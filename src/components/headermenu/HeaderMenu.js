@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Menu } from 'antd';
+import { Button } from 'antd';
 import Icon from '../common/Icon';
 import withApp from '../../containers/WithApp';
 
@@ -9,7 +9,7 @@ function HeaderMenu(props) {
     };
 
     return (
-        <Button onClick={onClick}>{<span><Icon icon="cogs" /><span>Synchronize</span></span>}</Button>
+        <Button onClick={onClick}>{<Icon icon="cogs" text="Synchronize" />}</Button>
     );
 }
 

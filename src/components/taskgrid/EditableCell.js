@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Input, Form } from 'antd';
+import React from 'react';
+import { Checkbox, Input, Form } from 'antd';
 import './EditableCell.css';
 
 const FormItem = Form.Item;
@@ -12,6 +12,32 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 
 export const EditableFormRow = Form.create()(EditableRow);
+
+const getValuePropName = type => {
+    switch (type) {
+        case 'checkbox':
+            return 'checked';
+        case 'text':
+        default:
+            return 'value';
+    }
+}
+
+const getInputFromType = (type, ref, save) => {
+    switch (type) {
+        case 'checkbox':
+            return <Checkbox
+                ref={ref}
+                onPressEnter={save}
+                onBlur={save} />;
+        case 'text':
+        default:
+            return <Input
+                ref={ref}
+                onPressEnter={save}
+                onBlur={save} />;
+    }
+}
 
 export class EditableCell extends React.Component {
     state = {
@@ -47,6 +73,7 @@ export class EditableCell extends React.Component {
 
     render() {
         const {
+            type,
             editable,
             dataIndex,
             title,
@@ -71,13 +98,9 @@ export class EditableCell extends React.Component {
                                                 required: true,
                                                 message: `"${title}" is required.`,
                                             }],
+                                            valuePropName: getValuePropName(type),
                                             initialValue: record[dataIndex],
-                                        })(
-                                            <Input
-                                                ref={this.inputRef}
-                                                onPressEnter={this.save}
-                                                onBlur={this.save} />
-                                        )}
+                                        })(getInputFromType(type, this.inputRef, this.save))}
                                     </FormItem>
                                 ) : (
                                         <div

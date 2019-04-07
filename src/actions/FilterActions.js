@@ -1,4 +1,4 @@
-export const loadFilters = () => {
+export const setFilters = () => {
     return dispatch => {
         dispatch({
             type: 'ON_SUCCESS',

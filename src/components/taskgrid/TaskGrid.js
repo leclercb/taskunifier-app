@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
-import { Table } from 'antd';
+import uuid from 'uuid';
+import { Button, Table } from 'antd';
 import withApp from '../../containers/WithApp';
+import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
 import { EditableFormRow, EditableCell } from './EditableCell';
 import './EditableCell.css';
-
-const columns = [
-    {
-        title: 'Completed',
-        dataIndex: 'completed',
-        key: 'completed'
-    },
-    {
-        title: 'Title',
-        dataIndex: 'title',
-        key: 'title',
-        editable: true
-    }
-];
+import Spacer from '../common/Spacer';
 
 function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-    const onSave = row => {
-        console.log(row);
+    const onAddTask = () => {
+        const taskId = 'task-' + uuid();
+
+        props.addTask({
+            id: taskId,
+            title: 'Task Test ' + taskId,
+            completed: false
+        });
+    };
+
+    const onUpdateTask = row => {
+        props.updateTask(row);
+    };
+
+    const onDeleteTask = () => {
+        props.deleteTask(selectedRowKeys);
     };
 
     const components = {
@@ -33,40 +36,45 @@ function TaskGrid(props) {
         },
     };
 
-    const newColumns = columns.map(column => {
-        if (!column.editable) {
-            return column;
-        }
-
+    const columns = props.fields.map(field => {
         return {
-            ...column,
+            ...field,
+            title: field.title,
+            dataIndex: field.path,
+            key: field.path,
+            editable: true,
             onCell: record => ({
                 record,
-                editable: column.editable,
-                dataIndex: column.dataIndex,
-                title: column.title,
-                onSave: onSave,
+                editable: true,
+                type: field.type,
+                dataIndex: field.path,
+                title: field.title,
+                onSave: onUpdateTask,
             }),
         };
     });
 
     return (
-        <React.Fragment>
-            {"Filter: " + (props.selectedFilter ? props.selectedFilter.title : '')}
-            <Table
-                rowKey="id"
-                components={components}
-                columns={newColumns}
-                dataSource={props.tasks}
-                bordered={true}
-                rowClassName={() => 'editable-row'}
-                size="small"
-                rowSelection={{
-                    selectedRowKeys,
-                    onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys),
-                }} />
-        </React.Fragment>
+        <Table
+            rowKey="id"
+            components={components}
+            columns={columns}
+            dataSource={props.tasks}
+            bordered={true}
+            rowClassName={() => 'editable-row'}
+            size="small"
+            rowSelection={{
+                selectedRowKeys,
+                onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys),
+            }}
+            footer={currentPageData =>
+                <React.Fragment>
+                    <Button onClick={onAddTask}>Add Task</Button>
+                    <Spacer />
+                    {selectedRowKeys.length > 0 && <Button onClick={onDeleteTask}>{`Delete Task${selectedRowKeys.length > 1 ? 's' : ''}`}</Button>}
+                </React.Fragment>
+            } />
     );
 }
 
-export default withApp(withTasks(TaskGrid));
+export default withApp(withFields(withTasks(TaskGrid)));

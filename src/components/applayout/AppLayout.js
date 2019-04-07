@@ -14,12 +14,12 @@ function AppLayout() {
     return (
         <React.Fragment>
             <Login/>
-            <Layout>
+            <Layout style={{minHeight: "100%", height: "100%"}}>
                 <Header>
                     <HeaderMenu />
                 </Header>
-                <Layout>
-                    <Sider width={300}>
+                <Layout style={{height: "100%"}}>
+                    <Sider width={250} theme="light">
                         <SiderMenu />
                     </Sider>
                     <Content>

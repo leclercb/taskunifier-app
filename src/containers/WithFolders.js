@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 
 const mapStateToProps = state => ({
     folders: state.folders
 });
 
 const mapDispatchToProps = dispatch => ({
-
+    addFolder: folder => dispatch(addFolder(folder)),
+    updateFolder: folder => dispatch(updateFolder(folder)),
+    deleteFolder: folderId => dispatch(deleteFolder(folderId))
 });
 
 function withFolders(Component) {

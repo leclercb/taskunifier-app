@@ -1,6 +1,6 @@
 function AppFooter() {
     return (
-        "OrganiTask ©2019 Created by BL-IT"
+        "TaskUnifier 2 ©2019 Created by BL-IT"
     );
 }
 

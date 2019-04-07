@@ -1,14 +1,16 @@
-import { loadFolders } from "./FolderActions";
-import { loadContexts } from "./ContextActions";
-import { loadFilters } from "./FilterActions";
-import { loadTasks } from "./TaskActions";
+import { setFolders } from "./FolderActions";
+import { setContexts } from "./ContextActions";
+import { setFields } from "./FieldActions";
+import { setFilters } from "./FilterActions";
+import { setTasks } from "./TaskActions";
 
 export const synchronize = () => {
     return dispatch => {
-        loadContexts()(dispatch);
-        loadFilters()(dispatch);
-        loadFolders()(dispatch);
-        loadTasks()(dispatch);
+        setContexts()(dispatch);
+        setFields()(dispatch);
+        setFilters()(dispatch);
+        setFolders()(dispatch);
+        setTasks()(dispatch);
     };
 };
 
