@@ -11,7 +11,7 @@ function Login(props) {
 
     return (
         <Modal
-            title={<span><Icon icon="user" /><span>Login</span></span>}
+            title={<Icon icon="cogs" text="Login"/>}
             visible={visible}
             closable={false}
             onOk={onOk}

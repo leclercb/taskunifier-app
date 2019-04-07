@@ -8,9 +8,11 @@ export const loadObjectsFromFile = (property, file) => {
 
         dispatch({
             type: 'UPDATE_PROCESS',
-            id: processId,
-            status: 'RUNNING',
-            title: `Load "${property}" from file`
+            process: {
+                id: processId,
+                status: 'RUNNING',
+                title: `Load "${property}" from file`
+            }
         });
 
         fs.readFile(file, 'utf-8', (err, data) => {
@@ -19,8 +21,10 @@ export const loadObjectsFromFile = (property, file) => {
             } else {
                 dispatch({
                     type: 'UPDATE_PROCESS',
-                    id: processId,
-                    status: 'COMPLETED'
+                    process: {
+                        id: processId,
+                        status: 'COMPLETED'
+                    }
                 });
 
                 setObjects(property, JSON.parse(data))(dispatch, getState);

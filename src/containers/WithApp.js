@@ -1,9 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import { setSelectedFilter, synchronize, loadData, saveData } from '../actions/AppActions'
+import { connect } from 'react-redux';
+import { setSelectedFilter, synchronize, loadData, saveData } from '../actions/AppActions';
 
 const mapStateToProps = state => ({
-    selectedFilter: state.app ? state.app.selectedFilter : null
+    selectedFilter: state.app.selectedFilter
 })
 
 const mapDispatchToProps = dispatch => ({

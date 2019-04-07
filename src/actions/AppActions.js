@@ -1,11 +1,13 @@
-import { loadFoldersFromFile, saveFoldersToFile } from "./FolderActions";
-import { loadContextsFromFile, saveContextsToFile } from "./ContextActions";
-import { loadFieldsFromFile, saveFieldsToFile } from "./FieldActions";
-import { loadFiltersFromFile, saveFiltersToFile } from "./FilterActions";
-import { loadTasksFromFile, saveTasksToFile } from "./TaskActions";
+import { loadFoldersFromFile, saveFoldersToFile } from './FolderActions';
+import { loadContextsFromFile, saveContextsToFile } from './ContextActions';
+import { loadFieldsFromFile, saveFieldsToFile } from './FieldActions';
+import { loadFiltersFromFile, saveFiltersToFile } from './FilterActions';
+import { loadTasksFromFile, saveTasksToFile } from './TaskActions';
+import { setStatusVisible } from './StatusActions';
 
 export const loadData = () => {
     return (dispatch, getState) => {
+        setStatusVisible(true)(dispatch, getState);
         loadContextsFromFile("data/contexts.json")(dispatch, getState);
         loadFieldsFromFile("data/fields.json")(dispatch, getState);
         loadFiltersFromFile("data/filters.json")(dispatch, getState);
@@ -16,6 +18,7 @@ export const loadData = () => {
 
 export const saveData = () => {
     return (dispatch, getState) => {
+        setStatusVisible(true)(dispatch, getState);
         saveContextsToFile("data/contexts.json")(dispatch, getState);
         saveFieldsToFile("data/fields.json")(dispatch, getState);
         saveFiltersToFile("data/filters.json")(dispatch, getState);
@@ -25,8 +28,8 @@ export const saveData = () => {
 };
 
 export const synchronize = () => {
-    return dispatch => {
-        
+    return (dispatch, getState) => {
+        setStatusVisible(true)(dispatch, getState);
     };
 };
 
