@@ -2,7 +2,7 @@ import uuid from 'uuid';
 
 const fs = window.require('fs');
 
-export const loadObjectsFromFile = (property, file) => {
+export const loadObjectsFromFile = (property, file, onData = null) => {
     return (dispatch, getState) => {
         const processId = uuid();
 
@@ -27,7 +27,11 @@ export const loadObjectsFromFile = (property, file) => {
                     }
                 });
 
-                setObjects(property, JSON.parse(data))(dispatch, getState);
+                if (onData) {
+                    onData(JSON.parse(data));
+                } else {
+                    setObjects(property, JSON.parse(data))(dispatch, getState);
+                }
             }
         });
     };

@@ -18,7 +18,7 @@ function AppFooter(props) {
         <React.Fragment>
             <span>TaskUnifier 2 ©2019 Created by BL-IT</span>
             <span>{notification ? notification.status + ': ' + notification.title : ''}</span>
-            <Button onClick={onShowStatus}><Icon icon="cogs" text="Show status" /></Button>
+            <Button size="small" onClick={onShowStatus}><Icon icon="cogs" text="Show status" /></Button>
         </React.Fragment>
     );
 }

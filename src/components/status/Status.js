@@ -20,7 +20,7 @@ function Status(props) {
         <React.Fragment>
             <span>Status: {props.status.busy ? 'Busy' : 'Idle'}</span>
             {props.status.processes.map(process =>
-                <Alert message={process.title} type={getTypeFromStatus(process.status)} showIcon />)}
+                <Alert key={process.id} message={process.title} type={getTypeFromStatus(process.status)} showIcon />)}
         </React.Fragment>
     );
 }
