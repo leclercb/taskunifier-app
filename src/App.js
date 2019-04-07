@@ -1,21 +1,14 @@
-import React from 'react';
-import './App.css';
+import React, { useEffect } from 'react';
 import AppLayout from './components/applayout/AppLayout';
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
-import rootReducer from './reducers';
-import thunk from 'redux-thunk';
+import withApp from './containers/WithApp';
+import './App.css';
 
-const store = createStore(
-    rootReducer,
-    applyMiddleware(thunk));
+function App(props) {
+    useEffect(() => props.loadData(), [true]);
 
-function App() {
     return (
-        <Provider store={store}>
-            <AppLayout />
-        </Provider>
+        <AppLayout />
     );
 }
 
-export default App;
+export default withApp(App);

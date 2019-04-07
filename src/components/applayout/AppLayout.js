@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout,Spin } from 'antd';
+import { Layout, Spin } from 'antd';
 import SiderMenu from '../sidermenu/SiderMenu';
 import TaskGrid from '../taskgrid/TaskGrid';
 import HeaderMenu from '../headermenu/HeaderMenu';
@@ -15,22 +15,22 @@ function AppLayout(props) {
     return (
         <React.Fragment>
             <Spin spinning={props.status.busy}>
-            <Layout style={{minHeight: "100%", height: "100%"}}>
-                <Header>
-                    <HeaderMenu />
-                </Header>
-                <Layout style={{height: "100%"}}>
-                    <Sider width={250} theme="light">
-                        <SiderMenu />
-                    </Sider>
-                    <Content>
-                        <TaskGrid />
-                    </Content>
+                <Layout style={{ minHeight: "100%", height: "100%" }}>
+                    <Header>
+                        <HeaderMenu />
+                    </Header>
+                    <Layout style={{ height: "100%" }}>
+                        <Sider width={250} theme="light">
+                            <SiderMenu />
+                        </Sider>
+                        <Content>
+                            <TaskGrid />
+                        </Content>
+                    </Layout>
+                    <Footer style={{ textAlign: 'center' }}>
+                        <AppFooter />
+                    </Footer>
                 </Layout>
-                <Footer style={{ textAlign: 'center' }}>
-                    <AppFooter />
-                </Footer>
-            </Layout>
             </Spin>
         </React.Fragment>
     );
