@@ -1,21 +1,37 @@
-import { setFolders } from "./FolderActions";
-import { setContexts } from "./ContextActions";
-import { setFields } from "./FieldActions";
-import { setFilters } from "./FilterActions";
-import { setTasks } from "./TaskActions";
+import { loadFoldersFromFile, saveFoldersToFile } from "./FolderActions";
+import { loadContextsFromFile, saveContextsToFile } from "./ContextActions";
+import { loadFieldsFromFile, saveFieldsToFile } from "./FieldActions";
+import { loadFiltersFromFile, saveFiltersToFile } from "./FilterActions";
+import { loadTasksFromFile, saveTasksToFile } from "./TaskActions";
+
+export const loadData = () => {
+    return (dispatch, getState) => {
+        loadContextsFromFile("data/contexts.json")(dispatch, getState);
+        loadFieldsFromFile("data/fields.json")(dispatch, getState);
+        loadFiltersFromFile("data/filters.json")(dispatch, getState);
+        loadFoldersFromFile("data/folders.json")(dispatch, getState);
+        loadTasksFromFile("data/tasks.json")(dispatch, getState);
+    };
+};
+
+export const saveData = () => {
+    return (dispatch, getState) => {
+        saveContextsToFile("data/contexts.json")(dispatch, getState);
+        saveFieldsToFile("data/fields.json")(dispatch, getState);
+        saveFiltersToFile("data/filters.json")(dispatch, getState);
+        saveFoldersToFile("data/folders.json")(dispatch, getState);
+        saveTasksToFile("data/tasks.json")(dispatch, getState);
+    };
+};
 
 export const synchronize = () => {
     return dispatch => {
-        setContexts()(dispatch);
-        setFields()(dispatch);
-        setFilters()(dispatch);
-        setFolders()(dispatch);
-        setTasks()(dispatch);
+        
     };
 };
 
 export const setSelectedFilter = filter => {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({
             type: 'SET_SELECTED_FILTER',
             filter: filter

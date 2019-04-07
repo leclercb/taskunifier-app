@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { setSelectedFilter, synchronize } from '../actions/AppActions'
+import { setSelectedFilter, synchronize, loadData, saveData } from '../actions/AppActions'
 
 const mapStateToProps = state => ({
     selectedFilter: state.app ? state.app.selectedFilter : null
 })
 
 const mapDispatchToProps = dispatch => ({
+    loadData: () => dispatch(loadData()),
+    saveData: () => dispatch(saveData()),
     synchronize: () => dispatch(synchronize()),
     setSelectedFilter: filter => dispatch(setSelectedFilter(filter))
 })

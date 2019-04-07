@@ -1,30 +1,25 @@
-export const setContexts = () => {
-    return dispatch => {
-        dispatch({
-            type: 'ON_SUCCESS',
-            context: 'CONTEXTS',
-            id: 'a'
-        });
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
 
-        dispatch({
-            type: 'SET_CONTEXTS',
-            contexts: [
-                {
-                    id: 'context-1',
-                    title: 'Context Test 1',
-                    color: '#33cc33'
-                },
-                {
-                    id: 'context-2',
-                    title: 'Context Test 2',
-                    color: '#ff9933'
-                },
-                {
-                    id: 'context-3',
-                    title: 'Context Test 3',
-                    color: '#ff66ff'
-                }
-            ]
-        });
-    };
+export const loadContextsFromFile = file => {
+    return loadObjectsFromFile('contexts', file);
+};
+
+export const saveContextsToFile = file => {
+    return saveObjectsToFile('contexts', file);
+};
+
+export const setContexts = contexts => {
+    return setObjects('contexts', contexts);
+};
+
+export const addContext = context => {
+    return addObject('contexts', context);
+};
+
+export const updateContext = context => {
+    return updateObject('contexts', context);
+};
+
+export const deleteContext = contextId => {
+    return deleteObject('contexts', contextId);
 };

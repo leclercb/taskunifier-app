@@ -1,27 +1,25 @@
-export const setFilters = () => {
-    return dispatch => {
-        dispatch({
-            type: 'ON_SUCCESS',
-            context: 'FILTERS',
-            id: 'a'
-        });
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
 
-        dispatch({
-            type: 'SET_FILTERS',
-            filters: [
-                {
-                    id: 'filter-1',
-                    title: 'Filter Test 1'
-                },
-                {
-                    id: 'filter-2',
-                    title: 'Filter Test 2'
-                },
-                {
-                    id: 'filter-3',
-                    title: 'Filter Test 3'
-                }
-            ]
-        });
-    };
+export const loadFiltersFromFile = file => {
+    return loadObjectsFromFile('filters', file);
+};
+
+export const saveFiltersToFile = file => {
+    return saveObjectsToFile('filters', file);
+};
+
+export const setFilters = filters => {
+    return setObjects('filters', filters);
+};
+
+export const addFilter = filter => {
+    return addObject('filters', filter);
+};
+
+export const updateFilter = filter => {
+    return updateObject('filters', filter);
+};
+
+export const deleteFilter = filterId => {
+    return deleteObject('filters', filterId);
 };

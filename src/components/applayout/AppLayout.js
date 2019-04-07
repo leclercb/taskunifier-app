@@ -1,19 +1,20 @@
 import React from 'react';
-import { Layout } from 'antd';
+import { Layout,Spin } from 'antd';
 import SiderMenu from '../sidermenu/SiderMenu';
 import TaskGrid from '../taskgrid/TaskGrid';
 import HeaderMenu from '../headermenu/HeaderMenu';
 import AppFooter from '../appfooter/AppFooter';
 import Login from '../oauth/Login';
+import withStatus from '../../containers/WithStatus';
 
 const {
     Header, Footer, Sider, Content,
 } = Layout;
 
-function AppLayout() {
+function AppLayout(props) {
     return (
         <React.Fragment>
-            <Login/>
+            <Spin spinning={props.status.busy}>
             <Layout style={{minHeight: "100%", height: "100%"}}>
                 <Header>
                     <HeaderMenu />
@@ -30,8 +31,9 @@ function AppLayout() {
                     <AppFooter />
                 </Footer>
             </Layout>
+            </Spin>
         </React.Fragment>
     );
 }
 
-export default AppLayout;
+export default withStatus(AppLayout);

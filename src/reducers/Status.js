@@ -1,27 +1,27 @@
-const Status = context => (state = {
-    id: null,
-    loaded: false,
-    loading: false
+const Status = () => (state = {
+    busy: false,
+    processes: [],
+    notifications: []
 }, action) => {
-    if (context !== action.context) {
-        return state;
-    }
-
     switch (action.type) {
-        case 'ON_LOAD':
-            return {
-                ...state,
-                id: action.id,
-                loaded: false,
-                loading: true
+        case 'UPDATE_PROCESS':
+            const newState = {
+                ...state
             }
-        case 'ON_SUCCESS':
-            return {
-                ...state,
-                id: action.id,
-                loaded: true,
-                loading: false
-            }
+
+            //if (action.id in newState.processes) {
+                newState.processes[action.id] = {
+                    ...newState.processes[action.id],
+                    ...action
+                };
+            //} else {
+                //newState.processes[action.id] = action;
+            //}
+
+            newState.busy = !!Object.keys(newState.processes).find(key => newState.processes[key].status === 'RUNNING');
+            newState.notifications.push(action.status + ': ' + newState.processes[action.id].title);
+
+            return newState;
         default:
             return state
     }

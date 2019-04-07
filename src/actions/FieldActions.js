@@ -1,56 +1,25 @@
-export const setFields = () => {
-    return dispatch => {
-        dispatch({
-            type: 'ON_SUCCESS',
-            context: 'FIELDS',
-            id: 'a'
-        });
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
 
-        dispatch({
-            type: 'SET_FIELDS',
-            fields: [
-                {
-                    id: 'field-title',
-                    path: 'title',
-                    title: 'Title',
-                    type: 'text',
-                    base: true
-                },
-                {
-                    id: 'field-completed',
-                    path: 'completed',
-                    title: 'Completed',
-                    type: 'checkbox',
-                    base: true
-                }
-            ]
-        });
-    };
+export const loadFieldsFromFile = file => {
+    return loadObjectsFromFile('fields', file);
+};
+
+export const saveFieldsToFile = file => {
+    return saveObjectsToFile('fields', file);
+};
+
+export const setFields = fields => {
+    return setObjects('fields', fields);
 };
 
 export const addField = field => {
-    return dispatch => {
-        dispatch({
-            type: 'ADD_FIELD',
-            field: field
-        });
-    };
+    return addObject('fields', field);
 };
 
 export const updateField = field => {
-    return dispatch => {
-        dispatch({
-            type: 'UPDATE_FIELD',
-            field: field
-        });
-    };
+    return updateObject('fields', field);
 };
 
 export const deleteField = fieldId => {
-    return dispatch => {
-        dispatch({
-            type: 'DELETE_FIELD',
-            fieldId: fieldId
-        });
-    };
+    return deleteObject('fields', fieldId);
 };

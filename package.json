@@ -2,6 +2,7 @@
   "name": "organitask",
   "version": "0.1.0",
   "private": true,
+  "main": "src/electron-starter.js",
   "dependencies": {
     "@craco/craco": "^4.1.0",
     "antd": "^3.16.1",
@@ -14,10 +15,14 @@
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2"
   },
+  "devDependencies": {
+    "electron": "^4.1.4"
+  },
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "test": "craco test",
+    "electron-start": "electron ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -27,8 +32,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "electron": "^4.1.4"
-  }
+  ]
 }

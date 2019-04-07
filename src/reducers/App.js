@@ -1,4 +1,4 @@
-const App = (state = {
+const App = () => (state = {
     user: null,
     selectedFilter: {
         id: 'not-completed',
