@@ -19,3 +19,15 @@
 .ant-form-item {
     margin-bottom: 3px !important;
 }
+
+.ant-list-item:hover {
+    cursor: pointer;
+}
+
+.selected-list-item {
+    background-color: #b8ccbf;
+}
+
+.object-actions:hover {
+    color: #008c4b !important;
+}

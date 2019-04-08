@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setSelectedFilter, synchronize, loadData, saveData, setManageCategoriesVisible } from '../actions/AppActions';
+import { setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerVisible } from '../actions/AppActions';
 import { setSettingsVisible } from '../actions/SettingActions';
 import { clearProcesses } from '../actions/StatusActions';
 
 const mapStateToProps = state => ({
     selectedFilter: state.app.selectedFilter,
-    manageCategoriesVisible: state.app.manageCategoriesVisible
+    categoryManagerVisible: state.app.categoryManagerVisible
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
     synchronize: () => dispatch(synchronize()),
     setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
     setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),
-    setManageCategoriesVisible: visible => dispatch(setManageCategoriesVisible(visible)),
+    setCategoryManagerVisible: visible => dispatch(setCategoryManagerVisible(visible)),
     clearProcesses: () => dispatch(clearProcesses())
 })
 

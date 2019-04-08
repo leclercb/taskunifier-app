@@ -7,9 +7,17 @@ const Objects = property => (state = [], action) => {
 
     switch (action.type) {
         case 'SET_OBJECTS': {
-            return [
-                ...action.objects
-            ];
+            return (action.objects || []).map(object => ({
+                id: uuid(),
+                refIds: {},
+                properties: {},
+                creationDate: Date.now(),
+                updateDate: Date.now(),
+                status: 'LOADED',
+                title: 'Untitled',
+                color: '#ffffff',
+                ...object,
+            }));
         }
         case 'ADD_OBJECT': {
             const objects = [
@@ -19,6 +27,8 @@ const Objects = property => (state = [], action) => {
             objects.push({
                 refIds: {},
                 properties: {},
+                title: 'Untitled',
+                color: '#ffffff',
                 ...action.object,
                 id: uuid(),
                 creationDate: Date.now(),
@@ -44,9 +54,6 @@ const Objects = property => (state = [], action) => {
             }
 
             objects[index] = {
-                creationDate: Date.now(),
-                refIds: {},
-                properties: {},
                 ...action.object,
                 updateDate: Date.now(),
                 status: 'TO_UPDATE',

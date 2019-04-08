@@ -24,8 +24,8 @@ function Header(props) {
         props.setSettingsVisible(true);
     };
 
-    const onSetManageCategoriesVisible = () => {
-        props.setManageCategoriesVisible(true);
+    const onSetCategoryManagerVisible = () => {
+        props.setCategoryManagerVisible(true);
     };
 
     return (
@@ -38,7 +38,7 @@ function Header(props) {
             <Spacer />
             <Button onClick={onSetSettingsVisible}>{<Icon icon="cog" text="Settings" />}</Button>
             <Spacer />
-            <Button onClick={onSetManageCategoriesVisible}>{<Icon icon="cubes" text="Manage Categories" />}</Button>
+            <Button onClick={onSetCategoryManagerVisible}>{<Icon icon="cubes" text="Category Manager" />}</Button>
         </LeftRight>
     );
 }
@@ -48,7 +48,7 @@ Header.propTypes = {
     saveData: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
     setSettingsVisible: PropTypes.func.isRequired,
-    setManageCategoriesVisible: PropTypes.func.isRequired
+    setCategoryManagerVisible: PropTypes.func.isRequired
 }
 
 export default withApp(Header);

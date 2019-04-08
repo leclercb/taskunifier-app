@@ -7,14 +7,14 @@ import Footer from './Footer';
 import withStatus from '../../containers/WithStatus';
 import ModalStatus from '../status/ModalStatus';
 import ModalSettings from '../settings/ModalSettings';
-import ModalManageCategories from '../categories/ModalManageCategories';
+import ModalCategoryManager from '../categories/ModalCategoryManager';
 
 function AppLayout(props) {
     return (
         <React.Fragment>
             <ModalSettings />
             <ModalStatus />
-            <ModalManageCategories />
+            <ModalCategoryManager />
             <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.status.busy}>
                 <Layout style={{ minHeight: "100%", height: "100%" }}>
                     <Layout.Header>

@@ -86,10 +86,10 @@ export const setSelectedFilter = filter => {
     };
 };
 
-export const setManageCategoriesVisible = visible => {
+export const setCategoryManagerVisible = visible => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SET_MANAGE_CATEGORIES_VISIBLE',
+            type: 'SET_CATEGORY_MANAGER_VISIBLE',
             visible: visible
         });
 

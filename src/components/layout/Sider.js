@@ -8,7 +8,6 @@ import withGoals from '../../containers/WithGoals';
 import withLocations from '../../containers/WithLocations';
 import withApp from '../../containers/WithApp';
 import LeftRight from '../common/LeftRight';
-import './Sider.css';
 
 function Sider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
@@ -41,13 +40,17 @@ function Sider(props) {
             <React.Fragment>
                 <Icon
                     icon="edit"
-                    color="#eaeff7"
+                    color="#e3f2eb"
                     className="object-actions"
                     onClick={() => onEdit()} />
-                <Popconfirm title={`Do you really want to delete "${object.title}" ?`} onConfirm={() => onDelete()} okText="Yes" cancelText="No">
+                <Popconfirm
+                    title={`Do you really want to delete "${object.title}" ?`}
+                    onConfirm={() => onDelete()}
+                    okText="Yes"
+                    cancelText="No">
                     <Icon
                         icon="trash-alt"
-                        color="#eaeff7"
+                        color="#e3f2eb"
                         className="object-actions" />
                 </Popconfirm>
             </React.Fragment>
@@ -81,7 +84,7 @@ function Sider(props) {
                 <Menu.Item key="next-action">{<Icon icon="chevron-circle-right" text="Next Action" />}</Menu.Item>
                 <Menu.Item key="completed">{<Icon icon="check-double" text="Completed" />}</Menu.Item>
             </Menu.SubMenu>
-            <Menu.SubMenu key="folders" title={createCategorySubMenu("Folders", "folder", () => props.setManageCategoriesVisible(true))}>
+            <Menu.SubMenu key="folders" title={createCategorySubMenu("Folders", "folder", () => props.setCategoryManagerVisible(true))}>
                 {props.folders.map(folder => createObjectMenuItem(folder, () => { }, () => props.deleteFolder(folder.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="contexts" title={createCategorySubMenu("Contexts", "thumbtack", () => { })}>
