@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import AppLayout from './components/applayout/AppLayout';
+import AppLayout from './components/layout/AppLayout';
 import withApp from './containers/WithApp';
 import './App.css';
 

@@ -4,8 +4,10 @@ import { Button } from 'antd';
 import Icon from '../common/Icon';
 import withApp from '../../containers/WithApp';
 import Spacer from '../common/Spacer';
+import LeftRight from '../common/LeftRight';
+import Logo from '../common/Logo';
 
-function HeaderMenu(props) {
+function Header(props) {
     const onLoad = () => {
         props.loadData();
     };
@@ -27,7 +29,7 @@ function HeaderMenu(props) {
     };
 
     return (
-        <React.Fragment>
+        <LeftRight right={<Logo size={40} />}>
             <Button onClick={onLoad}>{<Icon icon="folder-open" text="Load" />}</Button>
             <Spacer />
             <Button onClick={onSave}>{<Icon icon="save" text="Save" />}</Button>
@@ -37,11 +39,11 @@ function HeaderMenu(props) {
             <Button onClick={onSetSettingsVisible}>{<Icon icon="cog" text="Settings" />}</Button>
             <Spacer />
             <Button onClick={onSetManageCategoriesVisible}>{<Icon icon="cubes" text="Manage Categories" />}</Button>
-        </React.Fragment>
+        </LeftRight>
     );
 }
 
-HeaderMenu.propTypes = {
+Header.propTypes = {
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
@@ -49,4 +51,4 @@ HeaderMenu.propTypes = {
     setManageCategoriesVisible: PropTypes.func.isRequired
 }
 
-export default withApp(HeaderMenu);
+export default withApp(Header);

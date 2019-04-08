@@ -5,7 +5,7 @@ function Icon(props) {
         <span onClick={props.onClick}>
             <i
                 className={"fas fa-" + props.icon + " " + props.className}
-                style={{ color: props.color ? props.color : "#20639b", marginRight: 10 }}></i>
+                style={{ color: props.color ? props.color : "#008c4b", marginRight: 10 }}></i>
             {props.text}
         </span>
     );

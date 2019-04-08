@@ -6,9 +6,9 @@ import withFilters from '../../containers/WithFilters';
 import withFolders from '../../containers/WithFolders';
 import withApp from '../../containers/WithApp';
 import LeftRight from '../common/LeftRight';
-import './SiderMenu.css';
+import './Sider.css';
 
-function SiderMenu(props) {
+function Sider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
 
     const onSelect = event => {
@@ -21,6 +21,18 @@ function SiderMenu(props) {
     const onOpenChange = keys => {
         setOpenKeys(keys);
     };
+
+    const createCategorySubMenu = (text, icon, onAdd) => {
+        return (
+            <LeftRight right={<Icon
+                icon="plus"
+                color="#eaeff7"
+                className="object-actions"
+                onClick={() => onAdd()} />}>
+                <Icon icon={icon} text={text} />
+            </LeftRight>
+        );
+    }
 
     const createEditDeleteButtons = (object, onEdit, onDelete) => {
         return (
@@ -67,23 +79,23 @@ function SiderMenu(props) {
                 <Menu.Item key="next-action">{<Icon icon="chevron-circle-right" text="Next Action" />}</Menu.Item>
                 <Menu.Item key="completed">{<Icon icon="check-double" text="Completed" />}</Menu.Item>
             </Menu.SubMenu>
-            <Menu.SubMenu key="folders" title={<Icon icon="folder" text="Folders" />}>
+            <Menu.SubMenu key="folders" title={createCategorySubMenu("Folders", "folder", () => props.setManageCategoriesVisible(true))}>
                 {props.folders.map(folder => createObjectMenuItem(folder, () => { }, () => props.deleteFolder(folder.id)))}
             </Menu.SubMenu>
-            <Menu.SubMenu key="contexts" title={<Icon icon="thumbtack" text="Contexts" />}>
+            <Menu.SubMenu key="contexts" title={createCategorySubMenu("Contexts", "thumbtack", () => { })}>
                 {props.contexts.map(context => createObjectMenuItem(context, () => { }, () => props.deleteContext(context.id)))}
             </Menu.SubMenu>
-            <Menu.SubMenu key="goals" title={<Icon icon="bullseye" text="Goals" />}>
+            <Menu.SubMenu key="goals" title={createCategorySubMenu("Goals", "bullseye", () => { })}>
             </Menu.SubMenu>
-            <Menu.SubMenu key="locations" title={<Icon icon="compass" text="Locations" />}>
+            <Menu.SubMenu key="locations" title={createCategorySubMenu("Locations", "compass", () => { })}>
             </Menu.SubMenu>
-            <Menu.SubMenu key="tags" title={<Icon icon="tag" text="Tags" />}>
+            <Menu.SubMenu key="tags" title={createCategorySubMenu("Tags", "tag", () => { })}>
             </Menu.SubMenu>
-            <Menu.SubMenu key="filters" title={<Icon icon="filter" text="Filters" />}>
+            <Menu.SubMenu key="filters" title={createCategorySubMenu("Filters", "filter", () => { })}>
                 {props.filters.map(filter => createObjectMenuItem(filter, () => { }, () => props.deleteFilter(filter.id)))}
             </Menu.SubMenu>
-        </Menu>
+        </Menu >
     );
 }
 
-export default withApp(withContexts(withFilters(withFolders(SiderMenu))));
+export default withApp(withContexts(withFilters(withFolders(Sider))));
