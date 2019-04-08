@@ -1,0 +1,26 @@
+[
+    {
+        "id": "goal-1",
+        "title": "Goal Test 1",
+        "color": "#33cc33",
+        "archived": false,
+        "level": null,
+        "contributes": null
+    },
+    {
+        "id": "goal-2",
+        "title": "Goal Test 2",
+        "color": "#ff9933",
+        "archived": false,
+        "level": null,
+        "contributes": null
+    },
+    {
+        "id": "goal-3",
+        "title": "Goal Test 3",
+        "color": "#ff66ff",
+        "archived": false,
+        "level": null,
+        "contributes": null
+    }
+]

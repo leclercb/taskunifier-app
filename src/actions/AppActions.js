@@ -7,6 +7,8 @@ import { loadFiltersFromFile, saveFiltersToFile } from './FilterActions';
 import { loadTasksFromFile, saveTasksToFile } from './TaskActions';
 import { clearProcesses, updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
+import { loadGoalsFromFile, saveGoalsToFile } from './GoalActions';
+import { loadLocationsFromFile, saveLocationsToFile } from './LocationActions';
 
 export const loadData = () => {
     return (dispatch, getState) => {
@@ -21,6 +23,8 @@ export const loadData = () => {
                 loadFieldsFromFile("data/fields.json")(dispatch, getState),
                 loadFiltersFromFile("data/filters.json")(dispatch, getState),
                 loadFoldersFromFile("data/folders.json")(dispatch, getState),
+                loadGoalsFromFile("data/goals.json")(dispatch, getState),
+                loadLocationsFromFile("data/locations.json")(dispatch, getState),
                 loadTasksFromFile("data/tasks.json")(dispatch, getState)
             ]).then(() => {
                 updateProcess(processId, 'COMPLETED')(dispatch, getState);
@@ -49,6 +53,8 @@ export const saveData = () => {
                 saveFieldsToFile("data/fields.json", state.fields)(dispatch, getState),
                 saveFiltersToFile("data/filters.json", state.filters)(dispatch, getState),
                 saveFoldersToFile("data/folders.json", state.folders)(dispatch, getState),
+                saveGoalsToFile("data/goals.json", state.folders)(dispatch, getState),
+                saveLocationsToFile("data/locations.json", state.folders)(dispatch, getState),
                 saveTasksToFile("data/tasks.json", state.tasks)(dispatch, getState)
             ]).then(() => {
                 updateProcess(processId, 'COMPLETED')(dispatch, getState);

@@ -1,0 +1,26 @@
+[
+    {
+        "id": "location-1",
+        "title": "Location Test 1",
+        "color": "#33cc33",
+        "description": null,
+        "latitude": null,
+        "longitude": null
+    },
+    {
+        "id": "location-2",
+        "title": "Location Test 2",
+        "color": "#ff9933",
+        "description": null,
+        "latitude": null,
+        "longitude": null
+    },
+    {
+        "id": "location-3",
+        "title": "Location Test 3",
+        "color": "#ff66ff",
+        "description": null,
+        "latitude": null,
+        "longitude": null
+    }
+]

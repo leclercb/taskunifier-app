@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 const Objects = property => (state = [], action) => {
     if (property !== action.property) {
         return state;
@@ -14,13 +16,15 @@ const Objects = property => (state = [], action) => {
                 ...state
             ];
 
-            const index = objects.findIndex(object => object.id === action.object.id);
-
-            if (index >= 0) {
-                throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
-            }
-
-            objects.push(action.object);
+            objects.push({
+                refIds: {},
+                properties: {},
+                ...action.object,
+                id: uuid(),
+                creationDate: Date.now(),
+                updateDate: Date.now(),
+                status: 'LOADED'
+            });
 
             return objects;
         }
@@ -29,13 +33,24 @@ const Objects = property => (state = [], action) => {
                 ...state
             ];
 
+            if (!action.object.id) {
+                throw Error('The object doesn\'t have an ID');
+            }
+
             const index = objects.findIndex(object => object.id === action.object.id);
 
             if (index < 0) {
                 throw Error(`The object with id "${action.object.id}" cannot be updated as it doesn't exist`);
             }
 
-            objects[index] = action.object;
+            objects[index] = {
+                creationDate: Date.now(),
+                refIds: {},
+                properties: {},
+                ...action.object,
+                updateDate: Date.now(),
+                status: 'TO_UPDATE',
+            };
 
             return objects;
         }
@@ -46,7 +61,20 @@ const Objects = property => (state = [], action) => {
 
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
 
-            return objects.filter(object => !objectIds.includes(object.id));
+            objects.forEach(object => {
+                if (objectIds.includes(object.id)) {
+                    object.status = 'TO_DELETE';
+                }
+            });
+
+            return objects;
+        }
+        case 'CLEAN_OBJECTS': {
+            const objects = [
+                ...state
+            ];
+
+            return objects.filter(object => object.status !== 'DELETED');
         }
         default:
             return state

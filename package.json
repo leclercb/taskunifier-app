@@ -22,7 +22,7 @@
     "electron": "^4.1.4"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "BROWSER=none; craco start",
     "build": "craco build",
     "test": "craco test",
     "electron-start": "electron ."

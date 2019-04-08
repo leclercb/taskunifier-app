@@ -10,6 +10,8 @@ export default combineReducers({
     fields: Objects('fields'),
     filters: Objects('filters'),
     folders: Objects('folders'),
+    goals: Objects('goals'),
+    locations: Objects('locations'),
     tasks: Objects('tasks'),
     settings: Settings(),
     status: Status()

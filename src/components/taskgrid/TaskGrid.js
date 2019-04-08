@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import uuid from 'uuid';
 import { Button, Table } from 'antd';
 import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
@@ -12,11 +11,8 @@ function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
     const onAddTask = () => {
-        const taskId = 'task-' + uuid();
-
         props.addTask({
-            id: taskId,
-            title: 'Task Test ' + taskId,
+            title: 'Task Test ' + Date.now(),
             completed: false
         });
     };

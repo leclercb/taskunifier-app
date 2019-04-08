@@ -4,6 +4,8 @@ import Icon from '../common/Icon';
 import withContexts from '../../containers/WithContexts';
 import withFilters from '../../containers/WithFilters';
 import withFolders from '../../containers/WithFolders';
+import withGoals from '../../containers/WithGoals';
+import withLocations from '../../containers/WithLocations';
 import withApp from '../../containers/WithApp';
 import LeftRight from '../common/LeftRight';
 import './Sider.css';
@@ -86,8 +88,10 @@ function Sider(props) {
                 {props.contexts.map(context => createObjectMenuItem(context, () => { }, () => props.deleteContext(context.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="goals" title={createCategorySubMenu("Goals", "bullseye", () => { })}>
+                {props.goals.map(goal => createObjectMenuItem(goal, () => { }, () => props.deleteGoal(goal.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="locations" title={createCategorySubMenu("Locations", "compass", () => { })}>
+                {props.locations.map(location => createObjectMenuItem(location, () => { }, () => props.deleteLocation(location.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="tags" title={createCategorySubMenu("Tags", "tag", () => { })}>
             </Menu.SubMenu>
@@ -98,4 +102,4 @@ function Sider(props) {
     );
 }
 
-export default withApp(withContexts(withFilters(withFolders(Sider))));
+export default withApp(withContexts(withFilters(withFolders(withGoals(withLocations(Sider))))));

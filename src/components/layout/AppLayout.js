@@ -21,7 +21,7 @@ function AppLayout(props) {
                         <Header />
                     </Layout.Header>
                     <Layout style={{ height: "100%" }}>
-                        <Layout.Sider width={250} theme="light">
+                        <Layout.Sider width={300} theme="light">
                             <Sider />
                         </Layout.Sider>
                         <Layout.Content>
