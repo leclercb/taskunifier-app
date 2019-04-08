@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Modal } from 'antd';
 import withSettings from '../../containers/WithSettings';
 import Icon from '../common/Icon';

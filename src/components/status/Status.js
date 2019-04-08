@@ -1,26 +1,43 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert } from 'antd';
 import withStatus from '../../containers/WithStatus';
+import Icon from '../common/Icon';
 
 function Status(props) {
-    const getTypeFromStatus = status => {
+    const getIconFromStatus = status => {
         switch (status) {
             case 'RUNNING':
-                return 'info';
+                return 'spinner';
             case 'COMPLETED':
-                return 'success';
+                return 'check';
             case 'ERROR':
             default:
-                return 'error';
+                return 'exclamation-circle';
+        }
+    }
+
+    const getColorFromStatus = status => {
+        switch (status) {
+            case 'RUNNING':
+                return '#20639b';
+            case 'COMPLETED':
+                return '#3caea3';
+            case 'ERROR':
+            default:
+                return '#ed553b';
         }
     }
 
     return (
         <React.Fragment>
-            <span>Status: {props.status.busy ? 'Busy' : 'Idle'}</span>
             {props.status.processes.map(process =>
-                <Alert key={process.id} message={process.title} type={getTypeFromStatus(process.status)} showIcon />)}
+                <div key={process.id + process.status}>
+                    <Icon
+                        text={process.title}
+                        icon={getIconFromStatus(process.status)}
+                        color={getColorFromStatus(process.status)} />
+                </div>
+            )}
         </React.Fragment>
     );
 }

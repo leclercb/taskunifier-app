@@ -6,17 +6,19 @@ export const setSettingsVisible = visible => {
             type: 'SET_SETTINGS_VISIBLE',
             visible: visible
         });
+
+        return Promise.resolve();
     };
 };
 
 export const loadSettingsFromFile = file => {
     return (dispatch, getState) => {
-        return loadObjectsFromFile('tasks', file, data => setSettings(data)(dispatch, getState))(dispatch, getState);
+        return loadObjectsFromFile('settings', file, data => setSettings(data)(dispatch, getState))(dispatch, getState);
     };
 };
 
-export const saveSettingsToFile = file => {
-    return saveObjectsToFile('tasks', file);
+export const saveSettingsToFile = (file, data) => {
+    return saveObjectsToFile('settings', file, data);
 };
 
 export const setSettings = settings => {
@@ -25,6 +27,8 @@ export const setSettings = settings => {
             type: 'SET_SETTINGS',
             settings: settings
         });
+
+        return Promise.resolve();
     };
 };
 
@@ -34,5 +38,7 @@ export const updateSettings = settings => {
             type: 'UPDATE_SETTINGS',
             settings: settings
         });
+
+        return Promise.resolve();
     };
 };

@@ -4,8 +4,8 @@ export const loadContextsFromFile = file => {
     return loadObjectsFromFile('contexts', file);
 };
 
-export const saveContextsToFile = file => {
-    return saveObjectsToFile('contexts', file);
+export const saveContextsToFile = (file, data) => {
+    return saveObjectsToFile('contexts', file, data);
 };
 
 export const setContexts = contexts => {

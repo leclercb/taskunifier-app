@@ -1,14 +1,12 @@
 const Status = () => (state = {
-    visible: false,
     busy: false,
-    processes: [],
-    notifications: []
+    processes: []
 }, action) => {
     switch (action.type) {
-        case 'SET_STATUS_VISIBLE':
+        case 'CLEAR_PROCESSES':
             return {
                 ...state,
-                visible: action.visible
+                processes: []
             }
         case 'UPDATE_PROCESS':
             const newState = {
@@ -20,12 +18,11 @@ const Status = () => (state = {
             if (process) {
                 Object.assign(process, action.process);
             } else {
-                process = {...action.process};
+                process = { ...action.process };
                 newState.processes.push(process);
             }
 
             newState.busy = !!newState.processes.find(process => process.status === 'RUNNING');
-            newState.notifications.push({...process});
 
             return newState;
         default:

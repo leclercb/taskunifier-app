@@ -1,14 +1,20 @@
 import React, { useEffect } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from './components/applayout/AppLayout';
 import withApp from './containers/WithApp';
 import './App.css';
 
+const DragDropContextHTML5 = DragDropContext(HTML5Backend);
+
 function App(props) {
-    useEffect(() => props.loadData(), [true]);
+    useEffect(() => {
+        props.loadData();
+    }, [true]);
 
     return (
         <AppLayout />
     );
 }
 
-export default withApp(App);
+export default DragDropContextHTML5(withApp(App));

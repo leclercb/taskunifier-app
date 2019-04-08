@@ -4,8 +4,8 @@ export const loadFieldsFromFile = file => {
     return loadObjectsFromFile('fields', file);
 };
 
-export const saveFieldsToFile = file => {
-    return saveObjectsToFile('fields', file);
+export const saveFieldsToFile = (file, data) => {
+    return saveObjectsToFile('fields', file, data);
 };
 
 export const setFields = fields => {

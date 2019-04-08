@@ -8,6 +8,7 @@ import Login from '../oauth/Login';
 import withStatus from '../../containers/WithStatus';
 import ModalStatus from '../status/ModalStatus';
 import ModalSettings from '../settings/ModalSettings';
+import ModalManageCategories from '../managecategories/ModalManageCategories';
 
 const {
     Header, Footer, Sider, Content,
@@ -18,7 +19,8 @@ function AppLayout(props) {
         <React.Fragment>
             <ModalSettings />
             <ModalStatus />
-            <Spin spinning={props.status.busy}>
+            <ModalManageCategories />
+            <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.status.busy}>
                 <Layout style={{ minHeight: "100%", height: "100%" }}>
                     <Header>
                         <HeaderMenu />

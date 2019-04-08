@@ -1,20 +1,3 @@
 {
-    "automatic_backups": {
-        "title": "Enable automatic backups",
-        "category": "Backups",
-        "value": true,
-        "visible": true
-    },
-    "backup_interval": {
-        "title": "Backup interval in minutes",
-        "category": "Backups",
-        "value": 60,
-        "visible": true
-    },
-    "last_backup": {
-        "title": "Last backup date",
-        "category": "Backups",
-        "value": null,
-        "visible": false
-    }
+    "backup_interval": 10
 }

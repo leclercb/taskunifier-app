@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setStatusVisible } from '../actions/StatusActions';
+import { clearProcesses } from '../actions/StatusActions';
 
 const mapStateToProps = state => ({
     status: state.status
 });
 
 const mapDispatchToProps = dispatch => ({
-    setStatusVisible: visible => dispatch(setStatusVisible(visible))
+    clearProcesses: () => dispatch(clearProcesses())
 });
 
 function withStatus(Component) {

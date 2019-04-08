@@ -4,8 +4,8 @@ export const loadTasksFromFile = file => {
     return loadObjectsFromFile('tasks', file);
 };
 
-export const saveTasksToFile = file => {
-    return saveObjectsToFile('tasks', file);
+export const saveTasksToFile = (file, data) => {
+    return saveObjectsToFile('tasks', file, data);
 };
 
 export const setTasks = tasks => {

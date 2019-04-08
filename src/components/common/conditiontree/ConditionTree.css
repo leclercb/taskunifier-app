@@ -1,0 +1,50 @@
+.condition-container {
+    position: relative;
+    padding: 5px 5px 5px 5px;
+    width: 100%;
+    border: 1px dashed #cccccc;
+}
+
+.condition-actions {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+}
+
+.condition-group-container {
+    display: table;
+    width: 100%;
+    height: 180px;
+    min-height: 180px;
+}
+
+.condition-group-operator {
+    position: relative;
+    display: table-cell;
+    width: 40px;
+    max-width: 40px;
+    vertical-align: middle;
+    border: 1px solid #000000;
+}
+
+.condition-group-operator-text {
+    font-weight: bold;
+    transform: rotate(-90deg) translate3d(0, 0, 0);
+    transform-origin: 50% 55%;
+}
+
+.condition-group-operator-actions {
+    position: absolute;
+    bottom: 3px;
+    right: 6px;
+}
+
+.condition-group-content {
+    width: 100%;
+}
+
+.condition-leaf-drag {
+    position: relative;
+    top: 5px;
+    left: 5px;
+}

@@ -4,8 +4,8 @@ export const loadFiltersFromFile = file => {
     return loadObjectsFromFile('filters', file);
 };
 
-export const saveFiltersToFile = file => {
-    return saveObjectsToFile('filters', file);
+export const saveFiltersToFile = (file, data) => {
+    return saveObjectsToFile('filters', file, data);
 };
 
 export const setFilters = filters => {

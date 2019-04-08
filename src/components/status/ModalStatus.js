@@ -1,25 +1,16 @@
 import React from 'react';
-import { Button, Modal } from 'antd';
+import { Modal } from 'antd';
 import withStatus from '../../containers/WithStatus';
 import Status from './Status';
 import Icon from '../common/Icon';
 
 function ModalStatus(props) {
-    const onOk = () => {
-        props.setStatusVisible(false);
-    }
-
     return (
         <Modal
-            title={<Icon icon="cogs" text="Status" />}
-            visible={props.status.visible}
+            title={<Icon icon="cogs" text="Progress" />}
+            visible={props.status.busy}
             closable={false}
-            onOk={onOk}
-            footer={
-                <Button key="submit" onClick={onOk}>
-                    Close
-                </Button>
-            }>
+            footer={null}>
             <Status />
         </Modal>
     );

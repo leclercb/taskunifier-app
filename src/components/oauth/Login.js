@@ -5,7 +5,7 @@ import Icon from '../common/Icon';
 function Login(props) {
     const [visible, setVisible] = useState(true);
 
-    const onOk = () => {
+    const onLogin = () => {
         setVisible(false);
     }
 
@@ -14,9 +14,9 @@ function Login(props) {
             title={<Icon icon="cogs" text="Login"/>}
             visible={visible}
             closable={false}
-            onOk={onOk}
+            onOk={onLogin}
             footer={
-                <Button key="submit" type="primary" loading={false} onClick={onOk}>
+                <Button key="submit" type="primary" loading={false} onClick={onLogin}>
                     Login
                 </Button>
             }>

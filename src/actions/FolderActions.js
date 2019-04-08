@@ -4,8 +4,8 @@ export const loadFoldersFromFile = file => {
     return loadObjectsFromFile('folders', file);
 };
 
-export const saveFoldersToFile = file => {
-    return saveObjectsToFile('folders', file);
+export const saveFoldersToFile = (file, data) => {
+    return saveObjectsToFile('folders', file, data);
 };
 
 export const setFolders = folders => {
