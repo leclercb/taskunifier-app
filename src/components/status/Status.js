@@ -31,7 +31,7 @@ function Status(props) {
     return (
         <React.Fragment>
             {props.status.processes.map(process =>
-                <div key={process.id + process.status}>
+                <div>
                     <Icon
                         text={process.title}
                         icon={getIconFromStatus(process.status)}

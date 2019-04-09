@@ -27,7 +27,9 @@ function ContextManager(props) {
 
             </Col>
             <Col span={16}>
-                {selectedContext ? <ContextForm key={selectedContextId} context={selectedContext} /> : <Empty />}
+                {selectedContext ? (
+                    <ContextForm key={selectedContextId} context={selectedContext} updateContext={props.updateContext} />
+                ) : <Empty />}
             </Col>
         </Row>
     );

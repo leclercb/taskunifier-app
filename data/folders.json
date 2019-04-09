@@ -1,18 +1,33 @@
 [
     {
         "id": "folder-1",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587911,
+        "updateDate": 1554795587911,
+        "status": "LOADED",
         "title": "Folder Test 1",
         "color": "#33cc33",
         "archived": false
     },
     {
         "id": "folder-2",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587911,
+        "updateDate": 1554795587911,
+        "status": "LOADED",
         "title": "Folder Test 2",
         "color": "#ff9933",
         "archived": false
     },
     {
         "id": "folder-3",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587911,
+        "updateDate": 1554795587911,
+        "status": "LOADED",
         "title": "Folder Test 3",
         "color": "#ff66ff",
         "archived": false

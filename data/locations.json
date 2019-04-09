@@ -1,26 +1,35 @@
 [
     {
-        "id": "location-1",
-        "title": "Location Test 1",
+        "id": "folder-1",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587911,
+        "updateDate": 1554795587911,
+        "status": "LOADED",
+        "title": "Folder Test 1",
         "color": "#33cc33",
-        "description": null,
-        "latitude": null,
-        "longitude": null
+        "archived": false
     },
     {
-        "id": "location-2",
-        "title": "Location Test 2",
+        "id": "folder-2",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587911,
+        "updateDate": 1554795587911,
+        "status": "LOADED",
+        "title": "Folder Test 2",
         "color": "#ff9933",
-        "description": null,
-        "latitude": null,
-        "longitude": null
+        "archived": false
     },
     {
-        "id": "location-3",
-        "title": "Location Test 3",
+        "id": "folder-3",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587911,
+        "updateDate": 1554795587911,
+        "status": "LOADED",
+        "title": "Folder Test 3",
         "color": "#ff66ff",
-        "description": null,
-        "latitude": null,
-        "longitude": null
+        "archived": false
     }
 ]

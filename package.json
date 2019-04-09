@@ -5,8 +5,13 @@
   "main": "src/electron-starter.js",
   "dependencies": {
     "@craco/craco": "^4.1.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
     "antd": "^3.16.1",
     "craco-antd": "^1.10.0",
+    "i": "^0.3.6",
+    "npm": "^6.9.0",
     "rc-color-picker": "^1.2.6",
     "react": "^16.8.6",
     "react-dnd": "^7.4.5",

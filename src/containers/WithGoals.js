@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
+import { filterObjects } from '../reducers/Objects';
 
 const mapStateToProps = state => ({
-    goals: state.goals
+    goals: filterObjects(state.goals)
 });
 
 const mapDispatchToProps = dispatch => ({

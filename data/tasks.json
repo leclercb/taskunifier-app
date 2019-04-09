@@ -1,17 +1,35 @@
 [
     {
         "id": "task-1",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554795588054,
+        "status": "LOADED",
         "title": "Task Test 1",
+        "color": "#ffffff",
         "completed": false
     },
     {
         "id": "task-2",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554795588054,
+        "status": "LOADED",
         "title": "Task Test 2",
+        "color": "#ffffff",
         "completed": true
     },
     {
         "id": "task-3",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554795588054,
+        "status": "LOADED",
         "title": "Task Test 3",
+        "color": "#ffffff",
         "completed": false
     }
 ]

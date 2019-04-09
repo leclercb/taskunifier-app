@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
+import { filterObjects } from '../reducers/Objects';
 
 const mapStateToProps = state => ({
-    folders: state.folders
+    folders: filterObjects(state.folders)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerVisible } from '../actions/AppActions';
+import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerVisible } from '../actions/AppActions';
 import { setSettingsVisible } from '../actions/SettingActions';
 import { clearProcesses } from '../actions/StatusActions';
 
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     loadData: () => dispatch(loadData()),
     saveData: () => dispatch(saveData()),
+    backupData: () => dispatch(backupData()),
     synchronize: () => dispatch(synchronize()),
     setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
     setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),

@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
+import { filterObjects } from '../reducers/Objects';
 
 const mapStateToProps = state => ({
-    locations: state.locations
+    locations: filterObjects(state.locations)
 });
 
 const mapDispatchToProps = dispatch => ({

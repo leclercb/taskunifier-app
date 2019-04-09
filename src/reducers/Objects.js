@@ -1,5 +1,9 @@
 import uuid from 'uuid';
 
+export function filterObjects(objects) {
+    return objects.filter(object => object.status === 'LOADED' || object.status === 'TO_UPDATE');
+}
+
 const Objects = property => (state = [], action) => {
     if (property !== action.property) {
         return state;

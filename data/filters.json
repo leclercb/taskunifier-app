@@ -1,16 +1,31 @@
 [
     {
         "id": "filter-1",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587861,
+        "updateDate": 1554795587861,
+        "status": "LOADED",
         "title": "Filter Test 1",
         "color": "#33cc33"
     },
     {
         "id": "filter-2",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587861,
+        "updateDate": 1554795587861,
+        "status": "LOADED",
         "title": "Filter Test 2",
         "color": "#ff9933"
     },
     {
         "id": "filter-3",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587861,
+        "updateDate": 1554795587861,
+        "status": "LOADED",
         "title": "Filter Test 3",
         "color": "#ff66ff"
     }

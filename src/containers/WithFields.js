@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addField, updateField, deleteField } from '../actions/FieldActions';
+import { filterObjects } from '../reducers/Objects';
 
 const mapStateToProps = state => ({
-    fields: state.fields
+    fields: filterObjects(state.fields)
 });
 
 const mapDispatchToProps = dispatch => ({

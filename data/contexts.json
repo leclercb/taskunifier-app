@@ -1,16 +1,31 @@
 [
     {
         "id": "context-1",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587731,
+        "updateDate": 1554807923127,
+        "status": "TO_UPDATE",
         "title": "Context Test 1",
-        "color": "#33cc33"
+        "color": "#33b6cc"
     },
     {
         "id": "context-2",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587731,
+        "updateDate": 1554795587731,
+        "status": "LOADED",
         "title": "Context Test 2",
         "color": "#ff9933"
     },
     {
         "id": "context-3",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795587731,
+        "updateDate": 1554795587731,
+        "status": "LOADED",
         "title": "Context Test 3",
         "color": "#ff66ff"
     }

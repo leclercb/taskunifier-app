@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
+import { filterObjects } from '../reducers/Objects';
 
 const mapStateToProps = state => ({
-    contexts: state.contexts
+    contexts: filterObjects(state.contexts)
 })
 
 const mapDispatchToProps = dispatch => ({
