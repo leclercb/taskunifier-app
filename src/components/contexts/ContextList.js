@@ -33,7 +33,9 @@ function ContextList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addContext()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
+            <Button onClick={() => props.addContext()} style={{ marginTop: 5 }}>
+                <Icon icon="plus" text="Add" />
+            </Button>
         </React.Fragment>
     );
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import uuid from 'nes-core-frontend/lib/utils/Uuid';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
@@ -13,19 +12,16 @@ function ConditionTree(props) {
 
         if (key === 'condition_group_and') {
             newCondition = {
-                '@uuid': uuid(),
                 operator: 'AND',
                 conditions: []
             };
         } else if (key === 'condition_group_or') {
             newCondition = {
-                '@uuid': uuid(),
                 operator: 'OR',
                 conditions: []
             };
         } else if (key === 'condition_group_not') {
             newCondition = {
-                '@uuid': uuid(),
                 operator: 'NOT',
                 conditions: []
             };
@@ -50,11 +46,11 @@ function ConditionTree(props) {
         }
     };
 
-    handleUpdate = (condition) => {
+    const handleUpdate = (condition) => {
 
     };
 
-    handleDelete = (condition, parentCondition) => {
+    const handleDelete = (condition, parentCondition) => {
         if (!parentCondition) {
             /*             this.setState({
                             condition: null
@@ -68,7 +64,7 @@ function ConditionTree(props) {
         }
     };
 
-    handleEndDrag = (item, dropResult) => {
+    const handleEndDrag = (item, dropResult) => {
         /* if (!item.parentCondition) {
             return;
         }
@@ -111,7 +107,6 @@ function ConditionTree(props) {
         handleEndDrag={handleEndDrag}
         addMenuItems={props.addMenuItems}
         getLeafComponent={props.getLeafComponent} />;
-}
 }
 
 ConditionTree.propTypes = {

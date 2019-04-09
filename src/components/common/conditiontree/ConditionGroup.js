@@ -5,7 +5,6 @@ import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from './ItemTypes';
 import AddButton from './AddButton';
 import Condition from './Condition';
-import Panel from 'nes-core-frontend/lib/components/core/Panel';
 import { conditionGroup } from './ConditionPropTypes';
 
 function ConditionGroup(props) {
@@ -76,28 +75,25 @@ function ConditionGroup(props) {
                     getLeafComponent={props.getLeafComponent} />;
             })}
 
-            {(condition.operator === 'AND' || condition.operator === 'OR') && condition.conditions.length < 2 ?
-                <Panel>
-                    <Alert
-                        message="Warning"
-                        description={'A condition group with operator \'' + condition.operator + '\' must contain at least two sub-conditions.'}
-                        type="warning"
-                        showIcon
-                    />
-                </Panel> : null}
+            {(condition.operator === 'AND' || condition.operator === 'OR') && condition.conditions.length < 2 ? (
+                <Alert
+                    message="Warning"
+                    description={'A condition group with operator \'' + condition.operator + '\' must contain at least two sub-conditions.'}
+                    type="warning"
+                    showIcon
+                />
+            ) : null}
 
-            {condition.operator === 'NOT' && condition.conditions.length !== 1 ?
-                <Panel>
-                    <Alert
-                        message="Warning"
-                        description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
-                        type="warning"
-                        showIcon
-                    />
-                </Panel> : null}
+            {condition.operator === 'NOT' && condition.conditions.length !== 1 ? (
+                <Alert
+                    message="Warning"
+                    description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
+                    type="warning"
+                    showIcon
+                />
+            ) : null}
         </div>
     </div>;
-}
 }
 
 ConditionGroup.propTypes = {

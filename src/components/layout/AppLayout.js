@@ -8,6 +8,7 @@ import withStatus from '../../containers/WithStatus';
 import ModalStatus from '../status/ModalStatus';
 import ModalSettings from '../settings/ModalSettings';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
+import ModalFilterManager from '../filters/ModalFilterManager';
 
 function AppLayout(props) {
     return (
@@ -15,6 +16,7 @@ function AppLayout(props) {
             <ModalSettings />
             <ModalStatus />
             <ModalCategoryManager />
+            <ModalFilterManager />
             <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.status.busy}>
                 <Layout style={{ minHeight: "100%", height: "100%" }}>
                     <Layout.Header>

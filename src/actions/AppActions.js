@@ -105,7 +105,18 @@ export const setSelectedFilter = filter => {
 export const setCategoryManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SET_CATEGORY_MANAGER_VISIBLE',
+            type: 'SET_CATEGORY_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
+
+export const setFilterManagerOptions = (options) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_FILTER_MANAGER_OPTIONS',
             ...options
         });
 

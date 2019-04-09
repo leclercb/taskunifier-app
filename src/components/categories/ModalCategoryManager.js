@@ -1,13 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from '../../containers/WithApp';
 import Icon from '../common/Icon';
 import CategoryManager from './CategoryManager';
 
 function ModalCategoryManager(props) {
-    const onSetCategoryManagerOptions = () => {
-        props.setCategoryManagerOptions({visible: false});
-    }
+    const onCloseCategoryManager = () => {
+        props.setCategoryManagerOptions({ visible: false });
+    };
+
+    const onObjectSelection = objectId => {
+        props.setCategoryManagerOptions({ objectId });
+    };
 
     return (
         <Modal
@@ -16,17 +21,22 @@ function ModalCategoryManager(props) {
             width="80%"
             closable={false}
             footer={
-                <Button onClick={onSetCategoryManagerOptions}>
+                <Button onClick={onCloseCategoryManager}>
                     Close
                 </Button>
             }>
             <CategoryManager
                 category={props.categoryManager.category}
                 objectId={props.categoryManager.objectId}
-                onCategorySelection={category => props.setCategoryManagerOptions({category})}
-                onObjectSelection={objectId => props.setCategoryManagerOptions({objectId})} />
+                onCategorySelection={category => props.setCategoryManagerOptions({ category })}
+                onObjectSelection={onObjectSelection} />
         </Modal>
     );
+}
+
+ModalCategoryManager.propTypes = {
+    setCategoryManagerOptions: PropTypes.func.isRequired,
+    categoryManager: PropTypes.object.isRequired
 }
 
 export default withApp(ModalCategoryManager);

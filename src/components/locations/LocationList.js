@@ -33,7 +33,9 @@ function LocationList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addLocation()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
+            <Button onClick={() => props.addLocation()} style={{ marginTop: 5 }}>
+                <Icon icon="plus" text="Add" />
+            </Button>
         </React.Fragment>
     );
 }

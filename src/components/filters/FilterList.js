@@ -4,22 +4,22 @@ import { Button, List, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
 
-function FolderList(props) {
+function FilterList(props) {
     return (
         <React.Fragment>
             <List
                 size="small"
                 bordered={true}
-                dataSource={props.folders}
+                dataSource={props.filters}
                 style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
                 renderItem={item => (
                     <List.Item
-                        onClick={() => props.onFolderSelection(item)}
-                        className={item.id === props.selectedFolderId ? 'selected-list-item' : null}>
+                        onClick={() => props.onFilterSelection(item)}
+                        className={item.id === props.selectedFilterId ? 'selected-list-item' : null}>
                         <LeftRight right={(
                             <Popconfirm
                                 title={`Do you really want to delete "${item.title}" ?`}
-                                onConfirm={() => props.deleteFolder(item.id)}
+                                onConfirm={() => props.deleteFilter(item.id)}
                                 okText="Yes"
                                 cancelText="No">
                                 <Icon
@@ -33,19 +33,19 @@ function FolderList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addFolder()} style={{ marginTop: 5 }}>
+            <Button onClick={() => props.addFilter()} style={{ marginTop: 5 }}>
                 <Icon icon="plus" text="Add" />
             </Button>
         </React.Fragment>
     );
 }
 
-FolderList.propTypes = {
-    folders: PropTypes.array.isRequired,
-    selectedFolderId: PropTypes.string,
-    addFolder: PropTypes.func.isRequired,
-    deleteFolder: PropTypes.func.isRequired,
-    onFolderSelection: PropTypes.func.isRequired
+FilterList.propTypes = {
+    filters: PropTypes.array.isRequired,
+    selectedFilterId: PropTypes.string,
+    addFilter: PropTypes.func.isRequired,
+    deleteFilter: PropTypes.func.isRequired,
+    onFilterSelection: PropTypes.func.isRequired
 }
 
-export default FolderList;
+export default FilterList;

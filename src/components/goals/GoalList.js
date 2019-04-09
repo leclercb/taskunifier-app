@@ -33,7 +33,9 @@ function GoalList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addGoal()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
+            <Button onClick={() => props.addGoal()} style={{ marginTop: 5 }}>
+                <Icon icon="plus" text="Add" />
+            </Button>
         </React.Fragment>
     );
 }

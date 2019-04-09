@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
 import withContexts from '../../containers/WithContexts';
@@ -7,6 +8,11 @@ import withFolders from '../../containers/WithFolders';
 import withGoals from '../../containers/WithGoals';
 import withLocations from '../../containers/WithLocations';
 import withApp from '../../containers/WithApp';
+import { ContextPropType } from '../../proptypes/ContextPropTypes';
+import { FolderPropType } from '../../proptypes/FolderPropTypes';
+import { GoalPropType } from '../../proptypes/GoalPropTypes';
+import { LocationPropType } from '../../proptypes/LocationPropTypes';
+import { FilterPropType } from '../../proptypes/FilterPropTypes';
 import LeftRight from '../common/LeftRight';
 
 function Sider(props) {
@@ -82,6 +88,19 @@ function Sider(props) {
         });
     }
 
+    const addFilter = () => {
+        props.setFilterManagerOptions({
+            visible: true
+        });
+    }
+
+    const editFilter = filterId => {
+        props.setFilterManagerOptions({
+            visible: true,
+            filterId: filterId
+        });
+    }
+
     return (
         <Menu
             selectedKeys={[props.selectedFilter.id]}
@@ -113,11 +132,28 @@ function Sider(props) {
             </Menu.SubMenu>
             <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', () => { })}>
             </Menu.SubMenu>
-            <Menu.SubMenu key="filters" title={createCategorySubMenu('Filters', 'filter', () => { })}>
-                {props.filters.map(filter => createObjectMenuItem(filter, () => { }, () => props.deleteFilter(filter.id)))}
+            <Menu.SubMenu key="filters" title={createCategorySubMenu('Filters', 'filter', () => addFilter())}>
+                {props.filters.map(filter => createObjectMenuItem(filter, () => editFilter(filter.id), () => props.deleteFilter(filter.id)))}
             </Menu.SubMenu>
         </Menu >
     );
+}
+
+Sider.propTypes = {
+    selectedFilter: FilterPropType.isRequired,
+    contexts: PropTypes.arrayOf(ContextPropType).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType).isRequired,
+    goals: PropTypes.arrayOf(GoalPropType).isRequired,
+    locations: PropTypes.arrayOf(LocationPropType).isRequired,
+    filters: PropTypes.arrayOf(FilterPropType).isRequired,
+    setSelectedFilter: PropTypes.func.isRequired,
+    setCategoryManagerOptions: PropTypes.func.isRequired,
+    setFilterManagerOptions: PropTypes.func.isRequired,
+    deleteContext: PropTypes.func.isRequired,
+    deleteFolder: PropTypes.func.isRequired,
+    deleteGoal: PropTypes.func.isRequired,
+    deleteLocation: PropTypes.func.isRequired,
+    deleteFilter: PropTypes.func.isRequired
 }
 
 export default withApp(withContexts(withFilters(withFolders(withGoals(withLocations(Sider))))));
