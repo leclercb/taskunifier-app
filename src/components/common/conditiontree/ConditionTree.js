@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { Button } from 'antd';
@@ -6,10 +6,16 @@ import AddButton from './AddButton';
 import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
 import './ConditionTree.css';
+import { usePrevious } from '../../../hooks/UsePrevious';
 
 function ConditionTree(props) {
     // TODO don't update directly ?
-    const [ rootCondition, setRootCondition ] = useState(props.condition);
+    const [ rootCondition, setRootCondition ] = useState(clone(props.condition));
+    const prevCondition = usePrevious(props.condition);
+
+    if (prevCondition !== props.condition) {
+        setRootCondition(clone(props.condition));
+    }
 
     const handleAdd = (condition, key) => {
         let newCondition = null;
@@ -44,13 +50,13 @@ function ConditionTree(props) {
             props.onUpdateCondition(condition);
         } else {
             condition.conditions.push(newCondition);
-            props.onUpdateCondition(props.condition);
+            props.onUpdateCondition(rootCondition);
         }
     };
 
     const handleUpdate = (condition) => {
         // TODO check this
-        props.onUpdateCondition(props.condition);
+        props.onUpdateCondition(rootCondition);
     };
 
     const handleDelete = (condition, parentCondition) => {
@@ -58,7 +64,7 @@ function ConditionTree(props) {
             props.onUpdateCondition(null);
         } else {
             parentCondition.conditions.splice(parentCondition.conditions.indexOf(condition), 1);
-            props.onUpdateCondition(props.condition);
+            props.onUpdateCondition(rootCondition);
         }
     };
 
@@ -70,10 +76,10 @@ function ConditionTree(props) {
         item.parentCondition.conditions.splice(item.parentCondition.conditions.indexOf(item.condition), 1);
         dropResult.condition.conditions.push(item.condition);
 
-        props.onUpdateCondition(props.condition);
+        props.onUpdateCondition(rootCondition);
     };
 
-    if (!props.condition) {
+    if (!rootCondition) {
         if (props.disabled) {
             return null;
         } else {
@@ -94,7 +100,7 @@ function ConditionTree(props) {
 
     return <Condition
         disabled={props.disabled}
-        condition={props.condition}
+        condition={rootCondition}
         parentCondition={null}
         context={props.context}
         handleAdd={handleAdd}

@@ -67,7 +67,7 @@ const DragDropContextHTML5 = DragDropContext(HTML5Backend);
 function App(props) {
     useEffect(() => {
         props.loadData();
-    }, [true]);
+    }, []);
 
     useInterval(() => {
         props.backupData();

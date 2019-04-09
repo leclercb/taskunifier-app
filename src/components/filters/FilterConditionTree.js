@@ -38,10 +38,11 @@ function FilterConditionTree(props) {
     }
 
     const onUpdateCondition = condition => {
+        // TODO don't save directly
         props.updateFilter({
             ...props.filter,
             condition: condition
-        })
+        });
     }
 
     return (
