@@ -65,8 +65,8 @@ export const saveData = path => {
                 saveFieldsToFile(path + "fields.json", state.fields)(dispatch, getState),
                 saveFiltersToFile(path + "filters.json", state.filters)(dispatch, getState),
                 saveFoldersToFile(path + "folders.json", state.folders)(dispatch, getState),
-                saveGoalsToFile(path + "goals.json", state.folders)(dispatch, getState),
-                saveLocationsToFile(path + "locations.json", state.folders)(dispatch, getState),
+                saveGoalsToFile(path + "goals.json", state.goals)(dispatch, getState),
+                saveLocationsToFile(path + "locations.json", state.locations)(dispatch, getState),
                 saveTasksToFile(path + "tasks.json", state.tasks)(dispatch, getState)
             ]).then(() => {
                 updateProcess(processId, 'COMPLETED')(dispatch, getState);
