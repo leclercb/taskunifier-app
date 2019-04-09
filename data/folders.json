@@ -19,7 +19,7 @@
         "status": "LOADED",
         "title": "Folder Test 2",
         "color": "#ff9933",
-        "archived": false
+        "archived": true
     },
     {
         "id": "folder-3",

@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withContexts from '../../containers/WithContexts';
 import ContextList from './ContextList';
 import ContextForm from './ContextForm';
 
 function ContextManager(props) {
-    const [selectedContextId, setSelectedContextId] = useState(null);
+    const selectedContextId = props.contextId;
 
     const onContextSelection = context => {
-        setSelectedContextId(context.id);
+        props.onContextSelection(context.id);
     }
 
     const selectedContext = props.contexts.find(context => context.id === selectedContextId);
@@ -33,6 +34,11 @@ function ContextManager(props) {
             </Col>
         </Row>
     );
+}
+
+ContextManager.propTypes = {
+    contextId: PropTypes.string,
+    onContextSelection: PropTypes.func.isRequired
 }
 
 export default withContexts(ContextManager);

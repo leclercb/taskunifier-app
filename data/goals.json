@@ -1,34 +1,34 @@
 [
     {
-        "id": "folder-1",
+        "id": "goal-1",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
         "status": "LOADED",
-        "title": "Folder Test 1",
+        "title": "Goal Test 1",
         "color": "#33cc33",
         "archived": false
     },
     {
-        "id": "folder-2",
+        "id": "goal-2",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
         "status": "LOADED",
-        "title": "Folder Test 2",
+        "title": "Goal Test 2",
         "color": "#ff9933",
-        "archived": false
+        "archived": true
     },
     {
-        "id": "folder-3",
+        "id": "goal-3",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
         "status": "LOADED",
-        "title": "Folder Test 3",
+        "title": "Goal Test 3",
         "color": "#ff66ff",
         "archived": false
     }

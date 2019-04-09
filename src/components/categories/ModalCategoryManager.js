@@ -5,22 +5,26 @@ import Icon from '../common/Icon';
 import CategoryManager from './CategoryManager';
 
 function ModalCategoryManager(props) {
-    const onSetCategoryManagerVisible = () => {
-        props.setCategoryManagerVisible(false);
+    const onSetCategoryManagerOptions = () => {
+        props.setCategoryManagerOptions({visible: false});
     }
 
     return (
         <Modal
             title={<Icon icon="cubes" text="Category Manager" />}
-            visible={props.categoryManagerVisible}
+            visible={props.categoryManager.visible}
             width="80%"
             closable={false}
             footer={
-                <Button onClick={onSetCategoryManagerVisible}>
+                <Button onClick={onSetCategoryManagerOptions}>
                     Close
                 </Button>
             }>
-            <CategoryManager />
+            <CategoryManager
+                category={props.categoryManager.category}
+                objectId={props.categoryManager.objectId}
+                onCategorySelection={category => props.setCategoryManagerOptions({category})}
+                onObjectSelection={objectId => props.setCategoryManagerOptions({objectId})} />
         </Modal>
     );
 }

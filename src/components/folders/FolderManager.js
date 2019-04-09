@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withFolders from '../../containers/WithFolders';
 import FolderList from './FolderList';
 import FolderForm from './FolderForm';
 
 function FolderManager(props) {
-    const [selectedFolderId, setSelectedFolderId] = useState(null);
+    const selectedFolderId = props.folderId;
 
     const onFolderSelection = folder => {
-        setSelectedFolderId(folder.id);
+        props.onFolderSelection(folder.id);
     }
 
     const selectedFolder = props.folders.find(folder => folder.id === selectedFolderId);
@@ -33,6 +34,11 @@ function FolderManager(props) {
             </Col>
         </Row>
     );
+}
+
+FolderManager.propTypes = {
+    folderId: PropTypes.string,
+    onFolderSelection: PropTypes.func.isRequired
 }
 
 export default withFolders(FolderManager);

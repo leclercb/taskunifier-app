@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button } from 'antd';
 import ColorPicker from 'rc-color-picker';
 import 'rc-color-picker/assets/index.css';
-import { FolderPropType } from '../../proptypes/FolderPropTypes';
+import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { merge } from '../../utils/ObjectUtils';
 
-function FolderForm(props) {
+function LocationForm(props) {
     const onSave = (e) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                const updatedFolder = merge({ ...props.folder }, values);
-                props.updateFolder(updatedFolder);
+                const updatedLocation = merge({ ...props.location }, values);
+                props.updateLocation(updatedLocation);
             }
         });
     }
@@ -47,7 +47,7 @@ function FolderForm(props) {
         <Form {...formItemLayout} onSubmit={onSave}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
-                    initialValue: props.folder.title,
+                    initialValue: props.location.title,
                     rules: [
                         {
                             required: true,
@@ -60,7 +60,7 @@ function FolderForm(props) {
             </Form.Item>
             <Form.Item label="Color">
                 {getFieldDecorator('color', {
-                    initialValue: props.folder.color,
+                    initialValue: props.location.color,
                     valuePropName: 'color',
                     getValueFromEvent: event => event.color,
                     rules: [
@@ -72,12 +72,25 @@ function FolderForm(props) {
                     <ColorPicker />
                 )}
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                {getFieldDecorator('archived', {
-                    initialValue: props.folder.archived,
-                    valuePropName: 'checked'
+            <Form.Item label="Description">
+                {getFieldDecorator('description', {
+                    initialValue: props.location.description
                 })(
-                    <Checkbox>Archived</Checkbox>
+                    <Input.TextArea />
+                )}
+            </Form.Item>
+            <Form.Item label="Latitude">
+                {getFieldDecorator('latitude', {
+                    initialValue: props.location.latitude
+                })(
+                    <Input />
+                )}
+            </Form.Item>
+            <Form.Item label="Longitude">
+                {getFieldDecorator('longitude', {
+                    initialValue: props.location.longitude
+                })(
+                    <Input />
                 )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
@@ -87,9 +100,9 @@ function FolderForm(props) {
     );
 }
 
-FolderForm.propTypes = {
-    folder: FolderPropType.isRequired,
-    updateFolder: PropTypes.func.isRequired
+LocationForm.propTypes = {
+    location: LocationPropType.isRequired,
+    updateLocation: PropTypes.func.isRequired
 }
 
-export default Form.create({ name: 'folder' })(FolderForm);
+export default Form.create({ name: 'location' })(LocationForm);

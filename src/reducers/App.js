@@ -4,7 +4,11 @@ const App = () => (state = {
         id: 'not-completed',
         title: 'Not Completed'
     },
-    categoryManagerVisible: false
+    categoryManager: {
+        visible: false,
+        category: 'contexts',
+        objectId: null
+    }
 }, action) => {
     switch (action.type) {
         case 'SET_SELECTED_FILTER':
@@ -15,7 +19,11 @@ const App = () => (state = {
         case 'SET_CATEGORY_MANAGER_VISIBLE':
             return {
                 ...state,
-                categoryManagerVisible: action.visible
+                categoryManager: {
+                    visible: 'visible' in action ? action.visible : state.categoryManager.visible,
+                    category: 'category' in action ? action.category : state.categoryManager.category,
+                    objectId: 'objectId' in action ? action.objectId : state.categoryManager.objectId
+                }
             }
         default:
             return state

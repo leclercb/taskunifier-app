@@ -102,11 +102,11 @@ export const setSelectedFilter = filter => {
     };
 };
 
-export const setCategoryManagerVisible = visible => {
+export const setCategoryManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
             type: 'SET_CATEGORY_MANAGER_VISIBLE',
-            visible: visible
+            ...options
         });
 
         return Promise.resolve();

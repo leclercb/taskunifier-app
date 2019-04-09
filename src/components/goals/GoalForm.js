@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { Form, Input, Button, Checkbox } from 'antd';
 import ColorPicker from 'rc-color-picker';
 import 'rc-color-picker/assets/index.css';
-import { FolderPropType } from '../../proptypes/FolderPropTypes';
+import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { merge } from '../../utils/ObjectUtils';
 
-function FolderForm(props) {
+function GoalForm(props) {
     const onSave = (e) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                const updatedFolder = merge({ ...props.folder }, values);
-                props.updateFolder(updatedFolder);
+                const updatedGoal = merge({ ...props.goal }, values);
+                props.updateGoal(updatedGoal);
             }
         });
     }
@@ -47,7 +47,7 @@ function FolderForm(props) {
         <Form {...formItemLayout} onSubmit={onSave}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
-                    initialValue: props.folder.title,
+                    initialValue: props.goal.title,
                     rules: [
                         {
                             required: true,
@@ -60,7 +60,7 @@ function FolderForm(props) {
             </Form.Item>
             <Form.Item label="Color">
                 {getFieldDecorator('color', {
-                    initialValue: props.folder.color,
+                    initialValue: props.goal.color,
                     valuePropName: 'color',
                     getValueFromEvent: event => event.color,
                     rules: [
@@ -74,7 +74,7 @@ function FolderForm(props) {
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
                 {getFieldDecorator('archived', {
-                    initialValue: props.folder.archived,
+                    initialValue: props.goal.archived,
                     valuePropName: 'checked'
                 })(
                     <Checkbox>Archived</Checkbox>
@@ -87,9 +87,9 @@ function FolderForm(props) {
     );
 }
 
-FolderForm.propTypes = {
-    folder: FolderPropType.isRequired,
-    updateFolder: PropTypes.func.isRequired
+GoalForm.propTypes = {
+    goal: GoalPropType.isRequired,
+    updateGoal: PropTypes.func.isRequired
 }
 
-export default Form.create({ name: 'folder' })(FolderForm);
+export default Form.create({ name: 'goal' })(GoalForm);

@@ -67,6 +67,21 @@ function Sider(props) {
         );
     }
 
+    const addObject = category => {
+        props.setCategoryManagerOptions({
+            visible: true,
+            category: category
+        });
+    }
+
+    const editObject = (category, objectId) => {
+        props.setCategoryManagerOptions({
+            visible: true,
+            category: category,
+            objectId: objectId
+        });
+    }
+
     return (
         <Menu
             selectedKeys={[props.selectedFilter.id]}
@@ -84,21 +99,21 @@ function Sider(props) {
                 <Menu.Item key="next-action">{<Icon icon="chevron-circle-right" text="Next Action" />}</Menu.Item>
                 <Menu.Item key="completed">{<Icon icon="check-double" text="Completed" />}</Menu.Item>
             </Menu.SubMenu>
-            <Menu.SubMenu key="folders" title={createCategorySubMenu("Folders", "folder", () => props.setCategoryManagerVisible(true))}>
-                {props.folders.map(folder => createObjectMenuItem(folder, () => { }, () => props.deleteFolder(folder.id)))}
+            <Menu.SubMenu key="folders" title={createCategorySubMenu('Folders', 'folder', () => addObject('folders'))}>
+                {props.folders.map(folder => createObjectMenuItem(folder, () => editObject('folders', folder.id), () => props.deleteFolder(folder.id)))}
             </Menu.SubMenu>
-            <Menu.SubMenu key="contexts" title={createCategorySubMenu("Contexts", "thumbtack", () => { })}>
-                {props.contexts.map(context => createObjectMenuItem(context, () => { }, () => props.deleteContext(context.id)))}
+            <Menu.SubMenu key="contexts" title={createCategorySubMenu('Contexts', 'thumbtack', () => addObject('contexts'))}>
+                {props.contexts.map(context => createObjectMenuItem(context, () => editObject('contexts', context.id), () => props.deleteContext(context.id)))}
             </Menu.SubMenu>
-            <Menu.SubMenu key="goals" title={createCategorySubMenu("Goals", "bullseye", () => { })}>
-                {props.goals.map(goal => createObjectMenuItem(goal, () => { }, () => props.deleteGoal(goal.id)))}
+            <Menu.SubMenu key="goals" title={createCategorySubMenu('Goals', 'bullseye', () => addObject('goals'))}>
+                {props.goals.map(goal => createObjectMenuItem(goal, () => editObject('goals', goal.id), () => props.deleteGoal(goal.id)))}
             </Menu.SubMenu>
-            <Menu.SubMenu key="locations" title={createCategorySubMenu("Locations", "compass", () => { })}>
-                {props.locations.map(location => createObjectMenuItem(location, () => { }, () => props.deleteLocation(location.id)))}
+            <Menu.SubMenu key="locations" title={createCategorySubMenu('Locations', 'compass', () => addObject('locations'))}>
+                {props.locations.map(location => createObjectMenuItem(location, () => editObject('locations', location.id), () => props.deleteLocation(location.id)))}
             </Menu.SubMenu>
-            <Menu.SubMenu key="tags" title={createCategorySubMenu("Tags", "tag", () => { })}>
+            <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', () => { })}>
             </Menu.SubMenu>
-            <Menu.SubMenu key="filters" title={createCategorySubMenu("Filters", "filter", () => { })}>
+            <Menu.SubMenu key="filters" title={createCategorySubMenu('Filters', 'filter', () => { })}>
                 {props.filters.map(filter => createObjectMenuItem(filter, () => { }, () => props.deleteFilter(filter.id)))}
             </Menu.SubMenu>
         </Menu >

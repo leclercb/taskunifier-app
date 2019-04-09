@@ -4,22 +4,22 @@ import { Button, List, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
 
-function FolderList(props) {
+function LocationList(props) {
     return (
         <React.Fragment>
             <List
                 size="small"
                 bordered={true}
-                dataSource={props.folders}
+                dataSource={props.locations}
                 style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
                 renderItem={item => (
                     <List.Item
-                        onClick={() => props.onFolderSelection(item)}
-                        className={item.id === props.selectedFolderId ? 'selected-list-item' : null}>
+                        onClick={() => props.onLocationSelection(item)}
+                        className={item.id === props.selectedLocationId ? 'selected-list-item' : null}>
                         <LeftRight right={(
                             <Popconfirm
                                 title={`Do you really want to delete "${item.title}" ?`}
-                                onConfirm={() => props.deleteFolder(item.id)}
+                                onConfirm={() => props.deleteLocation(item.id)}
                                 okText="Yes"
                                 cancelText="No">
                                 <Icon
@@ -33,17 +33,17 @@ function FolderList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addFolder()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
+            <Button onClick={() => props.addLocation()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
         </React.Fragment>
     );
 }
 
-FolderList.propTypes = {
-    folders: PropTypes.array.isRequired,
-    selectedFolderId: PropTypes.string,
-    addFolder: PropTypes.func.isRequired,
-    deleteFolder: PropTypes.func.isRequired,
-    onFolderSelection: PropTypes.func.isRequired
+LocationList.propTypes = {
+    locations: PropTypes.array.isRequired,
+    selectedLocationId: PropTypes.string,
+    addLocation: PropTypes.func.isRequired,
+    deleteLocation: PropTypes.func.isRequired,
+    onLocationSelection: PropTypes.func.isRequired
 }
 
-export default FolderList;
+export default LocationList;

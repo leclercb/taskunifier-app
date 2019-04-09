@@ -4,22 +4,22 @@ import { Button, List, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
 
-function FolderList(props) {
+function GoalList(props) {
     return (
         <React.Fragment>
             <List
                 size="small"
                 bordered={true}
-                dataSource={props.folders}
+                dataSource={props.goals}
                 style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
                 renderItem={item => (
                     <List.Item
-                        onClick={() => props.onFolderSelection(item)}
-                        className={item.id === props.selectedFolderId ? 'selected-list-item' : null}>
+                        onClick={() => props.onGoalSelection(item)}
+                        className={item.id === props.selectedGoalId ? 'selected-list-item' : null}>
                         <LeftRight right={(
                             <Popconfirm
                                 title={`Do you really want to delete "${item.title}" ?`}
-                                onConfirm={() => props.deleteFolder(item.id)}
+                                onConfirm={() => props.deleteGoal(item.id)}
                                 okText="Yes"
                                 cancelText="No">
                                 <Icon
@@ -33,17 +33,17 @@ function FolderList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addFolder()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
+            <Button onClick={() => props.addGoal()} style={{ marginTop: 5 }}><Icon icon="plus" text="Add" /></Button>
         </React.Fragment>
     );
 }
 
-FolderList.propTypes = {
-    folders: PropTypes.array.isRequired,
-    selectedFolderId: PropTypes.string,
-    addFolder: PropTypes.func.isRequired,
-    deleteFolder: PropTypes.func.isRequired,
-    onFolderSelection: PropTypes.func.isRequired
+GoalList.propTypes = {
+    goals: PropTypes.array.isRequired,
+    selectedGoalId: PropTypes.string,
+    addGoal: PropTypes.func.isRequired,
+    deleteGoal: PropTypes.func.isRequired,
+    onGoalSelection: PropTypes.func.isRequired
 }
 
-export default FolderList;
+export default GoalList;

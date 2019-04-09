@@ -11,6 +11,7 @@ function ContextList(props) {
                 size="small"
                 bordered={true}
                 dataSource={props.contexts}
+                style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
                 renderItem={item => (
                     <List.Item
                         onClick={() => props.onContextSelection(item)}

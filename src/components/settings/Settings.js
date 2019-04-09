@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { List, Row, Col } from 'antd';
 import withSettings from '../../containers/WithSettings';
-import { getCategories } from './Categories';
+import { getCategories } from '../../data/SettingCategories';
 import Icon from '../common/Icon';
 
 function Settings(props) {
@@ -33,7 +33,9 @@ function Settings(props) {
                     bordered={true}
                     dataSource={categories}
                     renderItem={item => (
-                        <List.Item onClick={() => onCategorySelection(item)}>
+                        <List.Item 
+                        onClick={() => onCategorySelection(item)}
+                        className={item.id === selectedCategoryId ? 'selected-list-item' : null}>
                             <Icon icon={item.icon} text={item.title} />
                         </List.Item>
                     )}
