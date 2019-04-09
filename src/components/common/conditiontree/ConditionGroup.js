@@ -62,7 +62,7 @@ function ConditionGroup(props) {
         <div className='condition-group-content'>
             {condition.conditions.map(cond => {
                 return <Condition
-                    key={cond['@uuid']}
+                    key={cond.id}
                     condition={cond}
                     parentCondition={condition}
                     context={props.context}

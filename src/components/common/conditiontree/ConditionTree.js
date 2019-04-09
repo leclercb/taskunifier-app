@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 import { Button } from 'antd';
 import AddButton from './AddButton';
 import Condition from './Condition';
@@ -7,21 +8,27 @@ import { condition } from './ConditionPropTypes';
 import './ConditionTree.css';
 
 function ConditionTree(props) {
+    // TODO don't update directly ?
+    const [ rootCondition, setRootCondition ] = useState(props.condition);
+
     const handleAdd = (condition, key) => {
         let newCondition = null;
 
         if (key === 'condition_group_and') {
             newCondition = {
+                id: uuid(),
                 operator: 'AND',
                 conditions: []
             };
         } else if (key === 'condition_group_or') {
             newCondition = {
+                id: uuid(),
                 operator: 'OR',
                 conditions: []
             };
         } else if (key === 'condition_group_not') {
             newCondition = {
+                id: uuid(),
                 operator: 'NOT',
                 conditions: []
             };
@@ -34,47 +41,36 @@ function ConditionTree(props) {
         }
 
         if (!condition) {
-            this.setState({
-                condition: newCondition
-            });
+            props.onUpdateCondition(condition);
         } else {
             condition.conditions.push(newCondition);
-
-            this.setState({
-                condition: this.state.condition
-            });
+            props.onUpdateCondition(props.condition);
         }
     };
 
     const handleUpdate = (condition) => {
-
+        // TODO check this
+        props.onUpdateCondition(props.condition);
     };
 
     const handleDelete = (condition, parentCondition) => {
         if (!parentCondition) {
-            /*             this.setState({
-                            condition: null
-                        }); */
+            props.onUpdateCondition(null);
         } else {
-            /* parentCondition.conditions.splice(parentCondition.conditions.indexOf(condition), 1);
-
-            this.setState({
-                condition: this.state.condition
-            }); */
+            parentCondition.conditions.splice(parentCondition.conditions.indexOf(condition), 1);
+            props.onUpdateCondition(props.condition);
         }
     };
 
     const handleEndDrag = (item, dropResult) => {
-        /* if (!item.parentCondition) {
+        if (!item.parentCondition) {
             return;
         }
 
         item.parentCondition.conditions.splice(item.parentCondition.conditions.indexOf(item.condition), 1);
         dropResult.condition.conditions.push(item.condition);
 
-        this.setState({
-            condition: this.state.condition
-        }); */
+        props.onUpdateCondition(props.condition);
     };
 
     if (!props.condition) {
@@ -113,9 +109,10 @@ ConditionTree.propTypes = {
     condition: condition,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    createLeafObject: PropTypes.func.isRequired,
     addMenuItems: PropTypes.node.isRequired,
-    getLeafComponent: PropTypes.any.isRequired
+    createLeafObject: PropTypes.func.isRequired,
+    getLeafComponent: PropTypes.any.isRequired,
+    onUpdateCondition: PropTypes.func.isRequired
 };
 
 export default ConditionTree;

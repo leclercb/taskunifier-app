@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 import { Empty, Menu } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 
@@ -8,7 +9,15 @@ function FilterConditionTree(props) {
         switch (key) {
             case 'title':
                 return {
-                    'field': 'title',
+                    'id': uuid(),
+                    'type': 'title',
+                    'condition': 'equals',
+                    'value': ''
+                };
+            case 'completed':
+                return {
+                    'id': uuid(),
+                    'type': 'completed',
                     'condition': 'equals',
                     'value': ''
                 };
@@ -18,12 +27,21 @@ function FilterConditionTree(props) {
     }
 
     const getLeafComponent = condition => {
-        switch (condition.field) {
+        switch (condition.type) {
             case 'title':
-                return <Empty />;
+                return Empty;
+            case 'completed':
+                return Empty;
             default:
-                throw new Error('Unknown condition type "' + condition.field + '"');
+                throw new Error('Unknown condition type "' + condition.type + '"');
         }
+    }
+
+    const onUpdateCondition = condition => {
+        props.updateFilter({
+            ...props.filter,
+            condition: condition
+        })
     }
 
     return (
@@ -31,11 +49,13 @@ function FilterConditionTree(props) {
             disabled={!!props.disabled}
             condition={props.filter.condition}
             context={props.context}
-            createLeafObject={createLeafObject}
             addMenuItems={[
-                <Menu.Item key="title">Title</Menu.Item>
+                <Menu.Item key="title">Title</Menu.Item>,
+                <Menu.Item key="completed">Completed</Menu.Item>
             ]}
-            getLeafComponent={getLeafComponent} />
+            createLeafObject={createLeafObject}
+            getLeafComponent={getLeafComponent}
+            onUpdateCondition={onUpdateCondition} />
     );
 }
 

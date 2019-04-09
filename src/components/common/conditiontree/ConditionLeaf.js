@@ -6,8 +6,8 @@ import ItemTypes from './ItemTypes';
 import { conditionGroup, conditionLeaf } from './ConditionPropTypes';
 
 function ConditionLeaf(props) {
-    let condition = props.condition;
-    let parentCondition = props.parentCondition;
+    const condition = props.condition;
+    const parentCondition = props.parentCondition;
 
     return (
         <div className='condition-container'>

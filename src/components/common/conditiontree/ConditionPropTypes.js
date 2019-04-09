@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 
 export const conditionGroup = {
-    '@uuid': PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     operator: PropTypes.oneOf(['AND', 'OR', 'NOT']).isRequired
 };
 
 export const conditionLeaf = {
-    '@uuid': PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired
 };
 
 export const condition = PropTypes.oneOfType([

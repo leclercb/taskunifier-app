@@ -7,7 +7,21 @@
         "updateDate": 1554795587861,
         "status": "LOADED",
         "title": "Filter Test 1",
-        "color": "#33cc33"
+        "color": "#33cc33",
+        "condition": {
+            "id": "1",
+            "operator": "AND",
+            "conditions": [
+                {
+                    "id": "2",
+                    "type": "title"
+                },
+                {
+                    "id": "3",
+                    "type": "title"
+                }
+            ]
+        }
     },
     {
         "id": "filter-2",
