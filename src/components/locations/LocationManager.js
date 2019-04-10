@@ -8,7 +8,7 @@ import LocationForm from './LocationForm';
 function LocationManager(props) {
     const selectedLocationId = props.locationId;
 
-    const onAddLocation = follocationder => {
+    const onAddLocation = location => {
         props.addLocation(location).then(id => props.onLocationSelection(id));
     }
 

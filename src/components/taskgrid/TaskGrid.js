@@ -14,7 +14,7 @@ function TaskGrid(props) {
         props.addTask({
             title: 'Task Test ' + Date.now(),
             completed: false
-        });
+        }).then(id => setSelectedRowKeys([id]));
     };
 
     const onUpdateTask = row => {
@@ -59,11 +59,12 @@ function TaskGrid(props) {
             bordered={true}
             rowClassName={record => 'editable-row importance-' + record.importance}
             size="small"
+            pagination={false}
             rowSelection={{
                 selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys),
             }}
-            footer={currentPageData =>
+            footer={() =>
                 <React.Fragment>
                     <Button onClick={onAddTask}>Add Task</Button>
                     <Spacer />
@@ -71,6 +72,30 @@ function TaskGrid(props) {
                 </React.Fragment>
             } />
     );
+}
+
+// TODO remove
+const dummyTasks = createDummyTasks();
+
+function createDummyTasks() {
+    const tasks = [];
+
+    for (let i = 0; i < 100; i++) {
+        tasks.push({
+            id: 'task-dummy-' + i,
+            refIds: {},
+            properties: {},
+            creationDate: 1554795588054,
+            updateDate: 1554897001063,
+            status: 'TO_UPDATE',
+            title: 'Task Dummy ' + i,
+            color: '#ffffff',
+            completed: false,
+            importance: '0'
+        })
+    }
+
+    return tasks;
 }
 
 export default withApp(withFields(withTasks(TaskGrid)));
