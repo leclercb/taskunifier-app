@@ -8,6 +8,10 @@ import FolderForm from './FolderForm';
 function FolderManager(props) {
     const selectedFolderId = props.folderId;
 
+    const onAddFolder = folder => {
+        props.addFolder(folder).then(id => props.onFolderSelection(id));
+    }
+
     const onFolderSelection = folder => {
         props.onFolderSelection(folder.id);
     }
@@ -20,7 +24,7 @@ function FolderManager(props) {
                 <FolderList
                     folders={props.folders}
                     selectedFolderId={selectedFolderId}
-                    addFolder={props.addFolder}
+                    addFolder={onAddFolder}
                     deleteFolder={props.deleteFolder}
                     onFolderSelection={onFolderSelection} />
             </Col>
@@ -30,7 +34,7 @@ function FolderManager(props) {
             <Col span={16}>
                 {selectedFolder ? (
                     <FolderForm key={selectedFolderId} folder={selectedFolder} updateFolder={props.updateFolder} />
-                ) : <Empty />}
+                ) : <Empty description="Please select a folder" />}
             </Col>
         </Row>
     );

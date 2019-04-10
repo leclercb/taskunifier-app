@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { List, Row, Col } from 'antd';
 import withSettings from '../../containers/WithSettings';
-import { getCategories } from '../../data/SettingCategories';
+import { getCategories } from '../../data/DataSettings';
 import Icon from '../common/Icon';
 
 function Settings(props) {

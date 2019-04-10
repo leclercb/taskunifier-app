@@ -8,6 +8,10 @@ import LocationForm from './LocationForm';
 function LocationManager(props) {
     const selectedLocationId = props.locationId;
 
+    const onAddLocation = follocationder => {
+        props.addLocation(location).then(id => props.onLocationSelection(id));
+    }
+
     const onLocationSelection = location => {
         props.onLocationSelection(location.id);
     }
@@ -20,7 +24,7 @@ function LocationManager(props) {
                 <LocationList
                     locations={props.locations}
                     selectedLocationId={selectedLocationId}
-                    addLocation={props.addLocation}
+                    addLocation={onAddLocation}
                     deleteLocation={props.deleteLocation}
                     onLocationSelection={onLocationSelection} />
             </Col>
@@ -30,7 +34,7 @@ function LocationManager(props) {
             <Col span={16}>
                 {selectedLocation ? (
                     <LocationForm key={selectedLocationId} location={selectedLocation} updateLocation={props.updateLocation} />
-                ) : <Empty />}
+                ) : <Empty description="Please select a location" />}
             </Col>
         </Row>
     );

@@ -1,51 +1,15 @@
 import uuid from 'uuid';
-import { updateProcess } from './StatusActions';
+import { filterStaticObjects } from '../utils/CategoryUtils';
+import { loadFromFile, saveToFile } from './ActionUtils';
 
-const fs = window.require('fs');
-
-export const loadObjectsFromFile = (property, file, onData = null) => {
+export const loadObjectsFromFile = (property, file) => {
     return (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            const processId = uuid();
-
-            updateProcess(processId, 'RUNNING', `Load "${property}" from file`)(dispatch, getState);
-
-            fs.readFile(file, 'utf-8', (err, data) => {
-                if (err) {
-                    updateProcess(processId, 'ERROR', null, err)(dispatch, getState);
-                    reject();
-                } else {
-                    updateProcess(processId, 'COMPLETED')(dispatch, getState);
-
-                    if (onData) {
-                        onData(JSON.parse(data)).then(() => resolve());
-                    } else {
-                        setObjects(property, JSON.parse(data))(dispatch, getState).then(() => resolve());
-                    }
-                }
-            });
-        });
+        return loadFromFile(property, file, data => setObjects(property, data)(dispatch, getState))(dispatch, getState);
     };
 };
 
 export const saveObjectsToFile = (property, file, data) => {
-    return (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            const processId = uuid();
-
-            updateProcess(processId, 'RUNNING', `Save "${property}" to file`)(dispatch, getState);
-
-            fs.writeFile(file, JSON.stringify(data, null, 4), err => {
-                if (err) {
-                    updateProcess(processId, 'ERROR', null, err)(dispatch, getState);
-                    reject();
-                } else {
-                    updateProcess(processId, 'COMPLETED')(dispatch, getState);
-                    resolve();
-                }
-            });
-        });
-    };
+    return saveToFile(property, file, filterStaticObjects(data));
 };
 
 export const setObjects = (property, objects) => {
@@ -62,13 +26,18 @@ export const setObjects = (property, objects) => {
 
 export const addObject = (property, object) => {
     return (dispatch, getState) => {
+        const id = uuid();
+
         dispatch({
             type: 'ADD_OBJECT',
             property: property,
-            object: object
+            object: {
+                ...object,
+                id: id
+            }
         });
 
-        return Promise.resolve();
+        return Promise.resolve(id);
     };
 };
 

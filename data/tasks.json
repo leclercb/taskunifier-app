@@ -1,35 +1,158 @@
 [
     {
+        "id": "task-0",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897001063,
+        "status": "TO_UPDATE",
+        "title": "Task Test 0",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "0"
+    },
+    {
         "id": "task-1",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795588054,
-        "updateDate": 1554795588054,
-        "status": "LOADED",
+        "updateDate": 1554897001063,
+        "status": "TO_UPDATE",
         "title": "Task Test 1",
         "color": "#ffffff",
-        "completed": false
+        "completed": false,
+        "importance": "1"
     },
     {
         "id": "task-2",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795588054,
-        "updateDate": 1554795588054,
-        "status": "LOADED",
+        "updateDate": 1554897003546,
+        "status": "TO_UPDATE",
         "title": "Task Test 2",
         "color": "#ffffff",
-        "completed": true
+        "completed": true,
+        "importance": "2"
     },
     {
         "id": "task-3",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795588054,
-        "updateDate": 1554795588054,
-        "status": "LOADED",
+        "updateDate": 1554900528718,
+        "status": "TO_UPDATE",
         "title": "Task Test 3",
         "color": "#ffffff",
-        "completed": false
+        "completed": false,
+        "importance": "3"
+    },
+    {
+        "id": "task-4",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 4",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "4"
+    },
+    {
+        "id": "task-5",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 5",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "5"
+    },
+    {
+        "id": "task-6",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 6",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "6"
+    },
+    {
+        "id": "task-7",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 7",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "7"
+    },
+    {
+        "id": "task-8",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 8",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "8"
+    },
+    {
+        "id": "task-9",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 9",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "9"
+    },
+    {
+        "id": "task-10",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 10",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "10"
+    },
+    {
+        "id": "task-11",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 11",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "11"
+    },
+    {
+        "id": "task-12",
+        "refIds": {},
+        "properties": {},
+        "creationDate": 1554795588054,
+        "updateDate": 1554897005245,
+        "status": "TO_UPDATE",
+        "title": "Task Test 12",
+        "color": "#ffffff",
+        "completed": false,
+        "importance": "12"
     }
 ]

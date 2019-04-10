@@ -1,18 +1,14 @@
 import uuid from 'uuid';
 import Constants from '../components/constants/Constants';
 
-export function filterObjects(objects) {
-    return objects.filter(object => object.status === 'LOADED' || object.status === 'TO_UPDATE');
-}
-
-const Objects = property => (state = [], action) => {
+const Objects = (property, basic = false, defaultObjects = []) => (state = [], action) => {
     if (property !== action.property) {
         return state;
     }
 
     switch (action.type) {
         case 'SET_OBJECTS': {
-            return (action.objects || []).map(object => ({
+            return defaultObjects.concat(action.objects || []).map(object => ({
                 id: uuid(),
                 refIds: {},
                 properties: {},
@@ -30,12 +26,12 @@ const Objects = property => (state = [], action) => {
             ];
 
             objects.push({
+                id: uuid(),
                 refIds: {},
                 properties: {},
                 title: 'Untitled',
                 color: Constants.defaultObjectColor,
                 ...action.object,
-                id: uuid(),
                 creationDate: Date.now(),
                 updateDate: Date.now(),
                 status: 'LOADED'
@@ -73,13 +69,17 @@ const Objects = property => (state = [], action) => {
 
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
 
-            objects.forEach(object => {
-                if (objectIds.includes(object.id)) {
-                    object.status = 'TO_DELETE';
-                }
-            });
+            if (basic) {
+                return objects.filter(object => !objectIds.includes(object.id));
+            } else {
+                objects.forEach(object => {
+                    if (objectIds.includes(object.id)) {
+                        object.status = 'TO_DELETE';
+                    }
+                });
 
-            return objects;
+                return objects;
+            }
         }
         case 'CLEAN_OBJECTS': {
             const objects = [
@@ -89,8 +89,8 @@ const Objects = property => (state = [], action) => {
             return objects.filter(object => object.status !== 'DELETED');
         }
         default:
-            return state
+            return state;
     }
 }
 
-export default Objects
+export default Objects;

@@ -19,7 +19,7 @@ const App = () => (state = {
             return {
                 ...state,
                 selectedFilter: action.filter
-            }
+            };
         case 'SET_CATEGORY_MANAGER_OPTIONS':
             return {
                 ...state,
@@ -28,7 +28,7 @@ const App = () => (state = {
                     category: 'category' in action ? action.category : state.categoryManager.category,
                     objectId: 'objectId' in action ? action.objectId : state.categoryManager.objectId
                 }
-            }
+            };
         case 'SET_FILTER_MANAGER_OPTIONS':
             return {
                 ...state,
@@ -36,10 +36,10 @@ const App = () => (state = {
                     visible: 'visible' in action ? action.visible : state.filterManager.visible,
                     filterId: 'filterId' in action ? action.filterId : state.filterManager.filterId
                 }
-            }
+            };
         default:
-            return state
+            return state;
     }
 }
 
-export default App
+export default App;

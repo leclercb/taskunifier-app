@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button, Checkbox } from 'antd';
 import ColorPicker from 'rc-color-picker';
-import 'rc-color-picker/assets/index.css';
 import { FolderPropType } from '../../proptypes/FolderPropTypes';
 import { merge } from '../../utils/ObjectUtils';
+import Icon from '../common/Icon';
+import 'rc-color-picker/assets/index.css';
 
 function FolderForm(props) {
     const onSave = (e) => {
@@ -81,7 +82,9 @@ function FolderForm(props) {
                 )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">Save</Button>
+                <Button type="primary" htmlType="submit">
+                    <Icon icon="save" color="#ffffff" text="Save" />
+                </Button>
             </Form.Item>
         </Form>
     );

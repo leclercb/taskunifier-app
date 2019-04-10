@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
-import { filterObjects } from '../reducers/Objects';
+import { filterObjects } from '../utils/CategoryUtils';
 
 const mapStateToProps = state => ({
     goals: filterObjects(state.goals)

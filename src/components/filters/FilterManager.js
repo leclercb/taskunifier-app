@@ -30,7 +30,7 @@ function FilterManager(props) {
             <Col span={16}>
                 {selectedFilter ? (
                     <FilterConditionTree key={selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
-                ) : <Empty />}
+                ) : <Empty description="Please select a filter" />}
             </Col>
         </Row>
     );

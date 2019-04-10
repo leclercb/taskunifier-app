@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile } from './ObjectActions';
+import { loadFromFile, saveToFile } from './ActionUtils';
 
 export const setSettingsVisible = visible => {
     return (dispatch, getState) => {
@@ -13,12 +13,12 @@ export const setSettingsVisible = visible => {
 
 export const loadSettingsFromFile = file => {
     return (dispatch, getState) => {
-        return loadObjectsFromFile('settings', file, data => setSettings(data)(dispatch, getState))(dispatch, getState);
+        return loadFromFile('settings', file, data => setSettings(data)(dispatch, getState))(dispatch, getState);
     };
 };
 
 export const saveSettingsToFile = (file, data) => {
-    return saveObjectsToFile('settings', file, data);
+    return saveToFile('settings', file, data);
 };
 
 export const setSettings = settings => {

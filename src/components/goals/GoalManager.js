@@ -8,6 +8,10 @@ import GoalForm from './GoalForm';
 function GoalManager(props) {
     const selectedGoalId = props.goalId;
 
+    const onAddGoal = goal => {
+        props.addGoal(goal).then(id => props.onGoalSelection(id));
+    }
+
     const onGoalSelection = goal => {
         props.onGoalSelection(goal.id);
     }
@@ -20,7 +24,7 @@ function GoalManager(props) {
                 <GoalList
                     goals={props.goals}
                     selectedGoalId={selectedGoalId}
-                    addGoal={props.addGoal}
+                    addGoal={onAddGoal}
                     deleteGoal={props.deleteGoal}
                     onGoalSelection={onGoalSelection} />
             </Col>
@@ -30,7 +34,7 @@ function GoalManager(props) {
             <Col span={16}>
                 {selectedGoal ? (
                     <GoalForm key={selectedGoalId} goal={selectedGoal} updateGoal={props.updateGoal} />
-                ) : <Empty />}
+                ) : <Empty description="Please select a goal" />}
             </Col>
         </Row>
     );

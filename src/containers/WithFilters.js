@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addFilter, updateFilter, deleteFilter } from '../actions/FilterActions';
-import { filterObjects } from '../reducers/Objects';
+import { filterObjects } from '../utils/CategoryUtils';
 
 const mapStateToProps = state => ({
     filters: filterObjects(state.filters)

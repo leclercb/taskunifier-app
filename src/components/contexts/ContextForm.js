@@ -2,16 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
 import ColorPicker from 'rc-color-picker';
-import 'rc-color-picker/assets/index.css';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
 import { merge } from '../../utils/ObjectUtils';
+import Icon from '../common/Icon';
+import 'rc-color-picker/assets/index.css';
 
 function ContextForm(props) {
     const onSave = (e) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
-                const updatedContext = merge({...props.context}, values);
+                const updatedContext = merge({ ...props.context }, values);
                 props.updateContext(updatedContext);
             }
         });
@@ -73,7 +74,9 @@ function ContextForm(props) {
                 )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">Save</Button>
+                <Button type="primary" htmlType="submit">
+                    <Icon icon="save" color="#ffffff" text="Save" />
+                </Button>
             </Form.Item>
         </Form>
     );

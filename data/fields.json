@@ -1,28 +1,14 @@
 [
     {
-        "id": "field-title",
+        "id": "custom1",
         "refIds": {},
         "properties": {},
         "creationDate": 1554795587825,
         "updateDate": 1554795587825,
         "status": "LOADED",
-        "title": "Title",
+        "title": "Custom 1",
         "color": "#ffffff",
-        "path": "title",
-        "type": "text",
-        "base": true
-    },
-    {
-        "id": "field-completed",
-        "refIds": {},
-        "properties": {},
-        "creationDate": 1554795587825,
-        "updateDate": 1554795587825,
-        "status": "LOADED",
-        "title": "Completed",
-        "color": "#ffffff",
-        "path": "completed",
-        "type": "checkbox",
-        "base": true
+        "path": "custom1",
+        "type": "text"
     }
 ]

@@ -7,11 +7,11 @@ const Status = () => (state = {
             return {
                 ...state,
                 processes: []
-            }
+            };
         case 'UPDATE_PROCESS':
             const newState = {
                 ...state
-            }
+            };
 
             let process = newState.processes.find(process => process.id === action.process.id);
 
@@ -26,8 +26,8 @@ const Status = () => (state = {
 
             return newState;
         default:
-            return state
+            return state;
     }
 }
 
-export default Status
+export default Status;

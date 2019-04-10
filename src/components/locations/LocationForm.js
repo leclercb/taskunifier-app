@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Button } from 'antd';
 import ColorPicker from 'rc-color-picker';
-import 'rc-color-picker/assets/index.css';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { merge } from '../../utils/ObjectUtils';
+import Icon from '../common/Icon';
+import 'rc-color-picker/assets/index.css';
 
 function LocationForm(props) {
     const onSave = (e) => {
@@ -94,7 +95,9 @@ function LocationForm(props) {
                 )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">Save</Button>
+                <Button type="primary" htmlType="submit">
+                    <Icon icon="save" color="#ffffff" text="Save" />
+                </Button>
             </Form.Item>
         </Form>
     );

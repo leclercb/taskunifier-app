@@ -37,8 +37,7 @@ function FilterConditionTree(props) {
         }
     }
 
-    const onUpdateCondition = condition => {
-        // TODO don't save directly
+    const onSaveCondition = condition => {
         props.updateFilter({
             ...props.filter,
             condition: condition
@@ -56,7 +55,7 @@ function FilterConditionTree(props) {
             ]}
             createLeafObject={createLeafObject}
             getLeafComponent={getLeafComponent}
-            onUpdateCondition={onUpdateCondition} />
+            onSaveCondition={onSaveCondition} />
     );
 }
 

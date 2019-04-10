@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import uuid from 'uuid';
 import { Row, Col, Empty } from 'antd';
 import withContexts from '../../containers/WithContexts';
 import ContextList from './ContextList';
@@ -7,6 +8,10 @@ import ContextForm from './ContextForm';
 
 function ContextManager(props) {
     const selectedContextId = props.contextId;
+
+    const onAddContext = context => {
+        props.addContext(context).then(id => props.onContextSelection(id));
+    }
 
     const onContextSelection = context => {
         props.onContextSelection(context.id);
@@ -20,7 +25,7 @@ function ContextManager(props) {
                 <ContextList
                     contexts={props.contexts}
                     selectedContextId={selectedContextId}
-                    addContext={props.addContext}
+                    addContext={onAddContext}
                     deleteContext={props.deleteContext}
                     onContextSelection={onContextSelection} />
             </Col>
@@ -30,7 +35,7 @@ function ContextManager(props) {
             <Col span={16}>
                 {selectedContext ? (
                     <ContextForm key={selectedContextId} context={selectedContext} updateContext={props.updateContext} />
-                ) : <Empty />}
+                ) : <Empty description="Please select a context" />}
             </Col>
         </Row>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
-import { filterObjects } from '../reducers/Objects';
+import { filterObjects } from '../utils/CategoryUtils';
 
 const mapStateToProps = state => ({
     contexts: filterObjects(state.contexts)

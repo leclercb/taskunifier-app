@@ -57,7 +57,7 @@ function TaskGrid(props) {
             columns={columns}
             dataSource={props.tasks}
             bordered={true}
-            rowClassName={() => 'editable-row'}
+            rowClassName={record => 'editable-row importance-' + record.importance}
             size="small"
             rowSelection={{
                 selectedRowKeys,

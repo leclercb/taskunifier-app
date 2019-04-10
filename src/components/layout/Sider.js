@@ -15,6 +15,7 @@ import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { FilterPropType } from '../../proptypes/FilterPropTypes';
 import LeftRight from '../common/LeftRight';
 import Constants from '../constants/Constants';
+import { filterArchivedObjects } from '../../utils/CategoryUtils';
 
 function Sider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
@@ -120,13 +121,13 @@ function Sider(props) {
                 <Menu.Item key="completed">{<Icon icon="check-double" text="Completed" />}</Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu key="folders" title={createCategorySubMenu('Folders', 'folder', () => addObject('folders'))}>
-                {props.folders.map(folder => createObjectMenuItem(folder, () => editObject('folders', folder.id), () => props.deleteFolder(folder.id)))}
+                {filterArchivedObjects(props.folders).map(folder => createObjectMenuItem(folder, () => editObject('folders', folder.id), () => props.deleteFolder(folder.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="contexts" title={createCategorySubMenu('Contexts', 'thumbtack', () => addObject('contexts'))}>
                 {props.contexts.map(context => createObjectMenuItem(context, () => editObject('contexts', context.id), () => props.deleteContext(context.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="goals" title={createCategorySubMenu('Goals', 'bullseye', () => addObject('goals'))}>
-                {props.goals.map(goal => createObjectMenuItem(goal, () => editObject('goals', goal.id), () => props.deleteGoal(goal.id)))}
+                {filterArchivedObjects(props.goals).map(goal => createObjectMenuItem(goal, () => editObject('goals', goal.id), () => props.deleteGoal(goal.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="locations" title={createCategorySubMenu('Locations', 'compass', () => addObject('locations'))}>
                 {props.locations.map(location => createObjectMenuItem(location, () => editObject('locations', location.id), () => props.deleteLocation(location.id)))}

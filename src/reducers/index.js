@@ -3,12 +3,13 @@ import App from './App';
 import Objects from './Objects';
 import Status from './Status';
 import Settings from './Settings';
+import { getDefaultFields } from '../data/DataFields';
 
 export default combineReducers({
     app: App(),
     contexts: Objects('contexts'),
-    fields: Objects('fields'),
-    filters: Objects('filters'),
+    fields: Objects('fields', true, getDefaultFields()),
+    filters: Objects('filters', true),
     folders: Objects('folders'),
     goals: Objects('goals'),
     locations: Objects('locations'),

@@ -1,3 +1,5 @@
 {
-    "backup_interval": 10
+    "automatic_backups": true,
+    "backup_interval": 10,
+    "last_backup": null
 }

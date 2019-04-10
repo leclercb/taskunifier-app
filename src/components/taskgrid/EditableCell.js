@@ -13,6 +13,16 @@ const EditableRow = ({ form, index, ...props }) => (
 
 export const EditableFormRow = Form.create()(EditableRow);
 
+const isAlwaysInEdition = type => {
+    switch (type) {
+        case 'checkbox':
+            return true;
+        case 'text':
+        default:
+            return false;
+    }
+}
+
 const getValuePropName = type => {
     switch (type) {
         case 'checkbox':
@@ -91,7 +101,7 @@ export class EditableCell extends React.Component {
                             this.form = form;
 
                             return (
-                                this.state.editing ? (
+                                this.state.editing || isAlwaysInEdition(type) ? (
                                     <FormItem style={{ margin: 0 }}>
                                         {form.getFieldDecorator(dataIndex, {
                                             rules: [{

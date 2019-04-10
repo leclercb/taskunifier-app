@@ -1,3 +1,5 @@
+import { getSettings } from "../data/DataSettings";
+
 const Settings = () => (state = {
     visible: false,
     data: {}
@@ -7,11 +9,14 @@ const Settings = () => (state = {
             return {
                 ...state,
                 visible: action.visible
-            }
+            };
         case 'SET_SETTINGS': {
             return {
                 ...state,
-                data: action.settings
+                data: {
+                    ...getSettings(),
+                    ...action.settings
+                }
             };
         }
         case 'UPDATE_SETTINGS': {
@@ -21,11 +26,11 @@ const Settings = () => (state = {
                     ...state.data,
                     ...action.settings
                 }
-            }
+            };
         }
         default:
-            return state
+            return state;
     }
 }
 
-export default Settings
+export default Settings;
