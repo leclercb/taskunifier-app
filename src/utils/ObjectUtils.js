@@ -2,6 +2,21 @@ export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
+export function clone(o) {
+    if (o === undefined || o === null) {
+        return o;
+    }
+
+    const output = Array.isArray(o) ? [] : {};
+
+    for (let key in o) {
+        const v = o[key];
+        output[key] = (typeof v === "object") ? clone(v) : v;
+    }
+
+    return output;
+}
+
 export function merge(target, source) {
     if (!isObject(source) || !isObject(target)) {
         return source;

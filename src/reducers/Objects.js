@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import Constants from '../components/constants/Constants';
 
 export function filterObjects(objects) {
     return objects.filter(object => object.status === 'LOADED' || object.status === 'TO_UPDATE');
@@ -19,7 +20,7 @@ const Objects = property => (state = [], action) => {
                 updateDate: Date.now(),
                 status: 'LOADED',
                 title: 'Untitled',
-                color: '#ffffff',
+                color: Constants.defaultObjectColor,
                 ...object,
             }));
         }
@@ -32,7 +33,7 @@ const Objects = property => (state = [], action) => {
                 refIds: {},
                 properties: {},
                 title: 'Untitled',
-                color: '#ffffff',
+                color: Constants.defaultObjectColor,
                 ...action.object,
                 id: uuid(),
                 creationDate: Date.now(),

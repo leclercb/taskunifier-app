@@ -6,21 +6,22 @@ import ItemTypes from './ItemTypes';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { conditionGroup } from './ConditionPropTypes';
+import Constants from '../../constants/Constants';
 
 function ConditionGroup(props) {
     const isActive = props.canDrop && props.isOver;
 
     let colors = {
-        AND: '#D1F7D9',
-        OR: '#E8EBF6',
-        NOT: '#FFC8C5'
+        AND: Constants.conditionTreeGroupAnd,
+        OR: Constants.conditionTreeGroupOr,
+        NOT: Constants.conditionTreeGroupNot
     };
 
     if (isActive) {
         colors = {
-            AND: '#C2E2C9',
-            OR: '#D4D7E2',
-            NOT: '#E3AFAC'
+            AND: Constants.conditionTreeGroupAndActive,
+            OR: Constants.conditionTreeGroupOrActive,
+            NOT: Constants.conditionTreeGroupNotActive
         };
     }
 

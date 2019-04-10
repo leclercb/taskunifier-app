@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, List, Popconfirm } from 'antd';
+import { Button, List, Popconfirm, Tooltip } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
+import Constants from '../constants/Constants';
 
 function GoalList(props) {
     return (
@@ -24,10 +25,15 @@ function GoalList(props) {
                                 cancelText="No">
                                 <Icon
                                     icon="trash-alt"
-                                    color="#e3f2eb"
+                                    color={Constants.fadeColor}
                                     className="object-actions" />
                             </Popconfirm>
                         )}>
+                            {item.archived ? (
+                                <Tooltip title={<Icon icon="archive" color={Constants.lightColor} text="Archived" />}>
+                                    <span><Icon icon="archive" color={Constants.disabledColor} /></span>
+                                </Tooltip>
+                            ) : null}
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>

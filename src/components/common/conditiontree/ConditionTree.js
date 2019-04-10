@@ -7,9 +7,9 @@ import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
 import './ConditionTree.css';
 import { usePrevious } from '../../../hooks/UsePrevious';
+import { clone } from '../../../utils/ObjectUtils';
 
 function ConditionTree(props) {
-    // TODO don't update directly ?
     const [ rootCondition, setRootCondition ] = useState(clone(props.condition));
     const prevCondition = usePrevious(props.condition);
 
@@ -55,7 +55,6 @@ function ConditionTree(props) {
     };
 
     const handleUpdate = (condition) => {
-        // TODO check this
         props.onUpdateCondition(rootCondition);
     };
 

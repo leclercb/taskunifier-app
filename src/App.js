@@ -6,6 +6,7 @@ import AppLayout from './components/layout/AppLayout';
 import withApp from './containers/WithApp';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
+    faArchive,
     faBomb,
     faBullseye,
     faCalendarAlt,
@@ -35,6 +36,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import './App.css';
 
+library.add(faArchive);
 library.add(faBomb);
 library.add(faBullseye);
 library.add(faCalendarAlt);

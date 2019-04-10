@@ -14,6 +14,7 @@ import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { FilterPropType } from '../../proptypes/FilterPropTypes';
 import LeftRight from '../common/LeftRight';
+import Constants from '../constants/Constants';
 
 function Sider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
@@ -33,7 +34,7 @@ function Sider(props) {
         return (
             <LeftRight right={<Icon
                 icon="plus"
-                color="#eaeff7"
+                color={Constants.fadeColor}
                 className="object-actions"
                 onClick={() => onAdd()} />}>
                 <Icon icon={icon} text={text} />
@@ -46,7 +47,7 @@ function Sider(props) {
             <React.Fragment>
                 <Icon
                     icon="edit"
-                    color="#e3f2eb"
+                    color={Constants.fadeColor}
                     className="object-actions"
                     onClick={() => onEdit()} />
                 <Popconfirm
@@ -56,7 +57,7 @@ function Sider(props) {
                     cancelText="No">
                     <Icon
                         icon="trash-alt"
-                        color="#e3f2eb"
+                        color={Constants.fadeColor}
                         className="object-actions" />
                 </Popconfirm>
             </React.Fragment>

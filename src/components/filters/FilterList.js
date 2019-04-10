@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, List, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
+import Constants from '../constants/Constants';
 
 function FilterList(props) {
     return (
@@ -24,7 +25,7 @@ function FilterList(props) {
                                 cancelText="No">
                                 <Icon
                                     icon="trash-alt"
-                                    color="#e3f2eb"
+                                    color={Constants.fadeColor}
                                     className="object-actions" />
                             </Popconfirm>
                         )}>

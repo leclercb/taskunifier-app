@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import withStatus from '../../containers/WithStatus';
 import Icon from '../common/Icon';
+import Constants from '../constants/Constants';
 
 function Status(props) {
     const getIconFromStatus = status => {
@@ -19,12 +20,12 @@ function Status(props) {
     const getColorFromStatus = status => {
         switch (status) {
             case 'RUNNING':
-                return '#20639b';
+                return Constants.processRunningColor;
             case 'COMPLETED':
-                return '#3caea3';
+                return Constants.processCompletedColor;
             case 'ERROR':
             default:
-                return '#ed553b';
+                return Constants.processErrorColor;
         }
     }
 
