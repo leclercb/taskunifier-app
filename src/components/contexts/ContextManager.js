@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import uuid from 'uuid';
 import { Row, Col, Empty } from 'antd';
 import withContexts from '../../containers/WithContexts';
 import ContextList from './ContextList';

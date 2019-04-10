@@ -2,7 +2,7 @@ import uuid from 'uuid';
 import { updateProcess } from './StatusActions';
 
 const fs = window.require('fs');
-const path = window.require('path');
+const { join } = window.require('path');
 
 export const loadFromFile = (property, file, onData) => {
     return (dispatch, getState) => {
@@ -46,7 +46,7 @@ export const saveToFile = (property, file, data) => {
 
 export const getDirectories = path => {
     const isDirectory = path => fs.lstatSync(path).isDirectory();
-    return fs.readdirSync(path).map(name => path.join(path, name)).filter(isDirectory);
+    return fs.readdirSync(path).map(name => join(path, name)).filter(isDirectory);
 }
 
 export const createDirectory = (path, recursive = true) => {
