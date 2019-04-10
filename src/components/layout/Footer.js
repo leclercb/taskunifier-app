@@ -1,7 +1,6 @@
 import React from 'react';
 import Logo from '../common/Logo';
 import Spacer from '../common/Spacer';
-import Constants from '../constants/Constants';
 
 function Footer(props) {
     return (

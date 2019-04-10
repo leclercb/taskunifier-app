@@ -1,5 +1,6 @@
 import React from 'react';
-import { Checkbox, Input } from 'antd';
+import { Checkbox, Input, Select } from 'antd';
+import { getConditionsForType } from '../../utils/FilterUtils';
 
 export const isAlwaysInEdition = type => {
     switch (type) {
@@ -28,6 +29,16 @@ export const getRenderFromType = type => (text, record, index) => {
         default:
             return text ? text : <span>&nbsp;</span>;
     }
+}
+
+export const getSelectForType = type => {
+    return <Select>
+        {getConditionsForType(type).map(condition => (
+            <Select.Option key={condition.id} value={condition.id}>
+                {condition.title}
+            </Select.Option>
+        ))}
+    </Select>
 }
 
 export const getInputFromType = (type, ref, save) => {

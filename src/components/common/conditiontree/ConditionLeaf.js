@@ -18,7 +18,8 @@ function ConditionLeaf(props) {
                     {
                         condition: props.condition,
                         context: props.context,
-                        disabled: props.disabled
+                        disabled: props.disabled,
+                        handleUpdate: props.handleUpdate
                     })
             }
             {props.disabled ? null :

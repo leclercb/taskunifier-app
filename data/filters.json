@@ -16,13 +16,13 @@
                     "id": "2",
                     "field": "title",
                     "condition": "equals",
-                    "value:": "Task Test 2"
+                    "value": "Task Test 2"
                 },
                 {
                     "id": "3",
                     "field": "title",
                     "condition": "equals",
-                    "value:": "Task Test 3"
+                    "value": "Task Test 3"
                 }
             ]
         }

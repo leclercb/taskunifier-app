@@ -6,8 +6,7 @@ export const conditionGroup = {
 };
 
 export const conditionLeaf = {
-    id: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired
 };
 
 export const condition = PropTypes.oneOfType([

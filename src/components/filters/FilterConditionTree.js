@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
-import { Empty, Menu } from 'antd';
+import { Menu, Empty } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import withFields from '../../containers/WithFields';
+import FilterConditionForm from './FilterConditionForm';
 
 function FilterConditionTree(props) {
     const createLeafObject = (parentCondition, key) => {
@@ -26,17 +27,10 @@ function FilterConditionTree(props) {
         const field = props.fields.find(field => field.id === condition.field);
 
         if (!field) {
-            throw new Error('Unknown condition field "' + condition.field + '"');
+            return Empty;
         }
 
-        switch (field.type) {
-            case 'text':
-                return Empty;
-            case 'checkbox':
-                return Empty;
-            default:
-                throw new Error('Unknown field type "' + condition.field + '"');
-        }
+        return FilterConditionForm;
     }
 
     const onSaveCondition = condition => {
