@@ -2,7 +2,7 @@ export function getDefaultFields() {
     return [
         {
             static: true,
-            id: 'field-completed',
+            id: 'completed',
             refIds: {},
             properties: {},
             creationDate: 1554795587825,
@@ -15,7 +15,7 @@ export function getDefaultFields() {
         },
         {
             static: true,
-            id: 'field-title',
+            id: 'title',
             refIds: {},
             properties: {},
             creationDate: 1554795587825,
@@ -28,7 +28,7 @@ export function getDefaultFields() {
         },
         {
             static: true,
-            id: 'field-importance',
+            id: 'importance',
             refIds: {},
             properties: {},
             creationDate: 1554795587825,

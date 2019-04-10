@@ -14,11 +14,15 @@
             "conditions": [
                 {
                     "id": "2",
-                    "type": "title"
+                    "field": "title",
+                    "condition": "equals",
+                    "value:": "Task Test 2"
                 },
                 {
                     "id": "3",
-                    "type": "title"
+                    "field": "title",
+                    "condition": "equals",
+                    "value:": "Task Test 3"
                 }
             ]
         }

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const FolderPropType = PropTypes.shape({
+export const FieldPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,
     path: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
