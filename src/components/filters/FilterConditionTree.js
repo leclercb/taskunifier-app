@@ -4,6 +4,7 @@ import uuid from 'uuid';
 import { Empty, Menu } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
+import withFields from '../../containers/WithFields';
 
 function FilterConditionTree(props) {
     const createLeafObject = (parentCondition, key) => {

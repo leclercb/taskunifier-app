@@ -9,7 +9,7 @@ function Footer(props) {
             <span>
                 <Logo size={12} />
                 <Spacer size={3} />
-                TaskUnifier <span style={{ color: Constants.color }}>2</span> ©2019 Created by BL-IT
+                TaskUnifier 2 &copy; 2019 Created by BL-IT
             </span>
         </React.Fragment>
     );

@@ -6,6 +6,7 @@ import withTasks from '../../containers/WithTasks';
 import { EditableFormRow, EditableCell } from './EditableCell';
 import './EditableCell.css';
 import Spacer from '../common/Spacer';
+import { getRenderFromType } from '../fields/FieldComponents';
 
 function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -39,13 +40,14 @@ function TaskGrid(props) {
             dataIndex: field.path,
             key: field.path,
             editable: true,
+            render: getRenderFromType(field.type),
             onCell: record => ({
                 record,
                 editable: true,
                 type: field.type,
                 dataIndex: field.path,
                 title: field.title,
-                onSave: onUpdateTask,
+                onSave: onUpdateTask
             }),
         };
     });
