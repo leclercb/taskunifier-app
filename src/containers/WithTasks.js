@@ -4,7 +4,7 @@ import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyFilter } from '../utils/FilterUtils';
 
-function withTasks(Component, options = { applySelectedFilter = false }) {
+function withTasks(Component, options = { applySelectedFilter: false }) {
     function WithTasks(props) {
         return <Component {...props} />
     }
