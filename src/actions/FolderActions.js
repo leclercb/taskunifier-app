@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadFoldersFromFile = file => {
     return loadObjectsFromFile('folders', file);
@@ -22,4 +22,8 @@ export const updateFolder = folder => {
 
 export const deleteFolder = folderId => {
     return deleteObject('folders', folderId);
+};
+
+export const cleanFolders = () => {
+    return cleanObjects('folders');
 };

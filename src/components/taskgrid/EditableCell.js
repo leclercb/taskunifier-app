@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Form } from 'antd';
-import { isAlwaysInEdition, getValuePropName, getInputFromType } from '../fields/FieldComponents';
+import { isAlwaysInEdition, getValuePropName, getInputForType } from '../../utils/FieldUtils';
 import './EditableCell.css';
 
 const FormItem = Form.Item;
@@ -65,7 +65,7 @@ export function EditableCell(props) {
                                         rules: [],
                                         valuePropName: getValuePropName(type),
                                         initialValue: record[dataIndex],
-                                    })(getInputFromType(type, inputRef, save))}
+                                    })(getInputForType(type, inputRef, save))}
                                 </FormItem>
                             ) : (
                                     <div

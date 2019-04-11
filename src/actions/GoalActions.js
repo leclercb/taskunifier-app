@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadGoalsFromFile = file => {
     return loadObjectsFromFile('goals', file);
@@ -22,4 +22,8 @@ export const updateGoal = goal => {
 
 export const deleteGoal = goalId => {
     return deleteObject('goals', goalId);
+};
+
+export const cleanGoals = () => {
+    return cleanObjects('goals');
 };

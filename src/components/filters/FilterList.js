@@ -47,6 +47,6 @@ FilterList.propTypes = {
     addFilter: PropTypes.func.isRequired,
     deleteFilter: PropTypes.func.isRequired,
     onFilterSelection: PropTypes.func.isRequired
-}
+};
 
 export default FilterList;

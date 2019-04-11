@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadLocationsFromFile = file => {
     return loadObjectsFromFile('locations', file);
@@ -22,4 +22,8 @@ export const updateLocation = location => {
 
 export const deleteLocation = locationId => {
     return deleteObject('locations', locationId);
+};
+
+export const cleanLocations = () => {
+    return cleanObjects('locations');
 };

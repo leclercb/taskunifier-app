@@ -43,6 +43,6 @@ function GoalManager(props) {
 GoalManager.propTypes = {
     goalId: PropTypes.string,
     onGoalSelection: PropTypes.func.isRequired
-}
+};
 
 export default withGoals(GoalManager);

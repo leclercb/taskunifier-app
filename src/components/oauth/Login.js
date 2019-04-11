@@ -7,11 +7,11 @@ function Login(props) {
 
     const onLogin = () => {
         setVisible(false);
-    }
+    };
 
     return (
         <Modal
-            title={<Icon icon="cogs" text="Login"/>}
+            title={<Icon icon="cogs" text="Login" />}
             visible={visible}
             closable={false}
             onOk={onLogin}

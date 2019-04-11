@@ -47,6 +47,6 @@ LocationList.propTypes = {
     addLocation: PropTypes.func.isRequired,
     deleteLocation: PropTypes.func.isRequired,
     onLocationSelection: PropTypes.func.isRequired
-}
+};
 
 export default LocationList;

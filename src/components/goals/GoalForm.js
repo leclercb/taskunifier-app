@@ -92,6 +92,6 @@ function GoalForm(props) {
 GoalForm.propTypes = {
     goal: GoalPropType.isRequired,
     updateGoal: PropTypes.func.isRequired
-}
+};
 
 export default Form.create({ name: 'goal' })(GoalForm);

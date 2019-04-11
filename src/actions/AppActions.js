@@ -1,14 +1,14 @@
 import uuid from 'uuid';
 
-import { loadFoldersFromFile, saveFoldersToFile } from './FolderActions';
-import { loadContextsFromFile, saveContextsToFile } from './ContextActions';
-import { loadFieldsFromFile, saveFieldsToFile } from './FieldActions';
-import { loadFiltersFromFile, saveFiltersToFile } from './FilterActions';
-import { loadTasksFromFile, saveTasksToFile } from './TaskActions';
+import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
+import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './ContextActions';
+import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
+import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
+import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
 import { clearProcesses, updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
-import { loadGoalsFromFile, saveGoalsToFile } from './GoalActions';
-import { loadLocationsFromFile, saveLocationsToFile } from './LocationActions';
+import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
+import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { createDirectory, getDirectories } from './ActionUtils';
 
 export const loadData = path => {
@@ -90,6 +90,34 @@ export const restoreBackup = backupId => {
 
 export const backupData = () => {
     return saveData("data/backups/" + Date.now() + "/");
+}
+
+export const cleanData = () => {
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            const processId = uuid();
+
+            updateProcess(processId, 'RUNNING', 'Clean database')(dispatch, getState);
+
+            Promise.all([
+                cleanContexts()(dispatch, getState),
+                cleanFields()(dispatch, getState),
+                cleanFilters()(dispatch, getState),
+                cleanFolders()(dispatch, getState),
+                cleanGoals()(dispatch, getState),
+                cleanLocations()(dispatch, getState),
+                cleanTasks()(dispatch, getState),
+            ]).then(() => {
+                updateProcess(processId, 'COMPLETED')(dispatch, getState);
+
+                setTimeout(() => {
+                    clearProcesses()(dispatch, getState);
+                }, 500);
+
+                resolve();
+            });
+        });
+    };
 }
 
 export const synchronize = () => {

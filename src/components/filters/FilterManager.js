@@ -39,6 +39,6 @@ function FilterManager(props) {
 FilterManager.propTypes = {
     filterId: PropTypes.string,
     onFilterSelection: PropTypes.func.isRequired
-}
+};
 
 export default withFilters(FilterManager);

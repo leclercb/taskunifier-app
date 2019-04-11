@@ -15,7 +15,6 @@ import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { FilterPropType } from '../../proptypes/FilterPropTypes';
 import LeftRight from '../common/LeftRight';
 import Constants from '../constants/Constants';
-import { filterArchivedObjects } from '../../utils/CategoryUtils';
 import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
 
 function Sider(props) {
@@ -143,7 +142,7 @@ function Sider(props) {
                 <Menu.Item key="completed">{<Icon icon="check-double" text="Completed" />}</Menu.Item>
             </Menu.SubMenu>
             <Menu.SubMenu key="folders" title={createCategorySubMenu('Folders', 'folder', () => addObject('folders'))}>
-                {filterArchivedObjects(props.folders).map(folder => createObjectMenuItem(
+                {props.folders.map(folder => createObjectMenuItem(
                     folder,
                     () => addObject('folders'),
                     () => editObject('folders', folder.id),
@@ -157,7 +156,7 @@ function Sider(props) {
                     () => props.deleteContext(context.id)))}
             </Menu.SubMenu>
             <Menu.SubMenu key="goals" title={createCategorySubMenu('Goals', 'bullseye', () => addObject('goals'))}>
-                {filterArchivedObjects(props.goals).map(goal => createObjectMenuItem(
+                {props.goals.map(goal => createObjectMenuItem(
                     goal,
                     () => addObject('goals'),
                     () => editObject('goals', goal.id),
@@ -198,6 +197,13 @@ Sider.propTypes = {
     deleteGoal: PropTypes.func.isRequired,
     deleteLocation: PropTypes.func.isRequired,
     deleteFilter: PropTypes.func.isRequired
-}
+};
 
-export default withApp(withContexts(withFilters(withFolders(withGoals(withLocations(Sider))))));
+export default withApp(
+    withContexts(
+        withFilters(
+            withFolders(
+                withGoals(
+                    withLocations(Sider),
+                    { filterArchived: true }),
+                { filterArchived: true }))));

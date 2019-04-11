@@ -43,6 +43,6 @@ function LocationManager(props) {
 LocationManager.propTypes = {
     locationId: PropTypes.string,
     onLocationSelection: PropTypes.func.isRequired
-}
+};
 
 export default withLocations(LocationManager);

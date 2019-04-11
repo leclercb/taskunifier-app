@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadFieldsFromFile = file => {
     return loadObjectsFromFile('fields', file);
@@ -22,4 +22,8 @@ export const updateField = field => {
 
 export const deleteField = fieldId => {
     return deleteObject('fields', fieldId);
+};
+
+export const cleanFields = () => {
+    return cleanObjects('fields');
 };

@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import Constants from '../components/constants/Constants';
 
-const Objects = (property, basic = false, defaultObjects = []) => (state = [], action) => {
+const Objects = (property, defaultObjects = []) => (state = [], action) => {
     if (property !== action.property) {
         return state;
     }
@@ -69,17 +69,13 @@ const Objects = (property, basic = false, defaultObjects = []) => (state = [], a
 
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
 
-            if (basic) {
-                return objects.filter(object => !objectIds.includes(object.id));
-            } else {
-                objects.forEach(object => {
-                    if (objectIds.includes(object.id)) {
-                        object.status = 'TO_DELETE';
-                    }
-                });
+            objects.forEach(object => {
+                if (objectIds.includes(object.id)) {
+                    object.status = 'TO_DELETE';
+                }
+            });
 
-                return objects;
-            }
+            return objects;
         }
         case 'CLEAN_OBJECTS': {
             const objects = [

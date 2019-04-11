@@ -47,6 +47,6 @@ ContextList.propTypes = {
     addContext: PropTypes.func.isRequired,
     deleteContext: PropTypes.func.isRequired,
     onContextSelection: PropTypes.func.isRequired
-}
+};
 
 export default ContextList;

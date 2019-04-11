@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadContextsFromFile = file => {
     return loadObjectsFromFile('contexts', file);
@@ -22,4 +22,8 @@ export const updateContext = context => {
 
 export const deleteContext = contextId => {
     return deleteObject('contexts', contextId);
+};
+
+export const cleanContexts = () => {
+    return cleanObjects('contexts');
 };

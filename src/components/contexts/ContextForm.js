@@ -84,6 +84,6 @@ function ContextForm(props) {
 ContextForm.propTypes = {
     context: ContextPropType.isRequired,
     updateContext: PropTypes.func.isRequired
-}
+};
 
 export default Form.create({ name: 'context' })(ContextForm);

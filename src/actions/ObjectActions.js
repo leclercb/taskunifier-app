@@ -64,3 +64,14 @@ export const deleteObject = (property, objectId) => {
         return Promise.resolve();
     };
 };
+
+export const cleanObjects = (property) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'CLEAN_OBJECTS',
+            property: property
+        });
+
+        return Promise.resolve();
+    };
+};

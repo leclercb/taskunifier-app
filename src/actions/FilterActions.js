@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadFiltersFromFile = file => {
     return loadObjectsFromFile('filters', file);
@@ -22,4 +22,8 @@ export const updateFilter = filter => {
 
 export const deleteFilter = filterId => {
     return deleteObject('filters', filterId);
+};
+
+export const cleanFilters = () => {
+    return cleanObjects('filters');
 };

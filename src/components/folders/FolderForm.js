@@ -92,6 +92,6 @@ function FolderForm(props) {
 FolderForm.propTypes = {
     folder: FolderPropType.isRequired,
     updateFolder: PropTypes.func.isRequired
-}
+};
 
 export default Form.create({ name: 'folder' })(FolderForm);

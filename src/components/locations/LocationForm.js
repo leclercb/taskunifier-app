@@ -105,6 +105,6 @@ function LocationForm(props) {
 LocationForm.propTypes = {
     location: LocationPropType.isRequired,
     updateLocation: PropTypes.func.isRequired
-}
+};
 
 export default Form.create({ name: 'location' })(LocationForm);

@@ -6,9 +6,8 @@ import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
 import { EditableFormRow, EditableCell } from './EditableCell';
 import Spacer from '../common/Spacer';
-import { getRenderFromType } from '../fields/FieldComponents';
 import './EditableCell.css';
-import { getWidthForType } from '../../utils/FieldUtils';
+import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
 
 function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -43,7 +42,7 @@ function TaskGrid(props) {
             dataIndex: field.path,
             key: field.path,
             editable: true,
-            render: getRenderFromType(field.type),
+            render: getRenderForType(field.type),
             onCell: record => ({
                 record,
                 editable: true,
@@ -106,4 +105,4 @@ function createDummyTasks() {
     return tasks;
 }
 
-export default withApp(withFields(withTasks(TaskGrid)));
+export default withApp(withFields(withTasks(TaskGrid, { applySelectedFilter: true })));

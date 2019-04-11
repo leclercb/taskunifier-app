@@ -43,6 +43,6 @@ function FolderManager(props) {
 FolderManager.propTypes = {
     folderId: PropTypes.string,
     onFolderSelection: PropTypes.func.isRequired
-}
+};
 
 export default withFolders(FolderManager);

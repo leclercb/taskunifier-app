@@ -22,7 +22,7 @@ export const getValuePropName = type => {
     }
 }
 
-export const getRenderFromType = type => (text, record, index) => {
+export const getRenderForType = type => (text, record, index) => {
     switch (type) {
         case 'checkbox':
         case 'text':
@@ -32,27 +32,33 @@ export const getRenderFromType = type => (text, record, index) => {
 }
 
 export const getSelectForType = type => {
-    return <Select>
-        {getConditionsForType(type).map(condition => (
-            <Select.Option key={condition.id} value={condition.id}>
-                {condition.title}
-            </Select.Option>
-        ))}
-    </Select>
+    return (
+        <Select>
+            {getConditionsForType(type).map(condition => (
+                <Select.Option key={condition.id} value={condition.id}>
+                    {condition.title}
+                </Select.Option>
+            ))}
+        </Select>
+    );
 }
 
-export const getInputFromType = (type, ref, save) => {
+export const getInputForType = (type, ref, save) => {
     switch (type) {
         case 'checkbox':
-            return <Checkbox
-                ref={ref}
-                onPressEnter={save}
-                onBlur={save} />;
+            return (
+                <Checkbox
+                    ref={ref}
+                    onPressEnter={save}
+                    onBlur={save} />
+            );
         case 'text':
         default:
-            return <Input
-                ref={ref}
-                onPressEnter={save}
-                onBlur={save} />;
+            return (
+                <Input
+                    ref={ref}
+                    onPressEnter={save}
+                    onBlur={save} />
+            );
     }
 }

@@ -1,4 +1,4 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject } from './ObjectActions';
+import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
 
 export const loadTasksFromFile = file => {
     return loadObjectsFromFile('tasks', file);
@@ -22,4 +22,8 @@ export const updateTask = task => {
 
 export const deleteTask = taskId => {
     return deleteObject('tasks', taskId);
+};
+
+export const cleanTasks = () => {
+    return cleanObjects('tasks');
 };

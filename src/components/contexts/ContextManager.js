@@ -43,6 +43,6 @@ function ContextManager(props) {
 ContextManager.propTypes = {
     contextId: PropTypes.string,
     onContextSelection: PropTypes.func.isRequired
-}
+};
 
 export default withContexts(ContextManager);

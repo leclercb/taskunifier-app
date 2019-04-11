@@ -45,6 +45,6 @@ function Status(props) {
 
 Status.propTypes = {
     status: PropTypes.object.isRequired
-}
+};
 
 export default withStatus(Status);

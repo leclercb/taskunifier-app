@@ -52,6 +52,6 @@ FolderList.propTypes = {
     addFolder: PropTypes.func.isRequired,
     deleteFolder: PropTypes.func.isRequired,
     onFolderSelection: PropTypes.func.isRequired
-}
+};
 
 export default FolderList;

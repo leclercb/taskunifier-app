@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 import withFields from '../../containers/WithFields';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
-import { getSelectForType } from '../fields/FieldComponents';
+import { getInputForType, getSelectForType } from '../../utils/FieldUtils';
 
 function FilterConditionForm(props) {
     const { getFieldDecorator } = props.form;
@@ -65,7 +65,7 @@ function FilterConditionForm(props) {
                         }
                     ]
                 })(
-                    <Input />
+                    getInputForType(field.type)
                 )}
             </Form.Item>
         </Form>
@@ -79,6 +79,6 @@ FilterConditionForm.propTypes = {
     disabled: PropTypes.bool.isRequired,
     handleAddSaveCallback: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired
-}
+};
 
 export default withFields(Form.create({ name: 'condition' })(FilterConditionForm));

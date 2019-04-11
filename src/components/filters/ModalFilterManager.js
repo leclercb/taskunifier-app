@@ -35,6 +35,6 @@ function ModalFilterManager(props) {
 ModalFilterManager.propTypes = {
     setFilterManagerOptions: PropTypes.func.isRequired,
     filterManager: PropTypes.object.isRequired
-}
+};
 
 export default withApp(ModalFilterManager);

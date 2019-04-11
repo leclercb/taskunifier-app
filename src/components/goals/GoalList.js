@@ -52,6 +52,6 @@ GoalList.propTypes = {
     addGoal: PropTypes.func.isRequired,
     deleteGoal: PropTypes.func.isRequired,
     onGoalSelection: PropTypes.func.isRequired
-}
+};
 
 export default GoalList;

@@ -56,6 +56,6 @@ Header.propTypes = {
     setSettingsVisible: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setFilterManagerOptions: PropTypes.func.isRequired
-}
+};
 
 export default withApp(Header);
