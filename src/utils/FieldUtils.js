@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox, Input, Select } from 'antd';
+import { getConditionsForCheckbox, getConditionsForNumber, getConditionsForText } from './FilterUtils';
 
 export const getWidthForType = type => {
     switch (type) {
@@ -66,7 +67,7 @@ export const getSelectForType = type => {
     return (
         <Select>
             {getConditionsForType(type).map(condition => (
-                <Select.Option key={condition.id} value={condition.id}>
+                <Select.Option key={condition.type} value={condition.type}>
                     {condition.title}
                 </Select.Option>
             ))}
@@ -74,7 +75,7 @@ export const getSelectForType = type => {
     );
 }
 
-export const getConditionsForType = type => {
+export const getConditionsForType = (type => {
     switch (type) {
         case 'checkbox':
             return getConditionsForCheckbox();
@@ -84,51 +85,4 @@ export const getConditionsForType = type => {
         default:
             return getConditionsForText();
     }
-}
-
-export const getConditionsForCheckbox = () => {
-    return [
-        {
-            id: 'equals',
-            title: 'Equals'
-        },
-        {
-            id: 'not_equals',
-            title: 'Does not equal'
-        }
-    ]
-}
-
-export const getConditionsForNumber = () => {
-    return [
-        {
-            id: 'equals',
-            title: 'Equals'
-        },
-        {
-            id: 'not_equals',
-            title: 'Does not equal'
-        }
-    ]
-}
-
-export const getConditionsForText = () => {
-    return [
-        {
-            id: 'equals',
-            title: 'Equals'
-        },
-        {
-            id: 'not_equals',
-            title: 'Does not equal'
-        },
-        {
-            id: 'contains',
-            title: 'Contains'
-        },
-        {
-            id: 'not_contains',
-            title: 'Does not contain'
-        }
-    ]
 }
