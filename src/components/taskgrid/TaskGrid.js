@@ -4,9 +4,9 @@ import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
 import { EditableFormRow, EditableCell } from './EditableCell';
-import './EditableCell.css';
 import Spacer from '../common/Spacer';
 import { getRenderFromType } from '../fields/FieldComponents';
+import './EditableCell.css';
 
 function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);

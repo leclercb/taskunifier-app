@@ -5,7 +5,6 @@ import ColorPicker from 'rc-color-picker';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { merge } from '../../utils/ObjectUtils';
 import Icon from '../common/Icon';
-import 'rc-color-picker/assets/index.css';
 
 function GoalForm(props) {
     const onSave = (e) => {

@@ -5,10 +5,10 @@ import { Button, message } from 'antd';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
-import './ConditionTree.css';
 import { usePrevious } from '../../../hooks/UsePrevious';
 import { clone } from '../../../utils/ObjectUtils';
 import Icon from '../Icon';
+import './ConditionTree.css';
 
 function ConditionTree(props) {
     const saveCallbacks = useRef([]);

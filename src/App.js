@@ -4,7 +4,7 @@ import { useInterval } from './hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from './components/layout/AppLayout';
 import withApp from './containers/WithApp';
-import { library } from '@fortawesome/fontawesome-svg-core'
+import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faArchive,
     faBomb,
@@ -33,8 +33,11 @@ import {
     faTag,
     faThumbtack,
     faTrashAlt
-} from '@fortawesome/free-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons';
+
 import './App.css';
+import 'rc-color-picker/assets/index.css';
+import 'react-contexify/dist/ReactContexify.min.css';
 
 library.add(faArchive);
 library.add(faBomb);

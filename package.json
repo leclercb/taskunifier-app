@@ -14,11 +14,13 @@
     "npm": "^6.9.0",
     "rc-color-picker": "^1.2.6",
     "react": "^16.8.6",
+    "react-contexify": "^4.1.0",
     "react-dnd": "^7.4.5",
     "react-dnd-html5-backend": "^7.4.4",
     "react-dom": "^16.8.6",
     "react-redux": "^6.0.1",
     "react-scripts": "2.1.8",
+    "react-split-pane": "^0.1.87",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.2"

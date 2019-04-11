@@ -5,7 +5,6 @@ import ColorPicker from 'rc-color-picker';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { merge } from '../../utils/ObjectUtils';
 import Icon from '../common/Icon';
-import 'rc-color-picker/assets/index.css';
 
 function LocationForm(props) {
     const onSave = (e) => {

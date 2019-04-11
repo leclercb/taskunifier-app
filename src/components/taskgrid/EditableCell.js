@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Form } from 'antd';
-import './EditableCell.css';
 import { isAlwaysInEdition, getValuePropName, getInputFromType } from '../fields/FieldComponents';
+import './EditableCell.css';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();

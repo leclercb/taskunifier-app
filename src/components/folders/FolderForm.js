@@ -5,7 +5,6 @@ import ColorPicker from 'rc-color-picker';
 import { FolderPropType } from '../../proptypes/FolderPropTypes';
 import { merge } from '../../utils/ObjectUtils';
 import Icon from '../common/Icon';
-import 'rc-color-picker/assets/index.css';
 
 function FolderForm(props) {
     const onSave = (e) => {

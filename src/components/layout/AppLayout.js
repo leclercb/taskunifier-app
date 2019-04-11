@@ -9,6 +9,7 @@ import ModalStatus from '../status/ModalStatus';
 import ModalSettings from '../settings/ModalSettings';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
 import ModalFilterManager from '../filters/ModalFilterManager';
+import SplitPane from 'react-split-pane';
 
 function AppLayout(props) {
     return (
@@ -22,13 +23,11 @@ function AppLayout(props) {
                     <Layout.Header>
                         <Header />
                     </Layout.Header>
-                    <Layout style={{ height: "100%" }}>
-                        <Layout.Sider width={300} theme="light">
+                    <Layout style={{ height: "100%", position: "relative" }}>
+                        <SplitPane split="vertical" minSize={200} defaultSize={300} paneStyle={{ overflowY: 'auto' }}>
                             <Sider />
-                        </Layout.Sider>
-                        <Layout.Content>
                             <TaskGrid />
-                        </Layout.Content>
+                        </SplitPane>
                     </Layout>
                     <Layout.Footer style={{ textAlign: 'center' }}>
                         <Footer />
