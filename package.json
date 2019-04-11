@@ -12,6 +12,7 @@
     "antd-table-infinity": "^1.1.2",
     "craco-antd": "^1.10.0",
     "i": "^0.3.6",
+    "inputmask-core": "^2.2.0",
     "npm": "^6.9.0",
     "rc-color-picker": "^1.2.6",
     "react": "^16.8.6",
