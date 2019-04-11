@@ -19,6 +19,7 @@ function ConditionLeaf(props) {
                         condition: props.condition,
                         context: props.context,
                         disabled: props.disabled,
+                        handleAddSaveCallback: props.handleAddSaveCallback,
                         handleUpdate: props.handleUpdate
                     })
             }
@@ -41,6 +42,7 @@ ConditionLeaf.propTypes = {
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     getLeafComponent: PropTypes.any.isRequired,
+    handleAddSaveCallback: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired,
     handleEndDrag: PropTypes.func.isRequired,

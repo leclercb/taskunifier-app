@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
@@ -11,6 +11,8 @@ import { clone } from '../../../utils/ObjectUtils';
 import Icon from '../Icon';
 
 function ConditionTree(props) {
+    const saveCallbacks = useRef([]);
+
     const [rootCondition, setRootCondition] = useState(clone(props.condition));
     const prevCondition = usePrevious(props.condition);
 
@@ -21,7 +23,30 @@ function ConditionTree(props) {
     }
 
     const onSave = () => {
-        props.onSaveCondition(rootCondition);
+        const promises = [];
+
+        Object.keys(saveCallbacks.current).forEach(key => {
+            if (saveCallbacks.current[key]) {
+                promises.push(saveCallbacks.current[key]());
+            }
+        });
+
+        const promiseAll = Promise.all(promises);
+
+        promiseAll.catch(() => {
+            message.error('Please fix the validation errors');
+        })
+
+        promiseAll.then(() => {
+            props.onSaveCondition(rootCondition);
+        });
+    };
+
+    const handleAddSaveCallback = (id, callback) => {
+        saveCallbacks.current = {
+            ...saveCallbacks.current,
+            [id]: callback
+        }
     }
 
     const handleAdd = (condition, key) => {
@@ -120,6 +145,7 @@ function ConditionTree(props) {
                 condition={rootCondition}
                 parentCondition={null}
                 context={props.context}
+                handleAddSaveCallback={handleAddSaveCallback}
                 handleAdd={handleAdd}
                 handleDelete={handleDelete}
                 handleUpdate={handleUpdate}

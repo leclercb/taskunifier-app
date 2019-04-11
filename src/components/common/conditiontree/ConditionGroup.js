@@ -68,6 +68,7 @@ function ConditionGroup(props) {
                     parentCondition={condition}
                     context={props.context}
                     disabled={props.disabled}
+                    handleAddSaveCallback={props.handleAddSaveCallback}
                     handleAdd={props.handleAdd}
                     handleDelete={props.handleDelete}
                     handleUpdate={props.handleUpdate}
@@ -102,6 +103,7 @@ ConditionGroup.propTypes = {
     parentCondition: PropTypes.shape(conditionGroup),
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
+    handleAddSaveCallback: PropTypes.func.isRequired,
     handleAdd: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired,

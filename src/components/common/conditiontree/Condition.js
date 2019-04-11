@@ -12,6 +12,7 @@ function Condition(props) {
                 parentCondition={props.parentCondition}
                 context={props.context}
                 disabled={props.disabled}
+                handleAddSaveCallback={props.handleAddSaveCallback}
                 handleAdd={props.handleAdd}
                 handleDelete={props.handleDelete}
                 handleUpdate={props.handleUpdate}
@@ -26,6 +27,7 @@ function Condition(props) {
                 parentCondition={props.parentCondition}
                 context={props.context}
                 disabled={props.disabled}
+                handleAddSaveCallback={props.handleAddSaveCallback}
                 handleDelete={props.handleDelete}
                 handleUpdate={props.handleUpdate}
                 handleEndDrag={props.handleEndDrag}
@@ -39,6 +41,7 @@ Condition.propTypes = {
     parentCondition: PropTypes.shape(conditionGroup),
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
+    handleAddSaveCallback: PropTypes.func.isRequired,
     handleAdd: PropTypes.func.isRequired,
     handleDelete: PropTypes.func.isRequired,
     handleUpdate: PropTypes.func.isRequired,
