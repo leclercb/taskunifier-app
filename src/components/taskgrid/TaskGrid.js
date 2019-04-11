@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Table } from 'antd';
+import { InfinityTable } from 'antd-table-infinity';
 import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
@@ -7,6 +8,7 @@ import { EditableFormRow, EditableCell } from './EditableCell';
 import Spacer from '../common/Spacer';
 import { getRenderFromType } from '../fields/FieldComponents';
 import './EditableCell.css';
+import { getWidthForType } from '../../utils/FieldUtils';
 
 function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -36,6 +38,7 @@ function TaskGrid(props) {
     const columns = props.fields.map(field => {
         return {
             ...field,
+            width: field.id === 'title' ? null : getWidthForType(field.type),
             title: field.title,
             dataIndex: field.path,
             key: field.path,
@@ -52,16 +55,19 @@ function TaskGrid(props) {
         };
     });
 
+    const dummy = false;
+
     return (
-        <Table
+        <InfinityTable
             rowKey="id"
             components={components}
             columns={columns}
-            dataSource={props.tasks}
+            dataSource={dummy ? dummyTasks : props.tasks}
             bordered={true}
             rowClassName={record => 'editable-row importance-' + record.importance}
             size="small"
             pagination={false}
+            scroll={{ y: 450 }}
             rowSelection={{
                 selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys),
@@ -82,7 +88,7 @@ const dummyTasks = createDummyTasks();
 function createDummyTasks() {
     const tasks = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
         tasks.push({
             id: 'task-dummy-' + i,
             refIds: {},

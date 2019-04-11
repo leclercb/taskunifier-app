@@ -1,6 +1,6 @@
 import React from 'react';
 import { Checkbox, Input, Select } from 'antd';
-import { getConditionsForType } from '../../utils/FilterUtils';
+import { getConditionsForType } from '../../utils/FieldUtils';
 
 export const isAlwaysInEdition = type => {
     switch (type) {

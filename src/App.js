@@ -36,6 +36,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import './App.css';
+import 'antd-table-infinity/index.css';
 import 'rc-color-picker/assets/index.css';
 import 'react-contexify/dist/ReactContexify.min.css';
 

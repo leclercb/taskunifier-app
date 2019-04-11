@@ -9,6 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "antd": "^3.16.1",
+    "antd-table-infinity": "^1.1.2",
     "craco-antd": "^1.10.0",
     "i": "^0.3.6",
     "npm": "^6.9.0",

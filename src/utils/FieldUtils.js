@@ -1,12 +1,24 @@
+export function getWidthForType(type) {
+    switch (type) {
+        case 'checkbox':
+            return 100;
+        case 'number':
+            return 150;
+        case 'text':
+        default:
+            return 250;
+    }
+}
+
 export function getConditionsForType(type) {
     switch (type) {
         case 'checkbox':
             return getConditionsForCheckbox();
         case 'number':
-            return getConditionsForCheckbox();
+            return getConditionsForNumber();
         case 'text':
         default:
-            return getConditionsForCheckbox();
+            return getConditionsForText();
     }
 }
 
