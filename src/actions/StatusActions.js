@@ -1,3 +1,14 @@
+export const setSilent = silent => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_SILENT',
+            silent: silent
+        });
+
+        return Promise.resolve();
+    };
+};
+
 export const clearProcesses = () => {
     return (dispatch, getState) => {
         dispatch({

@@ -1,8 +1,14 @@
 const Status = () => (state = {
+    silent: false,
     busy: false,
     processes: []
 }, action) => {
     switch (action.type) {
+        case 'SET_SILENT':
+            return {
+                ...state,
+                silent: action.silent
+            };
         case 'CLEAR_PROCESSES':
             return {
                 ...state,

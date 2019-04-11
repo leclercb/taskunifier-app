@@ -38,7 +38,7 @@ function CustomDragLayer(props) {
         <div style={layerStyles}>
             <div style={getItemStyles()}>
                 TODO
-                </div>
+            </div>
         </div>
     );
 }

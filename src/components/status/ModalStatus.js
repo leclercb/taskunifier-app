@@ -8,7 +8,7 @@ function ModalStatus(props) {
     return (
         <Modal
             title={<Icon icon="cogs" text="Progress" />}
-            visible={props.status.busy}
+            visible={props.status.busy && !props.status.silent}
             closable={false}
             footer={null}>
             <Status />
