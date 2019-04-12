@@ -17,13 +17,16 @@ const electron = window.require('electron');
 
 function App(props) {
     const onClose = () => {
-        const resolution = electron.remote.getCurrentWindow().getSize();
+        const size = electron.remote.getCurrentWindow().getSize();
+        const position = electron.remote.getCurrentWindow().getPosition();
 
         props.updateSettings({
-            window_width: resolution[0],
-            window_height: resolution[1]
+            window_width: size[0],
+            window_height: size[1],
+            window_x: position[0],
+            window_y: position[1]
         }).then(() => {
-            props.saveData().then(() => {
+            props.saveData(null, true).then(() => {
                 electron.ipcRenderer.send('closed');
             });
         });
@@ -34,6 +37,11 @@ function App(props) {
             electron.ipcRenderer.send('resize', {
                 width: state.settings.data.window_width,
                 height: state.settings.data.window_height
+            });
+
+            electron.ipcRenderer.send('move', {
+                x: state.settings.data.window_x,
+                y: state.settings.data.window_y
             });
         });
 

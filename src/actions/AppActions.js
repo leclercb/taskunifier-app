@@ -44,7 +44,7 @@ export const loadData = path => {
     };
 };
 
-export const saveData = path => {
+export const saveData = (path, clean = false) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -58,24 +58,32 @@ export const saveData = path => {
 
             createDirectory(path);
 
-            Promise.all([
-                saveSettingsToFile(path + "settings.json", state.settings.data)(dispatch, getState),
-                saveContextsToFile(path + "contexts.json", state.contexts)(dispatch, getState),
-                saveFieldsToFile(path + "fields.json", state.fields)(dispatch, getState),
-                saveFiltersToFile(path + "filters.json", state.filters)(dispatch, getState),
-                saveFoldersToFile(path + "folders.json", state.folders)(dispatch, getState),
-                saveGoalsToFile(path + "goals.json", state.goals)(dispatch, getState),
-                saveLocationsToFile(path + "locations.json", state.locations)(dispatch, getState),
-                saveTasksToFile(path + "tasks.json", state.tasks)(dispatch, getState)
-            ]).then(() => {
-                updateProcess(processId, 'COMPLETED')(dispatch, getState);
+            const saveAllFn = () => {
+                Promise.all([
+                    saveSettingsToFile(path + "settings.json", state.settings.data)(dispatch, getState),
+                    saveContextsToFile(path + "contexts.json", state.contexts)(dispatch, getState),
+                    saveFieldsToFile(path + "fields.json", state.fields)(dispatch, getState),
+                    saveFiltersToFile(path + "filters.json", state.filters)(dispatch, getState),
+                    saveFoldersToFile(path + "folders.json", state.folders)(dispatch, getState),
+                    saveGoalsToFile(path + "goals.json", state.goals)(dispatch, getState),
+                    saveLocationsToFile(path + "locations.json", state.locations)(dispatch, getState),
+                    saveTasksToFile(path + "tasks.json", state.tasks)(dispatch, getState)
+                ]).then(() => {
+                    updateProcess(processId, 'COMPLETED')(dispatch, getState);
 
-                setTimeout(() => {
-                    clearProcesses()(dispatch, getState);
-                }, 500);
+                    setTimeout(() => {
+                        clearProcesses()(dispatch, getState);
+                    }, 500);
 
-                resolve();
-            });
+                    resolve();
+                });
+            };
+
+            if (clean) {
+                cleanData()(dispatch, getState).then(() => saveAllFn());
+            } else {
+                saveAllFn();
+            }
         });
     };
 };

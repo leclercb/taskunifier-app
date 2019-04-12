@@ -33,6 +33,10 @@ function createWindow() {
     ipcMain.on('resize', (event, arg) => {
         win.setSize(arg.width, arg.height);
     });
+
+    ipcMain.on('move', (event, arg) => {
+        win.setSize(arg.x, arg.y);
+    });
 }
 
 app.on('ready', createWindow);
