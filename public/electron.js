@@ -8,10 +8,6 @@ let mainWindow = null;
 function createMainWindow() {
     const window = new BrowserWindow({
         show: false,
-        titleBarStyle: 'hidden',
-        webPreferences: {
-            nodeIntegration: false
-        },
         width: 1024,
         height: 768,
         icon: 'public/resources/images/logo.png'

@@ -7,12 +7,12 @@
     "main": "public/electron.js",
     "homepage": "./",
     "scripts": {
-        "react-start": "BROWSER=none; craco start",
-        "react-build": "craco build",
-        "react-test": "craco test",
-        "electron-start": "electron .",
-        "electron-build": "electron-builder",
-        "start": "yarn react-start",
+        "react:start": "BROWSER=none; craco start",
+        "react:build": "craco build",
+        "react:test": "craco test",
+        "electron:start": "electron .",
+        "electron:build": "electron-builder",
+        "start": "yarn react:start",
         "pack": "electron-builder --dir",
         "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
     },
@@ -42,7 +42,8 @@
     "devDependencies": {
         "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
-        "electron-devtools-installer": "^2.2.4"
+        "electron-devtools-installer": "^2.2.4",
+        "typescript": "^3.4.3"
     },
     "build": {
         "appId": "com.bl-it.taskunifier",
