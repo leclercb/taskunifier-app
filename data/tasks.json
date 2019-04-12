@@ -10,7 +10,38 @@
         "color": "#ffffff",
         "completed": false,
         "importance": "0",
-        "custom1": ""
+        "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "custom1": "",
+        "children": [
+            {
+                "id": "task-0-0",
+                "refIds": {},
+                "properties": {},
+                "creationDate": 1554795588054,
+                "updateDate": 1554917942317,
+                "status": "TO_UPDATE",
+                "title": "Task Test 0.0",
+                "color": "#ffffff",
+                "completed": false,
+                "importance": "5",
+                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "custom1": ""
+            },
+            {
+                "id": "task-0-1",
+                "refIds": {},
+                "properties": {},
+                "creationDate": 1554795588054,
+                "updateDate": 1554917942317,
+                "status": "TO_UPDATE",
+                "title": "Task Test 0.1",
+                "color": "#ffffff",
+                "completed": false,
+                "importance": "7",
+                "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                "custom1": ""
+            }
+        ]
     },
     {
         "id": "task-1",

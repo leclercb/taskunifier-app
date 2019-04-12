@@ -8,6 +8,7 @@ import { EditableFormRow, EditableCell } from './EditableCell';
 import Spacer from '../common/Spacer';
 import './EditableCell.css';
 import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
+import DragableBodyRow from './DragableBodyRow';
 
 function TaskGrid(props) {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -29,9 +30,9 @@ function TaskGrid(props) {
 
     const components = {
         body: {
-            row: EditableFormRow,
-            cell: EditableCell,
-        },
+            row: EditableFormRow(DragableBodyRow),
+            cell: EditableCell
+        }
     };
 
     const columns = props.fields.map(field => {
@@ -62,14 +63,15 @@ function TaskGrid(props) {
             components={components}
             columns={columns}
             dataSource={dummy ? dummyTasks : props.tasks}
+            childrenColumnName='children'
             bordered={true}
-            rowClassName={record => 'editable-row importance-' + record.importance}
+            rowClassName={record => 'editable-row task-importance-' + record.importance + ' ' + (record.completed ? 'task-completed' : '')}
             size="small"
             pagination={false}
             scroll={dummy ? { y: 450 } : true}
             rowSelection={{
-                selectedRowKeys,
-                onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys),
+                selectedRowKeys: selectedRowKeys,
+                onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys)
             }}
             footer={() =>
                 <React.Fragment>

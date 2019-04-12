@@ -13,74 +13,78 @@
     padding: 4px 11px;
 }
 
-.importance-0 {
+.task-importance-0 {
     background-color: #ffffff !important;
 }
 
-.importance-1 {
+.task-completed {
+    text-decoration: line-through !important;
+}
+
+.task-importance-1 {
     background-color: #ffffff !important;
 }
 
-.importance-2 {
+.task-importance-2 {
     background-color: #ffffff !important;
 }
 
-.importance-3 {
+.task-importance-3 {
     background-color: #f0f7f7 !important;
 }
 
-.importance-4 {
+.task-importance-4 {
     background-color: #ccffff !important;
 }
 
-.importance-5 {
+.task-importance-5 {
     background-color: #d0f7e3 !important;
 }
 
-.importance-6 {
+.task-importance-6 {
     background-color: #ccffcc !important;
 }
 
-.importance-7 {
+.task-importance-7 {
     background-color: #ccff99 !important;
 }
 
-.importance-8 {
+.task-importance-8 {
     background-color: #ffffcc !important;
 }
 
-.importance-9 {
+.task-importance-9 {
     background-color: #ffff99 !important;
 }
 
-.importance-10 {
+.task-importance-10 {
     background-color: #ffcc99 !important;
 }
 
-.importance-11 {
+.task-importance-11 {
     background-color: #ffcccc !important;
 }
 
-.importance-12 {
+.task-importance-12 {
     background-color: #ff9999 !important;
 }
 
-.priority-negative {
+.task-priority-negative {
     background-color: #f0f7f7 !important;
 }
 
-.priority-low {
+.task-priority-low {
     background-color: #00ff00 !important;
 }
 
-.priority-medium {
+.task-priority-medium {
     background-color: #ffff00 !important;
 }
 
-.priority-high {
+.task-priority-high {
     background-color: #ffc800 !important;
 }
 
-.priority-top {
+.task-priority-top {
     background-color: #ff0000 !important;
 }

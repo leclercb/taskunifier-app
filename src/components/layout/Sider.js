@@ -161,7 +161,7 @@ function Sider(props) {
                                 <Input.Search
                                     allowClear={true}
                                     size="small"
-                                    placeholder="Search for..."
+                                    placeholder="Search for ..."
                                     style={{ width: '80%' }}
                                     onSearch={value => onSearch(value)} />
                             </Tooltip>
@@ -174,6 +174,7 @@ function Sider(props) {
                             filter={filter}>
                             <Icon
                                 icon={filter.icon}
+                                color={filter.color}
                                 text={filter.title} />
                         </Menu.Item>
                     ))}

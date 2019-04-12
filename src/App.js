@@ -11,8 +11,6 @@ import 'antd-table-infinity/index.css';
 import 'rc-color-picker/assets/index.css';
 import 'react-contexify/dist/ReactContexify.min.css';
 
-const DragDropContextHTML5 = DragDropContext(HTML5Backend);
-
 function App(props) {
     useEffect(() => {
         props.loadData();
@@ -27,4 +25,4 @@ function App(props) {
     );
 }
 
-export default DragDropContextHTML5(withApp(App));
+export default DragDropContext(HTML5Backend)(withApp(App));

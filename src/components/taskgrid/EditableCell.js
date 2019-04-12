@@ -6,13 +6,15 @@ import './EditableCell.css';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-const EditableRow = ({ form, index, ...props }) => (
+const EditableRow = Component => ({ form, index, ...props }) => (
     <EditableContext.Provider value={form}>
-        <tr {...props} />
+        {Component ? React.createElement(Component, props) : (
+            <tr {...props} />
+        )}
     </EditableContext.Provider>
 );
 
-export const EditableFormRow = Form.create()(EditableRow);
+export const EditableFormRow = Component => Form.create()(EditableRow(Component));
 
 export function EditableCell(props) {
     const [editing, setEditing] = useState(false);
@@ -28,7 +30,7 @@ export function EditableCell(props) {
         });
     }
 
-    const save = (e) => {
+    const save = e => {
         const { record, onSave } = props;
         formRef.current.validateFields((error, values) => {
             if (error && error[e.currentTarget.id]) {

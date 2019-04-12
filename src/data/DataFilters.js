@@ -27,6 +27,7 @@ export function getGeneralFilters() {
         {
             id: "not-completed",
             title: "Not Completed",
+            color: "#17e510",
             icon: "check",
             condition: {
                 id: "1",
@@ -38,6 +39,7 @@ export function getGeneralFilters() {
         {
             id: "due-today",
             title: "Due Today",
+            color: "#fcaf35",
             icon: "calendar-alt",
             condition: {
                 id: "1",
@@ -49,6 +51,7 @@ export function getGeneralFilters() {
         {
             id: "overdue",
             title: "Overdue",
+            color: "#ff1111",
             icon: "bomb",
             condition: {
                 id: "1",
@@ -60,6 +63,7 @@ export function getGeneralFilters() {
         {
             id: "hot-list",
             title: "Hot List",
+            color: "#d83131",
             icon: "pepper-hot",
             condition: {
                 id: "1",
@@ -71,6 +75,7 @@ export function getGeneralFilters() {
         {
             id: "importance",
             title: "Importance",
+            color: "#fcc635",
             icon: "exclamation-triangle",
             condition: {
                 id: "1",
@@ -82,6 +87,7 @@ export function getGeneralFilters() {
         {
             id: "starred",
             title: "Starred",
+            color: "#fcde35",
             icon: "star",
             condition: {
                 id: "1",
@@ -93,6 +99,7 @@ export function getGeneralFilters() {
         {
             id: "next-action",
             title: "Next Action",
+            color: "#2abff9",
             icon: "chevron-circle-right",
             condition: {
                 id: "1",
@@ -104,11 +111,12 @@ export function getGeneralFilters() {
         {
             id: "completed",
             title: "Completed",
+            color: "#17e510",
             icon: "check-double",
             condition: {
                 id: "1",
                 field: "completed",
-                condtypeition: "equals",
+                type: "equals",
                 value: true
             }
         }

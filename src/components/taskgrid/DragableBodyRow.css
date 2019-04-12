@@ -1,0 +1,7 @@
+tr.drop-over-downward td {
+    border-bottom: 2px dashed #008c4b;
+}
+
+tr.drop-over-upward td {
+    border-top: 2px dashed #008c4b;
+}
