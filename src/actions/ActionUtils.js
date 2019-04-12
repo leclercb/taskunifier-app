@@ -1,8 +1,9 @@
 import uuid from 'uuid';
 import { updateProcess } from './StatusActions';
 
-const fs = window.require('fs');
-const { join } = window.require('path');
+const electron = window.require('electron');
+const fs = electron.remote.require('fs');
+const { join } = electron.remote.require('path');
 
 export const loadFromFile = (property, file, onData) => {
     return (dispatch, getState) => {

@@ -1,11 +1,11 @@
 // https://medium.com/@brockhoff/using-electron-with-react-the-basics-e93f9761f86f
-const { app, BrowserWindow } = require('electron');
+const { app, ipcMain, BrowserWindow } = require('electron');
 
 function createWindow() {
     win = new BrowserWindow({
         show: false,
-        width: 1600,
-        height: 800,
+        width: 1024,
+        height: 768,
         icon: 'public/resources/images/logo.png'
     });
 
@@ -14,12 +14,25 @@ function createWindow() {
     win.once('ready-to-show', () => {
         win.show();
     });
+
+    win.on('close', (e) => {
+        if (win) {
+            e.preventDefault();
+            win.webContents.send('app-close');
+        }
+    });
+
+    ipcMain.on('closed', _ => {
+        win = null;
+
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
+    });
+
+    ipcMain.on('resize', (event, arg) => {
+        win.setSize(arg.width, arg.height);
+    });
 }
 
 app.on('ready', createWindow);
-
-// TODO save on quit
-app.on('before-quit', e => {
-    //e.preventDefault();
-    //app.quit();
-});

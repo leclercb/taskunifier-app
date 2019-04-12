@@ -38,7 +38,7 @@ export const loadData = path => {
                     clearProcesses()(dispatch, getState);
                 }, 500);
 
-                resolve();
+                resolve(getState());
             });
         });
     };

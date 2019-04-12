@@ -23,8 +23,10 @@ export function EditableCell(props) {
 
     const toggleEdit = () => {
         const newEditing = !editing;
-        setEditing(newEditing, () => {
-            if (newEditing) {
+        setEditing(newEditing);
+
+        setTimeout(() => {
+            if (newEditing && inputRef.current) {
                 inputRef.current.focus();
             }
         });

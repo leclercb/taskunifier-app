@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerOptions, setFilterManagerOptions } from '../actions/AppActions';
-import { setSettingsVisible } from '../actions/SettingActions';
+import { setSettingsVisible, updateSettings } from '../actions/SettingActions';
 import { clearProcesses } from '../actions/StatusActions';
 
 function withApp(Component) {
@@ -21,10 +21,11 @@ function withApp(Component) {
         backupData: () => dispatch(backupData()),
         synchronize: () => dispatch(synchronize()),
         setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
-        setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),
-        clearProcesses: () => dispatch(clearProcesses())
+        clearProcesses: () => dispatch(clearProcesses()),
+        setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),
+        updateSettings: settings => dispatch(updateSettings(settings))
     });
 
     return connect(

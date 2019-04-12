@@ -68,7 +68,7 @@ function TaskGrid(props) {
             rowClassName={record => 'editable-row task-importance-' + record.importance + ' ' + (record.completed ? 'task-completed' : '')}
             size="small"
             pagination={false}
-            scroll={dummy ? { y: 450 } : true}
+            scroll={dummy ? { y: 450 } : { x: true }}
             rowSelection={{
                 selectedRowKeys: selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys)
