@@ -1,9 +1,8 @@
+import { getDefaultSelectedFilter } from "../data/DataFilters";
+
 const App = () => (state = {
     user: null,
-    selectedFilter: {
-        id: 'not-completed',
-        title: 'Not Completed'
-    },
+    selectedFilter: getDefaultSelectedFilter(),
     categoryManager: {
         visible: false,
         category: 'contexts',

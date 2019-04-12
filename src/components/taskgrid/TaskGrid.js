@@ -57,7 +57,7 @@ function TaskGrid(props) {
     const dummy = false;
 
     return (
-        <InfinityTable
+        <Table
             rowKey="id"
             components={components}
             columns={columns}
@@ -66,7 +66,7 @@ function TaskGrid(props) {
             rowClassName={record => 'editable-row importance-' + record.importance}
             size="small"
             pagination={false}
-            scroll={{ y: 450 }}
+            scroll={dummy ? { y: 450 } : true}
             rowSelection={{
                 selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys),

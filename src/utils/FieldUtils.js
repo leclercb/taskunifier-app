@@ -75,7 +75,7 @@ export const getSelectForType = type => {
     );
 }
 
-export const getConditionsForType = (type => {
+export const getConditionsForType = type => {
     switch (type) {
         case 'checkbox':
             return getConditionsForCheckbox();

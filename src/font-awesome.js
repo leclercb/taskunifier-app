@@ -1,0 +1,63 @@
+
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+    faArchive,
+    faBomb,
+    faBullseye,
+    faCalendarAlt,
+    faCheck,
+    faCheckDouble,
+    faChevronCircleRight,
+    faCircle,
+    faCompass,
+    faCog,
+    faCogs,
+    faCubes,
+    faEdit,
+    faExclamationCircle,
+    faExclamationTriangle,
+    faFilter,
+    faFolder,
+    faFolderOpen,
+    faHome,
+    faPepperHot,
+    faPlus,
+    faSave,
+    faSearch,
+    faSpinner,
+    faStar,
+    faTag,
+    faTasks,
+    faThumbtack,
+    faTrashAlt
+} from '@fortawesome/free-solid-svg-icons';
+
+library.add(faArchive);
+library.add(faBomb);
+library.add(faBullseye);
+library.add(faCalendarAlt);
+library.add(faCheck);
+library.add(faCheckDouble);
+library.add(faChevronCircleRight);
+library.add(faCircle);
+library.add(faCompass);
+library.add(faCog);
+library.add(faCogs);
+library.add(faCubes);
+library.add(faEdit);
+library.add(faExclamationCircle);
+library.add(faExclamationTriangle);
+library.add(faFilter);
+library.add(faFolder);
+library.add(faFolderOpen);
+library.add(faHome);
+library.add(faPepperHot);
+library.add(faPlus);
+library.add(faSave);
+library.add(faSearch);
+library.add(faSpinner);
+library.add(faStar);
+library.add(faTag);
+library.add(faTasks);
+library.add(faThumbtack);
+library.add(faTrashAlt);

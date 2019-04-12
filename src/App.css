@@ -26,6 +26,10 @@
     cursor: pointer;
 }
 
+.ant-input[disabled] {
+    color: #000000 !important;
+}
+
 /* React SplitPane */
 
 .Resizer {

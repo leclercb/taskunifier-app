@@ -7,6 +7,10 @@ import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import withFields from '../../containers/WithFields';
 import FilterConditionForm from './FilterConditionForm';
 
+function FilterEmpty(props) {
+    return (<Empty />);
+}
+
 function FilterConditionTree(props) {
     const createLeafObject = (parentCondition, key) => {
         const field = props.fields.find(field => field.id === key);
@@ -27,7 +31,7 @@ function FilterConditionTree(props) {
         const field = props.fields.find(field => field.id === condition.field);
 
         if (!field) {
-            return Empty;
+            return FilterEmpty;
         }
 
         return FilterConditionForm;

@@ -15,13 +15,13 @@
                 {
                     "id": "2",
                     "field": "title",
-                    "condition": "equals",
+                    "type": "equals",
                     "value": "Task Test 2"
                 },
                 {
                     "id": "3",
                     "field": "title",
-                    "condition": "equals",
+                    "type": "equals",
                     "value": "Task Test 3"
                 }
             ]

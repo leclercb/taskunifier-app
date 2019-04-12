@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'antd';
+import { Form, Input, Row, Col } from 'antd';
 import withFields from '../../containers/WithFields';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import { getInputForType, getSelectForType } from '../../utils/FieldUtils';
@@ -14,9 +14,13 @@ function FilterConditionForm(props) {
                 if (err) {
                     reject(err);
                 } else {
-                    Object.assign(props.condition, values);
+                    const v = { ...values };
+                    delete v.title;
+
+                    Object.assign(props.condition, v);
                     props.handleUpdate(props.condition);
-                    resolve(values);
+
+                    resolve(v);
                 }
             });
         });
@@ -28,12 +32,12 @@ function FilterConditionForm(props) {
 
     const formItemLayout = {
         labelCol: {
-            xs: { span: 24 },
-            sm: { span: 8 },
+            xs: { span: 0 },
+            sm: { span: 0 }
         },
         wrapperCol: {
             xs: { span: 24 },
-            sm: { span: 16 },
+            sm: { span: 24 }
         }
     };
 
@@ -41,33 +45,45 @@ function FilterConditionForm(props) {
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="Field">
-                {field.title}
-            </Form.Item>
-            <Form.Item label="Condition">
-                {getFieldDecorator('type', {
-                    initialValue: props.condition.type,
-                    rules: [
-                        {
-                            required: true, message: 'The condition is required',
-                        }
-                    ]
-                })(
-                    getSelectForType(field.type)
-                )}
-            </Form.Item>
-            <Form.Item label="Value">
-                {getFieldDecorator('value', {
-                    initialValue: props.condition.value,
-                    rules: [
-                        {
-                            required: true, message: 'The value is required',
-                        }
-                    ]
-                })(
-                    getInputForType(field.type)
-                )}
-            </Form.Item>
+            <Row gutter={10}>
+                <Col span={6}>
+                    <Form.Item >
+                        {getFieldDecorator('title', {
+                            initialValue: field.title
+                        })(
+                            <Input disabled={true} />
+                        )}
+                    </Form.Item>
+                </Col>
+                <Col span={6}>
+                    <Form.Item>
+                        {getFieldDecorator('type', {
+                            initialValue: props.condition.type,
+                            rules: [
+                                {
+                                    required: true, message: 'The condition is required',
+                                }
+                            ]
+                        })(
+                            getSelectForType(field.type)
+                        )}
+                    </Form.Item>
+                </Col>
+                <Col span={10}>
+                    <Form.Item>
+                        {getFieldDecorator('value', {
+                            initialValue: props.condition.value,
+                            rules: [
+                                {
+                                    required: true, message: 'The value is required',
+                                }
+                            ]
+                        })(
+                            getInputForType(field.type)
+                        )}
+                    </Form.Item>
+                </Col>
+            </Row>
         </Form>
     );
 }

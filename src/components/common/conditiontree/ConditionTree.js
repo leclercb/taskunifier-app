@@ -79,7 +79,7 @@ function ConditionTree(props) {
         }
 
         if (!condition) {
-            setClonedRootCondition(condition);
+            setClonedRootCondition(newCondition);
         } else {
             condition.conditions.push(newCondition);
             setClonedRootCondition(rootCondition);

@@ -13,7 +13,7 @@ function withTasks(Component, options = { applySelectedFilter: false }) {
         let tasks = filterObjects(state.tasks);
 
         if (options && options.applySelectedFilter === true) {
-            tasks = applyFilter(state.app.selectedFilter, state.fields, tasks);
+            tasks = applyFilter(state.app.selectedFilter, tasks, state.fields);
         }
 
         return {
