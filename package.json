@@ -1,48 +1,51 @@
 {
-  "name": "taskunifier",
-  "version": "0.1.0",
-  "private": true,
-  "main": "src/electron-starter.js",
-  "dependencies": {
-    "@craco/craco": "^4.1.0",
-    "@fortawesome/fontawesome-svg-core": "^1.2.17",
-    "@fortawesome/free-solid-svg-icons": "^5.8.1",
-    "@fortawesome/react-fontawesome": "^0.1.4",
-    "antd": "^3.16.1",
-    "antd-table-infinity": "^1.1.2",
-    "craco-antd": "^1.10.0",
-    "i": "^0.3.6",
-    "inputmask-core": "^2.2.0",
-    "npm": "^6.9.0",
-    "rc-color-picker": "^1.2.6",
-    "react": "^16.8.6",
-    "react-contexify": "^4.1.0",
-    "react-dnd": "^7.4.5",
-    "react-dnd-html5-backend": "^7.4.4",
-    "react-dom": "^16.8.6",
-    "react-redux": "^6.0.1",
-    "react-scripts": "2.1.8",
-    "react-split-pane": "^0.1.87",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "uuid": "^3.3.2"
-  },
-  "devDependencies": {
-    "electron": "^4.1.4"
-  },
-  "scripts": {
-    "start": "BROWSER=none; craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "electron-start": "electron ."
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+    "name": "taskunifier",
+    "version": "0.1.0",
+    "private": true,
+    "main": "src/electron-starter.js",
+    "dependencies": {
+        "@craco/craco": "^4.1.0",
+        "@fortawesome/fontawesome-svg-core": "^1.2.17",
+        "@fortawesome/free-solid-svg-icons": "^5.8.1",
+        "@fortawesome/react-fontawesome": "^0.1.4",
+        "antd": "^3.16.1",
+        "antd-table-infinity": "^1.1.2",
+        "craco-antd": "^1.10.0",
+        "i": "^0.3.6",
+        "inputmask-core": "^2.2.0",
+        "npm": "^6.9.0",
+        "rc-color-picker": "^1.2.6",
+        "react": "^16.8.6",
+        "react-contexify": "^4.1.0",
+        "react-dnd": "^7.4.5",
+        "react-dnd-html5-backend": "^7.4.4",
+        "react-dom": "^16.8.6",
+        "react-redux": "^6.0.1",
+        "react-scripts": "2.1.8",
+        "react-split-pane": "^0.1.87",
+        "redux": "^4.0.1",
+        "redux-thunk": "^2.3.0",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "electron": "^4.1.4",
+        "electron-builder": "^20.39.0"
+    },
+    "scripts": {
+        "start": "BROWSER=none; craco start",
+        "build": "craco build",
+        "test": "craco test",
+        "electron-start": "electron .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
 }

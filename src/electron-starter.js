@@ -1,42 +1,78 @@
-// https://medium.com/@brockhoff/using-electron-with-react-the-basics-e93f9761f86f
 const { app, ipcMain, BrowserWindow } = require('electron');
+const path = require('path');
+const url = require('url');
 
-function createWindow() {
-    win = new BrowserWindow({
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+let mainWindow = null;
+
+function createMainWindow() {
+    const window = new BrowserWindow({
         show: false,
         width: 1024,
         height: 768,
         icon: 'public/resources/images/logo.png'
     });
 
-    win.loadURL('http://localhost:3000');
+    if (isDevelopment) {
+        window.webContents.openDevTools();
+    }
 
-    win.once('ready-to-show', () => {
-        win.show();
+    if (isDevelopment) {
+        window.loadURL('http://localhost:3000');
+    } else {
+        window.loadURL(url.format({
+            pathname: path.join(__dirname, 'index.html'),
+            protocol: 'file',
+            slashes: true
+        }));
+    }
+
+    window.once('ready-to-show', () => {
+        window.show();
     });
 
-    win.on('close', (e) => {
-        if (win) {
+    window.on('close', e => {
+        if (mainWindow) {
             e.preventDefault();
-            win.webContents.send('app-close');
+            mainWindow.webContents.send('app-close');
         }
     });
 
-    ipcMain.on('closed', _ => {
-        win = null;
-
-        if (process.platform !== 'darwin') {
-            app.quit();
-        }
+    window.on('closed', () => {
+        mainWindow = null;
     });
 
-    ipcMain.on('resize', (event, arg) => {
-        win.setSize(arg.width, arg.height);
+    window.webContents.on('devtools-opened', () => {
+        window.focus()
+        setImmediate(() => {
+            window.focus();
+        });
     });
 
-    ipcMain.on('move', (event, arg) => {
-        win.setPosition(arg.x, arg.y);
-    });
+    return window;
 }
 
-app.on('ready', createWindow);
+ipcMain.on('resize', (event, arg) => {
+    mainWindow.setSize(arg.width, arg.height);
+});
+
+ipcMain.on('move', (event, arg) => {
+    mainWindow.setPosition(arg.x, arg.y);
+});
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+app.on('activate', () => {
+    if (mainWindow === null) {
+        mainWindow = createMainWindow();
+    }
+});
+
+app.on('ready', () => {
+    mainWindow = createMainWindow();
+});
