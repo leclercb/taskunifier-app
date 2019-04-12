@@ -1,8 +1,11 @@
 {
     "name": "taskunifier",
+    "description": "TaskUnifier 2 - Take GTD to the next level",
+    "author": "BL-IT",
     "version": "0.1.0",
     "private": true,
-    "main": "src/electron-starter.js",
+    "main": "public/electron.js",
+    "homepage": "./",
     "dependencies": {
         "@craco/craco": "^4.1.0",
         "@fortawesome/fontawesome-svg-core": "^1.2.17",
@@ -29,15 +32,21 @@
     },
     "devDependencies": {
         "electron": "^4.1.4",
-        "electron-builder": "^20.39.0"
+        "electron-builder": "^20.39.0",
+        "typescript": "^3.4.3"
     },
     "scripts": {
-        "start": "BROWSER=none; craco start",
-        "build": "craco build",
-        "test": "craco test",
+        "react-start": "BROWSER=none; craco start",
+        "react-build": "craco build",
+        "react-test": "craco test",
         "electron-start": "electron .",
-        "pack": "electron-builder --dir",
-        "dist": "electron-builder"
+        "electron-build": "electron-builder",
+        "start": "yarn react-start",
+        "build": "yarn react-build && yarn electron-build",
+        "release": "yarn react-build && yarn electron-builder --publish=always"
+    },
+    "build": {
+        "appId": "com.bl-it.taskunifier"
     },
     "eslintConfig": {
         "extends": "react-app"
