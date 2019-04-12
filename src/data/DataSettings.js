@@ -41,7 +41,38 @@ export function getCategories() {
                     "title": "Last backup date",
                     "category": "backup",
                     "value": null,
-                    "visible": false
+                    "visible": true
+                }
+            }
+        },
+        {
+            id: 'window',
+            title: 'Window',
+            icon: 'desktop',
+            settings: {
+                "window_size_width": {
+                    "title": "Window Size - Width",
+                    "category": "window",
+                    "value": 1024,
+                    "visible": true
+                },
+                "window_size_height": {
+                    "title": "Window Size - Height",
+                    "category": "window",
+                    "value": 768,
+                    "visible": true
+                },
+                "window_position_x": {
+                    "title": "Window Position - X",
+                    "category": "window",
+                    "value": null,
+                    "visible": true
+                },
+                "window_position_y": {
+                    "title": "Window Position - Y",
+                    "category": "window",
+                    "value": null,
+                    "visible": true
                 }
             }
         }

@@ -13,6 +13,7 @@ import {
     faCog,
     faCogs,
     faCubes,
+    faDesktop,
     faEdit,
     faExclamationCircle,
     faExclamationTriangle,
@@ -44,6 +45,7 @@ library.add(faCompass);
 library.add(faCog);
 library.add(faCogs);
 library.add(faCubes);
+library.add(faDesktop);
 library.add(faEdit);
 library.add(faExclamationCircle);
 library.add(faExclamationTriangle);

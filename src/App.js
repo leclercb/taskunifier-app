@@ -21,33 +21,54 @@ function App(props) {
         const position = electron.remote.getCurrentWindow().getPosition();
 
         props.updateSettings({
-            window_width: size[0],
-            window_height: size[1],
-            window_x: position[0],
-            window_y: position[1]
+            window_size_width: size[0],
+            window_size_height: size[1],
+            window_position_x: position[0],
+            window_position_y: position[1]
         }).then(() => {
-            props.saveData(null, true).then(() => {
+            props.saveData().then(() => {
                 electron.ipcRenderer.send('closed');
             });
         });
     };
 
     useEffect(() => {
+        let saveInterval = null;
+        let backupInterval = null;
+
         props.loadData().then(state => {
             electron.ipcRenderer.send('resize', {
-                width: state.settings.data.window_width,
-                height: state.settings.data.window_height
+                width: state.settings.data.window_size_width,
+                height: state.settings.data.window_size_height
             });
 
-            electron.ipcRenderer.send('move', {
-                x: state.settings.data.window_x,
-                y: state.settings.data.window_y
-            });
+            if (state.settings.data.window_position_x !== null &&
+                state.settings.data.window_position_y !== null) {
+                electron.ipcRenderer.send('move', {
+                    x: state.settings.data.window_position_x,
+                    y: state.settings.data.window_position_y
+                });
+            }
+
+            // TODO save and backup interval in settings
+            if (false) {
+                saveInterval = setInterval(() => {
+                    props.saveData();
+                }, 10000);
+
+                backupInterval = setInterval(() => {
+                    props.backupData();
+                }, 10000);
+            }
         });
 
         electron.ipcRenderer.on('app-close', onClose);
 
-        return () => electron.ipcRenderer.removeListener('app-close', onClose);
+        return () => {
+            clearInterval(saveInterval);
+            clearInterval(backupInterval);
+            electron.ipcRenderer.removeListener('app-close', onClose);
+        }
     }, []);
 
     useInterval(() => {

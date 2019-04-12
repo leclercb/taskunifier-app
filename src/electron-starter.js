@@ -35,7 +35,7 @@ function createWindow() {
     });
 
     ipcMain.on('move', (event, arg) => {
-        win.setSize(arg.x, arg.y);
+        win.setPosition(arg.x, arg.y);
     });
 }
 

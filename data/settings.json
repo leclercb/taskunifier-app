@@ -1,7 +1,5 @@
 {
     "automatic_backups": true,
     "backup_interval": 10,
-    "last_backup": null,
-    "window_width": 1920,
-    "window_height": 1177
+    "last_backup": null
 }
