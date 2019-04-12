@@ -6,6 +6,16 @@
     "private": true,
     "main": "public/electron.js",
     "homepage": "./",
+    "scripts": {
+        "react-start": "BROWSER=none; craco start",
+        "react-build": "craco build",
+        "react-test": "craco test",
+        "electron-start": "electron .",
+        "electron-build": "electron-builder",
+        "start": "yarn react-start",
+        "pack": "electron-builder --dir",
+        "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
+    },
     "dependencies": {
         "@craco/craco": "^4.1.0",
         "@fortawesome/fontawesome-svg-core": "^1.2.17",
@@ -14,9 +24,8 @@
         "antd": "^3.16.1",
         "antd-table-infinity": "^1.1.2",
         "craco-antd": "^1.10.0",
-        "i": "^0.3.6",
+        "electron-is-dev": "^1.1.0",
         "inputmask-core": "^2.2.0",
-        "npm": "^6.9.0",
         "rc-color-picker": "^1.2.6",
         "react": "^16.8.6",
         "react-contexify": "^4.1.0",
@@ -33,20 +42,38 @@
     "devDependencies": {
         "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
-        "typescript": "^3.4.3"
-    },
-    "scripts": {
-        "react-start": "BROWSER=none; craco start",
-        "react-build": "craco build",
-        "react-test": "craco test",
-        "electron-start": "electron .",
-        "electron-build": "electron-builder",
-        "start": "yarn react-start",
-        "build": "yarn react-build && yarn electron-build",
-        "release": "yarn react-build && yarn electron-builder --publish=always"
+        "electron-devtools-installer": "^2.2.4"
     },
     "build": {
-        "appId": "com.bl-it.taskunifier"
+        "appId": "com.bl-it.taskunifier",
+        "compression": "normal",
+        "productName": "TaskUnifier 2",
+        "directories": {
+            "buildResources": "build",
+            "output": "dist"
+        },
+        "mac": {
+            "icon": "assets/icon.icns",
+            "type": "distribution",
+            "target": [
+                "pkg",
+                "dmg"
+            ],
+            "category": "public.app-category.productivity"
+        },
+        "win": {
+            "target": "nsis",
+            "icon": "assets/icon.ico"
+        },
+        "linux": {
+            "icon": "assets/icon.png",
+            "target": [
+                "snap",
+                "AppImage"
+            ],
+            "description": "Example",
+            "category": "Office;ProjectManagement"
+        }
     },
     "eslintConfig": {
         "extends": "react-app"
