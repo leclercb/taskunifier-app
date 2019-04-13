@@ -1,17 +1,48 @@
 const { app, ipcMain, BrowserWindow } = require('electron');
+const fs = require('fs');
 const path = require('path');
 
 const isDevelopment = require('electron-is-dev');
 
 let mainWindow = null;
 
+function getWindowSettings() {
+    try {
+        const userDataPath = app.getPath('userData');
+        const data = fs.readFileSync(path.join(userDataPath, 'settings.json'), 'utf-8');
+        const settings = JSON.parse(data);
+
+        const window = {
+            width: 1024,
+            height: 768
+        };
+
+        if (Number.isInteger(settings.window_size_width) &&
+            Number.isInteger(settings.window_size_height)) {
+            window.width = settings.window_size_width;
+            window.height = settings.window_size_height;
+        }
+
+        if (Number.isInteger(settings.window_position_x) &&
+            Number.isInteger(settings.window_position_y)) {
+            window.x = settings.window_position_x;
+            window.y = settings.window_position_y;
+        }
+
+        return window;
+    } catch (err) {
+        return {
+            width: 1024,
+            height: 768
+        };
+    }
+}
+
 function createMainWindow() {
-    const window = new BrowserWindow({
+    const window = new BrowserWindow(Object.assign({
         show: false,
-        width: 1024,
-        height: 768,
         icon: 'public/resources/images/logo.png'
-    });
+    }, getWindowSettings()));
 
     if (isDevelopment) {
         const {
@@ -57,14 +88,6 @@ function createMainWindow() {
 
     return window;
 }
-
-ipcMain.on('resize', (event, arg) => {
-    mainWindow.setSize(arg.width, arg.height);
-});
-
-ipcMain.on('move', (event, arg) => {
-    mainWindow.setPosition(arg.x, arg.y);
-});
 
 ipcMain.on('closed', () => {
     mainWindow = null;

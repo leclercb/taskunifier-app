@@ -36,20 +36,7 @@ function App(props) {
         let saveInterval = null;
         let backupInterval = null;
 
-        props.loadData().then(state => {
-            electron.ipcRenderer.send('resize', {
-                width: state.settings.data.window_size_width,
-                height: state.settings.data.window_size_height
-            });
-
-            if (state.settings.data.window_position_x !== null &&
-                state.settings.data.window_position_y !== null) {
-                electron.ipcRenderer.send('move', {
-                    x: state.settings.data.window_position_x,
-                    y: state.settings.data.window_position_y
-                });
-            }
-
+        props.loadData().then(() => {
             // TODO save and backup interval in settings
             if (false) {
                 saveInterval = setInterval(() => {
