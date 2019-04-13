@@ -10,12 +10,6 @@ export const applyFilter = (filter, tasks, fields) => {
 }
 
 const applyCondition = (condition, task, fields) => {
-    const field = fields.find(field => field.id === condition.field);
-
-    if (!condition || !field) {
-        return true;
-    }
-
     if (condition.operator) {
         if (!condition.conditions || condition.conditions.length === 0) {
             return true;
@@ -56,6 +50,12 @@ const applyCondition = (condition, task, fields) => {
             }
         }
     } else {
+        const field = fields.find(field => field.id === condition.field);
+
+        if (!condition || !field) {
+            return true;
+        }
+
         const c = getConditionsForType(field.type).find(c => c.type === condition.type);
 
         if (!c) {

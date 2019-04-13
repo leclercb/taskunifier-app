@@ -9,6 +9,20 @@ import GoalSelect from '../components/goals/GoalSelect';
 import LocationTitle from '../components/locations/LocationTitle';
 import LocationSelect from '../components/locations/LocationSelect';
 
+export function getFieldTypes() {
+    return [
+        'checkbox',
+        'context',
+        'folder',
+        'goal',
+        'location',
+        'money_dollar',
+        'money_euro',
+        'number',
+        'text'
+    ];
+}
+
 export function getFieldConfiguration(type) {
     let configuration = null;
 
