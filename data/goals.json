@@ -2,7 +2,6 @@
     {
         "id": "goal-1",
         "refIds": {},
-        "properties": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
         "status": "LOADED",
@@ -13,7 +12,6 @@
     {
         "id": "goal-2",
         "refIds": {},
-        "properties": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
         "status": "LOADED",
@@ -24,7 +22,6 @@
     {
         "id": "goal-3",
         "refIds": {},
-        "properties": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
         "status": "LOADED",

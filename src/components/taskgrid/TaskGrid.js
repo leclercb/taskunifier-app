@@ -93,7 +93,6 @@ function createDummyTasks() {
         tasks.push({
             id: 'task-dummy-' + i,
             refIds: {},
-            properties: {},
             creationDate: 1554795588054,
             updateDate: 1554897001063,
             status: 'TO_UPDATE',

@@ -2,7 +2,6 @@
     {
         "id": "filter-1",
         "refIds": {},
-        "properties": {},
         "creationDate": 1554795587861,
         "updateDate": 1554795587861,
         "status": "LOADED",
@@ -30,7 +29,6 @@
     {
         "id": "filter-2",
         "refIds": {},
-        "properties": {},
         "creationDate": 1554795587861,
         "updateDate": 1554795587861,
         "status": "LOADED",
@@ -40,7 +38,6 @@
     {
         "id": "filter-3",
         "refIds": {},
-        "properties": {},
         "creationDate": 1554795587861,
         "updateDate": 1554795587861,
         "status": "LOADED",

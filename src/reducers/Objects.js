@@ -1,6 +1,3 @@
-import uuid from 'uuid';
-import Constants from '../components/constants/Constants';
-
 const Objects = (property, defaultObjects = []) => (state = [], action) => {
     if (property !== action.property) {
         return state;
@@ -8,32 +5,30 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
 
     switch (action.type) {
         case 'SET_OBJECTS': {
-            return defaultObjects.concat(action.objects || []).map(object => ({
-                id: uuid(),
-                refIds: {},
-                properties: {},
-                creationDate: Date.now(),
-                updateDate: Date.now(),
-                status: 'LOADED',
-                title: 'Untitled',
-                color: Constants.defaultObjectColor,
-                ...object,
-            }));
+            return defaultObjects.concat(action.objects || []);
         }
         case 'ADD_OBJECT': {
             const objects = [
                 ...state
             ];
 
+            if (!action.object.id) {
+                throw Error('The object doesn\'t have an ID');
+            }
+
+            const index = objects.findIndex(object => object.id === action.object.id);
+
+            if (index >= 0) {
+                throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
+            }
+
             objects.push({
-                id: uuid(),
                 refIds: {},
-                properties: {},
                 title: 'Untitled',
-                color: Constants.defaultObjectColor,
+                color: null,
                 ...action.object,
-                creationDate: Date.now(),
-                updateDate: Date.now(),
+                creationDate: action.creationDate,
+                updateDate: action.creationDate,
                 status: 'LOADED'
             });
 
@@ -56,8 +51,9 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
 
             objects[index] = {
                 ...action.object,
-                updateDate: Date.now(),
-                status: 'TO_UPDATE',
+                creationDate: objects[index].creationDate,
+                updateDate: action.updateDate,
+                status: 'TO_UPDATE'
             };
 
             return objects;
@@ -71,7 +67,7 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
 
             objects.forEach(object => {
                 if (objectIds.includes(object.id)) {
-                    object.status = 'TO_DELETE';
+                    object.status = action.immediate === true ? 'DELETED' : 'TO_DELETE';
                 }
             });
 

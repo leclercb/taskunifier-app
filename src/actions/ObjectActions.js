@@ -1,6 +1,7 @@
 import uuid from 'uuid';
 import { filterStaticObjects } from '../utils/CategoryUtils';
 import { loadFromFile, saveToFile } from './ActionUtils';
+import Constants from '../components/constants/Constants';
 
 export const loadObjectsFromFile = (property, file) => {
     return (dispatch, getState) => {
@@ -31,7 +32,9 @@ export const addObject = (property, object) => {
         dispatch({
             type: 'ADD_OBJECT',
             property: property,
+            creationDate: Date.now(),
             object: {
+                color: Constants.defaultObjectColor,
                 ...object,
                 id: id
             }
@@ -46,6 +49,7 @@ export const updateObject = (property, object) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
+            updateDate: Date.now(),
             object: object
         });
 
@@ -58,6 +62,7 @@ export const deleteObject = (property, objectId) => {
         dispatch({
             type: 'DELETE_OBJECT',
             property: property,
+            immediate: true,
             objectId: objectId
         });
 
