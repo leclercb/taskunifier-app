@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerOptions, setFilterManagerOptions } from '../actions/AppActions';
 import { setSettingsVisible, updateSettings } from '../actions/SettingActions';
 import { clearProcesses } from '../actions/StatusActions';
+import { isValidLicense } from '../utils/LicenseUtils';
 
 function withApp(Component) {
     function WithApp(props) {
@@ -10,6 +11,7 @@ function withApp(Component) {
     }
 
     const mapStateToProps = state => ({
+        pro: isValidLicense(state.settings.data.license),
         selectedFilter: state.app.selectedFilter,
         categoryManager: state.app.categoryManager,
         filterManager: state.app.filterManager

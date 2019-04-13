@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { isValidLicense } from '../utils/LicenseUtils';
 
 function withPro(Component) {
     function WithPro(props) {

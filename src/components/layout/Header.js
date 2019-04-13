@@ -25,15 +25,22 @@ function Header(props) {
     };
 
     const onSetCategoryManagerVisible = () => {
-        props.setCategoryManagerOptions({visible: true});
+        props.setCategoryManagerOptions({ visible: true });
     };
 
     const onSetFilterManagerVisible = () => {
-        props.setFilterManagerOptions({visible: true});
+        props.setFilterManagerOptions({ visible: true });
     };
 
     return (
-        <LeftRight right={<Logo size={40} />}>
+        <LeftRight right={(
+            <React.Fragment>
+                {props.pro ? (
+                    <img src="/resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
+                ) : null}
+                <Logo size={40} />
+            </React.Fragment>
+        )}>
             <Button onClick={onLoad}>{<Icon icon="folder-open" text="Load" />}</Button>
             <Spacer />
             <Button onClick={onSave}>{<Icon icon="save" text="Save" />}</Button>
@@ -50,6 +57,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
+    pro: PropTypes.bool.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
