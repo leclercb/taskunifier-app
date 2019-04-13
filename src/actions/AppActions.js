@@ -33,12 +33,14 @@ export const loadData = path => {
                 loadTasksFromFile(join(path, 'tasks.json'))(dispatch, getState)
             ]).then(() => {
                 updateProcess(processId, 'COMPLETED')(dispatch, getState);
-
+                resolve(getState());
+            }).catch(() => {
+                updateProcess(processId, 'ERROR')(dispatch, getState);
+                reject();
+            }).finally(() => {
                 setTimeout(() => {
                     clearProcesses()(dispatch, getState);
                 }, 500);
-
-                resolve(getState());
             });
         });
     };
@@ -60,27 +62,29 @@ export const saveData = (path, clean = false) => {
 
             const saveAllFn = () => {
                 Promise.all([
-                    saveSettingsToFile(join(path, 'settings.json', state.settings.data))(dispatch, getState),
-                    saveContextsToFile(join(path, 'contexts.json', state.contexts))(dispatch, getState),
-                    saveFieldsToFile(join(path, 'fields.json', state.fields))(dispatch, getState),
-                    saveFiltersToFile(join(path, 'filters.json', state.filters))(dispatch, getState),
-                    saveFoldersToFile(join(path, 'folders.json', state.folders))(dispatch, getState),
-                    saveGoalsToFile(join(path, 'goals.json', state.goals))(dispatch, getState),
-                    saveLocationsToFile(join(path, 'locations.json', state.locations))(dispatch, getState),
-                    saveTasksToFile(join(path, 'tasks.json', state.tasks))(dispatch, getState)
+                    saveSettingsToFile(join(path, 'settings.json'), state.settings.data)(dispatch, getState),
+                    saveContextsToFile(join(path, 'contexts.json'), state.contexts)(dispatch, getState),
+                    saveFieldsToFile(join(path, 'fields.json'), state.fields)(dispatch, getState),
+                    saveFiltersToFile(join(path, 'filters.json'), state.filters)(dispatch, getState),
+                    saveFoldersToFile(join(path, 'folders.json'), state.folders)(dispatch, getState),
+                    saveGoalsToFile(join(path, 'goals.json'), state.goals)(dispatch, getState),
+                    saveLocationsToFile(join(path, 'locations.json'), state.locations)(dispatch, getState),
+                    saveTasksToFile(join(path, 'tasks.json'), state.tasks)(dispatch, getState)
                 ]).then(() => {
                     updateProcess(processId, 'COMPLETED')(dispatch, getState);
-
+                    resolve();
+                }).catch(() => {
+                    updateProcess(processId, 'ERROR')(dispatch, getState);
+                    reject();
+                }).finally(() => {
                     setTimeout(() => {
                         clearProcesses()(dispatch, getState);
                     }, 500);
-
-                    resolve();
                 });
             };
 
             if (clean) {
-                cleanData()(dispatch, getState).then(() => saveAllFn());
+                cleanData()(dispatch, getState).finally(() => saveAllFn());
             } else {
                 saveAllFn();
             }
@@ -117,12 +121,14 @@ export const cleanData = () => {
                 cleanTasks()(dispatch, getState),
             ]).then(() => {
                 updateProcess(processId, 'COMPLETED')(dispatch, getState);
-
+                resolve();
+            }).catch(() => {
+                updateProcess(processId, 'ERROR')(dispatch, getState);
+                reject();
+            }).finally(() => {
                 setTimeout(() => {
                     clearProcesses()(dispatch, getState);
                 }, 500);
-
-                resolve();
             });
         });
     };

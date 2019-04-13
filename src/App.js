@@ -26,7 +26,7 @@ function App(props) {
             window_position_x: position[0],
             window_position_y: position[1]
         }).then(() => {
-            props.saveData().then(() => {
+            props.saveData().finally(() => {
                 electron.ipcRenderer.send('closed');
             });
         });

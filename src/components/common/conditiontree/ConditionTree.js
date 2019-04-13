@@ -31,14 +31,10 @@ function ConditionTree(props) {
             }
         });
 
-        const promiseAll = Promise.all(promises);
-
-        promiseAll.catch(() => {
-            message.error('Please fix the validation errors');
-        })
-
-        promiseAll.then(() => {
+        Promise.all(promises).then(() => {
             props.onSaveCondition(rootCondition);
+        }).catch(() => {
+            message.error('Please fix the validation errors');
         });
     };
 

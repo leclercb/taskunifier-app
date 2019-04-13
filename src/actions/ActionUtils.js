@@ -19,7 +19,7 @@ export const loadFromFile = (property, file, onData) => {
                     reject();
                 } else {
                     updateProcess(processId, 'COMPLETED')(dispatch, getState);
-                    onData(JSON.parse(data)).then(() => resolve());
+                    onData(JSON.parse(data)).then(() => resolve()).catch(() => reject());
                 }
             });
         });
