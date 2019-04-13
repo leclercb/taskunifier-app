@@ -10,7 +10,7 @@ function GoalTitle(props) {
 }
 
 GoalTitle.propTypes = {
-    goalId: PropTypes.string.isRequired,
+    goalId: PropTypes.string,
     goal: GoalPropType
 }
 

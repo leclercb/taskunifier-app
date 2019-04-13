@@ -41,7 +41,10 @@ function getWindowSettings() {
 function createMainWindow() {
     const window = new BrowserWindow(Object.assign({
         show: false,
-        icon: 'public/resources/images/logo.png'
+        icon: 'public/resources/images/logo.png',
+        webPreferences: {
+            nodeIntegration: true
+        }
     }, getWindowSettings()));
 
     if (isDevelopment) {

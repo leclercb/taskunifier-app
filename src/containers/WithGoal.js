@@ -9,7 +9,7 @@ function withGoal(Component, propertyId = 'goalId') {
     }
 
     WithGoal.propTypes = {
-        [propertyId]: PropTypes.string.isRequired
+        [propertyId]: PropTypes.string
     }
 
     const mapStateToProps = (state, ownProps) => ({

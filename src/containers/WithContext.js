@@ -9,7 +9,7 @@ function withContext(Component, propertyId = 'contextId') {
     }
 
     WithContext.propTypes = {
-        [propertyId]: PropTypes.string.isRequired
+        [propertyId]: PropTypes.string
     }
 
     const mapStateToProps = (state, ownProps) => ({

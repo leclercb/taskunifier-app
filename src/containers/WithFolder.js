@@ -9,7 +9,7 @@ function withFolder(Component, propertyId = 'folderId') {
     }
 
     WithFolder.propTypes = {
-        [propertyId]: PropTypes.string.isRequired
+        [propertyId]: PropTypes.string
     }
 
     const mapStateToProps = (state, ownProps) => ({

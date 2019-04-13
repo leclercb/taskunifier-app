@@ -9,7 +9,7 @@ function withLocation(Component, propertyId = 'locationId') {
     }
 
     WithLocation.propTypes = {
-        [propertyId]: PropTypes.string.isRequired
+        [propertyId]: PropTypes.string
     }
 
     const mapStateToProps = (state, ownProps) => ({

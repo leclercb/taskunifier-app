@@ -10,7 +10,7 @@ function LocationTitle(props) {
 }
 
 LocationTitle.propTypes = {
-    locationId: PropTypes.string.isRequired,
+    locationId: PropTypes.string,
     location: LocationPropType
 }
 

@@ -10,7 +10,7 @@ function FolderTitle(props) {
 }
 
 FolderTitle.propTypes = {
-    folderId: PropTypes.string.isRequired,
+    folderId: PropTypes.string,
     folder: FolderPropType
 }
 

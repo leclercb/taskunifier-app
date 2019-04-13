@@ -10,7 +10,7 @@ function ContextTitle(props) {
 }
 
 ContextTitle.propTypes = {
-    contextId: PropTypes.string.isRequired,
+    contextId: PropTypes.string,
     context: ContextPropType
 }
 
