@@ -9,7 +9,7 @@ import { clearProcesses, updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
-import { createDirectory, getDirectories } from './ActionUtils';
+import { createDirectory, getDirectories, getUserDataPath, join } from './ActionUtils';
 
 export const loadData = path => {
     return (dispatch, getState) => {
@@ -17,20 +17,20 @@ export const loadData = path => {
             const processId = uuid();
 
             if (!path) {
-                path = 'data/';
+                path = getUserDataPath();
             }
 
             updateProcess(processId, 'RUNNING', 'Load database')(dispatch, getState);
 
             Promise.all([
-                loadSettingsFromFile(path + "settings.json")(dispatch, getState),
-                loadContextsFromFile(path + "contexts.json")(dispatch, getState),
-                loadFieldsFromFile(path + "fields.json")(dispatch, getState),
-                loadFiltersFromFile(path + "filters.json")(dispatch, getState),
-                loadFoldersFromFile(path + "folders.json")(dispatch, getState),
-                loadGoalsFromFile(path + "goals.json")(dispatch, getState),
-                loadLocationsFromFile(path + "locations.json")(dispatch, getState),
-                loadTasksFromFile(path + "tasks.json")(dispatch, getState)
+                loadSettingsFromFile(join(path, 'settings.json'))(dispatch, getState),
+                loadContextsFromFile(join(path, 'contexts.json'))(dispatch, getState),
+                loadFieldsFromFile(join(path, 'fields.json'))(dispatch, getState),
+                loadFiltersFromFile(join(path, 'filters.json'))(dispatch, getState),
+                loadFoldersFromFile(join(path, 'folders.json'))(dispatch, getState),
+                loadGoalsFromFile(join(path, 'goals.json'))(dispatch, getState),
+                loadLocationsFromFile(join(path, 'locations.json'))(dispatch, getState),
+                loadTasksFromFile(join(path, 'tasks.json'))(dispatch, getState)
             ]).then(() => {
                 updateProcess(processId, 'COMPLETED')(dispatch, getState);
 
@@ -51,7 +51,7 @@ export const saveData = (path, clean = false) => {
             const state = getState();
 
             if (!path) {
-                path = 'data/';
+                path = getUserDataPath();
             }
 
             updateProcess(processId, 'RUNNING', 'Save database')(dispatch, getState);
@@ -60,14 +60,14 @@ export const saveData = (path, clean = false) => {
 
             const saveAllFn = () => {
                 Promise.all([
-                    saveSettingsToFile(path + "settings.json", state.settings.data)(dispatch, getState),
-                    saveContextsToFile(path + "contexts.json", state.contexts)(dispatch, getState),
-                    saveFieldsToFile(path + "fields.json", state.fields)(dispatch, getState),
-                    saveFiltersToFile(path + "filters.json", state.filters)(dispatch, getState),
-                    saveFoldersToFile(path + "folders.json", state.folders)(dispatch, getState),
-                    saveGoalsToFile(path + "goals.json", state.goals)(dispatch, getState),
-                    saveLocationsToFile(path + "locations.json", state.locations)(dispatch, getState),
-                    saveTasksToFile(path + "tasks.json", state.tasks)(dispatch, getState)
+                    saveSettingsToFile(join(path, 'settings.json', state.settings.data))(dispatch, getState),
+                    saveContextsToFile(join(path, 'contexts.json', state.contexts))(dispatch, getState),
+                    saveFieldsToFile(join(path, 'fields.json', state.fields))(dispatch, getState),
+                    saveFiltersToFile(join(path, 'filters.json', state.filters))(dispatch, getState),
+                    saveFoldersToFile(join(path, 'folders.json', state.folders))(dispatch, getState),
+                    saveGoalsToFile(join(path, 'goals.json', state.goals))(dispatch, getState),
+                    saveLocationsToFile(join(path, 'locations.json', state.locations))(dispatch, getState),
+                    saveTasksToFile(join(path, 'tasks.json', state.tasks))(dispatch, getState)
                 ]).then(() => {
                     updateProcess(processId, 'COMPLETED')(dispatch, getState);
 
@@ -89,15 +89,15 @@ export const saveData = (path, clean = false) => {
 };
 
 export const getBackups = () => {
-    return getDirectories("data/backups");
+    return getDirectories(join(getUserDataPath(), 'backups'));
 }
 
 export const restoreBackup = backupId => {
-    return loadData("data/backups/" + backupId + "/");
+    return loadData(join(getUserDataPath(), 'backups', backupId));
 }
 
 export const backupData = () => {
-    return saveData("data/backups/" + Date.now() + "/");
+    return saveData(join(getUserDataPath(), 'backups', Date.now()));
 }
 
 export const cleanData = () => {

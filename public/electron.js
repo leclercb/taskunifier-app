@@ -48,10 +48,6 @@ function createMainWindow() {
         }
     });
 
-    window.on('closed', () => {
-        mainWindow = null;
-    });
-
     window.webContents.on('devtools-opened', () => {
         window.focus()
         setImmediate(() => {
@@ -68,6 +64,11 @@ ipcMain.on('resize', (event, arg) => {
 
 ipcMain.on('move', (event, arg) => {
     mainWindow.setPosition(arg.x, arg.y);
+});
+
+ipcMain.on('closed', () => {
+    mainWindow = null;
+    app.quit();
 });
 
 app.on('window-all-closed', () => {

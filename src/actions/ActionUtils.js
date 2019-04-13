@@ -3,7 +3,8 @@ import { updateProcess } from './StatusActions';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
-const { join } = electron.remote.require('path');
+
+export const { join } = electron.remote.require('path');
 
 export const loadFromFile = (property, file, onData) => {
     return (dispatch, getState) => {
@@ -44,6 +45,10 @@ export const saveToFile = (property, file, data) => {
         });
     };
 };
+
+export const getUserDataPath = () => {
+    return electron.remote.app.getPath('userData');
+}
 
 export const getDirectories = path => {
     const isDirectory = path => fs.lstatSync(path).isDirectory();
