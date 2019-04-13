@@ -9,6 +9,10 @@ import FilterForm from './FilterForm';
 function FilterManager(props) {
     const selectedFilterId = props.filterId;
 
+    const onAddFilter = filter => {
+        props.addFilter(filter).then(id => props.onFilterSelection(id));
+    }
+
     const onFilterSelection = filter => {
         props.onFilterSelection(filter.id);
     }
@@ -21,7 +25,7 @@ function FilterManager(props) {
                 <FilterList
                     filters={props.filters}
                     selectedFilterId={selectedFilterId}
-                    addFilter={props.addFilter}
+                    addFilter={onAddFilter}
                     deleteFilter={props.deleteFilter}
                     onFilterSelection={onFilterSelection} />
             </Col>

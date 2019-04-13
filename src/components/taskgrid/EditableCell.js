@@ -27,7 +27,11 @@ export function EditableCell(props) {
 
         setTimeout(() => {
             if (newEditing && inputRef.current) {
-                inputRef.current.focus();
+                try {
+                    inputRef.current.focus();
+                } catch (err) {
+                    // Don't do anything
+                }
             }
         });
     }

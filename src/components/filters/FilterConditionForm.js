@@ -72,12 +72,7 @@ function FilterConditionForm(props) {
                 <Col span={10}>
                     <Form.Item>
                         {getFieldDecorator('value', {
-                            initialValue: props.condition.value,
-                            rules: [
-                                {
-                                    required: true, message: 'The value is required',
-                                }
-                            ]
+                            initialValue: props.condition.value
                         })(
                             getInputForType(field.type)
                         )}

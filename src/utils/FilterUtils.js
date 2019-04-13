@@ -1,5 +1,5 @@
-import { getConditionsForType } from "./FieldUtils";
 import { getValue } from "./ObjectUtils";
+import { getConditionsForType } from "./FieldUtils";
 
 export const applyFilter = (filter, tasks, fields) => {
     if (!filter || !filter.condition) {
@@ -64,75 +64,4 @@ const applyCondition = (condition, task, fields) => {
 
         return c.apply(condition.value, getValue(task, field.path));
     }
-}
-
-export const getConditionsForCheckbox = () => {
-    return [
-        {
-            type: 'equals',
-            title: 'Equals',
-            apply: (conditionValue, taskValue) => {
-                return conditionValue === taskValue;
-            }
-        },
-        {
-            type: 'not_equals',
-            title: 'Does not equal',
-            apply: (conditionValue, taskValue) => {
-                return conditionValue !== taskValue;
-            }
-        }
-    ]
-}
-
-export const getConditionsForNumber = () => {
-    return [
-        {
-            type: 'equals',
-            title: 'Equals',
-            apply: (conditionValue, taskValue) => {
-                return conditionValue === taskValue;
-            }
-        },
-        {
-            type: 'not_equals',
-            title: 'Does not equal',
-            apply: (conditionValue, taskValue) => {
-                return conditionValue !== taskValue;
-            }
-        }
-    ]
-}
-
-export const getConditionsForText = () => {
-    return [
-        {
-            type: 'equals',
-            title: 'Equals',
-            apply: (conditionValue, taskValue) => {
-                return conditionValue === taskValue;
-            }
-        },
-        {
-            type: 'not_equals',
-            title: 'Does not equal',
-            apply: (conditionValue, taskValue) => {
-                return conditionValue !== taskValue;
-            }
-        },
-        {
-            type: 'contains',
-            title: 'Contains',
-            apply: (conditionValue, taskValue) => {
-                return (taskValue || '').includes(conditionValue);
-            }
-        },
-        {
-            type: 'not_contains',
-            title: 'Does not contain',
-            apply: (conditionValue, taskValue) => {
-                return !(taskValue || '').includes(conditionValue);
-            }
-        }
-    ]
 }
