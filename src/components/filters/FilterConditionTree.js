@@ -22,7 +22,7 @@ function FilterConditionTree(props) {
         return {
             id: uuid(),
             field: field.id,
-            condition: 'equals',
+            condition: 'equal',
             value: null
         };
     }

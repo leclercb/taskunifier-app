@@ -38,6 +38,18 @@ export function getDefaultFields() {
         },
         {
             static: true,
+            id: 'duedate',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            status: 'LOADED',
+            title: 'Due date',
+            color: '#ffffff',
+            path: 'duedate',
+            type: 'date'
+        },
+        {
+            static: true,
             id: 'context',
             refIds: {},
             creationDate: 1554795587825,

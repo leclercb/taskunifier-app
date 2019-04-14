@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Input, InputNumber, Select } from 'antd';
+import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
 import ContextTitle from '../components/contexts/ContextTitle';
 import ContextSelect from '../components/contexts/ContextSelect';
 import FolderTitle from '../components/folders/FolderTitle';
@@ -81,6 +81,63 @@ export function getFieldConfiguration(type) {
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
+                        }
+                    }
+                ]
+            };
+
+            break;
+        case 'date':
+            configuration = {
+                title: 'Date',
+                valuePropName: 'value',
+                width: 200,
+                alwaysInEdition: false,
+                input: props => (
+                    <DatePicker {...props} />
+                ),
+                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equal',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'before',
+                        title: 'Before',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'before_or_equal',
+                        title: 'Before or equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue >= taskValue;
+                        }
+                    },
+                    {
+                        type: 'after',
+                        title: 'Before',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'after_or_equal',
+                        title: 'Before or equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue >= taskValue;
                         }
                     }
                 ]

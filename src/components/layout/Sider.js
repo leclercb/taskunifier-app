@@ -129,9 +129,9 @@ function Sider(props) {
             title: object.title,
             color: object.color,
             condition: {
-                id: "1",
+                id: '1',
                 field: field,
-                type: "equals",
+                type: 'equal',
                 value: object.id
             }
         }
