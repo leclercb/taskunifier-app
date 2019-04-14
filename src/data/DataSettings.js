@@ -26,12 +26,20 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: "save_interval",
+                    id: "automatic_save_interval",
                     title: "Save interval in minutes",
                     category: "general",
                     type: 'number',
                     value: 15,
                     editable: true
+                },
+                {
+                    id: "last_automatic_save",
+                    title: "Last automatic save",
+                    category: "general",
+                    type: 'date',
+                    value: Date.now(),
+                    editable: false
                 }
             ]
         },
@@ -56,20 +64,28 @@ export function getCategories() {
             icon: 'save',
             settings: [
                 {
-                    id: "automatic_backups",
-                    title: "Enable automatic backups",
+                    id: "automatic_backup",
+                    title: "Enable automatic backup",
                     category: "backup",
                     type: 'checkbox',
                     value: true,
                     editable: true
                 },
                 {
-                    id: "backup_interval",
+                    id: "automatic_backup_interval",
                     title: "Backup interval in minutes",
                     category: "backup",
                     type: 'number',
                     value: 60,
                     editable: true
+                },
+                {
+                    id: "last_automatic_backup",
+                    title: "Last automatic backup",
+                    category: "backup",
+                    type: 'date',
+                    value: Date.now(),
+                    editable: false
                 }
             ]
         },

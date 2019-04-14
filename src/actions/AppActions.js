@@ -93,15 +93,19 @@ export const saveData = (path, clean = false) => {
 };
 
 export const getBackups = () => {
+    createDirectory(join(getUserDataPath(), 'backups'));
     return getDirectories(join(getUserDataPath(), 'backups'));
 }
 
 export const restoreBackup = backupId => {
+    createDirectory(join(getUserDataPath(), 'backups'));
     return loadData(join(getUserDataPath(), 'backups', backupId));
 }
 
 export const backupData = () => {
-    return saveData(join(getUserDataPath(), 'backups', Date.now()));
+
+    createDirectory(join(getUserDataPath(), 'backups'));
+    return saveData(join(getUserDataPath(), 'backups', Date.now().toString()));
 }
 
 export const cleanData = () => {

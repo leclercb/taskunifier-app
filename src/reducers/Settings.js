@@ -1,6 +1,7 @@
 import { getSettings } from "../data/DataSettings";
 
 const Settings = () => (state = {
+    loaded: false,
     visible: false,
     data: {}
 }, action) => {
@@ -13,6 +14,7 @@ const Settings = () => (state = {
         case 'SET_SETTINGS': {
             return {
                 ...state,
+                loaded: true,
                 data: {
                     ...getSettings(),
                     ...action.settings

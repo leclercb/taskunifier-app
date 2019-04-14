@@ -35,9 +35,8 @@ function Settings(props) {
     const onSave = (e) => {
         e.preventDefault();
         props.form.validateFieldsAndScroll((err, values) => {
-            console.log(err, values);
             if (!err) {
-                const updatedSettings = merge({ ...props.settings }, values);
+                const updatedSettings = merge({ ...props.settings.data }, values);
                 props.updateSettings(updatedSettings);
             }
         });
@@ -78,6 +77,7 @@ function Settings(props) {
                                 <Form.Item label={item.title} style={{ width: '100%' }}>
                                     {getFieldDecorator(item.id, {
                                         rules: [],
+                                        normalize: getNormalizeForType(item.type),
                                         valuePropName: getValuePropNameForType(item.type),
                                         getValueFromEvent: getValueFromEventForType(item.type),
                                         initialValue: getNormalizeForType(item.type)(getSettingValue(item)),

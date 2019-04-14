@@ -58,7 +58,7 @@ export const getDirectories = path => {
 export const createDirectory = (path, recursive = true) => {
     if (!fs.existsSync(path)) {
         fs.mkdirSync(path, {
-            recursive: true
+            recursive: recursive
         });
     }
 };

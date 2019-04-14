@@ -110,7 +110,7 @@ export function getFieldConfiguration(type) {
                 commitOnChange: true,
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
-                getValueFromEvent: event => event ? event.valueOf() : null,
+                getValueFromEvent: event => event ? event.toString() : null,
                 render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY') : <span>&nbsp;</span>,
                 input: props => (
                     <DatePicker format="DD-MM-YYYY" {...props} />

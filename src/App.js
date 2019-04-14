@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { DragDropContext } from 'react-dnd';
 import { useInterval } from './hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -33,35 +34,53 @@ function App(props) {
     };
 
     useEffect(() => {
-        let saveInterval = null;
-        let backupInterval = null;
-
-        props.loadData().then(() => {
-            if (props.getSetting('automatic_save') &&
-                Number.isInteger(props.getSetting('save_interval')) &&
-                props.getSetting('save_interval') > 0) {
-                saveInterval = setInterval(() => {
-                    props.saveData();
-                }, props.getSetting('save_interval') * 60 * 1000);
-            }
-
-            if (props.getSetting('automatic_backups') &&
-                Number.isInteger(props.getSetting('backup_interval')) &&
-                props.getSetting('backup_interval') > 0) {
-                backupInterval = setInterval(() => {
-                    props.backupData();
-                }, props.getSetting('backup_interval') * 60 * 1000);
-            }
-        });
-
+        props.loadData();
         electron.ipcRenderer.on('app-close', onClose);
 
         return () => {
-            clearInterval(saveInterval);
-            clearInterval(backupInterval);
             electron.ipcRenderer.removeListener('app-close', onClose);
         }
     }, []);
+
+    useEffect(() => {
+        let interval = null;
+
+        if (props.settings.loaded) {
+            interval = setInterval(() => {
+                const automaticSave = props.getSetting('automatic_save');
+                const automaticSaveInterval = props.getSetting('automatic_save_interval');
+                const lastAutomaticSave = props.getSetting('last_automatic_save');
+
+                if (automaticSave &&
+                    Number.isInteger(automaticSaveInterval) &&
+                    automaticSaveInterval > 0 &&
+                    (!lastAutomaticSave || moment().diff(moment(lastAutomaticSave)) > automaticSaveInterval * 60 * 1000)) {
+                    props.saveData();
+                    props.updateSettings({
+                        last_automatic_save: Date.now()
+                    });
+                }
+
+                const automaticBackup = props.getSetting('automatic_backups');
+                const automaticBackupInterval = props.getSetting('automatic_backup_interval');
+                const lastAutomaticBackup = props.getSetting('last_automatic_backup');
+
+                if (automaticBackup &&
+                    Number.isInteger(automaticBackupInterval) &&
+                    automaticBackupInterval > 0 &&
+                    (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
+                    props.backupData();
+                    props.updateSettings({
+                        last_automatic_backup: Date.now()
+                    });
+                }
+            }, 5 * 1000);
+        }
+
+        return () => {
+            clearInterval(interval);
+        }
+    }, [props.settings]);
 
     useInterval(() => {
         props.backupData();
