@@ -38,7 +38,7 @@ function ConditionGroup(props) {
                         disabled={props.disabled}
                         onChange={(value) => {
                             condition.operator = value;
-                            props.handleUpdate(condition);
+                            props.onUpdate(condition);
                         }}>
                         <Select.Option value="AND">AND</Select.Option>
                         <Select.Option value="OR">OR</Select.Option>
@@ -47,7 +47,7 @@ function ConditionGroup(props) {
                 </div>
                 {props.disabled ? null :
                     <div className='condition-group-operator-actions'>
-                        <AddButton onClick={(key) => props.handleAdd(condition, key)}>
+                        <AddButton onClick={(key) => props.onAdd(condition, key)}>
                             {props.addMenuItems}
                         </AddButton>
                         <br />
@@ -55,7 +55,7 @@ function ConditionGroup(props) {
                             shape="circle"
                             icon="minus"
                             size="small"
-                            onClick={() => props.handleDelete(condition, parentCondition)} />
+                            onClick={() => props.onDelete(condition, parentCondition)} />
                     </div>
                 }
             </div>
@@ -68,11 +68,11 @@ function ConditionGroup(props) {
                     parentCondition={condition}
                     context={props.context}
                     disabled={props.disabled}
-                    handleAddSaveCallback={props.handleAddSaveCallback}
-                    handleAdd={props.handleAdd}
-                    handleDelete={props.handleDelete}
-                    handleUpdate={props.handleUpdate}
-                    handleEndDrag={props.handleEndDrag}
+                    onChangeSaveRef={props.onChangeSaveRef}
+                    onAdd={props.onAdd}
+                    onDelete={props.onDelete}
+                    onUpdate={props.onUpdate}
+                    onEndDrag={props.onEndDrag}
                     addMenuItems={props.addMenuItems}
                     getLeafComponent={props.getLeafComponent} />;
             })}
@@ -103,11 +103,11 @@ ConditionGroup.propTypes = {
     parentCondition: PropTypes.shape(conditionGroup),
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    handleAddSaveCallback: PropTypes.func.isRequired,
-    handleAdd: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    handleEndDrag: PropTypes.func.isRequired,
+    onChangeSaveRef: PropTypes.func.isRequired,
+    onAdd: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onEndDrag: PropTypes.func.isRequired,
     addMenuItems: PropTypes.node.isRequired,
     getLeafComponent: PropTypes.any.isRequired,
     connectDragSource: PropTypes.func.isRequired,
@@ -132,7 +132,7 @@ const conditionSource = {
         const dropResult = monitor.getDropResult();
 
         if (dropResult) {
-            props.handleEndDrag(item, dropResult);
+            props.onEndDrag(item, dropResult);
         }
     }
 };

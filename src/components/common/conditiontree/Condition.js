@@ -12,11 +12,11 @@ function Condition(props) {
                 parentCondition={props.parentCondition}
                 context={props.context}
                 disabled={props.disabled}
-                handleAddSaveCallback={props.handleAddSaveCallback}
-                handleAdd={props.handleAdd}
-                handleDelete={props.handleDelete}
-                handleUpdate={props.handleUpdate}
-                handleEndDrag={props.handleEndDrag}
+                onChangeSaveRef={props.onChangeSaveRef}
+                onAdd={props.onAdd}
+                onDelete={props.onDelete}
+                onUpdate={props.onUpdate}
+                onEndDrag={props.onEndDrag}
                 addMenuItems={props.addMenuItems}
                 getLeafComponent={props.getLeafComponent} />
         );
@@ -27,10 +27,10 @@ function Condition(props) {
                 parentCondition={props.parentCondition}
                 context={props.context}
                 disabled={props.disabled}
-                handleAddSaveCallback={props.handleAddSaveCallback}
-                handleDelete={props.handleDelete}
-                handleUpdate={props.handleUpdate}
-                handleEndDrag={props.handleEndDrag}
+                onChangeSaveRef={props.onChangeSaveRef}
+                onDelete={props.onDelete}
+                onUpdate={props.onUpdate}
+                onEndDrag={props.onEndDrag}
                 getLeafComponent={props.getLeafComponent} />
         );
     }
@@ -41,11 +41,11 @@ Condition.propTypes = {
     parentCondition: PropTypes.shape(conditionGroup),
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    handleAddSaveCallback: PropTypes.func.isRequired,
-    handleAdd: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    handleEndDrag: PropTypes.func.isRequired,
+    onChangeSaveRef: PropTypes.func.isRequired,
+    onAdd: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onEndDrag: PropTypes.func.isRequired,
     addMenuItems: PropTypes.node.isRequired,
     getLeafComponent: PropTypes.any.isRequired
 };

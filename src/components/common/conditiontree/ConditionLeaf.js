@@ -19,8 +19,8 @@ function ConditionLeaf(props) {
                         condition: props.condition,
                         context: props.context,
                         disabled: props.disabled,
-                        handleAddSaveCallback: props.handleAddSaveCallback,
-                        handleUpdate: props.handleUpdate
+                        onChangeSaveRef: props.onChangeSaveRef,
+                        onUpdate: props.onUpdate
                     })
             }
             {props.disabled ? null :
@@ -29,7 +29,7 @@ function ConditionLeaf(props) {
                         shape="circle"
                         icon="minus"
                         size="small"
-                        onClick={() => props.handleDelete(condition, parentCondition)} />
+                        onClick={() => props.onDelete(condition, parentCondition)} />
                 </div>
             }
         </div>
@@ -42,10 +42,10 @@ ConditionLeaf.propTypes = {
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     getLeafComponent: PropTypes.any.isRequired,
-    handleAddSaveCallback: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired,
-    handleEndDrag: PropTypes.func.isRequired,
+    onChangeSaveRef: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired,
+    onEndDrag: PropTypes.func.isRequired,
     connectDragSource: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired
 };
@@ -65,7 +65,7 @@ const conditionSource = {
         const dropResult = monitor.getDropResult();
 
         if (dropResult) {
-            props.handleEndDrag(item, dropResult);
+            props.onEndDrag(item, dropResult);
         }
     }
 };

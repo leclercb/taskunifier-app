@@ -1,9 +1,9 @@
 export function getSettings() {
-    const settings = {}
+    const settings = {};
 
     getCategories().forEach(category => {
-        Object.keys(category.settings).forEach(key => {
-            settings[key] = category.settings[key].value;
+        category.settings.forEach(setting => {
+            settings[setting.id] = setting.value;
         });
     });
 
@@ -16,65 +16,77 @@ export function getCategories() {
             id: 'general',
             title: 'General',
             icon: 'home',
-            settings: {
-
-            }
+            settings: []
         },
         {
             id: 'backup',
             title: 'Backup',
             icon: 'save',
-            settings: {
-                "automatic_backups": {
-                    "title": "Enable automatic backups",
-                    "category": "backup",
-                    "value": true,
-                    "visible": true
+            settings: [
+                {
+                    id: "automatic_backups",
+                    title: "Enable automatic backups",
+                    category: "backup",
+                    type: 'checkbox',
+                    value: true,
+                    visible: true
                 },
-                "backup_interval": {
-                    "title": "Backup interval in minutes",
-                    "category": "backup",
-                    "value": 60,
-                    "visible": true
+                {
+                    id: "backup_interval",
+                    title: "Backup interval in minutes",
+                    category: "backup",
+                    type: 'number',
+                    value: 60,
+                    visible: true
                 },
-                "last_backup": {
-                    "title": "Last backup date",
-                    "category": "backup",
-                    "value": null,
-                    "visible": true
+                {
+                    id: "last_backup",
+                    title: "Last backup date",
+                    category: "backup",
+                    type: 'text',
+                    value: null,
+                    visible: true
                 }
-            }
+            ]
         },
         {
             id: 'window',
             title: 'Window',
             icon: 'desktop',
-            settings: {
-                "window_size_width": {
-                    "title": "Window Size - Width",
-                    "category": "window",
-                    "value": 1024,
-                    "visible": true
+            settings: [
+                {
+                    id: "window_size_width",
+                    title: "Window Size - Width",
+                    category: "window",
+                    type: 'number',
+                    value: 1024,
+                    visible: true
                 },
-                "window_size_height": {
-                    "title": "Window Size - Height",
-                    "category": "window",
-                    "value": 768,
-                    "visible": true
+                {
+                    id: "window_size_height",
+                    title: "Window Size - Height",
+                    category: "window",
+                    type: 'number',
+                    value: 768,
+                    visible: true
                 },
-                "window_position_x": {
-                    "title": "Window Position - X",
-                    "category": "window",
-                    "value": null,
-                    "visible": true
+                {
+                    id: "window_position_x",
+                    title: "Window Position - X",
+                    category: "window",
+                    type: 'number',
+                    value: null,
+                    visible: true
                 },
-                "window_position_y": {
-                    "title": "Window Position - Y",
-                    "category": "window",
-                    "value": null,
-                    "visible": true
+                {
+                    id: "window_position_y",
+                    title: "Window Position - Y",
+                    category: "window",
+                    type: 'number',
+                    value: null,
+                    visible: true
                 }
-            }
+            ]
         }
     ]
 }

@@ -2,13 +2,13 @@ export const getDefaultFormItemLayout = () => {
     return {
         labelCol: {
             xs: { span: 24 },
-            sm: { span: 8 },
-            md: { span: 4 }
+            sm: { span: 10 },
+            xl: { span: 6 }
         },
         wrapperCol: {
             xs: { span: 24 },
-            sm: { span: 16 },
-            md: { span: 10 }
+            sm: { span: 14 },
+            xl: { span: 10 }
         }
     };
 };
@@ -21,12 +21,12 @@ export const getDefaultTailFormItemLayout = () => {
                 offset: 0
             },
             sm: {
-                span: 16,
-                offset: 8
+                span: 14,
+                offset: 10
             },
-            ms: {
+            xl: {
                 span: 10,
-                offset: 4
+                offset: 6
             }
         }
     };

@@ -30,6 +30,7 @@ import {
     faTag,
     faTasks,
     faThumbtack,
+    faTimes,
     faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -62,4 +63,5 @@ library.add(faStar);
 library.add(faTag);
 library.add(faTasks);
 library.add(faThumbtack);
+library.add(faTimes);
 library.add(faTrashAlt);

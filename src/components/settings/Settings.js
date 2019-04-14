@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, Row, Col } from 'antd';
+import { List, Row, Col, Form, Input, Button, Divider } from 'antd';
 import withSettings from '../../containers/WithSettings';
 import { getCategories } from '../../data/DataSettings';
 import Icon from '../common/Icon';
+import { merge } from '../../utils/ObjectUtils';
+import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
+import { getInputForType, getValuePropName } from '../../utils/FieldUtils';
 
 function Settings(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
@@ -12,18 +15,33 @@ function Settings(props) {
     const category = categories.find(category => category.id === selectedCategoryId);
     const settings = category.settings;
 
-    const getSettingValue = (categoryId, settingId) => {
-        if (settingId in props.settings.data) {
-            return props.settings.data[settingId];
+    const getSettingValue = setting => {
+        if (setting.id in props.settings.data) {
+            return props.settings.data[setting.id];
         } else {
-            const category = categories.find(category => category.id === categoryId);
-            return category.settings[settingId].value;
+            return setting.value;
         }
     }
 
     const onCategorySelection = category => {
         setSelectedCategoryId(category.id);
     }
+
+    const onSave = (e) => {
+        e.preventDefault();
+        props.form.validateFieldsAndScroll((err, values) => {
+            console.log(err, values);
+            if (!err) {
+                const updatedSettings = merge({ ...props.settings }, values);
+                props.updateSettings(updatedSettings);
+            }
+        });
+    }
+
+    const { getFieldDecorator } = props.form;
+
+    const formItemLayout = getDefaultFormItemLayout();
+    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Row>
@@ -45,26 +63,38 @@ function Settings(props) {
 
             </Col>
             <Col span={16}>
-                <List
-                    size="small"
-                    bordered={false}
-                    dataSource={Object.keys(settings).filter(key => settings[key].visible)}
-                    renderItem={item => {
-                        const setting = settings[item];
-
-                        return (
+                <Form {...formItemLayout} onSubmit={onSave}>
+                    <List
+                        size="small"
+                        bordered={false}
+                        dataSource={settings.filter(setting => setting.visible)}
+                        renderItem={item => (
                             <List.Item>
-                                {`${setting.title} : ${getSettingValue(selectedCategoryId, item)}`}
+                                <Form.Item label={item.title} style={{ width: '100%' }}>
+                                    {getFieldDecorator(item.id, {
+                                        valuePropName: getValuePropName(item.type),
+                                        initialValue: getSettingValue(item)
+                                    })(
+                                        getInputForType(item.type)
+                                    )}
+                                </Form.Item>
                             </List.Item>
-                        );
-                    }} />
+                        )} />
+                    <Divider />
+                    <Form.Item {...tailFormItemLayout}>
+                        <Button type="primary" htmlType="submit">
+                            <Icon icon="save" color="#ffffff" text="Save" />
+                        </Button>
+                    </Form.Item>
+                </Form>
             </Col>
         </Row>
     );
 }
 
 Settings.propTypes = {
-    settings: PropTypes.object.isRequired
+    settings: PropTypes.object.isRequired,
+    updateSettings: PropTypes.func.isRequired
 };
 
-export default withSettings(Settings);
+export default withSettings(Form.create({ name: 'settings' })(Settings));

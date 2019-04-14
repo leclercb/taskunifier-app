@@ -18,16 +18,17 @@ function FilterConditionForm(props) {
                     delete v.title;
 
                     Object.assign(props.condition, v);
-                    props.handleUpdate(props.condition);
+                    props.onUpdate(props.condition);
 
                     resolve(v);
                 }
             });
         });
     }
+    
     useEffect(() => {
-        props.handleAddSaveCallback(props.condition.id, onSave);
-        return () => props.handleAddSaveCallback(props.condition.id, null);
+        props.onChangeSaveRef(props.condition.id, onSave);
+        return () => props.onChangeSaveRef(props.condition.id, null);
     });
 
     const formItemLayout = {
@@ -88,8 +89,8 @@ FilterConditionForm.propTypes = {
     condition: PropTypes.object.isRequired,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    handleAddSaveCallback: PropTypes.func.isRequired,
-    handleUpdate: PropTypes.func.isRequired
+    onChangeSaveRef: PropTypes.func.isRequired,
+    onUpdate: PropTypes.func.isRequired
 };
 
 export default withFields(Form.create({ name: 'condition' })(FilterConditionForm));

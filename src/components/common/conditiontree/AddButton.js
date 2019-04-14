@@ -6,11 +6,11 @@ function AddButton(props) {
     const [menuVisible, setMenuVisible] = useState(false);
 
     const onMenuClick = event => {
-        handleMenuVisibleChange(false);
+        onMenuVisibleChange(false);
         props.onClick(event.key);
     }
 
-    const handleMenuVisibleChange = visible => {
+    const onMenuVisibleChange = visible => {
         setMenuVisible(visible);
     }
 
@@ -29,7 +29,7 @@ function AddButton(props) {
             title="Add Condition"
             trigger="click"
             visible={menuVisible}
-            onVisibleChange={handleMenuVisibleChange}>
+            onVisibleChange={onMenuVisibleChange}>
             <Button
                 shape="circle"
                 icon="plus"

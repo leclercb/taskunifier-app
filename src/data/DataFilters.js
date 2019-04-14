@@ -27,8 +27,8 @@ export function getGeneralFilters() {
         {
             id: "not-completed",
             title: "Not Completed",
-            color: "#17e510",
-            icon: "check",
+            color: "#0e80ea",
+            icon: "times",
             condition: {
                 id: "1",
                 field: "completed",
@@ -112,7 +112,7 @@ export function getGeneralFilters() {
             id: "completed",
             title: "Completed",
             color: "#17e510",
-            icon: "check-double",
+            icon: "check",
             condition: {
                 id: "1",
                 field: "completed",

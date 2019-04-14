@@ -11,7 +11,7 @@ import Icon from '../Icon';
 import './ConditionTree.css';
 
 function ConditionTree(props) {
-    const saveCallbacks = useRef([]);
+    const saveRefs = useRef([]);
 
     const [rootCondition, setRootCondition] = useState(clone(props.condition));
     const prevCondition = usePrevious(props.condition);
@@ -23,29 +23,29 @@ function ConditionTree(props) {
     }
 
     const onSave = () => {
-        const promises = [];
+            const promises = [];
 
-        Object.keys(saveCallbacks.current).forEach(key => {
-            if (saveCallbacks.current[key]) {
-                promises.push(saveCallbacks.current[key]());
-            }
-        });
+            Object.keys(saveRefs.current).forEach(key => {
+                if (saveRefs.current[key]) {
+                    promises.push(saveRefs.current[key]());
+                }
+            });
 
-        Promise.all(promises).then(() => {
-            props.onSaveCondition(rootCondition);
-        }).catch(() => {
-            message.error('Please fix the validation errors');
-        });
+            Promise.all(promises).then(() => {
+                props.onSaveCondition(rootCondition);
+            }).catch(() => {
+                message.error('Please fix the validation errors');
+            });
     };
 
-    const handleAddSaveCallback = (id, callback) => {
-        saveCallbacks.current = {
-            ...saveCallbacks.current,
+    const onChangeSaveRef = (id, callback) => {
+        saveRefs.current = {
+            ...saveRefs.current,
             [id]: callback
         }
     }
 
-    const handleAdd = (condition, key) => {
+    const onAdd = (condition, key) => {
         let newCondition = null;
 
         if (key === 'condition_group_and') {
@@ -82,11 +82,11 @@ function ConditionTree(props) {
         }
     };
 
-    const handleUpdate = (condition) => {
+    const onUpdate = (condition) => {
         setClonedRootCondition(rootCondition);
     };
 
-    const handleDelete = (condition, parentCondition) => {
+    const onDelete = (condition, parentCondition) => {
         if (!parentCondition) {
             setClonedRootCondition(null);
         } else {
@@ -95,7 +95,7 @@ function ConditionTree(props) {
         }
     };
 
-    const handleEndDrag = (item, dropResult) => {
+    const onEndDrag = (item, dropResult) => {
         if (!item.parentCondition) {
             return;
         }
@@ -118,7 +118,7 @@ function ConditionTree(props) {
         } else {
             return <React.Fragment>
                 <div>
-                    <AddButton onClick={(key) => handleAdd(null, key)}>
+                    <AddButton onClick={(key) => onAdd(null, key)}>
                         {props.addMenuItems}
                     </AddButton>
                     <Button
@@ -126,7 +126,7 @@ function ConditionTree(props) {
                         icon="minus"
                         size="small"
                         disabled={props.disabled}
-                        onClick={() => handleDelete(null)}
+                        onClick={() => onDelete(null)}
                         style={{ marginLeft: '3px' }} />
                 </div>
                 {props.disabled ? null : saveButton}
@@ -141,11 +141,11 @@ function ConditionTree(props) {
                 condition={rootCondition}
                 parentCondition={null}
                 context={props.context}
-                handleAddSaveCallback={handleAddSaveCallback}
-                handleAdd={handleAdd}
-                handleDelete={handleDelete}
-                handleUpdate={handleUpdate}
-                handleEndDrag={handleEndDrag}
+                onChangeSaveRef={onChangeSaveRef}
+                onAdd={onAdd}
+                onDelete={onDelete}
+                onUpdate={onUpdate}
+                onEndDrag={onEndDrag}
                 addMenuItems={props.addMenuItems}
                 getLeafComponent={props.getLeafComponent} />
             {props.disabled ? null : saveButton}
