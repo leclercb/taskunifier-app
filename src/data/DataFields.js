@@ -34,7 +34,7 @@ export function getDefaultFields() {
             title: 'Importance',
             color: '#ffffff',
             path: 'importance',
-            type: 'number'
+            type: 'importance'
         },
         {
             static: true,

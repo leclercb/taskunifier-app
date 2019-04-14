@@ -4,16 +4,28 @@ export const getWidthForType = type => {
     return getFieldConfiguration(type).width;
 }
 
-export const isAlwaysInEdition = type => {
+export const isAlwaysInEditionForType = type => {
     return getFieldConfiguration(type).alwaysInEdition;
+}
+
+export const isCommitOnChangeForType = type => {
+    return getFieldConfiguration(type).commitOnChange;
+}
+
+export const getNormalizeForType = type => {
+    return getFieldConfiguration(type).normalize;
+}
+
+export const getValuePropNameForType = type => {
+    return getFieldConfiguration(type).valuePropName;
+}
+
+export const getValueFromEventForType = type => {
+    return getFieldConfiguration(type).getValueFromEvent;
 }
 
 export const getRenderForType = type => (text, record, index) => {
     return getFieldConfiguration(type).render(text, record, index);
-}
-
-export const getValuePropName = type => {
-    return getFieldConfiguration(type).valuePropName;
 }
 
 export const getInputForType = (type, props) => {

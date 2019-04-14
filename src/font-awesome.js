@@ -21,6 +21,7 @@ import {
     faFolder,
     faFolderOpen,
     faHome,
+    faKey,
     faPepperHot,
     faPlus,
     faSave,
@@ -54,6 +55,7 @@ library.add(faFilter);
 library.add(faFolder);
 library.add(faFolderOpen);
 library.add(faHome);
+library.add(faKey);
 library.add(faPepperHot);
 library.add(faPlus);
 library.add(faSave);

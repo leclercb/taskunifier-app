@@ -69,6 +69,13 @@ function TaskGrid(props) {
             size="small"
             pagination={false}
             scroll={dummy ? { y: 450 } : { x: true }}
+            onRow={record => ({
+                rowProps: {
+                    record: record,
+                    onSave: onUpdateTask,
+                    getFieldType: dataIndex => props.fields.find(field => field.path === dataIndex).type
+                }
+            })}
             rowSelection={{
                 selectedRowKeys: selectedRowKeys,
                 onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys)

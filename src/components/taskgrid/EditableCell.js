@@ -1,20 +1,34 @@
 import React, { useState, useRef } from 'react';
 import { Form } from 'antd';
-import { isAlwaysInEdition, getValuePropName, getInputForType } from '../../utils/FieldUtils';
+import {
+    isAlwaysInEditionForType,
+    getValuePropNameForType,
+    getValueFromEventForType,
+    getInputForType,
+    getNormalizeForType,
+    isCommitOnChangeForType
+} from '../../utils/FieldUtils';
 import './EditableCell.css';
 
-const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
-const EditableRow = Component => ({ form, index, ...props }) => (
-    <EditableContext.Provider value={form}>
-        {Component ? React.createElement(Component, props) : (
-            <tr {...props} />
-        )}
-    </EditableContext.Provider>
-);
+const EditableRow = Component => ({ form, index, rowProps, ...props }) => {
+    return (
+        <EditableContext.Provider value={form}>
+            {Component ? React.createElement(Component, props) : (
+                <tr {...props} />
+            )}
+        </EditableContext.Provider>
+    );
+};
 
-export const EditableFormRow = Component => Form.create()(EditableRow(Component));
+export const EditableFormRow = Component => Form.create({
+    onValuesChange: (props, changedValues, allValues) => {
+        if (isCommitOnChangeForType(props.rowProps.getFieldType(Object.keys(changedValues)[0]))) {
+            props.rowProps.onSave({ ...props.rowProps.record, ...allValues });
+        }
+    }
+})(EditableRow(Component));
 
 export function EditableCell(props) {
     const [editing, setEditing] = useState(false);
@@ -59,6 +73,13 @@ export function EditableCell(props) {
         ...restProps
     } = props;
 
+    const extraProps = {};
+
+    if (!isCommitOnChangeForType(type)) {
+        extraProps.onPressEnter = save;
+        extraProps.onBlur = save;
+    }
+
     return (
         <td {...restProps}>
             {editable ? (
@@ -67,14 +88,17 @@ export function EditableCell(props) {
                         formRef.current = form;
 
                         return (
-                            editing || isAlwaysInEdition(type) ? (
-                                <FormItem style={{ margin: 0 }}>
+                            editing || isAlwaysInEditionForType(type) ? (
+                                <Form.Item style={{ margin: 0 }}>
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [],
-                                        valuePropName: getValuePropName(type),
-                                        initialValue: record[dataIndex],
-                                    })(getInputForType(type, { ref: inputRef, onPressEnter: save, onBlur: save }))}
-                                </FormItem>
+                                        valuePropName: getValuePropNameForType(type),
+                                        getValueFromEvent: getValueFromEventForType(type),
+                                        initialValue: getNormalizeForType(type)(record[dataIndex]),
+                                    })(
+                                        getInputForType(type, { ref: inputRef, ...extraProps })
+                                    )}
+                                </Form.Item>
                             ) : (
                                     <div
                                         className="editable-cell-value-wrap"

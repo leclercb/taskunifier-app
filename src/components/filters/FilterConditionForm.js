@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { Form, Input, Row, Col } from 'antd';
 import withFields from '../../containers/WithFields';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
-import { getInputForType, getSelectForType } from '../../utils/FieldUtils';
+import {
+    getInputForType,
+    getSelectForType,
+    getValuePropNameForType,
+    getValueFromEventForType,
+    getNormalizeForType
+} from '../../utils/FieldUtils';
 
 function FilterConditionForm(props) {
     const { getFieldDecorator } = props.form;
@@ -25,7 +31,7 @@ function FilterConditionForm(props) {
             });
         });
     }
-    
+
     useEffect(() => {
         props.onChangeSaveRef(props.condition.id, onSave);
         return () => props.onChangeSaveRef(props.condition.id, null);
@@ -73,7 +79,10 @@ function FilterConditionForm(props) {
                 <Col span={10}>
                     <Form.Item>
                         {getFieldDecorator('value', {
-                            initialValue: props.condition.value
+                            rules: [],
+                            valuePropName: getValuePropNameForType(field.type),
+                            getValueFromEvent: getValueFromEventForType(field.type),
+                            initialValue: getNormalizeForType(field.type)(props.condition.value),
                         })(
                             getInputForType(field.type)
                         )}

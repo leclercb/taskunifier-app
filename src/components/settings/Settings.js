@@ -6,7 +6,12 @@ import { getCategories } from '../../data/DataSettings';
 import Icon from '../common/Icon';
 import { merge } from '../../utils/ObjectUtils';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
-import { getInputForType, getValuePropName } from '../../utils/FieldUtils';
+import {
+    getInputForType,
+    getNormalizeForType,
+    getValueFromEventForType,
+    getValuePropNameForType
+} from '../../utils/FieldUtils';
 
 function Settings(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
@@ -72,8 +77,10 @@ function Settings(props) {
                             <List.Item>
                                 <Form.Item label={item.title} style={{ width: '100%' }}>
                                     {getFieldDecorator(item.id, {
-                                        valuePropName: getValuePropName(item.type),
-                                        initialValue: getSettingValue(item)
+                                        rules: [],
+                                        valuePropName: getValuePropNameForType(item.type),
+                                        getValueFromEvent: getValueFromEventForType(item.type),
+                                        initialValue: getNormalizeForType(item.type)(getSettingValue(item)),
                                     })(
                                         getInputForType(item.type, { disabled: item.editable === false })
                                     )}

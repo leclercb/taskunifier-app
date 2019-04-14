@@ -26,6 +26,7 @@
         "craco-antd": "^1.10.0",
         "electron-is-dev": "^1.1.0",
         "inputmask-core": "^2.2.0",
+        "moment": "^2.24.0",
         "rc-color-picker": "^1.2.6",
         "react": "^16.8.6",
         "react-contexify": "^4.1.0",

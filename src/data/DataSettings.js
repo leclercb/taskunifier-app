@@ -36,6 +36,21 @@ export function getCategories() {
             ]
         },
         {
+            id: 'license',
+            title: 'License',
+            icon: 'key',
+            settings: [
+                {
+                    id: "license",
+                    title: "License",
+                    category: "license",
+                    type: 'textarea',
+                    value: null,
+                    editable: true
+                }
+            ]
+        },
+        {
             id: 'backup',
             title: 'Backup',
             icon: 'save',
