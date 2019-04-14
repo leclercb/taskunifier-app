@@ -16,8 +16,8 @@ export const getValuePropName = type => {
     return getFieldConfiguration(type).valuePropName;
 }
 
-export const getInputForType = (type, ref, save) => {
-    return getFieldConfiguration(type).input(ref ? ref : () => { }, save ? save : () => { });
+export const getInputForType = (type, props) => {
+    return getFieldConfiguration(type).input(props);
 }
 
 export const getSelectForType = type => {

@@ -33,8 +33,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'checked',
                 width: 100,
                 alwaysInEdition: true,
-                input: (ref, save) => (
-                    <Checkbox ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <Checkbox {...props} />
                 ),
                 render: (value, record, index) => value ? value : <span>&nbsp;</span>,
                 conditions: [
@@ -62,8 +62,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 200,
                 alwaysInEdition: false,
-                input: (ref, save) => (
-                    <ContextSelect ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <ContextSelect {...props} />
                 ),
                 render: (value, record, index) => (
                     <ContextTitle contextId={value} />
@@ -93,8 +93,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 200,
                 alwaysInEdition: false,
-                input: (ref, save) => (
-                    <FolderSelect ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <FolderSelect {...props} />
                 ),
                 render: (value, record, index) => (
                     <FolderTitle folderId={value} />
@@ -124,8 +124,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 200,
                 alwaysInEdition: false,
-                input: (ref, save) => (
-                    <GoalSelect ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <GoalSelect {...props} />
                 ),
                 render: (value, record, index) => (
                     <GoalTitle goalId={value} />
@@ -155,8 +155,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 200,
                 alwaysInEdition: false,
-                input: (ref, save) => (
-                    <LocationSelect ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <LocationSelect {...props} />
                 ),
                 render: (value, record, index) => (
                     <LocationTitle locationId={value} />
@@ -186,13 +186,11 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 150,
                 alwaysInEdition: false,
-                input: (ref, save) => (
+                input: props => (
                     <InputNumber
-                        ref={ref}
-                        onPressEnter={save}
-                        onBlur={save}
                         formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace(/\$\s?|(,*)/g, '')} />
+                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        {...props} />
                 ),
                 render: (value, record, index) => value ? value : <span>&nbsp;</span>,
                 conditions: [
@@ -220,13 +218,11 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 150,
                 alwaysInEdition: false,
-                input: (ref, save) => (
+                input: props => (
                     <InputNumber
-                        ref={ref}
-                        onPressEnter={save}
-                        onBlur={save}
                         formatter={value => `€ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace(/€\s?|(,*)/g, '')} />
+                        parser={value => value.replace(/€\s?|(,*)/g, '')}
+                        {...props} />
                 ),
                 render: (value, record, index) => value ? value : <span>&nbsp;</span>,
                 conditions: [
@@ -254,8 +250,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 150,
                 alwaysInEdition: false,
-                input: (ref, save) => (
-                    <InputNumber ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <InputNumber {...props} />
                 ),
                 render: (value, record, index) => value ? value : <span>&nbsp;</span>,
                 conditions: [
@@ -284,8 +280,8 @@ export function getFieldConfiguration(type) {
                 valuePropName: 'value',
                 width: 250,
                 alwaysInEdition: false,
-                input: (ref, save) => (
-                    <Input ref={ref} onPressEnter={save} onBlur={save} />
+                input: props => (
+                    <Input {...props} />
                 ),
                 render: (value, record, index) => value ? value : <span>&nbsp;</span>,
                 conditions: [

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, Row, Col, Form, Input, Button, Divider } from 'antd';
+import { List, Row, Col, Form, Button, Divider } from 'antd';
 import withSettings from '../../containers/WithSettings';
 import { getCategories } from '../../data/DataSettings';
 import Icon from '../common/Icon';
@@ -67,7 +67,7 @@ function Settings(props) {
                     <List
                         size="small"
                         bordered={false}
-                        dataSource={settings.filter(setting => setting.visible)}
+                        dataSource={settings}
                         renderItem={item => (
                             <List.Item>
                                 <Form.Item label={item.title} style={{ width: '100%' }}>
@@ -75,7 +75,7 @@ function Settings(props) {
                                         valuePropName: getValuePropName(item.type),
                                         initialValue: getSettingValue(item)
                                     })(
-                                        getInputForType(item.type)
+                                        getInputForType(item.type, { disabled: item.editable === false })
                                     )}
                                 </Form.Item>
                             </List.Item>

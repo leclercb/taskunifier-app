@@ -73,7 +73,7 @@ export function EditableCell(props) {
                                         rules: [],
                                         valuePropName: getValuePropName(type),
                                         initialValue: record[dataIndex],
-                                    })(getInputForType(type, inputRef, save))}
+                                    })(getInputForType(type, { ref: inputRef, onPressEnter: save, onBlur: save }))}
                                 </FormItem>
                             ) : (
                                     <div

@@ -16,7 +16,24 @@ export function getCategories() {
             id: 'general',
             title: 'General',
             icon: 'home',
-            settings: []
+            settings: [
+                {
+                    id: "automatic_save",
+                    title: "Enable automatic save",
+                    category: "general",
+                    type: 'checkbox',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: "save_interval",
+                    title: "Save interval in minutes",
+                    category: "general",
+                    type: 'number',
+                    value: 15,
+                    editable: true
+                }
+            ]
         },
         {
             id: 'backup',
@@ -29,7 +46,7 @@ export function getCategories() {
                     category: "backup",
                     type: 'checkbox',
                     value: true,
-                    visible: true
+                    editable: true
                 },
                 {
                     id: "backup_interval",
@@ -37,15 +54,7 @@ export function getCategories() {
                     category: "backup",
                     type: 'number',
                     value: 60,
-                    visible: true
-                },
-                {
-                    id: "last_backup",
-                    title: "Last backup date",
-                    category: "backup",
-                    type: 'text',
-                    value: null,
-                    visible: true
+                    editable: true
                 }
             ]
         },
@@ -60,7 +69,7 @@ export function getCategories() {
                     category: "window",
                     type: 'number',
                     value: 1024,
-                    visible: true
+                    editable: false
                 },
                 {
                     id: "window_size_height",
@@ -68,7 +77,7 @@ export function getCategories() {
                     category: "window",
                     type: 'number',
                     value: 768,
-                    visible: true
+                    editable: false
                 },
                 {
                     id: "window_position_x",
@@ -76,7 +85,7 @@ export function getCategories() {
                     category: "window",
                     type: 'number',
                     value: null,
-                    visible: true
+                    editable: false
                 },
                 {
                     id: "window_position_y",
@@ -84,7 +93,7 @@ export function getCategories() {
                     category: "window",
                     type: 'number',
                     value: null,
-                    visible: true
+                    editable: false
                 }
             ]
         }

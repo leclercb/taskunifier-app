@@ -37,15 +37,20 @@ function App(props) {
         let backupInterval = null;
 
         props.loadData().then(() => {
-            // TODO save and backup interval in settings
-            if (false) {
+            if (props.getSetting('automatic_save') &&
+                Number.isInteger(props.getSetting('save_interval')) &&
+                props.getSetting('save_interval') > 0) {
                 saveInterval = setInterval(() => {
                     props.saveData();
-                }, 10000);
+                }, props.getSetting('save_interval') * 60 * 1000);
+            }
 
+            if (props.getSetting('automatic_backups') &&
+                Number.isInteger(props.getSetting('backup_interval')) &&
+                props.getSetting('backup_interval') > 0) {
                 backupInterval = setInterval(() => {
                     props.backupData();
-                }, 10000);
+                }, props.getSetting('backup_interval') * 60 * 1000);
             }
         });
 
@@ -68,6 +73,7 @@ function App(props) {
 }
 
 App.propTypes = {
+    getSetting: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,

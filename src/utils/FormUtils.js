@@ -3,7 +3,7 @@ export const getDefaultFormItemLayout = () => {
         labelCol: {
             xs: { span: 24 },
             sm: { span: 10 },
-            xl: { span: 6 }
+            xl: { span: 8 }
         },
         wrapperCol: {
             xs: { span: 24 },
@@ -26,7 +26,7 @@ export const getDefaultTailFormItemLayout = () => {
             },
             xl: {
                 span: 10,
-                offset: 6
+                offset: 8
             }
         }
     };
