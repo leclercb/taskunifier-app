@@ -5,24 +5,27 @@ const Status = () => (state = {
     notifications: []
 }, action) => {
     switch (action.type) {
-        case 'SET_STATUS_VISIBLE':
+        case 'SET_STATUS_VISIBLE': {
             return {
                 ...state,
                 silent: false,
                 visible: action.visible,
                 processes: []
             };
-        case 'SET_SILENT':
+        }
+        case 'SET_SILENT': {
             return {
                 ...state,
                 silent: action.silent
             };
-        case 'CLEAR_PROCESSES':
+        }
+        case 'CLEAR_PROCESSES': {
             return {
                 ...state,
                 processes: []
             };
-        case 'UPDATE_PROCESS':
+        }
+        case 'UPDATE_PROCESS': {
             const newState = {
                 ...state
             };
@@ -38,7 +41,10 @@ const Status = () => (state = {
 
             if (process.notify && (process.status === 'COMPLETED' || process.status === 'ERROR')) {
                 newState.notifications.push({
-                    ...process
+                    id: action.generateNotificationId(),
+                    process: {
+                        ...process
+                    }
                 });
             }
 
@@ -50,6 +56,17 @@ const Status = () => (state = {
             }
 
             return newState;
+        }
+        case 'DELETE_NOTIFICATION': {
+            const notificationIds = Array.isArray(action.notificationId) ? action.notificationId : [action.notificationId];
+
+            const newState = {
+                ...state,
+                notifications: state.notifications.filter(notification => !notificationIds.includes(notification.id))
+            };
+
+            return newState;
+        }
         default:
             return state;
     }

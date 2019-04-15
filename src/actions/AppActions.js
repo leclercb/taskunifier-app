@@ -26,7 +26,8 @@ const _loadData = (path, options = { silent: false }) => {
             updateProcess({
                 id: processId,
                 status: 'RUNNING',
-                title: 'Load database'
+                title: 'Load database',
+                notify: true
             })(dispatch, getState);
 
             Promise.all([
@@ -74,7 +75,8 @@ const _saveData = (path, options = { silent: false, clean: false, message: null 
             updateProcess({
                 id: processId,
                 status: 'RUNNING',
-                title: options.message ? options.message : 'Save database'
+                title: options.message ? options.message : 'Save database',
+                notify: true
             })(dispatch, getState);
 
             createDirectory(path);
@@ -125,7 +127,8 @@ export const cleanData = () => {
             updateProcess({
                 id: processId,
                 status: 'RUNNING',
-                title: 'Clean database'
+                title: 'Clean database',
+                notify: true
             })(dispatch, getState);
 
             Promise.all([
@@ -173,7 +176,8 @@ export const deleteBackup = date => {
             updateProcess({
                 id: processId,
                 status: 'RUNNING',
-                title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`
+                title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`,
+                notify: true
             })(dispatch, getState);
 
             try {
@@ -211,7 +215,8 @@ export const cleanBackups = () => {
             updateProcess({
                 id: processId,
                 status: 'RUNNING',
-                title: 'Clean backups'
+                title: 'Clean backups',
+                notify: true
             })(dispatch, getState);
 
             const backups = getBackups().sort((a, b) => Number(a) - Number(b));

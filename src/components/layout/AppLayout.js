@@ -10,10 +10,12 @@ import ModalSettings from '../settings/ModalSettings';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
 import ModalFilterManager from '../filters/ModalFilterManager';
 import SplitPane from 'react-split-pane';
+import NotificationManager from '../status/NotificationManager';
 
 function AppLayout(props) {
     return (
         <React.Fragment>
+            <NotificationManager />
             <ModalSettings />
             <ModalStatus />
             <ModalCategoryManager />

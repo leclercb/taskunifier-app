@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 export const setStatusVisible = visible => {
     return (dispatch, getState) => {
         dispatch({
@@ -34,10 +36,22 @@ export const updateProcess = process => {
     return (dispatch, getState) => {
         const action = {
             type: 'UPDATE_PROCESS',
-            process: process
+            process: process,
+            generateNotificationId: () => uuid()
         };
 
         dispatch(action);
+
+        return Promise.resolve();
+    };
+};
+
+export const deleteNotification = notificationId => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'DELETE_NOTIFICATION',
+            notificationId: notificationId
+        });
 
         return Promise.resolve();
     };

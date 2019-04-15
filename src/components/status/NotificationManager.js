@@ -1,11 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
 import withStatus from '../../containers/WithStatus';
 
-function Status(props) {
-    const notificationIndexes = useRef([]);
-
+function NotificationManager(props) {
     const getLevelFromStatus = status => {
         switch (status) {
             case 'RUNNING':
@@ -19,16 +17,21 @@ function Status(props) {
     }
 
     useEffect(() => {
-        if (notificationIndexes.current.contains()) {
+        if (props.status.notifications.length > 0) {
+            props.status.notifications.forEach(notification => {
+                message[getLevelFromStatus(notification.process.status)](notification.process.title);
+            });
 
+            props.deleteNotification(props.status.notifications.map(notification => notification.id));
         }
     });
 
     return null;
 }
 
-Status.propTypes = {
-    status: PropTypes.object.isRequired
+NotificationManager.propTypes = {
+    status: PropTypes.object.isRequired,
+    deleteNotification: PropTypes.func.isRequired
 };
 
-export default withStatus(Status);
+export default withStatus(NotificationManager);
