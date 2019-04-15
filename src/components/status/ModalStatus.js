@@ -12,7 +12,7 @@ function ModalStatus(props) {
     return (
         <Modal
             title={<Icon icon="cogs" text="Progress" />}
-            visible={props.status.visible && !props.status.silent}
+            visible={props.status.visible}
             closable={false}
             footer={
                 <Button onClick={onOk}>

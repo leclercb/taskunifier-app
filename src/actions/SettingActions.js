@@ -13,7 +13,7 @@ export const setSettingsVisible = visible => {
 
 export const loadSettingsFromFile = file => {
     return (dispatch, getState) => {
-        return loadFromFile('settings', file, data => setSettings(data)(dispatch, getState))(dispatch, getState);
+        return dispatch(loadFromFile('settings', file, data => dispatch(setSettings(data))));
     };
 };
 

@@ -34,7 +34,7 @@ function App(props) {
     };
 
     useEffect(() => {
-        props.loadData({ silent: true });
+        props.loadData();
         electron.ipcRenderer.on('app-close', onClose);
 
         return () => {

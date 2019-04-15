@@ -1,5 +1,5 @@
 const Status = () => (state = {
-    silent: false,
+    busy: false,
     visible: false,
     processes: [],
     notifications: []
@@ -8,15 +8,8 @@ const Status = () => (state = {
         case 'SET_STATUS_VISIBLE': {
             return {
                 ...state,
-                silent: false,
                 visible: action.visible,
                 processes: []
-            };
-        }
-        case 'SET_SILENT': {
-            return {
-                ...state,
-                silent: action.silent
             };
         }
         case 'CLEAR_PROCESSES': {
@@ -48,11 +41,11 @@ const Status = () => (state = {
                 });
             }
 
-            newState.visible = !newState.silent || !!newState.processes.find(process => process.status === 'ERROR');
+            newState.busy = !!newState.processes.find(process => process.status === 'RUNNING')
+            newState.visible = !!newState.processes.find(process => process.status === 'ERROR');
 
-            if (newState.silent && !newState.processes.find(process => process.status !== 'COMPLETED')) {
+            if (!newState.processes.find(process => process.status !== 'COMPLETED')) {
                 newState.processes = [];
-                newState.silent = false;
             }
 
             return newState;

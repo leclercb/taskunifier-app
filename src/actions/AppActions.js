@@ -5,14 +5,14 @@ import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './Conte
 import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
 import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
-import { updateProcess, setSilent } from './StatusActions';
+import { updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { createDirectory, getUserDataPath, join, deleteDirectory } from './ActionUtils';
 import { getBackups } from './BackupUtils';
 
-const _loadData = (path, options = { silent: false }) => {
+const _loadData = (path, options = {}) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -21,36 +21,34 @@ const _loadData = (path, options = { silent: false }) => {
                 path = getUserDataPath();
             }
 
-            setSilent(options.silent === true)(dispatch, getState);
-
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: 'Load database',
                 notify: true
-            })(dispatch, getState);
+            }));
 
             Promise.all([
-                loadSettingsFromFile(join(path, 'settings.json'))(dispatch, getState),
-                loadContextsFromFile(join(path, 'contexts.json'))(dispatch, getState),
-                loadFieldsFromFile(join(path, 'fields.json'))(dispatch, getState),
-                loadFiltersFromFile(join(path, 'filters.json'))(dispatch, getState),
-                loadFoldersFromFile(join(path, 'folders.json'))(dispatch, getState),
-                loadGoalsFromFile(join(path, 'goals.json'))(dispatch, getState),
-                loadLocationsFromFile(join(path, 'locations.json'))(dispatch, getState),
-                loadTasksFromFile(join(path, 'tasks.json'))(dispatch, getState)
+                dispatch(loadSettingsFromFile(join(path, 'settings.json'))),
+                dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
+                dispatch(loadFieldsFromFile(join(path, 'fields.json'))),
+                dispatch(loadFiltersFromFile(join(path, 'filters.json'))),
+                dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
+                dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
+                dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
+                dispatch(loadTasksFromFile(join(path, 'tasks.json')))
             ]).then(() => {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'COMPLETED'
-                }, true)(dispatch, getState);
+                }, true));
 
                 resolve(getState());
             }).catch(() => {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'ERROR'
-                })(dispatch, getState);
+                }));
 
                 reject();
             });
@@ -60,7 +58,7 @@ const _loadData = (path, options = { silent: false }) => {
 
 export const loadData = options => _loadData(null, options);
 
-const _saveData = (path, options = { silent: false, clean: false, message: null }) => {
+const _saveData = (path, options = { clean: false, message: null }) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -70,46 +68,44 @@ const _saveData = (path, options = { silent: false, clean: false, message: null 
                 path = getUserDataPath();
             }
 
-            setSilent(options.silent === true)(dispatch, getState);
-
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: options.message ? options.message : 'Save database',
                 notify: true
-            })(dispatch, getState);
+            }));
 
             createDirectory(path);
 
             const saveAllFn = () => {
                 Promise.all([
-                    saveSettingsToFile(join(path, 'settings.json'), state.settings.data)(dispatch, getState),
-                    saveContextsToFile(join(path, 'contexts.json'), state.contexts)(dispatch, getState),
-                    saveFieldsToFile(join(path, 'fields.json'), state.fields)(dispatch, getState),
-                    saveFiltersToFile(join(path, 'filters.json'), state.filters)(dispatch, getState),
-                    saveFoldersToFile(join(path, 'folders.json'), state.folders)(dispatch, getState),
-                    saveGoalsToFile(join(path, 'goals.json'), state.goals)(dispatch, getState),
-                    saveLocationsToFile(join(path, 'locations.json'), state.locations)(dispatch, getState),
-                    saveTasksToFile(join(path, 'tasks.json'), state.tasks)(dispatch, getState)
+                    dispatch(saveSettingsToFile(join(path, 'settings.json'), state.settings.data)),
+                    dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
+                    dispatch(saveFieldsToFile(join(path, 'fields.json'), state.fields)),
+                    dispatch(saveFiltersToFile(join(path, 'filters.json'), state.filters)),
+                    dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),
+                    dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals)),
+                    dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations)),
+                    dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks))
                 ]).then(() => {
-                    updateProcess({
+                    dispatch(updateProcess({
                         id: processId,
                         status: 'COMPLETED'
-                    })(dispatch, getState);
+                    }));
 
                     resolve();
                 }).catch(() => {
-                    updateProcess({
+                    dispatch(updateProcess({
                         id: processId,
                         status: 'ERROR'
-                    })(dispatch, getState);
+                    }));
 
                     reject();
                 });
             };
 
             if (options.clean === true) {
-                cleanData()(dispatch, getState).finally(() => saveAllFn());
+                dispatch(cleanData()).finally(() => saveAllFn());
             } else {
                 saveAllFn();
             }
@@ -124,33 +120,33 @@ export const cleanData = () => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: 'Clean database',
                 notify: true
-            })(dispatch, getState);
+            }));
 
             Promise.all([
-                cleanContexts()(dispatch, getState),
-                cleanFields()(dispatch, getState),
-                cleanFilters()(dispatch, getState),
-                cleanFolders()(dispatch, getState),
-                cleanGoals()(dispatch, getState),
-                cleanLocations()(dispatch, getState),
-                cleanTasks()(dispatch, getState),
+                dispatch(cleanContexts()),
+                dispatch(cleanFields()),
+                dispatch(cleanFilters()),
+                dispatch(cleanFolders()),
+                dispatch(cleanGoals()),
+                dispatch(cleanLocations()),
+                dispatch(cleanTasks()),
             ]).then(() => {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'COMPLETED'
-                })(dispatch, getState);
+                }));
 
                 resolve();
             }).catch(() => {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'ERROR'
-                })(dispatch, getState);
+                }));
 
                 reject();
             });
@@ -173,27 +169,28 @@ export const deleteBackup = date => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`,
                 notify: true
-            })(dispatch, getState);
+            }));
 
             try {
                 deleteDirectory(join(getUserDataPath(), 'backups', date.toString()));
-                updateProcess({
+
+                dispatch(updateProcess({
                     id: processId,
                     status: 'COMPLETED'
-                })(dispatch, getState);
+                }));
 
                 resolve();
             } catch (err) {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'ERROR',
                     error: err.toString()
-                })(dispatch, getState);
+                }));
 
                 reject();
             }
@@ -212,32 +209,32 @@ export const cleanBackups = () => {
                 return;
             }
 
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: 'Clean backups',
                 notify: true
-            })(dispatch, getState);
+            }));
 
             const backups = getBackups().sort((a, b) => Number(a) - Number(b));
 
             const promises = [];
             for (let index = 0; index < backups.length - maxBackups; index++) {
-                promises.push(deleteBackup(backups[index])(dispatch, getState));
+                promises.push(dispatch(deleteBackup(backups[index])));
             }
 
             Promise.all(promises).then(() => {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'COMPLETED'
-                })(dispatch, getState);
+                }));
 
                 resolve();
             }).catch(() => {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'ERROR'
-                })(dispatch, getState);
+                }));
 
                 reject();
             });

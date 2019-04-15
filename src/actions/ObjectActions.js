@@ -5,9 +5,9 @@ import Constants from '../components/constants/Constants';
 
 export const loadObjectsFromFile = (property, file) => {
     return (dispatch, getState) => {
-        return loadFromFile(property, file, data => setObjects(property, data)(dispatch, getState))(dispatch, getState);
+        return dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
     };
-};
+}; 
 
 export const saveObjectsToFile = (property, file, data) => {
     return saveToFile(property, file, filterStaticObjects(data));

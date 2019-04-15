@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import { updateProcess } from './StatusActions';
+import { updateProcess } from '../actions/StatusActions';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -12,34 +12,34 @@ export const loadFromFile = (property, file, onData) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: `Load "${property}" from file`
-            })(dispatch, getState);
+            }));
 
             if (!fs.existsSync(file)) {
-                updateProcess({
+                dispatch(updateProcess({
                     id: processId,
                     status: 'COMPLETED'
-                })(dispatch, getState);
+                }));
 
                 onData(null).then(() => resolve()).catch(() => reject());
             } else {
                 fs.readFile(file, 'utf-8', (err, data) => {
                     if (err) {
-                        updateProcess({
+                        dispatch(updateProcess({
                             id: processId,
                             status: 'ERROR',
                             error: err.toString()
-                        })(dispatch, getState);
+                        }));
 
                         reject();
                     } else {
-                        updateProcess({
+                        dispatch(updateProcess({
                             id: processId,
                             status: 'COMPLETED'
-                        })(dispatch, getState);
+                        }));
 
                         onData(JSON.parse(data)).then(() => resolve()).catch(() => reject());
                     }
@@ -54,27 +54,27 @@ export const saveToFile = (property, file, data) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
-            updateProcess({
+            dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
                 title: `Save "${property}" to file`
-            })(dispatch, getState);
+            }));
 
             fs.writeFile(file, JSON.stringify(data, null, 4), err => {
                 if (err) {
-                    updateProcess({
+                    dispatch(updateProcess({
                         id: processId,
                         status: 'ERROR',
                         error: err.toString()
-                    })(dispatch, getState);
+                    }));
 
                     reject();
                 } else {
-                    updateProcess({
+                    dispatch(updateProcess({
                         id: processId,
                         status: 'COMPLETED'
-                    })(dispatch, getState);
-                    
+                    }));
+
                     resolve();
                 }
             });
