@@ -1,30 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 import ColorPicker from 'rc-color-picker';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
-import { merge } from '../../utils/ObjectUtils';
-import Icon from '../common/Icon';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
 function LocationForm(props) {
-    const onSave = (e) => {
-        e.preventDefault();
-        props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                const updatedLocation = merge({ ...props.location }, values);
-                props.updateLocation(updatedLocation);
-            }
-        });
-    }
-
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
-        <Form {...formItemLayout} onSubmit={onSave}>
+        <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
                     initialValue: props.location.title,
@@ -73,11 +60,6 @@ function LocationForm(props) {
                     <Input />
                 )}
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                    <Icon icon="save" color="#ffffff" text="Save" />
-                </Button>
-            </Form.Item>
         </Form>
     );
 }
@@ -87,4 +69,7 @@ LocationForm.propTypes = {
     updateLocation: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'location' })(LocationForm);
+export default Form.create({
+    name: 'location',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.location, props.updateLocation)
+})(LocationForm);

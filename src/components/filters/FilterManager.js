@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Empty, Tabs } from 'antd';
+import { Divider, Row, Col, Empty, Tabs } from 'antd';
 import withFilters from '../../containers/WithFilters';
 import FilterList from './FilterList';
 import FilterConditionTree from './FilterConditionTree';
@@ -34,14 +34,11 @@ function FilterManager(props) {
             </Col>
             <Col span={16}>
                 {selectedFilter ? (
-                    <Tabs>
-                        <Tabs.TabPane tab="General" key="general">
-                            <FilterForm key={selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
-                        </Tabs.TabPane>
-                        <Tabs.TabPane tab="Filter" key="filter">
-                            <FilterConditionTree key={selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
-                        </Tabs.TabPane>
-                    </Tabs>
+                    <React.Fragment>
+                        <FilterForm key={selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
+                        <Divider />
+                        <FilterConditionTree key={'condition_tree_' + selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
+                    </React.Fragment>
                 ) : <Empty description="Please select a filter" />}
             </Col>
         </Row>

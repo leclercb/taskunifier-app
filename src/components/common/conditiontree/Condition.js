@@ -12,7 +12,6 @@ function Condition(props) {
                 parentCondition={props.parentCondition}
                 context={props.context}
                 disabled={props.disabled}
-                onChangeSaveRef={props.onChangeSaveRef}
                 onAdd={props.onAdd}
                 onDelete={props.onDelete}
                 onUpdate={props.onUpdate}
@@ -27,7 +26,6 @@ function Condition(props) {
                 parentCondition={props.parentCondition}
                 context={props.context}
                 disabled={props.disabled}
-                onChangeSaveRef={props.onChangeSaveRef}
                 onDelete={props.onDelete}
                 onUpdate={props.onUpdate}
                 onEndDrag={props.onEndDrag}
@@ -41,7 +39,6 @@ Condition.propTypes = {
     parentCondition: PropTypes.shape(conditionGroup),
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    onChangeSaveRef: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,

@@ -1,49 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
-import { Button, message } from 'antd';
+import { Button, Empty } from 'antd';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
-import { usePrevious } from '../../../hooks/UsePrevious';
 import { clone } from '../../../utils/ObjectUtils';
 import Icon from '../Icon';
 import './ConditionTree.css';
 
 function ConditionTree(props) {
-    const saveRefs = useRef([]);
-
-    const [rootCondition, setRootCondition] = useState(clone(props.condition));
-    const prevCondition = usePrevious(props.condition);
-
-    const setClonedRootCondition = condition => setRootCondition(clone(condition));
-
-    if (prevCondition !== props.condition) {
-        setClonedRootCondition(props.condition);
-    }
-
-    const onSave = () => {
-            const promises = [];
-
-            Object.keys(saveRefs.current).forEach(key => {
-                if (saveRefs.current[key]) {
-                    promises.push(saveRefs.current[key]());
-                }
-            });
-
-            Promise.all(promises).then(() => {
-                props.onSaveCondition(rootCondition);
-            }).catch(() => {
-                message.error('Please fix the validation errors');
-            });
-    };
-
-    const onChangeSaveRef = (id, callback) => {
-        saveRefs.current = {
-            ...saveRefs.current,
-            [id]: callback
-        }
-    }
+    const rootCondition = clone(props.condition);
 
     const onAdd = (condition, key) => {
         let newCondition = null;
@@ -75,23 +42,23 @@ function ConditionTree(props) {
         }
 
         if (!condition) {
-            setClonedRootCondition(newCondition);
+            props.onSaveCondition(newCondition);
         } else {
             condition.conditions.push(newCondition);
-            setClonedRootCondition(rootCondition);
+            props.onSaveCondition(rootCondition);
         }
     };
 
     const onUpdate = (condition) => {
-        setClonedRootCondition(rootCondition);
+        props.onSaveCondition(rootCondition);
     };
 
     const onDelete = (condition, parentCondition) => {
         if (!parentCondition) {
-            setClonedRootCondition(null);
+            props.onSaveCondition(null);
         } else {
             parentCondition.conditions.splice(parentCondition.conditions.indexOf(condition), 1);
-            setClonedRootCondition(rootCondition);
+            props.onSaveCondition(rootCondition);
         }
     };
 
@@ -103,53 +70,36 @@ function ConditionTree(props) {
         item.parentCondition.conditions.splice(item.parentCondition.conditions.indexOf(item.condition), 1);
         dropResult.condition.conditions.push(item.condition);
 
-        setClonedRootCondition(rootCondition);
+        props.onSaveCondition(rootCondition);
     };
-
-    const saveButton = (
-        <Button type="primary" onClick={onSave} style={{ marginTop: 10 }}>
-            <Icon icon="save" color="#ffffff" text="Save" />
-        </Button>
-    );
 
     if (!rootCondition) {
         if (props.disabled) {
             return null;
         } else {
-            return <React.Fragment>
-                <div>
+            return (
+                <React.Fragment>
                     <AddButton onClick={(key) => onAdd(null, key)}>
                         {props.addMenuItems}
                     </AddButton>
-                    <Button
-                        shape="circle"
-                        icon="minus"
-                        size="small"
-                        disabled={props.disabled}
-                        onClick={() => onDelete(null)}
-                        style={{ marginLeft: '3px' }} />
-                </div>
-                {props.disabled ? null : saveButton}
-            </React.Fragment>;
+                    <Empty description='No filter, click on the "+" icon to add your first condition !' />
+                </React.Fragment>
+            );
         }
     }
 
     return (
-        <React.Fragment>
-            <Condition
-                disabled={props.disabled}
-                condition={rootCondition}
-                parentCondition={null}
-                context={props.context}
-                onChangeSaveRef={onChangeSaveRef}
-                onAdd={onAdd}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                onEndDrag={onEndDrag}
-                addMenuItems={props.addMenuItems}
-                getLeafComponent={props.getLeafComponent} />
-            {props.disabled ? null : saveButton}
-        </React.Fragment>
+        <Condition
+            disabled={props.disabled}
+            condition={rootCondition}
+            parentCondition={null}
+            context={props.context}
+            onAdd={onAdd}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
+            onEndDrag={onEndDrag}
+            addMenuItems={props.addMenuItems}
+            getLeafComponent={props.getLeafComponent} />
     );
 }
 

@@ -68,7 +68,6 @@ function ConditionGroup(props) {
                     parentCondition={condition}
                     context={props.context}
                     disabled={props.disabled}
-                    onChangeSaveRef={props.onChangeSaveRef}
                     onAdd={props.onAdd}
                     onDelete={props.onDelete}
                     onUpdate={props.onUpdate}
@@ -103,7 +102,6 @@ ConditionGroup.propTypes = {
     parentCondition: PropTypes.shape(conditionGroup),
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    onChangeSaveRef: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,

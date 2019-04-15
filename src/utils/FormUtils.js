@@ -1,3 +1,5 @@
+import { merge } from "./ObjectUtils";
+
 export const getDefaultFormItemLayout = () => {
     return {
         labelCol: {
@@ -31,3 +33,28 @@ export const getDefaultTailFormItemLayout = () => {
         }
     };
 };
+
+export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assign = false) => {
+    const values = {};
+    let errors = [];
+    let validating = false;
+
+    Object.keys(fields).forEach(key => {
+        values[key] = fields[key].value;
+        errors = errors.concat(fields[key].errors || []);
+
+        if (fields[key].validating) {
+            validating = true;
+        }
+    });
+
+    if (errors.length === 0 && !validating) {
+        if (assign) {
+            Object.assign(object, values);
+            updateObject(object);
+        } else {
+            const updatedObject = merge({ ...object }, values);
+            updateObject(updatedObject);
+        }
+    }
+}

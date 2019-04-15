@@ -1,30 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 import ColorPicker from 'rc-color-picker';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
-import { merge } from '../../utils/ObjectUtils';
-import Icon from '../common/Icon';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
 function ContextForm(props) {
-    const onSave = (e) => {
-        e.preventDefault();
-        props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                const updatedContext = merge({ ...props.context }, values);
-                props.updateContext(updatedContext);
-            }
-        });
-    }
-
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
-        <Form {...formItemLayout} onSubmit={onSave}>
+        <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
                     initialValue: props.context.title,
@@ -52,11 +39,6 @@ function ContextForm(props) {
                     <ColorPicker />
                 )}
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                    <Icon icon="save" color="#ffffff" text="Save" />
-                </Button>
-            </Form.Item>
         </Form>
     );
 }
@@ -66,4 +48,7 @@ ContextForm.propTypes = {
     updateContext: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'context' })(ContextForm);
+export default Form.create({
+    name: 'context',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.context, props.updateContext)
+})(ContextForm);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Row, Col } from 'antd';
 import withFields from '../../containers/WithFields';
@@ -10,32 +10,10 @@ import {
     getValueFromEventForType,
     getNormalizeForType
 } from '../../utils/FieldUtils';
+import { onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
 function FilterConditionForm(props) {
     const { getFieldDecorator } = props.form;
-
-    const onSave = () => {
-        return new Promise((resolve, reject) => {
-            props.form.validateFieldsAndScroll((err, values) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    const v = { ...values };
-                    delete v.title;
-
-                    Object.assign(props.condition, v);
-                    props.onUpdate(props.condition);
-
-                    resolve(v);
-                }
-            });
-        });
-    }
-
-    useEffect(() => {
-        props.onChangeSaveRef(props.condition.id, onSave);
-        return () => props.onChangeSaveRef(props.condition.id, null);
-    });
 
     const formItemLayout = {
         labelCol: {
@@ -98,8 +76,10 @@ FilterConditionForm.propTypes = {
     condition: PropTypes.object.isRequired,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    onChangeSaveRef: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired
 };
 
-export default withFields(Form.create({ name: 'condition' })(FilterConditionForm));
+export default withFields(Form.create({
+    name: 'condition',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.condition, props.onUpdate, true)
+})(FilterConditionForm));

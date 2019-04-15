@@ -19,7 +19,6 @@ function ConditionLeaf(props) {
                         condition: props.condition,
                         context: props.context,
                         disabled: props.disabled,
-                        onChangeSaveRef: props.onChangeSaveRef,
                         onUpdate: props.onUpdate
                     })
             }
@@ -42,7 +41,6 @@ ConditionLeaf.propTypes = {
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     getLeafComponent: PropTypes.any.isRequired,
-    onChangeSaveRef: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
     onEndDrag: PropTypes.func.isRequired,

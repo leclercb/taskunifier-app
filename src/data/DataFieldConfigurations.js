@@ -22,8 +22,10 @@ export function getFieldTypes() {
     return [
         'checkbox',
         'context',
+        'date',
         'folder',
         'goal',
+        'importance',
         'location',
         'money_dollar',
         'money_euro',

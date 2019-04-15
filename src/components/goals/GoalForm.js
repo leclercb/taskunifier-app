@@ -1,30 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Checkbox } from 'antd';
 import ColorPicker from 'rc-color-picker';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
-import { merge } from '../../utils/ObjectUtils';
-import Icon from '../common/Icon';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
 function GoalForm(props) {
-    const onSave = (e) => {
-        e.preventDefault();
-        props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                const updatedGoal = merge({ ...props.goal }, values);
-                props.updateGoal(updatedGoal);
-            }
-        });
-    }
-
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
     const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
-        <Form {...formItemLayout} onSubmit={onSave}>
+        <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
                     initialValue: props.goal.title,
@@ -60,11 +48,6 @@ function GoalForm(props) {
                     <Checkbox>Archived</Checkbox>
                 )}
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                    <Icon icon="save" color="#ffffff" text="Save" />
-                </Button>
-            </Form.Item>
         </Form>
     );
 }
@@ -74,4 +57,7 @@ GoalForm.propTypes = {
     updateGoal: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'goal' })(GoalForm);
+export default Form.create({
+    name: 'goal',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.goal, props.updateGoal)
+})(GoalForm);

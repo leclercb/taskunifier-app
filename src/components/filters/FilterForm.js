@@ -1,30 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 import ColorPicker from 'rc-color-picker';
 import { FilterPropType } from '../../proptypes/FilterPropTypes';
-import { merge } from '../../utils/ObjectUtils';
-import Icon from '../common/Icon';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
 function FilterForm(props) {
-    const onSave = (e) => {
-        e.preventDefault();
-        props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                const updatedFilter = merge({ ...props.filter }, values);
-                props.updateFilter(updatedFilter);
-            }
-        });
-    }
-
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
-        <Form {...formItemLayout} onSubmit={onSave}>
+        <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
                     initialValue: props.filter.title,
@@ -52,11 +39,6 @@ function FilterForm(props) {
                     <ColorPicker />
                 )}
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">
-                    <Icon icon="save" color="#ffffff" text="Save" />
-                </Button>
-            </Form.Item>
         </Form>
     );
 }
@@ -66,4 +48,7 @@ FilterForm.propTypes = {
     updateFilter: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'filter' })(FilterForm);
+export default Form.create({
+    name: 'filter',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.filter, props.updateFilter)
+})(FilterForm);
