@@ -9,8 +9,8 @@ import { updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
-import { createDirectory, getUserDataPath, join, deleteDirectory } from './ActionUtils';
-import { getBackups } from './BackupUtils';
+import { createDirectory, getUserDataPath, join, deleteDirectory } from '../utils/ActionUtils';
+import { getBackups } from '../utils/BackupUtils';
 
 const _loadData = (path, options = {}) => {
     return (dispatch, getState) => {

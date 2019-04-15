@@ -1,4 +1,4 @@
-import { loadFromFile, saveToFile } from './ActionUtils';
+import { loadFromFile, saveToFile } from '../utils/ActionUtils';
 
 export const setSettingsVisible = visible => {
     return (dispatch, getState) => {

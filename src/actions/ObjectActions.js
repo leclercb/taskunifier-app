@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 import { filterStaticObjects } from '../utils/CategoryUtils';
-import { loadFromFile, saveToFile } from './ActionUtils';
+import { loadFromFile, saveToFile } from '../utils/ActionUtils';
 import Constants from '../components/constants/Constants';
 
 export const loadObjectsFromFile = (property, file) => {
