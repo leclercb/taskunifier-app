@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerOptions, setFilterManagerOptions } from '../actions/AppActions';
 import { setSettingsVisible, updateSettings } from '../actions/SettingActions';
-import { clearProcesses } from '../actions/StatusActions';
+import { clearProcesses, setStatusVisible } from '../actions/StatusActions';
 import { isValidLicense } from '../utils/LicenseUtils';
 
 function withApp(Component) {
@@ -25,6 +25,7 @@ function withApp(Component) {
         setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),
+        setStatusVisible: visible => dispatch(setStatusVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
         setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),
         updateSettings: settings => dispatch(updateSettings(settings))

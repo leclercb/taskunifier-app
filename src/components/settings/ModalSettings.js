@@ -17,7 +17,7 @@ function ModalSettings(props) {
             closable={false}
             onOk={onOk}
             footer={
-                <Button key="submit" onClick={onOk}>
+                <Button onClick={onOk}>
                     Close
                 </Button>
             }>

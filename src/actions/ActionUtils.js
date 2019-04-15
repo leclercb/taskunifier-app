@@ -13,15 +13,20 @@ export const loadFromFile = (property, file, onData) => {
 
             updateProcess(processId, 'RUNNING', `Load "${property}" from file`)(dispatch, getState);
 
-            fs.readFile(file, 'utf-8', (err, data) => {
-                if (err) {
-                    updateProcess(processId, 'ERROR', null, err)(dispatch, getState);
-                    reject();
-                } else {
-                    updateProcess(processId, 'COMPLETED')(dispatch, getState);
-                    onData(JSON.parse(data)).then(() => resolve()).catch(() => reject());
-                }
-            });
+            if (!fs.existsSync(file)) {
+                updateProcess(processId, 'COMPLETED')(dispatch, getState);
+                onData(null).then(() => resolve()).catch(() => reject());
+            } else {
+                fs.readFile(file, 'utf-8', (err, data) => {
+                    if (err) {
+                        updateProcess(processId, 'ERROR', null, err.toString())(dispatch, getState);
+                        reject();
+                    } else {
+                        updateProcess(processId, 'COMPLETED')(dispatch, getState);
+                        onData(JSON.parse(data)).then(() => resolve()).catch(() => reject());
+                    }
+                });
+            }
         });
     };
 };
@@ -35,7 +40,7 @@ export const saveToFile = (property, file, data) => {
 
             fs.writeFile(file, JSON.stringify(data, null, 4), err => {
                 if (err) {
-                    updateProcess(processId, 'ERROR', null, err)(dispatch, getState);
+                    updateProcess(processId, 'ERROR', null, err.toString())(dispatch, getState);
                     reject();
                 } else {
                     updateProcess(processId, 'COMPLETED')(dispatch, getState);

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Alert } from 'antd';
 import withStatus from '../../containers/WithStatus';
 import Icon from '../common/Icon';
 import Constants from '../constants/Constants';
@@ -37,6 +38,9 @@ function Status(props) {
                         text={process.title}
                         icon={getIconFromStatus(process.status)}
                         color={getColorFromStatus(process.status)} />
+                    {process.status === 'ERROR' && process.error ? (
+                        <Alert type="error" message={process.error} showIcon={true} />
+                    ) : null}
                 </div>
             )}
         </React.Fragment>

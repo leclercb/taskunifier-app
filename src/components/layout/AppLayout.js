@@ -18,7 +18,7 @@ function AppLayout(props) {
             <ModalStatus />
             <ModalCategoryManager />
             <ModalFilterManager />
-            <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.status.busy}>
+            <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.status.visible}>
                 <Layout style={{ minHeight: "100%", height: "100%" }}>
                     <Layout.Header>
                         <Header />

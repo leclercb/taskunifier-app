@@ -12,16 +12,16 @@ function ConditionGroup(props) {
     const isActive = props.canDrop && props.isOver;
 
     let colors = {
-        AND: Constants.conditionTreeGroupAnd,
-        OR: Constants.conditionTreeGroupOr,
-        NOT: Constants.conditionTreeGroupNot
+        AND: Constants.conditionTreeGroupAndColor,
+        OR: Constants.conditionTreeGroupOrColor,
+        NOT: Constants.conditionTreeGroupNotColor
     };
 
     if (isActive) {
         colors = {
-            AND: Constants.conditionTreeGroupAndActive,
-            OR: Constants.conditionTreeGroupOrActive,
-            NOT: Constants.conditionTreeGroupNotActive
+            AND: Constants.conditionTreeGroupAndActiveColor,
+            OR: Constants.conditionTreeGroupOrActiveColor,
+            NOT: Constants.conditionTreeGroupNotActiveColor
         };
     }
 

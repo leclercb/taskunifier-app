@@ -1,9 +1,14 @@
 const Status = () => (state = {
     silent: false,
-    busy: false,
+    visible: false,
     processes: []
 }, action) => {
     switch (action.type) {
+        case 'SET_STATUS_VISIBLE':
+            return {
+                ...state,
+                visible: action.visible
+            };
         case 'SET_SILENT':
             return {
                 ...state,
@@ -28,7 +33,7 @@ const Status = () => (state = {
                 newState.processes.push(process);
             }
 
-            newState.busy = !!newState.processes.find(process => process.status === 'RUNNING');
+            newState.visible = !!newState.processes.find(process => process.status !== 'COMPLETED');
 
             return newState;
         default:

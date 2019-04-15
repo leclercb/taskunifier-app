@@ -23,10 +23,10 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
             }
 
             objects.push({
-                refIds: {},
                 title: 'Untitled',
                 color: null,
                 ...action.object,
+                refIds: {},
                 creationDate: action.creationDate,
                 updateDate: action.creationDate,
                 status: 'LOADED'

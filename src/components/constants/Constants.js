@@ -7,10 +7,10 @@ export default {
     processRunningColor: '#20639b',
     processCompletedColor: '#3caea3',
     processErrorColor: '#ed553b',
-    conditionTreeGroupAnd: '#d1f7d9',
-    conditionTreeGroupAndActive: '#c2e2c9',
-    conditionTreeGroupOr: '#e8ebf6',
-    conditionTreeGroupOrActive: '#d4d7e2',
-    conditionTreeGroupNot: '#ffc8c5',
-    conditionTreeGroupNotActive: '#e3afac'
+    conditionTreeGroupAndColor: '#d1f7d9',
+    conditionTreeGroupAndActiveColorColor: '#c2e2c9',
+    conditionTreeGroupOrColor: '#e8ebf6',
+    conditionTreeGroupOrActiveColor: '#d4d7e2',
+    conditionTreeGroupNotColor: '#ffc8c5',
+    conditionTreeGroupNotActiveColor: '#e3afac'
 };

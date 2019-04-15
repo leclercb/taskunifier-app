@@ -9,9 +9,10 @@ import {
     faCheckDouble,
     faChevronCircleRight,
     faCircle,
-    faCompass,
     faCog,
     faCogs,
+    faCompass,
+    faCopy,
     faCubes,
     faDesktop,
     faEdit,
@@ -43,9 +44,10 @@ library.add(faCheck);
 library.add(faCheckDouble);
 library.add(faChevronCircleRight);
 library.add(faCircle);
-library.add(faCompass);
 library.add(faCog);
 library.add(faCogs);
+library.add(faCompass);
+library.add(faCopy);
 library.add(faCubes);
 library.add(faDesktop);
 library.add(faEdit);

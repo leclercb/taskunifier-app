@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { clearProcesses } from '../actions/StatusActions';
+import { clearProcesses, setStatusVisible } from '../actions/StatusActions';
 
 function withStatus(Component) {
     function WithStatus(props) {
@@ -12,6 +12,7 @@ function withStatus(Component) {
     });
 
     const mapDispatchToProps = dispatch => ({
+        setStatusVisible: visible => dispatch(setStatusVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses())
     });
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, List, Popconfirm } from 'antd';
+import { Button, List } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
-import Constants from '../constants/Constants';
+import { createActions } from '../../utils/CategoryListUtils';
 
 function ContextList(props) {
     return (
@@ -17,18 +17,7 @@ function ContextList(props) {
                     <List.Item
                         onClick={() => props.onContextSelection(item)}
                         className={item.id === props.selectedContextId ? 'selected-list-item' : null}>
-                        <LeftRight right={(
-                            <Popconfirm
-                                title={`Do you really want to delete "${item.title}" ?`}
-                                onConfirm={() => props.deleteContext(item.id)}
-                                okText="Yes"
-                                cancelText="No">
-                                <Icon
-                                    icon="trash-alt"
-                                    color={Constants.fadeColor}
-                                    className="object-actions" />
-                            </Popconfirm>
-                        )}>
+                        <LeftRight right={createActions(item, () => props.addContext(item), () => props.deleteContext(item.id))}>
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>

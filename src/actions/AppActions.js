@@ -5,7 +5,7 @@ import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './Conte
 import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
 import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
-import { clearProcesses, updateProcess } from './StatusActions';
+import { updateProcess, clearProcesses } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
@@ -20,6 +20,7 @@ export const loadData = path => {
                 path = getUserDataPath();
             }
 
+            clearProcesses()(dispatch, getState);
             updateProcess(processId, 'RUNNING', 'Load database')(dispatch, getState);
 
             Promise.all([
@@ -37,10 +38,6 @@ export const loadData = path => {
             }).catch(() => {
                 updateProcess(processId, 'ERROR')(dispatch, getState);
                 reject();
-            }).finally(() => {
-                setTimeout(() => {
-                    clearProcesses()(dispatch, getState);
-                }, 500);
             });
         });
     };
@@ -56,6 +53,7 @@ export const saveData = (path, clean = false) => {
                 path = getUserDataPath();
             }
 
+            clearProcesses()(dispatch, getState);
             updateProcess(processId, 'RUNNING', 'Save database')(dispatch, getState);
 
             createDirectory(path);
@@ -76,10 +74,6 @@ export const saveData = (path, clean = false) => {
                 }).catch(() => {
                     updateProcess(processId, 'ERROR')(dispatch, getState);
                     reject();
-                }).finally(() => {
-                    setTimeout(() => {
-                        clearProcesses()(dispatch, getState);
-                    }, 500);
                 });
             };
 
@@ -113,6 +107,7 @@ export const cleanData = () => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
+            clearProcesses()(dispatch, getState);
             updateProcess(processId, 'RUNNING', 'Clean database')(dispatch, getState);
 
             Promise.all([
@@ -129,10 +124,6 @@ export const cleanData = () => {
             }).catch(() => {
                 updateProcess(processId, 'ERROR')(dispatch, getState);
                 reject();
-            }).finally(() => {
-                setTimeout(() => {
-                    clearProcesses()(dispatch, getState);
-                }, 500);
             });
         });
     };
