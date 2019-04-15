@@ -37,7 +37,7 @@ export function getCategories() {
                     id: "last_automatic_save",
                     title: "Last automatic save",
                     category: "general",
-                    type: 'date',
+                    type: 'datetime',
                     value: Date.now(),
                     editable: false
                 }
@@ -91,7 +91,7 @@ export function getCategories() {
                     id: "last_automatic_backup",
                     title: "Last automatic backup",
                     category: "backup",
-                    type: 'date',
+                    type: 'datetime',
                     value: Date.now(),
                     editable: false
                 }
