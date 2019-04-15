@@ -16,6 +16,14 @@ function Header(props) {
         props.saveData();
     };
 
+    const onBackup = () => {
+        props.backupData();
+    };
+
+    const onCleanBackups = () => {
+        props.cleanBackups();
+    };
+
     const onSynchronize = () => {
         props.synchronize();
     };
@@ -45,6 +53,10 @@ function Header(props) {
             <Spacer />
             <Button onClick={onSave}>{<Icon icon="save" text="Save" />}</Button>
             <Spacer />
+            <Button onClick={onBackup}>{<Icon icon="save" text="Backup" />}</Button>
+            <Spacer />
+            <Button onClick={onCleanBackups}>{<Icon icon="save" text="Clean backups" />}</Button>
+            <Spacer />
             <Button onClick={onSynchronize}>{<Icon icon="cogs" text="Synchronize" />}</Button>
             <Spacer />
             <Button onClick={onSetSettingsVisible}>{<Icon icon="cog" text="Settings" />}</Button>
@@ -60,6 +72,8 @@ Header.propTypes = {
     pro: PropTypes.bool.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
+    backupData: PropTypes.func.isRequired,
+    cleanBackups: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
     setSettingsVisible: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,

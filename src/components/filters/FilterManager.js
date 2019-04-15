@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Row, Col, Empty, Tabs } from 'antd';
+import { Divider, Row, Col, Empty } from 'antd';
 import withFilters from '../../containers/WithFilters';
 import FilterList from './FilterList';
 import FilterConditionTree from './FilterConditionTree';

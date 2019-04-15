@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerOptions, setFilterManagerOptions } from '../actions/AppActions';
+import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerOptions, setFilterManagerOptions, cleanBackups } from '../actions/AppActions';
 import { setSettingsVisible, updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setStatusVisible } from '../actions/StatusActions';
 import { isValidLicense } from '../utils/LicenseUtils';
@@ -18,9 +18,10 @@ function withApp(Component) {
     });
 
     const mapDispatchToProps = dispatch => ({
-        loadData: () => dispatch(loadData()),
-        saveData: () => dispatch(saveData()),
+        loadData: options => dispatch(loadData(options)),
+        saveData: options => dispatch(saveData(options)),
         backupData: () => dispatch(backupData()),
+        cleanBackups: nbBackupstoKeep => dispatch(cleanBackups(nbBackupstoKeep)),
         synchronize: () => dispatch(synchronize()),
         setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),

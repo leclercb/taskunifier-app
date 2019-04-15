@@ -27,14 +27,14 @@ function App(props) {
             window_position_x: position[0],
             window_position_y: position[1]
         }).then(() => {
-            props.saveData().finally(() => {
+            props.saveData({ clean: true }).finally(() => {
                 electron.ipcRenderer.send('closed');
             });
         });
     };
 
     useEffect(() => {
-        props.loadData();
+        props.loadData({ silent: true });
         electron.ipcRenderer.on('app-close', onClose);
 
         return () => {

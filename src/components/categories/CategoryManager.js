@@ -19,7 +19,7 @@ function CategoryManager(props) {
     }
 
     return (
-        <Tabs activeKey={category} onChange={onActiveKeyChange}>
+        <Tabs activeKey={category} onChange={onActiveKeyChange} animated={false}>
             <Tabs.TabPane tab="Contexts" key="contexts">
                 <ContextManager contextId={category === 'contexts' ? objectId : null} onContextSelection={onObjectSelection} />
             </Tabs.TabPane>

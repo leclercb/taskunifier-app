@@ -72,6 +72,14 @@ export function getCategories() {
                     editable: true
                 },
                 {
+                    id: "max_backups",
+                    title: "Maximum number of backups to keep",
+                    category: "backup",
+                    type: 'number',
+                    value: 100,
+                    editable: true
+                },
+                {
                     id: "automatic_backup_interval",
                     title: "Backup interval in minutes",
                     category: "backup",

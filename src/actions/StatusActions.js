@@ -30,26 +30,12 @@ export const clearProcesses = () => {
     };
 };
 
-export const updateProcess = (processId, status = null, title = null, error = null) => {
+export const updateProcess = process => {
     return (dispatch, getState) => {
         const action = {
             type: 'UPDATE_PROCESS',
-            process: {
-                id: processId
-            }
+            process: process
         };
-
-        if (status) {
-            action.process.status = status;
-        }
-
-        if (title) {
-            action.process.title = title;
-        }
-
-        if (error) {
-            action.process.error = error;
-        }
 
         dispatch(action);
 

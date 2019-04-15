@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
-import { Button, Empty } from 'antd';
+import { Empty } from 'antd';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { condition } from './ConditionPropTypes';
 import { clone } from '../../../utils/ObjectUtils';
-import Icon from '../Icon';
 import './ConditionTree.css';
 
 function ConditionTree(props) {

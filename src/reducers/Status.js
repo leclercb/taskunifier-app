@@ -1,13 +1,16 @@
 const Status = () => (state = {
     silent: false,
     visible: false,
-    processes: []
+    processes: [],
+    notifications: []
 }, action) => {
     switch (action.type) {
         case 'SET_STATUS_VISIBLE':
             return {
                 ...state,
-                visible: action.visible
+                silent: false,
+                visible: action.visible,
+                processes: []
             };
         case 'SET_SILENT':
             return {
@@ -33,7 +36,18 @@ const Status = () => (state = {
                 newState.processes.push(process);
             }
 
-            newState.visible = !!newState.processes.find(process => process.status !== 'COMPLETED');
+            if (process.notify && (process.status === 'COMPLETED' || process.status === 'ERROR')) {
+                newState.notifications.push({
+                    ...process
+                });
+            }
+
+            newState.visible = !newState.silent || !!newState.processes.find(process => process.status === 'ERROR');
+
+            if (newState.silent && !newState.processes.find(process => process.status !== 'COMPLETED')) {
+                newState.processes = [];
+                newState.silent = false;
+            }
 
             return newState;
         default:

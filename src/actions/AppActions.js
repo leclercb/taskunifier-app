@@ -1,17 +1,18 @@
 import uuid from 'uuid';
-
+import moment from 'moment';
 import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
 import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './ContextActions';
 import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
 import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
-import { updateProcess, clearProcesses } from './StatusActions';
+import { updateProcess, setSilent } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
-import { createDirectory, getDirectories, getUserDataPath, join } from './ActionUtils';
+import { createDirectory, getUserDataPath, join, deleteDirectory } from './ActionUtils';
+import { getBackups } from './BackupUtils';
 
-export const loadData = path => {
+const _loadData = (path, options = { silent: false }) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -20,8 +21,13 @@ export const loadData = path => {
                 path = getUserDataPath();
             }
 
-            clearProcesses()(dispatch, getState);
-            updateProcess(processId, 'RUNNING', 'Load database')(dispatch, getState);
+            setSilent(options.silent === true)(dispatch, getState);
+
+            updateProcess({
+                id: processId,
+                status: 'RUNNING',
+                title: 'Load database'
+            })(dispatch, getState);
 
             Promise.all([
                 loadSettingsFromFile(join(path, 'settings.json'))(dispatch, getState),
@@ -33,17 +39,27 @@ export const loadData = path => {
                 loadLocationsFromFile(join(path, 'locations.json'))(dispatch, getState),
                 loadTasksFromFile(join(path, 'tasks.json'))(dispatch, getState)
             ]).then(() => {
-                updateProcess(processId, 'COMPLETED')(dispatch, getState);
+                updateProcess({
+                    id: processId,
+                    status: 'COMPLETED'
+                }, true)(dispatch, getState);
+
                 resolve(getState());
             }).catch(() => {
-                updateProcess(processId, 'ERROR')(dispatch, getState);
+                updateProcess({
+                    id: processId,
+                    status: 'ERROR'
+                })(dispatch, getState);
+
                 reject();
             });
         });
     };
 };
 
-export const saveData = (path, clean = false) => {
+export const loadData = options => _loadData(null, options);
+
+const _saveData = (path, options = { silent: false, clean: false, message: null }) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -53,8 +69,13 @@ export const saveData = (path, clean = false) => {
                 path = getUserDataPath();
             }
 
-            clearProcesses()(dispatch, getState);
-            updateProcess(processId, 'RUNNING', 'Save database')(dispatch, getState);
+            setSilent(options.silent === true)(dispatch, getState);
+
+            updateProcess({
+                id: processId,
+                status: 'RUNNING',
+                title: options.message ? options.message : 'Save database'
+            })(dispatch, getState);
 
             createDirectory(path);
 
@@ -69,15 +90,23 @@ export const saveData = (path, clean = false) => {
                     saveLocationsToFile(join(path, 'locations.json'), state.locations)(dispatch, getState),
                     saveTasksToFile(join(path, 'tasks.json'), state.tasks)(dispatch, getState)
                 ]).then(() => {
-                    updateProcess(processId, 'COMPLETED')(dispatch, getState);
+                    updateProcess({
+                        id: processId,
+                        status: 'COMPLETED'
+                    })(dispatch, getState);
+
                     resolve();
                 }).catch(() => {
-                    updateProcess(processId, 'ERROR')(dispatch, getState);
+                    updateProcess({
+                        id: processId,
+                        status: 'ERROR'
+                    })(dispatch, getState);
+
                     reject();
                 });
             };
 
-            if (clean) {
+            if (options.clean === true) {
                 cleanData()(dispatch, getState).finally(() => saveAllFn());
             } else {
                 saveAllFn();
@@ -86,29 +115,18 @@ export const saveData = (path, clean = false) => {
     };
 };
 
-export const getBackups = () => {
-    createDirectory(join(getUserDataPath(), 'backups'));
-    return getDirectories(join(getUserDataPath(), 'backups'));
-}
-
-export const restoreBackup = backupId => {
-    createDirectory(join(getUserDataPath(), 'backups'));
-    return loadData(join(getUserDataPath(), 'backups', backupId));
-}
-
-export const backupData = () => {
-
-    createDirectory(join(getUserDataPath(), 'backups'));
-    return saveData(join(getUserDataPath(), 'backups', Date.now().toString()));
-}
+export const saveData = options => _saveData(null, options);
 
 export const cleanData = () => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
-            clearProcesses()(dispatch, getState);
-            updateProcess(processId, 'RUNNING', 'Clean database')(dispatch, getState);
+            updateProcess({
+                id: processId,
+                status: 'RUNNING',
+                title: 'Clean database'
+            })(dispatch, getState);
 
             Promise.all([
                 cleanContexts()(dispatch, getState),
@@ -119,15 +137,108 @@ export const cleanData = () => {
                 cleanLocations()(dispatch, getState),
                 cleanTasks()(dispatch, getState),
             ]).then(() => {
-                updateProcess(processId, 'COMPLETED')(dispatch, getState);
+                updateProcess({
+                    id: processId,
+                    status: 'COMPLETED'
+                })(dispatch, getState);
+
                 resolve();
             }).catch(() => {
-                updateProcess(processId, 'ERROR')(dispatch, getState);
+                updateProcess({
+                    id: processId,
+                    status: 'ERROR'
+                })(dispatch, getState);
+
                 reject();
             });
         });
     };
+};
+
+export const restoreBackup = backupId => {
+    createDirectory(join(getUserDataPath(), 'backups'));
+    return _loadData(join(getUserDataPath(), 'backups', backupId));
+};
+
+export const backupData = () => {
+    createDirectory(join(getUserDataPath(), 'backups'));
+    return _saveData(join(getUserDataPath(), 'backups', Date.now().toString()), { message: 'Backup database' });
+};
+
+export const deleteBackup = date => {
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            const processId = uuid();
+
+            updateProcess({
+                id: processId,
+                status: 'RUNNING',
+                title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`
+            })(dispatch, getState);
+
+            try {
+                deleteDirectory(join(getUserDataPath(), 'backups', date.toString()));
+                updateProcess({
+                    id: processId,
+                    status: 'COMPLETED'
+                })(dispatch, getState);
+
+                resolve();
+            } catch (err) {
+                updateProcess({
+                    id: processId,
+                    status: 'ERROR',
+                    error: err.toString()
+                })(dispatch, getState);
+
+                reject();
+            }
+        });
+    };
 }
+
+export const cleanBackups = () => {
+    return (dispatch, getState) => {
+        return new Promise((resolve, reject) => {
+            const processId = uuid();
+            const maxBackups = getState().settings.data['max_backups'];
+
+            if (!maxBackups) {
+                reject();
+                return;
+            }
+
+            updateProcess({
+                id: processId,
+                status: 'RUNNING',
+                title: 'Clean backups'
+            })(dispatch, getState);
+
+            const backups = getBackups().sort((a, b) => Number(a) - Number(b));
+
+            const promises = [];
+            for (let index = 0; index < backups.length - maxBackups; index++) {
+                promises.push(deleteBackup(backups[index])(dispatch, getState));
+            }
+
+            Promise.all(promises).then(() => {
+                updateProcess({
+                    id: processId,
+                    status: 'COMPLETED'
+                })(dispatch, getState);
+
+                resolve();
+            }).catch(() => {
+                updateProcess({
+                    id: processId,
+                    status: 'ERROR'
+                })(dispatch, getState);
+
+                reject();
+            });
+        });
+    };
+};
 
 export const synchronize = () => {
     return (dispatch, getState) => {

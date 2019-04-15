@@ -38,6 +38,7 @@
         "react-split-pane": "^0.1.87",
         "redux": "^4.0.1",
         "redux-thunk": "^2.3.0",
+        "rimraf": "^2.6.3",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
