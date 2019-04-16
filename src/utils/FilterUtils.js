@@ -1,12 +1,12 @@
 import { getValue } from "./ObjectUtils";
 import { getConditionsForType } from "./FieldUtils";
 
-export const applyFilter = (filter, tasks, fields) => {
+export const applyFilter = (filter, task, fields) => {
     if (!filter || !filter.condition) {
-        return tasks;
+        return true;
     }
 
-    return tasks.filter(task => applyCondition(filter.condition, task, fields));
+    return applyCondition(filter.condition, task, fields);
 }
 
 const applyCondition = (condition, task, fields) => {

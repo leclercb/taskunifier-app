@@ -256,7 +256,8 @@ export const setSelectedFilter = filter => {
     return (dispatch, getState) => {
         dispatch({
             type: 'SET_SELECTED_FILTER',
-            filter: filter
+            filter: filter,
+            date: moment().toString()
         });
 
         return Promise.resolve();

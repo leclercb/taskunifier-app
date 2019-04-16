@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function getSettings() {
     const settings = {};
 
@@ -38,7 +40,7 @@ export function getCategories() {
                     title: "Last automatic save",
                     category: "general",
                     type: 'datetime',
-                    value: Date.now(),
+                    value: moment().toString(),
                     editable: false
                 }
             ]
@@ -92,7 +94,7 @@ export function getCategories() {
                     title: "Last automatic backup",
                     category: "backup",
                     type: 'datetime',
-                    value: Date.now(),
+                    value: moment().toString(),
                     editable: false
                 }
             ]

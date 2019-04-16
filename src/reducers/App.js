@@ -3,6 +3,7 @@ import { getDefaultSelectedFilter } from "../data/DataFilters";
 const App = () => (state = {
     user: null,
     selectedFilter: getDefaultSelectedFilter(),
+    selectedFilterDate: null,
     categoryManager: {
         visible: false,
         category: 'contexts',
@@ -21,7 +22,8 @@ const App = () => (state = {
         case 'SET_SELECTED_FILTER':
             return {
                 ...state,
-                selectedFilter: action.filter
+                selectedFilter: action.filter,
+                selectedFilterDate: action.date
             };
         case 'SET_CATEGORY_MANAGER_OPTIONS':
             return {

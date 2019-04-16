@@ -1,4 +1,5 @@
 import uuid from 'uuid';
+import moment from 'moment';
 import { filterStaticObjects } from '../utils/CategoryUtils';
 import { loadFromFile, saveToFile } from '../utils/ActionUtils';
 import Constants from '../components/constants/Constants';
@@ -32,7 +33,7 @@ export const addObject = (property, object) => {
         dispatch({
             type: 'ADD_OBJECT',
             property: property,
-            creationDate: Date.now(),
+            creationDate: moment().toString(),
             object: {
                 color: Constants.defaultObjectColor,
                 ...object,
@@ -49,7 +50,7 @@ export const updateObject = (property, object) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
-            updateDate: Date.now(),
+            updateDate: moment().toString(),
             object: object
         });
 

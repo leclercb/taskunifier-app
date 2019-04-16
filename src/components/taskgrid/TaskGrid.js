@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import { Button, Table } from 'antd';
 import { InfinityTable } from 'antd-table-infinity';
 import withApp from '../../containers/WithApp';
@@ -15,7 +16,7 @@ function TaskGrid(props) {
 
     const onAddTask = () => {
         props.addTask({
-            title: 'Task Test ' + Date.now(),
+            title: 'Task Test ' + moment().toString(),
             completed: false
         }).then(id => setSelectedRowKeys([id]));
     };

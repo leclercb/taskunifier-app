@@ -12,6 +12,7 @@ import ModalFilterManager from '../filters/ModalFilterManager';
 import SplitPane from 'react-split-pane';
 import NotificationManager from '../status/NotificationManager';
 import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
+import TaskQuickAdd from '../taskgrid/TaskQuickAdd';
 
 function AppLayout(props) {
     return (
@@ -30,7 +31,10 @@ function AppLayout(props) {
                     <Layout style={{ height: "100%", position: "relative" }}>
                         <SplitPane split="vertical" minSize={200} defaultSize={300} paneStyle={{ overflowY: 'auto' }}>
                             <Sider />
-                            <TaskGrid />
+                            <React.Fragment>
+                                <TaskQuickAdd />
+                                <TaskGrid />
+                            </React.Fragment>
                         </SplitPane>
                     </Layout>
                     <Layout.Footer style={{ textAlign: 'center' }}>
