@@ -60,7 +60,7 @@ function FilterConditionForm(props) {
                             rules: [],
                             valuePropName: getValuePropNameForType(field.type),
                             getValueFromEvent: getValueFromEventForType(field.type),
-                            initialValue: getNormalizeForType(field.type)(props.condition.value),
+                            initialValue: getNormalizeForType(field.type)(props.condition.value)
                         })(
                             getInputForType(field.type)
                         )}

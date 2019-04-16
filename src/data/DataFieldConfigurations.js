@@ -113,7 +113,7 @@ export function getFieldConfiguration(type) {
                 commitOnChange: true,
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
-                getValueFromEvent: event => event ? event.toString() : null,
+                getValueFromEvent: defaultGetValueFromEvent,
                 render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY') : <span>&nbsp;</span>,
                 input: props => (
                     <DatePicker format="DD-MM-YYYY" {...props} />
@@ -173,7 +173,7 @@ export function getFieldConfiguration(type) {
                 commitOnChange: true,
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
-                getValueFromEvent: event => event ? event.toString() : null,
+                getValueFromEvent: defaultGetValueFromEvent,
                 render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY HH:mm:ss') : <span>&nbsp;</span>,
                 input: props => (
                     <DatePicker showTime={true} format="DD-MM-YYYY HH:mm:ss" {...props} />

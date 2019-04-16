@@ -1,4 +1,5 @@
-import { merge } from "./ObjectUtils";
+import { merge } from './ObjectUtils';
+import moment from 'moment';
 
 export const getDefaultFormItemLayout = () => {
     return {
@@ -41,6 +42,8 @@ export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assi
 
     Object.keys(fields).forEach(key => {
         values[key] = fields[key].value;
+        values[key] = moment.isMoment(values[key]) ? values[key].toString() : values[key];
+
         errors = errors.concat(fields[key].errors || []);
 
         if (fields[key].validating) {

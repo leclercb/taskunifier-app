@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, Row, Col, Form, Button, Divider } from 'antd';
+import { List, Row, Col, Form } from 'antd';
 import withSettings from '../../containers/WithSettings';
 import { getCategories } from '../../data/DataSettings';
 import Icon from '../common/Icon';
-import { merge } from '../../utils/ObjectUtils';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 import {
     getInputForType,
     getNormalizeForType,
@@ -32,20 +31,9 @@ function Settings(props) {
         setSelectedCategoryId(category.id);
     }
 
-    const onSave = (e) => {
-        e.preventDefault();
-        props.form.validateFieldsAndScroll((err, values) => {
-            if (!err) {
-                const updatedSettings = merge({ ...props.settings.data }, values);
-                props.updateSettings(updatedSettings);
-            }
-        });
-    }
-
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Row>
@@ -67,7 +55,7 @@ function Settings(props) {
 
             </Col>
             <Col span={16}>
-                <Form {...formItemLayout} onSubmit={onSave}>
+                <Form {...formItemLayout}>
                     <List
                         size="small"
                         bordered={false}
@@ -80,19 +68,13 @@ function Settings(props) {
                                         normalize: getNormalizeForType(item.type),
                                         valuePropName: getValuePropNameForType(item.type),
                                         getValueFromEvent: getValueFromEventForType(item.type),
-                                        initialValue: getNormalizeForType(item.type)(getSettingValue(item)),
+                                        initialValue: getNormalizeForType(item.type)(getSettingValue(item))
                                     })(
                                         getInputForType(item.type, { disabled: item.editable === false })
                                     )}
                                 </Form.Item>
                             </List.Item>
                         )} />
-                    <Divider />
-                    <Form.Item {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit">
-                            <Icon icon="save" color="#ffffff" text="Save" />
-                        </Button>
-                    </Form.Item>
                 </Form>
             </Col>
         </Row>
@@ -104,4 +86,7 @@ Settings.propTypes = {
     updateSettings: PropTypes.func.isRequired
 };
 
-export default withSettings(Form.create({ name: 'settings' })(Settings));
+export default withSettings(Form.create({
+    name: 'settings',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings.data, props.updateSettings)
+})(Settings));

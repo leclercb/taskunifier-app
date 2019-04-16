@@ -94,7 +94,7 @@ export function EditableCell(props) {
                                         rules: [],
                                         valuePropName: getValuePropNameForType(type),
                                         getValueFromEvent: getValueFromEventForType(type),
-                                        initialValue: getNormalizeForType(type)(record[dataIndex]),
+                                        initialValue: getNormalizeForType(type)(record[dataIndex])
                                     })(
                                         getInputForType(type, { ref: inputRef, ...extraProps })
                                     )}
