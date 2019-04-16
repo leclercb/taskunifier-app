@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Divider, Row, Col, Empty } from 'antd';
+import { Row, Col, Empty } from 'antd';
 import withTaskTemplates from '../../containers/WithTaskTemplates';
 import TaskTemplateList from './TaskTemplateList';
 import TaskTemplateForm from './TaskTemplateForm';

@@ -4,7 +4,7 @@ import { FolderPropType } from '../../proptypes/FolderPropTypes';
 import withFolder from '../../containers/WithFolder';
 import Icon from '../common/Icon';
 
-function FolderTitle(props) {
+export function FolderTitle(props) {
     const folder = props.folder;
     return folder ? <Icon icon="circle" color={folder.color} text={folder.title} /> : <span>&nbsp;</span>;
 }

@@ -49,7 +49,6 @@ function App(props) {
             if (props.settings.loaded) {
                 const automaticSave = props.getSetting('automatic_save');
                 const automaticSaveInterval = props.getSetting('automatic_save_interval');
-                console.log("REFRESH auto save", automaticSave, automaticSaveInterval);
 
                 if (automaticSave &&
                     Number.isInteger(automaticSaveInterval) &&

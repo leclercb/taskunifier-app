@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Menu, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
-import withContexts from '../../containers/WithContexts';
-import withFilters from '../../containers/WithFilters';
-import withFolders from '../../containers/WithFolders';
-import withGoals from '../../containers/WithGoals';
-import withLocations from '../../containers/WithLocations';
+import withData from '../../containers/WithData';
 import withApp from '../../containers/WithApp';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
 import { FolderPropType } from '../../proptypes/FolderPropTypes';
@@ -243,11 +239,13 @@ Sider.propTypes = {
     deleteFilter: PropTypes.func.isRequired
 };
 
-export default withApp(
-    withContexts(
-        withFilters(
-            withFolders(
-                withGoals(
-                    withLocations(Sider),
-                    { filterArchived: true }),
-                { filterArchived: true }))));
+export default withApp(withData(Sider, {
+    includeActions: true,
+    includeContexts: true,
+    includeFilters: true,
+    includeFolders: true,
+    includeGoals: true,
+    includeLocations: true,
+    filterArchivedFolders: true,
+    filterArchivedGoals: true
+}));

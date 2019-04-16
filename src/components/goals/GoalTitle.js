@@ -4,7 +4,7 @@ import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import withGoal from '../../containers/WithGoal';
 import Icon from '../common/Icon';
 
-function GoalTitle(props) {
+export function GoalTitle(props) {
     const goal = props.goal;
     return goal ? <Icon icon="circle" color={goal.color} text={goal.title} /> : <span>&nbsp;</span>;
 }
