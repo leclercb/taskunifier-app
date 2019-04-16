@@ -2,7 +2,7 @@ import uuid from 'uuid';
 import moment from 'moment';
 import { filterStaticObjects } from '../utils/CategoryUtils';
 import { loadFromFile, saveToFile } from '../utils/ActionUtils';
-import Constants from '../components/constants/Constants';
+import Constants from '../constants/Constants';
 
 export const loadObjectsFromFile = (property, file) => {
     return (dispatch, getState) => {

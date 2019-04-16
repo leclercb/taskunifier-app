@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Alert } from 'antd';
 import withStatus from '../../containers/WithStatus';
 import Icon from '../common/Icon';
-import Constants from '../constants/Constants';
+import Constants from '../../constants/Constants';
 
 function Status(props) {
     const getIconFromStatus = status => {

@@ -10,7 +10,7 @@ import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
 import { FilterPropType } from '../../proptypes/FilterPropTypes';
 import LeftRight from '../common/LeftRight';
-import Constants from '../constants/Constants';
+import Constants from '../../constants/Constants';
 import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
 import { getGeneralFilters, getSearchFilter } from '../../data/DataFilters';
 import { Tooltip } from 'antd';

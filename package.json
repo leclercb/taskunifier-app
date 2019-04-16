@@ -21,7 +21,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.17",
         "@fortawesome/free-solid-svg-icons": "^5.8.1",
         "@fortawesome/react-fontawesome": "^0.1.4",
-        "antd": "^3.16.1",
+        "antd": "^3.16.3",
         "antd-table-infinity": "^1.1.2",
         "craco-antd": "^1.10.0",
         "electron-is-dev": "^1.1.0",

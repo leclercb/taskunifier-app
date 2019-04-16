@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Constants from '../constants/Constants';
+import Constants from '../../constants/Constants';
 
 function Icon(props) {
     return (

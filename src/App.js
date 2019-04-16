@@ -8,8 +8,8 @@ import AppLayout from './components/layout/AppLayout';
 import withApp from './containers/WithApp';
 import withSettings from './containers/WithSettings';
 
-import './font-awesome.js';
 import './App.css';
+import './font-awesome.js';
 import 'antd-table-infinity/index.css';
 import 'rc-color-picker/assets/index.css';
 import 'react-contexify/dist/ReactContexify.min.css';

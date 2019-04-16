@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, List, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
-import Constants from '../constants/Constants';
+import Constants from '../../constants/Constants';
 
 function TaskTemplateList(props) {
     return (

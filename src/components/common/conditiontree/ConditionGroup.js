@@ -6,7 +6,7 @@ import ItemTypes from './ItemTypes';
 import AddButton from './AddButton';
 import Condition from './Condition';
 import { conditionGroup } from './ConditionPropTypes';
-import Constants from '../../constants/Constants';
+import Constants from '../../../constants/Constants';
 
 function ConditionGroup(props) {
     const isActive = props.canDrop && props.isOver;
