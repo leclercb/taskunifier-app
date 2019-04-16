@@ -14,6 +14,7 @@ export default combineReducers({
     goals: Objects('goals'),
     locations: Objects('locations'),
     tasks: Objects('tasks'),
+    taskTemplates: Objects('taskTemplates'),
     settings: Settings(),
     status: Status()
 });

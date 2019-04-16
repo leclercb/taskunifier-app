@@ -9,7 +9,7 @@ function GoalSelect(props) {
     const { goals, ...restProps } = props;
 
     return (
-        <Select {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {goals.map(goal => (
                 <Select.Option key={goal.id} value={goal.id}>
                     <Icon icon="circle" color={goal.color} text={goal.title} />

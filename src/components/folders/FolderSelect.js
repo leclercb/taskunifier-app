@@ -9,7 +9,7 @@ function FolderSelect(props) {
     const { folders, ...restProps } = props;
 
     return (
-        <Select {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {folders.map(folder => (
                 <Select.Option key={folder.id} value={folder.id}>
                     <Icon icon="circle" color={folder.color} text={folder.title} />

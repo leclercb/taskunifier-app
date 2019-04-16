@@ -9,7 +9,7 @@ function LocationSelect(props) {
     const { locations, ...restProps } = props;
 
     return (
-        <Select {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {locations.map(location => (
                 <Select.Option key={location.id} value={location.id}>
                     <Icon icon="circle" color={location.color} text={location.title} />

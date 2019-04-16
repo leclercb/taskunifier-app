@@ -40,6 +40,10 @@ function Header(props) {
         props.setFilterManagerOptions({ visible: true });
     };
 
+    const onSetTaskTemplateManagerVisible = () => {
+        props.setTaskTemplateManagerOptions({ visible: true });
+    };
+
     return (
         <LeftRight right={(
             <React.Fragment>
@@ -64,6 +68,8 @@ function Header(props) {
             <Button onClick={onSetCategoryManagerVisible}>{<Icon icon="cubes" text="Category Manager" />}</Button>
             <Spacer />
             <Button onClick={onSetFilterManagerVisible}>{<Icon icon="filter" text="Filter Manager" />}</Button>
+            <Spacer />
+            <Button onClick={onSetTaskTemplateManagerVisible}>{<Icon icon="tasks" text="Task Template Manager" />}</Button>
         </LeftRight>
     );
 }
@@ -77,7 +83,8 @@ Header.propTypes = {
     synchronize: PropTypes.func.isRequired,
     setSettingsVisible: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
-    setFilterManagerOptions: PropTypes.func.isRequired
+    setFilterManagerOptions: PropTypes.func.isRequired,
+    setTaskTemplateManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(Header);

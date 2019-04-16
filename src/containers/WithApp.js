@@ -1,6 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { backupData, setSelectedFilter, synchronize, loadData, saveData, setCategoryManagerOptions, setFilterManagerOptions, cleanBackups } from '../actions/AppActions';
+import {
+    backupData,
+    setSelectedFilter,
+    synchronize,
+    loadData,
+    saveData,
+    cleanBackups,
+    setCategoryManagerOptions,
+    setFilterManagerOptions,
+    setTaskTemplateManagerOptions
+} from '../actions/AppActions';
 import { setSettingsVisible, updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setStatusVisible } from '../actions/StatusActions';
 import { isValidLicense } from '../utils/LicenseUtils';
@@ -14,7 +24,8 @@ function withApp(Component) {
         pro: isValidLicense(state.settings.data.license),
         selectedFilter: state.app.selectedFilter,
         categoryManager: state.app.categoryManager,
-        filterManager: state.app.filterManager
+        filterManager: state.app.filterManager,
+        taskTemplateManager: state.app.taskTemplateManager
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -26,6 +37,7 @@ function withApp(Component) {
         setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),
+        setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
         setStatusVisible: visible => dispatch(setStatusVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
         setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),

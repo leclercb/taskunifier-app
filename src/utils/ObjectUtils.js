@@ -41,7 +41,7 @@ export function merge(target, source) {
     return output;
 }
 
-export function getValue(object, path, safe) {
+export function getValue(object, path, safe = false) {
     try {
         path = path.replace(/\[(\w+)\]/g, '.$1');
         path = path.replace(/^\./, '');
@@ -66,7 +66,7 @@ export function getValue(object, path, safe) {
     return object;
 }
 
-export function setValue(object, path, value, safe) {
+export function setValue(object, path, value, safe = false) {
     try {
         path = path.replace(/\[(\w+)\]/g, '.$1');
         path = path.replace(/^\./, '');

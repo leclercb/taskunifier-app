@@ -5,6 +5,7 @@ import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './Conte
 import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
 import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
+import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates } from './TaskTemplateActions';
 import { updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
@@ -36,7 +37,8 @@ const _loadData = (path, options = {}) => {
                 dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
                 dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
                 dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
-                dispatch(loadTasksFromFile(join(path, 'tasks.json')))
+                dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
+                dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
             ]).then(() => {
                 dispatch(updateProcess({
                     id: processId,
@@ -86,7 +88,8 @@ const _saveData = (path, options = { clean: false, message: null }) => {
                     dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),
                     dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals)),
                     dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations)),
-                    dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks))
+                    dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks)),
+                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), state.taskTemplates))
                 ]).then(() => {
                     dispatch(updateProcess({
                         id: processId,
@@ -135,6 +138,7 @@ export const cleanData = () => {
                 dispatch(cleanGoals()),
                 dispatch(cleanLocations()),
                 dispatch(cleanTasks()),
+                dispatch(cleanTaskTemplates())
             ]).then(() => {
                 dispatch(updateProcess({
                     id: processId,
@@ -274,6 +278,17 @@ export const setFilterManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
             type: 'SET_FILTER_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
+
+export const setTaskTemplateManagerOptions = (options) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_TASK_TEMPLATE_MANAGER_OPTIONS',
             ...options
         });
 

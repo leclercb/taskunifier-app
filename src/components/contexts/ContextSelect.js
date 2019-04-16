@@ -9,7 +9,7 @@ function ContextSelect(props) {
     const { contexts, ...restProps } = props;
 
     return (
-        <Select {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {contexts.map(context => (
                 <Select.Option key={context.id} value={context.id}>
                     <Icon icon="circle" color={context.color} text={context.title} />
