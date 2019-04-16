@@ -42,45 +42,71 @@ function App(props) {
         }
     }, []);
 
-    useEffect(() => {
-        let interval = null;
+    useEffect(
+        () => {
+            let interval = null;
 
-        if (props.settings.loaded) {
-            interval = setInterval(() => {
+            if (props.settings.loaded) {
                 const automaticSave = props.getSetting('automatic_save');
                 const automaticSaveInterval = props.getSetting('automatic_save_interval');
-                const lastAutomaticSave = props.getSetting('last_automatic_save');
+                console.log("REFRESH auto save", automaticSave, automaticSaveInterval);
 
                 if (automaticSave &&
                     Number.isInteger(automaticSaveInterval) &&
-                    automaticSaveInterval > 0 &&
-                    (!lastAutomaticSave || moment().diff(moment(lastAutomaticSave)) > automaticSaveInterval * 60 * 1000)) {
-                    props.saveData();
-                    props.updateSettings({
-                        last_automatic_save: Date.now()
-                    });
+                    automaticSaveInterval > 0) {
+                    interval = setInterval(() => {
+                        props.saveData();
+                        props.updateSettings({
+                            last_automatic_save: moment().toString()
+                        });
+                    }, automaticSaveInterval * 60 * 1000);
                 }
+            }
 
-                const automaticBackup = props.getSetting('automatic_backups');
-                const automaticBackupInterval = props.getSetting('automatic_backup_interval');
-                const lastAutomaticBackup = props.getSetting('last_automatic_backup');
+            return () => {
+                clearInterval(interval);
+            }
+        },
+        [
+            props.settings.loaded,
+            props.getSetting('automatic_save'),
+            props.getSetting('automatic_save_interval')
+        ]
+    );
 
-                if (automaticBackup &&
-                    Number.isInteger(automaticBackupInterval) &&
-                    automaticBackupInterval > 0 &&
-                    (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
-                    props.backupData();
-                    props.updateSettings({
-                        last_automatic_backup: Date.now()
-                    });
-                }
-            }, 5 * 1000);
-        }
+    useEffect(
+        () => {
+            let interval = null;
 
-        return () => {
-            clearInterval(interval);
-        }
-    }, [props.settings]);
+            if (props.settings.loaded) {
+                interval = setInterval(() => {
+                    const automaticBackup = props.getSetting('automatic_backup');
+                    const automaticBackupInterval = props.getSetting('automatic_backup_interval');
+                    const lastAutomaticBackup = props.getSetting('last_automatic_backup');
+
+                    if (automaticBackup &&
+                        Number.isInteger(automaticBackupInterval) &&
+                        automaticBackupInterval > 0 &&
+                        (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
+                        props.backupData();
+                        props.updateSettings({
+                            last_automatic_backup: moment().toString()
+                        });
+                    }
+                }, 30 * 1000);
+            }
+
+            return () => {
+                clearInterval(interval);
+            }
+        },
+        [
+            props.settings.loaded,
+            props.getSetting('automatic_backup'),
+            props.getSetting('automatic_backup_interval'),
+            props.getSetting('last_automatic_backup')
+        ]
+    );
 
     useInterval(() => {
         props.backupData();
