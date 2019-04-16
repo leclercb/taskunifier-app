@@ -123,42 +123,66 @@ export function getFieldConfiguration(type) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(conditionValue).isSame(moment(taskValue), 'day');
                         }
                     },
                     {
                         type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return !moment(conditionValue).isSame(moment(taskValue), 'day');
                         }
                     },
                     {
                         type: 'before',
                         title: 'Before',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue > taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isBefore(moment(conditionValue), 'day');
                         }
                     },
                     {
                         type: 'before_or_equal',
                         title: 'Before or equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue >= taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'day');
                         }
                     },
                     {
                         type: 'after',
-                        title: 'Before',
+                        title: 'After',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue > taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isAfter(moment(conditionValue), 'day');
                         }
                     },
                     {
                         type: 'after_or_equal',
-                        title: 'Before or equals',
+                        title: 'After or equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue >= taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'day');
                         }
                     }
                 ]
@@ -174,51 +198,75 @@ export function getFieldConfiguration(type) {
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY HH:mm:ss') : <span>&nbsp;</span>,
+                render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY HH:mm') : <span>&nbsp;</span>,
                 input: props => (
-                    <DatePicker showTime={true} format="DD-MM-YYYY HH:mm:ss" {...props} />
+                    <DatePicker showTime={{ format: 'HH:mm' }} format="DD-MM-YYYY HH:mm" {...props} />
                 ),
                 conditions: [
                     {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(conditionValue).isSame(moment(taskValue), 'minute');
                         }
                     },
                     {
                         type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return !moment(conditionValue).isSame(moment(taskValue), 'minute');
                         }
                     },
                     {
                         type: 'before',
                         title: 'Before',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue > taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isBefore(moment(conditionValue), 'minute');
                         }
                     },
                     {
                         type: 'before_or_equal',
                         title: 'Before or equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue >= taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'minute');
                         }
                     },
                     {
                         type: 'after',
-                        title: 'Before',
+                        title: 'After',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue > taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isAfter(moment(conditionValue), 'minute');
                         }
                     },
                     {
                         type: 'after_or_equal',
-                        title: 'Before or equals',
+                        title: 'After or equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue >= taskValue;
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+                            
+                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'minute');
                         }
                     }
                 ]
