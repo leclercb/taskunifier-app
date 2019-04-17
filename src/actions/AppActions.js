@@ -165,7 +165,17 @@ export const restoreBackup = backupId => {
 
 export const backupData = () => {
     createDirectory(join(getUserDataPath(), 'backups'));
-    return _saveData(join(getUserDataPath(), 'backups', Date.now().toString()), { message: 'Backup database' });
+
+    return (dispatch, getState) => {
+        return new Promise(resolve => {
+            const promise = dispatch(_saveData(join(getUserDataPath(), 'backups', Date.now().toString()), { message: 'Backup database' }));
+
+            promise.then(() => {
+                dispatch(cleanBackups());
+                resolve();
+            });
+        });
+    };
 };
 
 export const deleteBackup = date => {
@@ -176,8 +186,7 @@ export const deleteBackup = date => {
             dispatch(updateProcess({
                 id: processId,
                 status: 'RUNNING',
-                title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`,
-                notify: true
+                title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`
             }));
 
             try {
