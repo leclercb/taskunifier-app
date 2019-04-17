@@ -1,4 +1,5 @@
 import React from 'react';
+import { Resizable } from 'react-resizable';
 
 function ResizableColumn(props) {
     const { onResize, width, ...restProps } = props;

@@ -100,6 +100,117 @@ export function getCategories() {
             ]
         },
         {
+            id: 'colors',
+            title: 'Colors',
+            icon: 'paint-roller',
+            settings: [
+                {
+                    id: "importance_0",
+                    title: "Importance 0",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "importance_1",
+                    title: "Importance 1",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "importance_2",
+                    title: "Importance 2",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "importance_3",
+                    title: "Importance 3",
+                    category: "colors",
+                    type: 'color',
+                    value: '#f0f7f7',
+                    editable: true
+                },
+                {
+                    id: "importance_4",
+                    title: "Importance 4",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ccffff',
+                    editable: true
+                },
+                {
+                    id: "importance_5",
+                    title: "Importance 5",
+                    category: "colors",
+                    type: 'color',
+                    value: '#d0f7e3',
+                    editable: true
+                },
+                {
+                    id: "importance_6",
+                    title: "Importance 6",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ccffcc',
+                    editable: true
+                },
+                {
+                    id: "importance_7",
+                    title: "Importance 7",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ccff99',
+                    editable: true
+                },
+                {
+                    id: "importance_8",
+                    title: "Importance 8",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffffcc',
+                    editable: true
+                },
+                {
+                    id: "importance_9",
+                    title: "Importance 9",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffff99',
+                    editable: true
+                },
+                {
+                    id: "importance_10",
+                    title: "Importance 10",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffcc99',
+                    editable: true
+                },
+                {
+                    id: "importance_11",
+                    title: "Importance 11",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffcccc',
+                    editable: true
+                },
+                {
+                    id: "importance_12",
+                    title: "Importance 12",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ff9999',
+                    editable: true
+                }
+            ]
+        },
+        {
             id: 'window',
             title: 'Window',
             icon: 'desktop',

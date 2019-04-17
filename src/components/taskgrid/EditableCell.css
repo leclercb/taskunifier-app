@@ -13,58 +13,6 @@
     padding: 4px 11px;
 }
 
-.task-importance-0 {
-    background-color: #ffffff !important;
-}
-
 .task-completed {
     text-decoration: line-through !important;
-}
-
-.task-importance-1 {
-    background-color: #ffffff !important;
-}
-
-.task-importance-2 {
-    background-color: #ffffff !important;
-}
-
-.task-importance-3 {
-    background-color: #f0f7f7 !important;
-}
-
-.task-importance-4 {
-    background-color: #ccffff !important;
-}
-
-.task-importance-5 {
-    background-color: #d0f7e3 !important;
-}
-
-.task-importance-6 {
-    background-color: #ccffcc !important;
-}
-
-.task-importance-7 {
-    background-color: #ccff99 !important;
-}
-
-.task-importance-8 {
-    background-color: #ffffcc !important;
-}
-
-.task-importance-9 {
-    background-color: #ffff99 !important;
-}
-
-.task-importance-10 {
-    background-color: #ffcc99 !important;
-}
-
-.task-importance-11 {
-    background-color: #ffcccc !important;
-}
-
-.task-importance-12 {
-    background-color: #ff9999 !important;
 }

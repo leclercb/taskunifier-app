@@ -5,6 +5,7 @@ import { InfinityTable } from 'antd-table-infinity';
 import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
+import withSettings from '../../containers/WithSettings';
 import { EditableFormRow, EditableCell } from './EditableCell';
 import ResizableColumn from './ResizableColumn';
 import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
@@ -32,7 +33,7 @@ function TaskGrid(props) {
         console.log(index, size, e);
     };
 
-    const columns = props.fields.map(field => {
+    const columns = props.fields.map((field, index) => {
         return {
             ...field,
             width: getWidthForType(field.type),
@@ -58,6 +59,7 @@ function TaskGrid(props) {
 
     const dummy = false;
 
+    // TODO finish here line 78
     return (
         <Table
             rowKey="id"
@@ -66,14 +68,14 @@ function TaskGrid(props) {
             dataSource={dummy ? dummyTasks : props.tasks}
             childrenColumnName='children'
             bordered={true}
-            rowClassName={record => 'editable-row task-importance-' + record.importance + ' ' + (record.completed ? 'task-completed' : '')}
             size="small"
             pagination={false}
             onRow={record => ({
                 rowProps: {
                     record: record,
                     onSave: onUpdateTask,
-                    getFieldType: dataIndex => props.fields.find(field => field.id === dataIndex).type
+                    getFieldType: dataIndex => props.fields.find(field => field.id === dataIndex).type,
+                    settings: props.settings
                 }
             })}
             rowSelection={{
@@ -113,4 +115,4 @@ function createDummyTasks() {
     return tasks;
 }
 
-export default withApp(withFields(withTasks(TaskGrid, { applySelectedFilter: true })));
+export default withApp(withSettings(withFields(withTasks(TaskGrid, { applySelectedFilter: true }))));

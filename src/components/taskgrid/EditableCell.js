@@ -13,6 +13,10 @@ import './EditableCell.css';
 const EditableContext = React.createContext();
 
 const EditableRow = Component => ({ form, index, rowProps, ...props }) => {
+    // TODO finish here
+    console.log(rowProps);
+    props.style.backgroundColor = rowProps.settings.data['importance_' + rowProps.record.importance];
+
     return (
         <EditableContext.Provider value={form}>
             {Component ? React.createElement(Component, props) : (
