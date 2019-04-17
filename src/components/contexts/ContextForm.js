@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
-import ColorPicker from 'rc-color-picker';
+import ColorPicker from '../common/ColorPicker';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Checkbox } from 'antd';
-import ColorPicker from 'rc-color-picker';
+import ColorPicker from '../common/ColorPicker';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 

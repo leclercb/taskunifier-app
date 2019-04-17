@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Form, Input } from 'antd';
-import ColorPicker from 'rc-color-picker';
+import ColorPicker from '../common/ColorPicker';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
