@@ -47,9 +47,6 @@ function Sider(props) {
                 <RCItem onClick={() => onEdit()}>
                     <Icon icon="edit" text="Edit" />
                 </RCItem>
-                <RCItem onClick={() => onDelete()}>
-                    <Icon icon="trash-alt" text="Delete" />
-                </RCItem>
             </RCMenu>
         );
     }

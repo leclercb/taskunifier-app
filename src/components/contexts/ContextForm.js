@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
-import { SketchPicker } from 'react-color';
+import ColorPicker from 'rc-color-picker';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
@@ -29,14 +29,14 @@ function ContextForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.context.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.hex,
+                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, message: 'The color is required',
                         }
                     ]
                 })(
-                    <SketchPicker />
+                    <ColorPicker placement="bottomLeft" />
                 )}
             </Form.Item>
         </Form>

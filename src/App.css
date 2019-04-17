@@ -13,8 +13,7 @@
     padding: 3px 50px !important;
 }
 
-.ant-spin-nested-loading,
-.ant-spin-container {
+.ant-spin-nested-loading, .ant-spin-container {
     min-height: 100%;
     height: 100%;
 }
@@ -88,8 +87,18 @@
 /* React Contexify */
 
 .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
-    color: black;
-    background-color: #b8ccbf;
+    color: black !important;
+    background-color: #b8ccbf !important;
+}
+
+/* RC Color Picker */
+
+.rc-color-picker-trigger {
+    border: 1px solid #d9d9d9 !important;
+    width: 50px !important;
+    height: 32px !important;
+    box-shadow: 0 0 0 5px #ffffff inset !important;
+    margin-top: 3px !important;
 }
 
 /* TaskUnifier */
