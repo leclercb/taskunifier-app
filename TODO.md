@@ -5,7 +5,7 @@
   * Fix draggable row
   * Importance color in style instead of classname 
   * Search better table component
-* React color or rc color ?
+* Add priority field config
 * Call clean backups on close ?
 * Date filter with a number of days, extended fields
 * Object children 
