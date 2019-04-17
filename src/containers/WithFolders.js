@@ -3,12 +3,16 @@ import { connect } from 'react-redux';
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
 
-function withFolders(Component, options = { filterArchived: false }) {
+function withFolders(Component, options = { actionsOnly: false, filterArchived: false }) {
     function WithFolders(props) {
         return <Component {...props} />
     }
 
     const mapStateToProps = state => {
+        if (options && options.actionsOnly === true) {
+            return {};
+        }
+
         let folders = filterObjects(state.folders);
 
         if (options && options.filterArchived === true) {
@@ -19,7 +23,7 @@ function withFolders(Component, options = { filterArchived: false }) {
             folders: folders
         };
     };
-    
+
     const mapDispatchToProps = dispatch => ({
         addFolder: folder => dispatch(addFolder(folder)),
         updateFolder: folder => dispatch(updateFolder(folder)),

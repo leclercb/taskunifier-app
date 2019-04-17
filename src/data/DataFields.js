@@ -9,7 +9,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Title',
             color: '#ffffff',
-            path: 'title',
             type: 'text'
         },
         {
@@ -21,8 +20,18 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Completed',
             color: '#ffffff',
-            path: 'completed',
             type: 'checkbox'
+        },
+        {
+            static: true,
+            id: 'priority',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            status: 'LOADED',
+            title: 'Priority',
+            color: '#ffffff',
+            type: 'priority'
         },
         {
             static: true,
@@ -33,7 +42,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Importance',
             color: '#ffffff',
-            path: 'importance',
             type: 'importance'
         },
         {
@@ -45,7 +53,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Due date',
             color: '#ffffff',
-            path: 'duedate',
             type: 'date'
         },
         {
@@ -57,7 +64,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Context',
             color: '#ffffff',
-            path: 'context',
             type: 'context'
         },
         {
@@ -69,7 +75,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Folder',
             color: '#ffffff',
-            path: 'folder',
             type: 'folder'
         },
         {
@@ -81,7 +86,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Goal',
             color: '#ffffff',
-            path: 'goal',
             type: 'goal'
         },
         {
@@ -93,7 +97,6 @@ export function getDefaultFields() {
             status: 'LOADED',
             title: 'Location',
             color: '#ffffff',
-            path: 'location',
             type: 'location'
         }
     ]

@@ -63,7 +63,7 @@ export function getCategories() {
         {
             id: 'backup',
             title: 'Backup',
-            icon: 'save',
+            icon: 'box-open',
             settings: [
                 {
                     id: "automatic_backup",

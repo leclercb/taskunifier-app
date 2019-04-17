@@ -252,6 +252,17 @@ export const synchronize = () => {
     };
 };
 
+export const setSelectedTaskIds = taskIds => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_SELECTED_TASK_IDS',
+            taskIds: taskIds
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export const setSelectedFilter = filter => {
     return (dispatch, getState) => {
         dispatch({

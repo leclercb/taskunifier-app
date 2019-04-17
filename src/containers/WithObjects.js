@@ -6,18 +6,20 @@ import { addFilter, updateFilter, deleteFilter } from '../actions/FilterActions'
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
+import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
 
-function withData(Component, options = {
+function withObjects(Component, options = {
     includeActions: false,
     includeContexts: false,
     includeFilters: false,
     includeFolders: false,
     includeGoals: false,
     includeLocations: false,
+    includeTaskTemplates: false,
     filterArchivedFolders: false,
     filterArchivedGoals: false
 }) {
-    function WithData(props) {
+    function WithObjects(props) {
         return <Component {...props} />
     }
 
@@ -52,6 +54,10 @@ function withData(Component, options = {
             data.locations = filterObjects(state.locations);
         }
 
+        if (options && options.includeTaskTemplates === true) {
+            data.taskTemplates = filterObjects(state.taskTemplates);
+        }
+
         return data;
     };
 
@@ -75,14 +81,17 @@ function withData(Component, options = {
             deleteGoal: goalId => dispatch(deleteGoal(goalId)),
             addLocation: location => dispatch(addLocation(location)),
             updateLocation: location => dispatch(updateLocation(location)),
-            deleteLocation: locationId => dispatch(deleteLocation(locationId))
+            deleteLocation: locationId => dispatch(deleteLocation(locationId)),
+            addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),
+            updateTaskTemplate: taskTemplate => dispatch(updateTaskTemplate(taskTemplate)),
+            deleteTaskTemplate: taskTemplateId => dispatch(deleteTaskTemplate(taskTemplateId))
         }
     };
 
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithData);
+    )(WithObjects);
 }
 
-export default withData;
+export default withObjects;

@@ -2,6 +2,7 @@ import { getDefaultSelectedFilter } from "../data/DataFilters";
 
 const App = () => (state = {
     user: null,
+    selectedTaskIds: [],
     selectedFilter: getDefaultSelectedFilter(),
     selectedFilterDate: null,
     categoryManager: {
@@ -19,6 +20,11 @@ const App = () => (state = {
     }
 }, action) => {
     switch (action.type) {
+        case 'SET_SELECTED_TASK_IDS':
+            return {
+                ...state,
+                selectedTaskIds: action.taskIds
+            };
         case 'SET_SELECTED_FILTER':
             return {
                 ...state,

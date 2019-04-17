@@ -62,6 +62,6 @@ const applyCondition = (condition, task, fields) => {
             return true;
         }
 
-        return c.apply(condition.value, getValue(task, field.path));
+        return c.apply(condition.value, getValue(task, field.id));
     }
 }

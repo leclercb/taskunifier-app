@@ -2,12 +2,19 @@ import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import withTasks from '../../containers/WithTasks';
-import withData from '../../containers/WithData';
+import withObjects from '../../containers/WithObjects';
 import Icon from '../common/Icon';
 import { ContextTitle } from '../contexts/ContextTitle';
 import { FolderTitle } from '../folders/FolderTitle';
 import { GoalTitle } from '../goals/GoalTitle';
 import { LocationTitle } from '../locations/LocationTitle';
+import { TaskTemplateTitle } from '../tasktemplates/TaskTemplateTitle';
+import { ContextPropType } from '../../proptypes/ContextPropTypes';
+import { FolderPropType } from '../../proptypes/FolderPropTypes';
+import { GoalPropType } from '../../proptypes/GoalPropTypes';
+import { LocationPropType } from '../../proptypes/LocationPropTypes';
+import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
+import { applyTaskTemplate } from '../../utils/TaskTemplateUtils';
 
 function TaskQuickAdd(props) {
     const [values, setValues] = useState([]);
@@ -31,7 +38,9 @@ function TaskQuickAdd(props) {
     }
 
     const onAdd = values => {
-        const tags = {};
+        const newTask = {
+            title: values[0]
+        };
 
         values.forEach((value, index) => {
             if (index === 0) {
@@ -39,13 +48,16 @@ function TaskQuickAdd(props) {
             }
 
             const object = JSON.parse(value.substr(value.lastIndexOf('__') + 2));
-            tags[object.field] = object.value;
+
+            if (object.field === 'taskTemplate') {
+                const taskTemplate = props.taskTemplates.find(taskTemplate => taskTemplate.id === object.value);
+                applyTaskTemplate(taskTemplate, newTask);
+            } else {
+                newTask[object.field] = object.value;
+            }
         });
 
-        props.addTask({
-            title: values[0],
-            ...tags
-        });
+        props.addTask(newTask);
 
         setValues([]);
         setTimeout(() => setOpen(false));
@@ -93,6 +105,13 @@ function TaskQuickAdd(props) {
                             <LocationTitle location={location} />
                         </Select.Option>
                     ))}
+                </Select.OptGroup>,
+                <Select.OptGroup key='taskTemplates' label="Task Templates">
+                    {props.taskTemplates.map(taskTemplate => (
+                        <Select.Option key={taskTemplate.id} value={taskTemplate.title + '__' + JSON.stringify({ field: 'taskTemplate', value: taskTemplate.id })}>
+                            <TaskTemplateTitle taskTemplate={taskTemplate} />
+                        </Select.Option>
+                    ))}
                 </Select.OptGroup>
             ] : null}
         </Select>
@@ -100,12 +119,18 @@ function TaskQuickAdd(props) {
 }
 
 TaskQuickAdd.propTypes = {
+    contexts: PropTypes.arrayOf(ContextPropType).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType).isRequired,
+    goals: PropTypes.arrayOf(GoalPropType).isRequired,
+    locations: PropTypes.arrayOf(LocationPropType).isRequired,
+    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType).isRequired,
     addTask: PropTypes.func.isRequired
 }
 
-export default withTasks(withData(TaskQuickAdd, {
+export default withTasks(withObjects(TaskQuickAdd, {
     includeContexts: true,
     includeFolders: true,
     includeGoals: true,
-    includeLocations: true
+    includeLocations: true,
+    includeTaskTemplates: true
 }), { actionsOnly: true });

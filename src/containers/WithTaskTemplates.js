@@ -3,14 +3,20 @@ import { connect } from 'react-redux';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
 import { filterObjects } from '../utils/CategoryUtils';
 
-function withTaskTemplates(Component) {
+function withTaskTemplates(Component, options = { actionsOnly: false }) {
     function WithTaskTemplates(props) {
         return <Component {...props} />
     }
 
-    const mapStateToProps = state => ({
-        taskTemplates: filterObjects(state.taskTemplates)
-    });
+    const mapStateToProps = state => {
+        if (options && options.actionsOnly === true) {
+            return {};
+        }
+
+        return {
+            taskTemplates: filterObjects(state.taskTemplates)
+        }
+    };
 
     const mapDispatchToProps = dispatch => ({
         addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),

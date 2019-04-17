@@ -3,14 +3,20 @@ import { connect } from 'react-redux';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
 import { filterObjects } from '../utils/CategoryUtils';
 
-function withContexts(Component) {
+function withContexts(Component, options = { actionsOnly: false }) {
     function WithContexts(props) {
         return <Component {...props} />
     }
 
-    const mapStateToProps = state => ({
-        contexts: filterObjects(state.contexts)
-    });
+    const mapStateToProps = state => {
+        if (options && options.actionsOnly === true) {
+            return {};
+        }
+
+        return {
+            contexts: filterObjects(state.contexts)
+        };
+    };
 
     const mapDispatchToProps = dispatch => ({
         addContext: context => dispatch(addContext(context)),

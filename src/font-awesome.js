@@ -3,8 +3,11 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faArchive,
     faBomb,
+    faBoxOpen,
+    faBroom,
     faBullseye,
     faCalendarAlt,
+    faCaretDown,
     faCheck,
     faCheckDouble,
     faChevronCircleRight,
@@ -38,8 +41,11 @@ import {
 
 library.add(faArchive);
 library.add(faBomb);
+library.add(faBoxOpen);
+library.add(faBroom);
 library.add(faBullseye);
 library.add(faCalendarAlt);
+library.add(faCaretDown);
 library.add(faCheck);
 library.add(faCheckDouble);
 library.add(faChevronCircleRight);

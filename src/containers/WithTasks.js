@@ -11,7 +11,7 @@ function withTasks(Component, options = { applySelectedFilter: false, actionsOnl
     }
 
     const mapStateToProps = state => {
-        if (options.actionsOnly === true) {
+        if (options && options.actionsOnly === true) {
             return {};
         }
 

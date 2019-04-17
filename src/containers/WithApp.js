@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
     backupData,
+    setSelectedTaskIds,
     setSelectedFilter,
     synchronize,
     loadData,
@@ -22,6 +23,7 @@ function withApp(Component) {
 
     const mapStateToProps = state => ({
         pro: isValidLicense(state.settings.data.license),
+        selectedTaskIds: state.app.selectedTaskIds,
         selectedFilter: state.app.selectedFilter,
         categoryManager: state.app.categoryManager,
         filterManager: state.app.filterManager,
@@ -34,6 +36,7 @@ function withApp(Component) {
         backupData: () => dispatch(backupData()),
         cleanBackups: nbBackupstoKeep => dispatch(cleanBackups(nbBackupstoKeep)),
         synchronize: () => dispatch(synchronize()),
+        setSelectedTaskIds: filter => dispatch(setSelectedTaskIds(filter)),
         setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),

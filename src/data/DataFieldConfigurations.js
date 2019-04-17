@@ -9,6 +9,9 @@ import GoalTitle from '../components/goals/GoalTitle';
 import GoalSelect from '../components/goals/GoalSelect';
 import LocationTitle from '../components/locations/LocationTitle';
 import LocationSelect from '../components/locations/LocationSelect';
+import PriorityTitle from '../components/priorities/PriorityTitle';
+import PrioritySelect from '../components/priorities/PrioritySelect';
+import { escape } from '../utils/RegexUtils';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -30,16 +33,17 @@ export function getFieldTypes() {
         'location',
         'money_dollar',
         'money_euro',
+        'priority',
         'number',
         'text'
     ];
 }
 
-export function getFieldConfiguration(type) {
+export function getFieldConfiguration(type, options) {
     let configuration = null;
 
     switch (type) {
-        case 'checkbox':
+        case 'checkbox': {
             configuration = {
                 title: 'Boolean',
                 width: 100,
@@ -67,11 +71,13 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'context':
+        }
+        case 'context': {
             configuration = {
                 title: 'Context',
                 width: 200,
@@ -101,11 +107,13 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'date':
+        }
+        case 'date': {
             configuration = {
                 title: 'Date',
                 width: 250,
@@ -185,11 +193,13 @@ export function getFieldConfiguration(type) {
                             return moment(taskValue).isSameOrAfter(moment(conditionValue), 'day');
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'datetime':
+        }
+        case 'datetime': {
             configuration = {
                 title: 'Date time',
                 width: 250,
@@ -265,15 +275,17 @@ export function getFieldConfiguration(type) {
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
-                            
+
                             return moment(taskValue).isSameOrAfter(moment(conditionValue), 'minute');
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'folder':
+        }
+        case 'folder': {
             configuration = {
                 title: 'Folder',
                 width: 200,
@@ -303,11 +315,13 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'goal':
+        }
+        case 'goal': {
             configuration = {
                 title: 'Goal',
                 width: 200,
@@ -337,11 +351,13 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'importance':
+        }
+        case 'importance': {
             configuration = {
                 title: 'Importance',
                 width: 150,
@@ -369,11 +385,13 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'location':
+        }
+        case 'location': {
             configuration = {
                 title: 'Location',
                 width: 200,
@@ -403,11 +421,15 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'money_dollar':
+        }
+        case 'money': {
+            const currency = options && options.currency ? options.currency : '€';
+
             configuration = {
                 title: 'Money Dollar',
                 width: 150,
@@ -419,8 +441,8 @@ export function getFieldConfiguration(type) {
                 render: (value, record, index) => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber
-                        formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                        formatter={value => `${currency} ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        parser={value => value.replace('/(' + escape(currency) + ')\\s?|(,*)/g', '')}
                         {...props} />
                 ),
                 conditions: [
@@ -438,46 +460,19 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
-            };
-
-            break;
-        case 'money_euro':
-            configuration = {
-                title: 'Money Euro',
-                width: 150,
-                alwaysInEdition: false,
-                commitOnChange: false,
-                normalize: value => value,
-                valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
-                input: props => (
-                    <InputNumber
-                        formatter={value => `€ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace(/€\s?|(,*)/g, '')}
-                        {...props} />
-                ),
-                conditions: [
+                ],
+                options: [
                     {
-                        type: 'equals',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'not_equals',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
+                        id: 'currency',
+                        title: 'Currency',
+                        type: 'text'
                     }
                 ]
             };
 
             break;
-        case 'number':
+        }
+        case 'number': {
             configuration = {
                 title: 'Number',
                 width: 150,
@@ -505,11 +500,49 @@ export function getFieldConfiguration(type) {
                             return conditionValue !== taskValue;
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
-        case 'textarea':
+        }
+        case 'priority': {
+            configuration = {
+                title: 'Priority',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: (value, record, index) => (
+                    <PriorityTitle priorityId={value} />
+                ),
+                input: props => (
+                    <PrioritySelect {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equals',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equals',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'textarea': {
             configuration = {
                 title: 'Text Area',
                 width: 250,
@@ -551,12 +584,14 @@ export function getFieldConfiguration(type) {
                             return !(taskValue || '').includes(conditionValue);
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
+        }
         case 'text':
-        default:
+        default: {
             configuration = {
                 title: 'Text',
                 width: 250,
@@ -598,10 +633,12 @@ export function getFieldConfiguration(type) {
                             return !(taskValue || '').includes(conditionValue);
                         }
                     }
-                ]
+                ],
+                options: []
             };
 
             break;
+        }
     }
 
     configuration.select = () => (

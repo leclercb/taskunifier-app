@@ -50,12 +50,12 @@ function TaskTemplateForm(props) {
             <Divider>Task Properties</Divider>
             {props.fields.map(field => (
                 <Form.Item key={field.id} label={field.title}>
-                    {getFieldDecorator('properties.' + field.path, {
+                    {getFieldDecorator('properties.' + field.id, {
                         rules: [],
                         normalize: getNormalizeForType(field.type),
                         valuePropName: getValuePropNameForType(field.type),
                         getValueFromEvent: getValueFromEventForType(field.type),
-                        initialValue: getNormalizeForType(field.type)(props.taskTemplate.properties ? props.taskTemplate.properties[field.path] : null)
+                        initialValue: getNormalizeForType(field.type)(props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : null)
                     })(
                         getInputForType(field.type)
                     )}

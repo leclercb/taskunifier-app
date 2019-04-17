@@ -30,6 +30,10 @@
     color: #000000 !important;
 }
 
+.ant-select-selection {
+    min-width: 150px !important;
+}
+
 /* React SplitPane */
 
 .Resizer {

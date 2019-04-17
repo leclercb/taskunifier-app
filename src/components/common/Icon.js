@@ -8,7 +8,10 @@ function Icon(props) {
             <FontAwesomeIcon
                 icon={props.icon}
                 className={props.className}
-                style={{ color: props.color ? props.color : Constants.color, marginRight: 10 }} />
+                style={{
+                    color: props.color ? props.color : Constants.color,
+                    marginRight: props.text ? 10 : 0
+                }} />
             {props.text}
         </span>
     );

@@ -68,23 +68,3 @@
 .task-importance-12 {
     background-color: #ff9999 !important;
 }
-
-.task-priority-negative {
-    background-color: #f0f7f7 !important;
-}
-
-.task-priority-low {
-    background-color: #00ff00 !important;
-}
-
-.task-priority-medium {
-    background-color: #ffff00 !important;
-}
-
-.task-priority-high {
-    background-color: #ffc800 !important;
-}
-
-.task-priority-top {
-    background-color: #ff0000 !important;
-}

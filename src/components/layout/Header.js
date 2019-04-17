@@ -1,13 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import Icon from '../common/Icon';
 import withApp from '../../containers/WithApp';
+import withTasks from '../../containers/WithTasks';
 import Spacer from '../common/Spacer';
 import LeftRight from '../common/LeftRight';
 import Logo from '../common/Logo';
 
 function Header(props) {
+    const onAddTask = () => {
+        props.addTask({
+            title: 'Untitled'
+        }).then(id => props.setSelectedTaskIds([id]));
+    }
+
     const onLoad = () => {
         props.loadData();
     };
@@ -44,6 +51,19 @@ function Header(props) {
         props.setTaskTemplateManagerOptions({ visible: true });
     };
 
+    const createButton = (icon, text, onClick) => {
+        return (
+            <React.Fragment>
+                <Tooltip placement="bottom" title={text}>
+                    <Button onClick={onClick}>
+                        <Icon icon={icon} />
+                    </Button>
+                </Tooltip>
+                <Spacer />
+            </React.Fragment>
+        );
+    }
+
     return (
         <LeftRight right={(
             <React.Fragment>
@@ -53,28 +73,22 @@ function Header(props) {
                 <Logo size={40} />
             </React.Fragment>
         )}>
-            <Button onClick={onLoad}>{<Icon icon="folder-open" text="Load" />}</Button>
-            <Spacer />
-            <Button onClick={onSave}>{<Icon icon="save" text="Save" />}</Button>
-            <Spacer />
-            <Button onClick={onBackup}>{<Icon icon="save" text="Backup" />}</Button>
-            <Spacer />
-            <Button onClick={onCleanBackups}>{<Icon icon="save" text="Clean backups" />}</Button>
-            <Spacer />
-            <Button onClick={onSynchronize}>{<Icon icon="cogs" text="Synchronize" />}</Button>
-            <Spacer />
-            <Button onClick={onSetSettingsVisible}>{<Icon icon="cog" text="Settings" />}</Button>
-            <Spacer />
-            <Button onClick={onSetCategoryManagerVisible}>{<Icon icon="cubes" text="Category Manager" />}</Button>
-            <Spacer />
-            <Button onClick={onSetFilterManagerVisible}>{<Icon icon="filter" text="Filter Manager" />}</Button>
-            <Spacer />
-            <Button onClick={onSetTaskTemplateManagerVisible}>{<Icon icon="tasks" text="Task Template Manager" />}</Button>
+            {createButton('plus', 'Add Task', onAddTask)}
+            {createButton('folder-open', 'Load', onLoad)}
+            {createButton('save', 'Save', onSave)}
+            {createButton('box-open', 'Backup', onBackup)}
+            {createButton('broom', 'Clean Backups', onCleanBackups)}
+            {createButton('cogs', 'Synchronize', onSynchronize)}
+            {createButton('cog', 'Settings', onSetSettingsVisible)}
+            {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
+            {createButton('filter', 'Filter Manager', onSetFilterManagerVisible)}
+            {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
         </LeftRight>
     );
 }
 
 Header.propTypes = {
+    addTask: PropTypes.func.isRequired,
     pro: PropTypes.bool.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
@@ -87,4 +101,4 @@ Header.propTypes = {
     setTaskTemplateManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(Header);
+export default withApp(withTasks(Header, { actionsOnly: true }));

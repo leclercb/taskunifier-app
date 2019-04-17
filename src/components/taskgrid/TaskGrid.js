@@ -1,32 +1,20 @@
-import React, { useState } from 'react';
-import moment from 'moment';
-import { Button, Table } from 'antd';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Table } from 'antd';
 import { InfinityTable } from 'antd-table-infinity';
 import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
 import { EditableFormRow, EditableCell } from './EditableCell';
-import Spacer from '../common/Spacer';
-import './EditableCell.css';
 import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
 import DragableBodyRow from './DragableBodyRow';
+import { FieldPropType } from '../../proptypes/FieldPropTypes';
+import { TaskPropType } from '../../proptypes/TaskPropTypes';
+import './EditableCell.css';
 
 function TaskGrid(props) {
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-
-    const onAddTask = () => {
-        props.addTask({
-            title: 'Task Test ' + moment().toString(),
-            completed: false
-        }).then(id => setSelectedRowKeys([id]));
-    };
-
     const onUpdateTask = row => {
         props.updateTask(row);
-    };
-
-    const onDeleteTask = () => {
-        props.deleteTask(selectedRowKeys);
     };
 
     const components = {
@@ -39,17 +27,17 @@ function TaskGrid(props) {
     const columns = props.fields.map(field => {
         return {
             ...field,
-            width: field.id === 'title' ? null : getWidthForType(field.type),
+            width: getWidthForType(field.type) + 100,
             title: field.title,
-            dataIndex: field.path,
-            key: field.path,
+            dataIndex: field.id,
+            key: field.id,
             editable: true,
             render: getRenderForType(field.type),
             onCell: record => ({
                 record,
                 editable: true,
                 type: field.type,
-                dataIndex: field.path,
+                dataIndex: field.id,
                 title: field.title,
                 onSave: onUpdateTask
             }),
@@ -69,26 +57,25 @@ function TaskGrid(props) {
             rowClassName={record => 'editable-row task-importance-' + record.importance + ' ' + (record.completed ? 'task-completed' : '')}
             size="small"
             pagination={false}
-            scroll={dummy ? { y: 450 } : { x: true }}
             onRow={record => ({
                 rowProps: {
                     record: record,
                     onSave: onUpdateTask,
-                    getFieldType: dataIndex => props.fields.find(field => field.path === dataIndex).type
+                    getFieldType: dataIndex => props.fields.find(field => field.id === dataIndex).type
                 }
             })}
             rowSelection={{
-                selectedRowKeys: selectedRowKeys,
-                onChange: (selectedRowKeys, selectedRows) => setSelectedRowKeys(selectedRowKeys)
-            }}
-            footer={() =>
-                <React.Fragment>
-                    <Button onClick={onAddTask}>Add Task</Button>
-                    <Spacer />
-                    {selectedRowKeys.length > 0 && <Button onClick={onDeleteTask}>{`Delete Task${selectedRowKeys.length > 1 ? 's' : ''}`}</Button>}
-                </React.Fragment>
-            } />
+                selectedRowKeys: props.selectedTaskIds,
+                onChange: selectedRowKeys => props.setSelectedTaskIds(selectedRowKeys)
+            }} />
     );
+}
+
+TaskGrid.propTypes = {
+    fields: PropTypes.arrayOf(FieldPropType).isRequired,
+    tasks: PropTypes.arrayOf(TaskPropType).isRequired,
+    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    setSelectedTaskIds: PropTypes.func.isRequired
 }
 
 // TODO remove

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Menu, Popconfirm } from 'antd';
 import Icon from '../common/Icon';
-import withData from '../../containers/WithData';
+import withObjects from '../../containers/WithObjects';
 import withApp from '../../containers/WithApp';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
 import { FolderPropType } from '../../proptypes/FolderPropTypes';
@@ -14,6 +14,7 @@ import Constants from '../../constants/Constants';
 import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
 import { getGeneralFilters, getSearchFilter } from '../../data/DataFilters';
 import { Tooltip } from 'antd';
+import Spacer from '../common/Spacer';
 
 function Sider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
@@ -59,6 +60,7 @@ function Sider(props) {
                     color={Constants.fadeColor}
                     className="object-actions"
                     onClick={() => onEdit()} />
+                <Spacer />
                 <Popconfirm
                     title={`Do you really want to delete "${object.title}" ?`}
                     onConfirm={() => onDelete()}
@@ -236,7 +238,7 @@ Sider.propTypes = {
     deleteFilter: PropTypes.func.isRequired
 };
 
-export default withApp(withData(Sider, {
+export default withApp(withObjects(Sider, {
     includeActions: true,
     includeContexts: true,
     includeFilters: true,

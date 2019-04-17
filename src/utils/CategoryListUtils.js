@@ -2,6 +2,7 @@ import React from 'react';
 import { Popconfirm, Tooltip } from 'antd';
 import Icon from '../components/common/Icon';
 import Constants from '../constants/Constants';
+import Spacer from '../components/common/Spacer';
 
 export const createAction = (icon, text, onClick) => (
     <Tooltip title={(
@@ -23,6 +24,7 @@ export const createAction = (icon, text, onClick) => (
 export const createActions = (item, onDuplicate, onDelete) => (
     <React.Fragment>
         {createAction('copy', `Duplicate "${item.title}" ?`, onDuplicate)}
+        <Spacer />
         <Popconfirm
             title={(
                 <Icon
