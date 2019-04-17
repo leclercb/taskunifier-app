@@ -52,7 +52,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Checkbox {...props} />
                 ),
@@ -86,7 +86,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => (
+                render: value => (
                     <ContextTitle contextId={value} />
                 ),
                 input: props => (
@@ -122,7 +122,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY') : <span>&nbsp;</span>,
+                render: value => value ? moment(value).format('DD-MM-YYYY') : <span>&nbsp;</span>,
                 input: props => (
                     <DatePicker format="DD-MM-YYYY" {...props} />
                 ),
@@ -208,7 +208,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? moment(value).format('DD-MM-YYYY HH:mm') : <span>&nbsp;</span>,
+                render: value => value ? moment(value).format('DD-MM-YYYY HH:mm') : <span>&nbsp;</span>,
                 input: props => (
                     <DatePicker showTime={{ format: 'HH:mm' }} format="DD-MM-YYYY HH:mm" {...props} />
                 ),
@@ -294,7 +294,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => (
+                render: value => (
                     <FolderTitle folderId={value} />
                 ),
                 input: props => (
@@ -330,7 +330,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => (
+                render: value => (
                     <GoalTitle goalId={value} />
                 ),
                 input: props => (
@@ -366,7 +366,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber min={0} max={12} {...props} />
                 ),
@@ -400,7 +400,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => (
+                render: value => (
                     <LocationTitle locationId={value} />
                 ),
                 input: props => (
@@ -438,7 +438,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber
                         formatter={value => `${currency} ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -481,7 +481,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber {...props} />
                 ),
@@ -515,7 +515,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => (
+                render: value => (
                     <PriorityTitle priorityId={value} />
                 ),
                 input: props => (
@@ -551,7 +551,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Input.TextArea autosize={true} {...props} />
                 ),
@@ -600,7 +600,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: (value, record, index) => value ? value : <span>&nbsp;</span>,
+                render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Input {...props} />
                 ),

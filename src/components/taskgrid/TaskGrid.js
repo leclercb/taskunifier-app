@@ -27,7 +27,7 @@ function TaskGrid(props) {
     const columns = props.fields.map(field => {
         return {
             ...field,
-            width: getWidthForType(field.type) + 100,
+            width: getWidthForType(field.type),
             title: field.title,
             dataIndex: field.id,
             key: field.id,
@@ -40,7 +40,7 @@ function TaskGrid(props) {
                 dataIndex: field.id,
                 title: field.title,
                 onSave: onUpdateTask
-            }),
+            })
         };
     });
 
