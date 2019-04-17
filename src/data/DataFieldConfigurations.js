@@ -52,7 +52,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? value : <span>&nbsp;</span>,
+                render: value => <Checkbox checked={!!value} />,
                 input: props => (
                     <Checkbox {...props} />
                 ),

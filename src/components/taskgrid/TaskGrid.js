@@ -6,6 +6,7 @@ import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
 import withTasks from '../../containers/WithTasks';
 import { EditableFormRow, EditableCell } from './EditableCell';
+import ResizableColumn from './ResizableColumn';
 import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
 import DragableBodyRow from './DragableBodyRow';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
@@ -18,10 +19,17 @@ function TaskGrid(props) {
     };
 
     const components = {
+        header: {
+            cell: ResizableColumn
+        },
         body: {
             row: EditableFormRow(DragableBodyRow),
             cell: EditableCell
         }
+    };
+
+    const handleResize = index => (e, { size }) => {
+        console.log(index, size, e);
     };
 
     const columns = props.fields.map(field => {
@@ -33,6 +41,10 @@ function TaskGrid(props) {
             key: field.id,
             editable: true,
             render: getRenderForType(field.type),
+            onHeaderCell: column => ({
+                width: column.width,
+                onResize: handleResize(index),
+            }),
             onCell: record => ({
                 record,
                 editable: true,

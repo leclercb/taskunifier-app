@@ -11,15 +11,15 @@ import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import { TaskPropType } from '../../proptypes/TaskPropTypes';
 import './EditableCell.css';
 
-export function createFormatter(createRender) {
+export function createFormatter(field) {
     function RGDFormatter(props) {
-        return createRender(props.value);
+        return getFieldConfiguration(field.type).render(props.value);
     }
 
     return RGDFormatter;
 }
 
-export function createEditor(field, createInput) {
+export function createEditor(field) {
     class RDGEditor extends React.Component {
         constructor(props) {
             super(props);
@@ -30,7 +30,7 @@ export function createEditor(field, createInput) {
 
         getValue() {
             return {
-                [field]: this.state.value
+                [field.id]: this.state.value
             };
         }
 
@@ -38,16 +38,24 @@ export function createEditor(field, createInput) {
             return ReactDOM.findDOMNode(this).getElementsByTagName("input")[0];
         }
 
+        handleChange = value => {
+            this.setState({
+                value: getFieldConfiguration(field.type).getValueFromEvent(value)
+            });
+        }
+
         handleChangeComplete = value => {
             this.setState({
-                value: value
+                value: getFieldConfiguration(field.type).getValueFromEvent(value)
             }, () => this.props.onCommit());
         }
 
         render() {
-            return createInput({
-                value: this.state.value,
-                onChange: this.handleChangeComplete
+            const c = getFieldConfiguration(field.type);
+
+            return c.input({
+                [c.valuePropName]: this.state.value,
+                onChange: c.commitOnChange ? this.handleChangeComplete : this.handleChange
             });
         }
     }
@@ -63,8 +71,8 @@ function TaskGrid(props) {
             name: field.title,
             editable: true,
             resizable: true,
-            formatter: createFormatter(getFieldConfiguration(field.type).render),
-            editor: createEditor(field.id, getFieldConfiguration(field.type).input)
+            formatter: createFormatter(field),
+            editor: createEditor(field)
         };
     });
 

@@ -3,11 +3,13 @@
 * Task Table
   * Fix infinity table
   * Fix draggable row
-  * Importance color in style instead of classname 
-  * Search better table component
+  * Importance color in style instead of classname
 * Try react-joyride
 * Date filter with a number of days, extended fields
-* Object children 
 * Batch add task
 * Electron proxy connection
-* Deploy node AWS (~20$ per month)
+
+## Future Features
+
+* Sub-categories (children)
+* Group by
