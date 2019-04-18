@@ -1,33 +1,18 @@
 import { getSettings } from "../data/DataSettings";
 
-const Settings = () => (state = {
-    loaded: false,
-    visible: false,
-    data: {}
-}, action) => {
+const Settings = () => (state = {}, action) => {
     switch (action.type) {
-        case 'SET_SETTINGS_VISIBLE':
-            return {
-                ...state,
-                visible: action.visible
-            };
         case 'SET_SETTINGS': {
             return {
                 ...state,
-                loaded: true,
-                data: {
-                    ...getSettings(),
-                    ...action.settings
-                }
+                ...getSettings(),
+                ...action.settings
             };
         }
         case 'UPDATE_SETTINGS': {
             return {
                 ...state,
-                data: {
-                    ...state.data,
-                    ...action.settings
-                }
+                ...action.settings
             };
         }
         default:

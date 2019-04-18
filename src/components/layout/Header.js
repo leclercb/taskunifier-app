@@ -36,7 +36,7 @@ function Header(props) {
     };
 
     const onSetSettingsVisible = () => {
-        props.setSettingsVisible(true);
+        props.setSettingManagerOptions({ visible: true });
     };
 
     const onSetCategoryManagerVisible = () => {
@@ -95,10 +95,10 @@ Header.propTypes = {
     backupData: PropTypes.func.isRequired,
     cleanBackups: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
-    setSettingsVisible: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setFilterManagerOptions: PropTypes.func.isRequired,
-    setTaskTemplateManagerOptions: PropTypes.func.isRequired
+    setTaskTemplateManagerOptions: PropTypes.func.isRequired,
+    setSettingManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(withTasks(Header, { actionsOnly: true }));

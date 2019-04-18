@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateSettings, setSettingsVisible } from '../actions/SettingActions';
+import { updateSettings } from '../actions/SettingActions';
 
 function withSettings(Component) {
     function WithSettings(props) {
-        return <Component {...props} getSetting={key => props.settings.data[key]} />
+        return <Component {...props} getSetting={key => props.settings[key]} />
     }
 
     const mapStateToProps = state => ({
@@ -12,7 +12,6 @@ function withSettings(Component) {
     });
 
     const mapDispatchToProps = dispatch => ({
-        setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),
         updateSettings: task => dispatch(updateSettings(task))
     });
 

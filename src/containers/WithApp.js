@@ -10,9 +10,10 @@ import {
     cleanBackups,
     setCategoryManagerOptions,
     setFilterManagerOptions,
-    setTaskTemplateManagerOptions
+    setTaskTemplateManagerOptions,
+    setSettingManagerOptions
 } from '../actions/AppActions';
-import { setSettingsVisible, updateSettings } from '../actions/SettingActions';
+import { updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setStatusVisible } from '../actions/StatusActions';
 import { isValidLicense } from '../utils/LicenseUtils';
 
@@ -22,12 +23,13 @@ function withApp(Component) {
     }
 
     const mapStateToProps = state => ({
-        pro: isValidLicense(state.settings.data.license),
+        pro: isValidLicense(state.settings.license),
         selectedTaskIds: state.app.selectedTaskIds,
         selectedFilter: state.app.selectedFilter,
         categoryManager: state.app.categoryManager,
         filterManager: state.app.filterManager,
-        taskTemplateManager: state.app.taskTemplateManager
+        taskTemplateManager: state.app.taskTemplateManager,
+        settingManager: state.app.settingManager
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -41,9 +43,9 @@ function withApp(Component) {
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
+        setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
         setStatusVisible: visible => dispatch(setStatusVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
-        setSettingsVisible: visible => dispatch(setSettingsVisible(visible)),
         updateSettings: settings => dispatch(updateSettings(settings))
     });
 

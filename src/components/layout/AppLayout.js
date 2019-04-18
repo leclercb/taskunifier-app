@@ -6,23 +6,23 @@ import Header from './Header';
 import Footer from './Footer';
 import withStatus from '../../containers/WithStatus';
 import ModalStatus from '../status/ModalStatus';
-import ModalSettings from '../settings/ModalSettings';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
 import ModalFilterManager from '../filters/ModalFilterManager';
 import SplitPane from 'react-split-pane';
 import NotificationManager from '../status/NotificationManager';
 import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
+import ModalSettingManager from '../settings/ModalSettingManager';
 import TaskQuickAdd from '../taskgrid/TaskQuickAdd';
 
 function AppLayout(props) {
     return (
         <React.Fragment>
             <NotificationManager />
-            <ModalSettings />
             <ModalStatus />
             <ModalCategoryManager />
             <ModalFilterManager />
             <ModalTaskTemplateManager />
+            <ModalSettingManager />
             <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.status.busy}>
                 <Layout style={{ minHeight: "100%", height: "100%" }}>
                     <Layout.Header>

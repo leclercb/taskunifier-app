@@ -12,6 +12,7 @@ import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
 import DragableBodyRow from './DragableBodyRow';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import { TaskPropType } from '../../proptypes/TaskPropTypes';
+import { getImportanceColor } from '../../utils/SettingUtils';
 import './EditableCell.css';
 
 function TaskGrid(props) {
@@ -75,7 +76,9 @@ function TaskGrid(props) {
                     record: record,
                     onSave: onUpdateTask,
                     getFieldType: dataIndex => props.fields.find(field => field.id === dataIndex).type,
-                    settings: props.settings
+                    style: {
+                        backgroundColor: getImportanceColor(record.importance, props.settings)
+                    }
                 }
             })}
             rowSelection={{

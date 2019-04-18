@@ -33,7 +33,7 @@ export const addObject = (property, object) => {
         dispatch({
             type: 'ADD_OBJECT',
             property: property,
-            creationDate: moment().toString(),
+            creationDate: moment().toJSON(),
             object: {
                 color: Constants.defaultObjectColor,
                 ...object,
@@ -50,7 +50,7 @@ export const updateObject = (property, object) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
-            updateDate: moment().toString(),
+            updateDate: moment().toJSON(),
             object: object
         });
 

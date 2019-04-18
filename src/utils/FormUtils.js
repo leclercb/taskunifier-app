@@ -41,7 +41,7 @@ export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assi
     let validating = false;
 
     flattenFields(null, fields).forEach(field => {
-        setValue(values, field.name, moment.isMoment(field.value) ? field.value.toString() : field.value);
+        setValue(values, field.name, moment.isMoment(field.value) ? field.value.toJSON() : field.value);
         errors.push(...(field.errors || []));
 
         if (field.validating) {

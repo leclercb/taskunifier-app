@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
 import moment from 'moment';
+import ColorPicker from '../components/common/ColorPicker';
 import ContextTitle from '../components/contexts/ContextTitle';
 import ContextSelect from '../components/contexts/ContextSelect';
 import FolderTitle from '../components/folders/FolderTitle';
@@ -24,6 +25,7 @@ function defaultGetValueFromEvent(e) {
 export function getFieldTypes() {
     return [
         'checkbox',
+        'color',
         'context',
         'date',
         'datetime',
@@ -31,8 +33,7 @@ export function getFieldTypes() {
         'goal',
         'importance',
         'location',
-        'money_dollar',
-        'money_euro',
+        'money',
         'priority',
         'number',
         'text'
@@ -55,6 +56,40 @@ export function getFieldConfiguration(type, options) {
                 render: value => <Checkbox checked={!!value} />,
                 input: props => (
                     <Checkbox {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equals',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equals',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'color': {
+            configuration = {
+                title: 'Color',
+                width: 100,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'color',
+                getValueFromEvent: event => event.color,
+                render: value => <ColorPicker color={value} />,
+                input: props => (
+                    <ColorPicker {...props} />
                 ),
                 conditions: [
                     {

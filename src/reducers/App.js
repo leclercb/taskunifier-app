@@ -17,6 +17,9 @@ const App = () => (state = {
     taskTemplateManager: {
         visible: false,
         taskTemplateId: null
+    },
+    settingManager: {
+        visible: false
     }
 }, action) => {
     switch (action.type) {
@@ -54,6 +57,13 @@ const App = () => (state = {
                 taskTemplateManager: {
                     visible: 'visible' in action ? action.visible : state.taskTemplateManager.visible,
                     taskTemplateId: 'taskTemplateId' in action ? action.taskTemplateId : state.taskTemplateManager.taskTemplateId
+                }
+            };
+        case 'SET_SETTING_MANAGER_OPTIONS':
+            return {
+                ...state,
+                settingManager: {
+                    visible: 'visible' in action ? action.visible : state.settingManager.visible
                 }
             };
         default:

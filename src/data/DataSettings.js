@@ -40,7 +40,7 @@ export function getCategories() {
                     title: "Last automatic save",
                     category: "general",
                     type: 'datetime',
-                    value: moment().toString(),
+                    value: moment().toJSON(),
                     editable: false
                 }
             ]
@@ -94,7 +94,7 @@ export function getCategories() {
                     title: "Last automatic backup",
                     category: "backup",
                     type: 'datetime',
-                    value: moment().toString(),
+                    value: moment().toJSON(),
                     editable: false
                 }
             ]
@@ -206,6 +206,46 @@ export function getCategories() {
                     category: "colors",
                     type: 'color',
                     value: '#ff9999',
+                    editable: true
+                },
+                {
+                    id: "priority_negative",
+                    title: "Priority Negative",
+                    category: "colors",
+                    type: 'color',
+                    value: '#f0f7f7',
+                    editable: true
+                },
+                {
+                    id: "priority_low",
+                    title: "Priority Low",
+                    category: "colors",
+                    type: 'color',
+                    value: '#00ff00',
+                    editable: true
+                },
+                {
+                    id: "priority_medium",
+                    title: "Priority Medium",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffff00',
+                    editable: true
+                },
+                {
+                    id: "priority_high",
+                    title: "Proirity High",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ffc800',
+                    editable: true
+                },
+                {
+                    id: "priority_top",
+                    title: "Priority Top",
+                    category: "colors",
+                    type: 'color',
+                    value: '#ff0000',
                     editable: true
                 }
             ]

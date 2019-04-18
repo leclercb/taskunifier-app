@@ -2,11 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { PriorityPropType } from '../../proptypes/PriorityPropTypes';
 import withPriority from '../../containers/WithPriority';
+import withSettings from '../../containers/WithSettings';
 import Icon from '../common/Icon';
+import { getPriorityColor } from '../../utils/SettingUtils';
 
 export function PriorityTitle(props) {
     const priority = props.priority;
-    return priority ? <Icon icon="circle" color={priority.color} text={priority.title} /> : <span>&nbsp;</span>;
+    return priority ? (
+        <Icon icon="circle" color={getPriorityColor(priority.id, props.settings)} text={priority.title} />
+    ) : (<span>&nbsp;</span>);
 }
 
 PriorityTitle.propTypes = {
@@ -14,4 +18,4 @@ PriorityTitle.propTypes = {
     priority: PriorityPropType
 }
 
-export default withPriority(PriorityTitle);
+export default withPriority(withSettings(PriorityTitle));

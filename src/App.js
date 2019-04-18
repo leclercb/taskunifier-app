@@ -46,20 +46,19 @@ function App(props) {
         () => {
             let interval = null;
 
-            if (props.settings.loaded) {
-                const automaticSave = props.getSetting('automatic_save');
-                const automaticSaveInterval = props.getSetting('automatic_save_interval');
+            const automaticSave = props.getSetting('automatic_save');
+            const automaticSaveInterval = props.getSetting('automatic_save_interval');
 
-                if (automaticSave &&
-                    Number.isInteger(automaticSaveInterval) &&
-                    automaticSaveInterval > 0) {
-                    interval = setInterval(() => {
-                        props.saveData();
-                        props.updateSettings({
-                            last_automatic_save: moment().toString()
-                        });
-                    }, automaticSaveInterval * 60 * 1000);
-                }
+            if (automaticSave &&
+                Number.isInteger(automaticSaveInterval) &&
+                automaticSaveInterval > 0) {
+                interval = setInterval(() => {
+                    props.saveData();
+                    props.updateSettings({
+                        last_automatic_save: moment().toJSON()
+                    });
+                }, automaticSaveInterval * 60 * 1000);
+
             }
 
             return () => {
@@ -77,23 +76,21 @@ function App(props) {
         () => {
             let interval = null;
 
-            if (props.settings.loaded) {
-                interval = setInterval(() => {
-                    const automaticBackup = props.getSetting('automatic_backup');
-                    const automaticBackupInterval = props.getSetting('automatic_backup_interval');
-                    const lastAutomaticBackup = props.getSetting('last_automatic_backup');
+            interval = setInterval(() => {
+                const automaticBackup = props.getSetting('automatic_backup');
+                const automaticBackupInterval = props.getSetting('automatic_backup_interval');
+                const lastAutomaticBackup = props.getSetting('last_automatic_backup');
 
-                    if (automaticBackup &&
-                        Number.isInteger(automaticBackupInterval) &&
-                        automaticBackupInterval > 0 &&
-                        (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
-                        props.backupData();
-                        props.updateSettings({
-                            last_automatic_backup: moment().toString()
-                        });
-                    }
-                }, 30 * 1000);
-            }
+                if (automaticBackup &&
+                    Number.isInteger(automaticBackupInterval) &&
+                    automaticBackupInterval > 0 &&
+                    (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
+                    props.backupData();
+                    props.updateSettings({
+                        last_automatic_backup: moment().toJSON()
+                    });
+                }
+            }, 30 * 1000);
 
             return () => {
                 clearInterval(interval);

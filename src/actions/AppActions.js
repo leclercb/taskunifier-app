@@ -81,7 +81,7 @@ const _saveData = (path, options = { clean: false, message: null }) => {
 
             const saveAllFn = () => {
                 Promise.all([
-                    dispatch(saveSettingsToFile(join(path, 'settings.json'), state.settings.data)),
+                    dispatch(saveSettingsToFile(join(path, 'settings.json'), state.settings)),
                     dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
                     dispatch(saveFieldsToFile(join(path, 'fields.json'), state.fields)),
                     dispatch(saveFiltersToFile(join(path, 'filters.json'), state.filters)),
@@ -168,7 +168,7 @@ export const backupData = () => {
 
     return (dispatch, getState) => {
         return new Promise(resolve => {
-            const promise = dispatch(_saveData(join(getUserDataPath(), 'backups', Date.now().toString()), { message: 'Backup database' }));
+            const promise = dispatch(_saveData(join(getUserDataPath(), 'backups', '' + Date.now().valueOf()), { message: 'Backup database' }));
 
             promise.then(() => {
                 dispatch(cleanBackups());
@@ -190,7 +190,7 @@ export const deleteBackup = date => {
             }));
 
             try {
-                deleteDirectory(join(getUserDataPath(), 'backups', date.toString()));
+                deleteDirectory(join(getUserDataPath(), 'backups', '' + date));
 
                 dispatch(updateProcess({
                     id: processId,
@@ -215,7 +215,7 @@ export const cleanBackups = () => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
-            const maxBackups = getState().settings.data['max_backups'];
+            const maxBackups = getState().settings['max_backups'];
 
             if (!maxBackups) {
                 reject();
@@ -277,7 +277,7 @@ export const setSelectedFilter = filter => {
         dispatch({
             type: 'SET_SELECTED_FILTER',
             filter: filter,
-            date: moment().toString()
+            date: moment().toJSON()
         });
 
         return Promise.resolve();
@@ -310,6 +310,17 @@ export const setTaskTemplateManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
             type: 'SET_TASK_TEMPLATE_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
+
+export const setSettingManagerOptions = (options) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_SETTING_MANAGER_OPTIONS',
             ...options
         });
 

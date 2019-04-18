@@ -8,7 +8,7 @@ function withPro(Component) {
     }
 
     const mapStateToProps = state => ({
-        pro: isValidLicense(state.settings.data.license)
+        pro: isValidLicense(state.settings.license)
     });
 
     const mapDispatchToProps = dispatch => ({

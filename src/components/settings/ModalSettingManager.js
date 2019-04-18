@@ -1,18 +1,18 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import withSettings from '../../containers/WithSettings';
+import withApp from '../../containers/WithApp';
 import Icon from '../common/Icon';
-import Settings from '../settings/Settings';
+import SettingManager from './SettingManager';
 
-function ModalSettings(props) {
+function ModalSettingManager(props) {
     const onOk = () => {
-        props.setSettingsVisible(false);
+        props.setSettingManagerOptions({ visible: false });
     }
 
     return (
         <Modal
             title={<Icon icon="cog" text="Settings" />}
-            visible={props.settings.visible}
+            visible={props.settingManager.visible}
             width="80%"
             closable={false}
             onOk={onOk}
@@ -21,9 +21,9 @@ function ModalSettings(props) {
                     Close
                 </Button>
             }>
-            <Settings />
+            <SettingManager />
         </Modal>
     );
 }
 
-export default withSettings(ModalSettings);
+export default withApp(ModalSettingManager);

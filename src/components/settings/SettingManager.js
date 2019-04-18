@@ -12,7 +12,7 @@ import {
     getValuePropNameForType
 } from '../../utils/FieldUtils';
 
-function Settings(props) {
+function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
 
     const categories = getCategories();
@@ -20,8 +20,8 @@ function Settings(props) {
     const settings = category.settings;
 
     const getSettingValue = setting => {
-        if (setting.id in props.settings.data) {
-            return props.settings.data[setting.id];
+        if (setting.id in props.settings) {
+            return props.settings[setting.id];
         } else {
             return setting.value;
         }
@@ -81,12 +81,12 @@ function Settings(props) {
     );
 }
 
-Settings.propTypes = {
+SettingManager.propTypes = {
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 
 export default withSettings(Form.create({
     name: 'settings',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings.data, props.updateSettings)
-})(Settings));
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings, props.updateSettings)
+})(SettingManager));
