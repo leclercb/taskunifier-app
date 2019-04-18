@@ -129,6 +129,7 @@
 
 .task-grid {
     width: max-content;
+    min-width: 100%;
 }
 
 .selected-list-item {
