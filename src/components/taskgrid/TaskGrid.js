@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd';
 import { InfinityTable } from 'antd-table-infinity';
 import withApp from '../../containers/WithApp';
 import withFields from '../../containers/WithFields';
@@ -67,13 +66,14 @@ function TaskGrid(props) {
         };
     });
 
-    const dummy = false;
+    const dummy = true;
 
     // TODO finish here line 78
     return (
-        <Table
+        <InfinityTable
             rowKey="id"
             className="task-grid"
+            scroll={{ y: 500 }}
             components={components}
             columns={columns}
             dataSource={dummy ? dummyTasks : props.tasks}
