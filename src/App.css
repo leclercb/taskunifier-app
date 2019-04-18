@@ -127,6 +127,10 @@
 
 /* TaskUnifier */
 
+.task-grid {
+    width: max-content;
+}
+
 .selected-list-item {
     background-color: #b8ccbf;
 }

@@ -1,7 +1,6 @@
 ## Todo List
 
 * Task Table
-  * Fix width not respected
   * Fix infinity table
   * Fix draggable row
   * Importance color in style instead of classname

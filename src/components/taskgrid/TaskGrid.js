@@ -73,6 +73,7 @@ function TaskGrid(props) {
     return (
         <Table
             rowKey="id"
+            className="task-grid"
             components={components}
             columns={columns}
             dataSource={dummy ? dummyTasks : props.tasks}
