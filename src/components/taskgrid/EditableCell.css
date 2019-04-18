@@ -12,7 +12,3 @@
     border-radius: 4px;
     padding: 4px 11px;
 }
-
-.task-completed {
-    text-decoration: line-through !important;
-}

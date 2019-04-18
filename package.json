@@ -10,6 +10,7 @@
         "react:start": "BROWSER=none; craco start",
         "react:build": "craco build",
         "react:test": "craco test",
+        "react:deploy": "node server.js",
         "electron:start": "electron .",
         "electron:build": "electron-builder",
         "start": "yarn react:start",
@@ -46,6 +47,7 @@
         "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
         "electron-devtools-installer": "^2.2.4",
+        "express": "^4.16.4",
         "typescript": "^3.4.3"
     },
     "build": {

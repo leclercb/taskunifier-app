@@ -30,14 +30,23 @@ function TaskGrid(props) {
         }
     };
 
-    const handleResize = index => (e, { size }) => {
-        console.log(index, size, e);
+    const handleResize = field => (e, { size }) => {
+        props.updateSettings({
+            ['task_column_width_' + field]: size.width
+        });
     };
 
     const columns = props.fields.map((field, index) => {
+        const settingKey = 'task_column_width_' + field.id;
+        let width = props.settings[settingKey];
+
+        if (!width) {
+            width = getWidthForType(field.type);
+        }
+
         return {
             ...field,
-            width: getWidthForType(field.type),
+            width: width,
             title: field.title,
             dataIndex: field.id,
             key: field.id,
@@ -45,7 +54,7 @@ function TaskGrid(props) {
             render: getRenderForType(field.type),
             onHeaderCell: column => ({
                 width: column.width,
-                onResize: handleResize(index),
+                onResize: handleResize(field.id),
             }),
             onCell: record => ({
                 record,
@@ -77,7 +86,8 @@ function TaskGrid(props) {
                     onSave: onUpdateTask,
                     getFieldType: dataIndex => props.fields.find(field => field.id === dataIndex).type,
                     style: {
-                        backgroundColor: getImportanceColor(record.importance, props.settings)
+                        backgroundColor: getImportanceColor(record.importance, props.settings),
+                        textDecoration: record.completed ? 'line-through' : null
                     }
                 }
             })}
