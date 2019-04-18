@@ -66,7 +66,7 @@ function TaskGrid(props) {
         };
     });
 
-    const dummy = true;
+    const dummy = false;
 
     // TODO finish here line 78
     return (
