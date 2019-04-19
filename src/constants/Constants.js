@@ -14,5 +14,7 @@ export default {
     conditionTreeGroupNotColor: '#ffc8c5',
     conditionTreeGroupNotActiveColor: '#e3afac',
     archivedColor: '#5e666d',
-    defaultTaskTemplateColor: '#ffd632'
+    defaultTaskTemplateColor: '#ffd632',
+    starredColor: '#fcde35',
+    unStarredColor: '#cccccc'
 };

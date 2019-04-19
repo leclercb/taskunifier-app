@@ -10,7 +10,8 @@ function Icon(props) {
                 className={props.className}
                 style={{
                     color: props.color ? props.color : Constants.color,
-                    marginRight: props.text ? 10 : 0
+                    marginRight: props.text ? 10 : 0,
+                    ...(props.style || {})
                 }} />
             {props.text}
         </span>

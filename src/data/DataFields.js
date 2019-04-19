@@ -13,6 +13,17 @@ export function getDefaultFields() {
         },
         {
             static: true,
+            id: 'star',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            state: 'LOADED',
+            title: 'Star',
+            color: '#ffffff',
+            type: 'star'
+        },
+        {
+            static: true,
             id: 'completed',
             refIds: {},
             creationDate: 1554795587825,
@@ -20,7 +31,7 @@ export function getDefaultFields() {
             state: 'LOADED',
             title: 'Completed',
             color: '#ffffff',
-            type: 'checkbox'
+            type: 'boolean'
         },
         {
             static: true,

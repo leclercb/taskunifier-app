@@ -22,7 +22,7 @@ export function getCategories() {
                 {
                     id: "automatic_save",
                     title: "Enable automatic save",
-                    type: 'checkbox',
+                    type: 'boolean',
                     value: true,
                     editable: true
                 },
@@ -64,7 +64,7 @@ export function getCategories() {
                 {
                     id: "automatic_backup",
                     title: "Enable automatic backup",
-                    type: 'checkbox',
+                    type: 'boolean',
                     value: true,
                     editable: true
                 },

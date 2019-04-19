@@ -3,6 +3,7 @@ import { Checkbox, DatePicker, Input, InputNumber, Progress, Select } from 'antd
 import moment from 'moment';
 import { escape } from '../utils/RegexUtils';
 import ColorPicker from '../components/common/ColorPicker';
+import StarCheckbox from '../components/common/StarCheckbox';
 import ContactTitle from '../components/contacts/ContactTitle';
 import ContactSelect from '../components/contacts/ContactSelect';
 import ContextTitle from '../components/contexts/ContextTitle';
@@ -32,7 +33,7 @@ function defaultGetValueFromEvent(e) {
 
 export function getFieldTypes() {
     return [
-        'checkbox',
+        'boolean',
         'color',
         'contact',
         'context',
@@ -43,9 +44,10 @@ export function getFieldTypes() {
         'importance',
         'location',
         'money',
+        'number',
         'priority',
         'progress',
-        'number',
+        'star',
         'status',
         'tags',
         'task-template',
@@ -58,7 +60,7 @@ export function getFieldConfiguration(type, options) {
     let configuration = null;
 
     switch (type) {
-        case 'checkbox': {
+        case 'boolean': {
             configuration = {
                 title: 'Boolean',
                 width: 100,
@@ -689,20 +691,18 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
-        case 'status': {
+        case 'progress': {
             configuration = {
-                title: 'Status',
+                title: 'Progress',
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => (
-                    <StatusTitle statusId={value} />
-                ),
+                render: value => value ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
                 input: props => (
-                    <StatusSelect {...props} />
+                    <InputNumber min={0} max={100} {...props} />
                 ),
                 conditions: [
                     {
@@ -725,18 +725,54 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
-        case 'progress': {
+        case 'star': {
             configuration = {
-                title: 'Progress',
+                title: 'Star',
+                width: 100,
+                alwaysInEdition: true,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'checked',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => <StarCheckbox checked={!!value} />,
+                input: props => (
+                    <StarCheckbox {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue === !!taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equal',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue !== !!taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'status': {
+            configuration = {
+                title: 'Status',
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
+                render: value => (
+                    <StatusTitle statusId={value} />
+                ),
                 input: props => (
-                    <InputNumber min={0} max={100} {...props} />
+                    <StatusSelect {...props} />
                 ),
                 conditions: [
                     {

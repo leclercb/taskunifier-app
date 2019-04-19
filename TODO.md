@@ -1,7 +1,5 @@
 ## Todo List
 
-* Add task statuses
-* Add star
 * Batch add task
 * Task Table
   * Fix infinity table
