@@ -1,6 +1,5 @@
 ## Todo List
 
-* Add contacts
 * Add tags
 * Add task statuses
 * Add task progress

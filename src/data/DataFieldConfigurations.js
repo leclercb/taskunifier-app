@@ -3,6 +3,8 @@ import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
 import moment from 'moment';
 import { escape } from '../utils/RegexUtils';
 import ColorPicker from '../components/common/ColorPicker';
+import ContactTitle from '../components/contacts/ContactTitle';
+import ContactSelect from '../components/contacts/ContactSelect';
 import ContextTitle from '../components/contexts/ContextTitle';
 import ContextSelect from '../components/contexts/ContextSelect';
 import FolderTitle from '../components/folders/FolderTitle';
@@ -28,6 +30,7 @@ export function getFieldTypes() {
     return [
         'checkbox',
         'color',
+        'contact',
         'context',
         'date',
         'datetime',
@@ -66,14 +69,14 @@ export function getFieldConfiguration(type, options) {
                         type: 'equals',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                            return !!conditionValue === !!taskValue;
                         }
                     },
                     {
                         type: 'not_equals',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                            return !!conditionValue !== !!taskValue;
                         }
                     }
                 ],
@@ -94,6 +97,42 @@ export function getFieldConfiguration(type, options) {
                 render: value => <ColorPicker color={value} />,
                 input: props => (
                     <ColorPicker {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equals',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equals',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'contact': {
+            configuration = {
+                title: 'Contact',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <ContactTitle contextId={value} />
+                ),
+                input: props => (
+                    <ContactSelect {...props} />
                 ),
                 conditions: [
                     {

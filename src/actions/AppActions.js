@@ -1,15 +1,16 @@
 import uuid from 'uuid';
 import moment from 'moment';
-import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
+import { loadContactsFromFile, saveContactsToFile, cleanContacts } from './ContactActions';
 import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './ContextActions';
 import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
 import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
+import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
+import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
+import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
 import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates } from './TaskTemplateActions';
 import { updateProcess } from './StatusActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
-import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
-import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { createDirectory, getUserDataPath, join, deleteDirectory } from '../utils/ActionUtils';
 import { getBackups } from '../utils/BackupUtils';
 
@@ -31,6 +32,7 @@ const _loadData = (path, options = {}) => {
 
             Promise.all([
                 dispatch(loadSettingsFromFile(join(path, 'settings.json'))),
+                dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
                 dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
                 dispatch(loadFieldsFromFile(join(path, 'fields.json'))),
                 dispatch(loadFiltersFromFile(join(path, 'filters.json'))),
@@ -82,6 +84,7 @@ const _saveData = (path, options = { clean: false, message: null }) => {
             const saveAllFn = () => {
                 Promise.all([
                     dispatch(saveSettingsToFile(join(path, 'settings.json'), state.settings)),
+                    dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts)),
                     dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
                     dispatch(saveFieldsToFile(join(path, 'fields.json'), state.fields)),
                     dispatch(saveFiltersToFile(join(path, 'filters.json'), state.filters)),
@@ -131,6 +134,7 @@ export const cleanData = () => {
             }));
 
             Promise.all([
+                dispatch(cleanContacts()),
                 dispatch(cleanContexts()),
                 dispatch(cleanFields()),
                 dispatch(cleanFilters()),

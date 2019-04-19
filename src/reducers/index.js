@@ -7,6 +7,7 @@ import { getDefaultFields } from '../data/DataFields';
 
 export default combineReducers({
     app: App(),
+    contacts: Objects('contacts'),
     contexts: Objects('contexts'),
     fields: Objects('fields', getDefaultFields()),
     filters: Objects('filters'),

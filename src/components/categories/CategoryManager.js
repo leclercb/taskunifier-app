@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
+import ContactManager from '../contacts/ContactManager';
 import ContextManager from '../contexts/ContextManager';
 import FolderManager from '../folders/FolderManager';
 import GoalManager from '../goals/GoalManager';
@@ -20,6 +21,9 @@ function CategoryManager(props) {
 
     return (
         <Tabs activeKey={category} onChange={onActiveKeyChange} animated={false}>
+        <Tabs.TabPane tab="Contacts" key="contacts">
+            <ContactManager contactId={category === 'contacts' ? objectId : null} onContactSelection={onObjectSelection} />
+        </Tabs.TabPane>
             <Tabs.TabPane tab="Contexts" key="contexts">
                 <ContextManager contextId={category === 'contexts' ? objectId : null} onContextSelection={onObjectSelection} />
             </Tabs.TabPane>
