@@ -15,6 +15,8 @@ import LocationTitle from '../components/locations/LocationTitle';
 import LocationSelect from '../components/locations/LocationSelect';
 import PriorityTitle from '../components/priorities/PriorityTitle';
 import PrioritySelect from '../components/priorities/PrioritySelect';
+import TagsTitle from '../components/tags/TagsTitle';
+import TagsSelect from '../components/tags/TagsSelect';
 import { TaskTemplateTitle } from '../components/tasktemplates/TaskTemplateTitle';
 import TaskTemplateSelect from '../components/tasktemplates/TaskTemplateSelect';
 
@@ -41,6 +43,7 @@ export function getFieldTypes() {
         'money',
         'priority',
         'number',
+        'tags',
         'task-template',
         'text',
         'textarea'
@@ -598,6 +601,42 @@ export function getFieldConfiguration(type, options) {
                 ),
                 input: props => (
                     <PrioritySelect {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equals',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equals',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'tags': {
+            configuration = {
+                title: 'Tags',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <TagsTitle tagIds={value} />
+                ),
+                input: props => (
+                    <TagsSelect {...props} />
                 ),
                 conditions: [
                     {

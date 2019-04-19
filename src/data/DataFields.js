@@ -57,6 +57,17 @@ export function getDefaultFields() {
         },
         {
             static: true,
+            id: 'tags',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            status: 'LOADED',
+            title: 'Tags',
+            color: '#ffffff',
+            type: 'tags'
+        },
+        {
+            static: true,
             id: 'context',
             refIds: {},
             creationDate: 1554795587825,
