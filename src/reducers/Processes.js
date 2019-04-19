@@ -1,11 +1,11 @@
-const Status = () => (state = {
+const Processes = () => (state = {
     busy: false,
     visible: false,
     processes: [],
     notifications: []
 }, action) => {
     switch (action.type) {
-        case 'SET_STATUS_VISIBLE': {
+        case 'SET_PROCESSES_VISIBLE': {
             return {
                 ...state,
                 visible: action.visible,
@@ -32,7 +32,7 @@ const Status = () => (state = {
                 newState.processes.push(process);
             }
 
-            if (process.notify && (process.status === 'COMPLETED' || process.status === 'ERROR')) {
+            if (process.notify && (process.state === 'COMPLETED' || process.state === 'ERROR')) {
                 newState.notifications.push({
                     id: action.generateNotificationId(),
                     process: {
@@ -41,10 +41,10 @@ const Status = () => (state = {
                 });
             }
 
-            newState.busy = !!newState.processes.find(process => process.status === 'RUNNING')
-            newState.visible = !!newState.processes.find(process => process.status === 'ERROR');
+            newState.busy = !!newState.processes.find(process => process.state === 'RUNNING')
+            newState.visible = !!newState.processes.find(process => process.state === 'ERROR');
 
-            if (!newState.processes.find(process => process.status !== 'COMPLETED')) {
+            if (!newState.processes.find(process => process.state !== 'COMPLETED')) {
                 newState.processes = [];
             }
 
@@ -65,4 +65,4 @@ const Status = () => (state = {
     }
 }
 
-export default Status;
+export default Processes;

@@ -4,7 +4,7 @@
         "refIds": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Location Test 1",
         "color": "#33cc33"
     },
@@ -13,7 +13,7 @@
         "refIds": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Location Test 2",
         "color": "#ff9933"
     },
@@ -22,7 +22,7 @@
         "refIds": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Location Test 3",
         "color": "#ff66ff"
     }

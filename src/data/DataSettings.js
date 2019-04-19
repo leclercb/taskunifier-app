@@ -246,82 +246,82 @@ export function getCategories() {
             ]
         },
         {
-            id: 'task_status_colors',
+            id: 'status_colors',
             title: 'Status Colors',
             icon: 'paint-roller',
             settings: [
                 {
-                    id: "task_status_active",
+                    id: "status_active",
                     title: "Status Active",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_cancelled",
+                    id: "status_cancelled",
                     title: "Status Cancelled",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_delegated",
+                    id: "status_delegated",
                     title: "Status Delegated",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_hold",
+                    id: "status_hold",
                     title: "Status Hold",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_next_action",
+                    id: "status_next_action",
                     title: "Status Next Action",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_none",
+                    id: "status_none",
                     title: "Status None",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_planning",
+                    id: "status_planning",
                     title: "Status Planning",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_postponed",
+                    id: "status_postponed",
                     title: "Status Postponed",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_reference",
+                    id: "status_reference",
                     title: "Status Reference",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_someday",
+                    id: "status_someday",
                     title: "Status Someday",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "task_status_waiting",
+                    id: "status_waiting",
                     title: "Status Waiting",
                     type: 'color',
                     value: '#ffffff',

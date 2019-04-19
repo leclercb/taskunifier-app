@@ -1,4 +1,4 @@
-export function getTaskStatuses() {
+export function getStatuses() {
     return [
         {
             id: 'active',

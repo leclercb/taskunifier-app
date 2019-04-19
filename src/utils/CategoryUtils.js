@@ -1,5 +1,5 @@
 export function filterObjects(objects) {
-    return objects.filter(object => object.status === 'LOADED' || object.status === 'TO_UPDATE');
+    return objects.filter(object => object.state === 'LOADED' || object.state === 'TO_UPDATE');
 }
 
 export function filterArchivedObjects(objects) {

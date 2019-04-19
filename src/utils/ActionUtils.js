@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import { updateProcess } from '../actions/StatusActions';
+import { updateProcess } from '../actions/ProcessActions';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -14,14 +14,14 @@ export const loadFromFile = (property, file, onData) => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: `Load "${property}" from file`
             }));
 
             if (!fs.existsSync(file)) {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'COMPLETED'
+                    state: 'COMPLETED'
                 }));
 
                 onData(null).then(() => resolve()).catch(() => reject());
@@ -30,7 +30,7 @@ export const loadFromFile = (property, file, onData) => {
                     if (err) {
                         dispatch(updateProcess({
                             id: processId,
-                            status: 'ERROR',
+                            state: 'ERROR',
                             error: err.toString()
                         }));
 
@@ -38,7 +38,7 @@ export const loadFromFile = (property, file, onData) => {
                     } else {
                         dispatch(updateProcess({
                             id: processId,
-                            status: 'COMPLETED'
+                            state: 'COMPLETED'
                         }));
 
                         onData(JSON.parse(data)).then(() => resolve()).catch(() => reject());
@@ -56,7 +56,7 @@ export const saveToFile = (property, file, data) => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: `Save "${property}" to file`
             }));
 
@@ -64,7 +64,7 @@ export const saveToFile = (property, file, data) => {
                 if (err) {
                     dispatch(updateProcess({
                         id: processId,
-                        status: 'ERROR',
+                        state: 'ERROR',
                         error: err.toString()
                     }));
 
@@ -72,7 +72,7 @@ export const saveToFile = (property, file, data) => {
                 } else {
                     dispatch(updateProcess({
                         id: processId,
-                        status: 'COMPLETED'
+                        state: 'COMPLETED'
                     }));
 
                     resolve();

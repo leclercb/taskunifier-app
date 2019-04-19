@@ -103,7 +103,7 @@ export function getGeneralFilters() {
             icon: 'chevron-circle-right',
             condition: {
                 id: '1',
-                field: 'taskStatus',
+                field: 'status',
                 type: 'equal',
                 value: 'next_action'
             }

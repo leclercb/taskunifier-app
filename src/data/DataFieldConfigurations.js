@@ -15,8 +15,8 @@ import LocationTitle from '../components/locations/LocationTitle';
 import LocationSelect from '../components/locations/LocationSelect';
 import PriorityTitle from '../components/priorities/PriorityTitle';
 import PrioritySelect from '../components/priorities/PrioritySelect';
-import TaskStatusTitle from '../components/taskstatuses/TaskStatusTitle';
-import TaskStatusSelect from '../components/taskstatuses/TaskStatusSelect';
+import StatusTitle from '../components/statuses/StatusTitle';
+import StatusSelect from '../components/statuses/StatusSelect';
 import TagsTitle from '../components/tags/TagsTitle';
 import TagsSelect from '../components/tags/TagsSelect';
 import { TaskTemplateTitle } from '../components/tasktemplates/TaskTemplateTitle';
@@ -46,7 +46,7 @@ export function getFieldTypes() {
         'priority',
         'progress',
         'number',
-        'task-status',
+        'status',
         'tags',
         'task-template',
         'text',
@@ -689,7 +689,7 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
-        case 'task-status': {
+        case 'status': {
             configuration = {
                 title: 'Status',
                 width: 200,
@@ -699,10 +699,10 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: value => (
-                    <TaskStatusTitle taskStatusId={value} />
+                    <StatusTitle statusId={value} />
                 ),
                 input: props => (
-                    <TaskStatusSelect {...props} />
+                    <StatusSelect {...props} />
                 ),
                 conditions: [
                     {

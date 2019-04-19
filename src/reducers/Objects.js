@@ -29,7 +29,7 @@ const Objects = (property, defaultObjects = [], onUpdate = (object, oldObject) =
                 refIds: {},
                 creationDate: action.creationDate,
                 updateDate: action.creationDate,
-                status: 'LOADED'
+                state: 'LOADED'
             };
 
             objects.push(newObject);
@@ -59,7 +59,7 @@ const Objects = (property, defaultObjects = [], onUpdate = (object, oldObject) =
                 ...action.object,
                 creationDate: objects[index].creationDate,
                 updateDate: action.updateDate,
-                status: 'TO_UPDATE'
+                state: 'TO_UPDATE'
             };
 
             onUpdate(objects[index], oldObject);
@@ -75,7 +75,7 @@ const Objects = (property, defaultObjects = [], onUpdate = (object, oldObject) =
 
             objects.forEach(object => {
                 if (objectIds.includes(object.id)) {
-                    object.status = action.immediate === true ? 'DELETED' : 'TO_DELETE';
+                    object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';
                 }
             });
 
@@ -86,7 +86,7 @@ const Objects = (property, defaultObjects = [], onUpdate = (object, oldObject) =
                 ...state
             ];
 
-            return objects.filter(object => object.status !== 'DELETED');
+            return objects.filter(object => object.state !== 'DELETED');
         }
         default:
             return state;

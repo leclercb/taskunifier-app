@@ -1,9 +1,9 @@
 import uuid from 'uuid';
 
-export const setStatusVisible = visible => {
+export const setProcessesVisible = visible => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SET_STATUS_VISIBLE',
+            type: 'SET_PROCESSES_VISIBLE',
             visible: visible
         });
 

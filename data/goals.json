@@ -4,7 +4,7 @@
         "refIds": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Goal Test 1",
         "color": "#33cc33",
         "archived": false
@@ -14,7 +14,7 @@
         "refIds": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Goal Test 2",
         "color": "#ff9933",
         "archived": true
@@ -24,7 +24,7 @@
         "refIds": {},
         "creationDate": 1554795587911,
         "updateDate": 1554795587911,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Goal Test 3",
         "color": "#ff66ff",
         "archived": false

@@ -118,7 +118,7 @@ function createDummyTasks() {
             refIds: {},
             creationDate: 1554795588054,
             updateDate: 1554897001063,
-            status: 'TO_UPDATE',
+            state: 'TO_UPDATE',
             title: 'Task Dummy ' + i,
             color: '#ffffff',
             completed: false,

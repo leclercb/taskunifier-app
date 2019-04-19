@@ -1,27 +1,27 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import withStatus from '../../containers/WithStatus';
-import Status from './Status';
+import withProcesses from '../../containers/WithProcesses';
+import ProcessList from './ProcessList';
 import Icon from '../common/Icon';
 
-function ModalStatus(props) {
+function ModalProcessManager(props) {
     const onOk = () => {
-        props.setStatusVisible(false);
+        props.setProcessesVisible(false);
     }
 
     return (
         <Modal
             title={<Icon icon="cogs" text="Progress" />}
-            visible={props.status.visible}
+            visible={props.processes.visible}
             closable={false}
             footer={
                 <Button onClick={onOk}>
                     Close
                 </Button>
             }>
-            <Status />
+            <ProcessList />
         </Modal>
     );
 }
 
-export default withStatus(ModalStatus);
+export default withProcesses(ModalProcessManager);

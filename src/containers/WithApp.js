@@ -14,7 +14,7 @@ import {
     setSettingManagerOptions
 } from '../actions/AppActions';
 import { updateSettings } from '../actions/SettingActions';
-import { clearProcesses, setStatusVisible } from '../actions/StatusActions';
+import { clearProcesses, setProcessesVisible } from '../actions/ProcessActions';
 import { isValidLicense } from '../utils/LicenseUtils';
 
 function withApp(Component) {
@@ -44,7 +44,7 @@ function withApp(Component) {
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
         setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
-        setStatusVisible: visible => dispatch(setStatusVisible(visible)),
+        setProcessesVisible: visible => dispatch(setProcessesVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
         updateSettings: settings => dispatch(updateSettings(settings))
     });

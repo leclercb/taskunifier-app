@@ -9,7 +9,7 @@ import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
 import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates } from './TaskTemplateActions';
-import { updateProcess } from './StatusActions';
+import { updateProcess } from './ProcessActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { createDirectory, getUserDataPath, join, deleteDirectory } from '../utils/ActionUtils';
 import { getBackups } from '../utils/BackupUtils';
@@ -25,7 +25,7 @@ const _loadData = (path, options = {}) => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: 'Load database',
                 notify: true
             }));
@@ -44,14 +44,14 @@ const _loadData = (path, options = {}) => {
             ]).then(() => {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'COMPLETED'
+                    state: 'COMPLETED'
                 }, true));
 
                 resolve(getState());
             }).catch(() => {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'ERROR'
+                    state: 'ERROR'
                 }));
 
                 reject();
@@ -74,7 +74,7 @@ const _saveData = (path, options = { clean: false, message: null }) => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: options.message ? options.message : 'Save database',
                 notify: true
             }));
@@ -96,14 +96,14 @@ const _saveData = (path, options = { clean: false, message: null }) => {
                 ]).then(() => {
                     dispatch(updateProcess({
                         id: processId,
-                        status: 'COMPLETED'
+                        state: 'COMPLETED'
                     }));
 
                     resolve();
                 }).catch(() => {
                     dispatch(updateProcess({
                         id: processId,
-                        status: 'ERROR'
+                        state: 'ERROR'
                     }));
 
                     reject();
@@ -128,7 +128,7 @@ export const cleanData = () => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: 'Clean database',
                 notify: true
             }));
@@ -146,14 +146,14 @@ export const cleanData = () => {
             ]).then(() => {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'COMPLETED'
+                    state: 'COMPLETED'
                 }));
 
                 resolve();
             }).catch(() => {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'ERROR'
+                    state: 'ERROR'
                 }));
 
                 reject();
@@ -189,7 +189,7 @@ export const deleteBackup = date => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`
             }));
 
@@ -198,14 +198,14 @@ export const deleteBackup = date => {
 
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'COMPLETED'
+                    state: 'COMPLETED'
                 }));
 
                 resolve();
             } catch (err) {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'ERROR',
+                    state: 'ERROR',
                     error: err.toString()
                 }));
 
@@ -228,7 +228,7 @@ export const cleanBackups = () => {
 
             dispatch(updateProcess({
                 id: processId,
-                status: 'RUNNING',
+                state: 'RUNNING',
                 title: 'Clean backups',
                 notify: true
             }));
@@ -243,14 +243,14 @@ export const cleanBackups = () => {
             Promise.all(promises).then(() => {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'COMPLETED'
+                    state: 'COMPLETED'
                 }));
 
                 resolve();
             }).catch(() => {
                 dispatch(updateProcess({
                     id: processId,
-                    status: 'ERROR'
+                    state: 'ERROR'
                 }));
 
                 reject();

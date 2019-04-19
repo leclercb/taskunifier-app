@@ -1,26 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { clearProcesses, setStatusVisible, deleteNotification } from '../actions/StatusActions';
+import PropTypes from 'prop-types';
+import { getStatuses } from '../data/DataStatuses';
 
-function withStatus(Component) {
+function withStatus(Component, propertyId = 'statusId') {
     function WithStatus(props) {
-        return <Component {...props} />
+        const status = getStatuses().find(property => property.id === props[propertyId]);
+
+        return <Component {...props} status={status} />
     }
 
-    const mapStateToProps = state => ({
-        status: state.status
-    });
+    WithStatus.propTypes = {
+        [propertyId]: PropTypes.string
+    }
 
-    const mapDispatchToProps = dispatch => ({
-        setStatusVisible: visible => dispatch(setStatusVisible(visible)),
-        clearProcesses: () => dispatch(clearProcesses()),
-        deleteNotification: notificationId => dispatch(deleteNotification(notificationId))
-    });
-
-    return connect(
-        mapStateToProps,
-        mapDispatchToProps
-    )(WithStatus);
+    return WithStatus;
 }
 
 export default withStatus;

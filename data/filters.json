@@ -4,7 +4,7 @@
         "refIds": {},
         "creationDate": 1554795587861,
         "updateDate": 1554795587861,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Filter Test 1",
         "color": "#33cc33",
         "condition": {
@@ -31,7 +31,7 @@
         "refIds": {},
         "creationDate": 1554795587861,
         "updateDate": 1554795587861,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Filter Test 2",
         "color": "#ff9933"
     },
@@ -40,7 +40,7 @@
         "refIds": {},
         "creationDate": 1554795587861,
         "updateDate": 1554795587861,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Filter Test 3",
         "color": "#ff66ff"
     }

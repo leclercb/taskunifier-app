@@ -6,7 +6,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Title',
             color: '#ffffff',
             type: 'text'
@@ -17,7 +17,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Completed',
             color: '#ffffff',
             type: 'checkbox'
@@ -28,7 +28,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Progress',
             color: '#ffffff',
             type: 'progress'
@@ -39,7 +39,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Priority',
             color: '#ffffff',
             type: 'priority'
@@ -50,21 +50,21 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Importance',
             color: '#ffffff',
             type: 'importance'
         },
         {
             static: true,
-            id: 'taskStatus',
+            id: 'status',
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Status',
             color: '#ffffff',
-            type: 'task-status'
+            type: 'status'
         },
         {
             static: true,
@@ -72,7 +72,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Due date',
             color: '#ffffff',
             type: 'date'
@@ -83,7 +83,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Tags',
             color: '#ffffff',
             type: 'tags'
@@ -94,7 +94,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Context',
             color: '#ffffff',
             type: 'context'
@@ -105,7 +105,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Folder',
             color: '#ffffff',
             type: 'folder'
@@ -116,7 +116,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Goal',
             color: '#ffffff',
             type: 'goal'
@@ -127,7 +127,7 @@ export function getDefaultFields() {
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
-            status: 'LOADED',
+            state: 'LOADED',
             title: 'Location',
             color: '#ffffff',
             type: 'location'

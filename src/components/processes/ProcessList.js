@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'antd';
-import withStatus from '../../containers/WithStatus';
+import withProcesses from '../../containers/WithProcesses';
 import Icon from '../common/Icon';
 import Constants from '../../constants/Constants';
 
-function Status(props) {
-    const getIconFromStatus = status => {
-        switch (status) {
+function ProcessList(props) {
+    const getIconFromState = state => {
+        switch (state) {
             case 'RUNNING':
                 return 'spinner';
             case 'COMPLETED':
@@ -18,8 +18,8 @@ function Status(props) {
         }
     }
 
-    const getColorFromStatus = status => {
-        switch (status) {
+    const getColorFromState = state => {
+        switch (state) {
             case 'RUNNING':
                 return Constants.processRunningColor;
             case 'COMPLETED':
@@ -32,13 +32,13 @@ function Status(props) {
 
     return (
         <React.Fragment>
-            {props.status.processes.map(process =>
+            {props.processes.processes.map(process =>
                 <div key={process.id}>
                     <Icon
                         text={process.title}
-                        icon={getIconFromStatus(process.status)}
-                        color={getColorFromStatus(process.status)} />
-                    {process.status === 'ERROR' && process.error ? (
+                        icon={getIconFromState(process.state)}
+                        color={getColorFromState(process.state)} />
+                    {process.state === 'ERROR' && process.error ? (
                         <Alert type="error" message={process.error} showIcon={true} />
                     ) : null}
                 </div>
@@ -47,8 +47,8 @@ function Status(props) {
     );
 }
 
-Status.propTypes = {
-    status: PropTypes.object.isRequired
+ProcessList.propTypes = {
+    processes: PropTypes.object.isRequired
 };
 
-export default withStatus(Status);
+export default withProcesses(ProcessList);

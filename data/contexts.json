@@ -4,7 +4,7 @@
         "refIds": {},
         "creationDate": 1554795587731,
         "updateDate": 1554807923127,
-        "status": "TO_UPDATE",
+        "state": "TO_UPDATE",
         "title": "Context Test 1",
         "color": "#33b6cc"
     },
@@ -13,7 +13,7 @@
         "refIds": {},
         "creationDate": 1554795587731,
         "updateDate": 1554795587731,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Context Test 2",
         "color": "#ff9933"
     },
@@ -22,7 +22,7 @@
         "refIds": {},
         "creationDate": 1554795587731,
         "updateDate": 1554795587731,
-        "status": "LOADED",
+        "state": "LOADED",
         "title": "Context Test 3",
         "color": "#ff66ff"
     }

@@ -6,6 +6,6 @@ export const getPriorityColor = (priority, settings) => {
     return settings['priority_' + (priority ? priority : 'negative')];
 }
 
-export const getTaskStatusColor = (status, settings) => {
-    return settings['task_status_' + (status ? status : 'negative')];
+export const getStatusColor = (status, settings) => {
+    return settings['status_' + (status ? status : 'negative')];
 }

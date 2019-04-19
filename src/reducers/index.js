@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import reduceReducers from 'reduce-reducers';
 import App from './App';
 import Objects from './Objects';
-import Status from './Status';
+import Processes from './Processes';
 import Settings from './Settings';
 import Tasks from './Tasks';
 import { getDefaultFields } from '../data/DataFields';
@@ -20,5 +20,5 @@ export default combineReducers({
     tasks: reduceReducers([], Objects('tasks'), Tasks()),
     taskTemplates: Objects('taskTemplates'),
     settings: Settings(),
-    status: Status()
+    processes: Processes()
 });
