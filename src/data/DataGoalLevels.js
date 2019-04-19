@@ -3,17 +3,17 @@ export function getGoalLevels() {
         {
             id: 'short_term',
             title: 'Short Term',
-            color: '#f0f7f7'
+            color: '#d1e1ff'
         },
         {
             id: 'long_term',
             title: 'Long Term',
-            color: '#00ff00'
+            color: '#71b6f2'
         },
         {
             id: 'life_time',
             title: 'Life Time',
-            color: '#ffff00'
+            color: '#0459f7'
         }
     ]
 }
