@@ -7,6 +7,8 @@ import withTags from '../../containers/WithTags';
 function TagsSelect(props) {
     const { tags, ...restProps } = props;
 
+    restProps.value = props.tags.find(tag => tag.id === restProps.value) ? restProps.value : null;
+
     return (
         <Select mode="tags" allowClear={true} {...restProps}>
             {tags.map(tag => (

@@ -8,6 +8,8 @@ import Icon from '../common/Icon';
 function GoalSelect(props) {
     const { goals, ...restProps } = props;
 
+    restProps.value = props.goals.find(goal => goal.id === restProps.value) ? restProps.value : null;
+
     return (
         <Select allowClear={true} {...restProps}>
             {goals.map(goal => (
@@ -23,4 +25,4 @@ GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType).isRequired
 }
 
-export default withGoals(GoalSelect);
+export default withGoals(GoalSelect, { filterArchived: true });

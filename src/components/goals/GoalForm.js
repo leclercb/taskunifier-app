@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Checkbox } from 'antd';
+import { Form, Input, Checkbox, Select } from 'antd';
 import ColorPicker from '../common/ColorPicker';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
+import { getGoalLevels } from '../../data/DataGoalLevels';
+import GoalSelect from './GoalSelect';
+import Icon from '../common/Icon';
 
 function GoalForm(props) {
     const { getFieldDecorator } = props.form;
@@ -38,6 +41,33 @@ function GoalForm(props) {
                     ]
                 })(
                     <ColorPicker />
+                )}
+            </Form.Item>
+            <Form.Item label="Level">
+                {getFieldDecorator('level', {
+                    initialValue: props.goal.level,
+                    rules: [
+                        {
+                            required: true,
+                            message: 'The level is required',
+                        }
+                    ]
+                })(
+                    <Select>
+                        {getGoalLevels().map(level => (
+                            <Select.Option key={level.id} value={level.id}>
+                                <Icon icon="circle" color={level.color} text={level.title} />
+                            </Select.Option>
+                        ))}
+                    </Select>
+                )}
+            </Form.Item>
+            <Form.Item label="Contributes To">
+                {getFieldDecorator('contributesTo', {
+                    initialValue: props.goal.contributesTo,
+                    rules: []
+                })(
+                    <GoalSelect excludeIds={[props.goal.id]} />
                 )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>

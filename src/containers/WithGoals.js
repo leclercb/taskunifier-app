@@ -8,7 +8,7 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
         return <Component {...props} />
     }
 
-    const mapStateToProps = state => {
+    const mapStateToProps = (state, ownProps) => {
         if (options && options.actionsOnly === true) {
             return {};
         }
@@ -17,6 +17,10 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
 
         if (options && options.filterArchived === true) {
             goals = filterArchivedObjects(goals);
+        }
+
+        if ('excludeIds' in ownProps) {
+            goals = goals.filter(goal => !ownProps.excludeIds.includes(goal.id));
         }
 
         return {

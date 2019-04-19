@@ -8,6 +8,8 @@ import Icon from '../common/Icon';
 function LocationSelect(props) {
     const { locations, ...restProps } = props;
 
+    restProps.value = props.locations.find(location => location.id === restProps.value) ? restProps.value : null;
+
     return (
         <Select allowClear={true} {...restProps}>
             {locations.map(location => (

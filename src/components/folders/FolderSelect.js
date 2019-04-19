@@ -8,6 +8,8 @@ import Icon from '../common/Icon';
 function FolderSelect(props) {
     const { folders, ...restProps } = props;
 
+    restProps.value = props.folders.find(folder => folder.id === restProps.value) ? restProps.value : null;
+
     return (
         <Select allowClear={true} {...restProps}>
             {folders.map(folder => (
@@ -23,4 +25,4 @@ FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType).isRequired
 }
 
-export default withFolders(FolderSelect);
+export default withFolders(FolderSelect, { filterArchived: true });
