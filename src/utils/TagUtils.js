@@ -25,7 +25,7 @@ export const getTagsFromTasks = tasks => {
 }
 
 export const updateTag = (task, tagId, newTagId) => {
-    if (task.tags) {
+    if (!task.tags) {
         return;
     }
 
@@ -34,7 +34,7 @@ export const updateTag = (task, tagId, newTagId) => {
 }
 
 export const deleteTag = (task, tagId) => {
-    if (task.tags) {
+    if (!task.tags) {
         return;
     }
 

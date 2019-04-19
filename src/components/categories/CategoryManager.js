@@ -6,6 +6,7 @@ import ContextManager from '../contexts/ContextManager';
 import FolderManager from '../folders/FolderManager';
 import GoalManager from '../goals/GoalManager';
 import LocationManager from '../locations/LocationManager';
+import TagManager from '../tags/TagManager';
 
 function CategoryManager(props) {
     const category = props.category;
@@ -35,6 +36,9 @@ function CategoryManager(props) {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Locations" key="locations">
                 <LocationManager locationId={category === 'locations' ? objectId : null} onLocationSelection={onObjectSelection} />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Tags" key="tags">
+                <TagManager tagId={category === 'tags' ? objectId : null} onTagSelection={onObjectSelection} />
             </Tabs.TabPane>
         </Tabs>
     );

@@ -28,12 +28,11 @@ export const cleanTasks = () => {
     return cleanObjects('tasks');
 };
 
-export const updateTag = (tagId, newTagId) => {
+export const updateTag = (tag) => {
     return (dispatch, getState) => {
         dispatch({
             type: 'UPDATE_TAG',
-            tagId: tagId,
-            newTagId: newTagId
+            tag: tag
         });
 
         return Promise.resolve();

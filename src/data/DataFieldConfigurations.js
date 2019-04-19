@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
+import { Checkbox, DatePicker, Input, InputNumber, Progress, Select } from 'antd';
 import moment from 'moment';
 import { escape } from '../utils/RegexUtils';
 import ColorPicker from '../components/common/ColorPicker';
@@ -42,6 +42,7 @@ export function getFieldTypes() {
         'location',
         'money',
         'priority',
+        'progress',
         'number',
         'tags',
         'task-template',
@@ -554,6 +555,9 @@ export function getFieldConfiguration(type, options) {
             break;
         }
         case 'number': {
+            const min = options && options.min ? options.min : -Infinity;
+            const max = options && options.max ? options.max : Infinity;
+
             configuration = {
                 title: 'Number',
                 width: 150,
@@ -564,7 +568,54 @@ export function getFieldConfiguration(type, options) {
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <InputNumber {...props} />
+                    <InputNumber min={min} max={max} {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equals',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equals',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: [
+                    {
+                        id: 'min',
+                        title: 'Minimum',
+                        type: 'number'
+                    },
+                    {
+                        id: 'max',
+                        title: 'Maximum',
+                        type: 'number'
+                    }
+                ]
+            };
+
+            break;
+        }
+        case 'priority': {
+            configuration = {
+                title: 'Priority',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <PriorityTitle priorityId={value} />
+                ),
+                input: props => (
+                    <PrioritySelect {...props} />
                 ),
                 conditions: [
                     {
@@ -587,20 +638,18 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
-        case 'priority': {
+        case 'progress': {
             configuration = {
-                title: 'Priority',
+                title: 'Progress',
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => (
-                    <PriorityTitle priorityId={value} />
-                ),
+                render: value => value ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
                 input: props => (
-                    <PrioritySelect {...props} />
+                    <InputNumber min={0} max={100} {...props} />
                 ),
                 conditions: [
                     {

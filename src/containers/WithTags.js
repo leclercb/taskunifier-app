@@ -25,8 +25,8 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
     };
 
     const mapDispatchToProps = dispatch => ({
-        updateTag: (tagId, newTagId) => dispatch(updateTag(tagId, newTagId)),
-        deleteTag: tagId => dispatch(deleteTag(tagId))
+        updateTag: tag => dispatch(updateTag(tag)),
+        deleteTag: tag => dispatch(deleteTag(tag))
     });
 
     return connect(

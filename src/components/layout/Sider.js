@@ -29,11 +29,13 @@ function Sider(props) {
 
     const createCategorySubMenu = (text, icon, onAdd) => {
         return (
-            <LeftRight right={<Icon
-                icon="plus"
-                color={Constants.fadeColor}
-                className="object-actions"
-                onClick={() => onAdd()} />}>
+            <LeftRight right={onAdd ? (
+                <Icon
+                    icon="plus"
+                    color={Constants.fadeColor}
+                    className="object-actions"
+                    onClick={() => onAdd()} />
+            ) : null}>
                 <Icon icon={icon} text={text} />
             </LeftRight>
         );
@@ -42,12 +44,16 @@ function Sider(props) {
     const createObjectContextMenu = (object, onAdd, onEdit, onDelete) => {
         return (
             <RCMenu id={'menu_' + object.id}>
-                <RCItem onClick={() => onAdd()}>
-                    <Icon icon="plus" text="Add" />
-                </RCItem>
-                <RCItem onClick={() => onEdit()}>
-                    <Icon icon="edit" text="Edit" />
-                </RCItem>
+                {onAdd ? (
+                    <RCItem onClick={() => onAdd()}>
+                        <Icon icon="plus" text="Add" />
+                    </RCItem>
+                ) : null}
+                {onEdit ? (
+                    <RCItem onClick={() => onEdit()}>
+                        <Icon icon="edit" text="Edit" />
+                    </RCItem>
+                ) : null}
             </RCMenu>
         );
     }
@@ -206,7 +212,13 @@ function Sider(props) {
                         () => editObject('locations', location.id),
                         () => props.deleteLocation(location.id)))}
                 </Menu.SubMenu>
-                <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', () => { })}>
+                <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', null)}>
+                    {props.tags.map(tag => createObjectMenuItem(
+                        tag,
+                        createFilterForObject(tag, 'tags'),
+                        null,
+                        () => editObject('tags', tag.id),
+                        () => props.deleteTag(tag.id)))}
                 </Menu.SubMenu>
                 <Menu.SubMenu key="filters" title={createCategorySubMenu('Filters', 'filter', () => addFilter())}>
                     {props.filters.map(filter => createObjectMenuItem(
@@ -245,6 +257,7 @@ export default withApp(withObjects(Sider, {
     includeFolders: true,
     includeGoals: true,
     includeLocations: true,
+    includeTags: true,
     filterArchivedFolders: true,
     filterArchivedGoals: true
 }));

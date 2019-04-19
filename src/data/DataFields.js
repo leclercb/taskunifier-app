@@ -24,6 +24,17 @@ export function getDefaultFields() {
         },
         {
             static: true,
+            id: 'progress',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            status: 'LOADED',
+            title: 'Progress',
+            color: '#ffffff',
+            type: 'progress'
+        },
+        {
+            static: true,
             id: 'priority',
             refIds: {},
             creationDate: 1554795587825,

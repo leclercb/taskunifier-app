@@ -8,7 +8,7 @@ const Tasks = () => (state = [], action) => {
             ];
 
             tasks.forEach(task => {
-                updateTag(task, action.tagId, action.newTagId);
+                updateTag(task, action.tag.id, action.tag.title);
             });
 
             return tasks;

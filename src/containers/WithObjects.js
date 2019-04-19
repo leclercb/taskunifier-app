@@ -6,7 +6,9 @@ import { addFilter, updateFilter, deleteFilter } from '../actions/FilterActions'
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
+import { updateTag, deleteTag } from '../actions/TaskActions';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
+import { getTagsFromTasks } from '../utils/TagUtils';
 
 function withObjects(Component, options = {
     includeActions: false,
@@ -15,6 +17,7 @@ function withObjects(Component, options = {
     includeFolders: false,
     includeGoals: false,
     includeLocations: false,
+    includeTags: false,
     includeTaskTemplates: false,
     filterArchivedFolders: false,
     filterArchivedGoals: false
@@ -54,6 +57,10 @@ function withObjects(Component, options = {
             data.locations = filterObjects(state.locations);
         }
 
+        if (options && options.includeTags === true) {
+            data.tags = getTagsFromTasks(state.tasks);
+        }
+
         if (options && options.includeTaskTemplates === true) {
             data.taskTemplates = filterObjects(state.taskTemplates);
         }
@@ -82,6 +89,8 @@ function withObjects(Component, options = {
             addLocation: location => dispatch(addLocation(location)),
             updateLocation: location => dispatch(updateLocation(location)),
             deleteLocation: locationId => dispatch(deleteLocation(locationId)),
+            updateTag: (tagId, newTagId) => dispatch(updateTag(tagId, newTagId)),
+            deleteTag: tagId => dispatch(deleteTag(tagId)),
             addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),
             updateTaskTemplate: taskTemplate => dispatch(updateTaskTemplate(taskTemplate)),
             deleteTaskTemplate: taskTemplateId => dispatch(deleteTaskTemplate(taskTemplateId))
