@@ -4,18 +4,18 @@ import Icon from '../components/common/Icon';
 import Constants from '../constants/Constants';
 import Spacer from '../components/common/Spacer';
 
-export const createAction = (icon, text, onClick) => (
+export const createAction = (icon, text, onClick, color) => (
     <Tooltip title={(
         <Icon
             icon={icon}
-            color={Constants.lightColor}
+            color={color ? color : Constants.lightColor}
             text={text} />
     )}>
         <span>
             <Icon
                 icon={icon}
-                color={Constants.fadeColor}
-                className="object-actions"
+                color={color ? color : Constants.fadeColor}
+                className={color ? '' : 'object-actions'}
                 onClick={onClick} />
         </span>
     </Tooltip>

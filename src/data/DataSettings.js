@@ -22,7 +22,6 @@ export function getCategories() {
                 {
                     id: "automatic_save",
                     title: "Enable automatic save",
-                    category: "general",
                     type: 'checkbox',
                     value: true,
                     editable: true
@@ -30,7 +29,6 @@ export function getCategories() {
                 {
                     id: "automatic_save_interval",
                     title: "Save interval in minutes",
-                    category: "general",
                     type: 'number',
                     value: 15,
                     editable: true
@@ -38,7 +36,6 @@ export function getCategories() {
                 {
                     id: "last_automatic_save",
                     title: "Last automatic save",
-                    category: "general",
                     type: 'datetime',
                     value: moment().toJSON(),
                     editable: false
@@ -53,7 +50,6 @@ export function getCategories() {
                 {
                     id: "license",
                     title: "License",
-                    category: "license",
                     type: 'textarea',
                     value: null,
                     editable: true
@@ -68,7 +64,6 @@ export function getCategories() {
                 {
                     id: "automatic_backup",
                     title: "Enable automatic backup",
-                    category: "backup",
                     type: 'checkbox',
                     value: true,
                     editable: true
@@ -76,7 +71,6 @@ export function getCategories() {
                 {
                     id: "max_backups",
                     title: "Maximum number of backups to keep",
-                    category: "backup",
                     type: 'number',
                     value: 100,
                     editable: true
@@ -84,7 +78,6 @@ export function getCategories() {
                 {
                     id: "automatic_backup_interval",
                     title: "Backup interval in minutes",
-                    category: "backup",
                     type: 'number',
                     value: 60,
                     editable: true
@@ -92,7 +85,6 @@ export function getCategories() {
                 {
                     id: "last_automatic_backup",
                     title: "Last automatic backup",
-                    category: "backup",
                     type: 'datetime',
                     value: moment().toJSON(),
                     editable: false
@@ -100,14 +92,27 @@ export function getCategories() {
             ]
         },
         {
-            id: 'colors',
-            title: 'Colors',
+            id: 'task_templates',
+            title: 'Task Templates',
+            icon: 'tasks',
+            settings: [
+                {
+                    id: "default_task_template",
+                    title: "Default task template",
+                    type: 'task-template',
+                    value: null,
+                    editable: true
+                }
+            ]
+        },
+        {
+            id: 'importance_colors',
+            title: 'Importance Colors',
             icon: 'paint-roller',
             settings: [
                 {
                     id: "importance_0",
                     title: "Importance 0",
-                    category: "colors",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
@@ -115,7 +120,6 @@ export function getCategories() {
                 {
                     id: "importance_1",
                     title: "Importance 1",
-                    category: "colors",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
@@ -123,7 +127,6 @@ export function getCategories() {
                 {
                     id: "importance_2",
                     title: "Importance 2",
-                    category: "colors",
                     type: 'color',
                     value: '#ffffff',
                     editable: true
@@ -131,7 +134,6 @@ export function getCategories() {
                 {
                     id: "importance_3",
                     title: "Importance 3",
-                    category: "colors",
                     type: 'color',
                     value: '#f0f7f7',
                     editable: true
@@ -139,7 +141,6 @@ export function getCategories() {
                 {
                     id: "importance_4",
                     title: "Importance 4",
-                    category: "colors",
                     type: 'color',
                     value: '#ccffff',
                     editable: true
@@ -147,7 +148,6 @@ export function getCategories() {
                 {
                     id: "importance_5",
                     title: "Importance 5",
-                    category: "colors",
                     type: 'color',
                     value: '#d0f7e3',
                     editable: true
@@ -155,7 +155,6 @@ export function getCategories() {
                 {
                     id: "importance_6",
                     title: "Importance 6",
-                    category: "colors",
                     type: 'color',
                     value: '#ccffcc',
                     editable: true
@@ -163,7 +162,6 @@ export function getCategories() {
                 {
                     id: "importance_7",
                     title: "Importance 7",
-                    category: "colors",
                     type: 'color',
                     value: '#ccff99',
                     editable: true
@@ -171,7 +169,6 @@ export function getCategories() {
                 {
                     id: "importance_8",
                     title: "Importance 8",
-                    category: "colors",
                     type: 'color',
                     value: '#ffffcc',
                     editable: true
@@ -179,7 +176,6 @@ export function getCategories() {
                 {
                     id: "importance_9",
                     title: "Importance 9",
-                    category: "colors",
                     type: 'color',
                     value: '#ffff99',
                     editable: true
@@ -187,7 +183,6 @@ export function getCategories() {
                 {
                     id: "importance_10",
                     title: "Importance 10",
-                    category: "colors",
                     type: 'color',
                     value: '#ffcc99',
                     editable: true
@@ -195,7 +190,6 @@ export function getCategories() {
                 {
                     id: "importance_11",
                     title: "Importance 11",
-                    category: "colors",
                     type: 'color',
                     value: '#ffcccc',
                     editable: true
@@ -203,15 +197,20 @@ export function getCategories() {
                 {
                     id: "importance_12",
                     title: "Importance 12",
-                    category: "colors",
                     type: 'color',
                     value: '#ff9999',
                     editable: true
-                },
+                }
+            ]
+        },
+        {
+            id: 'priority_colors',
+            title: 'Priority Colors',
+            icon: 'paint-roller',
+            settings: [
                 {
                     id: "priority_negative",
                     title: "Priority Negative",
-                    category: "colors",
                     type: 'color',
                     value: '#f0f7f7',
                     editable: true
@@ -219,7 +218,6 @@ export function getCategories() {
                 {
                     id: "priority_low",
                     title: "Priority Low",
-                    category: "colors",
                     type: 'color',
                     value: '#00ff00',
                     editable: true
@@ -227,7 +225,6 @@ export function getCategories() {
                 {
                     id: "priority_medium",
                     title: "Priority Medium",
-                    category: "colors",
                     type: 'color',
                     value: '#ffff00',
                     editable: true
@@ -235,7 +232,6 @@ export function getCategories() {
                 {
                     id: "priority_high",
                     title: "Proirity High",
-                    category: "colors",
                     type: 'color',
                     value: '#ffc800',
                     editable: true
@@ -243,7 +239,6 @@ export function getCategories() {
                 {
                     id: "priority_top",
                     title: "Priority Top",
-                    category: "colors",
                     type: 'color',
                     value: '#ff0000',
                     editable: true
@@ -258,7 +253,6 @@ export function getCategories() {
                 {
                     id: "window_size_width",
                     title: "Window Size - Width",
-                    category: "window",
                     type: 'number',
                     value: 1024,
                     editable: false
@@ -266,7 +260,6 @@ export function getCategories() {
                 {
                     id: "window_size_height",
                     title: "Window Size - Height",
-                    category: "window",
                     type: 'number',
                     value: 768,
                     editable: false
@@ -274,7 +267,6 @@ export function getCategories() {
                 {
                     id: "window_position_x",
                     title: "Window Position - X",
-                    category: "window",
                     type: 'number',
                     value: null,
                     editable: false
@@ -282,7 +274,6 @@ export function getCategories() {
                 {
                     id: "window_position_y",
                     title: "Window Position - Y",
-                    category: "window",
                     type: 'number',
                     value: null,
                     editable: false

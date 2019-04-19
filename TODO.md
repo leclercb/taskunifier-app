@@ -1,5 +1,10 @@
 ## Todo List
 
+* Add contacts
+* Add tags
+* Add task statuses
+* Add task progress
+* Add star
 * Task Table
   * Fix infinity table
   * Fix draggable row

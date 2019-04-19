@@ -4,6 +4,7 @@ import { Row, Col, Empty } from 'antd';
 import withTaskTemplates from '../../containers/WithTaskTemplates';
 import TaskTemplateList from './TaskTemplateList';
 import TaskTemplateForm from './TaskTemplateForm';
+import withSettings from '../../containers/WithSettings';
 
 function TaskTemplateManager(props) {
     const selectedTaskTemplateId = props.taskTemplateId;
@@ -26,7 +27,9 @@ function TaskTemplateManager(props) {
                     selectedTaskTemplateId={selectedTaskTemplateId}
                     addTaskTemplate={onAddTaskTemplate}
                     deleteTaskTemplate={props.deleteTaskTemplate}
-                    onTaskTemplateSelection={onTaskTemplateSelection} />
+                    onTaskTemplateSelection={onTaskTemplateSelection}
+                    settings={props.settings}
+                    updateSettings={props.updateSettings} />
             </Col>
             <Col span={2}>
 
@@ -45,4 +48,4 @@ TaskTemplateManager.propTypes = {
     onTaskTemplateSelection: PropTypes.func.isRequired
 };
 
-export default withTaskTemplates(TaskTemplateManager);
+export default withSettings(withTaskTemplates(TaskTemplateManager));

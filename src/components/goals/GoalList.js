@@ -4,6 +4,8 @@ import { Button, List } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
 import { createAction, createActions } from '../../utils/CategoryListUtils';
+import Spacer from '../common/Spacer';
+import Constants from '../../constants/Constants';
 
 function GoalList(props) {
     return (
@@ -18,7 +20,13 @@ function GoalList(props) {
                         onClick={() => props.onGoalSelection(item)}
                         className={item.id === props.selectedGoalId ? 'selected-list-item' : null}>
                         <LeftRight right={createActions(item, () => props.addGoal(item), () => props.deleteGoal(item.id))}>
-                            {item.archived ? createAction('archive', `"${item.title}" is archived`) : null}
+                            {item.archived ? createAction(
+                                'archive',
+                                `"${item.title}" is archived`,
+                                null,
+                                Constants.archivedColor
+                            ) : null}
+                            <Spacer />
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>

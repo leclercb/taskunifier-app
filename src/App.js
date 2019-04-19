@@ -116,10 +116,10 @@ function App(props) {
 App.propTypes = {
     getSetting: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
+    updateSettings: PropTypes.func.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
-    backupData: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    backupData: PropTypes.func.isRequired
 }
 
 export default DragDropContext(HTML5Backend)(withApp(withSettings(App)));

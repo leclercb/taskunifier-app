@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox, DatePicker, Input, InputNumber, Select } from 'antd';
 import moment from 'moment';
+import { escape } from '../utils/RegexUtils';
 import ColorPicker from '../components/common/ColorPicker';
 import ContextTitle from '../components/contexts/ContextTitle';
 import ContextSelect from '../components/contexts/ContextSelect';
@@ -12,7 +13,8 @@ import LocationTitle from '../components/locations/LocationTitle';
 import LocationSelect from '../components/locations/LocationSelect';
 import PriorityTitle from '../components/priorities/PriorityTitle';
 import PrioritySelect from '../components/priorities/PrioritySelect';
-import { escape } from '../utils/RegexUtils';
+import { TaskTemplateTitle } from '../components/tasktemplates/TaskTemplateTitle';
+import TaskTemplateSelect from '../components/tasktemplates/TaskTemplateSelect';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -36,7 +38,9 @@ export function getFieldTypes() {
         'money',
         'priority',
         'number',
-        'text'
+        'task-template',
+        'text',
+        'textarea'
     ];
 }
 
@@ -555,6 +559,42 @@ export function getFieldConfiguration(type, options) {
                 ),
                 input: props => (
                     <PrioritySelect {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equals',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equals',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'task-template': {
+            configuration = {
+                title: 'Task Template',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <TaskTemplateTitle taskTemplateId={value} />
+                ),
+                input: props => (
+                    <TaskTemplateSelect {...props} />
                 ),
                 conditions: [
                     {
