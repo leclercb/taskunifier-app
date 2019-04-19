@@ -86,7 +86,7 @@ export function EditableCell(props) {
         <td {...restProps}>
             {editable ? (
                 <EditableContext.Consumer>
-                    {(form) => {
+                    {form => {
                         formRef.current = form;
 
                         return (

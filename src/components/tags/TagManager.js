@@ -8,6 +8,12 @@ import TagForm from './TagForm';
 function TagManager(props) {
     const selectedTagId = props.tagId;
 
+    const updateTag = tag => {
+        props.updateTag(tag).then(() => {
+            props.onTagSelection(tag.title);
+        });
+    }
+
     const onTagSelection = tag => {
         props.onTagSelection(tag.id);
     }
@@ -28,7 +34,7 @@ function TagManager(props) {
             </Col>
             <Col span={16}>
                 {selectedTag ? (
-                    <TagForm key={selectedTagId} tag={selectedTag} updateTag={props.updateTag} />
+                    <TagForm key={selectedTagId} tag={selectedTag} updateTag={updateTag} />
                 ) : <Empty description="Please select a tag" />}
             </Col>
         </Row>
