@@ -24,17 +24,34 @@ export const getTagsFromTasks = tasks => {
     }))
 }
 
+export const updateTag = (task, tagId, newTagId) => {
+    if (task.tags) {
+        return;
+    }
+
+    task.tags = task.tags.map(tag => tag === tagId ? newTagId : tag);
+    task.tags = task.tags.filter((tag, index) => task.tags.indexOf(tag) === index);
+}
+
+export const deleteTag = (task, tagId) => {
+    if (task.tags) {
+        return;
+    }
+
+    task.tags = task.tags.filter(tag => tag !== tagId);
+}
+
 export const getColorFromIndex = index => {
     switch (index % 11) {
         case 0: return "magenta";
-        case 6: return "green";
-        case 7: return "cyan";
-        case 1: return "geekblue";
-        case 5: return "lime";
-        case 2: return "volcano";
-        case 8: return "blue";
-        case 3: return "orange";
-        case 4: return "gold";
+        case 1: return "green";
+        case 2: return "cyan";
+        case 3: return "geekblue";
+        case 4: return "lime";
+        case 5: return "volcano";
+        case 6: return "blue";
+        case 7: return "orange";
+        case 8: return "gold";
         case 9: return "red";
         case 10:
         default: return "purple";

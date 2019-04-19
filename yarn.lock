@@ -9828,6 +9828,11 @@ redent@^1.0.0:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
 
+reduce-reducers@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/reduce-reducers/-/reduce-reducers-1.0.1.tgz#00735ff3dce986511bc3b86b1cd544822ce6d713"
+  integrity sha512-Nh5zvjF6o3mw/++hm+nq8eeDYQC0Go4dZIZjfXkfGLBhmFWbgvr6NFJw4ebu2OrUayXMzRZKcxU0vOo/nUAWyQ==
+
 redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"

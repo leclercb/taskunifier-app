@@ -73,7 +73,7 @@ function TaskQuickAdd(props) {
             onInputKeyDown={onKeyInputDown}
             onBlur={onBlur}
             open={open}
-            style={{ width: "100%" }}>
+            style={{ width: "100%", padding: 3 }}>
             {values.length > 0 ? [
                 <Select.Option key='add' value="__ADD__">
                     <Icon icon="plus" text="Create task" />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { updateTag, deleteTag } from '../actions/TaskActions';
 import { getTagsFromIds, getTagsFromTasks } from '../utils/TagUtils';
 
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
@@ -13,7 +14,7 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
         }
 
         let tags = getTagsFromTasks(state.tasks);
-        
+
         if (options && options.propertyId in ownProps) {
             tags = getTagsFromIds(tags, ownProps[options.propertyId]);
         }
@@ -24,8 +25,8 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
     };
 
     const mapDispatchToProps = dispatch => ({
-        //updateTag: tag => dispatch(updateTag(tag)),
-        //deleteTag: tagId => dispatch(deleteTag(tagId))
+        updateTag: (tagId, newTagId) => dispatch(updateTag(tagId, newTagId)),
+        deleteTag: tagId => dispatch(deleteTag(tagId))
     });
 
     return connect(

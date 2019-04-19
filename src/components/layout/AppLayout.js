@@ -33,7 +33,9 @@ function AppLayout(props) {
                             <Sider />
                             <React.Fragment>
                                 <TaskQuickAdd />
-                                <TaskGrid />
+                                <div style={{ overflowY: 'auto', height: '100%' }}>
+                                    <TaskGrid />
+                                </div>
                             </React.Fragment>
                         </SplitPane>
                     </Layout>
