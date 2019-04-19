@@ -5,3 +5,7 @@ export const getImportanceColor = (importance, settings) => {
 export const getPriorityColor = (priority, settings) => {
     return settings['priority_' + (priority ? priority : 'negative')];
 }
+
+export const getTaskStatusColor = (status, settings) => {
+    return settings['task_status_' + (status ? status : 'negative')];
+}

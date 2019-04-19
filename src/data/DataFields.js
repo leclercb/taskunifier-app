@@ -57,6 +57,17 @@ export function getDefaultFields() {
         },
         {
             static: true,
+            id: 'taskStatus',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            status: 'LOADED',
+            title: 'Status',
+            color: '#ffffff',
+            type: 'task-status'
+        },
+        {
+            static: true,
             id: 'duedate',
             refIds: {},
             creationDate: 1554795587825,

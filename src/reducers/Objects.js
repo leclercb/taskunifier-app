@@ -1,4 +1,4 @@
-const Objects = (property, defaultObjects = []) => (state = [], action) => {
+const Objects = (property, defaultObjects = [], onUpdate = (object, oldObject) => { }) => (state = [], action) => {
     if (property !== action.property) {
         return state;
     }
@@ -22,7 +22,7 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
                 throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
             }
 
-            objects.push({
+            const newObject = {
                 title: 'Untitled',
                 color: null,
                 ...action.object,
@@ -30,7 +30,11 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
                 creationDate: action.creationDate,
                 updateDate: action.creationDate,
                 status: 'LOADED'
-            });
+            };
+
+            objects.push(newObject);
+
+            onUpdate(newObject, null);
 
             return objects;
         }
@@ -49,12 +53,16 @@ const Objects = (property, defaultObjects = []) => (state = [], action) => {
                 throw Error(`The object with id "${action.object.id}" cannot be updated as it doesn't exist`);
             }
 
+            const oldObject = objects[index];
+
             objects[index] = {
                 ...action.object,
                 creationDate: objects[index].creationDate,
                 updateDate: action.updateDate,
                 status: 'TO_UPDATE'
             };
+
+            onUpdate(objects[index], oldObject);
 
             return objects;
         }

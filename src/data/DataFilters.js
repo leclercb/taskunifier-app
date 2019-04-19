@@ -43,9 +43,9 @@ export function getGeneralFilters() {
             icon: 'calendar-alt',
             condition: {
                 id: '1',
-                field: 'completed',
+                field: 'duedate',
                 type: 'equal',
-                value: false
+                value: 0
             }
         },
         {
@@ -55,9 +55,9 @@ export function getGeneralFilters() {
             icon: 'bomb',
             condition: {
                 id: '1',
-                field: 'completed',
-                type: 'equal',
-                value: false
+                field: 'duedate',
+                type: 'before',
+                value: 0
             }
         },
         {
@@ -103,9 +103,9 @@ export function getGeneralFilters() {
             icon: 'chevron-circle-right',
             condition: {
                 id: '1',
-                field: 'completed',
+                field: 'taskStatus',
                 type: 'equal',
-                value: false
+                value: 'next_action'
             }
         },
         {

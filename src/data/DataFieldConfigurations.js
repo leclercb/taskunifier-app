@@ -15,6 +15,8 @@ import LocationTitle from '../components/locations/LocationTitle';
 import LocationSelect from '../components/locations/LocationSelect';
 import PriorityTitle from '../components/priorities/PriorityTitle';
 import PrioritySelect from '../components/priorities/PrioritySelect';
+import TaskStatusTitle from '../components/taskstatuses/TaskStatusTitle';
+import TaskStatusSelect from '../components/taskstatuses/TaskStatusSelect';
 import TagsTitle from '../components/tags/TagsTitle';
 import TagsSelect from '../components/tags/TagsSelect';
 import { TaskTemplateTitle } from '../components/tasktemplates/TaskTemplateTitle';
@@ -44,6 +46,7 @@ export function getFieldTypes() {
         'priority',
         'progress',
         'number',
+        'task-status',
         'tags',
         'task-template',
         'text',
@@ -70,14 +73,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return !!conditionValue === !!taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return !!conditionValue !== !!taskValue;
@@ -104,14 +107,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -140,14 +143,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -176,14 +179,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -213,6 +216,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -224,6 +231,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -235,6 +246,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'before',
                         title: 'Before',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -246,6 +261,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'before_or_equal',
                         title: 'Before or equals',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -257,6 +276,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'after',
                         title: 'After',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -268,6 +291,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'after_or_equal',
                         title: 'After or equals',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -299,6 +326,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -310,6 +341,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -321,6 +356,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'before',
                         title: 'Before',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -332,6 +371,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'before_or_equal',
                         title: 'Before or equals',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -343,6 +386,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'after',
                         title: 'After',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -354,6 +401,10 @@ export function getFieldConfiguration(type, options) {
                         type: 'after_or_equal',
                         title: 'After or equals',
                         apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
                             if (!conditionValue || !taskValue) {
                                 return false;
                             }
@@ -384,14 +435,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -420,14 +471,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -454,14 +505,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -490,14 +541,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -529,14 +580,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -572,14 +623,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -619,14 +670,50 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'task-status': {
+            configuration = {
+                title: 'Status',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <TaskStatusTitle taskStatusId={value} />
+                ),
+                input: props => (
+                    <TaskStatusSelect {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -653,14 +740,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -689,14 +776,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -725,14 +812,14 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -759,28 +846,28 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
                         }
                     },
                     {
-                        type: 'contains',
+                        type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, taskValue) => {
                             return (taskValue || '').includes(conditionValue);
                         }
                     },
                     {
-                        type: 'not_contains',
+                        type: 'not_contain',
                         title: 'Does not contain',
                         apply: (conditionValue, taskValue) => {
                             return !(taskValue || '').includes(conditionValue);
@@ -808,28 +895,28 @@ export function getFieldConfiguration(type, options) {
                 ),
                 conditions: [
                     {
-                        type: 'equals',
+                        type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue === taskValue;
                         }
                     },
                     {
-                        type: 'not_equals',
+                        type: 'not_equal',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
                         }
                     },
                     {
-                        type: 'contains',
+                        type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, taskValue) => {
                             return (taskValue || '').includes(conditionValue);
                         }
                     },
                     {
-                        type: 'not_contains',
+                        type: 'not_contain',
                         title: 'Does not contain',
                         apply: (conditionValue, taskValue) => {
                             return !(taskValue || '').includes(conditionValue);

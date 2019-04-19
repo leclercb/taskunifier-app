@@ -246,6 +246,90 @@ export function getCategories() {
             ]
         },
         {
+            id: 'task_status_colors',
+            title: 'Status Colors',
+            icon: 'paint-roller',
+            settings: [
+                {
+                    id: "task_status_active",
+                    title: "Status Active",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_cancelled",
+                    title: "Status Cancelled",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_delegated",
+                    title: "Status Delegated",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_hold",
+                    title: "Status Hold",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_next_action",
+                    title: "Status Next Action",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_none",
+                    title: "Status None",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_planning",
+                    title: "Status Planning",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_postponed",
+                    title: "Status Postponed",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_reference",
+                    title: "Status Reference",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_someday",
+                    title: "Status Someday",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: "task_status_waiting",
+                    title: "Status Waiting",
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                }
+            ]
+        },
+        {
             id: 'window',
             title: 'Window',
             icon: 'desktop',
