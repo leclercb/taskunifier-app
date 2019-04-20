@@ -84,7 +84,7 @@ export function getDefaultFields(settings) {
             creationDate: 1554795587825,
             updateDate: 1554795587825,
             state: 'LOADED',
-            title: 'Due date',
+            title: 'Start date',
             color: '#ffffff',
             type: (settings.showStartTime ? 'dateTime' : 'date'),
             options: {

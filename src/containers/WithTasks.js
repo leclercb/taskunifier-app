@@ -5,6 +5,7 @@ import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
 import { getDefaultFields } from '../data/DataFields';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyFilter } from '../utils/FilterUtils';
+import { setSelectedTaskIds } from '../actions/AppActions';
 
 function withTasks(Component, options = { applySelectedFilter: false, actionsOnly: false }) {
     function WithTasks(props) {
@@ -39,7 +40,8 @@ function withTasks(Component, options = { applySelectedFilter: false, actionsOnl
     const mapDispatchToProps = dispatch => ({
         addTask: task => dispatch(addTask(task)),
         updateTask: task => dispatch(updateTask(task)),
-        deleteTask: taskId => dispatch(deleteTask(taskId))
+        deleteTask: taskId => dispatch(deleteTask(taskId)),
+        setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds))
     });
 
     return connect(

@@ -1,0 +1,13 @@
+.task-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.task {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+    font-size: 12px;
+}

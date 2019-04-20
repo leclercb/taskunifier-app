@@ -4,7 +4,7 @@ import Constants from '../../constants/Constants';
 
 function Icon(props) {
     return (
-        <span onClick={props.onClick}>
+        <span onClick={props.onClick} className={props.spanClassName}>
             <FontAwesomeIcon
                 icon={props.icon}
                 className={props.className}
