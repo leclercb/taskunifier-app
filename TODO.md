@@ -1,6 +1,5 @@
 ## Todo List
 
-* Fix set star (not saved)
 * Task Table
   * Fix infinity table
   * Fix draggable row
