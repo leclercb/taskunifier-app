@@ -26,6 +26,7 @@ import {
     faFolderOpen,
     faHome,
     faKey,
+    faMagic,
     faPaintRoller,
     faPepperHot,
     faPlus,
@@ -65,6 +66,7 @@ library.add(faFolder);
 library.add(faFolderOpen);
 library.add(faHome);
 library.add(faKey);
+library.add(faMagic);
 library.add(faPaintRoller);
 library.add(faPepperHot);
 library.add(faPlus);

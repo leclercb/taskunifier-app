@@ -12,7 +12,7 @@ function ModalBatchAddTasks(props) {
 
     return (
         <Modal
-            title={<Icon icon="tasks" text="Batch Add Tasks" />}
+            title={<Icon icon="magic" text="Batch Add Tasks" />}
             visible={props.batchAddTasks.visible}
             width="80%"
             closable={false}

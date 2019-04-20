@@ -87,7 +87,7 @@ function Header(props) {
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
             {createButton('filter', 'Filter Manager', onSetFilterManagerVisible)}
             {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
-            {createButton('tasks', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
+            {createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
         </LeftRight>
     );
 }

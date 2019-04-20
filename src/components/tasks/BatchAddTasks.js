@@ -41,7 +41,7 @@ function BatchAddTasks(props) {
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="Titles">
+            <Form.Item label="Titles (each task on a separate line)">
                 {getFieldDecorator('titles', {
                     initialValue: null,
                     rules: [
