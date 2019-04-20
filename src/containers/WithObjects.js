@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
-import { addFilter, updateFilter, deleteFilter } from '../actions/FilterActions';
+import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from '../actions/TaskFilterActions';
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
@@ -13,7 +13,7 @@ import { getTagsFromTasks } from '../utils/TagUtils';
 function withObjects(Component, options = {
     includeActions: false,
     includeContexts: false,
-    includeFilters: false,
+    includeTaskFilters: false,
     includeFolders: false,
     includeGoals: false,
     includeLocations: false,
@@ -33,8 +33,8 @@ function withObjects(Component, options = {
             data.contexts = filterObjects(state.contexts);
         }
 
-        if (options && options.includeFilters === true) {
-            data.filters = filterObjects(state.filters);
+        if (options && options.includeTaskFilters === true) {
+            data.taskFilters = filterObjects(state.taskFilters);
         }
 
         if (options && options.includeFolders === true) {
@@ -77,9 +77,9 @@ function withObjects(Component, options = {
             addContext: context => dispatch(addContext(context)),
             updateContext: context => dispatch(updateContext(context)),
             deleteContext: contextId => dispatch(deleteContext(contextId)),
-            addFilter: field => dispatch(addFilter(field)),
-            updateFilter: field => dispatch(updateFilter(field)),
-            deleteFilter: fieldId => dispatch(deleteFilter(fieldId)),
+            addTaskFilter: field => dispatch(addTaskFilter(field)),
+            updateTaskFilter: field => dispatch(updateTaskFilter(field)),
+            deleteTaskFilter: fieldId => dispatch(deleteTaskFilter(fieldId)),
             addFolder: folder => dispatch(addFolder(folder)),
             updateFolder: folder => dispatch(updateFolder(folder)),
             deleteFolder: folderId => dispatch(deleteFolder(folderId)),

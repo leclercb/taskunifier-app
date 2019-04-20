@@ -5,13 +5,13 @@ import { Menu, Empty } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import withFields from '../../containers/WithFields';
-import FilterConditionForm from './FilterConditionForm';
+import TaskFilterConditionForm from './TaskFilterConditionForm';
 
-function FilterEmpty(props) {
+function TaskFilterEmpty(props) {
     return (<Empty />);
 }
 
-function FilterConditionTree(props) {
+function TaskFilterConditionTree(props) {
     const createLeafObject = (parentCondition, key) => {
         const field = props.fields.find(field => field.id === key);
 
@@ -22,7 +22,7 @@ function FilterConditionTree(props) {
         return {
             id: uuid(),
             field: field.id,
-            condition: 'equal',
+            type: 'equal',
             value: null
         };
     }
@@ -31,15 +31,15 @@ function FilterConditionTree(props) {
         const field = props.fields.find(field => field.id === condition.field);
 
         if (!field) {
-            return FilterEmpty;
+            return TaskFilterEmpty;
         }
 
-        return FilterConditionForm;
+        return TaskFilterConditionForm;
     }
 
     const onSaveCondition = condition => {
-        props.updateFilter({
-            ...props.filter,
+        props.updateTaskFilter({
+            ...props.taskFilter,
             condition: condition
         });
     }
@@ -47,7 +47,7 @@ function FilterConditionTree(props) {
     return (
         <ConditionTree
             disabled={!!props.disabled}
-            condition={props.filter.condition}
+            condition={props.taskFilter.condition}
             context={props.context}
             addMenuItems={props.fields.map(field => (
                 <Menu.Item key={field.id}>{field.title}</Menu.Item>
@@ -58,12 +58,12 @@ function FilterConditionTree(props) {
     );
 }
 
-FilterConditionTree.propTypes = {
-    filter: PropTypes.object.isRequired,
+TaskFilterConditionTree.propTypes = {
+    taskFilter: PropTypes.object.isRequired,
     fields: PropTypes.arrayOf(FieldPropType),
     context: PropTypes.object,
     disabled: PropTypes.bool,
-    updateFilter: PropTypes.func.isRequired
+    updateTaskFilter: PropTypes.func.isRequired
 };
 
-export default withFields(FilterConditionTree);
+export default withFields(TaskFilterConditionTree);

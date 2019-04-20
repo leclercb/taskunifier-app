@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
 import { getDefaultFields } from '../data/DataFields';
 import { filterObjects } from '../utils/CategoryUtils';
-import { applyFilter } from '../utils/FilterUtils';
+import { applyTaskFilter } from '../utils/TaskFilterUtils';
 import { setSelectedTaskIds } from '../actions/AppActions';
 
-function withTasks(Component, options = { applySelectedFilter: false, actionsOnly: false }) {
+function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
     function WithTasks(props) {
         return <Component {...props} />
     }
@@ -19,16 +19,16 @@ function withTasks(Component, options = { applySelectedFilter: false, actionsOnl
 
         let tasks = filterObjects(state.tasks);
 
-        if (options && options.applySelectedFilter === true) {
+        if (options && options.applySelectedTaskFilter === true) {
             const fields = getDefaultFields(state.settings).concat(filterObjects(state.fields));
 
             tasks = tasks.filter(task => {
-                if (!state.app.selectedFilterDate ||
-                    moment(task.creationDate).isAfter(moment(state.app.selectedFilterDate))) {
+                if (!state.app.selectedTaskFilterDate ||
+                    moment(task.creationDate).isAfter(moment(state.app.selectedTaskFilterDate))) {
                     return true;
                 }
 
-                return applyFilter(state.app.selectedFilter, task, fields);
+                return applyTaskFilter(state.app.selectedTaskFilter, task, fields);
             });
         }
 

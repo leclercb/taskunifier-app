@@ -129,4 +129,4 @@ function createDummyTasks() {
     return tasks;
 }
 
-export default withApp(withSettings(withFields(withTasks(TaskGrid, { applySelectedFilter: true }))));
+export default withApp(withSettings(withFields(withTasks(TaskGrid, { applySelectedTaskFilter: true }))));

@@ -46,4 +46,4 @@ TaskCalendar.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType).isRequired
 };
 
-export default withSettings(withTasks(TaskCalendar, { applySelectedFilter: true }));
+export default withSettings(withTasks(TaskCalendar, { applySelectedTaskFilter: true }));

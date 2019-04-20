@@ -12,7 +12,7 @@ import {
 } from '../../utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
-function FilterConditionForm(props) {
+function TaskFilterConditionForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = {
@@ -71,7 +71,7 @@ function FilterConditionForm(props) {
     );
 }
 
-FilterConditionForm.propTypes = {
+TaskFilterConditionForm.propTypes = {
     fields: PropTypes.arrayOf(FieldPropType),
     condition: PropTypes.object.isRequired,
     context: PropTypes.object,
@@ -82,4 +82,4 @@ FilterConditionForm.propTypes = {
 export default withFields(Form.create({
     name: 'condition',
     onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.condition, props.onUpdate, true)
-})(FilterConditionForm));
+})(TaskFilterConditionForm));

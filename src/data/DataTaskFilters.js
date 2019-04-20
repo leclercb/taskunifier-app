@@ -1,4 +1,4 @@
-export function createSearchFilter(searchValue) {
+export function createSearchTaskFilter(searchValue) {
     return {
         id: 'search',
         title: 'Search',
@@ -12,11 +12,11 @@ export function createSearchFilter(searchValue) {
     };
 }
 
-export function getDefaultSelectedFilter() {
-    return getGeneralFilters().find(filter => filter.id === 'all');
+export function getDefaultSelectedTaskFilter() {
+    return getGeneralTaskFilters().find(taskFilter => taskFilter.id === 'all');
 }
 
-export function getGeneralFilters() {
+export function getGeneralTaskFilters() {
     return [
         {
             id: 'all',

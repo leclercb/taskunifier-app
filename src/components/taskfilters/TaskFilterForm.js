@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from '../common/ColorPicker';
-import { FilterPropType } from '../../proptypes/FilterPropTypes';
+import { TaskFilterPropType } from '../../proptypes/TaskFilterPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 
-function FilterForm(props) {
+function TaskFilterForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
@@ -14,7 +14,7 @@ function FilterForm(props) {
         <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
-                    initialValue: props.filter.title,
+                    initialValue: props.taskFilter.title,
                     rules: [
                         {
                             required: true,
@@ -27,7 +27,7 @@ function FilterForm(props) {
             </Form.Item>
             <Form.Item label="Color">
                 {getFieldDecorator('color', {
-                    initialValue: props.filter.color,
+                    initialValue: props.taskFilter.color,
                     valuePropName: 'color',
                     getValueFromEvent: event => event.color,
                     rules: [
@@ -43,12 +43,12 @@ function FilterForm(props) {
     );
 }
 
-FilterForm.propTypes = {
-    filter: FilterPropType.isRequired,
-    updateFilter: PropTypes.func.isRequired
+TaskFilterForm.propTypes = {
+    taskFilter: TaskFilterPropType.isRequired,
+    updateTaskFilter: PropTypes.func.isRequired
 };
 
 export default Form.create({
-    name: 'filter',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.filter, props.updateFilter)
-})(FilterForm);
+    name: 'taskFilter',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.taskFilter, props.updateTaskFilter)
+})(TaskFilterForm);

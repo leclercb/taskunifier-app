@@ -12,11 +12,11 @@ export default combineReducers({
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),
     fields: Objects('fields'),
-    filters: Objects('filters'),
     folders: Objects('folders'),
     goals: Objects('goals', onGoalUpdate),
     locations: Objects('locations'),
     tasks: reduceReducers([], Objects('tasks'), Tasks()),
+    taskFilters: Objects('taskFilters'),
     taskTemplates: Objects('taskTemplates'),
     settings: Settings(),
     processes: Processes()

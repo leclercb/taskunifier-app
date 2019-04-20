@@ -43,8 +43,8 @@ function Header(props) {
         props.setCategoryManagerOptions({ visible: true });
     };
 
-    const onSetFilterManagerVisible = () => {
-        props.setFilterManagerOptions({ visible: true });
+    const onSetTaskFilterManagerVisible = () => {
+        props.setTaskFilterManagerOptions({ visible: true });
     };
 
     const onSetTaskTemplateManagerVisible = () => {
@@ -85,7 +85,7 @@ function Header(props) {
             {createButton('cogs', 'Synchronize', onSynchronize)}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
-            {createButton('filter', 'Filter Manager', onSetFilterManagerVisible)}
+            {createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)}
             {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
             {createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
         </LeftRight>
@@ -101,7 +101,7 @@ Header.propTypes = {
     cleanBackups: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
-    setFilterManagerOptions: PropTypes.func.isRequired,
+    setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
     setSettingManagerOptions: PropTypes.func.isRequired
 };

@@ -1,18 +1,18 @@
-import { getDefaultSelectedFilter } from "../data/DataFilters";
+import { getDefaultSelectedTaskFilter } from "../data/DataTaskFilters";
 
 const App = () => (state = {
     user: null,
     selectedTaskIds: [],
-    selectedFilter: getDefaultSelectedFilter(),
-    selectedFilterDate: null,
+    selectedTaskFilter: getDefaultSelectedTaskFilter(),
+    selectedTaskFilterDate: null,
     categoryManager: {
         visible: false,
         category: 'contexts',
         objectId: null
     },
-    filterManager: {
+    taskFilterManager: {
         visible: false,
-        filterId: null
+        taskFilterId: null
     },
     taskTemplateManager: {
         visible: false,
@@ -31,11 +31,11 @@ const App = () => (state = {
                 ...state,
                 selectedTaskIds: action.taskIds
             };
-        case 'SET_SELECTED_FILTER':
+        case 'SET_SELECTED_TASK_FILTER':
             return {
                 ...state,
-                selectedFilter: action.filter,
-                selectedFilterDate: action.date
+                selectedTaskFilter: action.taskFilter,
+                selectedTaskFilterDate: action.date
             };
         case 'SET_CATEGORY_MANAGER_OPTIONS':
             return {
@@ -46,12 +46,12 @@ const App = () => (state = {
                     objectId: 'objectId' in action ? action.objectId : state.categoryManager.objectId
                 }
             };
-        case 'SET_FILTER_MANAGER_OPTIONS':
+        case 'SET_TASK_FILTER_MANAGER_OPTIONS':
             return {
                 ...state,
-                filterManager: {
-                    visible: 'visible' in action ? action.visible : state.filterManager.visible,
-                    filterId: 'filterId' in action ? action.filterId : state.filterManager.filterId
+                taskFilterManager: {
+                    visible: 'visible' in action ? action.visible : state.taskFilterManager.visible,
+                    taskFilterId: 'taskFilterId' in action ? action.taskFilterId : state.taskFilterManager.taskFilterId
                 }
             };
         case 'SET_TASK_TEMPLATE_MANAGER_OPTIONS':

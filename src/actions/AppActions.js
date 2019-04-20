@@ -3,11 +3,11 @@ import moment from 'moment';
 import { loadContactsFromFile, saveContactsToFile, cleanContacts } from './ContactActions';
 import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './ContextActions';
 import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
-import { loadFiltersFromFile, saveFiltersToFile, cleanFilters } from './FilterActions';
 import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
+import { loadTaskFiltersFromFile, saveTaskFiltersToFile, cleanTaskFilters } from './TaskFilterActions';
 import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates } from './TaskTemplateActions';
 import { updateProcess } from './ProcessActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
@@ -35,11 +35,11 @@ const _loadData = (path, options = {}) => {
                 dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
                 dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
                 dispatch(loadFieldsFromFile(join(path, 'fields.json'))),
-                dispatch(loadFiltersFromFile(join(path, 'filters.json'))),
                 dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
                 dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
                 dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
                 dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
+                dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
                 dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
             ]).then(() => {
                 dispatch(updateProcess({
@@ -87,11 +87,11 @@ const _saveData = (path, options = { clean: false, message: null }) => {
                     dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts)),
                     dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
                     dispatch(saveFieldsToFile(join(path, 'fields.json'), state.fields)),
-                    dispatch(saveFiltersToFile(join(path, 'filters.json'), state.filters)),
                     dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),
                     dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals)),
                     dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations)),
                     dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks)),
+                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), state.taskFilters)),
                     dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), state.taskTemplates))
                 ]).then(() => {
                     dispatch(updateProcess({
@@ -137,7 +137,7 @@ export const cleanData = () => {
                 dispatch(cleanContacts()),
                 dispatch(cleanContexts()),
                 dispatch(cleanFields()),
-                dispatch(cleanFilters()),
+                dispatch(cleanTaskFilters()),
                 dispatch(cleanFolders()),
                 dispatch(cleanGoals()),
                 dispatch(cleanLocations()),
@@ -276,11 +276,11 @@ export const setSelectedTaskIds = taskIds => {
     };
 }
 
-export const setSelectedFilter = filter => {
+export const setSelectedTaskFilter = taskFilter => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SET_SELECTED_FILTER',
-            filter: filter,
+            type: 'SET_SELECTED_TASK_FILTER',
+            taskFilter: taskFilter,
             date: moment().toJSON()
         });
 
@@ -299,10 +299,10 @@ export const setCategoryManagerOptions = (options) => {
     };
 };
 
-export const setFilterManagerOptions = (options) => {
+export const setTaskFilterManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SET_FILTER_MANAGER_OPTIONS',
+            type: 'SET_TASK_FILTER_MANAGER_OPTIONS',
             ...options
         });
 

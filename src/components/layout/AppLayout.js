@@ -10,7 +10,7 @@ import withProcesses from '../../containers/WithProcesses';
 import withSettings from '../../containers/WithSettings';
 import ModalProcessManager from '../processes/ModalProcessManager';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
-import ModalFilterManager from '../filters/ModalFilterManager';
+import ModalTaskFilterManager from '../taskfilters/ModalTaskFilterManager';
 import NotificationManager from '../processes/NotificationManager';
 import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
 import ModalSettingManager from '../settings/ModalSettingManager';
@@ -24,7 +24,7 @@ function AppLayout(props) {
             <NotificationManager />
             <ModalProcessManager />
             <ModalCategoryManager />
-            <ModalFilterManager />
+            <ModalTaskFilterManager />
             <ModalTaskTemplateManager />
             <ModalSettingManager />
             <ModalBatchAddTasks />

@@ -50,12 +50,11 @@ export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assi
     });
 
     if (errors.length === 0 && !validating) {
-        const updatedObject = merge({ ...object }, values);
-
         if (assign) {
-            Object.assign(object, updateObject);
+            Object.assign(object, values);
             updateObject(object);
         } else {
+            const updatedObject = merge({ ...object }, values);
             updateObject(updatedObject);
         }
     }

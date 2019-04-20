@@ -8,11 +8,11 @@ import { ContextPropType } from '../../../proptypes/ContextPropTypes';
 import { FolderPropType } from '../../../proptypes/FolderPropTypes';
 import { GoalPropType } from '../../../proptypes/GoalPropTypes';
 import { LocationPropType } from '../../../proptypes/LocationPropTypes';
-import { FilterPropType } from '../../../proptypes/FilterPropTypes';
+import { TaskFilterPropType } from '../../../proptypes/TaskFilterPropTypes';
 import LeftRight from '../../common/LeftRight';
 import Constants from '../../../constants/Constants';
 import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
-import { getGeneralFilters, createSearchFilter } from '../../../data/DataFilters';
+import { getGeneralTaskFilters, createSearchTaskFilter } from '../../../data/DataTaskFilters';
 import { Tooltip } from 'antd';
 import Spacer from '../../common/Spacer';
 
@@ -20,7 +20,7 @@ function TaskSider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
 
     const onSelect = event => {
-        props.setSelectedFilter(event.item.props.filter);
+        props.setSelectedTaskFilter(event.item.props.filter);
     };
 
     const onOpenChange = keys => {
@@ -81,9 +81,9 @@ function TaskSider(props) {
         );
     };
 
-    const createObjectMenuItem = (object, filter, onAdd, onEdit, onDelete) => {
+    const createObjectMenuItem = (object, taskFilter, onAdd, onEdit, onDelete) => {
         return (
-            <Menu.Item key={object.id} filter={filter}>
+            <Menu.Item key={object.id} filter={taskFilter}>
                 <RCMenuProvider id={'menu_' + object.id}>
                     <div>
                         <LeftRight right={createEditDeleteButtons(object, onEdit, onDelete)}>
@@ -111,20 +111,20 @@ function TaskSider(props) {
         });
     };
 
-    const addFilter = () => {
-        props.setFilterManagerOptions({
+    const addTaskFilter = () => {
+        props.setTaskFilterManagerOptions({
             visible: true
         });
     };
 
-    const editFilter = filterId => {
-        props.setFilterManagerOptions({
+    const editTaskFilter = taskFilterId => {
+        props.setTaskFilterManagerOptions({
             visible: true,
-            filterId: filterId
+            taskFilterId: taskFilterId
         });
     };
 
-    const createFilterForObject = (object, field) => {
+    const createTaskFilterForObject = (object, field) => {
         return {
             id: object.id,
             title: object.title,
@@ -139,25 +139,25 @@ function TaskSider(props) {
     };
 
     const onSearch = value => {
-        props.setSelectedFilter(createSearchFilter(value));
+        props.setSelectedTaskFilter(createSearchTaskFilter(value));
     };
 
-    const searchFilter = createSearchFilter();
+    const searchTaskFilter = createSearchTaskFilter();
 
     return (
         <React.Fragment>
             <Menu
-                selectedKeys={[props.selectedFilter.id]}
+                selectedKeys={[props.selectedTaskFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
                 onOpenChange={onOpenChange}
                 mode="inline"
                 style={{ height: '100%' }}>
                 <Menu.Item
-                    key={searchFilter.id}
-                    filter={searchFilter}>
+                    key={searchTaskFilter.id}
+                    filter={searchTaskFilter}>
                     <Icon
-                        icon={searchFilter.icon}
+                        icon={searchTaskFilter.icon}
                         text={(
                             <Tooltip title="Press enter to search" placement="bottom">
                                 <Input.Search
@@ -170,21 +170,21 @@ function TaskSider(props) {
                         )} />
                 </Menu.Item>
                 <Menu.SubMenu key="general" title={<Icon icon="home" text="General" />}>
-                    {getGeneralFilters().map(filter => (
+                    {getGeneralTaskFilters().map(taskFilter => (
                         <Menu.Item
-                            key={filter.id}
-                            filter={filter}>
+                            key={taskFilter.id}
+                            filter={taskFilter}>
                             <Icon
-                                icon={filter.icon}
-                                color={filter.color}
-                                text={filter.title} />
+                                icon={taskFilter.icon}
+                                color={taskFilter.color}
+                                text={taskFilter.title} />
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
                 <Menu.SubMenu key="folders" title={createCategorySubMenu('Folders', 'folder', () => addObject('folders'))}>
                     {props.folders.map(folder => createObjectMenuItem(
                         folder,
-                        createFilterForObject(folder, 'folder'),
+                        createTaskFilterForObject(folder, 'folder'),
                         () => addObject('folders'),
                         () => editObject('folders', folder.id),
                         () => props.deleteFolder(folder.id)))}
@@ -192,7 +192,7 @@ function TaskSider(props) {
                 <Menu.SubMenu key="contexts" title={createCategorySubMenu('Contexts', 'thumbtack', () => addObject('contexts'))}>
                     {props.contexts.map(context => createObjectMenuItem(
                         context,
-                        createFilterForObject(context, 'context'),
+                        createTaskFilterForObject(context, 'context'),
                         () => addObject('contexts'),
                         () => editObject('contexts', context.id),
                         () => props.deleteContext(context.id)))}
@@ -200,7 +200,7 @@ function TaskSider(props) {
                 <Menu.SubMenu key="goals" title={createCategorySubMenu('Goals', 'bullseye', () => addObject('goals'))}>
                     {props.goals.map(goal => createObjectMenuItem(
                         goal,
-                        createFilterForObject(goal, 'goal'),
+                        createTaskFilterForObject(goal, 'goal'),
                         () => addObject('goals'),
                         () => editObject('goals', goal.id),
                         () => props.deleteGoal(goal.id)))}
@@ -208,7 +208,7 @@ function TaskSider(props) {
                 <Menu.SubMenu key="locations" title={createCategorySubMenu('Locations', 'compass', () => addObject('locations'))}>
                     {props.locations.map(location => createObjectMenuItem(
                         location,
-                        createFilterForObject(location, 'location'),
+                        createTaskFilterForObject(location, 'location'),
                         () => addObject('locations'),
                         () => editObject('locations', location.id),
                         () => props.deleteLocation(location.id)))}
@@ -216,18 +216,18 @@ function TaskSider(props) {
                 <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', null)}>
                     {props.tags.map(tag => createObjectMenuItem(
                         tag,
-                        createFilterForObject(tag, 'tags'),
+                        createTaskFilterForObject(tag, 'tags'),
                         null,
                         () => editObject('tags', tag.id),
                         () => props.deleteTag(tag.id)))}
                 </Menu.SubMenu>
-                <Menu.SubMenu key="filters" title={createCategorySubMenu('Filters', 'filter', () => addFilter())}>
-                    {props.filters.map(filter => createObjectMenuItem(
-                        filter,
-                        filter,
-                        () => addFilter(),
-                        () => editFilter(filter.id),
-                        () => props.deleteFilter(filter.id)))}
+                <Menu.SubMenu key="taskFilters" title={createCategorySubMenu('Task Filters', 'filter', () => addTaskFilter())}>
+                    {props.taskFilters.map(taskFilter => createObjectMenuItem(
+                        taskFilter,
+                        taskFilter,
+                        () => addTaskFilter(),
+                        () => editTaskFilter(taskFilter.id),
+                        () => props.deleteTaskFilter(taskFilter.id)))}
                 </Menu.SubMenu>
             </Menu >
         </React.Fragment>
@@ -235,26 +235,26 @@ function TaskSider(props) {
 }
 
 TaskSider.propTypes = {
-    selectedFilter: FilterPropType.isRequired,
+    selectedTaskFilter: TaskFilterPropType.isRequired,
     contexts: PropTypes.arrayOf(ContextPropType).isRequired,
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
     goals: PropTypes.arrayOf(GoalPropType).isRequired,
     locations: PropTypes.arrayOf(LocationPropType).isRequired,
-    filters: PropTypes.arrayOf(FilterPropType).isRequired,
-    setSelectedFilter: PropTypes.func.isRequired,
+    taskFilters: PropTypes.arrayOf(TaskFilterPropType).isRequired,
+    setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
-    setFilterManagerOptions: PropTypes.func.isRequired,
+    setTaskFilterManagerOptions: PropTypes.func.isRequired,
     deleteContext: PropTypes.func.isRequired,
     deleteFolder: PropTypes.func.isRequired,
     deleteGoal: PropTypes.func.isRequired,
     deleteLocation: PropTypes.func.isRequired,
-    deleteFilter: PropTypes.func.isRequired
+    deleteTaskFilter: PropTypes.func.isRequired
 };
 
 export default withApp(withObjects(TaskSider, {
     includeActions: true,
     includeContexts: true,
-    includeFilters: true,
+    includeTaskFilters: true,
     includeFolders: true,
     includeGoals: true,
     includeLocations: true,
