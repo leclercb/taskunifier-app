@@ -37,7 +37,7 @@ function FilterManager(props) {
                     <React.Fragment>
                         <FilterForm key={selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
                         <Divider />
-                        <FilterConditionTree key={'condition_tree_' + selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
+                        <FilterConditionTree key={'conditionTree_' + selectedFilterId} filter={selectedFilter} updateFilter={props.updateFilter} />
                     </React.Fragment>
                 ) : <Empty description="Please select a filter" />}
             </Col>

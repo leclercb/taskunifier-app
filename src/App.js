@@ -22,10 +22,10 @@ function App(props) {
         const position = electron.remote.getCurrentWindow().getPosition();
 
         props.updateSettings({
-            window_size_width: size[0],
-            window_size_height: size[1],
-            window_position_x: position[0],
-            window_position_y: position[1]
+            windowSizeWidth: size[0],
+            windowSizeHeight: size[1],
+            windowPositionX: position[0],
+            windowPositionY: position[1]
         }).then(() => {
             props.saveData({ clean: true }).finally(() => {
                 electron.ipcRenderer.send('closed');
@@ -46,8 +46,8 @@ function App(props) {
         () => {
             let interval = null;
 
-            const automaticSave = props.getSetting('automatic_save');
-            const automaticSaveInterval = props.getSetting('automatic_save_interval');
+            const automaticSave = props.settings.automaticSave;
+            const automaticSaveInterval = props.settings.automaticSaveInterval;
 
             if (automaticSave &&
                 Number.isInteger(automaticSaveInterval) &&
@@ -55,7 +55,7 @@ function App(props) {
                 interval = setInterval(() => {
                     props.saveData();
                     props.updateSettings({
-                        last_automatic_save: moment().toJSON()
+                        lastAutomaticSave: moment().toJSON()
                     });
                 }, automaticSaveInterval * 60 * 1000);
 
@@ -66,9 +66,8 @@ function App(props) {
             }
         },
         [
-            props.settings.loaded,
-            props.getSetting('automatic_save'),
-            props.getSetting('automatic_save_interval')
+            props.settings.automaticSave,
+            props.settings.automaticSaveInterval
         ]
     );
 
@@ -77,9 +76,9 @@ function App(props) {
             let interval = null;
 
             interval = setInterval(() => {
-                const automaticBackup = props.getSetting('automatic_backup');
-                const automaticBackupInterval = props.getSetting('automatic_backup_interval');
-                const lastAutomaticBackup = props.getSetting('last_automatic_backup');
+                const automaticBackup = props.settings.automaticBackup;
+                const automaticBackupInterval = props.settings.automaticBackupInterval;
+                const lastAutomaticBackup = props.settings.lastAutomaticBackup;
 
                 if (automaticBackup &&
                     Number.isInteger(automaticBackupInterval) &&
@@ -87,7 +86,7 @@ function App(props) {
                     (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
                     props.backupData();
                     props.updateSettings({
-                        last_automatic_backup: moment().toJSON()
+                        lastAutomaticBackup: moment().toJSON()
                     });
                 }
             }, 30 * 1000);
@@ -97,10 +96,9 @@ function App(props) {
             }
         },
         [
-            props.settings.loaded,
-            props.getSetting('automatic_backup'),
-            props.getSetting('automatic_backup_interval'),
-            props.getSetting('last_automatic_backup')
+            props.settings.automaticBackup,
+            props.settings.automaticBackupInterval,
+            props.settings.lastAutomaticBackup
         ]
     );
 
@@ -114,7 +112,6 @@ function App(props) {
 }
 
 App.propTypes = {
-    getSetting: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired,
     loadData: PropTypes.func.isRequired,

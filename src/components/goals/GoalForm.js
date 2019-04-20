@@ -67,7 +67,7 @@ function GoalForm(props) {
                     initialValue: props.goal.contributesTo,
                     rules: []
                 })(
-                    <GoalSelect excludeIds={[props.goal.id]} disabled={props.goal.level === 'life_time'} />
+                    <GoalSelect excludeIds={[props.goal.id]} disabled={props.goal.level === 'lifeTime'} />
                 )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>

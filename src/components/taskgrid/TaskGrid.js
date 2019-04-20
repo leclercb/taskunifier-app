@@ -31,12 +31,12 @@ function TaskGrid(props) {
 
     const handleResize = field => (e, { size }) => {
         props.updateSettings({
-            ['task_column_width_' + field]: size.width
+            ['taskColumnWidth_' + field]: size.width
         });
     };
 
-    const columns = props.fields.map((field, index) => {
-        const settingKey = 'task_column_width_' + field.id;
+    const columns = props.fields.map(field => {
+        const settingKey = 'taskColumnWidth_' + field.id;
         let width = props.settings[settingKey];
 
         if (!width) {
@@ -50,15 +50,15 @@ function TaskGrid(props) {
             dataIndex: field.id,
             key: field.id,
             editable: true,
-            render: getRenderForType(field.type),
+            render: getRenderForType(field.type, field.options),
             onHeaderCell: column => ({
                 width: column.width,
                 onResize: handleResize(field.id),
             }),
             onCell: record => ({
-                record,
+                record: record,
                 editable: true,
-                type: field.type,
+                field: field,
                 dataIndex: field.id,
                 title: field.title,
                 onSave: onUpdateTask
@@ -85,7 +85,7 @@ function TaskGrid(props) {
                 rowProps: {
                     record: record,
                     onSave: onUpdateTask,
-                    getFieldType: dataIndex => props.fields.find(field => field.id === dataIndex).type,
+                    getField: dataIndex => props.fields.find(field => field.id === dataIndex),
                     style: {
                         backgroundColor: getImportanceColor(record.importance, props.settings),
                         textDecoration: record.completed ? 'line-through' : null

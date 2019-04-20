@@ -5,17 +5,16 @@ import Objects from './Objects';
 import Processes from './Processes';
 import Settings from './Settings';
 import Tasks from './Tasks';
-import { getDefaultFields } from '../data/DataFields';
 import { onGoalUpdate } from '../utils/GoalUtils';
 
 export default combineReducers({
     app: App(),
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),
-    fields: Objects('fields', getDefaultFields()),
+    fields: Objects('fields'),
     filters: Objects('filters'),
     folders: Objects('folders'),
-    goals: Objects('goals', [], onGoalUpdate),
+    goals: Objects('goals', onGoalUpdate),
     locations: Objects('locations'),
     tasks: reduceReducers([], Objects('tasks'), Tasks()),
     taskTemplates: Objects('taskTemplates'),

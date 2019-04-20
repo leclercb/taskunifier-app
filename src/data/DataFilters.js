@@ -105,7 +105,7 @@ export function getGeneralFilters() {
                 id: '1',
                 field: 'status',
                 type: 'equal',
-                value: 'next_action'
+                value: 'nextAction'
             }
         },
         {

@@ -1,11 +1,11 @@
-const Objects = (property, defaultObjects = [], onUpdate = (object, oldObject) => { }) => (state = [], action) => {
+const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = [], action) => {
     if (property !== action.property) {
         return state;
     }
 
     switch (action.type) {
         case 'SET_OBJECTS': {
-            return defaultObjects.concat(action.objects || []);
+            return action.objects;
         }
         case 'ADD_OBJECT': {
             const objects = [

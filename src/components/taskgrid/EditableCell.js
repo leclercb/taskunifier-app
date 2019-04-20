@@ -26,7 +26,7 @@ const EditableRow = Component => ({ form, index, rowProps, ...props }) => {
 
 export const EditableFormRow = Component => Form.create({
     onValuesChange: (props, changedValues, allValues) => {
-        if (isCommitOnChangeForType(props.rowProps.getFieldType(Object.keys(changedValues)[0]))) {
+        if (isCommitOnChangeForType(props.rowProps.getField(Object.keys(changedValues)[0]).type)) {
             props.rowProps.onSave({ ...props.rowProps.record, ...allValues });
         }
     }
@@ -65,7 +65,7 @@ export function EditableCell(props) {
     }
 
     const {
-        type,
+        field,
         editable,
         dataIndex,
         title,
@@ -75,13 +75,6 @@ export function EditableCell(props) {
         ...restProps
     } = props;
 
-    const extraProps = {};
-
-    if (!isCommitOnChangeForType(type)) {
-        extraProps.onPressEnter = save;
-        extraProps.onBlur = save;
-    }
-
     return (
         <td {...restProps}>
             {editable ? (
@@ -89,16 +82,23 @@ export function EditableCell(props) {
                     {form => {
                         formRef.current = form;
 
+                        const extraProps = {};
+
+                        if (!isCommitOnChangeForType(field.type)) {
+                            extraProps.onPressEnter = save;
+                            extraProps.onBlur = save;
+                        }
+
                         return (
-                            editing || isAlwaysInEditionForType(type) ? (
+                            editing || isAlwaysInEditionForType(field.type) ? (
                                 <Form.Item style={{ margin: 0 }}>
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [],
-                                        valuePropName: getValuePropNameForType(type),
-                                        getValueFromEvent: getValueFromEventForType(type),
-                                        initialValue: getNormalizeForType(type)(record[dataIndex])
+                                        valuePropName: getValuePropNameForType(field.type),
+                                        getValueFromEvent: getValueFromEventForType(field.type),
+                                        initialValue: getNormalizeForType(field.type)(record[dataIndex])
                                     })(
-                                        getInputForType(type, { ref: inputRef, ...extraProps })
+                                        getInputForType(field.type, field.options, { ref: inputRef, ...extraProps })
                                     )}
                                 </Form.Item>
                             ) : (

@@ -70,7 +70,7 @@ function SettingManager(props) {
                                         getValueFromEvent: getValueFromEventForType(item.type),
                                         initialValue: getNormalizeForType(item.type)(getSettingValue(item))
                                     })(
-                                        getInputForType(item.type, { disabled: item.editable === false })
+                                        getInputForType(item.type, item.options, { disabled: item.editable === false })
                                     )}
                                 </Form.Item>
                             </List.Item>

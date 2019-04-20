@@ -24,12 +24,12 @@ export const getValueFromEventForType = type => {
     return getFieldConfiguration(type).getValueFromEvent;
 }
 
-export const getRenderForType = type => (text, record, index) => {
-    return getFieldConfiguration(type).render(text, record, index);
+export const getRenderForType = (type, options) => (text, record, index) => {
+    return getFieldConfiguration(type, options).render(text, record, index);
 }
 
-export const getInputForType = (type, props) => {
-    return getFieldConfiguration(type).input(props);
+export const getInputForType = (type, options, props) => {
+    return getFieldConfiguration(type, options).input(props);
 }
 
 export const getSelectForType = type => {

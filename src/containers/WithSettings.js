@@ -4,7 +4,7 @@ import { updateSettings } from '../actions/SettingActions';
 
 function withSettings(Component) {
     function WithSettings(props) {
-        return <Component {...props} getSetting={key => props.settings[key]} />
+        return <Component {...props} />
     }
 
     const mapStateToProps = state => ({

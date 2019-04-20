@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, DatePicker, Input, InputNumber, Progress, Select } from 'antd';
+import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
 import moment from 'moment';
 import { escape } from '../utils/RegexUtils';
 import ColorPicker from '../components/common/ColorPicker';
@@ -38,7 +38,7 @@ export function getFieldTypes() {
         'contact',
         'context',
         'date',
-        'datetime',
+        'dateTime',
         'folder',
         'goal',
         'importance',
@@ -47,10 +47,12 @@ export function getFieldTypes() {
         'number',
         'priority',
         'progress',
+        'select',
+        'selectTags',
         'star',
         'status',
         'tags',
-        'task-template',
+        'taskTemplate',
         'text',
         'textarea'
     ];
@@ -82,7 +84,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return !!conditionValue !== !!taskValue;
@@ -116,7 +118,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -152,7 +154,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -188,7 +190,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -201,6 +203,8 @@ export function getFieldConfiguration(type, options) {
             break;
         }
         case 'date': {
+            let dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
+
             configuration = {
                 title: 'Date',
                 width: 250,
@@ -209,9 +213,9 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? moment(value).format('DD-MM-YYYY') : <span>&nbsp;</span>,
+                render: value => value ? moment(value).format(dateFormat) : <span>&nbsp;</span>,
                 input: props => (
-                    <DatePicker format="DD-MM-YYYY" {...props} />
+                    <DatePicker format={dateFormat} {...props} />
                 ),
                 conditions: [
                     {
@@ -230,7 +234,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             if (Number.isInteger(conditionValue)) {
@@ -260,7 +264,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'before_or_equal',
+                        type: 'beforeOrEqual',
                         title: 'Before or equals',
                         apply: (conditionValue, taskValue) => {
                             if (Number.isInteger(conditionValue)) {
@@ -290,7 +294,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'after_or_equal',
+                        type: 'afterOrEqual',
                         title: 'After or equals',
                         apply: (conditionValue, taskValue) => {
                             if (Number.isInteger(conditionValue)) {
@@ -305,12 +309,21 @@ export function getFieldConfiguration(type, options) {
                         }
                     }
                 ],
-                options: []
+                options: [
+                    {
+                        id: 'dateFormat',
+                        title: 'Date format',
+                        type: 'text'
+                    }
+                ]
             };
 
             break;
         }
-        case 'datetime': {
+        case 'dateTime': {
+            let dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
+            let timeFormat = options && options.timeFormat ? options.timeFormat : 'HH:mm';
+
             configuration = {
                 title: 'Date time',
                 width: 250,
@@ -319,9 +332,9 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value ? moment(value) : null,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? moment(value).format('DD-MM-YYYY HH:mm') : <span>&nbsp;</span>,
+                render: value => value ? moment(value).format(`${dateFormat} ${timeFormat}`) : <span>&nbsp;</span>,
                 input: props => (
-                    <DatePicker showTime={{ format: 'HH:mm' }} format="DD-MM-YYYY HH:mm" {...props} />
+                    <DatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} />
                 ),
                 conditions: [
                     {
@@ -340,7 +353,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             if (Number.isInteger(conditionValue)) {
@@ -370,7 +383,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'before_or_equal',
+                        type: 'beforeOrEqual',
                         title: 'Before or equals',
                         apply: (conditionValue, taskValue) => {
                             if (Number.isInteger(conditionValue)) {
@@ -400,7 +413,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'after_or_equal',
+                        type: 'afterOrEqual',
                         title: 'After or equals',
                         apply: (conditionValue, taskValue) => {
                             if (Number.isInteger(conditionValue)) {
@@ -415,7 +428,18 @@ export function getFieldConfiguration(type, options) {
                         }
                     }
                 ],
-                options: []
+                options: [
+                    {
+                        id: 'dateFormat',
+                        title: 'Date format',
+                        type: 'text'
+                    },
+                    {
+                        id: 'timeFormat',
+                        title: 'Time format',
+                        type: 'text'
+                    }
+                ]
             };
 
             break;
@@ -444,7 +468,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -480,7 +504,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -514,7 +538,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -550,7 +574,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -573,7 +597,7 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? value : <span>&nbsp;</span>,
+                render: value => value ? currency + ' ' + value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber
                         formatter={value => `${currency} ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
@@ -589,7 +613,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -632,7 +656,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -679,7 +703,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -713,7 +737,101 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'select': {
+            let values = options && options.values ? options.values : [];
+            values = Array.isArray(values) ? values : [values];
+
+            configuration = {
+                title: 'Select',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    value ? value : <span>&nbsp;</span>
+                ),
+                input: props => (
+                    <Select {...props}>
+                        {values.map(value => {
+                            value = typeof value === 'object' ? value : {
+                                title: value,
+                                value: value
+                            };
+
+                            return (
+                                <Select.Option key={value.value} value={value.value}>
+                                    {value.title}
+                                </Select.Option>
+                            );
+                        })}
+                    </Select>
+                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: [
+                    {
+                        id: 'values',
+                        title: 'Values',
+                        type: 'selectTags'
+                    }
+                ]
+            };
+
+            break;
+        }
+        case 'selectTags': {
+            configuration = {
+                title: 'Select Tags',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: values => (
+                    values ? values.map(value => (<Tag>{value}</Tag>)) : <span>&nbsp;</span>
+                ),
+                input: props => (
+                    <Select mode="tags" {...props} />
+                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -747,7 +865,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return !!conditionValue !== !!taskValue;
@@ -783,7 +901,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -819,7 +937,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -831,7 +949,7 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
-        case 'task-template': {
+        case 'taskTemplate': {
             configuration = {
                 title: 'Task Template',
                 width: 200,
@@ -855,7 +973,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -889,7 +1007,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -903,7 +1021,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_contain',
+                        type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, taskValue) => {
                             return !(taskValue || '').includes(conditionValue);
@@ -938,7 +1056,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_equal',
+                        type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
@@ -952,7 +1070,7 @@ export function getFieldConfiguration(type, options) {
                         }
                     },
                     {
-                        type: 'not_contain',
+                        type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, taskValue) => {
                             return !(taskValue || '').includes(conditionValue);

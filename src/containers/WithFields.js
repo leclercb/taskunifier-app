@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addField, updateField, deleteField } from '../actions/FieldActions';
+import { getDefaultFields } from '../data/DataFields';
 import { filterObjects } from '../utils/CategoryUtils';
 
 function withFields(Component) {
@@ -9,7 +10,7 @@ function withFields(Component) {
     }
 
     const mapStateToProps = state => ({
-        fields: filterObjects(state.fields)
+        fields: getDefaultFields(state.settings).concat(filterObjects(state.fields))
     });
 
     const mapDispatchToProps = dispatch => ({

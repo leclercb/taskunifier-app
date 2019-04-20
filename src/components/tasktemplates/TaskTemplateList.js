@@ -8,11 +8,11 @@ import Spacer from '../common/Spacer';
 import Constants from '../../constants/Constants';
 
 function TaskTemplateList(props) {
-    const defaultTaskTemplate = props.settings['default_task_template'];
+    const defaultTaskTemplate = props.settings.defaultTaskTemplate;
 
     const setDefaultTaskTemplate = () => {
         props.updateSettings({
-            default_task_template: props.selectedTaskTemplateId
+            defaultTaskTemplate: props.selectedTaskTemplateId
         });
     }
 

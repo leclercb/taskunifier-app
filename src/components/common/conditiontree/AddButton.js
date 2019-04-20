@@ -18,10 +18,10 @@ function AddButton(props) {
         <Popover
             content={
                 <Menu onClick={onMenuClick} style={{ width: 240 }} mode="vertical" theme="light">
-                    <Menu.SubMenu key="condition_group" title='Condition Group'>
-                        <Menu.Item key="condition_group_and">AND</Menu.Item>
-                        <Menu.Item key="condition_group_or">OR</Menu.Item>
-                        <Menu.Item key="condition_group_not">NOT</Menu.Item>
+                    <Menu.SubMenu key="conditionGroup" title='Condition Group'>
+                        <Menu.Item key="conditionGroupAnd">AND</Menu.Item>
+                        <Menu.Item key="conditionGroupOr">OR</Menu.Item>
+                        <Menu.Item key="conditionGroupNot">NOT</Menu.Item>
                     </Menu.SubMenu>
                     {props.children}
                 </Menu>

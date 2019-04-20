@@ -1,4 +1,4 @@
-export function getDefaultFields() {
+export function getDefaultFields(settings) {
     return [
         {
             static: true,
@@ -79,14 +79,33 @@ export function getDefaultFields() {
         },
         {
             static: true,
-            id: 'duedate',
+            id: 'startDate',
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
             state: 'LOADED',
             title: 'Due date',
             color: '#ffffff',
-            type: 'date'
+            type: (settings.showStartTime ? 'dateTime' : 'date'),
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            }
+        },
+        {
+            static: true,
+            id: 'dueDate',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            state: 'LOADED',
+            title: 'Due date',
+            color: '#ffffff',
+            type: (settings.showDueTime ? 'dateTime' : 'date'),
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            }
         },
         {
             static: true,

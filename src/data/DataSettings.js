@@ -20,25 +20,112 @@ export function getCategories() {
             icon: 'home',
             settings: [
                 {
-                    id: "automatic_save",
+                    id: "automaticSave",
                     title: "Enable automatic save",
                     type: 'boolean',
                     value: true,
                     editable: true
                 },
                 {
-                    id: "automatic_save_interval",
+                    id: "automaticSaveInterval",
                     title: "Save interval in minutes",
                     type: 'number',
                     value: 15,
                     editable: true
                 },
                 {
-                    id: "last_automatic_save",
+                    id: "lastAutomaticSave",
                     title: "Last automatic save",
-                    type: 'datetime',
+                    type: 'dateTime',
                     value: moment().toJSON(),
                     editable: false
+                }
+            ]
+        },
+        {
+            id: 'date',
+            title: 'Date',
+            icon: 'calendar-alt',
+            settings: [
+                {
+                    id: "showStartTime",
+                    title: "Show start time",
+                    type: 'boolean',
+                    value: false,
+                    editable: true
+                },
+                {
+                    id: "showDueTime",
+                    title: "Show due time",
+                    type: 'boolean',
+                    value: false,
+                    editable: true
+                },
+                {
+                    id: "dateFormat",
+                    title: "Date format",
+                    type: 'select',
+                    options: {
+                        values: [
+                            {
+                                title: 'DD/MM/YYYY',
+                                value: 'DD/MM/YYYY'
+                            },
+                            {
+                                title: 'DD-MM-YYYY',
+                                value: 'DD-MM-YYYY'
+                            },
+                            {
+                                title: 'DD.MM.YYYY',
+                                value: 'DD.MM.YYYY'
+                            },
+                            {
+                                title: 'MM/DD/YYYY',
+                                value: 'MM/DD/YYYY'
+                            },
+                            {
+                                title: 'MM-DD-YYYY',
+                                value: 'MM-DD-YYYY'
+                            },
+                            {
+                                title: 'MM.DD.YYYY',
+                                value: 'MM.DD.YYYY'
+                            },
+                            {
+                                title: 'YYYY/MM/DD',
+                                value: 'YYYY/MM/DD'
+                            },
+                            {
+                                title: 'YYYY-MM-DD',
+                                value: 'YYYY-MM-DD'
+                            },
+                            {
+                                title: 'YYYY.MM.DD',
+                                value: 'YYYY.MM.DD'
+                            }
+                        ]
+                    },
+                    value: 'DD/MM/YYYY',
+                    editable: true
+                },
+                {
+                    id: "timeFormat",
+                    title: "Time format",
+                    type: 'select',
+                    options: {
+                        values: [
+                            {
+                                title: 'HH:mm',
+                                value: 'HH:mm'
+                            },
+                            {
+                                title: 'hh:mm a',
+                                value: 'hh:mm a'
+                            }
+                        ]
+                    },
+                    value: 'HH:mm',
+                    editable: true
                 }
             ]
         },
@@ -62,51 +149,51 @@ export function getCategories() {
             icon: 'box-open',
             settings: [
                 {
-                    id: "automatic_backup",
+                    id: "automaticBackup",
                     title: "Enable automatic backup",
                     type: 'boolean',
                     value: true,
                     editable: true
                 },
                 {
-                    id: "max_backups",
+                    id: "maxBackups",
                     title: "Maximum number of backups to keep",
                     type: 'number',
                     value: 100,
                     editable: true
                 },
                 {
-                    id: "automatic_backup_interval",
+                    id: "automaticBackupInterval",
                     title: "Backup interval in minutes",
                     type: 'number',
                     value: 60,
                     editable: true
                 },
                 {
-                    id: "last_automatic_backup",
+                    id: "lastAutomaticBackup",
                     title: "Last automatic backup",
-                    type: 'datetime',
+                    type: 'dateTime',
                     value: moment().toJSON(),
                     editable: false
                 }
             ]
         },
         {
-            id: 'task_templates',
+            id: 'taskTemplates',
             title: 'Task Templates',
             icon: 'tasks',
             settings: [
                 {
-                    id: "default_task_template",
+                    id: "defaultTaskTemplate",
                     title: "Default task template",
-                    type: 'task-template',
+                    type: 'taskTemplate',
                     value: null,
                     editable: true
                 }
             ]
         },
         {
-            id: 'importance_colors',
+            id: 'importanceColors',
             title: 'Importance Colors',
             icon: 'paint-roller',
             settings: [
@@ -204,7 +291,7 @@ export function getCategories() {
             ]
         },
         {
-            id: 'priority_colors',
+            id: 'priorityColors',
             title: 'Priority Colors',
             icon: 'paint-roller',
             settings: [
@@ -246,7 +333,7 @@ export function getCategories() {
             ]
         },
         {
-            id: 'status_colors',
+            id: 'statusColors',
             title: 'Status Colors',
             icon: 'paint-roller',
             settings: [
@@ -279,7 +366,7 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: "status_next_action",
+                    id: "status_nextAction",
                     title: "Status Next Action",
                     type: 'color',
                     value: '#ffffff',
@@ -335,28 +422,28 @@ export function getCategories() {
             icon: 'desktop',
             settings: [
                 {
-                    id: "window_size_width",
+                    id: "windowSizeWidth",
                     title: "Window Size - Width",
                     type: 'number',
                     value: 1024,
                     editable: false
                 },
                 {
-                    id: "window_size_height",
+                    id: "windowSizeHeight",
                     title: "Window Size - Height",
                     type: 'number',
                     value: 768,
                     editable: false
                 },
                 {
-                    id: "window_position_x",
+                    id: "windowPositionX",
                     title: "Window Position - X",
                     type: 'number',
                     value: null,
                     editable: false
                 },
                 {
-                    id: "window_position_y",
+                    id: "windowPositionY",
                     title: "Window Position - Y",
                     type: 'number',
                     value: null,

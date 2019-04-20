@@ -57,7 +57,7 @@ function TaskTemplateForm(props) {
                         getValueFromEvent: getValueFromEventForType(field.type),
                         initialValue: getNormalizeForType(field.type)(props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : null)
                     })(
-                        getInputForType(field.type)
+                        getInputForType(field.type, field.options)
                     )}
                 </Form.Item>
             ))}

@@ -21,7 +21,7 @@ export function getStatuses() {
             color: '#ffffff'
         },
         {
-            id: 'next_action',
+            id: 'nextAction',
             title: 'Next Action',
             color: '#ffffff'
         },

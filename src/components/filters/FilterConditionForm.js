@@ -62,7 +62,7 @@ function FilterConditionForm(props) {
                             getValueFromEvent: getValueFromEventForType(field.type),
                             initialValue: getNormalizeForType(field.type)(props.condition.value)
                         })(
-                            getInputForType(field.type)
+                            getInputForType(field.type, field.options)
                         )}
                     </Form.Item>
                 </Col>

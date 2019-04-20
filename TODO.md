@@ -1,5 +1,6 @@
 ## Todo List
 
+* Fix set star (not saved)
 * Batch add task
 * Task Table
   * Fix infinity table

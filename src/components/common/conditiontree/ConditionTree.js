@@ -14,19 +14,19 @@ function ConditionTree(props) {
     const onAdd = (condition, key) => {
         let newCondition = null;
 
-        if (key === 'condition_group_and') {
+        if (key === 'conditionGroupAnd') {
             newCondition = {
                 id: uuid(),
                 operator: 'AND',
                 conditions: []
             };
-        } else if (key === 'condition_group_or') {
+        } else if (key === 'conditionGroupOr') {
             newCondition = {
                 id: uuid(),
                 operator: 'OR',
                 conditions: []
             };
-        } else if (key === 'condition_group_not') {
+        } else if (key === 'conditionGroupNot') {
             newCondition = {
                 id: uuid(),
                 operator: 'NOT',
