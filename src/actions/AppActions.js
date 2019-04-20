@@ -2,11 +2,11 @@ import uuid from 'uuid';
 import moment from 'moment';
 import { loadContactsFromFile, saveContactsToFile, cleanContacts } from './ContactActions';
 import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './ContextActions';
-import { loadFieldsFromFile, saveFieldsToFile, cleanFields } from './FieldActions';
 import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
+import { loadTaskFieldsFromFile, saveTaskFieldsToFile, cleanTaskFields } from './TaskFieldActions';
 import { loadTaskFiltersFromFile, saveTaskFiltersToFile, cleanTaskFilters } from './TaskFilterActions';
 import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates } from './TaskTemplateActions';
 import { updateProcess } from './ProcessActions';
@@ -34,11 +34,11 @@ const _loadData = (path, options = {}) => {
                 dispatch(loadSettingsFromFile(join(path, 'settings.json'))),
                 dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
                 dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
-                dispatch(loadFieldsFromFile(join(path, 'fields.json'))),
                 dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
                 dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
                 dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
                 dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
+                dispatch(loadTaskFieldsFromFile(join(path, 'taskFields.json'))),
                 dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
                 dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
             ]).then(() => {
@@ -86,11 +86,11 @@ const _saveData = (path, options = { clean: false, message: null }) => {
                     dispatch(saveSettingsToFile(join(path, 'settings.json'), state.settings)),
                     dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts)),
                     dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
-                    dispatch(saveFieldsToFile(join(path, 'fields.json'), state.fields)),
                     dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),
                     dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals)),
                     dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations)),
                     dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks)),
+                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), state.taskFields)),
                     dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), state.taskFilters)),
                     dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), state.taskTemplates))
                 ]).then(() => {
@@ -136,12 +136,12 @@ export const cleanData = () => {
             Promise.all([
                 dispatch(cleanContacts()),
                 dispatch(cleanContexts()),
-                dispatch(cleanFields()),
-                dispatch(cleanTaskFilters()),
                 dispatch(cleanFolders()),
                 dispatch(cleanGoals()),
                 dispatch(cleanLocations()),
                 dispatch(cleanTasks()),
+                dispatch(cleanTaskFields()),
+                dispatch(cleanTaskFilters()),
                 dispatch(cleanTaskTemplates())
             ]).then(() => {
                 dispatch(updateProcess({

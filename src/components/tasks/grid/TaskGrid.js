@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { InfinityTable } from 'antd-table-infinity';
 import withApp from '../../../containers/WithApp';
-import withFields from '../../../containers/WithFields';
+import withTaskFields from '../../../containers/WithTaskFields';
 import withTasks from '../../../containers/WithTasks';
 import withSettings from '../../../containers/WithSettings';
 import { EditableFormRow, EditableCell } from './EditableCell';
@@ -35,7 +35,7 @@ function TaskGrid(props) {
         });
     };
 
-    const columns = props.fields.map(field => {
+    const columns = props.taskFields.map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
         let width = props.settings[settingKey];
 
@@ -85,7 +85,7 @@ function TaskGrid(props) {
                 rowProps: {
                     record: record,
                     onSave: onUpdateTask,
-                    getField: dataIndex => props.fields.find(field => field.id === dataIndex),
+                    getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
                     style: {
                         backgroundColor: getImportanceColor(record.importance, props.settings),
                         textDecoration: record.completed ? 'line-through' : null
@@ -100,7 +100,7 @@ function TaskGrid(props) {
 }
 
 TaskGrid.propTypes = {
-    fields: PropTypes.arrayOf(FieldPropType).isRequired,
+    taskFields: PropTypes.arrayOf(FieldPropType).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType).isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired
@@ -129,4 +129,4 @@ function createDummyTasks() {
     return tasks;
 }
 
-export default withApp(withSettings(withFields(withTasks(TaskGrid, { applySelectedTaskFilter: true }))));
+export default withApp(withSettings(withTaskFields(withTasks(TaskGrid, { applySelectedTaskFilter: true }))));

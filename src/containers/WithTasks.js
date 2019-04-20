@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
-import { getDefaultFields } from '../data/DataFields';
+import { getDefaultTaskFields } from '../data/DataTaskFields';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyTaskFilter } from '../utils/TaskFilterUtils';
 import { setSelectedTaskIds } from '../actions/AppActions';
@@ -20,7 +20,7 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
         let tasks = filterObjects(state.tasks);
 
         if (options && options.applySelectedTaskFilter === true) {
-            const fields = getDefaultFields(state.settings).concat(filterObjects(state.fields));
+            const fields = getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields));
 
             tasks = tasks.filter(task => {
                 if (!state.app.selectedTaskFilterDate ||

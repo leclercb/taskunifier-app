@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Row, Col } from 'antd';
-import withFields from '../../containers/WithFields';
+import withTaskFields from '../../containers/WithTaskFields';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import {
     getInputForType,
@@ -26,7 +26,7 @@ function TaskFilterConditionForm(props) {
         }
     };
 
-    const field = props.fields.find(field => field.id === props.condition.field);
+    const field = props.taskFields.find(field => field.id === props.condition.field);
 
     return (
         <Form {...formItemLayout}>
@@ -72,14 +72,14 @@ function TaskFilterConditionForm(props) {
 }
 
 TaskFilterConditionForm.propTypes = {
-    fields: PropTypes.arrayOf(FieldPropType),
+    taskFields: PropTypes.arrayOf(FieldPropType),
     condition: PropTypes.object.isRequired,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     onUpdate: PropTypes.func.isRequired
 };
 
-export default withFields(Form.create({
+export default withTaskFields(Form.create({
     name: 'condition',
     onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.condition, props.onUpdate, true)
 })(TaskFilterConditionForm));

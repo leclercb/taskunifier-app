@@ -4,7 +4,7 @@ import uuid from 'uuid';
 import { Menu, Empty } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
-import withFields from '../../containers/WithFields';
+import withTaskFields from '../../containers/WithTaskFields';
 import TaskFilterConditionForm from './TaskFilterConditionForm';
 
 function TaskFilterEmpty(props) {
@@ -13,7 +13,7 @@ function TaskFilterEmpty(props) {
 
 function TaskFilterConditionTree(props) {
     const createLeafObject = (parentCondition, key) => {
-        const field = props.fields.find(field => field.id === key);
+        const field = props.taskFields.find(field => field.id === key);
 
         if (!field) {
             throw new Error('Unknown condition field "' + key + '"');
@@ -28,7 +28,7 @@ function TaskFilterConditionTree(props) {
     }
 
     const getLeafComponent = condition => {
-        const field = props.fields.find(field => field.id === condition.field);
+        const field = props.taskFields.find(field => field.id === condition.field);
 
         if (!field) {
             return TaskFilterEmpty;
@@ -49,7 +49,7 @@ function TaskFilterConditionTree(props) {
             disabled={!!props.disabled}
             condition={props.taskFilter.condition}
             context={props.context}
-            addMenuItems={props.fields.map(field => (
+            addMenuItems={props.taskFields.map(field => (
                 <Menu.Item key={field.id}>{field.title}</Menu.Item>
             ))}
             createLeafObject={createLeafObject}
@@ -60,10 +60,10 @@ function TaskFilterConditionTree(props) {
 
 TaskFilterConditionTree.propTypes = {
     taskFilter: PropTypes.object.isRequired,
-    fields: PropTypes.arrayOf(FieldPropType),
+    taskFields: PropTypes.arrayOf(FieldPropType),
     context: PropTypes.object,
     disabled: PropTypes.bool,
     updateTaskFilter: PropTypes.func.isRequired
 };
 
-export default withFields(TaskFilterConditionTree);
+export default withTaskFields(TaskFilterConditionTree);

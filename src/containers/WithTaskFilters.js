@@ -13,9 +13,9 @@ function withTaskFilters(Component) {
     });
 
     const mapDispatchToProps = dispatch => ({
-        addTaskFilter: field => dispatch(addTaskFilter(field)),
-        updateTaskFilter: field => dispatch(updateTaskFilter(field)),
-        deleteTaskFilter: fieldId => dispatch(deleteTaskFilter(fieldId))
+        addTaskFilter: taskFilter => dispatch(addTaskFilter(taskFilter)),
+        updateTaskFilter: taskFilter => dispatch(updateTaskFilter(taskFilter)),
+        deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId))
     });
 
     return connect(

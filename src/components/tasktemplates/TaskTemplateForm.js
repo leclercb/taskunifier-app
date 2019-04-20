@@ -5,7 +5,7 @@ import ColorPicker from '../common/ColorPicker';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
-import withFields from '../../containers/WithFields';
+import withTaskFields from '../../containers/WithTaskFields';
 import {
     getInputForType,
     getNormalizeForType,
@@ -48,7 +48,7 @@ function TaskTemplateForm(props) {
                 )}
             </Form.Item>
             <Divider>Task Properties</Divider>
-            {props.fields.map(field => (
+            {props.taskFields.map(field => (
                 <Form.Item key={field.id} label={field.title}>
                     {getFieldDecorator('properties.' + field.id, {
                         rules: [],
@@ -66,7 +66,7 @@ function TaskTemplateForm(props) {
 }
 
 TaskTemplateForm.propTypes = {
-    fields: PropTypes.arrayOf(FieldPropType),
+    taskFields: PropTypes.arrayOf(FieldPropType),
     taskTemplate: TaskTemplatePropType.isRequired,
     updateTaskTemplate: PropTypes.func.isRequired
 };
@@ -74,4 +74,4 @@ TaskTemplateForm.propTypes = {
 export default Form.create({
     name: 'taskTemplate',
     onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.taskTemplate, props.updateTaskTemplate)
-})(withFields(TaskTemplateForm));
+})(withTaskFields(TaskTemplateForm));

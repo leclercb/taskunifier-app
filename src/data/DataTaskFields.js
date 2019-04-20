@@ -1,4 +1,4 @@
-export function getDefaultFields(settings) {
+export function getDefaultTaskFields(settings) {
     return [
         {
             static: true,
