@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
+import SplitPane from 'react-split-pane';
 import Sider from './Sider';
 import TaskGrid from '../tasks/grid/TaskGrid';
 import Header from './Header';
 import Footer from './Footer';
 import withProcesses from '../../containers/WithProcesses';
+import withSettings from '../../containers/WithSettings';
 import ModalProcessManager from '../processes/ModalProcessManager';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
 import ModalFilterManager from '../filters/ModalFilterManager';
-import SplitPane from 'react-split-pane';
 import NotificationManager from '../processes/NotificationManager';
 import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
 import ModalSettingManager from '../settings/ModalSettingManager';
@@ -32,16 +34,27 @@ function AppLayout(props) {
                         <Header />
                     </Layout.Header>
                     <Layout style={{ height: "100%", position: "relative" }}>
-                        <SplitPane split="vertical" minSize={200} defaultSize={300} paneStyle={{ overflowY: 'auto' }}>
+                        <SplitPane
+                            split="vertical"
+                            minSize={200}
+                            defaultSize={props.settings.verticalSplitPaneSize}
+                            onChange={size => props.updateSettings({ verticalSplitPaneSize: size })}
+                            paneStyle={{ overflowY: 'auto' }}>
                             <Sider />
-                            <SplitPane split="horizontal" minSize={200} defaultSize={300} paneStyle={{ overflowY: 'auto' }}>
-                                <div>
+                            <SplitPane
+                                split="horizontal"
+                                minSize={200}
+                                defaultSize={props.settings.horizontalSplitPaneSize}
+                                onChange={size => props.updateSettings({ horizontalSplitPaneSize: size })}
+                                primary="second"
+                                paneStyle={{ overflowY: 'auto' }}>
+                                <div style={{ height: '100%' }}>
                                     <TaskQuickAdd />
                                     <div style={{ overflowY: 'auto', height: '100%' }}>
                                         <TaskGrid />
                                     </div>
                                 </div>
-                                <div style={{ padding: 10 }}>
+                                <div style={{ padding: 10, width: '100%' }}>
                                     <TaskTabs />
                                 </div>
                             </SplitPane>
@@ -56,4 +69,10 @@ function AppLayout(props) {
     );
 }
 
-export default withProcesses(AppLayout);
+AppLayout.propTypes = {
+    processes: PropTypes.shape({
+        busy: PropTypes.bool.isRequired
+    }).isRequired
+}
+
+export default withProcesses(withSettings(AppLayout));

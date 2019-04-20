@@ -448,6 +448,20 @@ export function getCategories() {
                     type: 'number',
                     value: null,
                     editable: false
+                },
+                {
+                    id: "verticalSplitPaneSize",
+                    title: "Vertical Split Pane Size",
+                    type: 'number',
+                    value: 300,
+                    editable: false
+                },
+                {
+                    id: "horizontalSplitPaneSize",
+                    title: "Horizontal Split Pane Size",
+                    type: 'number',
+                    value: 300,
+                    editable: false
                 }
             ]
         }

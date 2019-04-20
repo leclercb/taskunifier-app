@@ -151,7 +151,8 @@ function Sider(props) {
                 openKeys={openKeys}
                 onSelect={onSelect}
                 onOpenChange={onOpenChange}
-                mode="inline">
+                mode="inline"
+                style={{ height: '100%' }}>
                 <Menu.Item
                     key={searchFilter.id}
                     filter={searchFilter}>
