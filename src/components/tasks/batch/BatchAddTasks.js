@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
-import Icon from '../common/Icon';
-import { TaskTemplateSelect } from '../tasktemplates/TaskTemplateSelect';
-import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
-import withTasks from '../../containers/WithTasks';
-import withTaskTemplates from '../../containers/WithTaskTemplates';
-import { applyTaskTemplate } from '../../utils/TaskTemplateUtils';
+import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../../utils/FormUtils';
+import Icon from '../../common/Icon';
+import { TaskTemplateSelect } from '../../tasktemplates/TaskTemplateSelect';
+import { TaskTemplatePropType } from '../../../proptypes/TaskTemplatePropTypes';
+import withTasks from '../../../containers/WithTasks';
+import withTaskTemplates from '../../../containers/WithTaskTemplates';
+import { applyTaskTemplate } from '../../../utils/TaskTemplateUtils';
 
 function BatchAddTasks(props) {
     const addTasks = () => {

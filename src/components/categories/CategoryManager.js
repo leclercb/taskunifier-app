@@ -22,9 +22,9 @@ function CategoryManager(props) {
 
     return (
         <Tabs activeKey={category} onChange={onActiveKeyChange} animated={false}>
-        <Tabs.TabPane tab="Contacts" key="contacts">
-            <ContactManager contactId={category === 'contacts' ? objectId : null} onContactSelection={onObjectSelection} />
-        </Tabs.TabPane>
+            <Tabs.TabPane tab="Contacts" key="contacts">
+                <ContactManager contactId={category === 'contacts' ? objectId : null} onContactSelection={onObjectSelection} />
+            </Tabs.TabPane>
             <Tabs.TabPane tab="Contexts" key="contexts">
                 <ContextManager contextId={category === 'contexts' ? objectId : null} onContextSelection={onObjectSelection} />
             </Tabs.TabPane>

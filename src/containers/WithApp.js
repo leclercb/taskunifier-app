@@ -40,7 +40,7 @@ function withApp(Component) {
         backupData: () => dispatch(backupData()),
         cleanBackups: nbBackupstoKeep => dispatch(cleanBackups(nbBackupstoKeep)),
         synchronize: () => dispatch(synchronize()),
-        setSelectedTaskIds: filter => dispatch(setSelectedTaskIds(filter)),
+        setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedFilter: filter => dispatch(setSelectedFilter(filter)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),

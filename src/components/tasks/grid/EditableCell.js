@@ -7,7 +7,7 @@ import {
     getInputForType,
     getNormalizeForType,
     isCommitOnChangeForType
-} from '../../utils/FieldUtils';
+} from '../../../utils/FieldUtils';
 import './EditableCell.css';
 
 const EditableContext = React.createContext();

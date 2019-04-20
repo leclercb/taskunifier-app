@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfinityTable } from 'antd-table-infinity';
-import withApp from '../../containers/WithApp';
-import withFields from '../../containers/WithFields';
-import withTasks from '../../containers/WithTasks';
-import withSettings from '../../containers/WithSettings';
+import withApp from '../../../containers/WithApp';
+import withFields from '../../../containers/WithFields';
+import withTasks from '../../../containers/WithTasks';
+import withSettings from '../../../containers/WithSettings';
 import { EditableFormRow, EditableCell } from './EditableCell';
 import ResizableColumn from './ResizableColumn';
-import { getWidthForType, getRenderForType } from '../../utils/FieldUtils';
+import { getWidthForType, getRenderForType } from '../../../utils/FieldUtils';
 import DragableBodyRow from './DragableBodyRow';
-import { FieldPropType } from '../../proptypes/FieldPropTypes';
-import { TaskPropType } from '../../proptypes/TaskPropTypes';
-import { getImportanceColor } from '../../utils/SettingUtils';
+import { FieldPropType } from '../../../proptypes/FieldPropTypes';
+import { TaskPropType } from '../../../proptypes/TaskPropTypes';
+import { getImportanceColor } from '../../../utils/SettingUtils';
 import './EditableCell.css';
 
 function TaskGrid(props) {
