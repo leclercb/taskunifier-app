@@ -51,6 +51,10 @@ function Header(props) {
         props.setTaskTemplateManagerOptions({ visible: true });
     };
 
+    const onSetBatchAddTasksVisible = () => {
+        props.setBatchAddTasksOptions({ visible: true });
+    };
+
     const createButton = (icon, text, onClick) => {
         return (
             <React.Fragment>
@@ -83,6 +87,7 @@ function Header(props) {
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
             {createButton('filter', 'Filter Manager', onSetFilterManagerVisible)}
             {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
+            {createButton('tasks', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
         </LeftRight>
     );
 }

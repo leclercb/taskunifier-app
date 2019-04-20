@@ -6,11 +6,11 @@ import withContacts from '../../containers/WithContacts';
 import Icon from '../common/Icon';
 import { getContactTitle } from '../../utils/ContactUtils';
 
-function ContactSelect(props) {
+export const ContactSelect = React.forwardRef((props, ref) => {
     const { contacts, ...restProps } = props;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {contacts.map(contact => (
                 <Select.Option key={contact.id} value={contact.id}>
                     <Icon icon="circle" color={contact.color} text={getContactTitle(contact)} />
@@ -18,7 +18,7 @@ function ContactSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 ContactSelect.propTypes = {
     contacts: PropTypes.arrayOf(ContactPropType).isRequired

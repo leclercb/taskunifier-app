@@ -7,11 +7,11 @@ import withSettings from '../../containers/WithSettings';
 import Icon from '../common/Icon';
 import { getStatusColor } from '../../utils/SettingUtils';
 
-function StatusSelect(props) {
+export const StatusSelect = React.forwardRef((props, ref) => {
     const { statuses, ...restProps } = props;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {statuses.map(status => (
                 <Select.Option key={status.id} value={status.id}>
                     <Icon icon="circle" color={getStatusColor(status.id, props.settings)} text={status.title} />
@@ -19,7 +19,7 @@ function StatusSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 StatusSelect.propTypes = {
     statuses: PropTypes.arrayOf(StatusPropType).isRequired

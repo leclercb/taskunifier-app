@@ -11,7 +11,8 @@ import {
     setCategoryManagerOptions,
     setFilterManagerOptions,
     setTaskTemplateManagerOptions,
-    setSettingManagerOptions
+    setSettingManagerOptions,
+    setBatchAddTasksOptions
 } from '../actions/AppActions';
 import { updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setProcessesVisible } from '../actions/ProcessActions';
@@ -29,7 +30,8 @@ function withApp(Component) {
         categoryManager: state.app.categoryManager,
         filterManager: state.app.filterManager,
         taskTemplateManager: state.app.taskTemplateManager,
-        settingManager: state.app.settingManager
+        settingManager: state.app.settingManager,
+        batchAddTasks: state.app.batchAddTasks
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -44,6 +46,7 @@ function withApp(Component) {
         setFilterManagerOptions: options => dispatch(setFilterManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
         setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
+        setBatchAddTasksOptions: options => dispatch(setBatchAddTasksOptions(options)),
         setProcessesVisible: visible => dispatch(setProcessesVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
         updateSettings: settings => dispatch(updateSettings(settings))

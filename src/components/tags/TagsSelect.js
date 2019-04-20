@@ -4,13 +4,13 @@ import { TagPropType } from '../../proptypes/TagPropTypes';
 import { Select, Tag } from 'antd';
 import withTags from '../../containers/WithTags';
 
-function TagsSelect(props) {
+export const TagsSelect = React.forwardRef((props, ref) => {
     const { tags, ...restProps } = props;
 
     restProps.value = props.tags.find(tag => tag.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select mode="tags" allowClear={true} {...restProps}>
+        <Select ref={ref} mode="tags" allowClear={true} {...restProps}>
             {tags.map(tag => (
                 <Select.Option key={tag.id} value={tag.id}>
                     <Tag color={tag.color}>{tag.title}</Tag>
@@ -18,7 +18,7 @@ function TagsSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 TagsSelect.propTypes = {
     tags: PropTypes.arrayOf(TagPropType).isRequired

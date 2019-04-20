@@ -331,3 +331,14 @@ export const setSettingManagerOptions = (options) => {
         return Promise.resolve();
     };
 };
+
+export const setBatchAddTasksOptions = (options) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_BATCH_ADD_TASKS_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
