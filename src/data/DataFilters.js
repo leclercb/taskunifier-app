@@ -1,4 +1,4 @@
-export function getSearchFilter(searchValue) {
+export function createSearchFilter(searchValue) {
     return {
         id: 'search',
         title: 'Search',

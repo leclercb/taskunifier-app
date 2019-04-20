@@ -1,22 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Menu, Popconfirm } from 'antd';
-import Icon from '../common/Icon';
-import withObjects from '../../containers/WithObjects';
-import withApp from '../../containers/WithApp';
-import { ContextPropType } from '../../proptypes/ContextPropTypes';
-import { FolderPropType } from '../../proptypes/FolderPropTypes';
-import { GoalPropType } from '../../proptypes/GoalPropTypes';
-import { LocationPropType } from '../../proptypes/LocationPropTypes';
-import { FilterPropType } from '../../proptypes/FilterPropTypes';
-import LeftRight from '../common/LeftRight';
-import Constants from '../../constants/Constants';
+import Icon from '../../common/Icon';
+import withObjects from '../../../containers/WithObjects';
+import withApp from '../../../containers/WithApp';
+import { ContextPropType } from '../../../proptypes/ContextPropTypes';
+import { FolderPropType } from '../../../proptypes/FolderPropTypes';
+import { GoalPropType } from '../../../proptypes/GoalPropTypes';
+import { LocationPropType } from '../../../proptypes/LocationPropTypes';
+import { FilterPropType } from '../../../proptypes/FilterPropTypes';
+import LeftRight from '../../common/LeftRight';
+import Constants from '../../../constants/Constants';
 import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
-import { getGeneralFilters, getSearchFilter } from '../../data/DataFilters';
+import { getGeneralFilters, createSearchFilter } from '../../../data/DataFilters';
 import { Tooltip } from 'antd';
-import Spacer from '../common/Spacer';
+import Spacer from '../../common/Spacer';
 
-function Sider(props) {
+function TaskSider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
 
     const onSelect = event => {
@@ -39,7 +39,7 @@ function Sider(props) {
                 <Icon icon={icon} text={text} />
             </LeftRight>
         );
-    }
+    };
 
     const createObjectContextMenu = (object, onAdd, onEdit, onDelete) => {
         return (
@@ -56,7 +56,7 @@ function Sider(props) {
                 ) : null}
             </RCMenu>
         );
-    }
+    };
 
     const createEditDeleteButtons = (object, onEdit, onDelete) => {
         return (
@@ -79,7 +79,7 @@ function Sider(props) {
                 </Popconfirm>
             </React.Fragment>
         );
-    }
+    };
 
     const createObjectMenuItem = (object, filter, onAdd, onEdit, onDelete) => {
         return (
@@ -94,14 +94,14 @@ function Sider(props) {
                 {createObjectContextMenu(object, onAdd, onEdit, onDelete)}
             </Menu.Item>
         );
-    }
+    };
 
     const addObject = category => {
         props.setCategoryManagerOptions({
             visible: true,
             category: category
         });
-    }
+    };
 
     const editObject = (category, objectId) => {
         props.setCategoryManagerOptions({
@@ -109,20 +109,20 @@ function Sider(props) {
             category: category,
             objectId: objectId
         });
-    }
+    };
 
     const addFilter = () => {
         props.setFilterManagerOptions({
             visible: true
         });
-    }
+    };
 
     const editFilter = filterId => {
         props.setFilterManagerOptions({
             visible: true,
             filterId: filterId
         });
-    }
+    };
 
     const createFilterForObject = (object, field) => {
         return {
@@ -136,13 +136,13 @@ function Sider(props) {
                 value: object.id
             }
         }
-    }
+    };
 
     const onSearch = value => {
-        props.setSelectedFilter(getSearchFilter(value));
-    }
+        props.setSelectedFilter(createSearchFilter(value));
+    };
 
-    const searchFilter = getSearchFilter();
+    const searchFilter = createSearchFilter();
 
     return (
         <React.Fragment>
@@ -234,7 +234,7 @@ function Sider(props) {
     );
 }
 
-Sider.propTypes = {
+TaskSider.propTypes = {
     selectedFilter: FilterPropType.isRequired,
     contexts: PropTypes.arrayOf(ContextPropType).isRequired,
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
@@ -251,7 +251,7 @@ Sider.propTypes = {
     deleteFilter: PropTypes.func.isRequired
 };
 
-export default withApp(withObjects(Sider, {
+export default withApp(withObjects(TaskSider, {
     includeActions: true,
     includeContexts: true,
     includeFilters: true,

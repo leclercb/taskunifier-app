@@ -1,4 +1,12 @@
-import { loadObjectsFromFile, saveObjectsToFile, setObjects, addObject, updateObject, deleteObject, cleanObjects } from './ObjectActions';
+import { 
+    loadObjectsFromFile, 
+    saveObjectsToFile, 
+    setObjects, 
+    addObject, 
+    updateObject, 
+    deleteObject, 
+    cleanObjects 
+} from './ObjectActions';
 
 export const loadContactsFromFile = file => {
     return loadObjectsFromFile('contacts', file);

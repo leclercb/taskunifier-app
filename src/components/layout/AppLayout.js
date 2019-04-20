@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
 import SplitPane from 'react-split-pane';
-import Sider from './Sider';
+import TaskSider from '../tasks/sider/TaskSider';
 import TaskGrid from '../tasks/grid/TaskGrid';
 import Header from './Header';
 import Footer from './Footer';
@@ -40,7 +40,7 @@ function AppLayout(props) {
                             defaultSize={props.settings.verticalSplitPaneSize}
                             onChange={size => props.updateSettings({ verticalSplitPaneSize: size })}
                             paneStyle={{ overflowY: 'auto' }}>
-                            <Sider />
+                            <TaskSider />
                             <SplitPane
                                 split="horizontal"
                                 minSize={200}
