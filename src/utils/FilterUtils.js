@@ -1,15 +1,15 @@
 import { getValue } from "./ObjectUtils";
 import { getConditionsForType } from "./FieldUtils";
 
-export const applyTaskFilter = (taskFilter, task, fields) => {
-    if (!taskFilter || !taskFilter.condition) {
+export const applyFilter = (objectFilter, object, fields) => {
+    if (!objectFilter || !objectFilter.condition) {
         return true;
     }
 
-    return applyCondition(taskFilter.condition, task, fields);
+    return applyCondition(objectFilter.condition, object, fields);
 }
 
-const applyCondition = (condition, task, fields) => {
+const applyCondition = (condition, object, fields) => {
     if (condition.operator) {
         if (!condition.conditions || condition.conditions.length === 0) {
             return true;
@@ -20,7 +20,7 @@ const applyCondition = (condition, task, fields) => {
                 let result = true;
 
                 for (let i = 0; i < condition.conditions.length; i++) {
-                    result = result && applyCondition(condition.conditions[i], task, fields);
+                    result = result && applyCondition(condition.conditions[i], object, fields);
 
                     if (!result) {
                         return false;
@@ -33,7 +33,7 @@ const applyCondition = (condition, task, fields) => {
                 let result = false;
 
                 for (let i = 0; i < condition.conditions.length; i++) {
-                    result = result || applyCondition(condition.conditions[i], task, fields);
+                    result = result || applyCondition(condition.conditions[i], object, fields);
 
                     if (result) {
                         return true;
@@ -43,7 +43,7 @@ const applyCondition = (condition, task, fields) => {
                 return result;
             }
             case 'NOT': {
-                return !applyCondition(condition.conditions[0], task, fields);
+                return !applyCondition(condition.conditions[0], object, fields);
             }
             default: {
                 return true;
@@ -62,6 +62,6 @@ const applyCondition = (condition, task, fields) => {
             return true;
         }
 
-        return c.apply(condition.value, getValue(task, field.id));
+        return c.apply(condition.value, getValue(object, field.id));
     }
 }

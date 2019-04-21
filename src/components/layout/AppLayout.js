@@ -8,17 +8,21 @@ import withProcesses from '../../containers/WithProcesses';
 import withSettings from '../../containers/WithSettings';
 import ModalProcessManager from '../processes/ModalProcessManager';
 import ModalCategoryManager from '../categories/ModalCategoryManager';
+import ModalNoteFilterManager from '../notefilters/ModalNoteFilterManager';
 import ModalTaskFilterManager from '../taskfilters/ModalTaskFilterManager';
 import NotificationManager from '../processes/NotificationManager';
 import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
 import ModalSettingManager from '../settings/ModalSettingManager';
 import ModalBatchAddTasks from '../tasks/batch/ModalBatchAddTasks';
+import NoteView from '../notes/views/NoteView';
 import TaskView from '../tasks/views/TaskView';
 import TaskCalendarView from '../tasks/views/TaskCalendarView';
 
 function AppLayout(props) {
     const getView = () => {
         switch (props.selectedView) {
+            case 'note':
+                return <NoteView />;
             case 'task':
                 return <TaskView />;
             case 'task-calendar':
@@ -33,6 +37,7 @@ function AppLayout(props) {
             <NotificationManager />
             <ModalProcessManager />
             <ModalCategoryManager />
+            <ModalNoteFilterManager />
             <ModalTaskFilterManager />
             <ModalTaskTemplateManager />
             <ModalSettingManager />

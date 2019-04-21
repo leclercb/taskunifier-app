@@ -3,6 +3,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faArchive,
     faBomb,
+    faBook,
     faBoxOpen,
     faBroom,
     faBullseye,
@@ -43,6 +44,7 @@ import {
 
 library.add(faArchive);
 library.add(faBomb);
+library.add(faBook);
 library.add(faBoxOpen);
 library.add(faBroom);
 library.add(faBullseye);

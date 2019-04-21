@@ -5,6 +5,9 @@ import { loadContextsFromFile, saveContextsToFile, cleanContexts } from './Conte
 import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from './FolderActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from './GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from './LocationActions';
+import { loadNotesFromFile, saveNotesToFile, cleanNotes } from './NoteActions';
+import { loadNoteFieldsFromFile, saveNoteFieldsToFile, cleanNoteFields } from './NoteFieldActions';
+import { loadNoteFiltersFromFile, saveNoteFiltersToFile, cleanNoteFilters } from './NoteFilterActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from './TaskActions';
 import { loadTaskFieldsFromFile, saveTaskFieldsToFile, cleanTaskFields } from './TaskFieldActions';
 import { loadTaskFiltersFromFile, saveTaskFiltersToFile, cleanTaskFilters } from './TaskFilterActions';
@@ -36,6 +39,9 @@ export const _loadData = (path, options = {}) => {
                 dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
                 dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
                 dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
+                dispatch(loadNotesFromFile(join(path, 'notes.json'))),
+                dispatch(loadNoteFieldsFromFile(join(path, 'noteFields.json'))),
+                dispatch(loadNoteFiltersFromFile(join(path, 'noteFilters.json'))),
                 dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
                 dispatch(loadTaskFieldsFromFile(join(path, 'taskFields.json'))),
                 dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
@@ -88,6 +94,9 @@ export const _saveData = (path, options = { clean: false, message: null }) => {
                     dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),
                     dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals)),
                     dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations)),
+                    dispatch(saveNotesToFile(join(path, 'notes.json'), state.notes)),
+                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), state.noteFields)),
+                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), state.noteFilters)),
                     dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks)),
                     dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), state.taskFields)),
                     dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), state.taskFilters)),
@@ -138,6 +147,9 @@ export const cleanData = () => {
                 dispatch(cleanFolders()),
                 dispatch(cleanGoals()),
                 dispatch(cleanLocations()),
+                dispatch(cleanNotes()),
+                dispatch(cleanNoteFields()),
+                dispatch(cleanNoteFilters()),
                 dispatch(cleanTasks()),
                 dispatch(cleanTaskFields()),
                 dispatch(cleanTaskFilters()),
@@ -201,6 +213,29 @@ export const setSelectedTaskFilter = taskFilter => {
     };
 };
 
+export const setSelectedNoteIds = noteIds => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_SELECTED_NOTE_IDS',
+            noteIds: noteIds
+        });
+
+        return Promise.resolve();
+    };
+};
+
+export const setSelectedNoteFilter = noteFilter => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_SELECTED_NOTE_FILTER',
+            noteFilter: noteFilter,
+            date: moment().toJSON()
+        });
+
+        return Promise.resolve();
+    };
+};
+
 export const setCategoryManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
@@ -227,6 +262,28 @@ export const setTaskTemplateManagerOptions = (options) => {
     return (dispatch, getState) => {
         dispatch({
             type: 'SET_TASK_TEMPLATE_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
+
+export const setNoteFilterManagerOptions = (options) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_NOTE_FILTER_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
+
+export const setNoteTemplateManagerOptions = (options) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_NOTE_TEMPLATE_MANAGER_OPTIONS',
             ...options
         });
 

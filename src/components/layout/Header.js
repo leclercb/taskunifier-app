@@ -3,17 +3,24 @@ import PropTypes from 'prop-types';
 import { Button, Tooltip } from 'antd';
 import Icon from '../common/Icon';
 import withApp from '../../containers/WithApp';
+import withNotes from '../../containers/WithNotes';
 import withTasks from '../../containers/WithTasks';
 import Spacer from '../common/Spacer';
 import LeftRight from '../common/LeftRight';
 import Logo from '../common/Logo';
 
 function Header(props) {
+    const onAddNote = () => {
+        props.addNote({
+            title: 'Untitled'
+        }).then(id => props.setSelectedNoteIds([id]));
+    };
+
     const onAddTask = () => {
         props.addTask({
             title: 'Untitled'
         }).then(id => props.setSelectedTaskIds([id]));
-    }
+    };
 
     const onLoad = () => {
         props.loadData();
@@ -43,6 +50,10 @@ function Header(props) {
         props.setCategoryManagerOptions({ visible: true });
     };
 
+    const onSetNoteFilterManagerVisible = () => {
+        props.setNoteFilterManagerOptions({ visible: true });
+    };
+
     const onSetTaskFilterManagerVisible = () => {
         props.setTaskFilterManagerOptions({ visible: true });
     };
@@ -61,6 +72,10 @@ function Header(props) {
 
     const onShowTaskCalendarContent = () => {
         props.setSelectedView('task-calendar');
+    };
+
+    const onShowNoteContent = () => {
+        props.setSelectedView('note');
     };
 
     const createButton = (icon, text, onClick) => {
@@ -85,6 +100,7 @@ function Header(props) {
                 <Logo size={40} />
             </React.Fragment>
         )}>
+        {createButton('plus', 'Add Note', onAddNote)}
             {createButton('plus', 'Add Task', onAddTask)}
             {createButton('folder-open', 'Load', onLoad)}
             {createButton('save', 'Save', onSave)}
@@ -93,6 +109,7 @@ function Header(props) {
             {createButton('cogs', 'Synchronize', onSynchronize)}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
+            {createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)}
             {createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)}
             {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
             {createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
@@ -107,12 +124,18 @@ function Header(props) {
                     onClick={onShowTaskCalendarContent}>
                     <Icon icon="calendar-alt" text="Calendar" />
                 </Button>
+                <Button
+                    type={props.selectedView === 'note' ? 'dashed' : 'default'}
+                    onClick={onShowNoteContent}>
+                    <Icon icon="book" text="Notes" />
+                </Button>
             </Button.Group>
         </LeftRight>
     );
 }
 
 Header.propTypes = {
+    addNote: PropTypes.func.isRequired,
     addTask: PropTypes.func.isRequired,
     pro: PropTypes.bool.isRequired,
     loadData: PropTypes.func.isRequired,
@@ -122,9 +145,10 @@ Header.propTypes = {
     synchronize: PropTypes.func.isRequired,
     setSelectedView: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
+    setNoteFilterManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withTasks(Header, { actionsOnly: true }));
+export default withApp(withNotes(withTasks(Header, { actionsOnly: true }), { actionsOnly: true }));

@@ -6,12 +6,12 @@ export const getTagsFromIds = (tags, tagIds) => {
     return tags.filter(tag => tagIds.includes(tag.id));
 }
 
-export const getTagsFromTasks = tasks => {
+export const getTagsFromObjects = objects => {
     let tags = [];
 
-    tasks.forEach(task => {
-        if (task.tags) {
-            tags.push(...task.tags);
+    objects.forEach(object => {
+        if (object.tags) {
+            tags.push(...object.tags);
         }
     });
 
@@ -24,21 +24,21 @@ export const getTagsFromTasks = tasks => {
     }))
 }
 
-export const updateTag = (task, tagId, newTagId) => {
-    if (!task.tags) {
+export const updateTag = (object, tagId, newTagId) => {
+    if (!object.tags) {
         return;
     }
 
-    task.tags = task.tags.map(tag => tag === tagId ? newTagId : tag);
-    task.tags = task.tags.filter((tag, index) => task.tags.indexOf(tag) === index);
+    object.tags = object.tags.map(tag => tag === tagId ? newTagId : tag);
+    object.tags = object.tags.filter((tag, index) => object.tags.indexOf(tag) === index);
 }
 
-export const deleteTag = (task, tagId) => {
-    if (!task.tags) {
+export const deleteTag = (object, tagId) => {
+    if (!object.tags) {
         return;
     }
 
-    task.tags = task.tags.filter(tag => tag !== tagId);
+    object.tags = object.tags.filter(tag => tag !== tagId);
 }
 
 export const getColorFromIndex = index => {

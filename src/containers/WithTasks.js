@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
 import { getDefaultTaskFields } from '../data/DataTaskFields';
 import { filterObjects } from '../utils/CategoryUtils';
-import { applyTaskFilter } from '../utils/TaskFilterUtils';
+import { applyFilter } from '../utils/FilterUtils';
 import { setSelectedTaskIds } from '../actions/AppActions';
 
 function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
@@ -28,7 +28,7 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
                     return true;
                 }
 
-                return applyTaskFilter(state.app.selectedTaskFilter, task, fields);
+                return applyFilter(state.app.selectedTaskFilter, task, fields);
             });
         }
 

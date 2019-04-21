@@ -161,6 +161,17 @@ export function getDefaultTaskFields(settings) {
             title: 'Location',
             color: '#ffffff',
             type: 'location'
+        },
+        {
+            static: true,
+            id: 'note',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            state: 'LOADED',
+            title: 'Note',
+            color: '#ffffff',
+            type: 'text'
         }
     ]
 }

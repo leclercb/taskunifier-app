@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateTag, deleteTag } from '../actions/TaskActions';
-import { getTagsFromIds, getTagsFromTasks } from '../utils/TagUtils';
+import { updateTag, deleteTag } from '../actions/TagActions';
+import { getTagsFromIds, getTagsFromObjects } from '../utils/TagUtils';
+import { filterObjects } from '../utils/CategoryUtils';
 
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
     function WithTags(props) {
@@ -13,7 +14,7 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
             return {};
         }
 
-        let tags = getTagsFromTasks(state.tasks);
+        let tags = getTagsFromObjects(filterObjects(state.tasks).concat(filterObjects(state.notes)));
 
         if (options && options.propertyId in ownProps) {
             tags = getTagsFromIds(tags, ownProps[options.propertyId]);

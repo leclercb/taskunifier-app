@@ -1,8 +1,12 @@
+import { getDefaultSelectedNoteFilter } from "../data/DataNoteFilters";
 import { getDefaultSelectedTaskFilter } from "../data/DataTaskFilters";
 
 const App = () => (state = {
     user: null,
     selectedView: 'task',
+    selectedNoteIds: [],
+    selectedNoteFilter: getDefaultSelectedNoteFilter(),
+    selectedNoteFilterDate: null,
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: null,
@@ -10,6 +14,10 @@ const App = () => (state = {
         visible: false,
         category: 'contexts',
         objectId: null
+    },
+    noteFilterManager: {
+        visible: false,
+        noteFilterId: null
     },
     taskFilterManager: {
         visible: false,
@@ -32,6 +40,17 @@ const App = () => (state = {
                 ...state,
                 selectedView: action.view
             };
+        case 'SET_SELECTED_NOTE_IDS':
+            return {
+                ...state,
+                selectedNoteIds: action.noteIds
+            };
+        case 'SET_SELECTED_NOTE_FILTER':
+            return {
+                ...state,
+                selectedNoteFilter: action.noteFilter,
+                selectedNoteFilterDate: action.date
+            };
         case 'SET_SELECTED_TASK_IDS':
             return {
                 ...state,
@@ -50,6 +69,14 @@ const App = () => (state = {
                     visible: 'visible' in action ? action.visible : state.categoryManager.visible,
                     category: 'category' in action ? action.category : state.categoryManager.category,
                     objectId: 'objectId' in action ? action.objectId : state.categoryManager.objectId
+                }
+            };
+        case 'SET_NOTE_FILTER_MANAGER_OPTIONS':
+            return {
+                ...state,
+                noteFilterManager: {
+                    visible: 'visible' in action ? action.visible : state.noteFilterManager.visible,
+                    noteFilterId: 'noteFilterId' in action ? action.noteFilterId : state.noteFilterManager.noteFilterId
                 }
             };
         case 'SET_TASK_FILTER_MANAGER_OPTIONS':

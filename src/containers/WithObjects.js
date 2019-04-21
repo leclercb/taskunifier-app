@@ -2,23 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
+import { addNoteFilter, updateNoteFilter, deleteNoteFilter } from '../actions/NoteFilterActions';
 import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from '../actions/TaskFilterActions';
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
-import { updateTag, deleteTag } from '../actions/TaskActions';
+import { updateTag, deleteTag } from '../actions/TagActions';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
-import { getTagsFromTasks } from '../utils/TagUtils';
+import { getTagsFromObjects } from '../utils/TagUtils';
 
 function withObjects(Component, options = {
     includeActions: false,
     includeContexts: false,
-    includeTaskFilters: false,
     includeFolders: false,
     includeGoals: false,
     includeLocations: false,
     includeTags: false,
     includeTaskTemplates: false,
+    includeNoteFilters: false,
+    includeTaskFilters: false,
     filterArchivedFolders: false,
     filterArchivedGoals: false
 }) {
@@ -31,10 +33,6 @@ function withObjects(Component, options = {
 
         if (options && options.includeContexts === true) {
             data.contexts = filterObjects(state.contexts);
-        }
-
-        if (options && options.includeTaskFilters === true) {
-            data.taskFilters = filterObjects(state.taskFilters);
         }
 
         if (options && options.includeFolders === true) {
@@ -58,11 +56,19 @@ function withObjects(Component, options = {
         }
 
         if (options && options.includeTags === true) {
-            data.tags = getTagsFromTasks(state.tasks);
+            data.tags = getTagsFromObjects(filterObjects(state.tasks).concat(filterObjects(state.notes)));
         }
 
         if (options && options.includeTaskTemplates === true) {
             data.taskTemplates = filterObjects(state.taskTemplates);
+        }
+
+        if (options && options.includeNoteFilters === true) {
+            data.noteFilters = filterObjects(state.noteFilters);
+        }
+
+        if (options && options.includeTaskFilters === true) {
+            data.taskFilters = filterObjects(state.taskFilters);
         }
 
         return data;
@@ -77,9 +83,6 @@ function withObjects(Component, options = {
             addContext: context => dispatch(addContext(context)),
             updateContext: context => dispatch(updateContext(context)),
             deleteContext: contextId => dispatch(deleteContext(contextId)),
-            addTaskFilter: taskFilter => dispatch(addTaskFilter(taskFilter)),
-            updateTaskFilter: taskFilter => dispatch(updateTaskFilter(taskFilter)),
-            deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId)),
             addFolder: folder => dispatch(addFolder(folder)),
             updateFolder: folder => dispatch(updateFolder(folder)),
             deleteFolder: folderId => dispatch(deleteFolder(folderId)),
@@ -93,7 +96,13 @@ function withObjects(Component, options = {
             deleteTag: tagId => dispatch(deleteTag(tagId)),
             addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),
             updateTaskTemplate: taskTemplate => dispatch(updateTaskTemplate(taskTemplate)),
-            deleteTaskTemplate: taskTemplateId => dispatch(deleteTaskTemplate(taskTemplateId))
+            deleteTaskTemplate: taskTemplateId => dispatch(deleteTaskTemplate(taskTemplateId)),
+            addNoteFilter: noteFilter => dispatch(addNoteFilter(noteFilter)),
+            updateNoteFilter: noteFilter => dispatch(updateNoteFilter(noteFilter)),
+            deleteNoteFilter: noteFilterId => dispatch(deleteNoteFilter(noteFilterId)),
+            addTaskFilter: taskFilter => dispatch(addTaskFilter(taskFilter)),
+            updateTaskFilter: taskFilter => dispatch(updateTaskFilter(taskFilter)),
+            deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId))
         }
     };
 
