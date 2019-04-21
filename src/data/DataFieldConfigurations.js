@@ -3,6 +3,7 @@ import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 
 import moment from 'moment';
 import { escape } from '../utils/RegexUtils';
 import ColorPicker from '../components/common/ColorPicker';
+import ExtendedDatePicker from '../components/common/ExtendedDatePicker';
 import StarCheckbox from '../components/common/StarCheckbox';
 import ContactTitle from '../components/contacts/ContactTitle';
 import ContactSelect from '../components/contacts/ContactSelect';
@@ -204,20 +205,33 @@ export function getFieldConfiguration(type, options) {
             break;
         }
         case 'date': {
-            let dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
+            const extended = options && options.extended === true;
+            const dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
 
             configuration = {
                 title: 'Date',
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: true,
-                normalize: value => value ? moment(value) : null,
+                normalize: value => {
+                    if (Number.isInteger(value)) {
+                        return value;
+                    }
+
+                    return value ? moment(value) : null;
+                },
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? moment(value).format(dateFormat) : <span>&nbsp;</span>,
-                input: props => (
-                    <DatePicker format={dateFormat} {...props} />
-                ),
+                render: value => {
+                    if (extended && Number.isInteger(value)) {
+                        return value;
+                    }
+
+                    return value ? moment(value).format(dateFormat) : <span>&nbsp;</span>
+                },
+                input: props => extended ?
+                    <ExtendedDatePicker format={dateFormat} {...props} /> :
+                    <DatePicker format={dateFormat} {...props} />,
                 conditions: [
                     {
                         type: 'equal',
@@ -330,21 +344,34 @@ export function getFieldConfiguration(type, options) {
             break;
         }
         case 'dateTime': {
-            let dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
-            let timeFormat = options && options.timeFormat ? options.timeFormat : 'HH:mm';
+            const extended = options && options.extended === true;
+            const dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
+            const timeFormat = options && options.timeFormat ? options.timeFormat : 'HH:mm';
 
             configuration = {
                 title: 'Date time',
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: true,
-                normalize: value => value ? moment(value) : null,
+                normalize: value => {
+                    if (Number.isInteger(value)) {
+                        return value;
+                    }
+
+                    return value ? moment(value) : null;
+                },
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => value ? moment(value).format(`${dateFormat} ${timeFormat}`) : <span>&nbsp;</span>,
-                input: props => (
-                    <DatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} />
-                ),
+                render: value => {
+                    if (extended && Number.isInteger(value)) {
+                        return value;
+                    }
+
+                    return value ? moment(value).format(`${dateFormat} ${timeFormat}`) : <span>&nbsp;</span>
+                },
+                input: props => extended ?
+                    <ExtendedDatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} /> :
+                    <DatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} />,
                 conditions: [
                     {
                         type: 'equal',

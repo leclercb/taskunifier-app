@@ -16,10 +16,18 @@ function Header(props) {
         }).then(id => props.setSelectedNoteIds([id]));
     };
 
+    const onRemoveNotes = () => {
+        props.deleteNote(props.selectedNoteIds);
+    };
+
     const onAddTask = () => {
         props.addTask({
             title: 'Untitled'
         }).then(id => props.setSelectedTaskIds([id]));
+    };
+
+    const onRemoveTasks = () => {
+        props.deleteTask(props.selectedTaskIds);
     };
 
     const onLoad = () => {
@@ -113,10 +121,16 @@ function Header(props) {
                 createButton('plus', 'Add Note', onAddNote)
                 : null}
             {props.selectedView === 'note' ?
+                createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
+                : null}
+            {props.selectedView === 'note' ?
                 createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('plus', 'Add Task', onAddTask)
+                : null}
+            {props.selectedView === 'task' ?
+                createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)

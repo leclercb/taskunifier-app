@@ -62,7 +62,10 @@ function TaskFilterConditionForm(props) {
                             getValueFromEvent: getValueFromEventForType(field.type),
                             initialValue: getNormalizeForType(field.type)(props.condition.value)
                         })(
-                            getInputForType(field.type, field.options)
+                            getInputForType(field.type, {
+                                ...field.options,
+                                extended: true
+                            })
                         )}
                     </Form.Item>
                 </Col>
