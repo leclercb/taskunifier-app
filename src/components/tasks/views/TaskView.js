@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from '../sider/TaskSider';
 import TaskGrid from '../grid/TaskGrid';
-import withProcesses from '../../../containers/WithProcesses';
 import withSettings from '../../../containers/WithSettings';
 import TaskQuickAdd from '../quick/TaskQuickAdd';
 import TaskTabs from '../tabs/TaskTabs';
 
-function TaskContent(props) {
+function TaskView(props) {
     return (
         <SplitPane
             split="vertical"
@@ -38,9 +37,9 @@ function TaskContent(props) {
     );
 }
 
-TaskContent.propTypes = {
+TaskView.propTypes = {
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired
 }
 
-export default withProcesses(withSettings(TaskContent));
+export default withSettings(TaskView);

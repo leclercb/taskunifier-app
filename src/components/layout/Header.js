@@ -55,6 +55,14 @@ function Header(props) {
         props.setBatchAddTasksOptions({ visible: true });
     };
 
+    const onShowTaskContent = () => {
+        props.setSelectedView('task');
+    };
+
+    const onShowTaskCalendarContent = () => {
+        props.setSelectedView('task-calendar');
+    };
+
     const createButton = (icon, text, onClick) => {
         return (
             <React.Fragment>
@@ -66,7 +74,7 @@ function Header(props) {
                 <Spacer />
             </React.Fragment>
         );
-    }
+    };
 
     return (
         <LeftRight right={(
@@ -88,6 +96,18 @@ function Header(props) {
             {createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)}
             {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
             {createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
+            <Button.Group style={{ marginLeft: 20 }}>
+                <Button
+                    type={props.selectedView === 'task' ? 'dashed' : 'default'}
+                    onClick={onShowTaskContent}>
+                    <Icon icon="tasks" text="Tasks" />
+                </Button>
+                <Button
+                    type={props.selectedView === 'task-calendar' ? 'dashed' : 'default'}
+                    onClick={onShowTaskCalendarContent}>
+                    <Icon icon="calendar-alt" text="Calendar" />
+                </Button>
+            </Button.Group>
         </LeftRight>
     );
 }
@@ -100,6 +120,7 @@ Header.propTypes = {
     backupData: PropTypes.func.isRequired,
     cleanBackups: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
+    setSelectedView: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,

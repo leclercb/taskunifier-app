@@ -167,6 +167,17 @@ export const synchronize = () => {
     };
 };
 
+export const setSelectedView = view => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'SET_SELECTED_VIEW',
+            view: view
+        });
+
+        return Promise.resolve();
+    };
+};
+
 export const setSelectedTaskIds = taskIds => {
     return (dispatch, getState) => {
         dispatch({
@@ -176,7 +187,7 @@ export const setSelectedTaskIds = taskIds => {
 
         return Promise.resolve();
     };
-}
+};
 
 export const setSelectedTaskFilter = taskFilter => {
     return (dispatch, getState) => {

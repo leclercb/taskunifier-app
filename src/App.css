@@ -1,5 +1,9 @@
 /* Ant Design */
 
+.ant-btn {
+    border-width: 3px !important;
+}
+
 .ant-menu-item {
     height: 30px !important;
     line-height: 30px !important;

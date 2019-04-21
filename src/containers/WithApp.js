@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    setSelectedTaskIds,
-    setSelectedTaskFilter,
-    synchronize,
     loadData,
     saveData,
+    synchronize,
+    setSelectedView,
+    setSelectedTaskIds,
+    setSelectedTaskFilter,
     setCategoryManagerOptions,
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions,
@@ -27,6 +28,7 @@ function withApp(Component) {
 
     const mapStateToProps = state => ({
         pro: isValidLicense(state.settings.license),
+        selectedView: state.app.selectedView,
         selectedTaskIds: state.app.selectedTaskIds,
         selectedTaskFilter: state.app.selectedTaskFilter,
         categoryManager: state.app.categoryManager,
@@ -42,6 +44,7 @@ function withApp(Component) {
         backupData: () => dispatch(backupData()),
         cleanBackups: () => dispatch(cleanBackups()),
         synchronize: () => dispatch(synchronize()),
+        setSelectedView: view => dispatch(setSelectedView(view)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter)),
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),

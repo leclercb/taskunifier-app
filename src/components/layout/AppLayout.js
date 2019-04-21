@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
 import Header from './Header';
 import Footer from './Footer';
+import withApp from '../../containers/WithApp';
 import withProcesses from '../../containers/WithProcesses';
 import withSettings from '../../containers/WithSettings';
 import ModalProcessManager from '../processes/ModalProcessManager';
@@ -12,9 +13,21 @@ import NotificationManager from '../processes/NotificationManager';
 import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
 import ModalSettingManager from '../settings/ModalSettingManager';
 import ModalBatchAddTasks from '../tasks/batch/ModalBatchAddTasks';
-import TaskContent from '../tasks/content/TaskContent';
+import TaskView from '../tasks/views/TaskView';
+import TaskCalendarView from '../tasks/views/TaskCalendarView';
 
 function AppLayout(props) {
+    const getView = () => {
+        switch (props.selectedView) {
+            case 'task':
+                return <TaskView />;
+            case 'task-calendar':
+                return <TaskCalendarView />;
+            default:
+                return <TaskView />;
+        }
+    };
+
     return (
         <React.Fragment>
             <NotificationManager />
@@ -30,7 +43,7 @@ function AppLayout(props) {
                         <Header />
                     </Layout.Header>
                     <Layout style={{ height: "100%", position: "relative" }}>
-                        <TaskContent />
+                        {getView()}
                     </Layout>
                     <Layout.Footer style={{ textAlign: 'center' }}>
                         <Footer />
@@ -47,4 +60,4 @@ AppLayout.propTypes = {
     }).isRequired
 }
 
-export default withProcesses(withSettings(AppLayout));
+export default withApp(withProcesses(withSettings(AppLayout)));

@@ -91,9 +91,9 @@ export function getGeneralTaskFilters() {
             icon: 'star',
             condition: {
                 id: '1',
-                field: 'completed',
+                field: 'star',
                 type: 'equal',
-                value: false
+                value: true
             }
         },
         {

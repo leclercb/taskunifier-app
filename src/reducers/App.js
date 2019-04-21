@@ -2,6 +2,7 @@ import { getDefaultSelectedTaskFilter } from "../data/DataTaskFilters";
 
 const App = () => (state = {
     user: null,
+    selectedView: 'task',
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: null,
@@ -26,6 +27,11 @@ const App = () => (state = {
     }
 }, action) => {
     switch (action.type) {
+        case 'SET_SELECTED_VIEW':
+            return {
+                ...state,
+                selectedView: action.view
+            };
         case 'SET_SELECTED_TASK_IDS':
             return {
                 ...state,
