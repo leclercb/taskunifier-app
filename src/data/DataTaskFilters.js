@@ -67,9 +67,21 @@ export function getGeneralTaskFilters() {
             icon: 'pepper-hot',
             condition: {
                 id: '1',
-                field: 'completed',
-                type: 'equal',
-                value: false
+                operator: 'AND',
+                conditions: [
+                    {
+                        id: '2',
+                        field: 'duedate',
+                        type: 'beforeOrEqual',
+                        value: 3
+                    },
+                    {
+                        id: '3',
+                        field: 'priority',
+                        type: 'greaterThanOrEqual',
+                        value: 'high'
+                    }
+                ]
             }
         },
         {

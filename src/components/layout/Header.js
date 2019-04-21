@@ -34,14 +34,6 @@ function Header(props) {
         props.backupData();
     };
 
-    const onCleanBackups = () => {
-        props.cleanBackups();
-    };
-
-    const onSynchronize = () => {
-        props.synchronize();
-    };
-
     const onSetSettingsVisible = () => {
         props.setSettingManagerOptions({ visible: true });
     };
@@ -100,20 +92,7 @@ function Header(props) {
                 <Logo size={40} />
             </React.Fragment>
         )}>
-        {createButton('plus', 'Add Note', onAddNote)}
-            {createButton('plus', 'Add Task', onAddTask)}
-            {createButton('folder-open', 'Load', onLoad)}
-            {createButton('save', 'Save', onSave)}
-            {createButton('box-open', 'Backup', onBackup)}
-            {createButton('broom', 'Clean Backups', onCleanBackups)}
-            {createButton('cogs', 'Synchronize', onSynchronize)}
-            {createButton('cog', 'Settings', onSetSettingsVisible)}
-            {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
-            {createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)}
-            {createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)}
-            {createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)}
-            {createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)}
-            <Button.Group style={{ marginLeft: 20 }}>
+            <Button.Group style={{ marginRight: 50 }}>
                 <Button
                     type={props.selectedView === 'task' ? 'dashed' : 'default'}
                     onClick={onShowTaskContent}>
@@ -130,6 +109,29 @@ function Header(props) {
                     <Icon icon="book" text="Notes" />
                 </Button>
             </Button.Group>
+            {props.selectedView === 'note' ?
+                createButton('plus', 'Add Note', onAddNote)
+                : null}
+            {props.selectedView === 'note' ?
+                createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('plus', 'Add Task', onAddTask)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
+                : null}
+            {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
+            {createButton('folder-open', 'Load', onLoad)}
+            {createButton('save', 'Save', onSave)}
+            {createButton('box-open', 'Backup', onBackup)}
+            {createButton('cog', 'Settings', onSetSettingsVisible)}
         </LeftRight>
     );
 }
@@ -141,8 +143,6 @@ Header.propTypes = {
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
-    cleanBackups: PropTypes.func.isRequired,
-    synchronize: PropTypes.func.isRequired,
     setSelectedView: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
