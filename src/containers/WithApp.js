@@ -1,19 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-    backupData,
     setSelectedTaskIds,
     setSelectedTaskFilter,
     synchronize,
     loadData,
     saveData,
-    cleanBackups,
     setCategoryManagerOptions,
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions,
     setSettingManagerOptions,
     setBatchAddTasksOptions
 } from '../actions/AppActions';
+import {
+    backupData,
+    cleanBackups
+} from '../actions/BackupActions';
 import { updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setProcessesVisible } from '../actions/ProcessActions';
 import { isValidLicense } from '../utils/LicenseUtils';
@@ -38,7 +40,7 @@ function withApp(Component) {
         loadData: options => dispatch(loadData(options)),
         saveData: options => dispatch(saveData(options)),
         backupData: () => dispatch(backupData()),
-        cleanBackups: nbBackupstoKeep => dispatch(cleanBackups(nbBackupstoKeep)),
+        cleanBackups: () => dispatch(cleanBackups()),
         synchronize: () => dispatch(synchronize()),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter)),

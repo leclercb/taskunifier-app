@@ -11,10 +11,9 @@ import { loadTaskFiltersFromFile, saveTaskFiltersToFile, cleanTaskFilters } from
 import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates } from './TaskTemplateActions';
 import { updateProcess } from './ProcessActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
-import { createDirectory, getUserDataPath, join, deleteDirectory } from '../utils/ActionUtils';
-import { getBackups } from '../utils/BackupUtils';
+import { createDirectory, getUserDataPath, join } from '../utils/ActionUtils';
 
-const _loadData = (path, options = {}) => {
+export const _loadData = (path, options = {}) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -62,7 +61,7 @@ const _loadData = (path, options = {}) => {
 
 export const loadData = options => _loadData(null, options);
 
-const _saveData = (path, options = { clean: false, message: null }) => {
+export const _saveData = (path, options = { clean: false, message: null }) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -144,103 +143,6 @@ export const cleanData = () => {
                 dispatch(cleanTaskFilters()),
                 dispatch(cleanTaskTemplates())
             ]).then(() => {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'COMPLETED'
-                }));
-
-                resolve();
-            }).catch(() => {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'ERROR'
-                }));
-
-                reject();
-            });
-        });
-    };
-};
-
-export const restoreBackup = backupId => {
-    createDirectory(join(getUserDataPath(), 'backups'));
-    return _loadData(join(getUserDataPath(), 'backups', backupId));
-};
-
-export const backupData = () => {
-    createDirectory(join(getUserDataPath(), 'backups'));
-
-    return (dispatch, getState) => {
-        return new Promise(resolve => {
-            const promise = dispatch(_saveData(join(getUserDataPath(), 'backups', '' + Date.now().valueOf()), { message: 'Backup database' }));
-
-            promise.then(() => {
-                dispatch(cleanBackups());
-                resolve();
-            });
-        });
-    };
-};
-
-export const deleteBackup = date => {
-    return (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            const processId = uuid();
-
-            dispatch(updateProcess({
-                id: processId,
-                state: 'RUNNING',
-                title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`
-            }));
-
-            try {
-                deleteDirectory(join(getUserDataPath(), 'backups', '' + date));
-
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'COMPLETED'
-                }));
-
-                resolve();
-            } catch (err) {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'ERROR',
-                    error: err.toString()
-                }));
-
-                reject();
-            }
-        });
-    };
-}
-
-export const cleanBackups = () => {
-    return (dispatch, getState) => {
-        return new Promise((resolve, reject) => {
-            const processId = uuid();
-            const maxBackups = getState().settings.maxBackups;
-
-            if (!maxBackups) {
-                reject();
-                return;
-            }
-
-            dispatch(updateProcess({
-                id: processId,
-                state: 'RUNNING',
-                title: 'Clean backups',
-                notify: true
-            }));
-
-            const backups = getBackups().sort((a, b) => Number(a) - Number(b));
-
-            const promises = [];
-            for (let index = 0; index < backups.length - maxBackups; index++) {
-                promises.push(dispatch(deleteBackup(backups[index])));
-            }
-
-            Promise.all(promises).then(() => {
                 dispatch(updateProcess({
                     id: processId,
                     state: 'COMPLETED'
