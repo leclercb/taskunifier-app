@@ -124,17 +124,17 @@ function TaskSider(props) {
         });
     };
 
-    const createTaskFilterForObject = (object, field) => {
+    const createTaskFilterForObject = (object, field, condition = {
+        id: '1',
+        field: field,
+        type: 'equal',
+        value: object.id
+    }) => {
         return {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition: {
-                id: '1',
-                field: field,
-                type: 'equal',
-                value: object.id
-            }
+            condition: condition
         }
     };
 
@@ -216,7 +216,12 @@ function TaskSider(props) {
                 <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', null)}>
                     {props.tags.map(tag => createObjectMenuItem(
                         tag,
-                        createTaskFilterForObject(tag, 'tags'),
+                        createTaskFilterForObject(tag, 'tags', {
+                            id: '1',
+                            field: 'tags',
+                            type: 'contain',
+                            value: tag.id
+                        }),
                         null,
                         () => editObject('tags', tag.id),
                         () => props.deleteTag(tag.id)))}

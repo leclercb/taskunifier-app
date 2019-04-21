@@ -942,6 +942,16 @@ export function getFieldConfiguration(type, options) {
                         apply: (conditionValue, taskValue) => {
                             return conditionValue !== taskValue;
                         }
+                    },
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskTags = taskValue || [];
+                            const conditionTags = conditionValue || [];
+
+                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                        }
                     }
                 ],
                 options: []

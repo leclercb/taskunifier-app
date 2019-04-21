@@ -121,17 +121,17 @@ function NoteSider(props) {
         });
     };
 
-    const createNoteFilterForObject = (object, field) => {
+    const createNoteFilterForObject = (object, field, condition = {
+        id: '1',
+        field: field,
+        type: 'equal',
+        value: object.id
+    }) => {
         return {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition: {
-                id: '1',
-                field: field,
-                type: 'equal',
-                value: object.id
-            }
+            condition: condition
         }
     };
 
@@ -189,7 +189,12 @@ function NoteSider(props) {
                 <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', null)}>
                     {props.tags.map(tag => createObjectMenuItem(
                         tag,
-                        createNoteFilterForObject(tag, 'tags'),
+                        createNoteFilterForObject(tag, 'tags', {
+                            id: '1',
+                            field: 'tags',
+                            type: 'contain',
+                            value: tag.id
+                        }),
                         null,
                         () => editObject('tags', tag.id),
                         () => props.deleteTag(tag.id)))}
