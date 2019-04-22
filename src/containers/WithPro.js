@@ -1,13 +1,10 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { isValidLicense } from '../utils/LicenseUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withPro(Component) {
-    function WithPro(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         pro: isValidLicense(state.settings.license)
     });
 
@@ -18,7 +15,7 @@ function withPro(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithPro);
+    )(withBusyCheck(Component));
 }
 
 export default withPro;

@@ -1,4 +1,3 @@
-import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { addNote, updateNote, deleteNote } from '../actions/NoteActions';
@@ -6,15 +5,14 @@ import { getDefaultNoteFields } from '../data/DataNoteFields';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyFilter } from '../utils/FilterUtils';
 import { setSelectedNoteIds } from '../actions/AppActions';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withNotes(Component, options = { applySelectedNoteFilter: false, actionsOnly: false }) {
-    function WithNotes(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         let notes = filterObjects(state.notes);
@@ -33,6 +31,7 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
         }
 
         return {
+            busy: state.processes.busy,
             notes: notes
         };
     };
@@ -47,7 +46,7 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithNotes);
+    )(withBusyCheck(Component));
 }
 
 export default withNotes;

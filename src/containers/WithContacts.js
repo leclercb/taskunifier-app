@@ -1,19 +1,18 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addContact, updateContact, deleteContact } from '../actions/ContactActions';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withContacts(Component, options = { actionsOnly: false }) {
-    function WithContacts(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         return {
+            busy: state.processes.busy,
             contacts: filterObjects(state.contacts)
         };
     };
@@ -27,7 +26,7 @@ function withContacts(Component, options = { actionsOnly: false }) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithContacts);
+    )(withBusyCheck(Component));
 }
 
 export default withContacts;

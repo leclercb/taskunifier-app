@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
 import Header from './Header';
 import Footer from './Footer';
-import withApp from '../../containers/WithApp';
+import withBusy from '../../containers/WithBusy';
 import withProcesses from '../../containers/WithProcesses';
 import withSettings from '../../containers/WithSettings';
 import ModalProcessManager from '../processes/ModalProcessManager';
@@ -42,7 +42,7 @@ function AppLayout(props) {
             <ModalTaskTemplateManager />
             <ModalSettingManager />
             <ModalBatchAddTasks />
-            <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.processes.busy}>
+            <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.busy}>
                 <Layout style={{ minHeight: "100%", height: "100%" }}>
                     <Layout.Header>
                         <Header />
@@ -60,9 +60,7 @@ function AppLayout(props) {
 }
 
 AppLayout.propTypes = {
-    processes: PropTypes.shape({
-        busy: PropTypes.bool.isRequired
-    }).isRequired
+    busy: PropTypes.bool.isRequired
 }
 
-export default withApp(withProcesses(withSettings(AppLayout)));
+export default withProcesses(withSettings(withBusy(AppLayout)));

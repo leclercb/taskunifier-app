@@ -1,19 +1,18 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withContexts(Component, options = { actionsOnly: false }) {
-    function WithContexts(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         return {
+            busy: state.processes.busy,
             contexts: filterObjects(state.contexts)
         };
     };
@@ -27,7 +26,7 @@ function withContexts(Component, options = { actionsOnly: false }) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithContexts);
+    )(withBusyCheck(Component));
 }
 
 export default withContexts;

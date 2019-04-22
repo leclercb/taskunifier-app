@@ -1,19 +1,18 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withLocations(Component, options = { actionsOnly: false }) {
-    function WithLocations(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         return {
+            busy: state.processes.busy,
             locations: filterObjects(state.locations)
         };
     };
@@ -27,7 +26,7 @@ function withLocations(Component, options = { actionsOnly: false }) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithLocations);
+    )(withBusyCheck(Component));
 }
 
 export default withLocations;

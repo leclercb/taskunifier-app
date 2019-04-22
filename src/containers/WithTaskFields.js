@@ -1,15 +1,12 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addTaskField, updateTaskField, deleteTaskField } from '../actions/TaskFieldActions';
 import { getDefaultTaskFields } from '../data/DataTaskFields';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTaskFields(Component) {
-    function WithTaskFields(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         taskFields: getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields))
     });
 
@@ -22,7 +19,7 @@ function withTaskFields(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithTaskFields);
+    )(withBusyCheck(Component));
 }
 
 export default withTaskFields;

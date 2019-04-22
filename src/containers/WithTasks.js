@@ -1,4 +1,3 @@
-import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
@@ -6,15 +5,14 @@ import { getDefaultTaskFields } from '../data/DataTaskFields';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyFilter } from '../utils/FilterUtils';
 import { setSelectedTaskIds } from '../actions/AppActions';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
-    function WithTasks(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         let tasks = filterObjects(state.tasks);
@@ -33,6 +31,7 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
         }
 
         return {
+            busy: state.processes.busy,
             tasks: tasks
         };
     };
@@ -47,7 +46,7 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithTasks);
+    )(withBusyCheck(Component));
 }
 
 export default withTasks;

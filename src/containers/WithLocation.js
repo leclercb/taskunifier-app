@@ -1,18 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withLocation(Component, propertyId = 'locationId') {
-    function WithLocation(props) {
-        return <Component {...props} />
-    }
-
-    WithLocation.propTypes = {
-        [propertyId]: PropTypes.string
-    }
-
     const mapStateToProps = (state, ownProps) => ({
+        busy: state.processes.busy,
         location: filterObjects(state.locations).find(location => location.id === ownProps[propertyId])
     });
 
@@ -23,7 +15,7 @@ function withLocation(Component, propertyId = 'locationId') {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithLocation);
+    )(withBusyCheck(Component));
 }
 
 export default withLocation;

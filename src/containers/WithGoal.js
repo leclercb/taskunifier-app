@@ -1,18 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withGoal(Component, propertyId = 'goalId') {
-    function WithGoal(props) {
-        return <Component {...props} />
-    }
-
-    WithGoal.propTypes = {
-        [propertyId]: PropTypes.string
-    }
-
     const mapStateToProps = (state, ownProps) => ({
+        busy: state.processes.busy,
         goal: filterObjects(state.goals).find(goal => goal.id === ownProps[propertyId])
     });
 
@@ -23,7 +15,7 @@ function withGoal(Component, propertyId = 'goalId') {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithGoal);
+    )(withBusyCheck(Component));
 }
 
 export default withGoal;

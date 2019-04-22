@@ -1,17 +1,13 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import {
     backupData,
     cleanBackups
 } from '../actions/BackupActions';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withBackups(Component) {
-    function WithBackups(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
-
+        busy: state.processes.busy,
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -22,7 +18,7 @@ function withBackups(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithBackups);
+    )(withBusyCheck(Component));
 }
 
 export default withBackups;

@@ -1,19 +1,18 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTaskTemplates(Component, options = { actionsOnly: false }) {
-    function WithTaskTemplates(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         return {
+            busy: state.processes.busy,
             taskTemplates: filterObjects(state.taskTemplates)
         }
     };
@@ -27,7 +26,7 @@ function withTaskTemplates(Component, options = { actionsOnly: false }) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithTaskTemplates);
+    )(withBusyCheck(Component));
 }
 
 export default withTaskTemplates;

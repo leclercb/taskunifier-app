@@ -1,13 +1,10 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { clearProcesses, setProcessesVisible, deleteNotification } from '../actions/ProcessActions';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withProcesses(Component) {
-    function WithProcesses(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         processes: state.processes
     });
 
@@ -20,7 +17,7 @@ function withProcesses(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithProcesses);
+    )(withBusyCheck(Component));
 }
 
 export default withProcesses;

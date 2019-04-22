@@ -1,18 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
-    function WithTaskTemplate(props) {
-        return <Component {...props} />
-    }
-
-    WithTaskTemplate.propTypes = {
-        [propertyId]: PropTypes.string
-    }
-
     const mapStateToProps = (state, ownProps) => ({
+        busy: state.processes.busy,
         taskTemplate: filterObjects(state.taskTemplates).find(taskTemplate => taskTemplate.id === ownProps[propertyId])
     });
 
@@ -23,7 +15,7 @@ function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithTaskTemplate);
+    )(withBusyCheck(Component));
 }
 
 export default withTaskTemplate;

@@ -1,17 +1,15 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { updateTag, deleteTag } from '../actions/TagActions';
 import { getTagsFromIds, getTagsFromObjects } from '../utils/TagUtils';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
-    function WithTags(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = (state, ownProps) => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         let tags = getTagsFromObjects(filterObjects(state.tasks).concat(filterObjects(state.notes)));
@@ -21,6 +19,7 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
         }
 
         return {
+            busy: state.processes.busy,
             tags: tags
         };
     };
@@ -33,7 +32,7 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithTags);
+    )(withBusyCheck(Component));
 }
 
 export default withTags;

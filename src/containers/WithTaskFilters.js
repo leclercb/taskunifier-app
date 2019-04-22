@@ -1,14 +1,11 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from '../actions/TaskFilterActions';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTaskFilters(Component) {
-    function WithTaskFilters(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         taskFilters: filterObjects(state.taskFilters)
     });
 
@@ -21,7 +18,7 @@ function withTaskFilters(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithTaskFilters);
+    )(withBusyCheck(Component));
 }
 
 export default withTaskFilters;

@@ -1,16 +1,14 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withGoals(Component, options = { actionsOnly: false, filterArchived: false }) {
-    function WithGoals(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = (state, ownProps) => {
         if (options && options.actionsOnly === true) {
-            return {};
+            return {
+                busy: state.processes.busy
+            };
         }
 
         let goals = filterObjects(state.goals);
@@ -24,6 +22,7 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
         }
 
         return {
+            busy: state.processes.busy,
             goals: goals
         };
     };
@@ -37,7 +36,7 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithGoals);
+    )(withBusyCheck(Component));
 }
 
 export default withGoals;

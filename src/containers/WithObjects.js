@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
@@ -10,6 +9,7 @@ import { addLocation, updateLocation, deleteLocation } from '../actions/Location
 import { updateTag, deleteTag } from '../actions/TagActions';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
 import { getTagsFromObjects } from '../utils/TagUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withObjects(Component, options = {
     includeActions: false,
@@ -24,12 +24,10 @@ function withObjects(Component, options = {
     filterArchivedFolders: false,
     filterArchivedGoals: false
 }) {
-    function WithObjects(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => {
-        const data = {};
+        const data = {
+            busy: state.processes.busy
+        };
 
         if (options && options.includeContexts === true) {
             data.contexts = filterObjects(state.contexts);
@@ -109,7 +107,7 @@ function withObjects(Component, options = {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithObjects);
+    )(withBusyCheck(Component));
 }
 
 export default withObjects;

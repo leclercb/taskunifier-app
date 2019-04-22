@@ -1,15 +1,12 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addNoteField, updateNoteField, deleteNoteField } from '../actions/NoteFieldActions';
 import { getDefaultNoteFields } from '../data/DataNoteFields';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withNoteFields(Component) {
-    function WithNoteFields(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         noteFields: getDefaultNoteFields(state.settings).concat(filterObjects(state.noteFields))
     });
 
@@ -22,7 +19,7 @@ function withNoteFields(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithNoteFields);
+    )(withBusyCheck(Component));
 }
 
 export default withNoteFields;

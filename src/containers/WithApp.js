@@ -1,4 +1,3 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import {
     loadData,
@@ -23,13 +22,11 @@ import {
 import { updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setProcessesVisible } from '../actions/ProcessActions';
 import { isValidLicense } from '../utils/LicenseUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withApp(Component) {
-    function WithApp(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         pro: isValidLicense(state.settings.license),
         selectedView: state.app.selectedView,
         selectedNoteIds: state.app.selectedNoteIds,
@@ -69,7 +66,7 @@ function withApp(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithApp);
+    )(withBusyCheck(Component));
 }
 
 export default withApp;

@@ -1,18 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withFolder(Component, propertyId = 'folderId') {
-    function WithFolder(props) {
-        return <Component {...props} />
-    }
-
-    WithFolder.propTypes = {
-        [propertyId]: PropTypes.string
-    }
-
     const mapStateToProps = (state, ownProps) => ({
+        busy: state.processes.busy,
         folder: filterObjects(state.folders).find(folder => folder.id === ownProps[propertyId])
     });
 
@@ -23,7 +15,7 @@ function withFolder(Component, propertyId = 'folderId') {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithFolder);
+    )(withBusyCheck(Component));
 }
 
 export default withFolder;

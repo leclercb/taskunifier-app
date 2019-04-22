@@ -1,14 +1,11 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addNoteFilter, updateNoteFilter, deleteNoteFilter } from '../actions/NoteFilterActions';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withNoteFilters(Component) {
-    function WithNoteFilters(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         noteFilters: filterObjects(state.noteFilters)
     });
 
@@ -21,7 +18,7 @@ function withNoteFilters(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithNoteFilters);
+    )(withBusyCheck(Component));
 }
 
 export default withNoteFilters;

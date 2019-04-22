@@ -1,13 +1,10 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { updateSettings } from '../actions/SettingActions';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withSettings(Component) {
-    function WithSettings(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         settings: state.settings
     });
 
@@ -18,7 +15,7 @@ function withSettings(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithSettings);
+    )(withBusyCheck(Component));
 }
 
 export default withSettings;

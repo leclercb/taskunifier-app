@@ -1,15 +1,12 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { addTask, updateTask, deleteTask } from '../actions/TaskActions';
 import { filterObjects } from '../utils/CategoryUtils';
 import { setSelectedTaskIds } from '../actions/AppActions';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withSelectedTasks(Component) {
-    function WithSelectedTasks(props) {
-        return <Component {...props} />
-    }
-
     const mapStateToProps = state => ({
+        busy: state.processes.busy,
         selectedTaskIds: state.app.selectedTaskIds,
         selectedTasks: filterObjects(state.tasks.filter(task => state.app.selectedTaskIds.includes(task.id)))
     });
@@ -24,7 +21,7 @@ function withSelectedTasks(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithSelectedTasks);
+    )(withBusyCheck(Component));
 }
 
 export default withSelectedTasks;

@@ -1,18 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
+import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withContact(Component, propertyId = 'contactId') {
-    function WithContact(props) {
-        return <Component {...props} />
-    }
-
-    WithContact.propTypes = {
-        [propertyId]: PropTypes.string
-    }
-
     const mapStateToProps = (state, ownProps) => ({
+        busy: state.processes.busy,
         contact: filterObjects(state.contacts).find(contact => contact.id === ownProps[propertyId])
     });
 
@@ -23,7 +15,7 @@ function withContact(Component, propertyId = 'contactId') {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(WithContact);
+    )(withBusyCheck(Component));
 }
 
 export default withContact;
