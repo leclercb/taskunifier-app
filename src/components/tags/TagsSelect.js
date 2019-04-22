@@ -4,7 +4,7 @@ import { TagPropType } from '../../proptypes/TagPropTypes';
 import { Select, Tag } from 'antd';
 import withTags from '../../containers/WithTags';
 
-export const TagsSelect = React.forwardRef((props, ref) => {
+export const TagsSelect = React.forwardRef(function TagsSelect(props, ref) {
     const { tags, ...restProps } = props;
 
     return (

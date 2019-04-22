@@ -5,7 +5,7 @@ import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
 import withTaskTemplates from '../../containers/WithTaskTemplates';
 import Icon from '../common/Icon';
 
-export const TaskTemplateSelect = React.forwardRef((props, ref) => {
+export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(props, ref) {
     const { taskTemplates, ...restProps } = props;
 
     restProps.value = props.taskTemplates.find(taskTemplate => taskTemplate.id === restProps.value) ? restProps.value : null;

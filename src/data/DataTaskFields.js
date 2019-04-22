@@ -171,7 +171,7 @@ export function getDefaultTaskFields(settings) {
             state: 'LOADED',
             title: 'Note',
             color: '#ffffff',
-            type: 'text'
+            type: 'textarea'
         }
     ]
 }

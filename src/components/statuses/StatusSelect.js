@@ -7,7 +7,7 @@ import withSettings from '../../containers/WithSettings';
 import Icon from '../common/Icon';
 import { getStatusColor } from '../../utils/SettingUtils';
 
-export const StatusSelect = React.forwardRef((props, ref) => {
+export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
     const { statuses, ...restProps } = props;
 
     return (

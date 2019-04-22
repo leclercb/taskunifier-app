@@ -5,7 +5,7 @@ import { FolderPropType } from '../../proptypes/FolderPropTypes';
 import withFolders from '../../containers/WithFolders';
 import Icon from '../common/Icon';
 
-export const FolderSelect = React.forwardRef((props, ref) => {
+export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
     const { folders, ...restProps } = props;
 
     restProps.value = props.folders.find(folder => folder.id === restProps.value) ? restProps.value : null;

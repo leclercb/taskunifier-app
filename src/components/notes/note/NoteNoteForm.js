@@ -1,17 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'antd';
+import { Form, Input } from 'antd';
 import { NotePropType } from '../../../proptypes/NotePropTypes';
 
 function NoteNoteForm(props) {
+    const { getFieldDecorator } = props.form;
+
+    const formItemLayout = {
+        labelCol: 0,
+        wrapperCol: 24
+    };
+
+    const onSave = () => {
+        props.form.validateFields((error, values) => {
+            if (error) {
+                return;
+            }
+
+            props.updateNote({ ...props.note, ...values });
+        });
+    }
+
     return (
-        <Input.TextArea
-            style={{ width: '100%' }}
-            autosize={{
-                minRows: 5
-            }}
-            value={props.note.note}
-            onChange={e => props.updateNote({ ...props.note, note: e.target.value })} />
+        <Form {...formItemLayout}>
+            <Form.Item>
+                {getFieldDecorator('note', {
+                    initialValue: props.note.note
+                })(
+                    <Input.TextArea autosize={{ minRows: 5 }} onBlur={onSave} />
+                )}
+            </Form.Item>
+        </Form>
     );
 }
 
@@ -20,4 +39,4 @@ NoteNoteForm.propTypes = {
     updateNote: PropTypes.func.isRequired
 };
 
-export default NoteNoteForm;
+export default Form.create({ name: 'noteNote' })(NoteNoteForm);

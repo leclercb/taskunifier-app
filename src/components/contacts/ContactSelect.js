@@ -6,7 +6,7 @@ import withContacts from '../../containers/WithContacts';
 import Icon from '../common/Icon';
 import { getContactTitle } from '../../utils/ContactUtils';
 
-export const ContactSelect = React.forwardRef((props, ref) => {
+export const ContactSelect = React.forwardRef(function ContactSelect(props, ref) {
     const { contacts, ...restProps } = props;
 
     return (

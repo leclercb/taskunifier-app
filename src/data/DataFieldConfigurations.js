@@ -1288,7 +1288,7 @@ export function getFieldConfiguration(type, options) {
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <Input.TextArea autosize={true} {...props} />
+                    <Input.TextArea autosize={true} {...props} onPressEnter={null} />
                 ),
                 conditions: [
                     {

@@ -5,7 +5,7 @@ import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import withGoals from '../../containers/WithGoals';
 import Icon from '../common/Icon';
 
-export const GoalSelect = React.forwardRef((props, ref) => {
+export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
     const { goals, ...restProps } = props;
 
     restProps.value = props.goals.find(goal => goal.id === restProps.value) ? restProps.value : null;

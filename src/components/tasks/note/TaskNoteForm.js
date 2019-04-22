@@ -1,17 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'antd';
+import { Form, Input } from 'antd';
 import { TaskPropType } from '../../../proptypes/TaskPropTypes';
 
 function TaskNoteForm(props) {
+    const { getFieldDecorator } = props.form;
+
+    const formItemLayout = {
+        labelCol: 0,
+        wrapperCol: 24
+    };
+
+    const onSave = () => {
+        props.form.validateFields((error, values) => {
+            if (error) {
+                return;
+            }
+
+            props.updateTask({ ...props.task, ...values });
+        });
+    }
+
     return (
-        <Input.TextArea
-            style={{ width: '100%' }}
-            autosize={{
-                minRows: 5
-            }}
-            value={props.task.note}
-            onChange={e => props.updateTask({ ...props.task, note: e.target.value })} />
+        <Form {...formItemLayout}>
+            <Form.Item>
+                {getFieldDecorator('note', {
+                    initialValue: props.task.note
+                })(
+                    <Input.TextArea autosize={{ minRows: 5 }} onBlur={onSave} />
+                )}
+            </Form.Item>
+        </Form>
     );
 }
 
@@ -20,4 +39,4 @@ TaskNoteForm.propTypes = {
     updateTask: PropTypes.func.isRequired
 };
 
-export default TaskNoteForm;
+export default Form.create({ name: 'taskNote' })(TaskNoteForm);

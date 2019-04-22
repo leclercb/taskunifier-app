@@ -5,7 +5,7 @@ import { ContextPropType } from '../../proptypes/ContextPropTypes';
 import withContexts from '../../containers/WithContexts';
 import Icon from '../common/Icon';
 
-export const ContextSelect = React.forwardRef((props, ref) => {
+export const ContextSelect = React.forwardRef(function ContextSelect(props, ref) {
     const { contexts, ...restProps } = props;
 
     restProps.value = props.contexts.find(context => context.id === restProps.value) ? restProps.value : null;
