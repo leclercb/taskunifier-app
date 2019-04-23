@@ -15,15 +15,12 @@ import { loadTaskTemplatesFromFile, saveTaskTemplatesToFile, cleanTaskTemplates 
 import { updateProcess } from './ProcessActions';
 import { saveSettingsToFile, loadSettingsFromFile } from './SettingActions';
 import { createDirectory, getUserDataPath, join } from '../utils/ActionUtils';
+import { filterSettings } from '../utils/SettingUtils';
 
 export const _loadData = (path, options = {}) => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
-
-            if (!path) {
-                path = getUserDataPath();
-            }
 
             dispatch(updateProcess({
                 id: processId,
@@ -32,34 +29,40 @@ export const _loadData = (path, options = {}) => {
                 notify: true
             }));
 
-            Promise.all([
-                dispatch(loadSettingsFromFile(join(path, 'settings.json'))),
-                dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
-                dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
-                dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
-                dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
-                dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
-                dispatch(loadNotesFromFile(join(path, 'notes.json'))),
-                dispatch(loadNoteFieldsFromFile(join(path, 'noteFields.json'))),
-                dispatch(loadNoteFiltersFromFile(join(path, 'noteFilters.json'))),
-                dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
-                dispatch(loadTaskFieldsFromFile(join(path, 'taskFields.json'))),
-                dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
-                dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
-            ]).then(() => {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'COMPLETED'
-                }, true));
+            dispatch(loadSettingsFromFile(join(getUserDataPath(), 'coreSettings.json'), true)).then(() => {
+                if (!path) {
+                    path = getState().settings.dataFolder
+                }
 
-                resolve(getState());
-            }).catch(() => {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'ERROR'
-                }));
+                Promise.all([
+                    dispatch(loadSettingsFromFile(join(path, 'settings.json'))),
+                    dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
+                    dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
+                    dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
+                    dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
+                    dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
+                    dispatch(loadNotesFromFile(join(path, 'notes.json'))),
+                    dispatch(loadNoteFieldsFromFile(join(path, 'noteFields.json'))),
+                    dispatch(loadNoteFiltersFromFile(join(path, 'noteFilters.json'))),
+                    dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
+                    dispatch(loadTaskFieldsFromFile(join(path, 'taskFields.json'))),
+                    dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
+                    dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
+                ]).then(() => {
+                    dispatch(updateProcess({
+                        id: processId,
+                        state: 'COMPLETED'
+                    }, true));
 
-                reject();
+                    resolve(getState());
+                }).catch(() => {
+                    dispatch(updateProcess({
+                        id: processId,
+                        state: 'ERROR'
+                    }));
+
+                    reject();
+                });
             });
         });
     };
@@ -73,10 +76,6 @@ export const _saveData = (path, options = { clean: false, message: null }) => {
             const processId = uuid();
             const state = getState();
 
-            if (!path) {
-                path = getUserDataPath();
-            }
-
             dispatch(updateProcess({
                 id: processId,
                 state: 'RUNNING',
@@ -84,11 +83,16 @@ export const _saveData = (path, options = { clean: false, message: null }) => {
                 notify: true
             }));
 
+            if (!path) {
+                path = getState().settings.dataFolder
+            }
+
             createDirectory(path);
 
             const saveAllFn = () => {
                 Promise.all([
-                    dispatch(saveSettingsToFile(join(path, 'settings.json'), state.settings)),
+                    dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(state.settings, true))),
+                    dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(state.settings, false))),
                     dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts)),
                     dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
                     dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),

@@ -2,20 +2,21 @@ import uuid from 'uuid';
 import moment from 'moment';
 import { _loadData, _saveData } from './AppActions';
 import { updateProcess } from './ProcessActions';
-import { createDirectory, getUserDataPath, join, deleteDirectory } from '../utils/ActionUtils';
+import { join, deleteDirectory } from '../utils/ActionUtils';
 import { getBackups } from '../utils/BackupUtils';
 
 export const restoreBackup = backupId => {
-    createDirectory(join(getUserDataPath(), 'backups'));
-    return _loadData(join(getUserDataPath(), 'backups', backupId));
+    return (dispatch, getState) => {
+        const path = join(getState().settings.dataFolder, 'backups', backupId);
+        return dispatch(_loadData(path));
+    };
 };
 
 export const backupData = () => {
-    createDirectory(join(getUserDataPath(), 'backups'));
-
     return (dispatch, getState) => {
         return new Promise(resolve => {
-            const promise = dispatch(_saveData(join(getUserDataPath(), 'backups', '' + Date.now().valueOf()), { message: 'Backup database' }));
+            const path = join(getState().settings.dataFolder, 'backups', '' + Date.now().valueOf());
+            const promise = dispatch(_saveData(path, { message: 'Backup database' }));
 
             promise.then(() => {
                 dispatch(cleanBackups());
@@ -37,7 +38,8 @@ export const deleteBackup = date => {
             }));
 
             try {
-                deleteDirectory(join(getUserDataPath(), 'backups', '' + date));
+                const path = join(getState().settings.dataFolder, 'backups', '' + date);
+                deleteDirectory(path, getState().settings.dataFolder);
 
                 dispatch(updateProcess({
                     id: processId,
@@ -76,7 +78,7 @@ export const cleanBackups = () => {
                 notify: true
             }));
 
-            const backups = getBackups().sort((a, b) => Number(a) - Number(b));
+            const backups = getBackups(getState).sort((a, b) => Number(a) - Number(b));
 
             const promises = [];
             for (let index = 0; index < backups.length - maxBackups; index++) {

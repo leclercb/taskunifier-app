@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 import reduceReducers from 'reduce-reducers';
 import App from './App';
 import Objects from './Objects';
+import Notes from './Notes';
 import Processes from './Processes';
 import Settings from './Settings';
-import Notes from './Notes';
 import Tasks from './Tasks';
 import { onGoalUpdate } from '../utils/GoalUtils';
 

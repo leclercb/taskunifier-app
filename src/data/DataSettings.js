@@ -1,6 +1,15 @@
 import moment from 'moment';
 import { getPriorities } from './DataPriorities';
 import { getStatuses } from './DataStatuses';
+import { getUserDataPath } from '../utils/ActionUtils';
+
+export function isCoreSetting(settingId) {
+    return !!getCategories().find(category => {
+        return category.settings.find(setting => {
+            return setting.id === settingId && setting.core === true;
+        })
+    });
+}
 
 export function getSettings() {
     const settings = {};
@@ -21,6 +30,14 @@ export function getCategories() {
             title: 'General',
             icon: 'home',
             settings: [
+                {
+                    id: 'dataFolder',
+                    title: 'Data folder location',
+                    type: 'text',
+                    value: getUserDataPath(),
+                    editable: true,
+                    core: true
+                },
                 {
                     id: 'automaticSave',
                     title: 'Enable automatic save',
@@ -326,28 +343,32 @@ export function getCategories() {
                     title: 'Window Size - Width',
                     type: 'number',
                     value: 1024,
-                    editable: false
+                    editable: false,
+                    core: true
                 },
                 {
                     id: 'windowSizeHeight',
                     title: 'Window Size - Height',
                     type: 'number',
                     value: 768,
-                    editable: false
+                    editable: false,
+                    core: true
                 },
                 {
                     id: 'windowPositionX',
                     title: 'Window Position - X',
                     type: 'number',
                     value: null,
-                    editable: false
+                    editable: false,
+                    core: true
                 },
                 {
                     id: 'windowPositionY',
                     title: 'Window Position - Y',
                     type: 'number',
                     value: null,
-                    editable: false
+                    editable: false,
+                    core: true
                 },
                 {
                     id: 'verticalSplitPaneSize',

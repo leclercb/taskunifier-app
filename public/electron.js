@@ -9,7 +9,7 @@ let mainWindow = null;
 function getWindowSettings() {
     try {
         const userDataPath = app.getPath('userData');
-        const data = fs.readFileSync(path.join(userDataPath, 'settings.json'), 'utf-8');
+        const data = fs.readFileSync(path.join(userDataPath, 'coreSettings.json'), 'utf-8');
         const settings = JSON.parse(data);
 
         const window = {
@@ -17,16 +17,16 @@ function getWindowSettings() {
             height: 768
         };
 
-        if (Number.isInteger(settings.window_size_width) &&
-            Number.isInteger(settings.window_size_height)) {
-            window.width = settings.window_size_width;
-            window.height = settings.window_size_height;
+        if (Number.isInteger(settings.windowSizeWidth) &&
+            Number.isInteger(settings.windowSizeHeight)) {
+            window.width = settings.windowSizeWidth;
+            window.height = settings.windowSizeHeight;
         }
 
-        if (Number.isInteger(settings.window_position_x) &&
-            Number.isInteger(settings.window_position_y)) {
-            window.x = settings.window_position_x;
-            window.y = settings.window_position_y;
+        if (Number.isInteger(settings.windowPositionX) &&
+            Number.isInteger(settings.windowPositionY)) {
+            window.x = settings.windowPositionX;
+            window.y = settings.windowPositionY;
         }
 
         return window;

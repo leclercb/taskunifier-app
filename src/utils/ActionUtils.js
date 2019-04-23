@@ -3,6 +3,7 @@ import { updateProcess } from '../actions/ProcessActions';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
+const mkdirp = electron.remote.require('mkdirp');
 const rimraf = electron.remote.require("rimraf");
 
 export const { join, sep } = electron.remote.require('path');
@@ -95,16 +96,14 @@ export const getDirectories = path => {
     return fs.readdirSync(path).map(name => join(path, name)).filter(isDirectory);
 }
 
-export const createDirectory = (path, recursive = true) => {
+export const createDirectory = (path) => {
     if (!fs.existsSync(path)) {
-        fs.mkdirSync(path, {
-            recursive: recursive
-        });
+        mkdirp(path);
     }
 };
 
-export const deleteDirectory = path => {
-    if (path && path.startsWith(getUserDataPath())) {
+export const deleteDirectory = (path, dataFolder) => {
+    if (path && (path.startsWith(getUserDataPath()) || path.startsWith(dataFolder))) {
         rimraf.sync(path);
     }
 }
