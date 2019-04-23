@@ -55,6 +55,10 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
 
             const oldObject = objects[index];
 
+            if (oldObject.state !== 'LOADED' && oldObject.state !== 'TO_UPDATE') {
+                throw Error('The object cannot be updated as it is not in a valid state');
+            }
+
             objects[index] = {
                 ...action.object,
                 creationDate: objects[index].creationDate,
@@ -67,19 +71,19 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
             return objects;
         }
         case 'DELETE_OBJECT': {
-            const objects = [
-                ...state
-            ];
-
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
 
-            objects.forEach(object => {
-                if (objectIds.includes(object.id)) {
-                    object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';
+            return state.map(object => {
+                if (object.state === 'LOADED' || object.state === 'TO_UPDATE') {
+                    if (objectIds.includes(object.id)) {
+                        object = { ...object };
+                        object.updateDate = action.updateDate;
+                        object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';
+                    }
                 }
-            });
 
-            return objects;
+                return object;
+            });
         }
         case 'CLEAN_OBJECTS': {
             const objects = [

@@ -3,26 +3,28 @@ import { updateTag, deleteTag } from '../utils/TagUtils';
 const Tasks = () => (state = [], action) => {
     switch (action.type) {
         case 'UPDATE_TAG': {
-            const tasks = [
-                ...state
-            ];
+            return state.map(task => {
+                if (task.state === 'LOADED' || task.state === 'TO_UPDATE') {
+                    task = { ...task };
+                    updateTag(task, action.tag.id, action.tag.title);
+                    task.updateDate = action.updateDate;
+                    task.state = 'TO_UPDATE';
+                }
 
-            tasks.forEach(task => {
-                updateTag(task, action.tag.id, action.tag.title);
+                return task;
             });
-
-            return tasks;
         }
         case 'DELETE_TAG': {
-            const tasks = [
-                ...state
-            ];
+            return state.map(task => {
+                if (task.state === 'LOADED' || task.state === 'TO_UPDATE') {
+                    task = { ...task };
+                    deleteTag(task, action.tagId);
+                    task.updateDate = action.updateDate;
+                    task.state = 'TO_UPDATE';
+                }
 
-            tasks.forEach(task => {
-                deleteTag(task, action.tagId);
+                return task;
             });
-
-            return tasks;
         }
         default:
             return state;

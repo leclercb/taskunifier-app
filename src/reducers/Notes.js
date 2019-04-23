@@ -3,26 +3,28 @@ import { updateTag, deleteTag } from '../utils/TagUtils';
 const Notes = () => (state = [], action) => {
     switch (action.type) {
         case 'UPDATE_TAG': {
-            const notes = [
-                ...state
-            ];
+            return state.map(note => {
+                if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
+                    note = { ...note };
+                    updateTag(note, action.tag.id, action.tag.title);
+                    note.updateDate = action.updateDate;
+                    note.state = 'TO_UPDATE';
+                }
 
-            notes.forEach(note => {
-                updateTag(note, action.tag.id, action.tag.title);
+                return note;
             });
-
-            return notes;
         }
         case 'DELETE_TAG': {
-            const notes = [
-                ...state
-            ];
+            return state.map(note => {
+                if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
+                    note = { ...note };
+                    deleteTag(note, action.tagId);
+                    note.updateDate = action.updateDate;
+                    note.state = 'TO_UPDATE';
+                }
 
-            notes.forEach(note => {
-                deleteTag(note, action.tagId);
+                return note;
             });
-
-            return notes;
         }
         default:
             return state;

@@ -11,6 +11,7 @@ import {
     getValueFromEventForType,
     getValuePropNameForType
 } from '../../utils/FieldUtils';
+import { SettingsPropType } from '../../proptypes/SettingPropTypes';
 
 function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
@@ -82,7 +83,8 @@ function SettingManager(props) {
 }
 
 SettingManager.propTypes = {
-    settings: PropTypes.object.isRequired,
+    form: PropTypes.object.isRequired,
+    settings: SettingsPropType,
     updateSettings: PropTypes.func.isRequired
 };
 

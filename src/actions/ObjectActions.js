@@ -8,7 +8,7 @@ export const loadObjectsFromFile = (property, file) => {
     return (dispatch, getState) => {
         return dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
     };
-}; 
+};
 
 export const saveObjectsToFile = (property, file, data) => {
     return saveToFile(property, file, filterStaticObjects(data));
@@ -63,8 +63,9 @@ export const deleteObject = (property, objectId) => {
         dispatch({
             type: 'DELETE_OBJECT',
             property: property,
+            updateDate: moment().toJSON(),
             immediate: true,
-            objectId: objectId
+            objectId: objectId,
         });
 
         return Promise.resolve();
