@@ -1,29 +1,37 @@
+export function getPriority(priorityId) {
+    return getPriorities().find(priority => priority.id === priorityId);
+}
+
+export const getPriorityIndex = priorityId => {
+    return getPriorities().findIndex(priority => priority.id === priorityId) || 0;
+}
+
 export function getPriorities() {
     return [
         {
             id: 'negative',
             title: 'Negative',
-            color: '#f0f7f7'
+            color: '#90a4ae'
         },
         {
             id: 'low',
             title: 'Low',
-            color: '#00ff00'
+            color: '#8bc34a'
         },
         {
             id: 'medium',
             title: 'Medium',
-            color: '#ffff00'
+            color: '#ffeb3b'
         },
         {
             id: 'high',
             title: 'High',
-            color: '#ffc800'
+            color: '#ffb300'
         },
         {
             id: 'top',
             title: 'Top',
-            color: '#ff0000'
+            color: '#f4511e'
         }
     ]
 }

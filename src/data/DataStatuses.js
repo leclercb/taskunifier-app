@@ -1,29 +1,33 @@
+export function getStatus(statusId) {
+    return getStatuses().find(status => status.id === statusId);
+}
+
 export function getStatuses() {
     return [
         {
             id: 'active',
             title: 'Active',
-            color: '#ffffff'
+            color: '#f4511e'
         },
         {
             id: 'cancelled',
             title: 'Cancelled',
-            color: '#ffffff'
+            color: '#90a4ae'
         },
         {
             id: 'delegated',
             title: 'Delegated',
-            color: '#ffffff'
+            color: '#'
         },
         {
             id: 'hold',
             title: 'Hold',
-            color: '#ffffff'
+            color: '#fdd835'
         },
         {
             id: 'nextAction',
             title: 'Next Action',
-            color: '#ffffff'
+            color: '#2abff9'
         },
         {
             id: 'none',
@@ -33,27 +37,27 @@ export function getStatuses() {
         {
             id: 'planning',
             title: 'Planning',
-            color: '#ffffff'
+            color: '#7cb342'
         },
         {
             id: 'postponed',
             title: 'Postponed',
-            color: '#ffffff'
+            color: '#00796b'
         },
         {
             id: 'reference',
             title: 'Reference',
-            color: '#ffffff'
+            color: '#8e24aa'
         },
         {
             id: 'someday',
             title: 'Someday',
-            color: '#ffffff'
+            color: '#795548'
         },
         {
             id: 'waiting',
             title: 'Waiting',
-            color: '#ffffff'
+            color: '#ffb300'
         }
     ]
 }

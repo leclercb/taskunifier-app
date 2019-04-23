@@ -25,7 +25,7 @@ function TaskView(props) {
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
                     <TaskQuickAdd />
-                    <div style={{ overflowY: 'auto', height: '100%' }}>
+                    <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
                         <TaskGrid />
                     </div>
                 </div>

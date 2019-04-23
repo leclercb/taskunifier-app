@@ -6,7 +6,7 @@ import { TaskPropType } from '../../../proptypes/TaskPropTypes';
 import withTasks from '../../../containers/WithTasks';
 import withSettings from '../../../containers/WithSettings';
 import Icon from '../../common/Icon';
-import { getImportanceColor } from '../../../utils/SettingUtils';
+import { getImportanceColor, getPriorityColor } from '../../../utils/SettingUtils';
 import './TaskCalendar.css';
 
 function TaskCalendar(props) {
@@ -22,11 +22,13 @@ function TaskCalendar(props) {
         return (
             <ul className="task-list">
                 {tasks.map(task => (
-                    <li key={task.id}>
+                    <li
+                        key={task.id}
+                        style={{ backgroundColor: getImportanceColor(task.importance, props.settings) }}>
                         <Icon
                             spanClassName="task"
                             icon="circle"
-                            color={getImportanceColor(task.importance, props.settings)}
+                            color={getPriorityColor(task.priority, props.settings)}
                             text={task.title}
                             onClick={() => props.setSelectedTaskIds([task.id])} />
                     </li>
@@ -38,7 +40,7 @@ function TaskCalendar(props) {
     return (
         <Calendar
             dateCellRender={getCellRender('day')}
-            monthCellRender={getCellRender('month')}  />
+            monthCellRender={getCellRender('month')} />
     );
 }
 

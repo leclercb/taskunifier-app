@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { getPriorities } from './DataPriorities';
+import { getStatuses } from './DataStatuses';
 
 export function getSettings() {
     const settings = {};
@@ -20,22 +22,22 @@ export function getCategories() {
             icon: 'home',
             settings: [
                 {
-                    id: "automaticSave",
-                    title: "Enable automatic save",
+                    id: 'automaticSave',
+                    title: 'Enable automatic save',
                     type: 'boolean',
                     value: true,
                     editable: true
                 },
                 {
-                    id: "automaticSaveInterval",
-                    title: "Save interval in minutes",
+                    id: 'automaticSaveInterval',
+                    title: 'Save interval in minutes',
                     type: 'number',
                     value: 15,
                     editable: true
                 },
                 {
-                    id: "lastAutomaticSave",
-                    title: "Last automatic save",
+                    id: 'lastAutomaticSave',
+                    title: 'Last automatic save',
                     type: 'dateTime',
                     value: moment().toJSON(),
                     editable: false
@@ -48,22 +50,22 @@ export function getCategories() {
             icon: 'calendar-alt',
             settings: [
                 {
-                    id: "showStartTime",
-                    title: "Show start time",
+                    id: 'showStartTime',
+                    title: 'Show start time',
                     type: 'boolean',
                     value: false,
                     editable: true
                 },
                 {
-                    id: "showDueTime",
-                    title: "Show due time",
+                    id: 'showDueTime',
+                    title: 'Show due time',
                     type: 'boolean',
                     value: false,
                     editable: true
                 },
                 {
-                    id: "dateFormat",
-                    title: "Date format",
+                    id: 'dateFormat',
+                    title: 'Date format',
                     type: 'select',
                     options: {
                         values: [
@@ -109,8 +111,8 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: "timeFormat",
-                    title: "Time format",
+                    id: 'timeFormat',
+                    title: 'Time format',
                     type: 'select',
                     options: {
                         values: [
@@ -135,8 +137,8 @@ export function getCategories() {
             icon: 'key',
             settings: [
                 {
-                    id: "license",
-                    title: "License",
+                    id: 'license',
+                    title: 'License',
                     type: 'textarea',
                     value: null,
                     editable: true
@@ -149,29 +151,29 @@ export function getCategories() {
             icon: 'box-open',
             settings: [
                 {
-                    id: "automaticBackup",
-                    title: "Enable automatic backup",
+                    id: 'automaticBackup',
+                    title: 'Enable automatic backup',
                     type: 'boolean',
                     value: true,
                     editable: true
                 },
                 {
-                    id: "maxBackups",
-                    title: "Maximum number of backups to keep",
+                    id: 'maxBackups',
+                    title: 'Maximum number of backups to keep',
                     type: 'number',
                     value: 100,
                     editable: true
                 },
                 {
-                    id: "automaticBackupInterval",
-                    title: "Backup interval in minutes",
+                    id: 'automaticBackupInterval',
+                    title: 'Backup interval in minutes',
                     type: 'number',
                     value: 60,
                     editable: true
                 },
                 {
-                    id: "lastAutomaticBackup",
-                    title: "Last automatic backup",
+                    id: 'lastAutomaticBackup',
+                    title: 'Last automatic backup',
                     type: 'dateTime',
                     value: moment().toJSON(),
                     editable: false
@@ -184,8 +186,8 @@ export function getCategories() {
             icon: 'tasks',
             settings: [
                 {
-                    id: "defaultTaskTemplate",
-                    title: "Default task template",
+                    id: 'defaultTaskTemplate',
+                    title: 'Default task template',
                     type: 'taskTemplate',
                     value: null,
                     editable: true
@@ -198,94 +200,94 @@ export function getCategories() {
             icon: 'paint-roller',
             settings: [
                 {
-                    id: "importance_0",
-                    title: "Importance 0",
+                    id: 'importance_0',
+                    title: 'Importance 0',
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "importance_1",
-                    title: "Importance 1",
+                    id: 'importance_1',
+                    title: 'Importance 1',
                     type: 'color',
                     value: '#ffffff',
                     editable: true
                 },
                 {
-                    id: "importance_2",
-                    title: "Importance 2",
+                    id: 'importance_2',
+                    title: 'Importance 2',
                     type: 'color',
-                    value: '#ffffff',
+                    value: '#eceff1',
                     editable: true
                 },
                 {
-                    id: "importance_3",
-                    title: "Importance 3",
+                    id: 'importance_3',
+                    title: 'Importance 3',
                     type: 'color',
-                    value: '#f0f7f7',
+                    value: '#e1f5fe',
                     editable: true
                 },
                 {
-                    id: "importance_4",
-                    title: "Importance 4",
+                    id: 'importance_4',
+                    title: 'Importance 4',
                     type: 'color',
-                    value: '#ccffff',
+                    value: '#b3e5fc',
                     editable: true
                 },
                 {
-                    id: "importance_5",
-                    title: "Importance 5",
+                    id: 'importance_5',
+                    title: 'Importance 5',
                     type: 'color',
-                    value: '#d0f7e3',
+                    value: '#dcedc8',
                     editable: true
                 },
                 {
-                    id: "importance_6",
-                    title: "Importance 6",
+                    id: 'importance_6',
+                    title: 'Importance 6',
                     type: 'color',
-                    value: '#ccffcc',
+                    value: '#c5e1a5',
                     editable: true
                 },
                 {
-                    id: "importance_7",
-                    title: "Importance 7",
+                    id: 'importance_7',
+                    title: 'Importance 7',
                     type: 'color',
-                    value: '#ccff99',
+                    value: '#fff9c4',
                     editable: true
                 },
                 {
-                    id: "importance_8",
-                    title: "Importance 8",
+                    id: 'importance_8',
+                    title: 'Importance 8',
                     type: 'color',
-                    value: '#ffffcc',
+                    value: '#fff176',
                     editable: true
                 },
                 {
-                    id: "importance_9",
-                    title: "Importance 9",
+                    id: 'importance_9',
+                    title: 'Importance 9',
                     type: 'color',
-                    value: '#ffff99',
+                    value: '#ffe082',
                     editable: true
                 },
                 {
-                    id: "importance_10",
-                    title: "Importance 10",
+                    id: 'importance_10',
+                    title: 'Importance 10',
                     type: 'color',
-                    value: '#ffcc99',
+                    value: '#ffd54f',
                     editable: true
                 },
                 {
-                    id: "importance_11",
-                    title: "Importance 11",
+                    id: 'importance_11',
+                    title: 'Importance 11',
                     type: 'color',
-                    value: '#ffcccc',
+                    value: '#ffab91',
                     editable: true
                 },
                 {
-                    id: "importance_12",
-                    title: "Importance 12",
+                    id: 'importance_12',
+                    title: 'Importance 12',
                     type: 'color',
-                    value: '#ff9999',
+                    value: '#ff5722',
                     editable: true
                 }
             ]
@@ -294,127 +296,25 @@ export function getCategories() {
             id: 'priorityColors',
             title: 'Priority Colors',
             icon: 'paint-roller',
-            settings: [
-                {
-                    id: "priority_negative",
-                    title: "Priority Negative",
-                    type: 'color',
-                    value: '#f0f7f7',
-                    editable: true
-                },
-                {
-                    id: "priority_low",
-                    title: "Priority Low",
-                    type: 'color',
-                    value: '#00ff00',
-                    editable: true
-                },
-                {
-                    id: "priority_medium",
-                    title: "Priority Medium",
-                    type: 'color',
-                    value: '#ffff00',
-                    editable: true
-                },
-                {
-                    id: "priority_high",
-                    title: "Proirity High",
-                    type: 'color',
-                    value: '#ffc800',
-                    editable: true
-                },
-                {
-                    id: "priority_top",
-                    title: "Priority Top",
-                    type: 'color',
-                    value: '#ff0000',
-                    editable: true
-                }
-            ]
+            settings: getPriorities().map(priority => ({
+                id: 'priority_' + priority.id,
+                title: 'Priority ' + priority.title,
+                type: 'color',
+                value: priority.color,
+                editable: true
+            }))
         },
         {
             id: 'statusColors',
             title: 'Status Colors',
             icon: 'paint-roller',
-            settings: [
-                {
-                    id: "status_active",
-                    title: "Status Active",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_cancelled",
-                    title: "Status Cancelled",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_delegated",
-                    title: "Status Delegated",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_hold",
-                    title: "Status Hold",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_nextAction",
-                    title: "Status Next Action",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_none",
-                    title: "Status None",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_planning",
-                    title: "Status Planning",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_postponed",
-                    title: "Status Postponed",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_reference",
-                    title: "Status Reference",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_someday",
-                    title: "Status Someday",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                },
-                {
-                    id: "status_waiting",
-                    title: "Status Waiting",
-                    type: 'color',
-                    value: '#ffffff',
-                    editable: true
-                }
-            ]
+            settings: getStatuses().map(status => ({
+                id: 'status_' + status.id,
+                title: 'Status ' + status.title,
+                type: 'color',
+                value: status.color,
+                editable: true
+            }))
         },
         {
             id: 'window',
@@ -422,43 +322,43 @@ export function getCategories() {
             icon: 'desktop',
             settings: [
                 {
-                    id: "windowSizeWidth",
-                    title: "Window Size - Width",
+                    id: 'windowSizeWidth',
+                    title: 'Window Size - Width',
                     type: 'number',
                     value: 1024,
                     editable: false
                 },
                 {
-                    id: "windowSizeHeight",
-                    title: "Window Size - Height",
+                    id: 'windowSizeHeight',
+                    title: 'Window Size - Height',
                     type: 'number',
                     value: 768,
                     editable: false
                 },
                 {
-                    id: "windowPositionX",
-                    title: "Window Position - X",
+                    id: 'windowPositionX',
+                    title: 'Window Position - X',
                     type: 'number',
                     value: null,
                     editable: false
                 },
                 {
-                    id: "windowPositionY",
-                    title: "Window Position - Y",
+                    id: 'windowPositionY',
+                    title: 'Window Position - Y',
                     type: 'number',
                     value: null,
                     editable: false
                 },
                 {
-                    id: "verticalSplitPaneSize",
-                    title: "Vertical Split Pane Size",
+                    id: 'verticalSplitPaneSize',
+                    title: 'Vertical Split Pane Size',
                     type: 'number',
                     value: 300,
                     editable: false
                 },
                 {
-                    id: "horizontalSplitPaneSize",
-                    title: "Horizontal Split Pane Size",
+                    id: 'horizontalSplitPaneSize',
+                    title: 'Horizontal Split Pane Size',
                     type: 'number',
                     value: 300,
                     editable: false

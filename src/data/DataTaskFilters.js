@@ -43,7 +43,7 @@ export function getGeneralTaskFilters() {
             icon: 'calendar-alt',
             condition: {
                 id: '1',
-                field: 'duedate',
+                field: 'dueDate',
                 type: 'equal',
                 value: 0
             }
@@ -55,7 +55,7 @@ export function getGeneralTaskFilters() {
             icon: 'bomb',
             condition: {
                 id: '1',
-                field: 'duedate',
+                field: 'dueDate',
                 type: 'before',
                 value: 0
             }
@@ -71,7 +71,7 @@ export function getGeneralTaskFilters() {
                 conditions: [
                     {
                         id: '2',
-                        field: 'duedate',
+                        field: 'dueDate',
                         type: 'beforeOrEqual',
                         value: 3
                     },

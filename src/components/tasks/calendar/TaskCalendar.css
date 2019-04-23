@@ -4,6 +4,12 @@
     padding: 0;
 }
 
+.task-list li {
+    border-radius: 5px;
+    padding: 0px 5px;
+    margin: 2px 0px;
+}
+
 .task {
     overflow: hidden;
     white-space: nowrap;

@@ -23,7 +23,7 @@ import TagsTitle from '../components/tags/TagsTitle';
 import TagsSelect from '../components/tags/TagsSelect';
 import { TaskTemplateTitle } from '../components/tasktemplates/TaskTemplateTitle';
 import TaskTemplateSelect from '../components/tasktemplates/TaskTemplateSelect';
-import { getPriorityIndex } from '../utils/PriorityUtils';
+import { getPriorityIndex } from './DataPriorities';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
