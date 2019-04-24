@@ -4,7 +4,7 @@
         "target": "es2016",
         "jsx": "preserve",
         "checkJs": true,
-        "baseUrl": "./src"
+        "baseUrl": "src"
     },
     "exclude": [
         "node_modules",
