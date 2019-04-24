@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Menu, Popconfirm } from 'antd';
+import { Input, Menu, Popconfirm, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import withObjects from 'containers/WithObjects';
 import withApp from 'containers/WithApp';
@@ -13,7 +13,6 @@ import LeftRight from 'components/common/LeftRight';
 import Constants from 'constants/Constants';
 import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
-import { Tooltip } from 'antd';
 import Spacer from 'components/common/Spacer';
 
 function TaskSider(props) {
