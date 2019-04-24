@@ -5,7 +5,7 @@ import { filterStaticObjects } from '../utils/CategoryUtils';
 import { loadFromFile, saveToFile } from '../utils/ActionUtils';
 
 export const loadObjectsFromFile = (property, file) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         return dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
     };
 };
@@ -15,7 +15,7 @@ export const saveObjectsToFile = (property, file, data) => {
 };
 
 export const setObjects = (property, objects) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'SET_OBJECTS',
             property: property,

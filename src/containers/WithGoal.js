@@ -7,7 +7,7 @@ function withGoal(Component, propertyId = 'goalId') {
         goal: filterObjects(state.goals).find(goal => goal.id === ownProps[propertyId])
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

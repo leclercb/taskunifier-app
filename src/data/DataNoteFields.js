@@ -1,4 +1,4 @@
-export function getDefaultNoteFields(settings) {
+export function getDefaultNoteFields() {
     return [
         {
             static: true,

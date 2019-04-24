@@ -7,7 +7,7 @@ function withFolder(Component, propertyId = 'folderId') {
         folder: filterObjects(state.folders).find(folder => folder.id === ownProps[propertyId])
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

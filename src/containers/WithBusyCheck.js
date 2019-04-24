@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 function withBusyCheck(Component) {
@@ -17,11 +18,15 @@ function withBusyCheck(Component) {
         }
     }
 
+    WithBusyCheck.propTypes = {
+        busy: PropTypes.bool.isRequired
+    }
+
     const mapStateToProps = state => ({
         busy: state.processes.busy
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

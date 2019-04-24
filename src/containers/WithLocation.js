@@ -7,7 +7,7 @@ function withLocation(Component, propertyId = 'locationId') {
         location: filterObjects(state.locations).find(location => location.id === ownProps[propertyId])
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

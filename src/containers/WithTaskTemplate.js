@@ -7,7 +7,7 @@ function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
         taskTemplate: filterObjects(state.taskTemplates).find(taskTemplate => taskTemplate.id === ownProps[propertyId])
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

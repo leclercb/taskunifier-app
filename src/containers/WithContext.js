@@ -7,7 +7,7 @@ function withContext(Component, propertyId = 'contextId') {
         context: filterObjects(state.contexts).find(context => context.id === ownProps[propertyId])
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

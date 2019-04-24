@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export const updateTag = (tag) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'UPDATE_TAG',
             updateDate: moment().toJSON(),
@@ -13,7 +13,7 @@ export const updateTag = (tag) => {
 };
 
 export const deleteTag = tagId => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'DELETE_TAG',
             updateDate: moment().toJSON(),

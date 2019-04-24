@@ -6,7 +6,7 @@ import {
 import withBusyCheck from './WithBusyCheck';
 
 function withBackups(Component) {
-    const mapStateToProps = state => ({
+    const mapStateToProps = () => ({
         
     });
 

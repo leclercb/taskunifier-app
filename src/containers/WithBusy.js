@@ -5,7 +5,7 @@ function withBusy(Component) {
         busy: state.processes.busy
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

@@ -7,7 +7,7 @@ function withContact(Component, propertyId = 'contactId') {
         contact: filterObjects(state.contacts).find(contact => contact.id === ownProps[propertyId])
     });
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

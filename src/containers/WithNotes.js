@@ -16,7 +16,7 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
         let notes = filterObjects(state.notes);
 
         if (options && options.applySelectedNoteFilter === true) {
-            const fields = getDefaultNoteFields(state.settings).concat(filterObjects(state.noteFields));
+            const fields = getDefaultNoteFields().concat(filterObjects(state.noteFields));
 
             notes = notes.filter(note => {
                 if (!state.app.selectedNoteFilterDate ||

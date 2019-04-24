@@ -6,7 +6,7 @@ import withBusyCheck from './WithBusyCheck';
 
 function withNoteFields(Component) {
     const mapStateToProps = state => ({
-        noteFields: getDefaultNoteFields(state.settings).concat(filterObjects(state.noteFields))
+        noteFields: getDefaultNoteFields().concat(filterObjects(state.noteFields))
     });
 
     const mapDispatchToProps = dispatch => ({
