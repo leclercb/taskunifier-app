@@ -12,13 +12,16 @@ import './EditableCell.css';
 
 const EditableContext = React.createContext();
 
-const EditableRow = Component => ({ form, rowProps, ...props }) => {
-    Object.assign(props.style, rowProps.style);
+const EditableRow = Component => ({ form, ...props }) => {
+    Object.assign(props.style, props.rowProps.style);
+
+    const trProps = { ...props };
+    delete trProps.rowProps;
 
     return (
         <EditableContext.Provider value={form}>
             {Component ? React.createElement(Component, props) : (
-                <tr {...props} />
+                <tr {...trProps} />
             )}
         </EditableContext.Provider>
     );

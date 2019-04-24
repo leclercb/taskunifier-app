@@ -93,8 +93,8 @@ function TaskGrid(props) {
                             textDecoration: record.completed ? 'line-through' : null
                         }
                     },
-                    moveRow: (dragIndex, dropIndex) => {
-                        console.log(dragIndex, dropIndex);
+                    moveRow: (dragRecord, dropRecord) => {
+                        console.log(dragRecord, dropRecord);
                     }
                 })}
                 rowSelection={{

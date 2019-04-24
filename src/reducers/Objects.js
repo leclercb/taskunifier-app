@@ -70,6 +70,32 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
 
             return objects;
         }
+        case 'UPDATE_HIERARCHY': {
+            const objects = [
+                ...state
+            ];
+
+            if (!action.targetObject.id) {
+                throw Error('The target object doesn\'t have an ID');
+            }
+
+            if (!action.sourceObject.id) {
+                throw Error('The source object doesn\'t have an ID');
+            }
+
+            const targetIndex = objects.findIndex(object => object.id === action.targetObject.id);
+            const sourceIndex = objects.findIndex(object => object.id === action.sourceObject.id);
+
+            if (targetIndex < 0) {
+                throw Error(`The target object with id "${action.targetObject.id}" cannot be updated as it doesn't exist`);
+            }
+
+            if (sourceIndex < 0) {
+                throw Error(`The source object with id "${action.sourceObject.id}" cannot be updated as it doesn't exist`);
+            }
+
+            // TODO update objects reducer to handle children
+        }
         case 'DELETE_OBJECT': {
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
 

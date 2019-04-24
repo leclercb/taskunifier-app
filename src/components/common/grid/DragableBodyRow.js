@@ -8,6 +8,7 @@ const BodyRow = props => {
         connectDragSource,
         connectDropTarget,
         moveRow,
+        rowProps,
         ...restProps
     } = props;
 
@@ -23,24 +24,19 @@ const BodyRow = props => {
 }
 
 const rowSource = {
-    beginDrag(props) {
+    beginDrag: props => {
         return {
-            index: props.index
+            record: props.rowProps.record
         };
     }
 };
 
 const rowTarget = {
     drop: (props, monitor) => {
-        const dragIndex = monitor.getItem().index;
-        const dropIndex = props.index;
+        const dragRecord = monitor.getItem().record;
+        const dropRecord = props.rowProps.record
 
-        if (dragIndex === dropIndex) {
-            return;
-        }
-
-        props.moveRow(dragIndex, dropIndex);
-        monitor.getItem().index = dropIndex;
+        props.moveRow(dragRecord, dropRecord);
     }
 };
 
