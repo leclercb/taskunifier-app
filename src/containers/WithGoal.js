@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withGoal(Component, propertyId = 'goalId') {
     const mapStateToProps = (state, ownProps) => ({

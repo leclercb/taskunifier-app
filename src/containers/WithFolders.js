@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addFolder, updateFolder, deleteFolder } from '../actions/FolderActions';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withFolders(Component, options = { actionsOnly: false, filterArchived: false }) {
     const mapStateToProps = state => {

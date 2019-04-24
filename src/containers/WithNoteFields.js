@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { addNoteField, updateNoteField, deleteNoteField } from '../actions/NoteFieldActions';
 import { getDefaultNoteFields } from '../data/DataNoteFields';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withNoteFields(Component) {
     const mapStateToProps = state => ({

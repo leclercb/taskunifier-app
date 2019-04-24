@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from '../actions/TaskFilterActions';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withTaskFilters(Component) {
     const mapStateToProps = state => ({

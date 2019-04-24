@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withContexts(Component, options = { actionsOnly: false }) {
     const mapStateToProps = state => {

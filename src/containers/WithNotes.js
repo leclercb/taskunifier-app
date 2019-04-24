@@ -5,7 +5,7 @@ import { getDefaultNoteFields } from '../data/DataNoteFields';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyFilter } from '../utils/FilterUtils';
 import { setSelectedNoteIds } from '../actions/AppActions';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withNotes(Component, options = { applySelectedNoteFilter: false, actionsOnly: false }) {
     const mapStateToProps = state => {

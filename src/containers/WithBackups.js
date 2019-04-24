@@ -3,7 +3,7 @@ import {
     backupData,
     cleanBackups
 } from '../actions/BackupActions';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withBackups(Component) {
     const mapStateToProps = state => ({

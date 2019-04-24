@@ -9,7 +9,7 @@ import { addLocation, updateLocation, deleteLocation } from '../actions/Location
 import { updateTag, deleteTag } from '../actions/TagActions';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
 import { getTagsFromObjects } from '../utils/TagUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withObjects(Component, options = {
     includeActions: false,

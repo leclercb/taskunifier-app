@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withTaskTemplates(Component, options = { actionsOnly: false }) {
     const mapStateToProps = state => {

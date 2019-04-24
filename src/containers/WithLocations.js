@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addLocation, updateLocation, deleteLocation } from '../actions/LocationActions';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withLocations(Component, options = { actionsOnly: false }) {
     const mapStateToProps = state => {

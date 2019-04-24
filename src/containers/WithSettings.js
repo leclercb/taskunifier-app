@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { updateSettings } from '../actions/SettingActions';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withSettings(Component) {
     const mapStateToProps = state => ({

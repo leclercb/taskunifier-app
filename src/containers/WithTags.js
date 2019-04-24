@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { updateTag, deleteTag } from '../actions/TagActions';
 import { getTagsFromIds, getTagsFromObjects } from '../utils/TagUtils';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
     const mapStateToProps = (state, ownProps) => {

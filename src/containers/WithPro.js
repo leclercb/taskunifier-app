@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { isValidLicense } from '../utils/LicenseUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withPro(Component) {
     const mapStateToProps = state => ({

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { clearProcesses, setProcessesVisible, deleteNotification } from '../actions/ProcessActions';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withProcesses(Component) {
     const mapStateToProps = state => ({

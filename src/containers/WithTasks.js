@@ -5,7 +5,7 @@ import { getDefaultTaskFields } from '../data/DataTaskFields';
 import { filterObjects } from '../utils/CategoryUtils';
 import { applyFilter } from '../utils/FilterUtils';
 import { setSelectedTaskIds } from '../actions/AppActions';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
     const mapStateToProps = state => {

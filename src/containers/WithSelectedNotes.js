@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { addNote, updateNote, deleteNote } from '../actions/NoteActions';
 import { filterObjects } from '../utils/CategoryUtils';
 import { setSelectedNoteIds } from '../actions/AppActions';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withSelectedNotes(Component) {
     const mapStateToProps = state => ({

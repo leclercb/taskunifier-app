@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addNoteFilter, updateNoteFilter, deleteNoteFilter } from '../actions/NoteFilterActions';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from '../components/common/WithBusyCheck';
+import withBusyCheck from './WithBusyCheck';
 
 function withNoteFilters(Component) {
     const mapStateToProps = state => ({
