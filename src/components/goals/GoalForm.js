@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Select } from 'antd';
-import ColorPicker from '../common/ColorPicker';
-import { GoalPropType } from '../../proptypes/GoalPropTypes';
+import ColorPicker from 'components/common/ColorPicker';
+import { GoalPropType } from 'proptypes/GoalPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import { getGoalLevels } from 'data/DataGoalLevels';
 import GoalSelect from 'components/goals/GoalSelect';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 
 function GoalForm(props) {
     const { getFieldDecorator } = props.form;

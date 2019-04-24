@@ -5,11 +5,11 @@ import withApp from 'containers/WithApp';
 import withNoteFields from 'containers/WithNoteFields';
 import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
-import { EditableFormRow, EditableCell } from '../../common/grid/EditableCell';
-import ResizableColumn from '../../common/grid/ResizableColumn';
+import { EditableFormRow, EditableCell } from 'components/common/grid/EditableCell';
+import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getWidthForType, getRenderForType } from 'utils/FieldUtils';
-import { FieldPropType } from '../../../proptypes/FieldPropTypes';
-import { NotePropType } from '../../../proptypes/NotePropTypes';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { NotePropType } from 'proptypes/NotePropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 

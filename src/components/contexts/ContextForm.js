@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
-import ColorPicker from '../common/ColorPicker';
-import { ContextPropType } from '../../proptypes/ContextPropTypes';
+import ColorPicker from 'components/common/ColorPicker';
+import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function ContextForm(props) {

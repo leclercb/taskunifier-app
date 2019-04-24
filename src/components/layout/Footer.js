@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from '../common/Logo';
-import Spacer from '../common/Spacer';
+import Logo from 'components/common/Logo';
+import Spacer from 'components/common/Spacer';
 
 function Footer(props) {
     return (

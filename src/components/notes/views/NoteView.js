@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
-import NoteSider from '../sider/NoteSider';
-import NoteGrid from '../grid/NoteGrid';
+import NoteSider from 'components/notes/sider/NoteSider';
+import NoteGrid from 'components/notes/grid/NoteGrid';
 import withSettings from 'containers/WithSettings';
-import NoteTabs from '../tabs/NoteTabs';
+import NoteTabs from 'components/notes/tabs/NoteTabs';
 
 function NoteView(props) {
     const onVerticalSplitPaneSizeChange = size => {

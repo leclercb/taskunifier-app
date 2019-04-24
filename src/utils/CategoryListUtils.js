@@ -1,7 +1,7 @@
 import React from 'react';
 import { Popconfirm, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
-import Constants from '../constants/Constants';
+import Constants from 'constants/Constants';
 import Spacer from 'components/common/Spacer';
 
 export const createAction = (icon, text, onClick, color) => (

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { ContactPropType } from '../../proptypes/ContactPropTypes';
+import { ContactPropType } from 'proptypes/ContactPropTypes';
 import withContacts from 'containers/WithContacts';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import { getContactTitle } from 'utils/ContactUtils';
 
 export const ContactSelect = React.forwardRef(function ContactSelect(props, ref) {

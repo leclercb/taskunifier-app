@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Checkbox } from 'antd';
-import ColorPicker from '../common/ColorPicker';
-import { FolderPropType } from '../../proptypes/FolderPropTypes';
+import ColorPicker from 'components/common/ColorPicker';
+import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function FolderForm(props) {

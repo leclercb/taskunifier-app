@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Empty } from 'antd';
 import withSelectedNotes from 'containers/WithSelectedNotes';
-import NoteNoteForm from '../note/NoteNoteForm';
+import NoteNoteForm from 'components/notes/note/NoteNoteForm';
 
 function NoteTabs(props) {
     if (props.selectedNotes.length !== 1) {

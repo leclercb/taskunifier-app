@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import withProcesses from 'containers/WithProcesses';
 import ProcessList from 'components/processes/ProcessList';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 
 function ModalProcessManager(props) {
     const onOk = () => {

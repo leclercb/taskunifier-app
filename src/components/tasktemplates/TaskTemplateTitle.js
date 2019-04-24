@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
+import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import withTaskTemplate from 'containers/WithTaskTemplate';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 
 export function TaskTemplateTitle(props) {
     const taskTemplate = props.taskTemplate;

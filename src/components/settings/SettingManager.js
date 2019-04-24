@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { List, Row, Col, Form } from 'antd';
 import withSettings from 'containers/WithSettings';
 import { getCategories } from 'data/DataSettings';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import {
     getInputForType,
@@ -11,7 +11,7 @@ import {
     getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
-import { SettingsPropType } from '../../proptypes/SettingPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 
 function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');

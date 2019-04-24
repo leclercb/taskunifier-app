@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
-import { TaskPropType } from '../../../proptypes/TaskPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskNoteForm(props) {
     const { getFieldDecorator } = props.form;

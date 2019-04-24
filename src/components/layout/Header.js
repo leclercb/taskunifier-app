@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tooltip } from 'antd';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import withApp from 'containers/WithApp';
 import withNotes from 'containers/WithNotes';
 import withTasks from 'containers/WithTasks';
-import Spacer from '../common/Spacer';
-import LeftRight from '../common/LeftRight';
-import Logo from '../common/Logo';
+import Spacer from 'components/common/Spacer';
+import LeftRight from 'components/common/LeftRight';
+import Logo from 'components/common/Logo';
 
 function Header(props) {
     const onAddNote = () => {

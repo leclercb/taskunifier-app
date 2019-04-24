@@ -7,17 +7,17 @@ import withApp from 'containers/WithApp';
 import withBusy from 'containers/WithBusy';
 import withProcesses from 'containers/WithProcesses';
 import withSettings from 'containers/WithSettings';
-import ModalProcessManager from '../processes/ModalProcessManager';
-import ModalCategoryManager from '../categories/ModalCategoryManager';
-import ModalNoteFilterManager from '../notefilters/ModalNoteFilterManager';
-import ModalTaskFilterManager from '../taskfilters/ModalTaskFilterManager';
-import NotificationManager from '../processes/NotificationManager';
-import ModalTaskTemplateManager from '../tasktemplates/ModalTaskTemplateManager';
-import ModalSettingManager from '../settings/ModalSettingManager';
-import ModalBatchAddTasks from '../tasks/batch/ModalBatchAddTasks';
-import NoteView from '../notes/views/NoteView';
-import TaskView from '../tasks/views/TaskView';
-import TaskCalendarView from '../tasks/views/TaskCalendarView';
+import ModalProcessManager from 'components/processes/ModalProcessManager';
+import ModalCategoryManager from 'components/categories/ModalCategoryManager';
+import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
+import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
+import NotificationManager from 'components/processes/NotificationManager';
+import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
+import ModalSettingManager from 'components/settings/ModalSettingManager';
+import ModalBatchAddTasks from 'components/tasks/batch/ModalBatchAddTasks';
+import NoteView from 'components/notes/views/NoteView';
+import TaskView from 'components/tasks/views/TaskView';
+import TaskCalendarView from 'components/tasks/views/TaskCalendarView';
 
 function AppLayout(props) {
     const getView = () => {

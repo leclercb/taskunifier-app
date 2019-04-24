@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Menu, Popconfirm } from 'antd';
-import Icon from '../../common/Icon';
+import Icon from 'components/common/Icon';
 import withObjects from 'containers/WithObjects';
 import withApp from 'containers/WithApp';
-import { ContextPropType } from '../../../proptypes/ContextPropTypes';
-import { FolderPropType } from '../../../proptypes/FolderPropTypes';
-import { GoalPropType } from '../../../proptypes/GoalPropTypes';
-import { LocationPropType } from '../../../proptypes/LocationPropTypes';
-import { TaskFilterPropType } from '../../../proptypes/TaskFilterPropTypes';
-import LeftRight from '../../common/LeftRight';
-import Constants from '../../../constants/Constants';
+import { ContextPropType } from 'proptypes/ContextPropTypes';
+import { FolderPropType } from 'proptypes/FolderPropTypes';
+import { GoalPropType } from 'proptypes/GoalPropTypes';
+import { LocationPropType } from 'proptypes/LocationPropTypes';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import LeftRight from 'components/common/LeftRight';
+import Constants from 'constants/Constants';
 import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
 import { getGeneralTaskFilters, createSearchTaskFilter } from 'data/DataTaskFilters';
 import { Tooltip } from 'antd';
-import Spacer from '../../common/Spacer';
+import Spacer from 'components/common/Spacer';
 
 function TaskSider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);

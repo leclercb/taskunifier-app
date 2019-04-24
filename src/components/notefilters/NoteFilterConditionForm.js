@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Row, Col } from 'antd';
 import withNoteFields from 'containers/WithNoteFields';
-import { FieldPropType } from '../../proptypes/FieldPropTypes';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
 import {
     getInputForType,
     getSelectForType,

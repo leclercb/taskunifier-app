@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import withTasks from 'containers/WithTasks';
 import withObjects from 'containers/WithObjects';
-import Icon from '../../common/Icon';
-import { ContextTitle } from '../../contexts/ContextTitle';
-import { FolderTitle } from '../../folders/FolderTitle';
-import { GoalTitle } from '../../goals/GoalTitle';
-import { LocationTitle } from '../../locations/LocationTitle';
-import { TaskTemplateTitle } from '../../tasktemplates/TaskTemplateTitle';
-import { ContextPropType } from '../../../proptypes/ContextPropTypes';
-import { FolderPropType } from '../../../proptypes/FolderPropTypes';
-import { GoalPropType } from '../../../proptypes/GoalPropTypes';
-import { LocationPropType } from '../../../proptypes/LocationPropTypes';
-import { TaskTemplatePropType } from '../../../proptypes/TaskTemplatePropTypes';
+import Icon from 'components/common/Icon';
+import { ContextTitle } from 'components/contexts/ContextTitle';
+import { FolderTitle } from 'components/folders/FolderTitle';
+import { GoalTitle } from 'components/goals/GoalTitle';
+import { LocationTitle } from 'components/locations/LocationTitle';
+import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import { ContextPropType } from 'proptypes/ContextPropTypes';
+import { FolderPropType } from 'proptypes/FolderPropTypes';
+import { GoalPropType } from 'proptypes/GoalPropTypes';
+import { LocationPropType } from 'proptypes/LocationPropTypes';
+import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function TaskQuickAdd(props) {

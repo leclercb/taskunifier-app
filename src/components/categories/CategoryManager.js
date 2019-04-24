@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
-import ContactManager from '../contacts/ContactManager';
-import ContextManager from '../contexts/ContextManager';
-import FolderManager from '../folders/FolderManager';
-import GoalManager from '../goals/GoalManager';
-import LocationManager from '../locations/LocationManager';
-import TagManager from '../tags/TagManager';
+import ContactManager from 'components/contacts/ContactManager';
+import ContextManager from 'components/contexts/ContextManager';
+import FolderManager from 'components/folders/FolderManager';
+import GoalManager from 'components/goals/GoalManager';
+import LocationManager from 'components/locations/LocationManager';
+import TagManager from 'components/tags/TagManager';
 
 function CategoryManager(props) {
     const category = props.category;

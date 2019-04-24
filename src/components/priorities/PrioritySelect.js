@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { PriorityPropType } from '../../proptypes/PriorityPropTypes';
+import { PriorityPropType } from 'proptypes/PriorityPropTypes';
 import withPriorities from 'containers/WithPriorities';
 import withSettings from 'containers/WithSettings';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import { getPriorityColor } from 'utils/SettingUtils';
 
 function PrioritySelect(props) {

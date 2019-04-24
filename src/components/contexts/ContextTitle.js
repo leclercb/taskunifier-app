@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ContextPropType } from '../../proptypes/ContextPropTypes';
+import { ContextPropType } from 'proptypes/ContextPropTypes';
 import withContext from 'containers/WithContext';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 
 export function ContextTitle(props) {
     const context = props.context;

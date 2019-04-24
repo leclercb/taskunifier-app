@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ContactPropType } from '../../proptypes/ContactPropTypes';
+import { ContactPropType } from 'proptypes/ContactPropTypes';
 import withContact from 'containers/WithContact';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import { getContactTitle } from 'utils/ContactUtils';
 
 export function ContactTitle(props) {

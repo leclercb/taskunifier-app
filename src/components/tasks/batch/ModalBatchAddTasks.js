@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from 'containers/WithApp';
 import BatchAddTasks from 'components/tasks/batch/BatchAddTasks';
-import Icon from '../../common/Icon';
+import Icon from 'components/common/Icon';
 
 function ModalBatchAddTasks(props) {
     const onClose = () => {

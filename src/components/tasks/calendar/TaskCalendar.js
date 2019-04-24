@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Calendar } from 'antd';
-import { TaskPropType } from '../../../proptypes/TaskPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
-import Icon from '../../common/Icon';
+import Icon from 'components/common/Icon';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 import './TaskCalendar.css';
 

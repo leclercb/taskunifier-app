@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
-import { NotePropType } from '../../../proptypes/NotePropTypes';
+import { NotePropType } from 'proptypes/NotePropTypes';
 
 function NoteNoteForm(props) {
     const { getFieldDecorator } = props.form;

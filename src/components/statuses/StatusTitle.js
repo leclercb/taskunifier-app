@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StatusPropType } from '../../proptypes/StatusPropTypes';
+import { StatusPropType } from 'proptypes/StatusPropTypes';
 import withStatus from 'containers/WithStatus';
 import withSettings from 'containers/WithSettings';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import { getStatusColor } from 'utils/SettingUtils';
 
 export function StatusTitle(props) {

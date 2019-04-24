@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import withNotes from 'containers/WithNotes';
 import withObjects from 'containers/WithObjects';
-import Icon from '../../common/Icon';
-import { ContextTitle } from '../../contexts/ContextTitle';
-import { FolderTitle } from '../../folders/FolderTitle';
-import { GoalTitle } from '../../goals/GoalTitle';
-import { LocationTitle } from '../../locations/LocationTitle';
-import { NoteTemplateTitle } from '../../notetemplates/NoteTemplateTitle';
-import { ContextPropType } from '../../../proptypes/ContextPropTypes';
-import { FolderPropType } from '../../../proptypes/FolderPropTypes';
-import { GoalPropType } from '../../../proptypes/GoalPropTypes';
-import { LocationPropType } from '../../../proptypes/LocationPropTypes';
-import { NoteTemplatePropType } from '../../../proptypes/NoteTemplatePropTypes';
+import Icon from 'components/common/Icon';
+import { ContextTitle } from 'components/contexts/ContextTitle';
+import { FolderTitle } from 'components/folders/FolderTitle';
+import { GoalTitle } from 'components/goals/GoalTitle';
+import { LocationTitle } from 'components/locations/LocationTitle';
+import { NoteTemplateTitle } from 'components/notetemplates/NoteTemplateTitle';
+import { ContextPropType } from 'proptypes/ContextPropTypes';
+import { FolderPropType } from 'proptypes/FolderPropTypes';
+import { GoalPropType } from 'proptypes/GoalPropTypes';
+import { LocationPropType } from 'proptypes/LocationPropTypes';
+import { NoteTemplatePropType } from 'proptypes/NoteTemplatePropTypes';
 import { applyNoteTemplate } from 'utils/NoteTemplateUtils';
 
 function NoteQuickAdd(props) {

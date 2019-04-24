@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
 import withApp from 'containers/WithApp';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 import SettingManager from 'components/settings/SettingManager';
 
 function ModalSettingManager(props) {

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, List } from 'antd';
-import Icon from '../common/Icon';
-import LeftRight from '../common/LeftRight';
+import Icon from 'components/common/Icon';
+import LeftRight from 'components/common/LeftRight';
 import { createAction, createActions } from 'utils/CategoryListUtils';
-import Spacer from '../common/Spacer';
-import Constants from '../../constants/Constants';
+import Spacer from 'components/common/Spacer';
+import Constants from 'constants/Constants';
 
 function FolderList(props) {
     return (

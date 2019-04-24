@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { TaskTemplatePropType } from '../../proptypes/TaskTemplatePropTypes';
+import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import withTaskTemplates from 'containers/WithTaskTemplates';
-import Icon from '../common/Icon';
+import Icon from 'components/common/Icon';
 
 export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(props, ref) {
     const { taskTemplates, ...restProps } = props;

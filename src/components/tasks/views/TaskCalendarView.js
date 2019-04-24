@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
-import TaskSider from '../sider/TaskSider';
-import TaskCalendar from '../calendar/TaskCalendar';
+import TaskSider from 'components/tasks/sider/TaskSider';
+import TaskCalendar from 'components/tasks/calendar/TaskCalendar';
 import withSettings from 'containers/WithSettings';
-import TaskQuickAdd from '../quick/TaskQuickAdd';
-import TaskTabs from '../tabs/TaskTabs';
+import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
+import TaskTabs from 'components/tasks/tabs/TaskTabs';
 
 function TaskCalendarView(props) {
     return (

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Empty } from 'antd';
 import withSelectedTasks from 'containers/WithSelectedTasks';
-import TaskNoteForm from '../note/TaskNoteForm';
+import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
 
 function TaskTabs(props) {
     if (props.selectedTasks.length !== 1) {

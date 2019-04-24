@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'antd';
 import withProcesses from 'containers/WithProcesses';
-import Icon from '../common/Icon';
-import Constants from '../../constants/Constants';
+import Icon from 'components/common/Icon';
+import Constants from 'constants/Constants';
 
 function ProcessList(props) {
     const getIconFromState = state => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, List } from 'antd';
-import Icon from '../common/Icon';
-import LeftRight from '../common/LeftRight';
+import Icon from 'components/common/Icon';
+import LeftRight from 'components/common/LeftRight';
 import { createActions } from 'utils/CategoryListUtils';
 import { getContactTitle } from 'utils/ContactUtils';
 

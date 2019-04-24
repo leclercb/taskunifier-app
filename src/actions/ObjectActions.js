@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 import moment from 'moment';
-import Constants from '../constants/Constants';
+import Constants from 'constants/Constants';
 import { filterStaticObjects } from 'utils/CategoryUtils';
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 

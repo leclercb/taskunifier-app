@@ -6,12 +6,12 @@ import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
-import { EditableFormRow, EditableCell } from '../../common/grid/EditableCell';
-import ResizableColumn from '../../common/grid/ResizableColumn';
+import { EditableFormRow, EditableCell } from 'components/common/grid/EditableCell';
+import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getWidthForType, getRenderForType } from 'utils/FieldUtils';
-import DragableBodyRow from '../../common/grid/DragableBodyRow';
-import { FieldPropType } from '../../../proptypes/FieldPropTypes';
-import { TaskPropType } from '../../../proptypes/TaskPropTypes';
+import DragableBodyRow from 'components/common/grid/DragableBodyRow';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 
