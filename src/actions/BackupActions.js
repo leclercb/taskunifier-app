@@ -58,7 +58,7 @@ export const deleteBackup = date => {
             }
         });
     };
-}
+};
 
 export const cleanBackups = () => {
     return (dispatch, getState) => {

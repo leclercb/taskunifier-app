@@ -227,7 +227,7 @@ export function getFieldConfiguration(type, options) {
                         return value;
                     }
 
-                    return value ? moment(value).format(dateFormat) : <span>&nbsp;</span>
+                    return value ? moment(value).format(dateFormat) : (<span>&nbsp;</span>);
                 },
                 input: props => extended ?
                     <ExtendedDatePicker format={dateFormat} {...props} /> :
@@ -367,7 +367,7 @@ export function getFieldConfiguration(type, options) {
                         return value;
                     }
 
-                    return value ? moment(value).format(`${dateFormat} ${timeFormat}`) : <span>&nbsp;</span>
+                    return value ? moment(value).format(`${dateFormat} ${timeFormat}`) : (<span>&nbsp;</span>);
                 },
                 input: props => extended ?
                     <ExtendedDatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} /> :

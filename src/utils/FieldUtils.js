@@ -24,8 +24,8 @@ export const getValueFromEventForType = type => {
     return getFieldConfiguration(type).getValueFromEvent;
 }
 
-export const getRenderForType = (type, options) => (text, record, index) => {
-    return getFieldConfiguration(type, options).render(text, record, index);
+export const getRenderForType = (type, options) => value => {
+    return getFieldConfiguration(type, options).render(value);
 }
 
 export const getInputForType = (type, options, props) => {

@@ -27,7 +27,7 @@ export const setObjects = (property, objects) => {
 };
 
 export const addObject = (property, object) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         const id = uuid();
 
         dispatch({
@@ -46,7 +46,7 @@ export const addObject = (property, object) => {
 };
 
 export const updateObject = (property, object) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
@@ -59,7 +59,7 @@ export const updateObject = (property, object) => {
 };
 
 export const deleteObject = (property, objectId) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
             property: property,
@@ -73,7 +73,7 @@ export const deleteObject = (property, objectId) => {
 };
 
 export const cleanObjects = (property) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',
             property: property

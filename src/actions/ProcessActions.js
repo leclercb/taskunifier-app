@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 
 export const setProcessesVisible = visible => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'SET_PROCESSES_VISIBLE',
             visible: visible
@@ -12,7 +12,7 @@ export const setProcessesVisible = visible => {
 };
 
 export const clearProcesses = () => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'CLEAR_PROCESSES'
         });
@@ -22,7 +22,7 @@ export const clearProcesses = () => {
 };
 
 export const updateProcess = process => {
-    return (dispatch, getState) => {
+    return dispatch => {
         const action = {
             type: 'UPDATE_PROCESS',
             process: process,
@@ -36,7 +36,7 @@ export const updateProcess = process => {
 };
 
 export const deleteNotification = notificationId => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'DELETE_NOTIFICATION',
             notificationId: notificationId
