@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addNote, updateNote, deleteNote } from 'actions/NoteActions';
+import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { filterObjects } from 'utils/CategoryUtils';
 import { setSelectedNoteIds } from 'actions/AppActions';
 import withBusyCheck from 'containers/WithBusyCheck';

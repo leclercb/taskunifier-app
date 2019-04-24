@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
-import { filterObjects, filterArchivedObjects } from 'utils/CategoryUtils';
-import { addContext, updateContext, deleteContext } from 'actions/ContextActions';
-import { addNoteFilter, updateNoteFilter, deleteNoteFilter } from 'actions/NoteFilterActions';
-import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from 'actions/TaskFilterActions';
-import { addFolder, updateFolder, deleteFolder } from 'actions/FolderActions';
-import { addGoal, updateGoal, deleteGoal } from 'actions/GoalActions';
-import { addLocation, updateLocation, deleteLocation } from 'actions/LocationActions';
-import { updateTag, deleteTag } from 'actions/TagActions';
-import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from 'actions/TaskTemplateActions';
+import { filterArchivedObjects, filterObjects } from 'utils/CategoryUtils';
+import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
+import { addNoteFilter, deleteNoteFilter, updateNoteFilter } from 'actions/NoteFilterActions';
+import { addTaskFilter, deleteTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
+import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
+import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
+import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
+import { deleteTag, updateTag } from 'actions/TagActions';
+import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { getTagsFromObjects } from 'utils/TagUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 

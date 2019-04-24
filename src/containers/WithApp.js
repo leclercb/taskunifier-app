@@ -2,18 +2,18 @@ import { connect } from 'react-redux';
 import {
     loadData,
     saveData,
-    synchronize,
-    setSelectedView,
-    setSelectedNoteIds,
-    setSelectedNoteFilter,
-    setSelectedTaskIds,
-    setSelectedTaskFilter,
+    setBatchAddTasksOptions,
     setCategoryManagerOptions,
     setNoteFilterManagerOptions,
+    setSelectedNoteFilter,
+    setSelectedNoteIds,
+    setSelectedTaskFilter,
+    setSelectedTaskIds,
+    setSelectedView,
+    setSettingManagerOptions,
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions,
-    setSettingManagerOptions,
-    setBatchAddTasksOptions
+    synchronize
 } from 'actions/AppActions';
 import {
     backupData,

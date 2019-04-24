@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Form } from 'antd';
 import {
-    isAlwaysInEditionForType,
-    getValuePropNameForType,
-    getValueFromEventForType,
     getInputForType,
     getNormalizeForType,
+    getValueFromEventForType,
+    getValuePropNameForType,
+    isAlwaysInEditionForType,
     isCommitOnChangeForType
 } from 'utils/FieldUtils';
 import './EditableCell.css';

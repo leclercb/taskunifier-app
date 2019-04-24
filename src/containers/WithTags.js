@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updateTag, deleteTag } from 'actions/TagActions';
+import { deleteTag, updateTag } from 'actions/TagActions';
 import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
 import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';

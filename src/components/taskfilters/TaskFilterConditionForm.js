@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, Row, Col } from 'antd';
+import { Col, Form, Input, Row } from 'antd';
 import withTaskFields from 'containers/WithTaskFields';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import {
     getInputForType,
+    getNormalizeForType,
     getSelectForType,
-    getValuePropNameForType,
     getValueFromEventForType,
-    getNormalizeForType
+    getValuePropNameForType
 } from 'utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 

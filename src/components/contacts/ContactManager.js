@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Empty } from 'antd';
+import { Col, Empty, Row } from 'antd';
 import withContacts from 'containers/WithContacts';
 import ContactList from 'components/contacts/ContactList';
 import ContactForm from 'components/contacts/ContactForm';

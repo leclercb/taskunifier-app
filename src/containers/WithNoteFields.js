@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addNoteField, updateNoteField, deleteNoteField } from 'actions/NoteFieldActions';
+import { addNoteField, deleteNoteField, updateNoteField } from 'actions/NoteFieldActions';
 import { getDefaultNoteFields } from 'data/DataNoteFields';
 import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';

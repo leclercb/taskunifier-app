@@ -1,11 +1,11 @@
 import { 
+    addObject, 
+    cleanObjects, 
+    deleteObject, 
     loadObjectsFromFile, 
     saveObjectsToFile, 
     setObjects, 
-    addObject, 
-    updateObject, 
-    deleteObject, 
-    cleanObjects 
+    updateObject 
 } from 'actions/ObjectActions';
 
 export const loadNoteFiltersFromFile = file => {

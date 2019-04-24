@@ -11,8 +11,8 @@ import { LocationPropType } from 'proptypes/LocationPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import LeftRight from 'components/common/LeftRight';
 import Constants from 'constants/Constants';
-import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
-import { getGeneralTaskFilters, createSearchTaskFilter } from 'data/DataTaskFilters';
+import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
+import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { Tooltip } from 'antd';
 import Spacer from 'components/common/Spacer';
 

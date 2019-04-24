@@ -8,8 +8,8 @@ import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 import LeftRight from 'components/common/LeftRight';
 import Constants from 'constants/Constants';
-import { Menu as RCMenu, Item as RCItem, MenuProvider as RCMenuProvider } from 'react-contexify';
-import { getGeneralNoteFilters, createSearchNoteFilter } from 'data/DataNoteFilters';
+import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
+import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
 import { Tooltip } from 'antd';
 import Spacer from 'components/common/Spacer';
 

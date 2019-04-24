@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { List, Row, Col, Form } from 'antd';
+import { Col, Form, List, Row } from 'antd';
 import withSettings from 'containers/WithSettings';
 import { getCategories } from 'data/DataSettings';
 import Icon from 'components/common/Icon';

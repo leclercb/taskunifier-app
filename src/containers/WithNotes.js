@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { addNote, updateNote, deleteNote } from 'actions/NoteActions';
+import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { getDefaultNoteFields } from 'data/DataNoteFields';
 import { filterObjects } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';

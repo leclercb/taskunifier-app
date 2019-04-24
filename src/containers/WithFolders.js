@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addFolder, updateFolder, deleteFolder } from 'actions/FolderActions';
-import { filterObjects, filterArchivedObjects } from 'utils/CategoryUtils';
+import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
+import { filterArchivedObjects, filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withFolders(Component, options = { actionsOnly: false, filterArchived: false }) {

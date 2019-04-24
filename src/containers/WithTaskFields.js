@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addTaskField, updateTaskField, deleteTaskField } from 'actions/TaskFieldActions';
+import { addTaskField, deleteTaskField, updateTaskField } from 'actions/TaskFieldActions';
 import { getDefaultTaskFields } from 'data/DataTaskFields';
 import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';

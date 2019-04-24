@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Empty } from 'antd';
+import { Empty, Tabs } from 'antd';
 import withSelectedTasks from 'containers/WithSelectedTasks';
 import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
 

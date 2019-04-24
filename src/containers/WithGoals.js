@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addGoal, updateGoal, deleteGoal } from 'actions/GoalActions';
-import { filterObjects, filterArchivedObjects } from 'utils/CategoryUtils';
+import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
+import { filterArchivedObjects, filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withGoals(Component, options = { actionsOnly: false, filterArchived: false }) {

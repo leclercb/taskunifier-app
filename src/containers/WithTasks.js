@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { addTask, updateTask, deleteTask } from 'actions/TaskActions';
+import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { getDefaultTaskFields } from 'data/DataTaskFields';
 import { filterObjects } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';

@@ -39,7 +39,7 @@
             "always"
         ],
         "sort-imports": [
-            "off",
+            "error",
             {
                 "ignoreCase": false,
                 "ignoreDeclarationSort": false,
