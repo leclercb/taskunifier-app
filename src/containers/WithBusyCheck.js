@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 function withBusyCheck(Component) {
     class WithBusyCheck extends React.Component {

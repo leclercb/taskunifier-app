@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { equals } from '../utils/ObjectUtils';
 
 function withSize(Component) {
     function WithSize(props) {
@@ -17,7 +18,7 @@ function withSize(Component) {
 
         const updateSize = () => {
             if (elementRef.current) {
-                setSize({
+                const newSize = {
                     element: {
                         width: elementRef.current.getBoundingClientRect().width,
                         height: elementRef.current.getBoundingClientRect().height
@@ -26,11 +27,17 @@ function withSize(Component) {
                         width: window.innerWidth,
                         height: window.innerHeight
                     }
-                });
+                };
+
+                if (!equals(size, newSize)) {
+                    setSize(newSize);
+                }
             }
         }
 
         useEffect(() => {
+            updateSize();
+
             window.addEventListener('resize', updateSize);
             window.addEventListener('app-resize', updateSize);
 
@@ -42,10 +49,12 @@ function withSize(Component) {
 
         return (
             <span ref={elementRef}>
-                <Component {...wrapppropsedProps} size={size} />
+                <Component {...props} size={size} />
             </span>
         );
     }
 
     return WithSize;
 }
+
+export default withSize;

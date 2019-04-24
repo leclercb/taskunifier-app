@@ -1,5 +1,9 @@
 import uuid from 'uuid';
 
+export function equals(object1, object2) {
+    return JSON.stringify(object1) === JSON.stringify(object2);
+}
+
 export function isObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }

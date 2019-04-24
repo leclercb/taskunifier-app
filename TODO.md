@@ -2,7 +2,7 @@
 
 * Add sort order in filters
 * Add length, timer, reminder and recurrence
-* Grid fix draggable row
+* Grid fix scrollbars
 * Improve performances
 * Try react-joyride
 * Electron proxy connection

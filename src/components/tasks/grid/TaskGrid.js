@@ -5,6 +5,7 @@ import withApp from '../../../containers/WithApp';
 import withTaskFields from '../../../containers/WithTaskFields';
 import withTasks from '../../../containers/WithTasks';
 import withSettings from '../../../containers/WithSettings';
+import withSize from '../../../containers/WithSize';
 import { EditableFormRow, EditableCell } from '../../common/grid/EditableCell';
 import ResizableColumn from '../../common/grid/ResizableColumn';
 import { getWidthForType, getRenderForType } from '../../../utils/FieldUtils';
@@ -69,36 +70,38 @@ function TaskGrid(props) {
     const dummy = false;
 
     return (
-        <InfinityTable
-            rowKey="id"
-            className="task-grid"
-            scroll={{ y: 500 }}
-            components={components}
-            columns={columns}
-            dataSource={dummy ? dummyTasks : props.tasks}
-            childrenColumnName='children'
-            bordered={true}
-            size="small"
-            pagination={false}
-            onRow={(record, index) => ({
-                index: index,
-                rowProps: {
-                    record: record,
-                    onSave: onUpdateTask,
-                    getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
-                    style: {
-                        backgroundColor: getTaskBackgroundColor(record, index, props.settings),
-                        textDecoration: record.completed ? 'line-through' : null
+        <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
+            <InfinityTable
+                rowKey="id"
+                className="task-grid"
+                scroll={{ y: props.size.element.height - 40 }}
+                components={components}
+                columns={columns}
+                dataSource={dummy ? dummyTasks : props.tasks}
+                childrenColumnName='children'
+                bordered={true}
+                size="small"
+                pagination={false}
+                onRow={(record, index) => ({
+                    index: index,
+                    rowProps: {
+                        record: record,
+                        onSave: onUpdateTask,
+                        getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
+                        style: {
+                            backgroundColor: getTaskBackgroundColor(record, index, props.settings),
+                            textDecoration: record.completed ? 'line-through' : null
+                        }
+                    },
+                    moveRow: (dragIndex, dropIndex) => {
+                        console.log(dragIndex, dropIndex);
                     }
-                },
-                moveRow: (dragIndex, dropIndex) => {
-                    console.log(dragIndex, dropIndex);
-                }
-            })}
-            rowSelection={{
-                selectedRowKeys: props.selectedTaskIds,
-                onChange: selectedRowKeys => props.setSelectedTaskIds(selectedRowKeys)
-            }} />
+                })}
+                rowSelection={{
+                    selectedRowKeys: props.selectedTaskIds,
+                    onChange: selectedRowKeys => props.setSelectedTaskIds(selectedRowKeys)
+                }} />
+        </div>
     );
 }
 
@@ -132,4 +135,4 @@ function createDummyTasks() {
     return tasks;
 }
 
-export default withApp(withSettings(withTaskFields(withTasks(TaskGrid, { applySelectedTaskFilter: true }))));
+export default withApp(withSettings(withTaskFields(withTasks(withSize(TaskGrid), { applySelectedTaskFilter: true }))));

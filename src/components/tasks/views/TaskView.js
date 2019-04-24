@@ -8,26 +8,34 @@ import TaskQuickAdd from '../quick/TaskQuickAdd';
 import TaskTabs from '../tabs/TaskTabs';
 
 function TaskView(props) {
+    const onVerticalSplitPaneSizeChange = size => {
+        props.updateSettings({ verticalSplitPaneSize: size });
+        window.dispatchEvent(new Event('app-resize'));
+    }
+
+    const onHorizontalSplitPaneSizeChange = size => {
+        props.updateSettings({ horizontalSplitPaneSize: size });
+        window.dispatchEvent(new Event('app-resize'));
+    }
+
     return (
         <SplitPane
             split="vertical"
             minSize={200}
             defaultSize={props.settings.verticalSplitPaneSize}
-            onChange={size => props.updateSettings({ verticalSplitPaneSize: size })}
+            onChange={size => onVerticalSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <TaskSider />
             <SplitPane
                 split="horizontal"
                 minSize={200}
                 defaultSize={props.settings.horizontalSplitPaneSize}
-                onChange={size => props.updateSettings({ horizontalSplitPaneSize: size })}
+                onChange={size => onHorizontalSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
                     <TaskQuickAdd />
-                    <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
-                        <TaskGrid />
-                    </div>
+                    <TaskGrid />
                 </div>
                 <div style={{ padding: 10, width: '100%' }}>
                     <TaskTabs />

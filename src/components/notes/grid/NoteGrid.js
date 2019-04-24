@@ -68,31 +68,33 @@ function NoteGrid(props) {
     const dummy = false;
 
     return (
-        <InfinityTable
-            rowKey="id"
-            className="note-grid"
-            scroll={{ y: 500 }}
-            components={components}
-            columns={columns}
-            dataSource={dummy ? dummyNotes : props.notes}
-            childrenColumnName='children'
-            bordered={true}
-            size="small"
-            pagination={false}
-            onRow={(record, index) => ({
-                rowProps: {
-                    record: record,
-                    onSave: onUpdateNote,
-                    getField: dataIndex => props.noteFields.find(field => field.id === dataIndex),
-                    style: {
-                        backgroundColor: getNoteBackgroundColor(record, index, props.settings)
+        <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
+            <InfinityTable
+                rowKey="id"
+                className="note-grid"
+                scroll={{ y: 500 }}
+                components={components}
+                columns={columns}
+                dataSource={dummy ? dummyNotes : props.notes}
+                childrenColumnName='children'
+                bordered={true}
+                size="small"
+                pagination={false}
+                onRow={(record, index) => ({
+                    rowProps: {
+                        record: record,
+                        onSave: onUpdateNote,
+                        getField: dataIndex => props.noteFields.find(field => field.id === dataIndex),
+                        style: {
+                            backgroundColor: getNoteBackgroundColor(record, index, props.settings)
+                        }
                     }
-                }
-            })}
-            rowSelection={{
-                selectedRowKeys: props.selectedNoteIds,
-                onChange: selectedRowKeys => props.setSelectedNoteIds(selectedRowKeys)
-            }} />
+                })}
+                rowSelection={{
+                    selectedRowKeys: props.selectedNoteIds,
+                    onChange: selectedRowKeys => props.setSelectedNoteIds(selectedRowKeys)
+                }} />
+        </div>
     );
 }
 
