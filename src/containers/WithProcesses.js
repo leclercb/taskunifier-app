@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withProcesses(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
         processes: state.processes
     });
 

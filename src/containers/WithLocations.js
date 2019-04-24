@@ -6,13 +6,10 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 function withLocations(Component, options = { actionsOnly: false }) {
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {
-                busy: state.processes.busy
-            };
+            return {};
         }
 
         return {
-            busy: state.processes.busy,
             locations: filterObjects(state.locations)
         };
     };

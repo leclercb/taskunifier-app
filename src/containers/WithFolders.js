@@ -6,9 +6,7 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 function withFolders(Component, options = { actionsOnly: false, filterArchived: false }) {
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {
-                busy: state.processes.busy
-            };
+            return {};
         }
 
         let folders = filterObjects(state.folders);
@@ -18,7 +16,6 @@ function withFolders(Component, options = { actionsOnly: false, filterArchived: 
         }
 
         return {
-            busy: state.processes.busy,
             folders: folders
         };
     };

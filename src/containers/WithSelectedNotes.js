@@ -6,7 +6,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withSelectedNotes(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
         selectedNoteIds: state.app.selectedNoteIds,
         selectedNotes: filterObjects(state.notes.filter(note => state.app.selectedNoteIds.includes(note.id)))
     });

@@ -10,9 +10,7 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {
-                busy: state.processes.busy
-            };
+            return {};
         }
 
         let tasks = filterObjects(state.tasks);
@@ -31,7 +29,6 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
         }
 
         return {
-            busy: state.processes.busy,
             tasks: tasks
         };
     };

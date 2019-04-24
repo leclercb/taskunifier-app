@@ -7,9 +7,7 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
     const mapStateToProps = (state, ownProps) => {
         if (options && options.actionsOnly === true) {
-            return {
-                busy: state.processes.busy
-            };
+            return {};
         }
 
         let tags = getTagsFromObjects(filterObjects(state.tasks).concat(filterObjects(state.notes)));
@@ -19,7 +17,6 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
         }
 
         return {
-            busy: state.processes.busy,
             tags: tags
         };
     };

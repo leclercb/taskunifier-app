@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withGoal(Component, propertyId = 'goalId') {
     const mapStateToProps = (state, ownProps) => ({
-        busy: state.processes.busy,
         goal: filterObjects(state.goals).find(goal => goal.id === ownProps[propertyId])
     });
 

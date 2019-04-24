@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withContact(Component, propertyId = 'contactId') {
     const mapStateToProps = (state, ownProps) => ({
-        busy: state.processes.busy,
         contact: filterObjects(state.contacts).find(contact => contact.id === ownProps[propertyId])
     });
 

@@ -26,7 +26,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withApp(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
         pro: isValidLicense(state.settings.license),
         selectedView: state.app.selectedView,
         selectedNoteIds: state.app.selectedNoteIds,

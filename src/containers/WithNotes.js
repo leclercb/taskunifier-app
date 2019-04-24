@@ -10,9 +10,7 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 function withNotes(Component, options = { applySelectedNoteFilter: false, actionsOnly: false }) {
     const mapStateToProps = state => {
         if (options && options.actionsOnly === true) {
-            return {
-                busy: state.processes.busy
-            };
+            return {};
         }
 
         let notes = filterObjects(state.notes);
@@ -31,7 +29,6 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
         }
 
         return {
-            busy: state.processes.busy,
             notes: notes
         };
     };

@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
     const mapStateToProps = (state, ownProps) => ({
-        busy: state.processes.busy,
         taskTemplate: filterObjects(state.taskTemplates).find(taskTemplate => taskTemplate.id === ownProps[propertyId])
     });
 

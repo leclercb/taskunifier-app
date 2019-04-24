@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withPro(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
         pro: isValidLicense(state.settings.license)
     });
 

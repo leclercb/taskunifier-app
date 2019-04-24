@@ -6,7 +6,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withTaskFields(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
         taskFields: getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields))
     });
 

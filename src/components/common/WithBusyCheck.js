@@ -16,7 +16,18 @@ function withBusyCheck(Component) {
         }
     }
 
-    return WithBusyCheck;
+    const mapStateToProps = state => ({
+        busy: state.processes.busy
+    });
+
+    const mapDispatchToProps = dispatch => ({
+
+    });
+
+    return connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(WithBusyCheck);
 }
 
 export default withBusyCheck;

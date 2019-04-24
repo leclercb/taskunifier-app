@@ -7,7 +7,7 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withBackups(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
+        
     });
 
     const mapDispatchToProps = dispatch => ({

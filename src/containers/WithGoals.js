@@ -6,9 +6,7 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 function withGoals(Component, options = { actionsOnly: false, filterArchived: false }) {
     const mapStateToProps = (state, ownProps) => {
         if (options && options.actionsOnly === true) {
-            return {
-                busy: state.processes.busy
-            };
+            return {};
         }
 
         let goals = filterObjects(state.goals);
@@ -22,7 +20,6 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
         }
 
         return {
-            busy: state.processes.busy,
             goals: goals
         };
     };

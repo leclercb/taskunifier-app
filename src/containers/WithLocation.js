@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withLocation(Component, propertyId = 'locationId') {
     const mapStateToProps = (state, ownProps) => ({
-        busy: state.processes.busy,
         location: filterObjects(state.locations).find(location => location.id === ownProps[propertyId])
     });
 

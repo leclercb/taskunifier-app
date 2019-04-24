@@ -25,9 +25,7 @@ function withObjects(Component, options = {
     filterArchivedGoals: false
 }) {
     const mapStateToProps = state => {
-        const data = {
-            busy: state.processes.busy
-        };
+        const data = {};
 
         if (options && options.includeContexts === true) {
             data.contexts = filterObjects(state.contexts);

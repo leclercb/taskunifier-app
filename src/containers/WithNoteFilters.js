@@ -5,7 +5,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withNoteFilters(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy,
         noteFilters: filterObjects(state.noteFilters)
     });
 

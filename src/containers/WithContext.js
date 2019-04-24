@@ -4,7 +4,6 @@ import withBusyCheck from '../components/common/WithBusyCheck';
 
 function withContext(Component, propertyId = 'contextId') {
     const mapStateToProps = (state, ownProps) => ({
-        busy: state.processes.busy,
         context: filterObjects(state.contexts).find(context => context.id === ownProps[propertyId])
     });
 
