@@ -40,7 +40,31 @@
         "star": true,
         "folder": "7ccd9fc1-a3fe-4ab9-9a93-d2aa0d3da900",
         "context": "37d6a815-e29a-441b-8002-afac65c571e8",
-        "location": "19a04367-c245-43c3-9b90-48d33dfe2e1c"
+        "location": "19a04367-c245-43c3-9b90-48d33dfe2e1c",
+        "children": [
+            {
+                "title": "Task 2.1 DEF.ABC",
+                "color": "#ffffff",
+                "id": "167c98c5-6670-4600-9528-4611b5e31964",
+                "refIds": {},
+                "creationDate": "2019-04-23T08:10:28.409Z",
+                "updateDate": "2019-04-23T10:56:19.978Z",
+                "state": "TO_UPDATE",
+                "progress": 68,
+                "priority": "negative",
+                "importance": 3,
+                "startDate": "2019-04-29T08:11:24.803Z",
+                "dueDate": "2019-04-30T08:11:27.700Z",
+                "tags": [
+                    "T3",
+                    "T4"
+                ],
+                "completed": true,
+                "status": "waiting",
+                "folder": "789cf454-004e-4fc9-bf42-c40b0b53cd47",
+                "context": "26525d43-68cb-4270-962e-515da08e5d9e"
+            }
+        ]
     },
     {
         "title": "Task 3 GHI",

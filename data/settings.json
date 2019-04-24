@@ -49,7 +49,7 @@
     "taskColumnWidth_star": 45,
     "taskColumnWidth_completed": 76,
     "taskColumnWidth_progress": 116,
-    "taskColumnWidth_priority": 120,
+    "taskColumnWidth_priority": 154,
     "taskColumnWidth_importance": 85,
     "taskColumnWidth_status": 147,
     "taskColumnWidth_startDate": 127,
