@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
-import Header from './Header';
-import Footer from './Footer';
+import Header from 'components/layout/Header';
+import Footer from 'components/layout/Footer';
 import withApp from '../../containers/WithApp';
 import withBusy from '../../containers/WithBusy';
 import withProcesses from '../../containers/WithProcesses';

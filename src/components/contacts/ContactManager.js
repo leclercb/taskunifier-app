@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withContacts from '../../containers/WithContacts';
-import ContactList from './ContactList';
-import ContactForm from './ContactForm';
+import ContactList from 'components/contacts/ContactList';
+import ContactForm from 'components/contacts/ContactForm';
 
 function ContactManager(props) {
     const selectedContactId = props.contactId;

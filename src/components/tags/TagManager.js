@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withTags from '../../containers/WithTags';
-import TagList from './TagList';
-import TagForm from './TagForm';
+import TagList from 'components/tags/TagList';
+import TagForm from 'components/tags/TagForm';
 
 function TagManager(props) {
     const selectedTagId = props.tagId;

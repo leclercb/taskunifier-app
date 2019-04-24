@@ -5,7 +5,7 @@ import ColorPicker from '../common/ColorPicker';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
 import { getGoalLevels } from '../../data/DataGoalLevels';
-import GoalSelect from './GoalSelect';
+import GoalSelect from 'components/goals/GoalSelect';
 import Icon from '../common/Icon';
 
 function GoalForm(props) {

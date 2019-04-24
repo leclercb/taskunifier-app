@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withGoals from '../../containers/WithGoals';
-import GoalList from './GoalList';
-import GoalForm from './GoalForm';
+import GoalList from 'components/goals/GoalList';
+import GoalForm from 'components/goals/GoalForm';
 
 function GoalManager(props) {
     const selectedGoalId = props.goalId;

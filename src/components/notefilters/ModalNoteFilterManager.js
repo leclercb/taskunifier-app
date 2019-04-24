@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from '../../containers/WithApp';
 import Icon from '../common/Icon';
-import NoteFilterManager from './NoteFilterManager';
+import NoteFilterManager from 'components/notefilters/NoteFilterManager';
 
 function ModalNoteFilterManager(props) {
     const onCloseNoteFilterManager = () => {

@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Button, Select } from 'antd';
 import { DragSource, DropTarget } from 'react-dnd';
-import ItemTypes from './ItemTypes';
-import AddButton from './AddButton';
-import Condition from './Condition';
-import { conditionGroup } from './ConditionPropTypes';
+import ItemTypes from 'components/common/conditiontree/ItemTypes';
+import AddButton from 'components/common/conditiontree/AddButton';
+import Condition from 'components/common/conditiontree/Condition';
+import { conditionGroup } from 'components/common/conditiontree/ConditionPropTypes';
 import Constants from '../../../constants/Constants';
 
 function ConditionGroup(props) {

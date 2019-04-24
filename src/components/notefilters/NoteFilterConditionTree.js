@@ -5,7 +5,7 @@ import { Menu, Empty } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import withNoteFields from '../../containers/WithNoteFields';
-import NoteFilterConditionForm from './NoteFilterConditionForm';
+import NoteFilterConditionForm from 'components/notefilters/NoteFilterConditionForm';
 
 function NoteFilterEmpty(props) {
     return (<Empty />);

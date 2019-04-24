@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
 import { DragSource } from 'react-dnd';
-import ItemTypes from './ItemTypes';
-import { conditionGroup, conditionLeaf } from './ConditionPropTypes';
+import ItemTypes from 'components/common/conditiontree/ItemTypes';
+import { conditionGroup, conditionLeaf } from 'components/common/conditiontree/ConditionPropTypes';
 
 function ConditionLeaf(props) {
     const condition = props.condition;

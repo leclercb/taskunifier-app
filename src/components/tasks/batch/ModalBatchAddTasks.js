@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from '../../../containers/WithApp';
-import BatchAddTasks from './BatchAddTasks';
+import BatchAddTasks from 'components/tasks/batch/BatchAddTasks';
 import Icon from '../../common/Icon';
 
 function ModalBatchAddTasks(props) {

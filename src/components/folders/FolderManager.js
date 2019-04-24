@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withFolders from '../../containers/WithFolders';
-import FolderList from './FolderList';
-import FolderForm from './FolderForm';
+import FolderList from 'components/folders/FolderList';
+import FolderForm from 'components/folders/FolderForm';
 
 function FolderManager(props) {
     const selectedFolderId = props.folderId;

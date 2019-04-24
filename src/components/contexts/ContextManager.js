@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withContexts from '../../containers/WithContexts';
-import ContextList from './ContextList';
-import ContextForm from './ContextForm';
+import ContextList from 'components/contexts/ContextList';
+import ContextForm from 'components/contexts/ContextForm';
 
 function ContextManager(props) {
     const selectedContextId = props.contextId;

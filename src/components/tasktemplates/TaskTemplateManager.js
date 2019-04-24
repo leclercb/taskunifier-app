@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
 import withTaskTemplates from '../../containers/WithTaskTemplates';
-import TaskTemplateList from './TaskTemplateList';
-import TaskTemplateForm from './TaskTemplateForm';
+import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
+import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
 import withSettings from '../../containers/WithSettings';
 
 function TaskTemplateManager(props) {

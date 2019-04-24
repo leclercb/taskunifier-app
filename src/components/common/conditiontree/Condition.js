@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ConditionLeaf from './ConditionLeaf';
-import ConditionGroup from './ConditionGroup';
-import { condition, conditionGroup } from './ConditionPropTypes';
+import ConditionLeaf from 'components/common/conditiontree/ConditionLeaf';
+import ConditionGroup from 'components/common/conditiontree/ConditionGroup';
+import { condition, conditionGroup } from 'components/common/conditiontree/ConditionPropTypes';
 
 function Condition(props) {
     if (props.condition.operator) {

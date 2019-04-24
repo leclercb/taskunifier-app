@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from './Icon';
+import Icon from 'components/common/Icon';
 import Constants from '../../constants/Constants';
 
 class StarCheckbox extends React.Component {

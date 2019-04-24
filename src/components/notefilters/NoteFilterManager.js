@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Row, Col, Empty } from 'antd';
 import withNoteFilters from '../../containers/WithNoteFilters';
-import NoteFilterList from './NoteFilterList';
-import NoteFilterConditionTree from './NoteFilterConditionTree';
-import NoteFilterForm from './NoteFilterForm';
+import NoteFilterList from 'components/notefilters/NoteFilterList';
+import NoteFilterConditionTree from 'components/notefilters/NoteFilterConditionTree';
+import NoteFilterForm from 'components/notefilters/NoteFilterForm';
 
 function NoteFilterManager(props) {
     const selectedNoteFilterId = props.noteFilterId;

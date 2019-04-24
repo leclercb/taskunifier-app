@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { Empty } from 'antd';
-import AddButton from './AddButton';
-import Condition from './Condition';
-import { condition } from './ConditionPropTypes';
+import AddButton from 'components/common/conditiontree/AddButton';
+import Condition from 'components/common/conditiontree/Condition';
+import { condition } from 'components/common/conditiontree/ConditionPropTypes';
 import { clone } from '../../../utils/ObjectUtils';
 import './ConditionTree.css';
 

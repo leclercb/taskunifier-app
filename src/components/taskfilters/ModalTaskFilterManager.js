@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from '../../containers/WithApp';
 import Icon from '../common/Icon';
-import TaskFilterManager from './TaskFilterManager';
+import TaskFilterManager from 'components/taskfilters/TaskFilterManager';
 
 function ModalTaskFilterManager(props) {
     const onCloseTaskFilterManager = () => {
