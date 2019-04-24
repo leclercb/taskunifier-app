@@ -11,7 +11,7 @@ import { getWidthForType, getRenderForType } from '../../../utils/FieldUtils';
 import DragableBodyRow from '../../common/grid/DragableBodyRow';
 import { FieldPropType } from '../../../proptypes/FieldPropTypes';
 import { TaskPropType } from '../../../proptypes/TaskPropTypes';
-import { getImportanceColor } from '../../../utils/SettingUtils';
+import { getTaskBackgroundColor } from '../../../utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 
 function TaskGrid(props) {
@@ -68,7 +68,6 @@ function TaskGrid(props) {
 
     const dummy = false;
 
-    // TODO finish here line 78
     return (
         <InfinityTable
             rowKey="id"
@@ -81,15 +80,19 @@ function TaskGrid(props) {
             bordered={true}
             size="small"
             pagination={false}
-            onRow={record => ({
+            onRow={(record, index) => ({
+                index: index,
                 rowProps: {
                     record: record,
                     onSave: onUpdateTask,
                     getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
                     style: {
-                        backgroundColor: getImportanceColor(record.importance, props.settings),
+                        backgroundColor: getTaskBackgroundColor(record, index, props.settings),
                         textDecoration: record.completed ? 'line-through' : null
                     }
+                },
+                moveRow: (dragIndex, dropIndex) => {
+                    console.log(dragIndex, dropIndex);
                 }
             })}
             rowSelection={{

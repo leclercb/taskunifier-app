@@ -8,10 +8,9 @@ import withSettings from '../../../containers/WithSettings';
 import { EditableFormRow, EditableCell } from '../../common/grid/EditableCell';
 import ResizableColumn from '../../common/grid/ResizableColumn';
 import { getWidthForType, getRenderForType } from '../../../utils/FieldUtils';
-import DragableBodyRow from '../../common/grid/DragableBodyRow';
 import { FieldPropType } from '../../../proptypes/FieldPropTypes';
 import { NotePropType } from '../../../proptypes/NotePropTypes';
-import { getImportanceColor } from '../../../utils/SettingUtils';
+import { getNoteBackgroundColor } from '../../../utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 
 function NoteGrid(props) {
@@ -24,7 +23,7 @@ function NoteGrid(props) {
             cell: ResizableColumn
         },
         body: {
-            row: EditableFormRow(DragableBodyRow),
+            row: EditableFormRow(),
             cell: EditableCell
         }
     };
@@ -68,7 +67,6 @@ function NoteGrid(props) {
 
     const dummy = false;
 
-    // TODO finish here line 78
     return (
         <InfinityTable
             rowKey="id"
@@ -81,14 +79,13 @@ function NoteGrid(props) {
             bordered={true}
             size="small"
             pagination={false}
-            onRow={record => ({
+            onRow={(record, index) => ({
                 rowProps: {
                     record: record,
                     onSave: onUpdateNote,
                     getField: dataIndex => props.noteFields.find(field => field.id === dataIndex),
                     style: {
-                        backgroundColor: getImportanceColor(record.importance, props.settings),
-                        textDecoration: record.completed ? 'line-through' : null
+                        backgroundColor: getNoteBackgroundColor(record, index, props.settings)
                     }
                 }
             })}
@@ -120,9 +117,7 @@ function createDummyNotes() {
             updateDate: 1554897001063,
             state: 'TO_UPDATE',
             title: 'Note Dummy ' + i,
-            color: '#ffffff',
-            completed: false,
-            importance: '0'
+            color: '#ffffff'
         })
     }
 

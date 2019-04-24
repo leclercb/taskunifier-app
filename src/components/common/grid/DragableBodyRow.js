@@ -2,8 +2,6 @@ import React from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import './DragableBodyRow.css';
 
-let dragingIndex = -1;
-
 const BodyRow = props => {
     const {
         isOver,
@@ -18,13 +16,7 @@ const BodyRow = props => {
     let className = restProps.className;
 
     if (isOver) {
-        if (restProps.index > dragingIndex) {
-            className += ' drop-over-downward';
-        }
-
-        if (restProps.index < dragingIndex) {
-            className += ' drop-over-upward';
-        }
+        className += ' drop-over';
     }
 
     return connectDragSource(connectDropTarget(<tr {...restProps} className={className} style={style} />));
@@ -32,9 +24,8 @@ const BodyRow = props => {
 
 const rowSource = {
     beginDrag(props) {
-        dragingIndex = props.index;
         return {
-            index: props.index,
+            index: props.index
         };
     }
 };
@@ -42,15 +33,15 @@ const rowSource = {
 const rowTarget = {
     drop: (props, monitor) => {
         const dragIndex = monitor.getItem().index;
-        const hoverIndex = props.index;
+        const dropIndex = props.index;
 
-        if (dragIndex === hoverIndex) {
+        if (dragIndex === dropIndex) {
             return;
         }
 
-        props.moveRow(dragIndex, hoverIndex);
-        monitor.getItem().index = hoverIndex;
-    },
+        props.moveRow(dragIndex, dropIndex);
+        monitor.getItem().index = dropIndex;
+    }
 };
 
 const DragableBodyRow = DropTarget(
@@ -60,14 +51,12 @@ const DragableBodyRow = DropTarget(
         connectDropTarget: connect.dropTarget(),
         isOver: monitor.isOver()
     })
-)(
-    DragSource(
-        'row',
-        rowSource,
-        (connect) => ({
-            connectDragSource: connect.dragSource()
-        }),
-    )(BodyRow)
-);
+)(DragSource(
+    'row',
+    rowSource,
+    (connect) => ({
+        connectDragSource: connect.dragSource()
+    }),
+)(BodyRow));
 
 export default DragableBodyRow;

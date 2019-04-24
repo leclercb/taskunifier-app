@@ -12,7 +12,7 @@ import './EditableCell.css';
 
 const EditableContext = React.createContext();
 
-const EditableRow = Component => ({ form, index, rowProps, ...props }) => {
+const EditableRow = Component => ({ form, rowProps, ...props }) => {
     Object.assign(props.style, rowProps.style);
 
     return (

@@ -24,3 +24,15 @@ export const getPriorityColor = (priority, settings) => {
 export const getStatusColor = (status, settings) => {
     return settings['status_' + (status ? status : 'negative')];
 }
+
+export const getNoteBackgroundColor = (note, index, settings) => {
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+}
+
+export const getTaskBackgroundColor = (task, index, settings) => {
+    if (settings.showImportanceColor) {
+        return getImportanceColor(task.importance, settings);
+    }
+
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+}

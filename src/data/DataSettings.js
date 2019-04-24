@@ -212,6 +212,34 @@ export function getCategories() {
             ]
         },
         {
+            id: 'colors',
+            title: 'Colors',
+            icon: 'paint-roller',
+            settings: [
+                {
+                    id: 'showImportanceColor',
+                    title: 'Show importance color',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'evenColor',
+                    title: 'Even Color',
+                    type: 'color',
+                    value: '#ffffff',
+                    editable: true
+                },
+                {
+                    id: 'oddColor',
+                    title: 'Odd Color',
+                    type: 'color',
+                    value: '#e8f1f7',
+                    editable: true
+                }
+            ]
+        },
+        {
             id: 'importanceColors',
             title: 'Importance Colors',
             icon: 'paint-roller',
