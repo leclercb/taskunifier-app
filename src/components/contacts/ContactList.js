@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Button, List } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
-import { createActions } from '../../utils/CategoryListUtils';
-import { getContactTitle } from '../../utils/ContactUtils';
+import { createActions } from 'utils/CategoryListUtils';
+import { getContactTitle } from 'utils/ContactUtils';
 
 function ContactList(props) {
     return (

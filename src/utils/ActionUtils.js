@@ -1,5 +1,5 @@
 import uuid from 'uuid';
-import { updateProcess } from '../actions/ProcessActions';
+import { updateProcess } from 'actions/ProcessActions';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');

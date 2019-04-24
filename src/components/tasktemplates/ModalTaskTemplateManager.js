@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withApp from '../../containers/WithApp';
+import withApp from 'containers/WithApp';
 import Icon from '../common/Icon';
 import TaskTemplateManager from 'components/tasktemplates/TaskTemplateManager';
 

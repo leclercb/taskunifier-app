@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Row, Col, Empty } from 'antd';
-import withTaskFilters from '../../containers/WithTaskFilters';
+import withTaskFilters from 'containers/WithTaskFilters';
 import TaskFilterList from 'components/taskfilters/TaskFilterList';
 import TaskFilterConditionTree from 'components/taskfilters/TaskFilterConditionTree';
 import TaskFilterForm from 'components/taskfilters/TaskFilterForm';

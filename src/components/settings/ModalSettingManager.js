@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import withApp from '../../containers/WithApp';
+import withApp from 'containers/WithApp';
 import Icon from '../common/Icon';
 import SettingManager from 'components/settings/SettingManager';
 

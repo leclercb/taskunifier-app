@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import {
     backupData,
     cleanBackups
-} from '../actions/BackupActions';
+} from 'actions/BackupActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withBackups(Component) {

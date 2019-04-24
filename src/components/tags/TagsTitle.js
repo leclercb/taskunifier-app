@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tag } from 'antd';
 import { TagPropType } from '../../proptypes/TagPropTypes';
-import withTags from '../../containers/WithTags';
+import withTags from 'containers/WithTags';
 
 export function TagsTitle(props) {
     const tags = props.tags;

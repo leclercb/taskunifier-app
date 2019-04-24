@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { addNoteField, updateNoteField, deleteNoteField } from '../actions/NoteFieldActions';
-import { getDefaultNoteFields } from '../data/DataNoteFields';
-import { filterObjects } from '../utils/CategoryUtils';
+import { addNoteField, updateNoteField, deleteNoteField } from 'actions/NoteFieldActions';
+import { getDefaultNoteFields } from 'data/DataNoteFields';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withNoteFields(Component) {

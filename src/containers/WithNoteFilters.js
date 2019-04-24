@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addNoteFilter, updateNoteFilter, deleteNoteFilter } from '../actions/NoteFilterActions';
-import { filterObjects } from '../utils/CategoryUtils';
+import { addNoteFilter, updateNoteFilter, deleteNoteFilter } from 'actions/NoteFilterActions';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withNoteFilters(Component) {

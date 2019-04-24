@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PriorityPropType } from '../../proptypes/PriorityPropTypes';
-import withPriority from '../../containers/WithPriority';
-import withSettings from '../../containers/WithSettings';
+import withPriority from 'containers/WithPriority';
+import withSettings from 'containers/WithSettings';
 import Icon from '../common/Icon';
-import { getPriorityColor } from '../../utils/SettingUtils';
+import { getPriorityColor } from 'utils/SettingUtils';
 
 export function PriorityTitle(props) {
     const priority = props.priority;

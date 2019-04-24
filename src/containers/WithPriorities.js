@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPriorities } from '../data/DataPriorities';
+import { getPriorities } from 'data/DataPriorities';
 
 function withPriorities(Component) {
     class WithPriorities extends React.Component {

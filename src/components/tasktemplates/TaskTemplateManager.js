@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
-import withTaskTemplates from '../../containers/WithTaskTemplates';
+import withTaskTemplates from 'containers/WithTaskTemplates';
 import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
 import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
-import withSettings from '../../containers/WithSettings';
+import withSettings from 'containers/WithSettings';
 
 function TaskTemplateManager(props) {
     const selectedTaskTemplateId = props.taskTemplateId;

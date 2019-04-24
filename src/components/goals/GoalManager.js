@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
-import withGoals from '../../containers/WithGoals';
+import withGoals from 'containers/WithGoals';
 import GoalList from 'components/goals/GoalList';
 import GoalForm from 'components/goals/GoalForm';
 

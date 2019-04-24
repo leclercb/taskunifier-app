@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import withNotes from '../../../containers/WithNotes';
-import withObjects from '../../../containers/WithObjects';
+import withNotes from 'containers/WithNotes';
+import withObjects from 'containers/WithObjects';
 import Icon from '../../common/Icon';
 import { ContextTitle } from '../../contexts/ContextTitle';
 import { FolderTitle } from '../../folders/FolderTitle';
@@ -14,7 +14,7 @@ import { FolderPropType } from '../../../proptypes/FolderPropTypes';
 import { GoalPropType } from '../../../proptypes/GoalPropTypes';
 import { LocationPropType } from '../../../proptypes/LocationPropTypes';
 import { NoteTemplatePropType } from '../../../proptypes/NoteTemplatePropTypes';
-import { applyNoteTemplate } from '../../../utils/NoteTemplateUtils';
+import { applyNoteTemplate } from 'utils/NoteTemplateUtils';
 
 function NoteQuickAdd(props) {
     const [values, setValues] = useState([]);

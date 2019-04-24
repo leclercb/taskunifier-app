@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FolderPropType } from '../../proptypes/FolderPropTypes';
-import withFolder from '../../containers/WithFolder';
+import withFolder from 'containers/WithFolder';
 import Icon from '../common/Icon';
 
 export function FolderTitle(props) {

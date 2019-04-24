@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import NoteSider from '../sider/NoteSider';
 import NoteGrid from '../grid/NoteGrid';
-import withSettings from '../../../containers/WithSettings';
+import withSettings from 'containers/WithSettings';
 import NoteTabs from '../tabs/NoteTabs';
 
 function NoteView(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Empty } from 'antd';
-import withSelectedTasks from '../../../containers/WithSelectedTasks';
+import withSelectedTasks from 'containers/WithSelectedTasks';
 import TaskNoteForm from '../note/TaskNoteForm';
 
 function TaskTabs(props) {

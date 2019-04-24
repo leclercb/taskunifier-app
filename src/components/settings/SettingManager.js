@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { List, Row, Col, Form } from 'antd';
-import withSettings from '../../containers/WithSettings';
-import { getCategories } from '../../data/DataSettings';
+import withSettings from 'containers/WithSettings';
+import { getCategories } from 'data/DataSettings';
 import Icon from '../common/Icon';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import {
     getInputForType,
     getNormalizeForType,
     getValueFromEventForType,
     getValuePropNameForType
-} from '../../utils/FieldUtils';
+} from 'utils/FieldUtils';
 import { SettingsPropType } from '../../proptypes/SettingPropTypes';
 
 function SettingManager(props) {

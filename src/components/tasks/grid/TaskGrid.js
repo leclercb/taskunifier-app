@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfinityTable } from 'antd-table-infinity';
-import withApp from '../../../containers/WithApp';
-import withTaskFields from '../../../containers/WithTaskFields';
-import withTasks from '../../../containers/WithTasks';
-import withSettings from '../../../containers/WithSettings';
-import withSize from '../../../containers/WithSize';
+import withApp from 'containers/WithApp';
+import withTaskFields from 'containers/WithTaskFields';
+import withTasks from 'containers/WithTasks';
+import withSettings from 'containers/WithSettings';
+import withSize from 'containers/WithSize';
 import { EditableFormRow, EditableCell } from '../../common/grid/EditableCell';
 import ResizableColumn from '../../common/grid/ResizableColumn';
-import { getWidthForType, getRenderForType } from '../../../utils/FieldUtils';
+import { getWidthForType, getRenderForType } from 'utils/FieldUtils';
 import DragableBodyRow from '../../common/grid/DragableBodyRow';
 import { FieldPropType } from '../../../proptypes/FieldPropTypes';
 import { TaskPropType } from '../../../proptypes/TaskPropTypes';
-import { getTaskBackgroundColor } from '../../../utils/SettingUtils';
+import { getTaskBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 
 function TaskGrid(props) {

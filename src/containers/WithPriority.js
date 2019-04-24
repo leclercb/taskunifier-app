@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getPriorities } from '../data/DataPriorities';
+import { getPriorities } from 'data/DataPriorities';
 
 function withPriority(Component, propertyId = 'priorityId') {
     function WithPriority(props) {

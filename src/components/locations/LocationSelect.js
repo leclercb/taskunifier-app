@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
-import withLocations from '../../containers/WithLocations';
+import withLocations from 'containers/WithLocations';
 import Icon from '../common/Icon';
 
 export const LocationSelect = React.forwardRef(function LocationSelect(props, ref) {

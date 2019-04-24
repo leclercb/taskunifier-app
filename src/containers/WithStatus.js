@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { getStatuses } from '../data/DataStatuses';
+import { getStatuses } from 'data/DataStatuses';
 
 function withStatus(Component, propertyId = 'statusId') {
     function WithStatus(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
-import withGoal from '../../containers/WithGoal';
+import withGoal from 'containers/WithGoal';
 import Icon from '../common/Icon';
 
 export function GoalTitle(props) {

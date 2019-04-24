@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Row, Col, Empty } from 'antd';
-import withNoteFilters from '../../containers/WithNoteFilters';
+import withNoteFilters from 'containers/WithNoteFilters';
 import NoteFilterList from 'components/notefilters/NoteFilterList';
 import NoteFilterConditionTree from 'components/notefilters/NoteFilterConditionTree';
 import NoteFilterForm from 'components/notefilters/NoteFilterForm';

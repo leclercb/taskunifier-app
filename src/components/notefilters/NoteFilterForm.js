@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from '../common/ColorPicker';
 import { NoteFilterPropType } from '../../proptypes/NoteFilterPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function NoteFilterForm(props) {
     const { getFieldDecorator } = props.form;

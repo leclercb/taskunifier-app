@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
-import { getUserDataPath } from '../utils/ActionUtils';
+import { getUserDataPath } from 'utils/ActionUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {

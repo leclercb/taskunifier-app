@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addContact, updateContact, deleteContact } from '../actions/ContactActions';
-import { filterObjects } from '../utils/CategoryUtils';
+import { addContact, updateContact, deleteContact } from 'actions/ContactActions';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withContacts(Component, options = { actionsOnly: false }) {

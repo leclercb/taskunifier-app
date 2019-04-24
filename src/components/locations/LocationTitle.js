@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { LocationPropType } from '../../proptypes/LocationPropTypes';
-import withLocation from '../../containers/WithLocation';
+import withLocation from 'containers/WithLocation';
 import Icon from '../common/Icon';
 
 export function LocationTitle(props) {

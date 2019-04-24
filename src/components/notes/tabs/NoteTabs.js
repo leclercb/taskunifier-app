@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Empty } from 'antd';
-import withSelectedNotes from '../../../containers/WithSelectedNotes';
+import withSelectedNotes from 'containers/WithSelectedNotes';
 import NoteNoteForm from '../note/NoteNoteForm';
 
 function NoteTabs(props) {

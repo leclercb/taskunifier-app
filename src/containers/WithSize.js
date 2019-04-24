@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { equals } from '../utils/ObjectUtils';
+import { equals } from 'utils/ObjectUtils';
 
 function withSize(Component) {
     function WithSize(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
-import withLocations from '../../containers/WithLocations';
+import withLocations from 'containers/WithLocations';
 import LocationList from 'components/locations/LocationList';
 import LocationForm from 'components/locations/LocationForm';
 

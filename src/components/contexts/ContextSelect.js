@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import { ContextPropType } from '../../proptypes/ContextPropTypes';
-import withContexts from '../../containers/WithContexts';
+import withContexts from 'containers/WithContexts';
 import Icon from '../common/Icon';
 
 export const ContextSelect = React.forwardRef(function ContextSelect(props, ref) {

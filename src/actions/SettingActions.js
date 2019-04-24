@@ -1,4 +1,4 @@
-import { loadFromFile, saveToFile } from '../utils/ActionUtils';
+import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
     return dispatch => {

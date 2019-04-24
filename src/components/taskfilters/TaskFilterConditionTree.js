@@ -4,7 +4,7 @@ import uuid from 'uuid';
 import { Menu, Empty } from 'antd';
 import ConditionTree from '../common/conditiontree/ConditionTree';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
-import withTaskFields from '../../containers/WithTaskFields';
+import withTaskFields from 'containers/WithTaskFields';
 import TaskFilterConditionForm from 'components/taskfilters/TaskFilterConditionForm';
 
 function TaskFilterEmpty(props) {

@@ -6,7 +6,7 @@ import Notes from 'reducers/Notes';
 import Processes from 'reducers/Processes';
 import Settings from 'reducers/Settings';
 import Tasks from 'reducers/Tasks';
-import { onGoalUpdate } from '../utils/GoalUtils';
+import { onGoalUpdate } from 'utils/GoalUtils';
 
 export default combineReducers({
     app: App(),

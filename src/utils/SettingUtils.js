@@ -1,4 +1,4 @@
-import { isCoreSetting } from '../data/DataSettings';
+import { isCoreSetting } from 'data/DataSettings';
 
 export const filterSettings = (settings, core) => {
     const newSettings = {};

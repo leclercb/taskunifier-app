@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
-import withContexts from '../../containers/WithContexts';
+import withContexts from 'containers/WithContexts';
 import ContextList from 'components/contexts/ContextList';
 import ContextForm from 'components/contexts/ContextForm';
 

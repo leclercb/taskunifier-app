@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import { GoalPropType } from '../../proptypes/GoalPropTypes';
-import withGoals from '../../containers/WithGoals';
+import withGoals from 'containers/WithGoals';
 import Icon from '../common/Icon';
 
 export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {

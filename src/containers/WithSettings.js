@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { updateSettings } from '../actions/SettingActions';
+import { updateSettings } from 'actions/SettingActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withSettings(Component) {

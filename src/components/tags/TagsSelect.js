@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { TagPropType } from '../../proptypes/TagPropTypes';
 import { Select, Tag } from 'antd';
-import withTags from '../../containers/WithTags';
+import withTags from 'containers/WithTags';
 
 export const TagsSelect = React.forwardRef(function TagsSelect(props, ref) {
     const { tags, ...restProps } = props;

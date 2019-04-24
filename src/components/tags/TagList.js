@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { List } from 'antd';
 import Icon from '../common/Icon';
 import LeftRight from '../common/LeftRight';
-import { createActions } from '../../utils/CategoryListUtils';
+import { createActions } from 'utils/CategoryListUtils';
 
 function TagList(props) {
     return (

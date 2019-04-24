@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from '../actions/TaskFilterActions';
-import { filterObjects } from '../utils/CategoryUtils';
+import { addTaskFilter, updateTaskFilter, deleteTaskFilter } from 'actions/TaskFilterActions';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskFilters(Component) {

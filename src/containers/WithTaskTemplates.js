@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from '../actions/TaskTemplateActions';
-import { filterObjects } from '../utils/CategoryUtils';
+import { addTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from 'actions/TaskTemplateActions';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskTemplates(Component, options = { actionsOnly: false }) {

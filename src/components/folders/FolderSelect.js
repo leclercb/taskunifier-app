@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import { FolderPropType } from '../../proptypes/FolderPropTypes';
-import withFolders from '../../containers/WithFolders';
+import withFolders from 'containers/WithFolders';
 import Icon from '../common/Icon';
 
 export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
-import withProcesses from '../../containers/WithProcesses';
+import withProcesses from 'containers/WithProcesses';
 
 function NotificationManager(props) {
     const getLevelFromState = state => {

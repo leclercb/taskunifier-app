@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from '../common/ColorPicker';
 import { TaskFilterPropType } from '../../proptypes/TaskFilterPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function TaskFilterForm(props) {
     const { getFieldDecorator } = props.form;

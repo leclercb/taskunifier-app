@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Row, Col } from 'antd';
-import withTaskFields from '../../containers/WithTaskFields';
+import withTaskFields from 'containers/WithTaskFields';
 import { FieldPropType } from '../../proptypes/FieldPropTypes';
 import {
     getInputForType,
@@ -9,8 +9,8 @@ import {
     getValuePropNameForType,
     getValueFromEventForType,
     getNormalizeForType
-} from '../../utils/FieldUtils';
-import { onFieldChangeForObjectUpdates } from '../../utils/FormUtils';
+} from 'utils/FieldUtils';
+import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function TaskFilterConditionForm(props) {
     const { getFieldDecorator } = props.form;

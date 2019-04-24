@@ -1,4 +1,4 @@
-import { getFieldConfiguration } from '../data/DataFieldConfigurations';
+import { getFieldConfiguration } from 'data/DataFieldConfigurations';
 
 export const getWidthForType = type => {
     return getFieldConfiguration(type).width;

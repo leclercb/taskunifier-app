@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import withProcesses from '../../containers/WithProcesses';
+import withProcesses from 'containers/WithProcesses';
 import ProcessList from 'components/processes/ProcessList';
 import Icon from '../common/Icon';
 

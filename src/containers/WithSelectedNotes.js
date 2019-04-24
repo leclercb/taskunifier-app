@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { addNote, updateNote, deleteNote } from '../actions/NoteActions';
-import { filterObjects } from '../utils/CategoryUtils';
-import { setSelectedNoteIds } from '../actions/AppActions';
+import { addNote, updateNote, deleteNote } from 'actions/NoteActions';
+import { filterObjects } from 'utils/CategoryUtils';
+import { setSelectedNoteIds } from 'actions/AppActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withSelectedNotes(Component) {

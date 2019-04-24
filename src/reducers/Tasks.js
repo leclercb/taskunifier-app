@@ -1,4 +1,4 @@
-import { updateTag, deleteTag } from '../utils/TagUtils';
+import { updateTag, deleteTag } from 'utils/TagUtils';
 
 const Tasks = () => (state = [], action) => {
     switch (action.type) {

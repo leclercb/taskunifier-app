@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
 import { StatusPropType } from '../../proptypes/StatusPropTypes';
-import withStatuses from '../../containers/WithStatuses';
-import withSettings from '../../containers/WithSettings';
+import withStatuses from 'containers/WithStatuses';
+import withSettings from 'containers/WithSettings';
 import Icon from '../common/Icon';
-import { getStatusColor } from '../../utils/SettingUtils';
+import { getStatusColor } from 'utils/SettingUtils';
 
 export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
     const { statuses, ...restProps } = props;

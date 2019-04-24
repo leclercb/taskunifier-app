@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStatuses } from '../data/DataStatuses';
+import { getStatuses } from 'data/DataStatuses';
 
 function withStatuses(Component) {
     class WithStatuses extends React.Component {

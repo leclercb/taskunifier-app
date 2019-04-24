@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { addNote, updateNote, deleteNote } from '../actions/NoteActions';
-import { getDefaultNoteFields } from '../data/DataNoteFields';
-import { filterObjects } from '../utils/CategoryUtils';
-import { applyFilter } from '../utils/FilterUtils';
-import { setSelectedNoteIds } from '../actions/AppActions';
+import { addNote, updateNote, deleteNote } from 'actions/NoteActions';
+import { getDefaultNoteFields } from 'data/DataNoteFields';
+import { filterObjects } from 'utils/CategoryUtils';
+import { applyFilter } from 'utils/FilterUtils';
+import { setSelectedNoteIds } from 'actions/AppActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withNotes(Component, options = { applySelectedNoteFilter: false, actionsOnly: false }) {

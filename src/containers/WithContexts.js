@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { addContext, updateContext, deleteContext } from '../actions/ContextActions';
-import { filterObjects } from '../utils/CategoryUtils';
+import { addContext, updateContext, deleteContext } from 'actions/ContextActions';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withContexts(Component, options = { actionsOnly: false }) {

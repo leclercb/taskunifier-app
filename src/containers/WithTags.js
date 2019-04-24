@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { updateTag, deleteTag } from '../actions/TagActions';
-import { getTagsFromIds, getTagsFromObjects } from '../utils/TagUtils';
-import { filterObjects } from '../utils/CategoryUtils';
+import { updateTag, deleteTag } from 'actions/TagActions';
+import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
+import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {

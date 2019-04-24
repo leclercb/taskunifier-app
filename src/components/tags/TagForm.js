@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import { TagPropType } from '../../proptypes/TagPropTypes';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from '../../utils/FormUtils';
-import { merge } from '../../utils/ObjectUtils';
+import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
+import { merge } from 'utils/ObjectUtils';
 import Icon from '../common/Icon';
 
 function TagForm(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Empty } from 'antd';
-import withTags from '../../containers/WithTags';
+import withTags from 'containers/WithTags';
 import TagList from 'components/tags/TagList';
 import TagForm from 'components/tags/TagForm';
 

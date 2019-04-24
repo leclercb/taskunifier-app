@@ -14,14 +14,14 @@ import {
     setTaskTemplateManagerOptions,
     setSettingManagerOptions,
     setBatchAddTasksOptions
-} from '../actions/AppActions';
+} from 'actions/AppActions';
 import {
     backupData,
     cleanBackups
-} from '../actions/BackupActions';
-import { updateSettings } from '../actions/SettingActions';
-import { clearProcesses, setProcessesVisible } from '../actions/ProcessActions';
-import { isValidLicense } from '../utils/LicenseUtils';
+} from 'actions/BackupActions';
+import { updateSettings } from 'actions/SettingActions';
+import { clearProcesses, setProcessesVisible } from 'actions/ProcessActions';
+import { isValidLicense } from 'utils/LicenseUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withApp(Component) {
