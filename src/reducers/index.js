@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import reduceReducers from 'reduce-reducers';
-import App from './App';
-import Objects from './Objects';
-import Notes from './Notes';
-import Processes from './Processes';
-import Settings from './Settings';
-import Tasks from './Tasks';
+import App from 'reducers/App';
+import Objects from 'reducers/Objects';
+import Notes from 'reducers/Notes';
+import Processes from 'reducers/Processes';
+import Settings from 'reducers/Settings';
+import Tasks from 'reducers/Tasks';
 import { onGoalUpdate } from '../utils/GoalUtils';
 
 export default combineReducers({

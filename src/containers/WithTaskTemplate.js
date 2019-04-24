@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from './WithBusyCheck';
+import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
     const mapStateToProps = (state, ownProps) => ({

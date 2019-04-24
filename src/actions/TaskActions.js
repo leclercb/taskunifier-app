@@ -6,7 +6,7 @@ import {
     updateObject, 
     deleteObject, 
     cleanObjects 
-} from './ObjectActions';
+} from 'actions/ObjectActions';
 
 export const loadTasksFromFile = file => {
     return loadObjectsFromFile('tasks', file);

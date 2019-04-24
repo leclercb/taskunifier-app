@@ -1,4 +1,4 @@
-import { merge, setValue } from './ObjectUtils';
+import { merge, setValue } from 'utils/ObjectUtils';
 import moment from 'moment';
 
 export const getDefaultFormItemLayout = () => {

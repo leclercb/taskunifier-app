@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DragDropContext } from 'react-dnd';
-import { useInterval } from './hooks/UseInterval';
+import { useInterval } from 'hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
-import AppLayout from './components/layout/AppLayout';
-import withApp from './containers/WithApp';
-import withSettings from './containers/WithSettings';
+import AppLayout from 'components/layout/AppLayout';
+import withApp from 'containers/WithApp';
+import withSettings from 'containers/WithSettings';
 
 import './App.css';
 import './font-awesome.js';

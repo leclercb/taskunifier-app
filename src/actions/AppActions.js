@@ -5,7 +5,7 @@ import { loadContextsFromFile, saveContextsToFile, cleanContexts } from 'actions
 import { loadFoldersFromFile, saveFoldersToFile, cleanFolders } from 'actions/FolderActions';
 import { loadGoalsFromFile, saveGoalsToFile, cleanGoals } from 'actions/GoalActions';
 import { loadLocationsFromFile, saveLocationsToFile, cleanLocations } from 'actions/LocationActions';
-import { loadNotesFromFile, saveNotesToFile, cleanNotes } from './NoteActions';
+import { loadNotesFromFile, saveNotesToFile, cleanNotes } from 'actions/NoteActions';
 import { loadNoteFieldsFromFile, saveNoteFieldsToFile, cleanNoteFields } from 'actions/NoteFieldActions';
 import { loadNoteFiltersFromFile, saveNoteFiltersToFile, cleanNoteFilters } from 'actions/NoteFilterActions';
 import { loadTasksFromFile, saveTasksToFile, cleanTasks } from 'actions/TaskActions';

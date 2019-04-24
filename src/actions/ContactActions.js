@@ -6,7 +6,7 @@ import {
     updateObject, 
     deleteObject, 
     cleanObjects 
-} from './ObjectActions';
+} from 'actions/ObjectActions';
 
 export const loadContactsFromFile = file => {
     return loadObjectsFromFile('contacts', file);

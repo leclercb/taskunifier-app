@@ -1,4 +1,4 @@
-import { getPathSeparator, join, getDirectories } from './ActionUtils';
+import { getPathSeparator, join, getDirectories } from 'utils/ActionUtils';
 
 export const getBackupDate = directory => {
     return Number(directory.substr(directory.lastIndexOf(getPathSeparator()) + 1));

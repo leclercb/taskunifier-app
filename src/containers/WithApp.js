@@ -22,7 +22,7 @@ import {
 import { updateSettings } from '../actions/SettingActions';
 import { clearProcesses, setProcessesVisible } from '../actions/ProcessActions';
 import { isValidLicense } from '../utils/LicenseUtils';
-import withBusyCheck from './WithBusyCheck';
+import withBusyCheck from 'containers/WithBusyCheck';
 
 function withApp(Component) {
     const mapStateToProps = state => ({

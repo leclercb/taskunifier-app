@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addGoal, updateGoal, deleteGoal } from '../actions/GoalActions';
 import { filterObjects, filterArchivedObjects } from '../utils/CategoryUtils';
-import withBusyCheck from './WithBusyCheck';
+import withBusyCheck from 'containers/WithBusyCheck';
 
 function withGoals(Component, options = { actionsOnly: false, filterArchived: false }) {
     const mapStateToProps = (state, ownProps) => {

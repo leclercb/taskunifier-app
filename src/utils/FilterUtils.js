@@ -1,5 +1,5 @@
-import { getValue } from './ObjectUtils';
-import { getConditionsForType } from './FieldUtils';
+import { getValue } from 'utils/ObjectUtils';
+import { getConditionsForType } from 'utils/FieldUtils';
 
 export const applyFilter = (objectFilter, object, fields) => {
     if (!objectFilter || !objectFilter.condition) {

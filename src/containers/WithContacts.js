@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addContact, updateContact, deleteContact } from '../actions/ContactActions';
 import { filterObjects } from '../utils/CategoryUtils';
-import withBusyCheck from './WithBusyCheck';
+import withBusyCheck from 'containers/WithBusyCheck';
 
 function withContacts(Component, options = { actionsOnly: false }) {
     const mapStateToProps = state => {

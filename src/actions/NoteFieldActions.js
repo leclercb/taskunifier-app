@@ -6,7 +6,7 @@ import {
     updateObject, 
     deleteObject, 
     cleanObjects 
-} from './ObjectActions';
+} from 'actions/ObjectActions';
 
 export const loadNoteFieldsFromFile = file => {
     return loadObjectsFromFile('noteFields', file);
