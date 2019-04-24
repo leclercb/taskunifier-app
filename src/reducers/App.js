@@ -1,5 +1,5 @@
-import { getDefaultSelectedNoteFilter } from "../data/DataNoteFilters";
-import { getDefaultSelectedTaskFilter } from "../data/DataTaskFilters";
+import { getDefaultSelectedNoteFilter } from '../data/DataNoteFilters';
+import { getDefaultSelectedTaskFilter } from '../data/DataTaskFilters';
 
 const App = () => (state = {
     user: null,
@@ -112,6 +112,6 @@ const App = () => (state = {
         default:
             return state;
     }
-}
+};
 
 export default App;

@@ -24,5 +24,5 @@ export function getGeneralNoteFilters() {
             icon: 'book',
             condition: null
         }
-    ]
+    ];
 }

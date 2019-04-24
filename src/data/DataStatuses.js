@@ -59,5 +59,5 @@ export function getStatuses() {
             title: 'Waiting',
             color: '#ffb300'
         }
-    ]
+    ];
 }

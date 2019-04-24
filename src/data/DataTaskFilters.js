@@ -132,5 +132,5 @@ export function getGeneralTaskFilters() {
                 value: true
             }
         }
-    ]
+    ];
 }

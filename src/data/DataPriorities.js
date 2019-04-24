@@ -4,7 +4,7 @@ export function getPriority(priorityId) {
 
 export const getPriorityIndex = priorityId => {
     return getPriorities().findIndex(priority => priority.id === priorityId) || 0;
-}
+};
 
 export function getPriorities() {
     return [
@@ -33,5 +33,5 @@ export function getPriorities() {
             title: 'Top',
             color: '#f4511e'
         }
-    ]
+    ];
 }

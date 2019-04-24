@@ -10,7 +10,7 @@ function withPriorities(Component) {
         }
     }
 
-    return WithPriorities
+    return WithPriorities;
 }
 
 export default withPriorities;

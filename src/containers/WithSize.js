@@ -33,7 +33,7 @@ function withSize(Component) {
                     setSize(newSize);
                 }
             }
-        }
+        };
 
         useEffect(() => {
             updateSize();
@@ -44,7 +44,7 @@ function withSize(Component) {
             return () => {
                 window.removeEventListener('resize', updateSize);
                 window.removeEventListener('app-resize', updateSize);
-            }
+            };
         });
 
         return (

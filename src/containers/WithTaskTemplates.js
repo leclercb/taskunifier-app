@@ -11,7 +11,7 @@ function withTaskTemplates(Component, options = { actionsOnly: false }) {
 
         return {
             taskTemplates: filterObjects(state.taskTemplates)
-        }
+        };
     };
 
     const mapDispatchToProps = dispatch => ({

@@ -41,7 +41,7 @@ const Processes = () => (state = {
                 });
             }
 
-            newState.busy = !!newState.processes.find(process => process.state === 'RUNNING')
+            newState.busy = !!newState.processes.find(process => process.state === 'RUNNING');
             newState.visible = !!newState.processes.find(process => process.state === 'ERROR');
 
             if (!newState.processes.find(process => process.state !== 'COMPLETED')) {
@@ -63,6 +63,6 @@ const Processes = () => (state = {
         default:
             return state;
     }
-}
+};
 
 export default Processes;

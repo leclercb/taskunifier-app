@@ -29,6 +29,6 @@ const Notes = () => (state = [], action) => {
         default:
             return state;
     }
-}
+};
 
 export default Notes;

@@ -121,6 +121,6 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
         default:
             return state;
     }
-}
+};
 
 export default Objects;

@@ -7,7 +7,7 @@ export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
         return category.settings.find(setting => {
             return setting.id === settingId && setting.core === true;
-        })
+        });
     });
 }
 
@@ -414,5 +414,5 @@ export function getCategories() {
                 }
             ]
         }
-    ]
+    ];
 }

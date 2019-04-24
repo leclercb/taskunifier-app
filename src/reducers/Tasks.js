@@ -29,6 +29,6 @@ const Tasks = () => (state = [], action) => {
         default:
             return state;
     }
-}
+};
 
 export default Tasks;

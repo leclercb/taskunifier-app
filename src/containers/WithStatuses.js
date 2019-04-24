@@ -10,7 +10,7 @@ function withStatuses(Component) {
         }
     }
 
-    return WithStatuses
+    return WithStatuses;
 }
 
 export default withStatuses;

@@ -173,5 +173,5 @@ export function getDefaultTaskFields(settings) {
             color: '#ffffff',
             type: 'textarea'
         }
-    ]
+    ];
 }

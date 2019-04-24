@@ -1,4 +1,4 @@
-import { getSettings, isCoreSetting } from "../data/DataSettings";
+import { getSettings, isCoreSetting } from '../data/DataSettings';
 
 const Settings = () => (state = {}, action) => {
     switch (action.type) {
@@ -28,6 +28,6 @@ const Settings = () => (state = {}, action) => {
         default:
             return state;
     }
-}
+};
 
 export default Settings;

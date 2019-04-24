@@ -44,5 +44,5 @@ export function getDefaultNoteFields(settings) {
             color: '#ffffff',
             type: 'folder'
         }
-    ]
+    ];
 }

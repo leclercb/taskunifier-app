@@ -3,4 +3,4 @@ export const getContactTitle = contact => {
     const lastName = contact.lastName ? contact.lastName : '';
 
     return `${firstName} ${lastName}`;
-}
+};

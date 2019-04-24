@@ -58,7 +58,7 @@ export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assi
             updateObject(updatedObject);
         }
     }
-}
+};
 
 const flattenFields = (path, object) => {
     if (typeof object !== 'object') {
@@ -76,4 +76,4 @@ const flattenFields = (path, object) => {
     });
 
     return array;
-}
+};

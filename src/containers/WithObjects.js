@@ -99,7 +99,7 @@ function withObjects(Component, options = {
             addTaskFilter: taskFilter => dispatch(addTaskFilter(taskFilter)),
             updateTaskFilter: taskFilter => dispatch(updateTaskFilter(taskFilter)),
             deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId))
-        }
+        };
     };
 
     return connect(

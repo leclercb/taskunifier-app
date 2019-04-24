@@ -6,12 +6,14 @@ function withPriority(Component, propertyId = 'priorityId') {
     function WithPriority(props) {
         const priority = getPriorities().find(property => property.id === props[propertyId]);
 
-        return <Component {...props} priority={priority} />
+        return (
+            <Component {...props} priority={priority} />
+        );
     }
 
     WithPriority.propTypes = {
         [propertyId]: PropTypes.string
-    }
+    };
 
     return WithPriority;
 }

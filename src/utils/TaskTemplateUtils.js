@@ -9,4 +9,4 @@ export const applyTaskTemplate = (taskTemplate, task) => {
             task[key] = value;
         }
     });
-}
+};

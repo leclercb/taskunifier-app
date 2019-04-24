@@ -17,7 +17,7 @@ export function clone(o) {
 
     for (let key in o) {
         const v = o[key];
-        output[key] = (typeof v === "object") ? clone(v) : v;
+        output[key] = (typeof v === 'object') ? clone(v) : v;
     }
 
     return output;
@@ -40,7 +40,7 @@ export function merge(target, source) {
         } else {
             Object.assign(output, { [key]: source[key] });
         }
-    })
+    });
 
     return output;
 }

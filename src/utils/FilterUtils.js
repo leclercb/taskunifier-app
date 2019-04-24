@@ -1,5 +1,5 @@
-import { getValue } from "./ObjectUtils";
-import { getConditionsForType } from "./FieldUtils";
+import { getValue } from './ObjectUtils';
+import { getConditionsForType } from './FieldUtils';
 
 export const applyFilter = (objectFilter, object, fields) => {
     if (!objectFilter || !objectFilter.condition) {
@@ -7,7 +7,7 @@ export const applyFilter = (objectFilter, object, fields) => {
     }
 
     return applyCondition(objectFilter.condition, object, fields);
-}
+};
 
 const applyCondition = (condition, object, fields) => {
     if (condition.operator) {
@@ -64,4 +64,4 @@ const applyCondition = (condition, object, fields) => {
 
         return c.apply(condition.value, getValue(object, field.id));
     }
-}
+};

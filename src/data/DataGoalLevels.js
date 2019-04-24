@@ -15,5 +15,5 @@ export function getGoalLevels() {
             title: 'Life Time',
             color: '#0459f7'
         }
-    ]
+    ];
 }

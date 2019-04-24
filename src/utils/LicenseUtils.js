@@ -43,4 +43,4 @@ export const verifyLicense = license => {
 
 export const isValidLicense = license => {
     return verifyLicense(license) !== null;
-}
+};
