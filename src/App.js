@@ -39,7 +39,7 @@ function App(props) {
 
         return () => {
             electron.ipcRenderer.removeListener('app-close', onClose);
-        }
+        };
     }, []);
 
     useEffect(
@@ -63,7 +63,7 @@ function App(props) {
 
             return () => {
                 clearInterval(interval);
-            }
+            };
         },
         [
             props.settings.automaticSave,
@@ -93,7 +93,7 @@ function App(props) {
 
             return () => {
                 clearInterval(interval);
-            }
+            };
         },
         [
             props.settings.automaticBackup,
@@ -117,6 +117,6 @@ App.propTypes = {
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired
-}
+};
 
 export default DragDropContext(HTML5Backend)(withApp(withSettings(App)));

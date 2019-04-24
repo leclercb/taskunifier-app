@@ -43,12 +43,12 @@ function AppLayout(props) {
             <ModalTaskTemplateManager />
             <ModalSettingManager />
             <ModalBatchAddTasks />
-            <Spin style={{ minHeight: "100%", height: "100%" }} spinning={props.busy}>
-                <Layout style={{ minHeight: "100%", height: "100%" }}>
+            <Spin style={{ minHeight: '100%', height: '100%' }} spinning={props.busy}>
+                <Layout style={{ minHeight: '100%', height: '100%' }}>
                     <Layout.Header>
                         <Header />
                     </Layout.Header>
-                    <Layout style={{ height: "100%", position: "relative" }}>
+                    <Layout style={{ height: '100%', position: 'relative' }}>
                         {getView()}
                     </Layout>
                     <Layout.Footer style={{ textAlign: 'center' }}>
@@ -62,6 +62,6 @@ function AppLayout(props) {
 
 AppLayout.propTypes = {
     busy: PropTypes.bool.isRequired
-}
+};
 
 export default withApp(withProcesses(withSettings(withBusy(AppLayout))));

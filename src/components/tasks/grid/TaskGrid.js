@@ -110,7 +110,7 @@ TaskGrid.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType).isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired
-}
+};
 
 // TODO remove
 const dummyTasks = createDummyTasks();
@@ -129,7 +129,7 @@ function createDummyTasks() {
             color: '#ffffff',
             completed: false,
             importance: '0'
-        })
+        });
     }
 
     return tasks;

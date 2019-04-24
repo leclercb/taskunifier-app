@@ -13,6 +13,6 @@ export function ContactTitle(props) {
 ContactTitle.propTypes = {
     contactId: PropTypes.string,
     contact: ContactPropType
-}
+};
 
 export default withContact(ContactTitle);

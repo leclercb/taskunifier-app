@@ -11,11 +11,11 @@ function TaskFilterManager(props) {
 
     const onAddTaskFilter = taskFilter => {
         props.addTaskFilter(taskFilter).then(id => props.onTaskFilterSelection(id));
-    }
+    };
 
     const onTaskFilterSelection = taskFilter => {
         props.onTaskFilterSelection(taskFilter.id);
-    }
+    };
 
     const selectedTaskFilter = props.taskFilters.find(taskFilter => taskFilter.id === selectedTaskFilterId);
 

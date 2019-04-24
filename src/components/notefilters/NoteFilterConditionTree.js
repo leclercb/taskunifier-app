@@ -25,7 +25,7 @@ function NoteFilterConditionTree(props) {
             type: 'equal',
             value: null
         };
-    }
+    };
 
     const getLeafComponent = condition => {
         const field = props.noteFields.find(field => field.id === condition.field);
@@ -35,14 +35,14 @@ function NoteFilterConditionTree(props) {
         }
 
         return NoteFilterConditionForm;
-    }
+    };
 
     const onSaveCondition = condition => {
         props.updateNoteFilter({
             ...props.noteFilter,
             condition: condition
         });
-    }
+    };
 
     return (
         <ConditionTree

@@ -135,7 +135,7 @@ function TaskSider(props) {
             title: object.title,
             color: object.color,
             condition: condition
-        }
+        };
     };
 
     const onSearch = value => {

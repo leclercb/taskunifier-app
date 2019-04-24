@@ -18,6 +18,6 @@ export function TagsTitle(props) {
 TagsTitle.propTypes = {
     tagIds: PropTypes.array,
     tags: PropTypes.arrayOf(TagPropType).isRequired
-}
+};
 
 export default withTags(TagsTitle);

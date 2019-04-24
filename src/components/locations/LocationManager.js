@@ -10,11 +10,11 @@ function LocationManager(props) {
 
     const onAddLocation = location => {
         props.addLocation(location).then(id => props.onLocationSelection(id));
-    }
+    };
 
     const onLocationSelection = location => {
         props.onLocationSelection(location.id);
-    }
+    };
 
     const selectedLocation = props.locations.find(location => location.id === selectedLocationId);
 

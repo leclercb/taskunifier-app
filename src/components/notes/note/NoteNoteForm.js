@@ -19,7 +19,7 @@ function NoteNoteForm(props) {
 
             props.updateNote({ ...props.note, ...values });
         });
-    }
+    };
 
     return (
         <Form {...formItemLayout}>

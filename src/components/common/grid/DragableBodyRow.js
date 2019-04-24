@@ -21,7 +21,7 @@ const BodyRow = props => {
     }
 
     return connectDragSource(connectDropTarget(<tr {...restProps} className={className} style={style} />));
-}
+};
 
 const rowSource = {
     beginDrag: props => {
@@ -34,7 +34,7 @@ const rowSource = {
 const rowTarget = {
     drop: (props, monitor) => {
         const dragRecord = monitor.getItem().record;
-        const dropRecord = props.rowProps.record
+        const dropRecord = props.rowProps.record;
 
         props.moveRow(dragRecord, dropRecord);
     }

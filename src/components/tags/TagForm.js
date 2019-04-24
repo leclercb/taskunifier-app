@@ -16,7 +16,7 @@ function TagForm(props) {
             const updatedObject = merge({ ...props.tag }, values);
             props.updateTag(updatedObject);
         });
-    }
+    };
 
     const { getFieldDecorator } = props.form;
 

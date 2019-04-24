@@ -23,6 +23,6 @@ function PrioritySelect(props) {
 
 PrioritySelect.propTypes = {
     priorities: PropTypes.arrayOf(PriorityPropType).isRequired
-}
+};
 
 export default withPriorities(withSettings(PrioritySelect));

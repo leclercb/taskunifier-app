@@ -8,7 +8,7 @@ function TaskTabs(props) {
     if (props.selectedTasks.length !== 1) {
         return (
             <Empty description="Please select one task" />
-        )
+        );
     }
 
     return (
@@ -23,6 +23,6 @@ function TaskTabs(props) {
 TaskTabs.propTypes = {
     selectedTasks: PropTypes.array.isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired
-}
+};
 
 export default withSelectedTasks(TaskTabs);

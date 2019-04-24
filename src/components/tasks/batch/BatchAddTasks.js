@@ -32,7 +32,7 @@ function BatchAddTasks(props) {
                 props.onAdd();
             }
         });
-    }
+    };
 
     const { getFieldDecorator } = props.form;
 

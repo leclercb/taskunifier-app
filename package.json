@@ -9,7 +9,7 @@
     "scripts": {
         "react:start": "BROWSER=none; craco start",
         "react:build": "craco build",
-        "react:lint": "node node_modules/eslint/bin/eslint.js src/**/*.js",
+        "react:lint": "node node_modules/eslint/bin/eslint.js src",
         "react:test": "craco test",
         "react:deploy": "node server.js",
         "electron:start": "electron .",

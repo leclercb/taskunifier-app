@@ -8,11 +8,11 @@ function AddButton(props) {
     const onMenuClick = event => {
         onMenuVisibleChange(false);
         props.onClick(event.key);
-    }
+    };
 
     const onMenuVisibleChange = visible => {
         setMenuVisible(visible);
-    }
+    };
 
     return (
         <Popover

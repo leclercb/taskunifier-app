@@ -23,19 +23,19 @@ function NoteQuickAdd(props) {
 
     const onChange = values => {
         if (values.includes('__ADD__')) {
-            onAdd(values.filter(v => v !== '__ADD__'))
+            onAdd(values.filter(v => v !== '__ADD__'));
         } else {
             setValues(values);
         }
-    }
+    };
 
     const onKeyInputDown = () => {
         setOpen(true);
-    }
+    };
 
     const onBlur = () => {
         setOpen(false);
-    }
+    };
 
     const onAdd = values => {
         const newNote = {
@@ -67,7 +67,7 @@ function NoteQuickAdd(props) {
             onInputKeyDown={onKeyInputDown}
             onBlur={onBlur}
             open={open}
-            style={{ width: "100%", padding: 3 }}>
+            style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
                 <Select.Option key='add' value="__ADD__">
                     <Icon icon="plus" text="Create note" />
@@ -87,7 +87,7 @@ function NoteQuickAdd(props) {
 NoteQuickAdd.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
     addNote: PropTypes.func.isRequired
-}
+};
 
 export default withNotes(withObjects(NoteQuickAdd, {
     includeFolders: true

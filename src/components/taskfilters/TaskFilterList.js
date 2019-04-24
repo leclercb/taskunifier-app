@@ -12,7 +12,7 @@ function TaskFilterList(props) {
                 size="small"
                 bordered={true}
                 dataSource={props.taskFilters}
-                style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
+                style={{ minHeight: 400, maxHeight: 400, overflowY: 'auto' }}
                 renderItem={item => (
                     <List.Item
                         onClick={() => props.onTaskFilterSelection(item)}

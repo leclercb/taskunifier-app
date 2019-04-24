@@ -16,6 +16,6 @@ export function PriorityTitle(props) {
 PriorityTitle.propTypes = {
     priorityId: PropTypes.string,
     priority: PriorityPropType
-}
+};
 
 export default withPriority(withSettings(PriorityTitle));

@@ -35,7 +35,7 @@ function TaskCalendar(props) {
                 ))}
             </ul>
         );
-    }
+    };
 
     return (
         <Calendar

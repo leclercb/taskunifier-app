@@ -12,6 +12,6 @@ export function ContextTitle(props) {
 ContextTitle.propTypes = {
     contextId: PropTypes.string,
     context: ContextPropType
-}
+};
 
 export default withContext(ContextTitle);

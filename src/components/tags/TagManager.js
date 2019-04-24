@@ -12,11 +12,11 @@ function TagManager(props) {
         props.updateTag(tag).then(() => {
             props.onTagSelection(tag.title);
         });
-    }
+    };
 
     const onTagSelection = tag => {
         props.onTagSelection(tag.id);
-    }
+    };
 
     const selectedTag = props.tags.find(tag => tag.id === selectedTagId);
 

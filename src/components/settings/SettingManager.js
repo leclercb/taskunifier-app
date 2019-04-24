@@ -26,11 +26,11 @@ function SettingManager(props) {
         } else {
             return setting.value;
         }
-    }
+    };
 
     const onCategorySelection = category => {
         setSelectedCategoryId(category.id);
-    }
+    };
 
     const { getFieldDecorator } = props.form;
 

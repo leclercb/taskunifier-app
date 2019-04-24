@@ -7,7 +7,7 @@ import SettingManager from './SettingManager';
 function ModalSettingManager(props) {
     const onOk = () => {
         props.setSettingManagerOptions({ visible: false });
-    }
+    };
 
     return (
         <Modal

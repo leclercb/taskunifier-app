@@ -40,6 +40,6 @@ function TaskCalendarView(props) {
 TaskCalendarView.propTypes = {
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired
-}
+};
 
 export default withSettings(TaskCalendarView);

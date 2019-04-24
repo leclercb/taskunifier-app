@@ -11,7 +11,7 @@ function ModalTaskTemplateManager(props) {
     };
 
     const onTaskTemplateSelection = taskTemplateId => {
-        props.setTaskTemplateManagerOptions({ taskTemplateId })
+        props.setTaskTemplateManagerOptions({ taskTemplateId });
     };
 
     return (

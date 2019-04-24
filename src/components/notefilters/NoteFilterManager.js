@@ -11,11 +11,11 @@ function NoteFilterManager(props) {
 
     const onAddNoteFilter = noteFilter => {
         props.addNoteFilter(noteFilter).then(id => props.onNoteFilterSelection(id));
-    }
+    };
 
     const onNoteFilterSelection = noteFilter => {
         props.onNoteFilterSelection(noteFilter.id);
-    }
+    };
 
     const selectedNoteFilter = props.noteFilters.find(noteFilter => noteFilter.id === selectedNoteFilterId);
 

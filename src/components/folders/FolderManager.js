@@ -10,11 +10,11 @@ function FolderManager(props) {
 
     const onAddFolder = folder => {
         props.addFolder(folder).then(id => props.onFolderSelection(id));
-    }
+    };
 
     const onFolderSelection = folder => {
         props.onFolderSelection(folder.id);
-    }
+    };
 
     const selectedFolder = props.folders.find(folder => folder.id === selectedFolderId);
 

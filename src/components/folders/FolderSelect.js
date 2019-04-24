@@ -23,6 +23,6 @@ export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
 
 FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType).isRequired
-}
+};
 
 export default withFolders(FolderSelect, { filterArchived: true });

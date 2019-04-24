@@ -11,7 +11,7 @@ function ModalNoteFilterManager(props) {
     };
 
     const onNoteFilterSelection = noteFilterId => {
-        props.setNoteFilterManagerOptions({ noteFilterId })
+        props.setNoteFilterManagerOptions({ noteFilterId });
     };
 
     return (

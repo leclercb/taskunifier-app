@@ -19,7 +19,7 @@ function TaskNoteForm(props) {
 
             props.updateTask({ ...props.task, ...values });
         });
-    }
+    };
 
     return (
         <Form {...formItemLayout}>

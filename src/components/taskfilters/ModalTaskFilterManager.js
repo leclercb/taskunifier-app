@@ -11,7 +11,7 @@ function ModalTaskFilterManager(props) {
     };
 
     const onTaskFilterSelection = taskFilterId => {
-        props.setTaskFilterManagerOptions({ taskFilterId })
+        props.setTaskFilterManagerOptions({ taskFilterId });
     };
 
     return (

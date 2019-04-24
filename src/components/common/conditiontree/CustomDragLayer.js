@@ -18,7 +18,7 @@ function CustomDragLayer(props) {
             transform: transform,
             WebkitTransform: transform
         };
-    }
+    };
 
     if (!props.isDragging) {
         return null;

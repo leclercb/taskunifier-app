@@ -23,19 +23,19 @@ function TaskQuickAdd(props) {
 
     const onChange = values => {
         if (values.includes('__ADD__')) {
-            onAdd(values.filter(v => v !== '__ADD__'))
+            onAdd(values.filter(v => v !== '__ADD__'));
         } else {
             setValues(values);
         }
-    }
+    };
 
     const onKeyInputDown = () => {
         setOpen(true);
-    }
+    };
 
     const onBlur = () => {
         setOpen(false);
-    }
+    };
 
     const onAdd = values => {
         const newTask = {
@@ -73,7 +73,7 @@ function TaskQuickAdd(props) {
             onInputKeyDown={onKeyInputDown}
             onBlur={onBlur}
             open={open}
-            style={{ width: "100%", padding: 3 }}>
+            style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
                 <Select.Option key='add' value="__ADD__">
                     <Icon icon="plus" text="Create task" />
@@ -125,7 +125,7 @@ TaskQuickAdd.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType).isRequired,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType).isRequired,
     addTask: PropTypes.func.isRequired
-}
+};
 
 export default withTasks(withObjects(TaskQuickAdd, {
     includeContexts: true,

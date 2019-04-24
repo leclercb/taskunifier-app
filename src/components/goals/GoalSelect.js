@@ -23,6 +23,6 @@ export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
 
 GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType).isRequired
-}
+};
 
 export default withGoals(GoalSelect, { filterArchived: true });

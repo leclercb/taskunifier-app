@@ -53,7 +53,7 @@ export function EditableCell(props) {
                 }
             }
         });
-    }
+    };
 
     const save = e => {
         const { record, onSave } = props;
@@ -65,7 +65,7 @@ export function EditableCell(props) {
             toggleEdit();
             onSave({ ...record, ...values });
         });
-    }
+    };
 
     const {
         field,

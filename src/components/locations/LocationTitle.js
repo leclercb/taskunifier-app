@@ -12,6 +12,6 @@ export function LocationTitle(props) {
 LocationTitle.propTypes = {
     locationId: PropTypes.string,
     location: LocationPropType
-}
+};
 
 export default withLocation(LocationTitle);

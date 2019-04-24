@@ -10,12 +10,12 @@ function NoteView(props) {
     const onVerticalSplitPaneSizeChange = size => {
         props.updateSettings({ verticalSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
-    }
+    };
 
     const onHorizontalSplitPaneSizeChange = size => {
         props.updateSettings({ horizontalSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
-    }
+    };
 
     return (
         <SplitPane
@@ -46,6 +46,6 @@ function NoteView(props) {
 NoteView.propTypes = {
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired
-}
+};
 
 export default withSettings(NoteView);

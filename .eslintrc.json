@@ -37,6 +37,20 @@
         "semi": [
             "error",
             "always"
+        ],
+        "sort-imports": [
+            "off",
+            {
+                "ignoreCase": false,
+                "ignoreDeclarationSort": false,
+                "ignoreMemberSort": false,
+                "memberSyntaxSortOrder": [
+                    "all",
+                    "multiple",
+                    "single",
+                    "none"
+                ]
+            }
         ]
     }
 }

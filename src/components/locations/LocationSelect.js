@@ -23,6 +23,6 @@ export const LocationSelect = React.forwardRef(function LocationSelect(props, re
 
 LocationSelect.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType).isRequired
-}
+};
 
 export default withLocations(LocationSelect);

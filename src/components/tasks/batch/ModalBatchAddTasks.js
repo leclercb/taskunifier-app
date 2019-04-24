@@ -29,6 +29,6 @@ function ModalBatchAddTasks(props) {
 ModalBatchAddTasks.propTypes = {
     batchAddTasks: PropTypes.object.isRequired,
     setBatchAddTasksOptions: PropTypes.func.isRequired
-}
+};
 
 export default withApp(ModalBatchAddTasks);

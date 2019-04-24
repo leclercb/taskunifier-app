@@ -12,6 +12,6 @@ export function TaskTemplateTitle(props) {
 TaskTemplateTitle.propTypes = {
     taskTemplateId: PropTypes.string,
     taskTemplate: TaskTemplatePropType
-}
+};
 
 export default withTaskTemplate(TaskTemplateTitle);

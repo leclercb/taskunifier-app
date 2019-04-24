@@ -103,7 +103,7 @@ NoteGrid.propTypes = {
     notes: PropTypes.arrayOf(NotePropType).isRequired,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired
-}
+};
 
 // TODO remove
 const dummyNotes = createDummyNotes();
@@ -120,7 +120,7 @@ function createDummyNotes() {
             state: 'TO_UPDATE',
             title: 'Note Dummy ' + i,
             color: '#ffffff'
-        })
+        });
     }
 
     return notes;

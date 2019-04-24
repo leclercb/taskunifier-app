@@ -23,6 +23,6 @@ export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
 
 StatusSelect.propTypes = {
     statuses: PropTypes.arrayOf(StatusPropType).isRequired
-}
+};
 
 export default withStatuses(withSettings(StatusSelect));

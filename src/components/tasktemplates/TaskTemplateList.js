@@ -14,7 +14,7 @@ function TaskTemplateList(props) {
         props.updateSettings({
             defaultTaskTemplate: props.selectedTaskTemplateId
         });
-    }
+    };
 
     return (
         <React.Fragment>
@@ -22,7 +22,7 @@ function TaskTemplateList(props) {
                 size="small"
                 bordered={true}
                 dataSource={props.taskTemplates}
-                style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
+                style={{ minHeight: 400, maxHeight: 400, overflowY: 'auto' }}
                 renderItem={item => (
                     <List.Item
                         onClick={() => props.onTaskTemplateSelection(item)}

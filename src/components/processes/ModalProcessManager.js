@@ -7,7 +7,7 @@ import Icon from '../common/Icon';
 function ModalProcessManager(props) {
     const onOk = () => {
         props.setProcessesVisible(false);
-    }
+    };
 
     return (
         <Modal

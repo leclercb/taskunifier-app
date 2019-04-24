@@ -12,6 +12,6 @@ export function FolderTitle(props) {
 FolderTitle.propTypes = {
     folderId: PropTypes.string,
     folder: FolderPropType
-}
+};
 
 export default withFolder(FolderTitle);

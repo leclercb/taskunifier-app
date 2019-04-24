@@ -25,7 +25,7 @@ function TaskFilterConditionTree(props) {
             type: 'equal',
             value: null
         };
-    }
+    };
 
     const getLeafComponent = condition => {
         const field = props.taskFields.find(field => field.id === condition.field);
@@ -35,14 +35,14 @@ function TaskFilterConditionTree(props) {
         }
 
         return TaskFilterConditionForm;
-    }
+    };
 
     const onSaveCondition = condition => {
         props.updateTaskFilter({
             ...props.taskFilter,
             condition: condition
         });
-    }
+    };
 
     return (
         <ConditionTree

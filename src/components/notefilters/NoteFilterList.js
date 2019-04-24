@@ -12,7 +12,7 @@ function NoteFilterList(props) {
                 size="small"
                 bordered={true}
                 dataSource={props.noteFilters}
-                style={{ minHeight: 400, maxHeight: 400, overflowY: "auto" }}
+                style={{ minHeight: 400, maxHeight: 400, overflowY: 'auto' }}
                 renderItem={item => (
                     <List.Item
                         onClick={() => props.onNoteFilterSelection(item)}

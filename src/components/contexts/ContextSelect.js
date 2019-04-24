@@ -23,6 +23,6 @@ export const ContextSelect = React.forwardRef(function ContextSelect(props, ref)
 
 ContextSelect.propTypes = {
     contexts: PropTypes.arrayOf(ContextPropType).isRequired
-}
+};
 
 export default withContexts(ContextSelect);

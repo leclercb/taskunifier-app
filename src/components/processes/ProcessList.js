@@ -16,7 +16,7 @@ function ProcessList(props) {
             default:
                 return 'exclamation-circle';
         }
-    }
+    };
 
     const getColorFromState = state => {
         switch (state) {
@@ -28,7 +28,7 @@ function ProcessList(props) {
             default:
                 return Constants.processErrorColor;
         }
-    }
+    };
 
     return (
         <React.Fragment>

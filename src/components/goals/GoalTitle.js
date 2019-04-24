@@ -12,6 +12,6 @@ export function GoalTitle(props) {
 GoalTitle.propTypes = {
     goalId: PropTypes.string,
     goal: GoalPropType
-}
+};
 
 export default withGoal(GoalTitle);

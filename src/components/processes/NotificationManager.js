@@ -14,7 +14,7 @@ function NotificationManager(props) {
             default:
                 return 'error';
         }
-    }
+    };
 
     useEffect(() => {
         if (props.processes.notifications.length > 0) {

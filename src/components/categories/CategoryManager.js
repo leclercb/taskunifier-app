@@ -14,11 +14,11 @@ function CategoryManager(props) {
 
     const onActiveKeyChange = activeKey => {
         props.onCategorySelection(activeKey);
-    }
+    };
 
     const onObjectSelection = objectId => {
         props.onObjectSelection(objectId);
-    }
+    };
 
     return (
         <Tabs activeKey={category} onChange={onActiveKeyChange} animated={false}>
@@ -49,6 +49,6 @@ CategoryManager.propTypes = {
     objectId: PropTypes.string,
     onCategorySelection: PropTypes.func.isRequired,
     onObjectSelection: PropTypes.func.isRequired
-}
+};
 
 export default CategoryManager;
