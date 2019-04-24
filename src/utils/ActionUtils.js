@@ -9,7 +9,7 @@ const rimraf = electron.remote.require('rimraf');
 export const { join, sep } = electron.remote.require('path');
 
 export const loadFromFile = (property, file, onData) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 
@@ -51,7 +51,7 @@ export const loadFromFile = (property, file, onData) => {
 };
 
 export const saveToFile = (property, file, data) => {
-    return (dispatch, getState) => {
+    return dispatch => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
 

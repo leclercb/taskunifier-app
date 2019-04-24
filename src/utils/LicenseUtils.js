@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 const electron = window.require('electron');
 const crypto = electron.remote.require('crypto');
 

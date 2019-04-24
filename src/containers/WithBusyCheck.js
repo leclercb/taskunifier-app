@@ -20,7 +20,7 @@ function withBusyCheck(Component) {
 
     WithBusyCheck.propTypes = {
         busy: PropTypes.bool.isRequired
-    }
+    };
 
     const mapStateToProps = state => ({
         busy: state.processes.busy

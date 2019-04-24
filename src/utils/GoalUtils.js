@@ -1,4 +1,4 @@
-export const onGoalUpdate = (goal, oldGoal) => {
+export const onGoalUpdate = goal => {
     if (goal.level === 'lifeTime') {
         goal.contributesTo = null;
     }

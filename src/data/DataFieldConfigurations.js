@@ -1097,7 +1097,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: values => (
-                    values ? values.map(value => (<Tag>{value}</Tag>)) : <span>&nbsp;</span>
+                    values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
                 ),
                 input: props => (
                     <Select mode="tags" {...props} />
