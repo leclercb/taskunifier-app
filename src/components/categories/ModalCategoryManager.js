@@ -35,8 +35,8 @@ function ModalCategoryManager(props) {
 }
 
 ModalCategoryManager.propTypes = {
-    setCategoryManagerOptions: PropTypes.func.isRequired,
-    categoryManager: PropTypes.object.isRequired
+    categoryManager: PropTypes.object.isRequired,
+    setCategoryManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(ModalCategoryManager);

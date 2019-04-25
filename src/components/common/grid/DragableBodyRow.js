@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import './DragableBodyRow.css';
 
 const BodyRow = props => {
     const {
+        rowProps,
         isOver,
         connectDragSource,
         connectDropTarget,
         moveRow,
-        rowProps,
         ...restProps
     } = props;
 
@@ -21,6 +22,14 @@ const BodyRow = props => {
     }
 
     return connectDragSource(connectDropTarget(<tr {...restProps} className={className} style={style} />));
+};
+
+BodyRow.propTypes = {
+    rowProps: PropTypes.object,
+    isOver: PropTypes.bool.isRequired,
+    connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
+    moveRow: PropTypes.func.isRequired,
 };
 
 const rowSource = {

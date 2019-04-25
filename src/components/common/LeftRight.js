@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function LeftRight(props) {
     return (
@@ -14,6 +15,12 @@ function LeftRight(props) {
             <div style={{ clear: 'both' }}></div>
         </React.Fragment>
     );
+}
+
+LeftRight.propTypes = {
+    left: PropTypes.node,
+    right: PropTypes.node,
+    children: PropTypes.node
 }
 
 export default LeftRight;

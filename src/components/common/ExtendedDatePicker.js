@@ -9,7 +9,6 @@ class ExtendedDatePicker extends React.Component {
     }
 
     render() {
-        console.log(this.props, Number.isInteger(this.props.value))
         return (
             <React.Fragment>
                 <Switch

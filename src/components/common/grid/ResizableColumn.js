@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Resizable } from 'react-resizable';
 
 function ResizableColumn(props) {
@@ -15,6 +16,11 @@ function ResizableColumn(props) {
             <th {...restProps} style={{ userSelect: 'none' }} />
         </Resizable>
     );
+}
+
+ResizableColumn.propTypes = {
+    width: PropTypes.number.isRequired,
+    onResize: PropTypes.func.isRequired
 }
 
 export default ResizableColumn;

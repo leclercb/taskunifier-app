@@ -1,6 +1,6 @@
 import React from 'react';
-import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
 import moment from 'moment';
+import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
 import { escape } from 'utils/RegexUtils';
 import ColorPicker from 'components/common/ColorPicker';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
