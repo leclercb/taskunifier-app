@@ -3,15 +3,23 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import MaskTextField from 'components/common/MaskTextField';
+import Spacer from 'components/common/Spacer';
 
 class TimerField extends React.Component {
     constructor(props) {
         super(props);
 
+        this.maskTextFieldRef = React.createRef();
+
+        this.focus = this.focus.bind(this);
         this.formatTime = this.formatTime.bind(this);
         this.parseTime = this.parseTime.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
+    }
+
+    focus() {
+        this.maskTextFieldRef.current.focus();
     }
 
     formatTime(value) {
@@ -22,7 +30,7 @@ class TimerField extends React.Component {
 
     parseTime(value) {
         const tokens = value.split(':');
-        return (tokens[0] * 60) + tokens[1];
+        return (Number(tokens[0]) * 60) + Number(tokens[1]);
     }
 
     onClick() {
@@ -38,13 +46,10 @@ class TimerField extends React.Component {
             timer.startDate = moment().toJSON();
         }
 
-        console.log(timer);
         this.props.onChange(timer);
     }
 
     onChange(value) {
-        console.log(value);
-
         if (!value.match(/^[0-9]{2}:[0-9]{2}$/)) {
             return;
         }
@@ -54,30 +59,38 @@ class TimerField extends React.Component {
             startDate: this.props.timer && this.props.timer.startDate ? moment().toJSON() : null
         };
 
-        //this.props.onChange(timer);
+        this.props.onChange(timer);
     }
 
     render() {
-        console.log(this.props.timer);
-
         const timer = this.props.timer || {
             value: 0,
             startDate: null
         }
+
+        if (this.props.readOnly) {
+            return this.formatTime(timer.value);
+        }
+
+        const restProps = { ...this.props };
+        delete restProps.timer;
+        delete restProps.onChange;
+        delete restProps.readOnly;
 
         return (
             <React.Fragment>
                 <Icon
                     icon={timer.startDate ? 'pause' : 'play'}
                     style={{ cursor: 'pointer' }}
-                    onClick={this.onClick}
-                    text={this.props.readOnly ? this.formatTime(timer.value) : null} />
-                {!this.props.readOnly &&
-                    <MaskTextField
-                        mask="11:11"
-                        value={this.formatTime(timer.value)}
-                        onChange={e => this.onChange(e.target.value)} />
-                }
+                    onClick={this.onClick} />
+                <Spacer />
+                <MaskTextField
+                    ref={this.maskTextFieldRef}
+                    mask="11:11"
+                    value={this.formatTime(timer.value)}
+                    onChange={e => this.onChange(e.target.value)}
+                    style={{ width: 100 }}
+                    {...restProps} />
             </React.Fragment>
         );
     }

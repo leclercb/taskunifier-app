@@ -9,8 +9,8 @@ import {
     isAlwaysInEditionForType,
     isCommitOnChangeForType
 } from 'utils/FieldUtils';
-import './EditableCell.css';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import './EditableCell.css';
 
 const EditableContext = React.createContext();
 
@@ -88,7 +88,9 @@ export function EditableCell(props) {
                     {form => {
                         formRef.current = form;
 
-                        const extraProps = {};
+                        const extraProps = {
+                            ref: inputRef
+                        };
 
                         if (!isCommitOnChangeForType(field.type)) {
                             extraProps.onPressEnter = save;
@@ -104,7 +106,7 @@ export function EditableCell(props) {
                                         getValueFromEvent: getValueFromEventForType(field.type),
                                         initialValue: getNormalizeForType(field.type)(record[dataIndex])
                                     })(
-                                        getInputForType(field.type, field.options, { ref: inputRef, ...extraProps })
+                                        getInputForType(field.type, field.options, { ...extraProps })
                                     )}
                                 </Form.Item>
                             ) : (

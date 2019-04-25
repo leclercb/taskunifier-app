@@ -72,7 +72,7 @@
         "id": "167c98c5-6670-4600-9528-4611b5e31131",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:28.409Z",
-        "updateDate": "2019-04-23T10:56:19.978Z",
+        "updateDate": "2019-04-25T19:51:38.015Z",
         "state": "TO_UPDATE",
         "progress": 43,
         "priority": "top",
@@ -86,6 +86,10 @@
         "completed": true,
         "status": "nextAction",
         "folder": "789cf454-004e-4fc9-bf42-c40b0b53cd47",
-        "context": "26525d43-68cb-4270-962e-515da08e5d9e"
+        "context": "26525d43-68cb-4270-962e-515da08e5d9e",
+        "timer": {
+            "value": 691,
+            "startDate": null
+        }
     }
 ]

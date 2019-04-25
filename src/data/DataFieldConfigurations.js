@@ -1333,13 +1333,13 @@ export function getFieldConfiguration(type, options) {
             configuration = {
                 title: 'Timer',
                 width: 200,
-                alwaysInEdition: true,
+                alwaysInEdition: false,
                 commitOnChange: false,
                 normalize: value => value,
                 valuePropName: 'timer',
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: value => (
-                    <TimerField value={value} readOnly={true} />
+                    <TimerField timer={value} readOnly={true} />
                 ),
                 input: props => (
                     <TimerField {...props} />

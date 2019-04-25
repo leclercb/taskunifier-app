@@ -283,7 +283,7 @@ export class MaskTextField extends Component {
         const props = { ...cleanedProps, ...eventHandlers, ref, maxLength, placeholder, defaultValue };
         delete props.placeholderChar;
         delete props.formatCharacters;
-
+        
         return props;
     }
 

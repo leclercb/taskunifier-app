@@ -74,6 +74,7 @@ function TaskGrid(props) {
             <InfinityTable
                 rowKey="id"
                 className="task-grid"
+                rowClassName={() => 'editable-row'}
                 scroll={{ y: props.size.element.height - 40 }}
                 components={components}
                 columns={columns}

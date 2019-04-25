@@ -72,6 +72,7 @@ function NoteGrid(props) {
             <InfinityTable
                 rowKey="id"
                 className="note-grid"
+                rowClassName={() => 'editable-row'}
                 scroll={{ y: 500 }}
                 components={components}
                 columns={columns}
