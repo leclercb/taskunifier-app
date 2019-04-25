@@ -1,6 +1,5 @@
 ## Todo List
 
-* Fix eslint
 * Add sort order in filters
 * Add length, timer, reminder and recurrence
 * Grid fix scrollbars
