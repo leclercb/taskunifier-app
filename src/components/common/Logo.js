@@ -9,6 +9,6 @@ function Logo(props) {
 
 Logo.propTypes = {
     size: PropTypes.number
-}
+};
 
 export default Logo;

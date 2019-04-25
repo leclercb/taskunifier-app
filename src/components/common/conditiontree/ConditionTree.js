@@ -48,7 +48,7 @@ function ConditionTree(props) {
         }
     };
 
-    const onUpdate = (condition) => {
+    const onUpdate = () => {
         props.onSaveCondition(rootCondition);
     };
 

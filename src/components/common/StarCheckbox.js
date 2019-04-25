@@ -4,7 +4,13 @@ import Icon from 'components/common/Icon';
 import Constants from 'constants/Constants';
 
 class StarCheckbox extends React.Component {
-    onChange = () => {
+    constructor(props) {
+        super(props);
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange() {
         this.props.onChange(!this.props.checked);
     }
 
@@ -22,6 +28,6 @@ class StarCheckbox extends React.Component {
 StarCheckbox.propTypes = {
     checked: PropTypes.bool,
     onChange: PropTypes.func
-}
+};
 
 export default StarCheckbox;

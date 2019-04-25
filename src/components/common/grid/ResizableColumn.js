@@ -21,6 +21,6 @@ function ResizableColumn(props) {
 ResizableColumn.propTypes = {
     width: PropTypes.number.isRequired,
     onResize: PropTypes.func.isRequired
-}
+};
 
 export default ResizableColumn;

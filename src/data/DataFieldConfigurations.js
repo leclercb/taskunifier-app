@@ -1,3 +1,5 @@
+/* eslint react/display-name: 0 */
+
 import React from 'react';
 import moment from 'moment';
 import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
@@ -21,8 +23,8 @@ import StatusTitle from 'components/statuses/StatusTitle';
 import StatusSelect from 'components/statuses/StatusSelect';
 import TagsTitle from 'components/tags/TagsTitle';
 import TagsSelect from 'components/tags/TagsSelect';
-import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
+import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { getPriorityIndex } from 'data/DataPriorities';
 
 function defaultGetValueFromEvent(e) {

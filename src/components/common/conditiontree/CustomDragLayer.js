@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DragLayer } from 'react-dnd';
 
 function CustomDragLayer(props) {
@@ -41,6 +42,11 @@ function CustomDragLayer(props) {
             </div>
         </div>
     );
+}
+
+CustomDragLayer.propTypes = {
+    currentOffset: PropTypes.number.isRequired,
+    isDragging: PropTypes.bool.isRequired
 }
 
 function collect(monitor) {

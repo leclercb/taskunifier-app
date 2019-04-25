@@ -71,12 +71,13 @@ export function EditableCell(props) {
         field,
         editable,
         dataIndex,
-        title,
         record,
-        index,
-        onSave,
         ...restProps
     } = props;
+
+    delete restProps.title;
+    delete restProps.index;
+    delete restProps.onSave;
 
     return (
         <td {...restProps}>

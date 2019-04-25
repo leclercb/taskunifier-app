@@ -9,6 +9,6 @@ function Spacer(props) {
 
 Spacer.propTypes = {
     size: PropTypes.number
-}
+};
 
 export default Spacer;

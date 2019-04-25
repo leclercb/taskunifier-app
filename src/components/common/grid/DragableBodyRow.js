@@ -5,11 +5,9 @@ import './DragableBodyRow.css';
 
 const BodyRow = props => {
     const {
-        rowProps,
         isOver,
         connectDragSource,
         connectDropTarget,
-        moveRow,
         ...restProps
     } = props;
 
@@ -20,6 +18,9 @@ const BodyRow = props => {
     if (isOver) {
         className += ' drop-over';
     }
+
+    delete restProps.moveRow;
+    delete restProps.rowProps;
 
     return connectDragSource(connectDropTarget(<tr {...restProps} className={className} style={style} />));
 };

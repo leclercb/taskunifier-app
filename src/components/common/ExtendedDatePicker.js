@@ -4,7 +4,13 @@ import moment from 'moment';
 import { DatePicker, InputNumber, Switch } from 'antd';
 
 class ExtendedDatePicker extends React.Component {
-    onChange = checked => {
+    constructor(props) {
+        super(props);
+
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange(checked) {
         this.props.onChange(checked ? 0 : moment());
     }
 
@@ -30,6 +36,6 @@ ExtendedDatePicker.propTypes = {
         PropTypes.object
     ]),
     onChange: PropTypes.func
-}
+};
 
 export default ExtendedDatePicker;

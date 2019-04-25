@@ -62,12 +62,6 @@ function setSelection(el, selection) {
 }
 
 export class MaskTextField extends Component {
-    static propTypes = {
-        mask: PropTypes.string,
-        formatCharacters: PropTypes.object,
-        placeholderChar: PropTypes.string
-    };
-
     componentWillMount() {
         if (!this.props.mask) {
             return null;
@@ -279,5 +273,11 @@ export class MaskTextField extends Component {
         return <Input {...(this.props.mask ? this.getInputProps() : {})} />
     }
 }
+
+MaskTextField.propTypes = {
+    mask: PropTypes.string,
+    formatCharacters: PropTypes.object,
+    placeholderChar: PropTypes.string
+};
 
 export default MaskTextField;

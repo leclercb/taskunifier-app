@@ -25,6 +25,6 @@ Icon.propTypes = {
     style: PropTypes.object,
     spanClassName: PropTypes.string,
     onClick: PropTypes.func
-}
+};
 
 export default Icon;
