@@ -240,7 +240,7 @@ export const setSelectedNoteFilter = noteFilter => {
     };
 };
 
-export const setCategoryManagerOptions = (options) => {
+export const setCategoryManagerOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_CATEGORY_MANAGER_OPTIONS',
@@ -251,7 +251,7 @@ export const setCategoryManagerOptions = (options) => {
     };
 };
 
-export const setTaskFilterManagerOptions = (options) => {
+export const setTaskFilterManagerOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_TASK_FILTER_MANAGER_OPTIONS',
@@ -262,7 +262,7 @@ export const setTaskFilterManagerOptions = (options) => {
     };
 };
 
-export const setTaskTemplateManagerOptions = (options) => {
+export const setTaskTemplateManagerOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_TASK_TEMPLATE_MANAGER_OPTIONS',
@@ -273,7 +273,7 @@ export const setTaskTemplateManagerOptions = (options) => {
     };
 };
 
-export const setNoteFilterManagerOptions = (options) => {
+export const setNoteFilterManagerOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_NOTE_FILTER_MANAGER_OPTIONS',
@@ -284,7 +284,7 @@ export const setNoteFilterManagerOptions = (options) => {
     };
 };
 
-export const setNoteTemplateManagerOptions = (options) => {
+export const setNoteTemplateManagerOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_NOTE_TEMPLATE_MANAGER_OPTIONS',
@@ -295,7 +295,7 @@ export const setNoteTemplateManagerOptions = (options) => {
     };
 };
 
-export const setSettingManagerOptions = (options) => {
+export const setSettingManagerOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_SETTING_MANAGER_OPTIONS',
@@ -306,7 +306,7 @@ export const setSettingManagerOptions = (options) => {
     };
 };
 
-export const setBatchAddTasksOptions = (options) => {
+export const setBatchAddTasksOptions = options => {
     return dispatch => {
         dispatch({
             type: 'SET_BATCH_ADD_TASKS_OPTIONS',

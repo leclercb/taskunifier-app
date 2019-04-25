@@ -1,8 +1,8 @@
 import uuid from 'uuid';
 import moment from 'moment';
 import Constants from 'constants/Constants';
-import { filterStaticObjects } from 'utils/CategoryUtils';
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
+import { filterStaticObjects } from 'utils/CategoryUtils';
 
 export const loadObjectsFromFile = (property, file) => {
     return dispatch => {
@@ -72,7 +72,7 @@ export const deleteObject = (property, objectId) => {
     };
 };
 
-export const cleanObjects = (property) => {
+export const cleanObjects = property => {
     return dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',

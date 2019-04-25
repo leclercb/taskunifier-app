@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import reduceReducers from 'reduce-reducers';
 import App from 'reducers/App';
-import Objects from 'reducers/Objects';
 import Notes from 'reducers/Notes';
+import Objects from 'reducers/Objects';
 import Processes from 'reducers/Processes';
 import Settings from 'reducers/Settings';
 import Tasks from 'reducers/Tasks';
