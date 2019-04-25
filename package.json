@@ -9,6 +9,7 @@
     "scripts": {
         "react:start": "BROWSER=none; craco start",
         "react:build": "craco build",
+        "react:babel": "node node_modules/babel-cli/bin/babel.js src -d lib --copy-files",
         "react:lint": "node node_modules/eslint/bin/eslint.js src",
         "react:test": "craco test",
         "react:deploy": "node server.js",
@@ -47,6 +48,12 @@
         "uuid": "^3.3.2"
     },
     "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-plugin-import": "^1.11.0",
+        "babel-plugin-transform-class-properties": "^6.24.1",
+        "babel-plugin-transform-object-rest-spread": "^6.26.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-react": "^6.24.1",
         "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
         "electron-devtools-installer": "^2.2.4",

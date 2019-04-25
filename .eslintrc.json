@@ -41,7 +41,8 @@
             "always"
         ],
         "import/order": [
-            "error", {
+            "error",
+            {
                 "groups": [
                     "builtin",
                     "external",
@@ -55,6 +56,9 @@
         ]
     },
     "settings": {
+        "react": {
+            "version": "detect"
+        },
         "import/resolver": {
             "node": {
                 "paths": [
