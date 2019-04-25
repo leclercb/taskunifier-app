@@ -35,6 +35,7 @@ function TaskNoteForm(props) {
 }
 
 TaskNoteForm.propTypes = {
+    form: PropTypes.object.isRequired,
     task: TaskPropType.isRequired,
     updateTask: PropTypes.func.isRequired
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import Logo from 'components/common/Logo';
 import Spacer from 'components/common/Spacer';
 
-function Footer(props) {
+function Footer() {
     return (
         <React.Fragment>
             <span>

@@ -72,6 +72,7 @@ function NoteFilterConditionForm(props) {
 }
 
 NoteFilterConditionForm.propTypes = {
+    form: PropTypes.object.isRequired,
     noteFields: PropTypes.arrayOf(FieldPropType),
     condition: PropTypes.object.isRequired,
     context: PropTypes.object,

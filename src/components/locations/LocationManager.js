@@ -4,6 +4,7 @@ import { Col, Empty, Row } from 'antd';
 import withLocations from 'containers/WithLocations';
 import LocationList from 'components/locations/LocationList';
 import LocationForm from 'components/locations/LocationForm';
+import { LocationPropType } from 'proptypes/LocationPropTypes';
 
 function LocationManager(props) {
     const selectedLocationId = props.locationId;
@@ -42,7 +43,11 @@ function LocationManager(props) {
 
 LocationManager.propTypes = {
     locationId: PropTypes.string,
-    onLocationSelection: PropTypes.func.isRequired
+    locations: PropTypes.arrayOf(LocationPropType).isRequired,
+    onLocationSelection: PropTypes.func.isRequired,
+    addLocation: PropTypes.func.isRequired,
+    updateLocation: PropTypes.func.isRequired,
+    deleteLocation: PropTypes.func.isRequired
 };
 
 export default withLocations(LocationManager);

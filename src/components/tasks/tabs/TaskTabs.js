@@ -22,7 +22,8 @@ function TaskTabs(props) {
 
 TaskTabs.propTypes = {
     selectedTasks: PropTypes.array.isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired
+    setSelectedTaskIds: PropTypes.func.isRequired,
+    updateTask: PropTypes.func.isRequired
 };
 
 export default withSelectedTasks(TaskTabs);

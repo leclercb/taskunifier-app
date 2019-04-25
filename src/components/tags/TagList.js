@@ -30,6 +30,7 @@ function TagList(props) {
 TagList.propTypes = {
     tags: PropTypes.array.isRequired,
     selectedTagId: PropTypes.string,
+    addTag: PropTypes.func.isRequired,
     deleteTag: PropTypes.func.isRequired,
     onTagSelection: PropTypes.func.isRequired
 };

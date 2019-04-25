@@ -44,6 +44,7 @@ function TaskFilterForm(props) {
 }
 
 TaskFilterForm.propTypes = {
+    form: PropTypes.object.isRequired,
     taskFilter: TaskFilterPropType.isRequired,
     updateTaskFilter: PropTypes.func.isRequired
 };

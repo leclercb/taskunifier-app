@@ -53,6 +53,7 @@ function FolderForm(props) {
 }
 
 FolderForm.propTypes = {
+    form: PropTypes.object.isRequired,
     folder: FolderPropType.isRequired,
     updateFolder: PropTypes.func.isRequired
 };

@@ -44,6 +44,7 @@ function NoteFilterForm(props) {
 }
 
 NoteFilterForm.propTypes = {
+    form: PropTypes.object.isRequired,
     noteFilter: NoteFilterPropType.isRequired,
     updateNoteFilter: PropTypes.func.isRequired
 };

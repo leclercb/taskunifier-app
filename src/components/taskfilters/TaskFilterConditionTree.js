@@ -7,8 +7,10 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 import withTaskFields from 'containers/WithTaskFields';
 import TaskFilterConditionForm from 'components/taskfilters/TaskFilterConditionForm';
 
-function TaskFilterEmpty(props) {
-    return (<Empty />);
+function TaskFilterEmpty() {
+    return (
+        <Empty />
+    );
 }
 
 function TaskFilterConditionTree(props) {

@@ -15,7 +15,8 @@ export function StatusTitle(props) {
 
 StatusTitle.propTypes = {
     statusId: PropTypes.string,
-    status: StatusPropType
+    status: StatusPropType,
+    settings: PropTypes.object.isRequired
 };
 
 export default withStatus(withSettings(StatusTitle));

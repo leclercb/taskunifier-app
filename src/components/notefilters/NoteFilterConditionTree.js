@@ -7,8 +7,10 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 import withNoteFields from 'containers/WithNoteFields';
 import NoteFilterConditionForm from 'components/notefilters/NoteFilterConditionForm';
 
-function NoteFilterEmpty(props) {
-    return (<Empty />);
+function NoteFilterEmpty() {
+    return (
+        <Empty />
+    );
 }
 
 function NoteFilterConditionTree(props) {

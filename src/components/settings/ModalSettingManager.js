@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from 'containers/WithApp';
 import Icon from 'components/common/Icon';
@@ -25,5 +26,10 @@ function ModalSettingManager(props) {
         </Modal>
     );
 }
+
+ModalSettingManager.propTypes = {
+    settingManager: PropTypes.object.isRequired,
+    setSettingManagerOptions: PropTypes.func.isRequired
+};
 
 export default withApp(ModalSettingManager);

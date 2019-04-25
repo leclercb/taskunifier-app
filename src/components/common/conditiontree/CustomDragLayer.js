@@ -47,7 +47,7 @@ function CustomDragLayer(props) {
 CustomDragLayer.propTypes = {
     currentOffset: PropTypes.number.isRequired,
     isDragging: PropTypes.bool.isRequired
-}
+};
 
 function collect(monitor) {
     return {

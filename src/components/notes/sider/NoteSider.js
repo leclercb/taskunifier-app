@@ -12,6 +12,7 @@ import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from '
 import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
 import { Tooltip } from 'antd';
 import Spacer from 'components/common/Spacer';
+import { TagPropType } from 'proptypes/TagPropTypes';
 
 function NoteSider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
@@ -38,7 +39,7 @@ function NoteSider(props) {
         );
     };
 
-    const createObjectContextMenu = (object, onAdd, onEdit, onDelete) => {
+    const createObjectContextMenu = (object, onAdd, onEdit) => {
         return (
             <RCMenu id={'menu_' + object.id}>
                 {onAdd ? (
@@ -88,7 +89,7 @@ function NoteSider(props) {
                         </LeftRight>
                     </div>
                 </RCMenuProvider>
-                {createObjectContextMenu(object, onAdd, onEdit, onDelete)}
+                {createObjectContextMenu(object, onAdd, onEdit)}
             </Menu.Item>
         );
     };
@@ -216,11 +217,13 @@ NoteSider.propTypes = {
     selectedNoteFilter: NoteFilterPropType.isRequired,
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
     noteFilters: PropTypes.arrayOf(NoteFilterPropType).isRequired,
+    tags: PropTypes.arrayOf(TagPropType).isRequired,
     setSelectedNoteFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
     deleteFolder: PropTypes.func.isRequired,
-    deleteNoteFilter: PropTypes.func.isRequired
+    deleteNoteFilter: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired
 };
 
 export default withApp(withObjects(NoteSider, {

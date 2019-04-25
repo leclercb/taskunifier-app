@@ -45,7 +45,9 @@ function TaskCalendar(props) {
 }
 
 TaskCalendar.propTypes = {
-    tasks: PropTypes.arrayOf(TaskPropType).isRequired
+    tasks: PropTypes.arrayOf(TaskPropType).isRequired,
+    settings: PropTypes.object.isRequired,
+    setSelectedTaskIds: PropTypes.func.isRequired
 };
 
 export default withSettings(withTasks(TaskCalendar, { applySelectedTaskFilter: true }));

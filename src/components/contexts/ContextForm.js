@@ -44,6 +44,7 @@ function ContextForm(props) {
 }
 
 ContextForm.propTypes = {
+    form: PropTypes.object.isRequired,
     context: ContextPropType.isRequired,
     updateContext: PropTypes.func.isRequired
 };

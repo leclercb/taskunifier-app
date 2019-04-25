@@ -61,7 +61,8 @@ function AppLayout(props) {
 }
 
 AppLayout.propTypes = {
-    busy: PropTypes.bool.isRequired
+    busy: PropTypes.bool.isRequired,
+    selectedView: PropTypes.string.isRequired
 };
 
 export default withApp(withProcesses(withSettings(withBusy(AppLayout))));

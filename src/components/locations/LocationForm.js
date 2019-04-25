@@ -65,6 +65,7 @@ function LocationForm(props) {
 }
 
 LocationForm.propTypes = {
+    form: PropTypes.object.isRequired,
     location: LocationPropType.isRequired,
     updateLocation: PropTypes.func.isRequired
 };

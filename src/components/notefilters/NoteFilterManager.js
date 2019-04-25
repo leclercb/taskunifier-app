@@ -5,6 +5,7 @@ import withNoteFilters from 'containers/WithNoteFilters';
 import NoteFilterList from 'components/notefilters/NoteFilterList';
 import NoteFilterConditionTree from 'components/notefilters/NoteFilterConditionTree';
 import NoteFilterForm from 'components/notefilters/NoteFilterForm';
+import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 
 function NoteFilterManager(props) {
     const selectedNoteFilterId = props.noteFilterId;
@@ -35,15 +36,15 @@ function NoteFilterManager(props) {
             <Col span={16}>
                 {selectedNoteFilter ? (
                     <React.Fragment>
-                        <NoteFilterForm 
-                        key={selectedNoteFilterId} 
-                        noteFilter={selectedNoteFilter} 
-                        updateNoteFilter={props.updateNoteFilter} />
+                        <NoteFilterForm
+                            key={selectedNoteFilterId}
+                            noteFilter={selectedNoteFilter}
+                            updateNoteFilter={props.updateNoteFilter} />
                         <Divider />
-                        <NoteFilterConditionTree 
-                        key={'conditionTree_' + selectedNoteFilterId} 
-                        noteFilter={selectedNoteFilter} 
-                        updateNoteFilter={props.updateNoteFilter} />
+                        <NoteFilterConditionTree
+                            key={'conditionTree_' + selectedNoteFilterId}
+                            noteFilter={selectedNoteFilter}
+                            updateNoteFilter={props.updateNoteFilter} />
                     </React.Fragment>
                 ) : <Empty description="Please select a note filter" />}
             </Col>
@@ -53,7 +54,11 @@ function NoteFilterManager(props) {
 
 NoteFilterManager.propTypes = {
     noteFilterId: PropTypes.string,
-    onNoteFilterSelection: PropTypes.func.isRequired
+    noteFilters: PropTypes.arrayOf(NoteFilterPropType).isRequired,
+    onNoteFilterSelection: PropTypes.func.isRequired,
+    addNoteFilter: PropTypes.func.isRequired,
+    updateNoteFilter: PropTypes.func.isRequired,
+    deleteNoteFilter: PropTypes.func.isRequired
 };
 
 export default withNoteFilters(NoteFilterManager);

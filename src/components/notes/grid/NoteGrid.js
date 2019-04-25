@@ -101,8 +101,11 @@ function NoteGrid(props) {
 NoteGrid.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType).isRequired,
     notes: PropTypes.arrayOf(NotePropType).isRequired,
+    settings: PropTypes.object.isRequired,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    setSelectedNoteIds: PropTypes.func.isRequired
+    setSelectedNoteIds: PropTypes.func.isRequired,
+    updateNote: PropTypes.func.isRequired,
+    updateSettings: PropTypes.func.isRequired
 };
 
 // TODO remove

@@ -4,6 +4,7 @@ import { Col, Empty, Row } from 'antd';
 import withContexts from 'containers/WithContexts';
 import ContextList from 'components/contexts/ContextList';
 import ContextForm from 'components/contexts/ContextForm';
+import { ContextPropType } from 'proptypes/ContextPropTypes';
 
 function ContextManager(props) {
     const selectedContextId = props.contextId;
@@ -42,7 +43,11 @@ function ContextManager(props) {
 
 ContextManager.propTypes = {
     contextId: PropTypes.string,
-    onContextSelection: PropTypes.func.isRequired
+    contexts: PropTypes.arrayOf(ContextPropType).isRequired,
+    onContextSelection: PropTypes.func.isRequired,
+    addContext: PropTypes.func.isRequired,
+    updateContext: PropTypes.func.isRequired,
+    deleteContext: PropTypes.func.isRequired
 };
 
 export default withContexts(ContextManager);

@@ -4,6 +4,7 @@ import { Col, Empty, Row } from 'antd';
 import withFolders from 'containers/WithFolders';
 import FolderList from 'components/folders/FolderList';
 import FolderForm from 'components/folders/FolderForm';
+import { FolderPropType } from 'proptypes/FolderPropTypes';
 
 function FolderManager(props) {
     const selectedFolderId = props.folderId;
@@ -42,7 +43,11 @@ function FolderManager(props) {
 
 FolderManager.propTypes = {
     folderId: PropTypes.string,
-    onFolderSelection: PropTypes.func.isRequired
+    folders: PropTypes.arrayOf(FolderPropType).isRequired,
+    onFolderSelection: PropTypes.func.isRequired,
+    addFolder: PropTypes.func.isRequired,
+    updateFolder: PropTypes.func.isRequired,
+    deleteFolder: PropTypes.func.isRequired
 };
 
 export default withFolders(FolderManager);

@@ -4,6 +4,7 @@ import { Col, Empty, Row } from 'antd';
 import withTags from 'containers/WithTags';
 import TagList from 'components/tags/TagList';
 import TagForm from 'components/tags/TagForm';
+import { TagPropType } from 'proptypes/TagPropTypes';
 
 function TagManager(props) {
     const selectedTagId = props.tagId;
@@ -43,7 +44,10 @@ function TagManager(props) {
 
 TagManager.propTypes = {
     tagId: PropTypes.string,
-    onTagSelection: PropTypes.func.isRequired
+    tags: PropTypes.arrayOf(TagPropType).isRequired,
+    onTagSelection: PropTypes.func.isRequired,
+    updateTag: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired
 };
 
 export default withTags(TagManager);

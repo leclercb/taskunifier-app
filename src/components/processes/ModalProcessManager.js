@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withProcesses from 'containers/WithProcesses';
 import ProcessList from 'components/processes/ProcessList';
@@ -23,5 +24,10 @@ function ModalProcessManager(props) {
         </Modal>
     );
 }
+
+ModalProcessManager.propTypes = {
+    processes: PropTypes.array.isRequired,
+    setProcessesVisible: PropTypes.func.isRequired
+};
 
 export default withProcesses(ModalProcessManager);

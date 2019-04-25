@@ -70,6 +70,7 @@ function ContactForm(props) {
 }
 
 ContactForm.propTypes = {
+    form: PropTypes.object.isRequired,
     contact: ContactPropType.isRequired,
     updateContact: PropTypes.func.isRequired
 };

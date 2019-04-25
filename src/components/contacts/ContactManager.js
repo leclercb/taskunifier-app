@@ -4,6 +4,7 @@ import { Col, Empty, Row } from 'antd';
 import withContacts from 'containers/WithContacts';
 import ContactList from 'components/contacts/ContactList';
 import ContactForm from 'components/contacts/ContactForm';
+import { ContactPropType } from 'proptypes/ContactPropTypes';
 
 function ContactManager(props) {
     const selectedContactId = props.contactId;
@@ -42,7 +43,11 @@ function ContactManager(props) {
 
 ContactManager.propTypes = {
     contactId: PropTypes.string,
-    onContactSelection: PropTypes.func.isRequired
+    contacts: PropTypes.arrayOf(ContactPropType).isRequired,
+    onContactSelection: PropTypes.func.isRequired,
+    addContact: PropTypes.func.isRequired,
+    updateContact: PropTypes.func.isRequired,
+    deleteContact: PropTypes.func.isRequired
 };
 
 export default withContacts(ContactManager);

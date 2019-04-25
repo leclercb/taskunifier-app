@@ -66,6 +66,7 @@ function TaskTemplateForm(props) {
 }
 
 TaskTemplateForm.propTypes = {
+    form: PropTypes.object.isRequired,
     taskFields: PropTypes.arrayOf(FieldPropType),
     taskTemplate: TaskTemplatePropType.isRequired,
     updateTaskTemplate: PropTypes.func.isRequired

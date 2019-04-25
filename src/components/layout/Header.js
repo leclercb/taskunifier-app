@@ -151,17 +151,25 @@ function Header(props) {
 }
 
 Header.propTypes = {
-    addNote: PropTypes.func.isRequired,
-    addTask: PropTypes.func.isRequired,
     pro: PropTypes.bool.isRequired,
+    selectedView: PropTypes.string.isRequired,
+    selectedNoteIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedTaskIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    addNote: PropTypes.func.isRequired,
+    deleteNote: PropTypes.func.isRequired,
+    addTask: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
     setSelectedView: PropTypes.func.isRequired,
+    setSelectedNoteIds: PropTypes.func.isRequired,
+    setSelectedTaskIds: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
+    setBatchAddTasksOptions: PropTypes.func.isRequired,
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 

@@ -35,6 +35,7 @@ function NoteNoteForm(props) {
 }
 
 NoteNoteForm.propTypes = {
+    form: PropTypes.object.isRequired,
     note: NotePropType.isRequired,
     updateNote: PropTypes.func.isRequired
 };

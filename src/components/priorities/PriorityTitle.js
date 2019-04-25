@@ -15,7 +15,8 @@ export function PriorityTitle(props) {
 
 PriorityTitle.propTypes = {
     priorityId: PropTypes.string,
-    priority: PriorityPropType
+    priority: PriorityPropType,
+    settings: PropTypes.object.isRequired
 };
 
 export default withPriority(withSettings(PriorityTitle));

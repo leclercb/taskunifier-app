@@ -48,6 +48,7 @@ function TagForm(props) {
 }
 
 TagForm.propTypes = {
+    form: PropTypes.object.isRequired,
     tag: TagPropType.isRequired,
     updateTag: PropTypes.func.isRequired
 };

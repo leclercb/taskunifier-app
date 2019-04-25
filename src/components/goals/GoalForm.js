@@ -83,6 +83,7 @@ function GoalForm(props) {
 }
 
 GoalForm.propTypes = {
+    form: PropTypes.object.isRequired,
     goal: GoalPropType.isRequired,
     updateGoal: PropTypes.func.isRequired
 };

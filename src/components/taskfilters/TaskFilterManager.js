@@ -5,6 +5,7 @@ import withTaskFilters from 'containers/WithTaskFilters';
 import TaskFilterList from 'components/taskfilters/TaskFilterList';
 import TaskFilterConditionTree from 'components/taskfilters/TaskFilterConditionTree';
 import TaskFilterForm from 'components/taskfilters/TaskFilterForm';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 
 function TaskFilterManager(props) {
     const selectedTaskFilterId = props.taskFilterId;
@@ -35,15 +36,15 @@ function TaskFilterManager(props) {
             <Col span={16}>
                 {selectedTaskFilter ? (
                     <React.Fragment>
-                        <TaskFilterForm 
-                        key={selectedTaskFilterId} 
-                        taskFilter={selectedTaskFilter} 
-                        updateTaskFilter={props.updateTaskFilter} />
+                        <TaskFilterForm
+                            key={selectedTaskFilterId}
+                            taskFilter={selectedTaskFilter}
+                            updateTaskFilter={props.updateTaskFilter} />
                         <Divider />
-                        <TaskFilterConditionTree 
-                        key={'conditionTree_' + selectedTaskFilterId} 
-                        taskFilter={selectedTaskFilter} 
-                        updateTaskFilter={props.updateTaskFilter} />
+                        <TaskFilterConditionTree
+                            key={'conditionTree_' + selectedTaskFilterId}
+                            taskFilter={selectedTaskFilter}
+                            updateTaskFilter={props.updateTaskFilter} />
                     </React.Fragment>
                 ) : <Empty description="Please select a task filter" />}
             </Col>
@@ -53,7 +54,11 @@ function TaskFilterManager(props) {
 
 TaskFilterManager.propTypes = {
     taskFilterId: PropTypes.string,
-    onTaskFilterSelection: PropTypes.func.isRequired
+    taskFilters: PropTypes.arrayOf(TaskFilterPropType).isRequired,
+    onTaskFilterSelection: PropTypes.func.isRequired,
+    addTaskFilter: PropTypes.func.isRequired,
+    updateTaskFilter: PropTypes.func.isRequired,
+    deleteTaskFilter: PropTypes.func.isRequired,
 };
 
 export default withTaskFilters(TaskFilterManager);

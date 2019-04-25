@@ -4,6 +4,7 @@ import { Col, Empty, Row } from 'antd';
 import withGoals from 'containers/WithGoals';
 import GoalList from 'components/goals/GoalList';
 import GoalForm from 'components/goals/GoalForm';
+import { GoalPropType } from 'proptypes/GoalPropTypes';
 
 function GoalManager(props) {
     const selectedGoalId = props.goalId;
@@ -42,7 +43,11 @@ function GoalManager(props) {
 
 GoalManager.propTypes = {
     goalId: PropTypes.string,
-    onGoalSelection: PropTypes.func.isRequired
+    goals: PropTypes.arrayOf(GoalPropType).isRequired,
+    onGoalSelection: PropTypes.func.isRequired,
+    addGoal: PropTypes.func.isRequired,
+    updateGoal: PropTypes.func.isRequired,
+    deleteGoal: PropTypes.func.isRequired
 };
 
 export default withGoals(GoalManager);

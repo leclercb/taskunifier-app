@@ -8,6 +8,7 @@ import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
+import { TagPropType } from 'proptypes/TagPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import LeftRight from 'components/common/LeftRight';
 import Constants from 'constants/Constants';
@@ -40,7 +41,7 @@ function TaskSider(props) {
         );
     };
 
-    const createObjectContextMenu = (object, onAdd, onEdit, onDelete) => {
+    const createObjectContextMenu = (object, onAdd, onEdit) => {
         return (
             <RCMenu id={'menu_' + object.id}>
                 {onAdd ? (
@@ -90,7 +91,7 @@ function TaskSider(props) {
                         </LeftRight>
                     </div>
                 </RCMenuProvider>
-                {createObjectContextMenu(object, onAdd, onEdit, onDelete)}
+                {createObjectContextMenu(object, onAdd, onEdit)}
             </Menu.Item>
         );
     };
@@ -244,6 +245,7 @@ TaskSider.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
     goals: PropTypes.arrayOf(GoalPropType).isRequired,
     locations: PropTypes.arrayOf(LocationPropType).isRequired,
+    tags: PropTypes.arrayOf(TagPropType).isRequired,
     taskFilters: PropTypes.arrayOf(TaskFilterPropType).isRequired,
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
@@ -252,6 +254,7 @@ TaskSider.propTypes = {
     deleteFolder: PropTypes.func.isRequired,
     deleteGoal: PropTypes.func.isRequired,
     deleteLocation: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired,
     deleteTaskFilter: PropTypes.func.isRequired
 };
 

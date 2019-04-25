@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import InputMask from 'inputmask-core';
 
-let KEYCODE_Z = 90;
-let KEYCODE_Y = 89;
+const KEYCODE_Z = 90;
+const KEYCODE_Y = 89;
 
 InputMask.Pattern.prototype.transform = function transform(char, index) {
-    let format = this.formatCharacters[this.pattern[index]];
+    const format = this.formatCharacters[this.pattern[index]];
     return typeof format.transform === 'function' ? format.transform(char, index) : char;
-}
+};
 
 function isUndo(e) {
     return (e.ctrlKey || e.metaKey) && e.keyCode === (e.shiftKey ? KEYCODE_Y : KEYCODE_Z);
@@ -27,8 +27,8 @@ function getSelection(el) {
     } else {
         try {
             el.focus();
-            let rangeEl = el.createTextRange();
-            let clone = rangeEl.duplicate();
+            const rangeEl = el.createTextRange();
+            const clone = rangeEl.duplicate();
 
             rangeEl.moveToBookmark(document.selection.createRange().getBookmark());
             clone.setEndPoint('EndToStart', rangeEl);
@@ -50,7 +50,7 @@ function setSelection(el, selection) {
             el.setSelectionRange(selection.start, selection.end);
         } else {
             el.focus();
-            let rangeEl = el.createTextRange();
+            const rangeEl = el.createTextRange();
             rangeEl.collapse(true);
             rangeEl.moveStart('character', selection.start);
             rangeEl.moveEnd('character', selection.end - selection.start);
@@ -62,6 +62,24 @@ function setSelection(el, selection) {
 }
 
 export class MaskTextField extends Component {
+    constructor(props) {
+        super(props);
+
+        this._updatePattern = this._updatePattern.bind(this);
+        this._updateMaskSelection = this._updateMaskSelection.bind(this);
+        this._updateInputSelection = this._updateInputSelection.bind(this);
+        this._onChange = this._onChange.bind(this);
+        this._onKeyDown = this._onKeyDown.bind(this);
+        this._onKeyPress = this._onKeyPress.bind(this);
+        this._onPaste = this._onPaste.bind(this);
+        this._getDisplayValue = this._getDisplayValue.bind(this);
+        this._keyPressPropName = this._keyPressPropName.bind(this);
+        this._getEventHandlers = this._getEventHandlers.bind(this);
+        this.focus = this.focus.bind(this);
+        this.blur = this.blur.bind(this);
+        this.getInputProps = this.getInputProps.bind(this);
+    }
+
     componentWillMount() {
         if (!this.props.mask) {
             return null;
@@ -133,7 +151,7 @@ export class MaskTextField extends Component {
         setSelection(this.input, this.mask.selection);
     }
 
-    _onChange = e => {
+    _onChange(e) {
         let maskValue = this.mask.getValue();
         let incomingValue = e.target.value;
 
@@ -147,9 +165,9 @@ export class MaskTextField extends Component {
         if (this.props.onChange) {
             this.props.onChange(e);
         }
-    };
+    }
 
-    _onKeyDown = e => {
+    _onKeyDown(e) {
         if (isUndo(e)) {
             e.preventDefault();
             if (this.mask.undo()) {
@@ -186,9 +204,9 @@ export class MaskTextField extends Component {
                 }
             }
         }
-    };
+    }
 
-    _onKeyPress = e => {
+    _onKeyPress(e) {
         if (e.metaKey || e.altKey || e.ctrlKey || e.key === 'Enter') {
             return;
         }
@@ -203,9 +221,9 @@ export class MaskTextField extends Component {
                 this.props.onChange(e);
             }
         }
-    };
+    }
 
-    _onPaste = e => {
+    _onPaste(e) {
         e.preventDefault();
         this._updateMaskSelection();
 
@@ -218,10 +236,10 @@ export class MaskTextField extends Component {
                 this.props.onChange(e);
             }
         }
-    };
+    }
 
     _getDisplayValue() {
-        let value = this.mask.getValue();
+        const value = this.mask.getValue();
         return value === this.mask.emptyValue ? '' : value;
     }
 
@@ -250,34 +268,39 @@ export class MaskTextField extends Component {
         this.input.blur();
     }
 
-    getInputProps = () => {
-        let ref = r => {
+    getInputProps() {
+        const ref = r => {
             this.input = r ? r.input : null;
         };
 
-        let defaultValue = this.mask.getValue();
-        let maxLength = this.mask.pattern.length;
-        let eventHandlers = this._getEventHandlers();
-        let { placeholder = this.mask.emptyValue } = this.props;
+        const defaultValue = this.mask.getValue();
+        const maxLength = this.mask.pattern.length;
+        const eventHandlers = this._getEventHandlers();
+        const { placeholder = this.mask.emptyValue } = this.props;
 
-        let { ...cleanedProps } = this.props;
+        const { ...cleanedProps } = this.props;
 
         const props = { ...cleanedProps, ...eventHandlers, ref, maxLength, placeholder, defaultValue };
         delete props.placeholderChar;
         delete props.formatCharacters;
 
         return props;
-    };
+    }
 
     render() {
-        return <Input {...(this.props.mask ? this.getInputProps() : {})} />
+        return (
+            <Input {...(this.props.mask ? this.getInputProps() : {})} />
+        );
     }
 }
 
 MaskTextField.propTypes = {
+    value: PropTypes.string,
     mask: PropTypes.string,
     formatCharacters: PropTypes.object,
-    placeholderChar: PropTypes.string
+    placeholderChar: PropTypes.string,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func
 };
 
 export default MaskTextField;

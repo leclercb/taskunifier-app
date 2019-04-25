@@ -20,9 +20,11 @@ function Icon(props) {
 }
 
 Icon.propTypes = {
+    icon: PropTypes.string.isRequired,
     color: PropTypes.string,
     text: PropTypes.string,
     style: PropTypes.object,
+    className: PropTypes.string,
     spanClassName: PropTypes.string,
     onClick: PropTypes.func
 };

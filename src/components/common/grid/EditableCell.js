@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Form } from 'antd';
 import {
     getInputForType,
@@ -9,6 +10,7 @@ import {
     isCommitOnChangeForType
 } from 'utils/FieldUtils';
 import './EditableCell.css';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
 
 const EditableContext = React.createContext();
 
@@ -120,3 +122,14 @@ export function EditableCell(props) {
         </td>
     );
 }
+
+EditableCell.propTypes = {
+    form: PropTypes.object.isRequired,
+    dataIndex: PropTypes.number.isRequired,
+    field: FieldPropType.isRequired,
+    style: PropTypes.object,
+    rowProps: PropTypes.object,
+    editable: PropTypes.bool.isRequired,
+    record: PropTypes.object.isRequired,
+    onSave: PropTypes.object.isRequired,
+};

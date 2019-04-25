@@ -71,6 +71,7 @@ function BatchAddTasks(props) {
 }
 
 BatchAddTasks.propTypes = {
+    form: PropTypes.object.isRequired,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType).isRequired,
     addTask: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired

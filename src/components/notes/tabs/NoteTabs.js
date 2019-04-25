@@ -22,7 +22,8 @@ function NoteTabs(props) {
 
 NoteTabs.propTypes = {
     selectedNotes: PropTypes.array.isRequired,
-    setSelectedNoteIds: PropTypes.func.isRequired
+    setSelectedNoteIds: PropTypes.func.isRequired,
+    updateNote: PropTypes.func.isRequired
 };
 
 export default withSelectedNotes(NoteTabs);
