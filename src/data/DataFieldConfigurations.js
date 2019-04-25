@@ -24,6 +24,7 @@ import StatusSelect from 'components/statuses/StatusSelect';
 import TagsTitle from 'components/tags/TagsTitle';
 import TagsSelect from 'components/tags/TagsSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
+import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { getPriorityIndex } from 'data/DataPriorities';
 
@@ -58,7 +59,8 @@ export function getFieldTypes() {
         'tags',
         'taskTemplate',
         'text',
-        'textarea'
+        'textarea',
+        'timer'
     ];
 }
 
@@ -1322,6 +1324,27 @@ export function getFieldConfiguration(type, options) {
                         }
                     }
                 ],
+                options: []
+            };
+
+            break;
+        }
+        case 'timer': {
+            configuration = {
+                title: 'Timer',
+                width: 200,
+                alwaysInEdition: true,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'timer',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <TimerField value={value} readOnly={true} />
+                ),
+                input: props => (
+                    <TimerField {...props} />
+                ),
+                conditions: [],
                 options: []
             };
 

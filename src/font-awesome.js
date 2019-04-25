@@ -29,7 +29,9 @@ import {
     faKey,
     faMagic,
     faPaintRoller,
+    faPause,
     faPepperHot,
+    faPlay,
     faPlus,
     faSave,
     faSearch,
@@ -70,7 +72,9 @@ library.add(faHome);
 library.add(faKey);
 library.add(faMagic);
 library.add(faPaintRoller);
+library.add(faPause);
 library.add(faPepperHot);
+library.add(faPlay);
 library.add(faPlus);
 library.add(faSave);
 library.add(faSearch);
