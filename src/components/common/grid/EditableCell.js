@@ -124,12 +124,11 @@ export function EditableCell(props) {
 }
 
 EditableCell.propTypes = {
-    form: PropTypes.object.isRequired,
-    dataIndex: PropTypes.number.isRequired,
-    field: FieldPropType.isRequired,
+    dataIndex: PropTypes.string,
+    field: FieldPropType,
     style: PropTypes.object,
     rowProps: PropTypes.object,
-    editable: PropTypes.bool.isRequired,
-    record: PropTypes.object.isRequired,
-    onSave: PropTypes.object.isRequired,
+    editable: PropTypes.bool,
+    record: PropTypes.object,
+    onSave: PropTypes.func,
 };

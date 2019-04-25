@@ -26,7 +26,7 @@ function ModalProcessManager(props) {
 }
 
 ModalProcessManager.propTypes = {
-    processes: PropTypes.array.isRequired,
+    processes: PropTypes.object.isRequired,
     setProcessesVisible: PropTypes.func.isRequired
 };
 

@@ -95,6 +95,7 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
             }
 
             // TODO update objects reducer to handle children
+            break;
         }
         case 'DELETE_OBJECT': {
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];

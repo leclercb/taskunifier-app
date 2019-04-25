@@ -22,7 +22,7 @@ function Icon(props) {
 Icon.propTypes = {
     icon: PropTypes.string.isRequired,
     color: PropTypes.string,
-    text: PropTypes.string,
+    text: PropTypes.node,
     style: PropTypes.object,
     className: PropTypes.string,
     spanClassName: PropTypes.string,
