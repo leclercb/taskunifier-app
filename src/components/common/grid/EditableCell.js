@@ -7,7 +7,9 @@ import {
     getValueFromEventForType,
     getValuePropNameForType,
     isAlwaysInEditionForType,
-    isCommitOnChangeForType
+    isCommitOnChangeForType,
+    getRenderForType,
+    isHandleToggleEdit
 } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import './EditableCell.css';
@@ -106,15 +108,27 @@ export function EditableCell(props) {
                                         getValueFromEvent: getValueFromEventForType(field.type),
                                         initialValue: getNormalizeForType(field.type)(record[dataIndex])
                                     })(
-                                        getInputForType(field.type, field.options, { ...extraProps })
+                                        getInputForType(
+                                            field.type,
+                                            field.options,
+                                            { ...extraProps })
                                     )}
                                 </Form.Item>
                             ) : (
                                     <div
                                         className="editable-cell-value-wrap"
-                                        style={{ paddingRight: 24 }}
-                                        onClick={toggleEdit}>
-                                        {restProps.children}
+                                        onClick={isHandleToggleEdit(field.type) ? null : toggleEdit}>
+                                        {getRenderForType(
+                                            field.type,
+                                            field.options,
+                                            getNormalizeForType(field.type)(record[dataIndex]),
+                                            {
+                                                onChange: e => props.onSave({
+                                                    ...record,
+                                                    [dataIndex]: getValueFromEventForType(field.type)(e)
+                                                }),
+                                                onToggleEdit: toggleEdit
+                                            })}
                                     </div>
                                 )
                         );

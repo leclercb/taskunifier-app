@@ -9,11 +9,3 @@
     padding: 0px 5px;
     margin: 2px 0px;
 }
-
-.task {
-    overflow: hidden;
-    white-space: nowrap;
-    width: 100%;
-    text-overflow: ellipsis;
-    font-size: 12px;
-}

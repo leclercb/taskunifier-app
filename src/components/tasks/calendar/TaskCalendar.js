@@ -26,7 +26,6 @@ function TaskCalendar(props) {
                         key={task.id}
                         style={{ backgroundColor: getImportanceColor(task.importance, props.settings) }}>
                         <Icon
-                            spanClassName="task"
                             icon="circle"
                             color={getPriorityColor(task.priority, props.settings)}
                             text={task.title}

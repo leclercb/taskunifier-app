@@ -46,7 +46,9 @@ class TimerField extends React.Component {
             timer.startDate = moment().toJSON();
         }
 
-        this.props.onChange(timer);
+        if (this.props.onChange) {
+            this.props.onChange(timer);
+        }
     }
 
     onChange(value) {
@@ -59,7 +61,9 @@ class TimerField extends React.Component {
             startDate: this.props.timer && this.props.timer.startDate ? moment().toJSON() : null
         };
 
-        this.props.onChange(timer);
+        if (this.props.onChange) {
+            this.props.onChange(timer);
+        }
     }
 
     render() {
@@ -68,29 +72,37 @@ class TimerField extends React.Component {
             startDate: null
         }
 
-        if (this.props.readOnly) {
-            return this.formatTime(timer.value);
-        }
-
         const restProps = { ...this.props };
         delete restProps.timer;
+        delete restProps.onStartStop;
         delete restProps.onChange;
+        delete restProps.onToggleEdit;
         delete restProps.readOnly;
+
+        const readOnly = this.props.readOnly;
+        const iconText = (
+            <span onClick={this.props.onToggleEdit}>{this.formatTime(timer.value)}</span>
+        );
 
         return (
             <React.Fragment>
                 <Icon
                     icon={timer.startDate ? 'pause' : 'play'}
                     style={{ cursor: 'pointer' }}
-                    onClick={this.onClick} />
-                <Spacer />
-                <MaskTextField
-                    ref={this.maskTextFieldRef}
-                    mask="11:11"
-                    value={this.formatTime(timer.value)}
-                    onChange={e => this.onChange(e.target.value)}
-                    style={{ width: 100 }}
-                    {...restProps} />
+                    onClick={this.onClick}
+                    text={readOnly ? iconText : null} />
+                {!readOnly &&
+                    <React.Fragment>
+                        <Spacer />
+                        <MaskTextField
+                            ref={this.maskTextFieldRef}
+                            mask="11:11"
+                            value={this.formatTime(timer.value)}
+                            onChange={e => this.onChange(e.target.value)}
+                            style={{ width: 100 }}
+                            {...restProps} />
+                    </React.Fragment>
+                }
             </React.Fragment>
         );
     }
@@ -101,6 +113,7 @@ TimerField.propTypes = {
         value: PropTypes.number.isRequired,
         startDate: PropTypes.string
     }),
+    onToggleEdit: PropTypes.func,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool
 };

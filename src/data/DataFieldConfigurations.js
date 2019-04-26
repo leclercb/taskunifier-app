@@ -74,6 +74,7 @@ export function getFieldConfiguration(type, options) {
                 width: 100,
                 alwaysInEdition: true,
                 commitOnChange: true,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -108,6 +109,7 @@ export function getFieldConfiguration(type, options) {
                 width: 100,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'color',
                 getValueFromEvent: event => event.color,
@@ -142,6 +144,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -178,6 +181,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -217,6 +221,7 @@ export function getFieldConfiguration(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: true,
+                handleToggleEdit: false,
                 normalize: value => {
                     if (Number.isInteger(value)) {
                         return value;
@@ -357,6 +362,7 @@ export function getFieldConfiguration(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: true,
+                handleToggleEdit: false,
                 normalize: value => {
                     if (Number.isInteger(value)) {
                         return value;
@@ -498,6 +504,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -534,6 +541,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -570,6 +578,7 @@ export function getFieldConfiguration(type, options) {
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -648,6 +657,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -686,6 +696,7 @@ export function getFieldConfiguration(type, options) {
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -776,6 +787,7 @@ export function getFieldConfiguration(type, options) {
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -865,6 +877,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -961,6 +974,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1042,6 +1056,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1097,6 +1112,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1139,6 +1155,7 @@ export function getFieldConfiguration(type, options) {
                 width: 100,
                 alwaysInEdition: true,
                 commitOnChange: true,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1173,6 +1190,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1209,6 +1227,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1251,6 +1270,7 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1287,6 +1307,7 @@ export function getFieldConfiguration(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
@@ -1335,11 +1356,16 @@ export function getFieldConfiguration(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: true,
                 normalize: value => value,
                 valuePropName: 'timer',
                 getValueFromEvent: defaultGetValueFromEvent,
-                render: value => (
-                    <TimerField timer={value} readOnly={true} />
+                render: (value, props) => (
+                    <TimerField
+                        timer={value}
+                        readOnly={true}
+                        onToggleEdit={props ? props.onToggleEdit : null}
+                        onChange={props ? props.onChange : null} />
                 ),
                 input: props => (
                     <TimerField {...props} />
@@ -1357,6 +1383,7 @@ export function getFieldConfiguration(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
+                handleToggleEdit: false,
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,

@@ -49,7 +49,7 @@ function NoteGrid(props) {
             dataIndex: field.id,
             key: field.id,
             editable: true,
-            render: getRenderForType(field.type, field.options),
+            render: value => getRenderForType(field.type, field.options, value),
             onHeaderCell: column => ({
                 width: column.width,
                 onResize: handleResize(field.id),
