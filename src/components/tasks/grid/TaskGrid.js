@@ -83,21 +83,34 @@ function TaskGrid(props) {
                 bordered={true}
                 size="small"
                 pagination={false}
-                onRow={(record, index) => ({
-                    index: index,
-                    rowProps: {
-                        record: record,
-                        onSave: onUpdateTask,
-                        getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
-                        style: {
-                            backgroundColor: getTaskBackgroundColor(record, index, props.settings),
-                            textDecoration: record.completed ? 'line-through' : null
-                        }
-                    },
-                    moveRow: (dragRecord, dropRecord) => {
-                        console.log(dragRecord, dropRecord);
+                onRow={(record, index) => {
+                    const bgColor = getTaskBackgroundColor(record, index, props.settings);
+                    const style = {};
+
+                    if (record.completed) {
+                        style.background = `repeating-linear-gradient(
+                            135deg, 
+                            ${bgColor}, 
+                            ${bgColor} 20px, 
+                            #b5c2c9 10px, 
+                            #b5c2c9 30px)`;
+                    } else {
+                        style.backgroundColor = bgColor;
                     }
-                })}
+
+                    return {
+                        index: index,
+                        rowProps: {
+                            record: record,
+                            onSave: onUpdateTask,
+                            getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
+                            style: style
+                        },
+                        moveRow: (dragRecord, dropRecord) => {
+                            console.log(dragRecord, dropRecord);
+                        }
+                    };
+                }}
                 rowSelection={{
                     selectedRowKeys: props.selectedTaskIds,
                     onChange: selectedRowKeys => props.setSelectedTaskIds(selectedRowKeys)

@@ -46,6 +46,17 @@ export function getDefaultTaskFields(settings) {
         },
         {
             static: true,
+            id: 'length',
+            refIds: {},
+            creationDate: 1554795587825,
+            updateDate: 1554795587825,
+            state: 'LOADED',
+            title: 'Length',
+            color: '#ffffff',
+            type: 'length'
+        },
+        {
+            static: true,
             id: 'timer',
             refIds: {},
             creationDate: 1554795587825,

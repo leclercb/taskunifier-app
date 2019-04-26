@@ -12,3 +12,7 @@
     border-radius: 4px;
     padding: 4px 11px;
 }
+
+.editable-row .ant-select-selection {
+    min-width: 150px !important;
+}

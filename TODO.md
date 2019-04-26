@@ -1,7 +1,7 @@
 ## Todo List
 
 * Add sort order in filters
-* Add length, timer, reminder and recurrence
+* Add reminder and recurrence
 * Grid fix scrollbars
 * Improve performances
 * Try react-joyride

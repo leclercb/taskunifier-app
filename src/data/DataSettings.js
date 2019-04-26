@@ -325,14 +325,14 @@ export function getCategories() {
                     id: 'importance_11',
                     title: 'Importance 11',
                     type: 'color',
-                    value: '#ffab91',
+                    value: '#fcbfbf',
                     editable: true
                 },
                 {
                     id: 'importance_12',
                     title: 'Importance 12',
                     type: 'color',
-                    value: '#ff5722',
+                    value: '#ffab91',
                     editable: true
                 }
             ]

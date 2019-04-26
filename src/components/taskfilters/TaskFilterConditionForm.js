@@ -8,7 +8,8 @@ import {
     getNormalizeForType,
     getSelectForType,
     getValueFromEventForType,
-    getValuePropNameForType
+    getValuePropNameForType,
+    getConditionsFieldTypeForType
 } from 'utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
@@ -27,6 +28,7 @@ function TaskFilterConditionForm(props) {
     };
 
     const field = props.taskFields.find(field => field.id === props.condition.field);
+    const conditionFieldType = getConditionsFieldTypeForType(field.type);
 
     return (
         <Form {...formItemLayout}>
@@ -58,12 +60,12 @@ function TaskFilterConditionForm(props) {
                     <Form.Item>
                         {getFieldDecorator('value', {
                             rules: [],
-                            valuePropName: getValuePropNameForType(field.type),
-                            getValueFromEvent: getValueFromEventForType(field.type),
-                            initialValue: getNormalizeForType(field.type)(props.condition.value)
+                            valuePropName: getValuePropNameForType(conditionFieldType),
+                            getValueFromEvent: getValueFromEventForType(conditionFieldType),
+                            initialValue: getNormalizeForType(conditionFieldType)(props.condition.value)
                         })(
-                            getInputForType(field.type, {
-                                ...field.options,
+                            getInputForType(conditionFieldType, {
+                                ...(field.type === conditionFieldType ? field.options : {}),
                                 extended: true
                             })
                         )}

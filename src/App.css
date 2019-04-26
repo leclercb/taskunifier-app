@@ -40,10 +40,6 @@
     color: #000000 !important;
 }
 
-.ant-select-selection {
-    min-width: 150px !important;
-}
-
 .ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
 .ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
 .ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th,

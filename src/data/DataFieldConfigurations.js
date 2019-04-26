@@ -15,6 +15,7 @@ import FolderTitle from 'components/folders/FolderTitle';
 import FolderSelect from 'components/folders/FolderSelect';
 import GoalTitle from 'components/goals/GoalTitle';
 import GoalSelect from 'components/goals/GoalSelect';
+import LengthField from 'components/common/LengthField';
 import LocationTitle from 'components/locations/LocationTitle';
 import LocationSelect from 'components/locations/LocationSelect';
 import PriorityTitle from 'components/priorities/PriorityTitle';
@@ -47,6 +48,7 @@ export function getFieldTypes() {
         'folder',
         'goal',
         'importance',
+        'length',
         'location',
         'money',
         'number',
@@ -82,6 +84,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <Checkbox {...props} />
                 ),
+                conditionsFieldType: 'boolean',
                 conditions: [
                     {
                         type: 'equal',
@@ -117,6 +120,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <ColorPicker {...props} />
                 ),
+                conditionsFieldType: 'color',
                 conditions: [
                     {
                         type: 'equal',
@@ -154,6 +158,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <ContactSelect {...props} />
                 ),
+                conditionsFieldType: 'contact',
                 conditions: [
                     {
                         type: 'equal',
@@ -191,6 +196,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <ContextSelect {...props} />
                 ),
+                conditionsFieldType: 'context',
                 conditions: [
                     {
                         type: 'equal',
@@ -241,6 +247,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => extended ?
                     <ExtendedDatePicker format={dateFormat} {...props} /> :
                     <DatePicker format={dateFormat} {...props} />,
+                conditionsFieldType: 'date',
                 conditions: [
                     {
                         type: 'equal',
@@ -382,6 +389,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => extended ?
                     <ExtendedDatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} /> :
                     <DatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} />,
+                conditionsFieldType: 'dateTime',
                 conditions: [
                     {
                         type: 'equal',
@@ -514,6 +522,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <FolderSelect {...props} />
                 ),
+                conditionsFieldType: 'folder',
                 conditions: [
                     {
                         type: 'equal',
@@ -551,6 +560,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <GoalSelect {...props} />
                 ),
+                conditionsFieldType: 'goal',
                 conditions: [
                     {
                         type: 'equal',
@@ -586,6 +596,89 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <InputNumber min={0} max={12} {...props} />
                 ),
+                conditionsFieldType: 'importance',
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue < taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue <= taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue >= taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'length': {
+            configuration = {
+                title: 'Length',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'length',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <LengthField length={value} readOnly={true} />
+                ),
+                input: props => (
+                    <LengthField {...props} />
+                ),
+                conditionsFieldType: 'length',
                 conditions: [
                     {
                         type: 'equal',
@@ -667,6 +760,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <LocationSelect {...props} />
                 ),
+                conditionsFieldType: 'location',
                 conditions: [
                     {
                         type: 'equal',
@@ -707,6 +801,7 @@ export function getFieldConfiguration(type, options) {
                         parser={value => value.replace('/(' + escape(currency) + ')\\s?|(,*)/g', '')}
                         {...props} />
                 ),
+                conditionsFieldType: 'money',
                 conditions: [
                     {
                         type: 'equal',
@@ -795,6 +890,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <InputNumber min={min} max={max} {...props} />
                 ),
+                conditionsFieldType: 'number',
                 conditions: [
                     {
                         type: 'equal',
@@ -887,6 +983,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <PrioritySelect {...props} />
                 ),
+                conditionsFieldType: 'priority',
                 conditions: [
                     {
                         type: 'equal',
@@ -982,6 +1079,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <InputNumber min={0} max={100} {...props} />
                 ),
+                conditionsFieldType: 'progress',
                 conditions: [
                     {
                         type: 'equal',
@@ -1079,6 +1177,7 @@ export function getFieldConfiguration(type, options) {
                         })}
                     </Select>
                 ),
+                conditionsFieldType: 'select',
                 conditions: [
                     {
                         type: 'equal',
@@ -1122,6 +1221,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <Select mode="tags" {...props} />
                 ),
+                conditionsFieldType: 'selectTags',
                 conditions: [
                     {
                         type: 'contain',
@@ -1163,6 +1263,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <StarCheckbox {...props} />
                 ),
+                conditionsFieldType: 'star',
                 conditions: [
                     {
                         type: 'equal',
@@ -1200,6 +1301,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <StatusSelect {...props} />
                 ),
+                conditionsFieldType: 'status',
                 conditions: [
                     {
                         type: 'equal',
@@ -1237,6 +1339,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <TagsSelect {...props} />
                 ),
+                conditionsFieldType: 'tags',
                 conditions: [
                     {
                         type: 'contain',
@@ -1280,6 +1383,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <TaskTemplateSelect {...props} />
                 ),
+                conditionsFieldType: 'taskTemplate',
                 conditions: [
                     {
                         type: 'equal',
@@ -1315,6 +1419,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <Input.TextArea autosize={true} {...props} onPressEnter={null} />
                 ),
+                conditionsFieldType: 'textarea',
                 conditions: [
                     {
                         type: 'equal',
@@ -1370,7 +1475,17 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <TimerField {...props} />
                 ),
-                conditions: [],
+                conditionsFieldType: 'boolean',
+                conditions: [
+                    {
+                        type: 'started',
+                        title: 'Started',
+                        apply: (conditionValue, taskValue) => {
+                            const startDate = taskValue ? taskValue.startDate : null;
+                            return !!startDate === conditionValue;
+                        }
+                    }
+                ],
                 options: []
             };
 
@@ -1391,6 +1506,7 @@ export function getFieldConfiguration(type, options) {
                 input: props => (
                     <Input {...props} />
                 ),
+                conditionsFieldType: 'text',
                 conditions: [
                     {
                         type: 'equal',
@@ -1429,7 +1545,7 @@ export function getFieldConfiguration(type, options) {
     }
 
     configuration.select = () => (
-        <Select>
+        <Select placeholder="Condition">
             {configuration.conditions.map(condition => (
                 <Select.Option key={condition.type} value={condition.type}>
                     {condition.title}

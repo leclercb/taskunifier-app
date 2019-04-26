@@ -24,7 +24,7 @@ function TaskFilterConditionTree(props) {
         return {
             id: uuid(),
             field: field.id,
-            type: 'equal',
+            type: null,
             value: null
         };
     };
