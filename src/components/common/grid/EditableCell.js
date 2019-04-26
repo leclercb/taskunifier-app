@@ -4,11 +4,11 @@ import { Form } from 'antd';
 import {
     getInputForType,
     getNormalizeForType,
+    getRenderForType,
     getValueFromEventForType,
     getValuePropNameForType,
     isAlwaysInEditionForType,
     isCommitOnChangeForType,
-    getRenderForType,
     isHandleToggleEdit
 } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';

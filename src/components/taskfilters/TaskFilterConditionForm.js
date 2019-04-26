@@ -4,12 +4,12 @@ import { Col, Form, Input, Row } from 'antd';
 import withTaskFields from 'containers/WithTaskFields';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import {
+    getConditionsFieldTypeForType,
     getInputForType,
     getNormalizeForType,
     getSelectForType,
     getValueFromEventForType,
-    getValuePropNameForType,
-    getConditionsFieldTypeForType
+    getValuePropNameForType
 } from 'utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 

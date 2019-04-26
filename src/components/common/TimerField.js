@@ -23,8 +23,8 @@ class TimerField extends React.Component {
     }
 
     formatTime(value) {
-        const minutes = Math.floor(value / 60).toString().padStart(2, "0");
-        const seconds = (value % 60).toString().padStart(2, "0");
+        const minutes = Math.floor(value / 60).toString().padStart(2, '0');
+        const seconds = (value % 60).toString().padStart(2, '0');
         return `${minutes}:${seconds}`;
     }
 
@@ -70,7 +70,7 @@ class TimerField extends React.Component {
         const timer = this.props.timer || {
             value: 0,
             startDate: null
-        }
+        };
 
         const restProps = { ...this.props };
         delete restProps.timer;
