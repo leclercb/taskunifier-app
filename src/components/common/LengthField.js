@@ -52,15 +52,13 @@ class LengthField extends React.Component {
         }
 
         return (
-            <React.Fragment>
-                <MaskTextField
-                    ref={this.maskTextFieldRef}
-                    mask="11:11"
-                    value={this.formatLength(length)}
-                    onChange={e => this.onChange(e.target.value)}
-                    style={{ width: 100 }}
-                    {...restProps} />
-            </React.Fragment>
+            <MaskTextField
+                ref={this.maskTextFieldRef}
+                mask="11:11"
+                value={this.formatLength(length)}
+                onChange={e => this.onChange(e.target.value)}
+                style={{ width: 100 }}
+                {...restProps} />
         );
     }
 }

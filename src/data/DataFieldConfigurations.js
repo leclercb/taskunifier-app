@@ -20,6 +20,7 @@ import LocationTitle from 'components/locations/LocationTitle';
 import LocationSelect from 'components/locations/LocationSelect';
 import PriorityTitle from 'components/priorities/PriorityTitle';
 import PrioritySelect from 'components/priorities/PrioritySelect';
+import RepeatField from 'components/repeat/RepeatField';
 import StatusTitle from 'components/statuses/StatusTitle';
 import StatusSelect from 'components/statuses/StatusSelect';
 import TagsTitle from 'components/tags/TagsTitle';
@@ -28,6 +29,8 @@ import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { getPriorityIndex } from 'data/DataPriorities';
+import { formatRepeat } from 'utils/RepeatUtils';
+import { equals } from 'utils/ObjectUtils';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -54,6 +57,7 @@ export function getFieldTypes() {
         'number',
         'priority',
         'progress',
+        'repeat',
         'select',
         'selectTags',
         'star',
@@ -1137,6 +1141,44 @@ export function getFieldConfiguration(type, options) {
                             }
 
                             return conditionValue >= taskValue;
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'repeat': {
+            configuration = {
+                title: 'Repeat',
+                width: 250,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    value ? formatRepeat(value) : <span>&nbsp;</span>
+                ),
+                input: props => (
+                    <RepeatField {...props} />
+                ),
+                conditionsFieldType: 'repeat',
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return equals(conditionValue, taskValue);
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !equals(conditionValue, taskValue);
                         }
                     }
                 ],
