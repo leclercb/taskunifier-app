@@ -46,7 +46,8 @@ function NoteFilterConditionForm(props) {
                             initialValue: props.condition.type,
                             rules: [
                                 {
-                                    required: true, message: 'The condition is required',
+                                    required: true, 
+                                    message: 'The condition is required',
                                 }
                             ]
                         })(

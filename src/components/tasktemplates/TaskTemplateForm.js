@@ -40,7 +40,8 @@ function TaskTemplateForm(props) {
                     getValueFromEvent: event => event.color,
                     rules: [
                         {
-                            required: true, message: 'The color is required',
+                            required: true, 
+                            message: 'The color is required',
                         }
                     ]
                 })(

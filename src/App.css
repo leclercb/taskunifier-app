@@ -7,6 +7,8 @@
 .ant-menu-item {
     height: 30px !important;
     line-height: 30px !important;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
 }
 
 .ant-layout-sider {
