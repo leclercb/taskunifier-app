@@ -29,7 +29,7 @@ function RepeatWeeklyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} />
+                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXWeeks'} />
                         )}
                         <span style={{ marginLeft: 10 }}>week(s)</span>
                     </Radio>
@@ -44,15 +44,15 @@ function RepeatWeeklyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} />
+                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} />
                         )}
                         <span style={{ marginLeft: 10 }}>week(s) on</span>
                         <div style={{ marginLeft: 40 }}>
-                            {getFieldDecorator('onDays', {
-                                initialValue: props.repeat ? props.repeat.onDays : null,
+                            {getFieldDecorator('daysOfWeek', {
+                                initialValue: props.repeat ? props.repeat.daysOfWeek : null,
                                 rules: []
                             })(
-                                <Checkbox.Group options={[
+                                <Checkbox.Group disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} options={[
                                     { label: 'Monday', value: 'monday' },
                                     { label: 'Thuesday', value: 'tuesday' },
                                     { label: 'Wednesday', value: 'wednesday' },

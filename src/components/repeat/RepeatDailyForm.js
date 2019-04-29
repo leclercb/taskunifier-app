@@ -11,7 +11,7 @@ function RepeatDailyForm(props) {
         height: '50px',
         lineHeight: '50px',
     };
-console.log(props.repeat);
+
     return (
         <Form>
             {getFieldDecorator('type', {
@@ -38,22 +38,22 @@ console.log(props.repeat);
                                 }
                             ]
                         })(
-                            <InputNumber min={0} />
+                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXDays'} />
                         )}
                         <span style={{ marginLeft: 10 }}>day(s)</span>
                     </Radio>
                     <Radio style={radioStyle} value='everySelectedDay'>
                         <span style={{ marginRight: 10 }}>Every</span>
-                        {getFieldDecorator('selectedDays', {
-                            initialValue: props.repeat ? props.repeat.selectedDays : null,
+                        {getFieldDecorator('dayOfWeek', {
+                            initialValue: props.repeat ? props.repeat.dayOfWeek : null,
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The day is required',
+                                    message: 'The day of week is required',
                                 }
                             ]
                         })(
-                            <Select style={{ width: 100 }}>
+                            <Select style={{ width: 100 }} disabled={props.repeat.type !== 'everySelectedDay'}>
                                 <Select.Option value="monday">Monday</Select.Option>
                                 <Select.Option value="tuesday">Tuesday</Select.Option>
                                 <Select.Option value="wednesday">Wednesday</Select.Option>

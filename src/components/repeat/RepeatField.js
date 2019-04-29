@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import ModalRepeatManager from 'components/repeat/ModalRepeatManager';
+import { getKeysForType } from 'utils/RepeatUtils';
 
 class RepeatField extends React.Component {
     render() {
@@ -11,7 +12,18 @@ class RepeatField extends React.Component {
                     visible={true}
                     onClose={() => this.props.onBlur()}
                     repeat={this.props.repeat}
-                    onUpdateRepeat={repeat =>{this.props.onChange(repeat); console.log('changed', repeat)}} />
+                    onUpdateRepeat={repeat => {
+                        const keys = getKeysForType(repeat.type);
+                        console.log(repeat, keys);
+
+                        Object.keys(repeat).forEach(key => {
+                            if (key !== 'type' && !keys.includes(key)) {
+                                delete repeat[key];
+                            }
+                        })
+
+                        this.props.onChange(repeat);
+                    }} />
                 <Input
                     readOnly={true}
                     {...this.props} />

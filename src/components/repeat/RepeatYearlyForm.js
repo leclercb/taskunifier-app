@@ -18,7 +18,7 @@ function RepeatYearlyForm(props) {
                 initialValue: props.repeat ? props.repeat.type : null
             })(
                 <Radio.Group>
-                    <Radio style={radioStyle} value='everyxyears'>
+                    <Radio style={radioStyle} value='everyXYears'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbYears', {
                             initialValue: props.repeat ? props.repeat.nbYears : null,
@@ -29,7 +29,7 @@ function RepeatYearlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} />
+                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXYears'} />
                         )}
                         <span style={{ marginLeft: 10 }}>year(s)</span>
                     </Radio>

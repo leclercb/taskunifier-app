@@ -20,7 +20,7 @@ function RepeatWithParentForm(props) {
                 <Radio.Group>
                     <Radio style={radioStyle} value='withParent'>
                         With Parent
-                </Radio>
+                    </Radio>
                 </Radio.Group>
             )}
         </Form>
