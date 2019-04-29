@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, InputNumber, Radio } from 'antd';
+import { Form, InputNumber, Radio } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function RepeatYearlyForm(props) {
-    const onChange = value => {
-
-    }
-
     const { getFieldDecorator } = props.form;
 
     const radioStyle = {
@@ -18,30 +14,34 @@ function RepeatYearlyForm(props) {
 
     return (
         <Form>
-            <Radio.Group onChange={onChange} value={null}>
-                <Radio style={radioStyle} value='everyxyears'>
-                    <span style={{ marginRight: 10 }}>Every</span>
-                    {getFieldDecorator('nbYears', {
-                        initialValue: props.repeat ? props.repeat.nbYears : null,
-                        rules: [
-                            {
-                                required: true,
-                                message: 'The number of years is required',
-                            }
-                        ]
-                    })(
-                        <InputNumber min={0} />
-                    )}
-                    <span style={{ marginLeft: 10 }}>year(s)</span>
-                </Radio>
-            </Radio.Group>
+            {getFieldDecorator('type', {
+                initialValue: props.repeat ? props.repeat.type : null
+            })(
+                <Radio.Group>
+                    <Radio style={radioStyle} value='everyxyears'>
+                        <span style={{ marginRight: 10 }}>Every</span>
+                        {getFieldDecorator('nbYears', {
+                            initialValue: props.repeat ? props.repeat.nbYears : null,
+                            rules: [
+                                {
+                                    required: true,
+                                    message: 'The number of years is required',
+                                }
+                            ]
+                        })(
+                            <InputNumber min={0} />
+                        )}
+                        <span style={{ marginLeft: 10 }}>year(s)</span>
+                    </Radio>
+                </Radio.Group>
+            )}
         </Form>
     );
 }
 
 RepeatYearlyForm.propTypes = {
     form: PropTypes.object.isRequired,
-    repeat: PropTypes.object.isRequired,
+    repeat: PropTypes.object,
     onUpdateRepeat: PropTypes.func.isRequired
 };
 

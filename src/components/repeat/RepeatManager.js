@@ -30,7 +30,7 @@ function RepeatManager(props) {
 }
 
 RepeatManager.propTypes = {
-    repeat: PropTypes.string.isRequired,
+    repeat: PropTypes.object,
     onUpdateRepeat: PropTypes.func.isRequired
 };
 

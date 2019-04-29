@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, InputNumber, Radio } from 'antd';
+import { Form, Radio } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function RepeatWithParentForm(props) {
-    const onChange = value => {
-
-    }
-
     const { getFieldDecorator } = props.form;
 
     const radioStyle = {
@@ -18,18 +14,22 @@ function RepeatWithParentForm(props) {
 
     return (
         <Form>
-            <Radio.Group onChange={onChange} value={null}>
-                <Radio style={radioStyle} value='withparent'>
-                    With Parent
+            {getFieldDecorator('type', {
+                initialValue: props.repeat ? props.repeat.type : null
+            })(
+                <Radio.Group>
+                    <Radio style={radioStyle} value='withParent'>
+                        With Parent
                 </Radio>
-            </Radio.Group>
+                </Radio.Group>
+            )}
         </Form>
     );
 }
 
 RepeatWithParentForm.propTypes = {
     form: PropTypes.object.isRequired,
-    repeat: PropTypes.object.isRequired,
+    repeat: PropTypes.object,
     onUpdateRepeat: PropTypes.func.isRequired
 };
 

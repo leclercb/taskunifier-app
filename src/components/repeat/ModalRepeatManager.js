@@ -28,7 +28,7 @@ function ModalRepeatManager(props) {
 ModalRepeatManager.propTypes = {
     visible: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
-    repeat: PropTypes.object.isRequired,
+    repeat: PropTypes.object,
     onUpdateRepeat: PropTypes.func.isRequired
 };
 

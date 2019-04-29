@@ -4,20 +4,14 @@ import { Input } from 'antd';
 import ModalRepeatManager from 'components/repeat/ModalRepeatManager';
 
 class RepeatField extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            visible: true
-        };
-    }
-
     render() {
         return (
             <React.Fragment>
                 <ModalRepeatManager
-                    visible={this.state.visible}
-                    onClose={() => this.props.onBlur()} />
+                    visible={true}
+                    onClose={() => this.props.onBlur()}
+                    repeat={this.props.repeat}
+                    onUpdateRepeat={repeat =>{this.props.onChange(repeat); console.log('changed', repeat)}} />
                 <Input
                     readOnly={true}
                     {...this.props} />
@@ -27,7 +21,7 @@ class RepeatField extends React.Component {
 }
 
 RepeatField.propTypes = {
-    value: PropTypes.string,
+    repeat: PropTypes.object,
     onChange: PropTypes.func,
     onBlur: PropTypes.func
 };

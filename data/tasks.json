@@ -5,7 +5,7 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-04-27T12:24:19.954Z",
+        "updateDate": "2019-04-29T13:48:56.664Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
@@ -17,7 +17,11 @@
             "T2"
         ],
         "folder": "7ccd9fc1-a3fe-4ab9-9a93-d2aa0d3da900",
-        "context": "37d6a815-e29a-441b-8002-afac65c571e8"
+        "context": "37d6a815-e29a-441b-8002-afac65c571e8",
+        "repeat": {
+            "type": "everySelectedDay",
+            "selectedDays": "wednesday"
+        }
     },
     {
         "title": "Task 2 DEF",
@@ -76,7 +80,7 @@
         "id": "167c98c5-6670-4600-9528-4611b5e31131",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:28.409Z",
-        "updateDate": "2019-04-26T11:19:05.687Z",
+        "updateDate": "2019-04-29T13:40:24.724Z",
         "state": "TO_UPDATE",
         "progress": 43,
         "priority": "top",
@@ -95,6 +99,9 @@
             "value": 916,
             "startDate": null
         },
-        "length": 775
+        "length": 775,
+        "repeat": {
+            "type": "everyDay"
+        }
     }
 ]

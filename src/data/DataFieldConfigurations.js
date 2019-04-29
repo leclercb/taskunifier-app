@@ -1157,7 +1157,7 @@ export function getFieldConfiguration(type, options) {
                 commitOnChange: false,
                 handleToggleEdit: false,
                 normalize: value => value,
-                valuePropName: 'value',
+                valuePropName: 'repeat',
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: value => (
                     value ? formatRepeat(value) : <span>&nbsp;</span>

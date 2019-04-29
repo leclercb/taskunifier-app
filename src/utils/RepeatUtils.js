@@ -1,3 +1,3 @@
 export const formatRepeat = repeat => {
-    return 'todo';
+    return repeat ? JSON.stringify(repeat) : '';
 }
