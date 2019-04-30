@@ -3,39 +3,39 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { Button, Table } from 'antd';
 import withSettings from 'containers/WithSettings';
-import { getDefaultContactLinkFields } from 'data/DataContactLinkFields';
+import { getDefaultLinkedContactFields } from 'data/DataLinkedContactFields';
 import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
 import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
-import { ContactLinkPropType } from 'proptypes/ContactLinkPropTypes';
-import { getContactLinkBackgroundColor } from 'utils/SettingUtils';
+import { LinkedContactPropType } from 'proptypes/LinkedContactPropTypes';
+import { getLinkedContactBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 import Icon from 'components/common/Icon';
 
-function ContactLinkGrid(props) {
-    const onAddContactLink = () => {
-        props.updateContactLinks([
-            ...props.contactLinks,
+function LinkedContactGrid(props) {
+    const onAddLinkedContact = () => {
+        props.updateLinkedContacts([
+            ...props.linkedContacts,
             {
                 id: uuid(),
-                contact: null,
-                link: null
+                link: null,
+                contact: null
             }
-        ])
-    }
-
-    const onUpdateContactLink = contactLink => {
-        const index = props.contactLinks.findIndex(item => item.id === contactLink.id);
-        const contactLinks = [...props.contactLinks];
-        contactLinks[index] = contactLink;
-        props.updateContactLinks(contactLinks);
+        ]);
     };
 
-    const onDeleteContactLink = contactLink => {
-        const index = props.contactLinks.findIndex(item => item.id === contactLink.id);
-        const contactLinks = [...props.contactLinks];
-        contactLinks.splice(index, 1);
-        props.updateContactLinks(contactLinks);
+    const onUpdateLinkedContact = linkedContact => {
+        const index = props.linkedContacts.findIndex(item => item.id === linkedContact.id);
+        const linkedContacts = [...props.linkedContacts];
+        linkedContacts[index] = linkedContact;
+        props.updateLinkedContacts(linkedContacts);
+    };
+
+    const onDeleteLinkedContact = linkedContact => {
+        const index = props.linkedContacts.findIndex(item => item.id === linkedContact.id);
+        const linkedContacts = [...props.linkedContacts];
+        linkedContacts.splice(index, 1);
+        props.updateLinkedContacts(linkedContacts);
     };
 
     const components = {
@@ -50,14 +50,14 @@ function ContactLinkGrid(props) {
 
     const handleResize = field => (e, { size }) => {
         props.updateSettings({
-            ['contactLinkColumnWidth_' + field]: size.width
+            ['linkedContactColumnWidth_' + field]: size.width
         });
     };
 
-    const contactLinkFields = getDefaultContactLinkFields();
+    const linkedContactFields = getDefaultLinkedContactFields();
 
-    const columns = contactLinkFields.map(field => {
-        const settingKey = 'contactLinkColumnWidth_' + field.id;
+    const columns = linkedContactFields.map(field => {
+        const settingKey = 'linkedContactColumnWidth_' + field.id;
         let width = props.settings[settingKey];
 
         if (!width) {
@@ -82,12 +82,12 @@ function ContactLinkGrid(props) {
                 field: field,
                 dataIndex: field.id,
                 title: field.title,
-                onSave: onUpdateContactLink
+                onSave: onUpdateLinkedContact
             })
         };
     });
 
-    let deleteColumnWidth = props.settings['contactLinkColumnWidth_delete'];
+    let deleteColumnWidth = props.settings['linkedContactColumnWidth_delete'];
 
     if (!deleteColumnWidth) {
         deleteColumnWidth = 50;
@@ -100,7 +100,7 @@ function ContactLinkGrid(props) {
         key: 'delete',
         editable: false,
         render: (value, record) => (
-            <Icon icon="trash-alt" onClick={() => onDeleteContactLink(record)} />
+            <Icon icon="trash-alt" onClick={() => onDeleteLinkedContact(record)} />
         ),
         onHeaderCell: column => ({
             width: column.width,
@@ -116,22 +116,22 @@ function ContactLinkGrid(props) {
                 rowClassName={() => 'editable-row'}
                 components={components}
                 columns={columns}
-                dataSource={props.contactLinks}
+                dataSource={props.linkedContacts}
                 bordered={true}
                 size="small"
                 pagination={false}
                 onRow={(record, index) => ({
                     rowProps: {
                         record: record,
-                        onSave: onUpdateContactLink,
-                        getField: dataIndex => contactLinkFields.find(field => field.id === dataIndex),
+                        onSave: onUpdateLinkedContact,
+                        getField: dataIndex => linkedContactFields.find(field => field.id === dataIndex),
                         style: {
-                            backgroundColor: getContactLinkBackgroundColor(record, index, props.settings)
+                            backgroundColor: getLinkedContactBackgroundColor(record, index, props.settings)
                         }
                     }
                 })}
                 footer={() => (
-                    <Button onClick={() => onAddContactLink()}>
+                    <Button onClick={() => onAddLinkedContact()}>
                         <Icon icon="plus" text="Add" />
                     </Button>
                 )} />
@@ -139,11 +139,11 @@ function ContactLinkGrid(props) {
     );
 }
 
-ContactLinkGrid.propTypes = {
-    contactLinks: PropTypes.arrayOf(ContactLinkPropType).isRequired,
-    updateContactLinks: PropTypes.func.isRequired,
+LinkedContactGrid.propTypes = {
+    linkedContacts: PropTypes.arrayOf(LinkedContactPropType).isRequired,
+    updateLinkedContacts: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 
-export default withSettings(ContactLinkGrid);
+export default withSettings(LinkedContactGrid);

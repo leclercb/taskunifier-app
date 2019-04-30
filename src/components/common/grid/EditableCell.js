@@ -22,8 +22,6 @@ const EditableRow = Component => ({ form, ...props }) => {
         ...props.rowProps.style
     };
 
-    console.log(style);
-
     const trProps = { ...props, style };
     delete trProps.rowProps;
 

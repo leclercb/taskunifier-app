@@ -37,6 +37,14 @@ export const getTaskBackgroundColor = (task, index, settings) => {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
 
-export const getContactLinkBackgroundColor = (contactLink, index, settings) => {
+export const getLinkedContactBackgroundColor = (linkedContact, index, settings) => {
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+};
+
+export const getLinkedFileBackgroundColor = (linkedFile, index, settings) => {
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+};
+
+export const getLinkedTaskBackgroundColor = (linkedTask, index, settings) => {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
