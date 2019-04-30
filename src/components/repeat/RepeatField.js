@@ -14,13 +14,12 @@ class RepeatField extends React.Component {
                     repeat={this.props.repeat}
                     onUpdateRepeat={repeat => {
                         const keys = getKeysForType(repeat.type);
-                        console.log(repeat, keys);
 
                         Object.keys(repeat).forEach(key => {
                             if (key !== 'type' && !keys.includes(key)) {
                                 delete repeat[key];
                             }
-                        })
+                        });
 
                         this.props.onChange(repeat);
                     }} />
