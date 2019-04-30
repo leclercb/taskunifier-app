@@ -29,7 +29,7 @@ function RepeatYearlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXYears'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXYears'} />
                         )}
                         <span style={{ marginLeft: 10 }}>year(s)</span>
                     </Radio>

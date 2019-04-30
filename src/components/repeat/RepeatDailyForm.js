@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputNumber, Radio, Select } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDaysOfWeek } from 'utils/RepeatUtils';
 
 function RepeatDailyForm(props) {
     const { getFieldDecorator } = props.form;
@@ -38,7 +39,7 @@ function RepeatDailyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXDays'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXDays'} />
                         )}
                         <span style={{ marginLeft: 10 }}>day(s)</span>
                     </Radio>
@@ -54,13 +55,9 @@ function RepeatDailyForm(props) {
                             ]
                         })(
                             <Select style={{ width: 100 }} disabled={props.repeat.type !== 'everySelectedDay'}>
-                                <Select.Option value="monday">Monday</Select.Option>
-                                <Select.Option value="tuesday">Tuesday</Select.Option>
-                                <Select.Option value="wednesday">Wednesday</Select.Option>
-                                <Select.Option value="thursday">Thursday</Select.Option>
-                                <Select.Option value="friday">Friday</Select.Option>
-                                <Select.Option value="saturday">Saturday</Select.Option>
-                                <Select.Option value="sunday">Sunday</Select.Option>
+                                {getDaysOfWeek().map(item => (
+                                    <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
+                                ))}
                             </Select>
                         )}
                     </Radio>

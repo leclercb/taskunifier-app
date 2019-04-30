@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Form, InputNumber, Radio } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDaysOfWeek } from 'utils/RepeatUtils';
 
 function RepeatWeeklyForm(props) {
     const { getFieldDecorator } = props.form;
@@ -29,7 +30,7 @@ function RepeatWeeklyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXWeeks'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXWeeks'} />
                         )}
                         <span style={{ marginLeft: 10 }}>week(s)</span>
                     </Radio>
@@ -44,7 +45,7 @@ function RepeatWeeklyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} />
                         )}
                         <span style={{ marginLeft: 10 }}>week(s) on</span>
                         <div style={{ marginLeft: 40 }}>
@@ -52,15 +53,7 @@ function RepeatWeeklyForm(props) {
                                 initialValue: props.repeat ? props.repeat.daysOfWeek : null,
                                 rules: []
                             })(
-                                <Checkbox.Group disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} options={[
-                                    { label: 'Monday', value: 'monday' },
-                                    { label: 'Thuesday', value: 'tuesday' },
-                                    { label: 'Wednesday', value: 'wednesday' },
-                                    { label: 'Thursday', value: 'thursday' },
-                                    { label: 'Friday', value: 'friday' },
-                                    { label: 'Saturday', value: 'saturday' },
-                                    { label: 'Sunday', value: 'sunday' }
-                                ]} />
+                                <Checkbox.Group disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} options={getDaysOfWeek()} />
                             )}
                         </div>
                     </Radio>

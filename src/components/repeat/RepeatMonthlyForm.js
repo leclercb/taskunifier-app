@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputNumber, Radio, Select } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDaysOfWeek, getWeekNumbers } from 'utils/RepeatUtils';
 
 function RepeatMonthlyForm(props) {
     const { getFieldDecorator } = props.form;
@@ -29,7 +30,7 @@ function RepeatMonthlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'everyXMonths'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXMonths'} />
                         )}
                         <span style={{ marginLeft: 10 }}>month(s)</span>
                     </Radio>
@@ -44,7 +45,7 @@ function RepeatMonthlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'dayXEveryYMonths'} />
+                            <InputNumber min={1} max={31} disabled={props.repeat.type !== 'dayXEveryYMonths'} />
                         )}
                         <span style={{ margin: '0px 10px' }}>of every</span>
                         {getFieldDecorator('nbMonths', {
@@ -56,7 +57,7 @@ function RepeatMonthlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'dayXEveryYMonths'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'dayXEveryYMonths'} />
                         )}
                         <span style={{ marginLeft: 10 }}>month(s)</span>
                     </Radio>
@@ -72,11 +73,9 @@ function RepeatMonthlyForm(props) {
                             ]
                         })(
                             <Select style={{ width: 100 }} disabled={props.repeat.type !== 'weekXDayYEveryZMonths'}>
-                                <Select.Option value="first">First</Select.Option>
-                                <Select.Option value="second">Second</Select.Option>
-                                <Select.Option value="third">Third</Select.Option>
-                                <Select.Option value="fourth">Fourth</Select.Option>
-                                <Select.Option value="last">Last</Select.Option>
+                                {getWeekNumbers().map(item => (
+                                    <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
+                                ))}
                             </Select>
                         )}
                         <span style={{ marginRight: 10 }}>&nbsp;</span>
@@ -90,13 +89,9 @@ function RepeatMonthlyForm(props) {
                             ]
                         })(
                             <Select style={{ width: 100 }} disabled={props.repeat.type !== 'weekXDayYEveryZMonths'}>
-                                <Select.Option value="monday">Monday</Select.Option>
-                                <Select.Option value="tuesday">Tuesday</Select.Option>
-                                <Select.Option value="wednesday">Wednesday</Select.Option>
-                                <Select.Option value="thursday">Thursday</Select.Option>
-                                <Select.Option value="friday">Friday</Select.Option>
-                                <Select.Option value="saturday">Saturday</Select.Option>
-                                <Select.Option value="sunday">Sunday</Select.Option>
+                                {getDaysOfWeek().map(item => (
+                                    <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
+                                ))}
                             </Select>
                         )}
                         <span style={{ margin: '0px 10px' }}>of every</span>
@@ -109,7 +104,7 @@ function RepeatMonthlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={0} disabled={props.repeat.type !== 'weekXDayYEveryZMonths'} />
+                            <InputNumber min={1} disabled={props.repeat.type !== 'weekXDayYEveryZMonths'} />
                         )}
                         <span style={{ marginLeft: 10 }}>month(s)</span>
                     </Radio>
