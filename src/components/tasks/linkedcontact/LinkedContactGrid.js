@@ -9,8 +9,8 @@ import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { LinkedContactPropType } from 'proptypes/LinkedContactPropTypes';
 import { getLinkedContactBackgroundColor } from 'utils/SettingUtils';
-import '../../common/grid/EditableCell.css';
 import Icon from 'components/common/Icon';
+import 'components/common/grid/EditableCell.css';
 
 function LinkedContactGrid(props) {
     const onAddLinkedContact = () => {

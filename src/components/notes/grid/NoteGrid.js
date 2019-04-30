@@ -11,7 +11,7 @@ import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
-import '../../common/grid/EditableCell.css';
+import 'components/common/grid/EditableCell.css';
 
 function NoteGrid(props) {
     const onUpdateNote = note => {

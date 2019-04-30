@@ -12,7 +12,7 @@ import {
     isHandleToggleEdit
 } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import './EditableCell.css';
+import 'components/common/grid/EditableCell.css';
 
 const EditableContext = React.createContext();
 

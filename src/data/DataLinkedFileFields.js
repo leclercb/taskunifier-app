@@ -2,14 +2,14 @@ export function getDefaultLinkedFileFields() {
     return [
         {
             static: true,
-            id: 'link',
+            id: 'links',
             refIds: {},
             creationDate: 1554795587825,
             updateDate: 1554795587825,
             state: 'LOADED',
-            title: 'Link',
+            title: 'Links',
             color: '#ffffff',
-            type: 'text'
+            type: 'linkedFileLinks'
         },
         {
             static: true,

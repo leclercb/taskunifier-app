@@ -1,1 +1,15 @@
-[]
+[
+    {
+        "title": "My note",
+        "color": "#ffffff",
+        "id": "fe5d6687-478d-436c-b83d-f22b1cd425fa",
+        "refIds": {},
+        "creationDate": "2019-04-30T23:06:14.222Z",
+        "updateDate": "2019-04-30T23:06:27.163Z",
+        "state": "TO_UPDATE",
+        "tags": [
+            "T2"
+        ],
+        "folder": "789cf454-004e-4fc9-bf42-c40b0b53cd47"
+    }
+]

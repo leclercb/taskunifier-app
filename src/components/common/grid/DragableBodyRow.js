@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
-import './DragableBodyRow.css';
+import 'components/common/grid/DragableBodyRow.css';
 
 const BodyRow = props => {
     const {

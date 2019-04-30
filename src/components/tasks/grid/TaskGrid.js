@@ -13,7 +13,7 @@ import DragableBodyRow from 'components/common/grid/DragableBodyRow';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
-import '../../common/grid/EditableCell.css';
+import 'components/common/grid/EditableCell.css';
 
 function TaskGrid(props) {
     const onUpdateTask = task => {

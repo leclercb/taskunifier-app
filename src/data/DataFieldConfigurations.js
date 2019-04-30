@@ -16,8 +16,20 @@ import FolderSelect from 'components/folders/FolderSelect';
 import GoalTitle from 'components/goals/GoalTitle';
 import GoalSelect from 'components/goals/GoalSelect';
 import LengthField from 'components/common/LengthField';
+import {
+    LinkedContactLinksSelect,
+    LinkedFileLinksSelect,
+    LinkedTaskLinksSelect
+} from 'components/links/LinksSelect';
+import {
+    LinkedContactLinksTitle,
+    LinkedFileLinksTitle,
+    LinkedTaskLinksTitle
+} from 'components/links/LinksTitle';
 import LocationTitle from 'components/locations/LocationTitle';
 import LocationSelect from 'components/locations/LocationSelect';
+import NoteTitle from 'components/notes/common/NoteTitle';
+import NoteSelect from 'components/notes/common/NoteSelect';
 import PriorityTitle from 'components/priorities/PriorityTitle';
 import PrioritySelect from 'components/priorities/PrioritySelect';
 import RepeatField from 'components/repeat/RepeatField';
@@ -25,6 +37,8 @@ import StatusTitle from 'components/statuses/StatusTitle';
 import StatusSelect from 'components/statuses/StatusSelect';
 import TagsTitle from 'components/tags/TagsTitle';
 import TagsSelect from 'components/tags/TagsSelect';
+import TaskTitle from 'components/tasks/common/TaskTitle';
+import TaskSelect from 'components/tasks/common/TaskSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
@@ -52,8 +66,12 @@ export function getFieldTypes() {
         'goal',
         'importance',
         'length',
+        'linkedContactLinks',
+        'linkedFileLinks',
+        'linkedTaskLinks',
         'location',
         'money',
+        'note',
         'number',
         'priority',
         'progress',
@@ -63,6 +81,7 @@ export function getFieldTypes() {
         'star',
         'status',
         'tags',
+        'task',
         'taskTemplate',
         'text',
         'textarea',
@@ -748,6 +767,138 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
+        case 'linkedContactLinks': {
+            configuration = {
+                title: 'Linked Contact Links',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <LinkedContactLinksTitle linkIds={value} />
+                ),
+                input: props => (
+                    <LinkedContactLinksSelect {...props} />
+                ),
+                conditionsFieldType: 'linkedContactLinks',
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'linkedFileLinks': {
+            configuration = {
+                title: 'Linked File Links',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <LinkedFileLinksTitle linkIds={value} />
+                ),
+                input: props => (
+                    <LinkedFileLinksSelect {...props} />
+                ),
+                conditionsFieldType: 'linkedFileLinks',
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'linkedTaskLinks': {
+            configuration = {
+                title: 'Linked Task Links',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <LinkedTaskLinksTitle linkIds={value} />
+                ),
+                input: props => (
+                    <LinkedTaskLinksSelect {...props} />
+                ),
+                conditionsFieldType: 'linkedTaskLinks',
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
         case 'location': {
             configuration = {
                 title: 'Location',
@@ -873,6 +1024,44 @@ export function getFieldConfiguration(type, options) {
                         type: 'text'
                     }
                 ]
+            };
+
+            break;
+        }
+        case 'note': {
+            configuration = {
+                title: 'Note',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <NoteTitle noteId={value} />
+                ),
+                input: props => (
+                    <NoteSelect {...props} />
+                ),
+                conditionsFieldType: 'note',
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
+                options: []
             };
 
             break;
@@ -1401,6 +1590,44 @@ export function getFieldConfiguration(type, options) {
                             const conditionTags = conditionValue || [];
 
                             return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                        }
+                    }
+                ],
+                options: []
+            };
+
+            break;
+        }
+        case 'task': {
+            configuration = {
+                title: 'Task',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                handleToggleEdit: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                render: value => (
+                    <TaskTitle taskId={value} />
+                ),
+                input: props => (
+                    <TaskSelect {...props} />
+                ),
+                conditionsFieldType: 'task',
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
                         }
                     }
                 ],

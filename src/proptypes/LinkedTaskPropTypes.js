@@ -2,6 +2,6 @@ import PropTypes from 'prop-types';
 
 export const LinkedTaskPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,
-    link: PropTypes.string,
+    links: PropTypes.arrayOf(PropTypes.string),
     task: PropTypes.string
 });

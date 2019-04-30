@@ -5,7 +5,7 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-04-30T12:58:39.276Z",
+        "updateDate": "2019-04-30T22:34:12.805Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
@@ -22,16 +22,42 @@
             "type": "everySelectedDay",
             "dayOfWeek": "tuesday"
         },
-        "contactLinks": [
+        "linkedContacts": [
             {
-                "id": "42b29875-1ca1-49c9-92e3-972ce02e4c01",
+                "id": "a2f1ccfb-0186-4cec-aeeb-d929c354d7fd",
                 "contact": "659dbc23-6164-467d-8b60-04cf971d33a9",
-                "link": "Test Link 1"
+                "links": [
+                    "My second contact link",
+                    "My first contact link"
+                ]
             },
             {
-                "id": "af1a019d-c085-4e22-bba2-9c4c8e5199ec",
+                "id": "f476c0b0-4b35-4dde-9ef5-fbc10a38817d",
+                "link": null,
                 "contact": "659dbc23-6164-467d-8b60-04cf971d33a9",
-                "link": "Test Link 2"
+                "links": [
+                    "My second contact link"
+                ]
+            }
+        ],
+        "linkedFiles": [
+            {
+                "id": "a5d370a1-bf25-4e5a-bad9-35781a3dfff8",
+                "link": null,
+                "file": "/home/***REMOVED***/test.txt",
+                "links": [
+                    "My first file link"
+                ]
+            }
+        ],
+        "linkedTasks": [
+            {
+                "id": "efbf17e4-fd4d-4a93-aa76-7586c5f7a095",
+                "link": null,
+                "task": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
+                "links": [
+                    "My first task link"
+                ]
             }
         ]
     },
@@ -92,7 +118,7 @@
         "id": "167c98c5-6670-4600-9528-4611b5e31131",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:28.409Z",
-        "updateDate": "2019-04-30T10:54:29.980Z",
+        "updateDate": "2019-04-30T22:02:35.429Z",
         "state": "TO_UPDATE",
         "progress": 43,
         "priority": "top",

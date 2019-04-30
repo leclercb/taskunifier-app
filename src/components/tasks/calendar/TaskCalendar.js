@@ -5,9 +5,8 @@ import { Calendar } from 'antd';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
-import Icon from 'components/common/Icon';
-import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
-import './TaskCalendar.css';
+import { TaskTitle } from 'components/tasks/common/TaskTitle';
+import 'components/tasks/calendar/TaskCalendar.css';
 
 function TaskCalendar(props) {
     const getCellRender = unit => value => {
@@ -22,14 +21,8 @@ function TaskCalendar(props) {
         return (
             <ul className="task-list">
                 {tasks.map(task => (
-                    <li
-                        key={task.id}
-                        style={{ backgroundColor: getImportanceColor(task.importance, props.settings) }}>
-                        <Icon
-                            icon="circle"
-                            color={getPriorityColor(task.priority, props.settings)}
-                            text={task.title}
-                            onClick={() => props.setSelectedTaskIds([task.id])} />
+                    <li key={task.id}>
+                        <TaskTitle task={task} settings={props.settings} />
                     </li>
                 ))}
             </ul>

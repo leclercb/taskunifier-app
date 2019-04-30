@@ -9,8 +9,8 @@ import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { LinkedTaskPropType } from 'proptypes/LinkedTaskPropTypes';
 import { getLinkedTaskBackgroundColor } from 'utils/SettingUtils';
-import '../../common/grid/EditableCell.css';
 import Icon from 'components/common/Icon';
+import 'components/common/grid/EditableCell.css';
 
 function LinkedTaskGrid(props) {
     const onAddLinkedTask = () => {

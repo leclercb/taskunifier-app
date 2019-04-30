@@ -9,8 +9,8 @@ import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { LinkedFilePropType } from 'proptypes/LinkedFilePropTypes';
 import { getLinkedFileBackgroundColor } from 'utils/SettingUtils';
-import '../../common/grid/EditableCell.css';
 import Icon from 'components/common/Icon';
+import 'components/common/grid/EditableCell.css';
 
 function LinkedFileGrid(props) {
     const onAddLinkedFile = () => {

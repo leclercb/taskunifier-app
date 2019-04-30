@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import rootReducer from 'reducers';
 import thunk from 'redux-thunk';
 import App from 'App';
-import './index.css';
+import 'index.css';
 
 const store = createStore(
     rootReducer,
