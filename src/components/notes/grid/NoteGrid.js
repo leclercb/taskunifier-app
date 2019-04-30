@@ -14,8 +14,8 @@ import { getNoteBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 
 function NoteGrid(props) {
-    const onUpdateNote = row => {
-        props.updateNote(row);
+    const onUpdateNote = note => {
+        props.updateNote(note);
     };
 
     const components = {
@@ -71,13 +71,12 @@ function NoteGrid(props) {
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
             <InfinityTable
                 rowKey="id"
-                className="note-grid"
+                className="data-grid"
                 rowClassName={() => 'editable-row'}
                 scroll={{ y: 500 }}
                 components={components}
                 columns={columns}
                 dataSource={dummy ? dummyNotes : props.notes}
-                childrenColumnName='children'
                 bordered={true}
                 size="small"
                 pagination={false}

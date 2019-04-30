@@ -21,7 +21,14 @@
         "repeat": {
             "type": "everySelectedDay",
             "dayOfWeek": "tuesday"
-        }
+        },
+        "contactLinks": [
+            {
+                "id": "42b29875-1ca1-49c9-92e3-972ce02e4c01",
+                "contact": "659dbc23-6164-467d-8b60-04cf971d33a9",
+                "link": "Test Link 1"
+            }
+        ]
     },
     {
         "title": "Task 2 DEF",
@@ -80,7 +87,7 @@
         "id": "167c98c5-6670-4600-9528-4611b5e31131",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:28.409Z",
-        "updateDate": "2019-04-29T13:40:24.724Z",
+        "updateDate": "2019-04-30T10:54:29.980Z",
         "state": "TO_UPDATE",
         "progress": 43,
         "priority": "top",
@@ -101,7 +108,10 @@
         },
         "length": 775,
         "repeat": {
-            "type": "everyDay"
+            "type": "weekXDayYEveryZMonths",
+            "nbMonths": 4,
+            "weekNb": "second",
+            "dayOfWeek": "tuesday"
         }
     }
 ]

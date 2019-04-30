@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Empty, Tabs } from 'antd';
 import withSelectedTasks from 'containers/WithSelectedTasks';
 import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
+import ContactLinkGrid from 'components/tasks/contactlink/ContactLinkGrid';
 
 function TaskTabs(props) {
     if (props.selectedTasks.length !== 1) {
@@ -11,10 +12,21 @@ function TaskTabs(props) {
         );
     }
 
+    const onUpdateContactLinks = contactLinks => {
+        // TODO implement
+    };
+
     return (
-        <Tabs animated={false} style={{ height: '100%' }}>
-            <Tabs.TabPane tab="Note" key="note" style={{ height: '100%' }}>
-                <TaskNoteForm task={props.selectedTasks[0]} updateTask={props.updateTask} />
+        <Tabs animated={false}>
+            <Tabs.TabPane tab="Note" key="note">
+                <TaskNoteForm
+                    task={props.selectedTasks[0]}
+                    updateTask={props.updateTask} />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Contact Links" key="contactLink">
+                <ContactLinkGrid
+                    contactLinks={props.selectedTasks[0].contactLinks || []}
+                    updateContactLinks={onUpdateContactLinks} />
             </Tabs.TabPane>
         </Tabs>
     );

@@ -16,8 +16,8 @@ import { getTaskBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
 
 function TaskGrid(props) {
-    const onUpdateTask = row => {
-        props.updateTask(row);
+    const onUpdateTask = task => {
+        props.updateTask(task);
     };
 
     const components = {
@@ -73,7 +73,7 @@ function TaskGrid(props) {
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
             <InfinityTable
                 rowKey="id"
-                className="task-grid"
+                className="data-grid"
                 rowClassName={() => 'editable-row'}
                 scroll={{ y: props.size.element.height - 40 }}
                 components={components}

@@ -157,7 +157,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 render: value => (
-                    <ContactTitle contextId={value} />
+                    <ContactTitle contactId={value} />
                 ),
                 input: props => (
                     <ContactSelect {...props} />

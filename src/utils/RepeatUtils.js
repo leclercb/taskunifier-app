@@ -71,23 +71,23 @@ export const getDaysOfWeek = () => {
 export const getWeekNumbers = () => {
     return [
         {
-            label: 'First',
+            label: 'first',
             value: 'first'
         },
         {
-            label: 'Second',
+            label: 'second',
             value: 'second'
         },
         {
-            label: 'Third',
+            label: 'third',
             value: 'third'
         },
         {
-            label: 'Fourth',
+            label: 'fourth',
             value: 'fourth'
         },
         {
-            label: 'Last',
+            label: 'last',
             value: 'last'
         }
     ];
