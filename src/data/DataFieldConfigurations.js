@@ -42,9 +42,7 @@ import TaskSelect from 'components/tasks/common/TaskSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { getPriorityIndex } from 'data/DataPriorities';
 import { formatRepeat } from 'utils/RepeatUtils';
-import { equals } from 'utils/ObjectUtils';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
