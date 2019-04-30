@@ -36,3 +36,7 @@ export const getTaskBackgroundColor = (task, index, settings) => {
 
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
+
+export const getContactLinkBackgroundColor = (contactLink, index, settings) => {
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+};

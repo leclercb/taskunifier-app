@@ -154,6 +154,18 @@
     min-width: 100%;
 }
 
+.data-grid .ant-form-item-control {
+    line-height: normal !important;
+}
+
+.data-grid .ant-input:focus {
+    box-shadow: none !important;
+}
+
+.data-grid .ant-table-footer {
+    padding: 8px !important;
+}
+
 .selected-list-item {
     background-color: #b8ccbf;
 }

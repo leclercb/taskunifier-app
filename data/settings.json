@@ -56,5 +56,8 @@
     "taskColumnWidth_dueDate": 118,
     "taskColumnWidth_tags": 182,
     "taskColumnWidth_context": 124,
-    "taskColumnWidth_folder": 141
+    "taskColumnWidth_folder": 141,
+    "contactLinkColumnWidth_delete": 20,
+    "contactLinkColumnWidth_link": 240,
+    "contactLinkColumnWidth_contact": 182
 }

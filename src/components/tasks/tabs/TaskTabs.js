@@ -13,7 +13,10 @@ function TaskTabs(props) {
     }
 
     const onUpdateContactLinks = contactLinks => {
-        // TODO implement
+        props.updateTask({
+            ...props.selectedTasks[0],
+            contactLinks: contactLinks
+        });
     };
 
     return (

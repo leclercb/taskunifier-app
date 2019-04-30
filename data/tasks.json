@@ -5,7 +5,7 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-04-29T16:19:23.651Z",
+        "updateDate": "2019-04-30T12:58:39.276Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
@@ -27,6 +27,11 @@
                 "id": "42b29875-1ca1-49c9-92e3-972ce02e4c01",
                 "contact": "659dbc23-6164-467d-8b60-04cf971d33a9",
                 "link": "Test Link 1"
+            },
+            {
+                "id": "af1a019d-c085-4e22-bba2-9c4c8e5199ec",
+                "contact": "659dbc23-6164-467d-8b60-04cf971d33a9",
+                "link": "Test Link 2"
             }
         ]
     },

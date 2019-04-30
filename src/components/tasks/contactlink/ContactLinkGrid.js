@@ -1,18 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'antd';
+import uuid from 'uuid';
+import { Button, Table } from 'antd';
 import withSettings from 'containers/WithSettings';
 import { getDefaultContactLinkFields } from 'data/DataContactLinkFields';
 import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
 import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { ContactLinkPropType } from 'proptypes/ContactLinkPropTypes';
+import { getContactLinkBackgroundColor } from 'utils/SettingUtils';
 import '../../common/grid/EditableCell.css';
+import Icon from 'components/common/Icon';
 
 function ContactLinkGrid(props) {
+    const onAddContactLink = () => {
+        props.updateContactLinks([
+            ...props.contactLinks,
+            {
+                id: uuid(),
+                contact: null,
+                link: null
+            }
+        ])
+    }
+
     const onUpdateContactLink = contactLink => {
-        console.log(contactLink);
-        //props.updateContactLinks(contactLink);
+        const index = props.contactLinks.findIndex(item => item.id === contactLink.id);
+        const contactLinks = [...props.contactLinks];
+        contactLinks[index] = contactLink;
+        props.updateContactLinks(contactLinks);
+    };
+
+    const onDeleteContactLink = contactLink => {
+        const index = props.contactLinks.findIndex(item => item.id === contactLink.id);
+        const contactLinks = [...props.contactLinks];
+        contactLinks.splice(index, 1);
+        props.updateContactLinks(contactLinks);
     };
 
     const components = {
@@ -64,6 +87,27 @@ function ContactLinkGrid(props) {
         };
     });
 
+    let deleteColumnWidth = props.settings['contactLinkColumnWidth_delete'];
+
+    if (!deleteColumnWidth) {
+        deleteColumnWidth = 50;
+    }
+
+    columns.push({
+        width: deleteColumnWidth,
+        title: 'Delete',
+        dataIndex: 'delete',
+        key: 'delete',
+        editable: false,
+        render: (value, record) => (
+            <Icon icon="trash-alt" onClick={() => onDeleteContactLink(record)} />
+        ),
+        onHeaderCell: column => ({
+            width: column.width,
+            onResize: handleResize('delete'),
+        }),
+    });
+
     return (
         <div style={{ overflowY: 'auto' }}>
             <Table
@@ -76,14 +120,21 @@ function ContactLinkGrid(props) {
                 bordered={true}
                 size="small"
                 pagination={false}
-                onRow={record => ({
+                onRow={(record, index) => ({
                     rowProps: {
                         record: record,
                         onSave: onUpdateContactLink,
                         getField: dataIndex => contactLinkFields.find(field => field.id === dataIndex),
-                        style: {}
+                        style: {
+                            backgroundColor: getContactLinkBackgroundColor(record, index, props.settings)
+                        }
                     }
-                })} />
+                })}
+                footer={() => (
+                    <Button onClick={() => onAddContactLink()}>
+                        <Icon icon="plus" text="Add" />
+                    </Button>
+                )} />
         </div>
     );
 }
