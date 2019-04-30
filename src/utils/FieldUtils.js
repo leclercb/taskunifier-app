@@ -43,7 +43,3 @@ export const getSelectForType = type => {
 export const getConditionsFieldTypeForType = type => {
     return getFieldConfiguration(type).conditionsFieldType;
 };
-
-export const getConditionsForType = type => {
-    return getFieldConfiguration(type).conditions;
-};

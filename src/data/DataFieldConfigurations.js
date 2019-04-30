@@ -108,22 +108,6 @@ export function getFieldConfiguration(type, options) {
                     <Checkbox {...props} />
                 ),
                 conditionsFieldType: 'boolean',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue === !!taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue !== !!taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -144,22 +128,6 @@ export function getFieldConfiguration(type, options) {
                     <ColorPicker {...props} />
                 ),
                 conditionsFieldType: 'color',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -182,22 +150,6 @@ export function getFieldConfiguration(type, options) {
                     <ContactSelect {...props} />
                 ),
                 conditionsFieldType: 'contact',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -220,22 +172,6 @@ export function getFieldConfiguration(type, options) {
                     <ContextSelect {...props} />
                 ),
                 conditionsFieldType: 'context',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -271,106 +207,6 @@ export function getFieldConfiguration(type, options) {
                     <ExtendedDatePicker format={dateFormat} {...props} /> :
                     <DatePicker format={dateFormat} {...props} />,
                 conditionsFieldType: 'date',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue && !taskValue) {
-                                return true;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(conditionValue).isSame(moment(taskValue), 'day');
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue && !taskValue) {
-                                return false;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return true;
-                            }
-
-                            return !moment(conditionValue).isSame(moment(taskValue), 'day');
-                        }
-                    },
-                    {
-                        type: 'before',
-                        title: 'Before',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isBefore(moment(conditionValue), 'day');
-                        }
-                    },
-                    {
-                        type: 'beforeOrEqual',
-                        title: 'Before or equals',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'day');
-                        }
-                    },
-                    {
-                        type: 'after',
-                        title: 'After',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isAfter(moment(conditionValue), 'day');
-                        }
-                    },
-                    {
-                        type: 'afterOrEqual',
-                        title: 'After or equals',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'day');
-                        }
-                    }
-                ],
                 options: [
                     {
                         id: 'dateFormat',
@@ -413,106 +249,6 @@ export function getFieldConfiguration(type, options) {
                     <ExtendedDatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} /> :
                     <DatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} />,
                 conditionsFieldType: 'dateTime',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue && !taskValue) {
-                                return true;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(conditionValue).isSame(moment(taskValue), 'minute');
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue && !taskValue) {
-                                return false;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return true;
-                            }
-
-                            return !moment(conditionValue).isSame(moment(taskValue), 'minute');
-                        }
-                    },
-                    {
-                        type: 'before',
-                        title: 'Before',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isBefore(moment(conditionValue), 'minute');
-                        }
-                    },
-                    {
-                        type: 'beforeOrEqual',
-                        title: 'Before or equals',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'minute');
-                        }
-                    },
-                    {
-                        type: 'after',
-                        title: 'After',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isAfter(moment(conditionValue), 'minute');
-                        }
-                    },
-                    {
-                        type: 'afterOrEqual',
-                        title: 'After or equals',
-                        apply: (conditionValue, taskValue) => {
-                            if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'minute');
-                        }
-                    }
-                ],
                 options: [
                     {
                         id: 'dateFormat',
@@ -546,22 +282,6 @@ export function getFieldConfiguration(type, options) {
                     <FolderSelect {...props} />
                 ),
                 conditionsFieldType: 'folder',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -584,22 +304,6 @@ export function getFieldConfiguration(type, options) {
                     <GoalSelect {...props} />
                 ),
                 conditionsFieldType: 'goal',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -620,66 +324,6 @@ export function getFieldConfiguration(type, options) {
                     <InputNumber min={0} max={12} {...props} />
                 ),
                 conditionsFieldType: 'importance',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThan',
-                        title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue < taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThanOrEqual',
-                        title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThan',
-                        title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue > taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThanOrEqual',
-                        title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -702,66 +346,6 @@ export function getFieldConfiguration(type, options) {
                     <LengthField {...props} />
                 ),
                 conditionsFieldType: 'length',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThan',
-                        title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue < taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThanOrEqual',
-                        title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThan',
-                        title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue > taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThanOrEqual',
-                        title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -784,28 +368,6 @@ export function getFieldConfiguration(type, options) {
                     <LinkedContactLinksSelect {...props} />
                 ),
                 conditionsFieldType: 'linkedContactLinks',
-                conditions: [
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
-                            const conditionLinks = conditionValue || [];
-
-                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
-                            const conditionLinks = conditionValue || [];
-
-                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -828,28 +390,6 @@ export function getFieldConfiguration(type, options) {
                     <LinkedFileLinksSelect {...props} />
                 ),
                 conditionsFieldType: 'linkedFileLinks',
-                conditions: [
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
-                            const conditionLinks = conditionValue || [];
-
-                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
-                            const conditionLinks = conditionValue || [];
-
-                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -872,28 +412,6 @@ export function getFieldConfiguration(type, options) {
                     <LinkedTaskLinksSelect {...props} />
                 ),
                 conditionsFieldType: 'linkedTaskLinks',
-                conditions: [
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
-                            const conditionLinks = conditionValue || [];
-
-                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
-                            const conditionLinks = conditionValue || [];
-
-                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -916,22 +434,6 @@ export function getFieldConfiguration(type, options) {
                     <LocationSelect {...props} />
                 ),
                 conditionsFieldType: 'location',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -957,66 +459,6 @@ export function getFieldConfiguration(type, options) {
                         {...props} />
                 ),
                 conditionsFieldType: 'money',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThan',
-                        title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue < taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThanOrEqual',
-                        title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThan',
-                        title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue > taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThanOrEqual',
-                        title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= taskValue;
-                        }
-                    }
-                ],
                 options: [
                     {
                         id: 'currency',
@@ -1045,22 +487,6 @@ export function getFieldConfiguration(type, options) {
                     <NoteSelect {...props} />
                 ),
                 conditionsFieldType: 'note',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1084,66 +510,6 @@ export function getFieldConfiguration(type, options) {
                     <InputNumber min={min} max={max} {...props} />
                 ),
                 conditionsFieldType: 'number',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThan',
-                        title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue < taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThanOrEqual',
-                        title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThan',
-                        title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue > taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThanOrEqual',
-                        title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= taskValue;
-                        }
-                    }
-                ],
                 options: [
                     {
                         id: 'min',
@@ -1177,82 +543,6 @@ export function getFieldConfiguration(type, options) {
                     <PrioritySelect {...props} />
                 ),
                 conditionsFieldType: 'priority',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThan',
-                        title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return getPriorityIndex(conditionValue) < getPriorityIndex(taskValue);
-                        }
-                    },
-                    {
-                        type: 'greaterThanOrEqual',
-                        title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return getPriorityIndex(conditionValue) <= getPriorityIndex(taskValue);
-                        }
-                    },
-                    {
-                        type: 'lessThan',
-                        title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return getPriorityIndex(conditionValue) > getPriorityIndex(taskValue);
-                        }
-                    },
-                    {
-                        type: 'lessThanOrEqual',
-                        title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return getPriorityIndex(conditionValue) >= getPriorityIndex(taskValue);
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1273,66 +563,6 @@ export function getFieldConfiguration(type, options) {
                     <InputNumber min={0} max={100} {...props} />
                 ),
                 conditionsFieldType: 'progress',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThan',
-                        title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue < taskValue;
-                        }
-                    },
-                    {
-                        type: 'greaterThanOrEqual',
-                        title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThan',
-                        title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue > taskValue;
-                        }
-                    },
-                    {
-                        type: 'lessThanOrEqual',
-                        title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1355,22 +585,6 @@ export function getFieldConfiguration(type, options) {
                     <RepeatField {...props} />
                 ),
                 conditionsFieldType: 'repeat',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return equals(conditionValue, taskValue);
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !equals(conditionValue, taskValue);
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1409,22 +623,6 @@ export function getFieldConfiguration(type, options) {
                     </Select>
                 ),
                 conditionsFieldType: 'select',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: [
                     {
                         id: 'values',
@@ -1453,28 +651,6 @@ export function getFieldConfiguration(type, options) {
                     <Select mode="tags" {...props} />
                 ),
                 conditionsFieldType: 'selectTags',
-                conditions: [
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
-                            const conditionTags = conditionValue || [];
-
-                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
-                            const conditionTags = conditionValue || [];
-
-                            return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1495,22 +671,6 @@ export function getFieldConfiguration(type, options) {
                     <StarCheckbox {...props} />
                 ),
                 conditionsFieldType: 'star',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue === !!taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue !== !!taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1533,22 +693,6 @@ export function getFieldConfiguration(type, options) {
                     <StatusSelect {...props} />
                 ),
                 conditionsFieldType: 'status',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1571,28 +715,6 @@ export function getFieldConfiguration(type, options) {
                     <TagsSelect {...props} />
                 ),
                 conditionsFieldType: 'tags',
-                conditions: [
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
-                            const conditionTags = conditionValue || [];
-
-                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
-                            const conditionTags = conditionValue || [];
-
-                            return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1615,22 +737,6 @@ export function getFieldConfiguration(type, options) {
                     <TaskSelect {...props} />
                 ),
                 conditionsFieldType: 'task',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1653,22 +759,6 @@ export function getFieldConfiguration(type, options) {
                     <TaskTemplateSelect {...props} />
                 ),
                 conditionsFieldType: 'taskTemplate',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1689,36 +779,6 @@ export function getFieldConfiguration(type, options) {
                     <Input.TextArea autosize={true} {...props} onPressEnter={null} />
                 ),
                 conditionsFieldType: 'textarea',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            return (taskValue || '').includes(conditionValue);
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            return !(taskValue || '').includes(conditionValue);
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1745,16 +805,6 @@ export function getFieldConfiguration(type, options) {
                     <TimerField {...props} />
                 ),
                 conditionsFieldType: 'boolean',
-                conditions: [
-                    {
-                        type: 'started',
-                        title: 'Started',
-                        apply: (conditionValue, taskValue) => {
-                            const startDate = taskValue ? taskValue.startDate : null;
-                            return !!startDate === conditionValue;
-                        }
-                    }
-                ],
                 options: []
             };
 
@@ -1776,36 +826,6 @@ export function getFieldConfiguration(type, options) {
                     <Input {...props} />
                 ),
                 conditionsFieldType: 'text',
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
-                        }
-                    },
-                    {
-                        type: 'contain',
-                        title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            return (taskValue || '').includes(conditionValue);
-                        }
-                    },
-                    {
-                        type: 'notContain',
-                        title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            return !(taskValue || '').includes(conditionValue);
-                        }
-                    }
-                ],
                 options: []
             };
 

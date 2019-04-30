@@ -1,5 +1,9 @@
 import { getValue } from 'utils/ObjectUtils';
-import { getConditionsForType } from 'utils/FieldUtils';
+import { getFieldConditions } from 'data/DataFieldConditions';
+
+export const getConditionsForType = type => {
+    return getFieldConditions(type);
+};
 
 export const applyFilter = (objectFilter, object, fields) => {
     if (!objectFilter || !objectFilter.condition) {
