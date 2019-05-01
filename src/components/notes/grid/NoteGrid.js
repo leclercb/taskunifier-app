@@ -65,8 +65,6 @@ function NoteGrid(props) {
         };
     });
 
-    const dummy = false;
-
     return (
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
             <InfinityTable
@@ -76,7 +74,7 @@ function NoteGrid(props) {
                 scroll={{ y: 500 }}
                 components={components}
                 columns={columns}
-                dataSource={dummy ? dummyNotes : props.notes}
+                dataSource={props.notes}
                 bordered={true}
                 size="small"
                 pagination={false}
@@ -107,26 +105,5 @@ NoteGrid.propTypes = {
     updateNote: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired
 };
-
-// TODO remove
-const dummyNotes = createDummyNotes();
-
-function createDummyNotes() {
-    const notes = [];
-
-    for (let i = 0; i < 1000; i++) {
-        notes.push({
-            id: 'note-dummy-' + i,
-            refIds: {},
-            creationDate: 1554795588054,
-            updateDate: 1554897001063,
-            state: 'TO_UPDATE',
-            title: 'Note Dummy ' + i,
-            color: '#ffffff'
-        });
-    }
-
-    return notes;
-}
 
 export default withApp(withSettings(withNoteFields(withNotes(NoteGrid, { applySelectedNoteFilter: true }))));

@@ -3,10 +3,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'title',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Title',
             color: '#ffffff',
             type: 'text'
@@ -14,10 +10,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'star',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Star',
             color: '#ffffff',
             type: 'star'
@@ -25,10 +17,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'completed',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Completed',
             color: '#ffffff',
             type: 'boolean'
@@ -36,10 +24,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'progress',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Progress',
             color: '#ffffff',
             type: 'progress'
@@ -47,10 +31,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'length',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Length',
             color: '#ffffff',
             type: 'length'
@@ -58,10 +38,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'timer',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Timer',
             color: '#ffffff',
             type: 'timer'
@@ -69,10 +45,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'priority',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Priority',
             color: '#ffffff',
             type: 'priority'
@@ -80,10 +52,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'importance',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Importance',
             color: '#ffffff',
             type: 'importance'
@@ -91,10 +59,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'status',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Status',
             color: '#ffffff',
             type: 'status'
@@ -102,10 +66,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'startDate',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Start date',
             color: '#ffffff',
             type: (settings.showStartTime ? 'dateTime' : 'date'),
@@ -117,10 +77,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'dueDate',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Due date',
             color: '#ffffff',
             type: (settings.showDueTime ? 'dateTime' : 'date'),
@@ -132,10 +88,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'tags',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Tags',
             color: '#ffffff',
             type: 'tags'
@@ -143,10 +95,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'context',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Context',
             color: '#ffffff',
             type: 'context'
@@ -154,10 +102,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'folder',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Folder',
             color: '#ffffff',
             type: 'folder'
@@ -165,10 +109,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'goal',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Goal',
             color: '#ffffff',
             type: 'goal'
@@ -176,10 +116,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'location',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Location',
             color: '#ffffff',
             type: 'location'
@@ -187,10 +123,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'repeat',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Repeat',
             color: '#ffffff',
             type: 'repeat'
@@ -198,10 +130,6 @@ export function getDefaultTaskFields(settings) {
         {
             static: true,
             id: 'note',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Note',
             color: '#ffffff',
             type: 'textarea'

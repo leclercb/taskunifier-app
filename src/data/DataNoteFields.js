@@ -3,10 +3,6 @@ export function getDefaultNoteFields() {
         {
             static: true,
             id: 'title',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Title',
             color: '#ffffff',
             type: 'text'
@@ -14,10 +10,6 @@ export function getDefaultNoteFields() {
         {
             static: true,
             id: 'star',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Star',
             color: '#ffffff',
             type: 'star'
@@ -25,10 +17,6 @@ export function getDefaultNoteFields() {
         {
             static: true,
             id: 'tags',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Tags',
             color: '#ffffff',
             type: 'tags'
@@ -36,10 +24,6 @@ export function getDefaultNoteFields() {
         {
             static: true,
             id: 'folder',
-            refIds: {},
-            creationDate: 1554795587825,
-            updateDate: 1554795587825,
-            state: 'LOADED',
             title: 'Folder',
             color: '#ffffff',
             type: 'folder'

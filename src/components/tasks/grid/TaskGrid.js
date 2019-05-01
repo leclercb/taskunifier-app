@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { InfinityTable } from 'antd-table-infinity';
 import withApp from 'containers/WithApp';
@@ -140,9 +141,8 @@ function createDummyTasks() {
         tasks.push({
             id: 'task-dummy-' + i,
             refIds: {},
-            creationDate: 1554795588054,
-            updateDate: 1554897001063,
-            state: 'TO_UPDATE',
+            creationDate: moment().toJSON(),
+            state: moment().toJSON(),
             title: 'Task Dummy ' + i,
             color: '#ffffff',
             completed: false,

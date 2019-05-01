@@ -3,7 +3,6 @@
 import React from 'react';
 import moment from 'moment';
 import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
-import { escape } from 'utils/RegexUtils';
 import ColorPicker from 'components/common/ColorPicker';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
 import StarCheckbox from 'components/common/StarCheckbox';
@@ -42,6 +41,8 @@ import TaskSelect from 'components/tasks/common/TaskSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import { getFieldConditions } from 'data/DataFieldConditions';
+import { escape } from 'utils/RegexUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 
 function defaultGetValueFromEvent(e) {
@@ -833,7 +834,7 @@ export function getFieldConfiguration(type, options) {
 
     configuration.select = () => (
         <Select placeholder="Condition">
-            {configuration.conditions.map(condition => (
+            {getFieldConditions(type).map(condition => (
                 <Select.Option key={condition.type} value={condition.type}>
                     {condition.title}
                 </Select.Option>
