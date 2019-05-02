@@ -16,7 +16,7 @@ function withLinkedFileLinks(Component, options = { propertyId: 'linkIds' }) {
         };
     };
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

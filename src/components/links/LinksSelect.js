@@ -8,7 +8,6 @@ import withLinkedTaskLinks from 'containers/WithLinkedTaskLinks';
 
 export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
     const { links, ...restProps } = props;
-    console.log(props);
 
     return (
         <Select ref={ref} mode="tags" allowClear={true} {...restProps}>

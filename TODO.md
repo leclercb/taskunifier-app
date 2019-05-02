@@ -2,6 +2,7 @@
 
 * Add sort order in filters
 * Add reminder and recurrence
+* Postpone Snooze
 * Edit task
 * Batch edit task
 * Sub-tasks

@@ -16,7 +16,7 @@ function withLinkedTaskLinks(Component, options = { propertyId: 'linkIds' }) {
         };
     };
 
-    const mapDispatchToProps = dispatch => ({
+    const mapDispatchToProps = () => ({
 
     });
 

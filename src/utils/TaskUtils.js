@@ -1,5 +1,5 @@
-import { clone } from "utils/ObjectUtils";
-import { canRepeat, getNextDate } from "utils/RepeatUtils";
+import { clone } from 'utils/ObjectUtils';
+import { canRepeat, getNextDate } from 'utils/RepeatUtils';
 
 export const onTaskUpdate = (task, oldTask) => {
     if (oldTask && !oldTask.completed && task.completed) {

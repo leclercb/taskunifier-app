@@ -38,8 +38,20 @@ export const getKeysForType = type => {
 };
 
 export const canRepeat = task => {
-    return task && task.repeat && task.repeat.type !== 'none' && (task.startDate || task.dueDate);
-}
+    if (!task || !task.repeat || !task.repeat.type) {
+        return false;
+    }
+
+    if (task.repeat.type === 'none') {
+        return false;
+    }
+
+    if (!task.startDate && !task.dueDate) {
+        return false;
+    }
+
+    return true;
+};
 
 export const getNextDate = (repeat, date) => {
     if (!repeat || !date) {
@@ -83,51 +95,79 @@ export const getNextDate = (repeat, date) => {
             return d.toJSON();
         }
         case 'everyXDays': {
+            if (!repeat.nbDays) {
+                return null;
+            }
+
             const d = moment(date);
             d.add(repeat.nbDays, 'days');
 
             return d.toJSON();
         }
         case 'everySelectedDay': {
+            if (!repeat.dayOfWeek) {
+                return null;
+            }
+
             const days = [Number(repeat.dayOfWeek)];
             const d = moment(date);
             d.add(1, 'days');
 
             for (let i = 0; i < 7; i++) {
-                if (!days.includes(d.isoWeekday())) {
+                if (days.includes(d.isoWeekday())) {
+                    return d.toJSON();
+                } else {
                     d.add(1, 'days');
                 }
             }
 
-            return d.toJSON();
+            return null;
         }
         case 'everyXWeeks': {
+            if (!repeat.nbWeeks) {
+                return null;
+            }
+
             const d = moment(date);
             d.add(repeat.nbWeeks, 'weeks');
 
             return d.toJSON();
         }
         case 'everyXWeeksOnDaysY': {
-            const days = repeat.daysOfWeek ? repeat.daysOfWeek.map(dayOfWeek => Number(dayOfWeek)) : [];
+            if (!repeat.nbWeeks || !repeat.daysOfWeek) {
+                return null;
+            }
+
+            const days = repeat.daysOfWeek.map(dayOfWeek => Number(dayOfWeek));
             const d = moment(date);
             d.add(1, 'days');
             d.add(repeat.nbWeeks - 1, 'weeks');
 
             for (let i = 0; i < 7; i++) {
-                if (!days.includes(d.isoWeekday())) {
+                if (days.includes(d.isoWeekday())) {
+                    return d.toJSON();
+                } else {
                     d.add(1, 'days');
                 }
             }
 
-            return d.toJSON();
+            return null;
         }
         case 'everyXMonths': {
+            if (!repeat.nbMonths) {
+                return null;
+            }
+
             const d = moment(date);
             d.add(repeat.nbMonths, 'months');
 
             return d.toJSON();
         }
         case 'dayXEveryYMonths': {
+            if (!repeat.dayNb || !repeat.nbMonths) {
+                return null;
+            }
+
             const d = moment(date);
             const oldDate = d.date();
             const oldMonth = d.month();
@@ -146,6 +186,10 @@ export const getNextDate = (repeat, date) => {
             return null; // TODO implement
         }
         case 'everyXYears': {
+            if (!repeat.nbYears) {
+                return null;
+            }
+
             const d = moment(date);
             d.add(repeat.nbYears, 'years');
 
@@ -158,7 +202,7 @@ export const getNextDate = (repeat, date) => {
             return null;
         }
     }
-}
+};
 
 export const getDaysOfWeek = () => {
     return [
@@ -233,20 +277,52 @@ export const formatRepeat = repeat => {
         case 'everyWeekend':
             return 'Every weekend';
         case 'everyXDays':
+            if (!repeat.nbDays) {
+                return '';
+            }
+
             return `Every ${repeat.nbDays} day${repeat.nbDays > 1 ? 's' : ''}`;
         case 'everySelectedDay':
+            if (!repeat.dayOfWeek) {
+                return '';
+            }
+
             return `Every ${formatDayOfWeek(repeat.dayOfWeek)}`;
         case 'everyXWeeks':
+            if (!repeat.nbWeeks) {
+                return '';
+            }
+
             return `Every ${repeat.nbWeeks} week${repeat.nbWeeks > 1 ? 's' : ''}`;
         case 'everyXWeeksOnDaysY':
+            if (!repeat.nbWeeks || !repeat.daysOfWeek) {
+                return '';
+            }
+
             return `Every ${repeat.nbWeeks} week${repeat.nbWeeks > 1 ? 's' : ''} on ${repeat.daysOfWeek.map(dayOfWeek => formatDayOfWeek(dayOfWeek)).join(', ')}`;
         case 'everyXMonths':
+            if (!repeat.nbMonths) {
+                return '';
+            }
+
             return `Every ${repeat.nbMonths} month${repeat.nbMonths > 1 ? 's' : ''}`;
         case 'dayXEveryYMonths':
+            if (!repeat.dayNb || !repeat.nbMonths) {
+                return '';
+            }
+
             return `Every ${formatDayNb(repeat.dayNb)}th day of every ${repeat.nbMonths} month${repeat.nbMonths > 1 ? 's' : ''}`;
         case 'weekXDayYEveryZMonths':
+            if (!repeat.weekNb || !repeat.dayOfWeek || !repeat.nbMonths) {
+                return '';
+            }
+
             return `Every ${formatWeekNb(repeat.weekNb)} ${formatDayOfWeek(repeat.dayOfWeek)} of every ${repeat.nbMonths} month${repeat.nbMonths > 1 ? 's' : ''}`;
         case 'everyXYears':
+            if (!repeat.nbYears) {
+                return '';
+            }
+
             return `Every ${repeat.nbYears} week${repeat.nbYears > 1 ? 's' : ''}`;
         case 'withParent':
             return 'With parent';
