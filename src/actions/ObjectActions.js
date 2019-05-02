@@ -33,6 +33,7 @@ export const addObject = (property, object) => {
         dispatch({
             type: 'ADD_OBJECT',
             property: property,
+            generateId: () => uuid(),
             creationDate: moment().toJSON(),
             object: {
                 color: Constants.defaultObjectColor,
@@ -50,6 +51,7 @@ export const updateObject = (property, object) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
+            generateId: () => uuid(),
             updateDate: moment().toJSON(),
             object: object
         });
@@ -63,6 +65,7 @@ export const deleteObject = (property, objectId) => {
         dispatch({
             type: 'DELETE_OBJECT',
             property: property,
+            generateId: () => uuid(),
             updateDate: moment().toJSON(),
             immediate: true,
             objectId: objectId,

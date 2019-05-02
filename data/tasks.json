@@ -20,7 +20,7 @@
         "context": "37d6a815-e29a-441b-8002-afac65c571e8",
         "repeat": {
             "type": "everySelectedDay",
-            "dayOfWeek": "tuesday"
+            "dayOfWeek": "2"
         },
         "linkedContacts": [
             {
@@ -67,7 +67,7 @@
         "id": "b43d6563-ef18-4dc4-8b18-4e450cc224c5",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.835Z",
-        "updateDate": "2019-04-26T12:48:45.838Z",
+        "updateDate": "2019-05-02T14:36:43.821Z",
         "state": "TO_UPDATE",
         "progress": 50,
         "priority": "high",
@@ -110,6 +110,14 @@
         "timer": {
             "value": 4879,
             "startDate": null
+        },
+        "repeat": {
+            "type": "everyXWeeksOnDaysY",
+            "daysOfWeek": [
+                "2",
+                "5"
+            ],
+            "nbWeeks": 2
         }
     },
     {
@@ -142,7 +150,7 @@
             "type": "weekXDayYEveryZMonths",
             "nbMonths": 4,
             "weekNb": "second",
-            "dayOfWeek": "tuesday"
+            "dayOfWeek": "2"
         }
     }
 ]

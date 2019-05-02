@@ -11,7 +11,7 @@ class RepeatField extends React.Component {
                 <ModalRepeatManager
                     visible={true}
                     onClose={() => this.props.onBlur()}
-                    repeat={this.props.repeat}
+                    repeat={this.props.repeat || { type: 'none' }}
                     onUpdateRepeat={repeat => {
                         const keys = getKeysForType(repeat.type);
 

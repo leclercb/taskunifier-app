@@ -1,4 +1,4 @@
-const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = [], action) => {
+const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => (state = [], action) => {
     if (property !== action.property) {
         return state;
     }
@@ -8,67 +8,10 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
             return (action.objects || []);
         }
         case 'ADD_OBJECT': {
-            const objects = [
-                ...state
-            ];
-
-            if (!action.object.id) {
-                throw Error('The object doesn\'t have an ID');
-            }
-
-            const index = objects.findIndex(object => object.id === action.object.id);
-
-            if (index >= 0) {
-                throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
-            }
-
-            const newObject = {
-                title: 'Untitled',
-                color: null,
-                ...action.object,
-                refIds: {},
-                creationDate: action.creationDate,
-                updateDate: action.creationDate,
-                state: 'LOADED'
-            };
-
-            objects.push(newObject);
-
-            onUpdate(newObject, null);
-
-            return objects;
+            return addObject(state, action);
         }
         case 'UPDATE_OBJECT': {
-            const objects = [
-                ...state
-            ];
-
-            if (!action.object.id) {
-                throw Error('The object doesn\'t have an ID');
-            }
-
-            const index = objects.findIndex(object => object.id === action.object.id);
-
-            if (index < 0) {
-                throw Error(`The object with id "${action.object.id}" cannot be updated as it doesn't exist`);
-            }
-
-            const oldObject = objects[index];
-
-            if (oldObject.state !== 'LOADED' && oldObject.state !== 'TO_UPDATE') {
-                throw Error('The object cannot be updated as it is not in a valid state');
-            }
-
-            objects[index] = {
-                ...action.object,
-                creationDate: objects[index].creationDate,
-                updateDate: action.updateDate,
-                state: 'TO_UPDATE'
-            };
-
-            onUpdate(objects[index], oldObject);
-
-            return objects;
+            return updateObject(state, action, onUpdate);
         }
         case 'UPDATE_HIERARCHY': {
             const objects = [
@@ -122,6 +65,80 @@ const Objects = (property, onUpdate = (object, oldObject) => { }) => (state = []
         default:
             return state;
     }
+};
+
+const addObject = (state, action) => {
+    const objects = [
+        ...state
+    ];
+
+    if (!action.object.id) {
+        throw Error('The object doesn\'t have an ID');
+    }
+
+    const index = objects.findIndex(object => object.id === action.object.id);
+
+    if (index >= 0) {
+        throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
+    }
+
+    const newObject = {
+        title: 'Untitled',
+        color: null,
+        ...action.object,
+        refIds: {},
+        creationDate: action.creationDate,
+        updateDate: action.creationDate,
+        state: 'LOADED'
+    };
+
+    objects.push(newObject);
+
+    return objects;
+};
+
+const updateObject = (state, action, onUpdate) => {
+    const objects = [
+        ...state
+    ];
+
+    if (!action.object.id) {
+        throw Error('The object doesn\'t have an ID');
+    }
+
+    const index = objects.findIndex(object => object.id === action.object.id);
+
+    if (index < 0) {
+        throw Error(`The object with id "${action.object.id}" cannot be updated as it doesn't exist`);
+    }
+
+    const oldObject = objects[index];
+
+    if (oldObject.state !== 'LOADED' && oldObject.state !== 'TO_UPDATE') {
+        throw Error('The object cannot be updated as it is not in a valid state');
+    }
+
+    objects[index] = {
+        ...action.object,
+        creationDate: objects[index].creationDate,
+        updateDate: action.updateDate,
+        state: 'TO_UPDATE'
+    };
+
+    const newObject = onUpdate(objects[index], oldObject);
+
+    if (newObject) {
+        newObject.id = action.generateId();
+
+        return addObject(
+            objects,
+            {
+                object: newObject,
+                creationDate: action.updateDate
+            });
+    }
+
+    return objects;
 };
 
 export default Objects;

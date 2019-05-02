@@ -2,6 +2,9 @@
 
 * Add sort order in filters
 * Add reminder and recurrence
+* Edit task
+* Batch edit task
+* Sub-tasks
 * Grid fix scrollbars
 * Improve performances
 * Try react-joyride
