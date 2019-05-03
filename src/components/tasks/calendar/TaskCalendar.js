@@ -7,7 +7,6 @@ import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import { TaskTitle } from 'components/tasks/common/TaskTitle';
 import 'components/tasks/calendar/TaskCalendar.css';
-import { getImportanceColor } from 'utils/SettingUtils';
 
 function TaskCalendar(props) {
     const getCellRender = unit => value => {
@@ -25,13 +24,14 @@ function TaskCalendar(props) {
                     <li
                         key={task.id}
                         onClick={() => props.setSelectedTaskIds([task.id])}
-                        className={props.selectedTaskIds.includes(task.id) ? 'selected' : ''}
-                        style={{
-                            backgroundColor: getImportanceColor(task.importance, props.settings),
-                        }}>
+                        className={props.selectedTaskIds.includes(task.id) ? 'selected' : ''}>
                         <TaskTitle
                             task={task}
-                            settings={props.settings} />
+                            settings={props.settings}
+                            style={{
+                                display: 'block',
+                                width: '100%'
+                            }} />
                     </li>
                 ))}
             </ul>

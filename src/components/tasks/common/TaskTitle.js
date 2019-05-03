@@ -17,7 +17,8 @@ export function TaskTitle(props) {
             globalStyle={{
                 backgroundColor: getImportanceColor(task.importance, props.settings),
                 borderRadius: 4,
-                padding: '2px 8px'
+                padding: '2px 8px',
+                ...props.style
             }} />
     ) : <span>&nbsp;</span>;
 }
@@ -25,7 +26,8 @@ export function TaskTitle(props) {
 TaskTitle.propTypes = {
     taskId: PropTypes.string,
     task: TaskPropType,
-    settings: PropTypes.object.isRequired
+    settings: PropTypes.object.isRequired,
+    style: PropTypes.object
 };
 
 export default withSettings(withTask(TaskTitle));
