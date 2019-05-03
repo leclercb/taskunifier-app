@@ -69,3 +69,12 @@ const applyCondition = (condition, object, fields) => {
         return c.apply(condition.value, getValue(object, field.id));
     }
 };
+
+export const sortObjects = (filter, a, b) => {
+    if (!filter || !filter.sortBy) {
+        return 0;
+    }
+
+    // TODO implement
+    return 0;
+}

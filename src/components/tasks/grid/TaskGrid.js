@@ -14,6 +14,8 @@ import DragableBodyRow from 'components/common/grid/DragableBodyRow';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import { sortObjects } from 'utils/FilterUtils';
 import 'components/common/grid/EditableCell.css';
 
 function TaskGrid(props) {
@@ -52,6 +54,8 @@ function TaskGrid(props) {
             dataIndex: field.id,
             key: field.id,
             editable: true,
+            defaultSortOrder: 'ascend',
+            sorter: (a, b) => sortObjects(props.selectedTaskFilter, a, b),
             render: value => getRenderForType(field.type, field.options, value),
             onHeaderCell: column => ({
                 width: column.width,
@@ -125,6 +129,7 @@ TaskGrid.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType).isRequired,
     settings: PropTypes.object.isRequired,
+    selectedTaskFilter: TaskFilterPropType,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,

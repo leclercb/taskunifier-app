@@ -11,6 +11,8 @@ import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
+import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
+import { sortObjects } from 'utils/FilterUtils';
 import 'components/common/grid/EditableCell.css';
 
 function NoteGrid(props) {
@@ -49,6 +51,7 @@ function NoteGrid(props) {
             dataIndex: field.id,
             key: field.id,
             editable: true,
+            sorter: (a, b) => sortObjects(props.selectedTaskFilter, a, b),
             render: value => getRenderForType(field.type, field.options, value),
             onHeaderCell: column => ({
                 width: column.width,
@@ -100,6 +103,7 @@ NoteGrid.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType).isRequired,
     notes: PropTypes.arrayOf(NotePropType).isRequired,
     settings: PropTypes.object.isRequired,
+    selectedNoteFilter: NoteFilterPropType,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired,
     updateNote: PropTypes.func.isRequired,
