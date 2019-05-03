@@ -52,5 +52,18 @@
             "type": "started",
             "value": true
         }
+    },
+    {
+        "title": "Sort by star and title",
+        "color": "#8fe283",
+        "id": "e10dc027-1f60-458c-992f-8c46d78aed8c",
+        "refIds": {},
+        "creationDate": "2019-05-03T12:39:13.826Z",
+        "updateDate": "2019-05-03T12:39:23.734Z",
+        "state": "TO_UPDATE",
+        "sortBy": [
+            "star",
+            "title"
+        ]
     }
 ]

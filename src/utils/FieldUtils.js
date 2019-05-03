@@ -28,6 +28,10 @@ export const getValueFromEventForType = type => {
     return getFieldConfiguration(type).getValueFromEvent;
 };
 
+export const getSortForType = (type, a, b) => {
+    return getFieldConfiguration(type).sort(a, b);
+};
+
 export const getRenderForType = (type, options, value, props) => {
     return getFieldConfiguration(type, options).render(value, props);
 };

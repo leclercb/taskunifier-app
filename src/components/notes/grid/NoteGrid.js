@@ -12,7 +12,7 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
-import { sortObjects } from 'utils/FilterUtils';
+import { sortObjects } from 'utils/SortUtils';
 import 'components/common/grid/EditableCell.css';
 
 function NoteGrid(props) {
@@ -39,19 +39,27 @@ function NoteGrid(props) {
     const columns = props.noteFields.map(field => {
         const settingKey = 'noteColumnWidth_' + field.id;
         let width = props.settings[settingKey];
+        let sorter = {};
 
         if (!width) {
             width = getWidthForType(field.type);
         }
 
+        if (field.id === 'title') {
+            sorter = {
+                defaultSortOrder: 'ascend',
+                sorter: (a, b) => sortObjects(props.selectedTaskFilter, props.taskFields, a, b),
+            };
+        }
+
         return {
             ...field,
+            ...sorter,
             width: width,
             title: field.title,
             dataIndex: field.id,
             key: field.id,
             editable: true,
-            sorter: (a, b) => sortObjects(props.selectedTaskFilter, a, b),
             render: value => getRenderForType(field.type, field.options, value),
             onHeaderCell: column => ({
                 width: column.width,
