@@ -29,7 +29,8 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
         }
 
         return {
-            notes: notes
+            notes: notes,
+            selectedNoteIds: state.app.selectedNoteIds
         };
     };
 

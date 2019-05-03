@@ -29,7 +29,8 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
         }
 
         return {
-            tasks: tasks
+            tasks: tasks,
+            selectedTaskIds: state.app.selectedTaskIds
         };
     };
 
