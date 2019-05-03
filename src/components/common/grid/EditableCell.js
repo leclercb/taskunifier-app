@@ -79,9 +79,11 @@ export function EditableCell(props) {
         editable,
         dataIndex,
         record,
+        width,
         ...restProps
     } = props;
 
+    delete restProps.width;
     delete restProps.title;
     delete restProps.index;
     delete restProps.onSave;
@@ -120,6 +122,12 @@ export function EditableCell(props) {
                             ) : (
                                     <div
                                         className="editable-cell-value-wrap"
+                                        style={{
+                                            width: (width - 18),
+                                            whiteSpace: 'nowrap',
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis'
+                                        }}
                                         onClick={isHandleToggleEdit(field.type) ? null : toggleEdit}>
                                         {getRenderForType(
                                             field.type,

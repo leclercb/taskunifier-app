@@ -58,6 +58,7 @@ function TaskGrid(props) {
                 onResize: handleResize(field.id),
             }),
             onCell: record => ({
+                width: width,
                 record: record,
                 editable: true,
                 field: field,

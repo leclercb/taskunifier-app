@@ -13,7 +13,12 @@ function ResizableColumn(props) {
 
     return (
         <Resizable width={width} height={0} onResize={onResize}>
-            <th {...restProps} style={{ userSelect: 'none' }} />
+            <th {...restProps} style={{
+                userSelect: 'none',
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                maxWidth: width - 12
+            }} />
         </Resizable>
     );
 }
