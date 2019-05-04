@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const updateTag = (tag) => {
+export const updateTag = tag => {
     return dispatch => {
         dispatch({
             type: 'UPDATE_TAG',

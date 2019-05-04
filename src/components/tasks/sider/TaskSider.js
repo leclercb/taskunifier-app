@@ -240,13 +240,13 @@ function TaskSider(props) {
 }
 
 TaskSider.propTypes = {
-    selectedTaskFilter: TaskFilterPropType.isRequired,
     contexts: PropTypes.arrayOf(ContextPropType).isRequired,
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
     goals: PropTypes.arrayOf(GoalPropType).isRequired,
     locations: PropTypes.arrayOf(LocationPropType).isRequired,
     tags: PropTypes.arrayOf(TagPropType).isRequired,
     taskFilters: PropTypes.arrayOf(TaskFilterPropType).isRequired,
+    selectedTaskFilter: TaskFilterPropType.isRequired,
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
@@ -261,11 +261,12 @@ TaskSider.propTypes = {
 export default withApp(withObjects(TaskSider, {
     includeActions: true,
     includeContexts: true,
-    includeTaskFilters: true,
     includeFolders: true,
     includeGoals: true,
     includeLocations: true,
     includeTags: true,
+    includeTaskFilters: true,
+    includeSelectedTaskFilter: true,
     filterArchivedFolders: true,
     filterArchivedGoals: true
 }));

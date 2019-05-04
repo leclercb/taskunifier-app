@@ -33,8 +33,8 @@ function ModalNoteFilterManager(props) {
 }
 
 ModalNoteFilterManager.propTypes = {
-    setNoteFilterManagerOptions: PropTypes.func.isRequired,
-    noteFilterManager: PropTypes.object.isRequired
+    noteFilterManager: PropTypes.object.isRequired,
+    setNoteFilterManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(ModalNoteFilterManager);

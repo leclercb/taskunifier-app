@@ -21,6 +21,8 @@ function withObjects(Component, options = {
     includeTaskTemplates: false,
     includeNoteFilters: false,
     includeTaskFilters: false,
+    includeSelectedNoteFilter: false,
+    includeSelectedTaskFilter: false,
     filterArchivedFolders: false,
     filterArchivedGoals: false
 }) {
@@ -67,6 +69,14 @@ function withObjects(Component, options = {
             data.taskFilters = filterObjects(state.taskFilters.all);
         }
 
+        if (options && options.includeSelectedNoteFilter === true) {
+            data.selectedNoteFilter = state.notes.selectedNoteFilter;
+        }
+
+        if (options && options.includeSelectedTaskFilter === true) {
+            data.selectedTaskFilter = state.tasks.selectedTaskFilter;
+        }
+
         return data;
     };
 
@@ -88,7 +98,7 @@ function withObjects(Component, options = {
             addLocation: location => dispatch(addLocation(location)),
             updateLocation: location => dispatch(updateLocation(location)),
             deleteLocation: locationId => dispatch(deleteLocation(locationId)),
-            updateTag: (tagId, newTagId) => dispatch(updateTag(tagId, newTagId)),
+            updateTag: tag => dispatch(updateTag(tag)),
             deleteTag: tagId => dispatch(deleteTag(tagId)),
             addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),
             updateTaskTemplate: taskTemplate => dispatch(updateTaskTemplate(taskTemplate)),

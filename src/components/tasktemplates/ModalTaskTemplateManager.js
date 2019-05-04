@@ -33,8 +33,8 @@ function ModalTaskTemplateManager(props) {
 }
 
 ModalTaskTemplateManager.propTypes = {
-    setTaskTemplateManagerOptions: PropTypes.func.isRequired,
-    taskTemplateManager: PropTypes.object.isRequired
+    taskTemplateManager: PropTypes.object.isRequired,
+    setTaskTemplateManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(ModalTaskTemplateManager);

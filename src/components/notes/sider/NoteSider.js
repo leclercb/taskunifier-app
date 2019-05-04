@@ -214,10 +214,10 @@ function NoteSider(props) {
 }
 
 NoteSider.propTypes = {
-    selectedNoteFilter: NoteFilterPropType.isRequired,
     folders: PropTypes.arrayOf(FolderPropType).isRequired,
     noteFilters: PropTypes.arrayOf(NoteFilterPropType).isRequired,
     tags: PropTypes.arrayOf(TagPropType).isRequired,
+    selectedNoteFilter: NoteFilterPropType.isRequired,
     setSelectedNoteFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
@@ -228,8 +228,9 @@ NoteSider.propTypes = {
 
 export default withApp(withObjects(NoteSider, {
     includeActions: true,
-    includeNoteFilters: true,
     includeFolders: true,
+    includeNoteFilters: true,
     includeTags: true,
+    includeSelectedNoteFilter: true,
     filterArchivedFolders: true
 }));

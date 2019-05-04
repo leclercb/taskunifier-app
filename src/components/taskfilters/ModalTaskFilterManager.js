@@ -33,8 +33,8 @@ function ModalTaskFilterManager(props) {
 }
 
 ModalTaskFilterManager.propTypes = {
-    setTaskFilterManagerOptions: PropTypes.func.isRequired,
-    taskFilterManager: PropTypes.object.isRequired
+    taskFilterManager: PropTypes.object.isRequired,
+    setTaskFilterManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(ModalTaskFilterManager);
