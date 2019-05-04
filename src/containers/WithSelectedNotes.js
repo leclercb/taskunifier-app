@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
-import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
+import { addNote, deleteNote, setSelectedNoteIds, updateNote } from 'actions/NoteActions';
 import { filterObjects } from 'utils/CategoryUtils';
-import { setSelectedNoteIds } from 'actions/AppActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withSelectedNotes(Component) {
     const mapStateToProps = state => ({
-        selectedNoteIds: state.app.selectedNoteIds,
-        selectedNotes: filterObjects(state.notes.all.filter(note => state.app.selectedNoteIds.includes(note.id)))
+        selectedNoteIds: state.notes.selectedNoteIds,
+        selectedNotes: filterObjects(state.notes.all.filter(note => state.notes.selectedNoteIds.includes(note.id)))
     });
 
     const mapDispatchToProps = dispatch => ({

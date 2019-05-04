@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { InfinityTable } from 'antd-table-infinity';
-import withApp from 'containers/WithApp';
 import withNoteFields from 'containers/WithNoteFields';
 import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
@@ -118,4 +117,4 @@ NoteGrid.propTypes = {
     updateSettings: PropTypes.func.isRequired
 };
 
-export default withApp(withSettings(withNoteFields(withNotes(NoteGrid, { applySelectedNoteFilter: true }))));
+export default withSettings(withNoteFields(withNotes(NoteGrid, { applySelectedNoteFilter: true })));

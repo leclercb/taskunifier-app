@@ -5,10 +5,6 @@ import {
     setBatchAddTasksOptions,
     setCategoryManagerOptions,
     setNoteFilterManagerOptions,
-    setSelectedNoteFilter,
-    setSelectedNoteIds,
-    setSelectedTaskFilter,
-    setSelectedTaskIds,
     setSelectedView,
     setSettingManagerOptions,
     setTaskFilterManagerOptions,
@@ -19,6 +15,8 @@ import {
     backupData,
     cleanBackups
 } from 'actions/BackupActions';
+import { setSelectedNoteIds, setSelectedNoteFilter } from 'actions/NoteActions';
+import { setSelectedTaskIds, setSelectedTaskFilter } from 'actions/TaskActions';
 import { updateSettings } from 'actions/SettingActions';
 import { clearProcesses, setProcessesVisible } from 'actions/ProcessActions';
 import { isValidLicense } from 'utils/LicenseUtils';
@@ -28,10 +26,10 @@ function withApp(Component) {
     const mapStateToProps = state => ({
         pro: isValidLicense(state.settings.license),
         selectedView: state.app.selectedView,
-        selectedNoteIds: state.app.selectedNoteIds,
-        selectedNoteFilter: state.app.selectedNoteFilter,
-        selectedTaskIds: state.app.selectedTaskIds,
-        selectedTaskFilter: state.app.selectedTaskFilter,
+        selectedNoteIds: state.notes.selectedNoteIds,
+        selectedNoteFilter: state.notes.selectedNoteFilter,
+        selectedTaskIds: state.tasks.selectedTaskIds,
+        selectedTaskFilter: state.tasks.selectedTaskFilter,
         categoryManager: state.app.categoryManager,
         noteFilterManager: state.app.noteFilterManager,
         taskFilterManager: state.app.taskFilterManager,

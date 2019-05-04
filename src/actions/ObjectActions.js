@@ -4,9 +4,9 @@ import Constants from 'constants/Constants';
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 import { filterStaticObjects } from 'utils/CategoryUtils';
 
-export const loadObjectsFromFile = (property, file) => {
+export const loadObjectsFromFile = (property, file, extraProps) => {
     return dispatch => {
-        return dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
+        return dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data, extraProps))));
     };
 };
 
@@ -14,19 +14,20 @@ export const saveObjectsToFile = (property, file, data) => {
     return saveToFile(property, file, filterStaticObjects(data));
 };
 
-export const setObjects = (property, objects) => {
+export const setObjects = (property, objects, extraProps) => {
     return dispatch => {
         dispatch({
             type: 'SET_OBJECTS',
             property: property,
-            objects: objects
+            objects: objects,
+            ...extraProps
         });
 
         return Promise.resolve();
     };
 };
 
-export const addObject = (property, object) => {
+export const addObject = (property, object, extraProps) => {
     return dispatch => {
         const id = uuid();
 
@@ -39,28 +40,30 @@ export const addObject = (property, object) => {
                 color: Constants.defaultObjectColor,
                 ...object,
                 id: id
-            }
+            },
+            ...extraProps
         });
 
         return Promise.resolve(id);
     };
 };
 
-export const updateObject = (property, object) => {
+export const updateObject = (property, object, extraProps) => {
     return dispatch => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
             generateId: () => uuid(),
             updateDate: moment().toJSON(),
-            object: object
+            object: object,
+            ...extraProps
         });
 
         return Promise.resolve();
     };
 };
 
-export const deleteObject = (property, objectId) => {
+export const deleteObject = (property, objectId, extraProps) => {
     return dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
@@ -69,17 +72,19 @@ export const deleteObject = (property, objectId) => {
             updateDate: moment().toJSON(),
             immediate: true,
             objectId: objectId,
+            ...extraProps
         });
 
         return Promise.resolve();
     };
 };
 
-export const cleanObjects = property => {
+export const cleanObjects = (property, extraProps) => {
     return dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',
-            property: property
+            property: property,
+            ...extraProps
         });
 
         return Promise.resolve();

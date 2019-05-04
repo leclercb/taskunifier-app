@@ -2,7 +2,6 @@ import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { InfinityTable } from 'antd-table-infinity';
-import withApp from 'containers/WithApp';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
@@ -166,4 +165,4 @@ function createDummyTasks() {
     return tasks;
 }
 
-export default withApp(withSettings(withTaskFields(withTasks(withSize(TaskGrid), { applySelectedTaskFilter: true }))));
+export default withSettings(withTaskFields(withTasks(withSize(TaskGrid), { applySelectedTaskFilter: true })));

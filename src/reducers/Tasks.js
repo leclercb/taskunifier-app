@@ -1,9 +1,63 @@
+import moment from 'moment';
+import { getDefaultTaskFields } from 'data/DataTaskFields';
+import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
+import { filterObjects } from 'utils/CategoryUtils';
+import { applyFilter } from 'utils/FilterUtils';
 import { deleteTag, updateTag } from 'utils/TagUtils';
 
+const getFilteredTasks = (state, action) => {
+    const fields = getDefaultTaskFields(action.settings).concat(filterObjects(action.taskFields.all));
+
+    return state.all.filter(task => {
+        if (!state.selectedTaskFilterDate ||
+            moment(task.creationDate).isAfter(moment(state.selectedTaskFilterDate))) {
+            return true;
+        }
+
+        return applyFilter(state.selectedTaskFilter, task, fields);
+    });
+}
+
 const Tasks = () => (state = {
-    all: []
+    all: [],
+    filtered: [],
+    selectedTaskIds: [],
+    selectedTaskFilter: getDefaultSelectedTaskFilter(),
+    selectedTaskFilterDate: null
 }, action) => {
     switch (action.type) {
+        case 'SET_OBJECTS':
+        case 'ADD_OBJECT':
+        case 'UPDATE_OBJECT':
+        case 'UPDATE_HIERARCHY':
+        case 'DELETE_OBJECT':
+        case 'CLEAN_OBJECTS': {
+            if (action.property !== 'tasks') {
+                return state;
+            }
+
+            return {
+                ...state,
+                filtered: getFilteredTasks(state, action)
+            };
+        }
+        case 'SET_SELECTED_TASK_IDS': {
+            return {
+                ...state,
+                selectedTaskIds: action.taskIds
+            };
+        }
+        case 'SET_SELECTED_TASK_FILTER': {
+            const newState = {
+                ...state,
+                selectedTaskFilter: action.taskFilter,
+                selectedTaskFilterDate: action.date
+            };
+
+            newState.filtered = getFilteredTasks(newState, action);
+
+            return newState;
+        }
         case 'UPDATE_TAG': {
             return {
                 ...state,

@@ -1,10 +1,6 @@
-import moment from 'moment';
 import { connect } from 'react-redux';
-import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
-import { getDefaultTaskFields } from 'data/DataTaskFields';
+import { addTask, deleteTask, setSelectedTaskIds, updateTask } from 'actions/TaskActions';
 import { filterObjects } from 'utils/CategoryUtils';
-import { applyFilter } from 'utils/FilterUtils';
-import { setSelectedTaskIds } from 'actions/AppActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
@@ -16,21 +12,13 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
         let tasks = filterObjects(state.tasks.all);
 
         if (options && options.applySelectedTaskFilter === true) {
-            const fields = getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields.all));
-
-            tasks = tasks.filter(task => {
-                if (!state.app.selectedTaskFilterDate ||
-                    moment(task.creationDate).isAfter(moment(state.app.selectedTaskFilterDate))) {
-                    return true;
-                }
-
-                return applyFilter(state.app.selectedTaskFilter, task, fields);
-            });
+            tasks = state.tasks.filtered;
         }
 
         return {
             tasks: tasks,
-            selectedTaskIds: state.app.selectedTaskIds
+            selectedTaskIds: state.tasks.selectedTaskIds,
+            selectedTaskFilter: state.tasks.selectedTaskFilter
         };
     };
 

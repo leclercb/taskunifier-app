@@ -7,7 +7,7 @@
 * Batch edit task
 * Sub-tasks
 * Grid fix scrollbars
-* Improve performances
+* Improve performances (use memo ?)
 * Try react-joyride
 * Electron proxy connection
 
