@@ -5,7 +5,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withLinkedFileLinks(Component, options = { propertyId: 'linkIds' }) {
     const mapStateToProps = (state, ownProps) => {
-        let links = getLinksFromObjects(filterObjects(state.tasks), 'linkedFiles');
+        let links = getLinksFromObjects(filterObjects(state.tasks.all), 'linkedFiles');
 
         if (options && options.propertyId in ownProps) {
             links = getLinksFromIds(links, ownProps[options.propertyId]);

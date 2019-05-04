@@ -5,7 +5,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withLinkedTaskLinks(Component, options = { propertyId: 'linkIds' }) {
     const mapStateToProps = (state, ownProps) => {
-        let links = getLinksFromObjects(filterObjects(state.tasks), 'linkedTasks');
+        let links = getLinksFromObjects(filterObjects(state.tasks.all), 'linkedTasks');
 
         if (options && options.propertyId in ownProps) {
             links = getLinksFromIds(links, ownProps[options.propertyId]);

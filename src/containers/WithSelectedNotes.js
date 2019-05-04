@@ -7,7 +7,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 function withSelectedNotes(Component) {
     const mapStateToProps = state => ({
         selectedNoteIds: state.app.selectedNoteIds,
-        selectedNotes: filterObjects(state.notes.filter(note => state.app.selectedNoteIds.includes(note.id)))
+        selectedNotes: filterObjects(state.notes.all.filter(note => state.app.selectedNoteIds.includes(note.id)))
     });
 
     const mapDispatchToProps = dispatch => ({

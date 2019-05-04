@@ -5,7 +5,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskFilters(Component) {
     const mapStateToProps = state => ({
-        taskFilters: filterObjects(state.taskFilters)
+        taskFilters: filterObjects(state.taskFilters.all)
     });
 
     const mapDispatchToProps = dispatch => ({

@@ -4,7 +4,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withNote(Component, propertyId = 'noteId') {
     const mapStateToProps = (state, ownProps) => ({
-        note: filterObjects(state.notes).find(note => note.id === ownProps[propertyId])
+        note: filterObjects(state.notes.all).find(note => note.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

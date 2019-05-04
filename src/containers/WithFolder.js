@@ -4,7 +4,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withFolder(Component, propertyId = 'folderId') {
     const mapStateToProps = (state, ownProps) => ({
-        folder: filterObjects(state.folders).find(folder => folder.id === ownProps[propertyId])
+        folder: filterObjects(state.folders.all).find(folder => folder.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

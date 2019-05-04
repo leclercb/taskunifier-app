@@ -4,7 +4,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withContext(Component, propertyId = 'contextId') {
     const mapStateToProps = (state, ownProps) => ({
-        context: filterObjects(state.contexts).find(context => context.id === ownProps[propertyId])
+        context: filterObjects(state.contexts.all).find(context => context.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

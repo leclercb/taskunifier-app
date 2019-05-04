@@ -9,7 +9,7 @@ function withFolders(Component, options = { actionsOnly: false, filterArchived: 
             return {};
         }
 
-        let folders = filterObjects(state.folders);
+        let folders = filterObjects(state.folders.all);
 
         if (options && options.filterArchived === true) {
             folders = filterArchivedObjects(folders);

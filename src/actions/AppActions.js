@@ -93,18 +93,18 @@ export const _saveData = (path, options = { clean: false, message: null }) => {
                 Promise.all([
                     dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(state.settings, true))),
                     dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(state.settings, false))),
-                    dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts)),
-                    dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts)),
-                    dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders)),
-                    dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals)),
-                    dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations)),
-                    dispatch(saveNotesToFile(join(path, 'notes.json'), state.notes)),
-                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), state.noteFields)),
-                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), state.noteFilters)),
-                    dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks)),
-                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), state.taskFields)),
-                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), state.taskFilters)),
-                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), state.taskTemplates))
+                    dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts.all)),
+                    dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts.all)),
+                    dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders.all)),
+                    dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals.all)),
+                    dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations.all)),
+                    dispatch(saveNotesToFile(join(path, 'notes.json'), state.notes.all)),
+                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), state.noteFields.all)),
+                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), state.noteFilters.all)),
+                    dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks.all)),
+                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), state.taskFields.all)),
+                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), state.taskFilters.all)),
+                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), state.taskTemplates.all))
                 ]).then(() => {
                     dispatch(updateProcess({
                         id: processId,

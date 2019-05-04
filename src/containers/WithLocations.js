@@ -10,7 +10,7 @@ function withLocations(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            locations: filterObjects(state.locations)
+            locations: filterObjects(state.locations.all)
         };
     };
 

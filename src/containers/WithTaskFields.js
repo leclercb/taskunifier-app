@@ -6,7 +6,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskFields(Component) {
     const mapStateToProps = state => ({
-        taskFields: getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields))
+        taskFields: getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields.all))
     });
 
     const mapDispatchToProps = dispatch => ({

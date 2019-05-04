@@ -9,7 +9,7 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
             return {};
         }
 
-        let goals = filterObjects(state.goals);
+        let goals = filterObjects(state.goals.all);
 
         if (options && options.filterArchived === true) {
             goals = filterArchivedObjects(goals);

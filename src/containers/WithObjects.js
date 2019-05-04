@@ -28,11 +28,11 @@ function withObjects(Component, options = {
         const data = {};
 
         if (options && options.includeContexts === true) {
-            data.contexts = filterObjects(state.contexts);
+            data.contexts = filterObjects(state.contexts.all);
         }
 
         if (options && options.includeFolders === true) {
-            data.folders = filterObjects(state.folders);
+            data.folders = filterObjects(state.folders.all);
 
             if (options.filterArchivedFolders === true) {
                 data.folders = filterArchivedObjects(data.folders);
@@ -40,7 +40,7 @@ function withObjects(Component, options = {
         }
 
         if (options && options.includeGoals === true) {
-            data.goals = filterObjects(state.goals);
+            data.goals = filterObjects(state.goals.all);
 
             if (options.filterArchivedGoals === true) {
                 data.goals = filterArchivedObjects(data.goals);
@@ -48,23 +48,23 @@ function withObjects(Component, options = {
         }
 
         if (options && options.includeLocations === true) {
-            data.locations = filterObjects(state.locations);
+            data.locations = filterObjects(state.locations.all);
         }
 
         if (options && options.includeTags === true) {
-            data.tags = getTagsFromObjects(filterObjects(state.tasks).concat(filterObjects(state.notes)));
+            data.tags = getTagsFromObjects(filterObjects(state.tasks.all).concat(filterObjects(state.notes.all)));
         }
 
         if (options && options.includeTaskTemplates === true) {
-            data.taskTemplates = filterObjects(state.taskTemplates);
+            data.taskTemplates = filterObjects(state.taskTemplates.all);
         }
 
         if (options && options.includeNoteFilters === true) {
-            data.noteFilters = filterObjects(state.noteFilters);
+            data.noteFilters = filterObjects(state.noteFilters.all);
         }
 
         if (options && options.includeTaskFilters === true) {
-            data.taskFilters = filterObjects(state.taskFilters);
+            data.taskFilters = filterObjects(state.taskFilters.all);
         }
 
         return data;

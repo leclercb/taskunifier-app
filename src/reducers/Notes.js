@@ -1,30 +1,38 @@
 import { deleteTag, updateTag } from 'utils/TagUtils';
 
-const Notes = () => (state = [], action) => {
+const Notes = () => (state = {
+    all: []
+}, action) => {
     switch (action.type) {
         case 'UPDATE_TAG': {
-            return state.map(note => {
-                if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
-                    note = { ...note };
-                    updateTag(note, action.tag.id, action.tag.title);
-                    note.updateDate = action.updateDate;
-                    note.state = 'TO_UPDATE';
-                }
+            return {
+                ...state,
+                all: state.all.map(note => {
+                    if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
+                        note = { ...note };
+                        updateTag(note, action.tag.id, action.tag.title);
+                        note.updateDate = action.updateDate;
+                        note.state = 'TO_UPDATE';
+                    }
 
-                return note;
-            });
+                    return note;
+                })
+            };
         }
         case 'DELETE_TAG': {
-            return state.map(note => {
-                if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
-                    note = { ...note };
-                    deleteTag(note, action.tagId);
-                    note.updateDate = action.updateDate;
-                    note.state = 'TO_UPDATE';
-                }
+            return {
+                ...state,
+                all: state.all.map(note => {
+                    if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
+                        note = { ...note };
+                        deleteTag(note, action.tagId);
+                        note.updateDate = action.updateDate;
+                        note.state = 'TO_UPDATE';
+                    }
 
-                return note;
-            });
+                    return note;
+                })
+            };
         }
         default:
             return state;

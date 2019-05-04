@@ -4,7 +4,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
     const mapStateToProps = (state, ownProps) => ({
-        taskTemplate: filterObjects(state.taskTemplates).find(taskTemplate => taskTemplate.id === ownProps[propertyId])
+        taskTemplate: filterObjects(state.taskTemplates.all).find(taskTemplate => taskTemplate.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

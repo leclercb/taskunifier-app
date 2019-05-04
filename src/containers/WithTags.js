@@ -10,7 +10,7 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
             return {};
         }
 
-        let tags = getTagsFromObjects(filterObjects(state.tasks).concat(filterObjects(state.notes)));
+        let tags = getTagsFromObjects(filterObjects(state.tasks.all).concat(filterObjects(state.notes.all)));
 
         if (options && options.propertyId in ownProps) {
             tags = getTagsFromIds(tags, ownProps[options.propertyId]);

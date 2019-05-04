@@ -10,7 +10,7 @@ function withContacts(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            contacts: filterObjects(state.contacts)
+            contacts: filterObjects(state.contacts.all)
         };
     };
 

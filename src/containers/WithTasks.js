@@ -13,10 +13,10 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
             return {};
         }
 
-        let tasks = filterObjects(state.tasks);
+        let tasks = filterObjects(state.tasks.all);
 
         if (options && options.applySelectedTaskFilter === true) {
-            const fields = getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields));
+            const fields = getDefaultTaskFields(state.settings).concat(filterObjects(state.taskFields.all));
 
             tasks = tasks.filter(task => {
                 if (!state.app.selectedTaskFilterDate ||

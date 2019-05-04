@@ -10,7 +10,7 @@ function withContexts(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            contexts: filterObjects(state.contexts)
+            contexts: filterObjects(state.contexts.all)
         };
     };
 

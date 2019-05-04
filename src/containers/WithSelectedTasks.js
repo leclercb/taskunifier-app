@@ -7,7 +7,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 function withSelectedTasks(Component) {
     const mapStateToProps = state => ({
         selectedTaskIds: state.app.selectedTaskIds,
-        selectedTasks: filterObjects(state.tasks.filter(task => state.app.selectedTaskIds.includes(task.id)))
+        selectedTasks: filterObjects(state.tasks.all.filter(task => state.app.selectedTaskIds.includes(task.id)))
     });
 
     const mapDispatchToProps = dispatch => ({

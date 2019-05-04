@@ -10,7 +10,7 @@ function withTaskTemplates(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            taskTemplates: filterObjects(state.taskTemplates)
+            taskTemplates: filterObjects(state.taskTemplates.all)
         };
     };
 
