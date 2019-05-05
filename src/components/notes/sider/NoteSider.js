@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Menu, Popconfirm } from 'antd';
+import { Badge, Input, Menu, Popconfirm, Tooltip } from 'antd';
+import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
-import withObjects from 'containers/WithObjects';
+import LeftRight from 'components/common/LeftRight';
+import Spacer from 'components/common/Spacer';
 import withApp from 'containers/WithApp';
+import withObjects from 'containers/WithObjects';
+import Constants from 'constants/Constants';
+import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
-import LeftRight from 'components/common/LeftRight';
-import Constants from 'constants/Constants';
-import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
-import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
-import { Tooltip } from 'antd';
-import Spacer from 'components/common/Spacer';
 import { TagPropType } from 'proptypes/TagPropTypes';
 
 function NoteSider(props) {
@@ -84,7 +83,12 @@ function NoteSider(props) {
             <Menu.Item key={object.id} filter={noteFilter}>
                 <RCMenuProvider id={'menu_' + object.id}>
                     <div>
-                        <LeftRight right={createEditDeleteButtons(object, onEdit, onDelete)}>
+                        <LeftRight right={(
+                            <React.Fragment>
+                                {createEditDeleteButtons(object, onEdit, onDelete)}
+                                {createBadge(noteFilter)}
+                            </React.Fragment>
+                        )}>
                             <Icon icon="circle" color={object.color} text={object.title} />
                         </LeftRight>
                     </div>
@@ -123,7 +127,7 @@ function NoteSider(props) {
     };
 
     const createNoteFilterForObject = (object, field, condition = {
-        id: '1',
+        id: null,
         field: field,
         type: 'equal',
         value: object.id
@@ -141,6 +145,22 @@ function NoteSider(props) {
     };
 
     const searchNoteFilter = createSearchNoteFilter();
+
+    const createBadge = noteFilter => {
+        if (noteFilter.id !== props.selectedNoteFilter.id) {
+            return null;
+        }
+
+        return <Badge
+            count={props.noteNumber}
+            showZero={true}
+            style={{
+                backgroundColor: Constants.badgeColor,
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginBottom: 2
+            }} />
+    }
 
     return (
         <React.Fragment>
@@ -172,10 +192,12 @@ function NoteSider(props) {
                         <Menu.Item
                             key={noteFilter.id}
                             filter={noteFilter}>
-                            <Icon
-                                icon={noteFilter.icon}
-                                color={noteFilter.color}
-                                text={noteFilter.title} />
+                            <LeftRight right={createBadge(noteFilter)}>
+                                <Icon
+                                    icon={noteFilter.icon}
+                                    color={noteFilter.color}
+                                    text={noteFilter.title} />
+                            </LeftRight>
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
@@ -217,6 +239,7 @@ NoteSider.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
     noteFilters: PropTypes.arrayOf(NoteFilterPropType.isRequired).isRequired,
     tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
+    noteNumber: PropTypes.number.isRequired,
     selectedNoteFilter: NoteFilterPropType.isRequired,
     setSelectedNoteFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
@@ -232,5 +255,6 @@ export default withApp(withObjects(NoteSider, {
     includeNoteFilters: true,
     includeTags: true,
     includeSelectedNoteFilter: true,
+    includeNoteNumber: true,
     filterArchivedFolders: true
 }));

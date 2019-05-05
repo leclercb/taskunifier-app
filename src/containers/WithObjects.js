@@ -24,6 +24,8 @@ function withObjects(Component, options = {
     includeTaskFilters: false,
     includeSelectedNoteFilter: false,
     includeSelectedTaskFilter: false,
+    includeNoteNumber: false,
+    includeTaskNumber: false,
     filterArchivedFolders: false,
     filterArchivedGoals: false
 }) {
@@ -76,6 +78,14 @@ function withObjects(Component, options = {
 
         if (options && options.includeSelectedTaskFilter === true) {
             data.selectedTaskFilter = state.tasks.selectedTaskFilter;
+        }
+
+        if (options && options.includeNoteNumber === true) {
+            data.noteNumber = state.notes.filteredBySelectedFilter.length;
+        }
+
+        if (options && options.includeTaskNumber === true) {
+            data.taskNumber = state.tasks.filteredBySelectedFilter.length;
         }
 
         return data;

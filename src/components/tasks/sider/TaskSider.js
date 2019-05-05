@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Input, Menu, Popconfirm, Tooltip } from 'antd';
+import { Badge, Input, Menu, Popconfirm, Tooltip } from 'antd';
+import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
-import withObjects from 'containers/WithObjects';
+import LeftRight from 'components/common/LeftRight';
+import Spacer from 'components/common/Spacer';
+import Constants from 'constants/Constants';
 import withApp from 'containers/WithApp';
+import withObjects from 'containers/WithObjects';
+import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
 import { TagPropType } from 'proptypes/TagPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import LeftRight from 'components/common/LeftRight';
-import Constants from 'constants/Constants';
-import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
-import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
-import Spacer from 'components/common/Spacer';
 
 function TaskSider(props) {
     const [openKeys, setOpenKeys] = useState(['general']);
@@ -86,7 +86,12 @@ function TaskSider(props) {
             <Menu.Item key={object.id} filter={taskFilter}>
                 <RCMenuProvider id={'menu_' + object.id}>
                     <div>
-                        <LeftRight right={createEditDeleteButtons(object, onEdit, onDelete)}>
+                        <LeftRight right={(
+                            <React.Fragment>
+                                {createEditDeleteButtons(object, onEdit, onDelete)}
+                                {createBadge(taskFilter)}
+                            </React.Fragment>
+                        )}>
                             <Icon icon="circle" color={object.color} text={object.title} />
                         </LeftRight>
                     </div>
@@ -125,7 +130,7 @@ function TaskSider(props) {
     };
 
     const createTaskFilterForObject = (object, field, condition = {
-        id: '1',
+        id: null,
         field: field,
         type: 'equal',
         value: object.id
@@ -143,6 +148,22 @@ function TaskSider(props) {
     };
 
     const searchTaskFilter = createSearchTaskFilter();
+
+    const createBadge = taskFilter => {
+        if (taskFilter.id !== props.selectedTaskFilter.id) {
+            return null;
+        }
+
+        return <Badge
+            count={props.taskNumber}
+            showZero={true}
+            style={{
+                backgroundColor: Constants.badgeColor,
+                fontWeight: 'bold',
+                marginLeft: 10,
+                marginBottom: 2
+            }} />
+    }
 
     return (
         <React.Fragment>
@@ -174,10 +195,12 @@ function TaskSider(props) {
                         <Menu.Item
                             key={taskFilter.id}
                             filter={taskFilter}>
-                            <Icon
-                                icon={taskFilter.icon}
-                                color={taskFilter.color}
-                                text={taskFilter.title} />
+                            <LeftRight right={createBadge(taskFilter)}>
+                                <Icon
+                                    icon={taskFilter.icon}
+                                    color={taskFilter.color}
+                                    text={taskFilter.title} />
+                            </LeftRight>
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
@@ -246,6 +269,7 @@ TaskSider.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
     tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
     taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
+    taskNumber: PropTypes.number.isRequired,
     selectedTaskFilter: TaskFilterPropType.isRequired,
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
@@ -267,6 +291,7 @@ export default withApp(withObjects(TaskSider, {
     includeTags: true,
     includeTaskFilters: true,
     includeSelectedTaskFilter: true,
+    includeTaskNumber: true,
     filterArchivedFolders: true,
     filterArchivedGoals: true
 }));

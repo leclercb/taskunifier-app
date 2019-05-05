@@ -6,7 +6,7 @@ export function createSearchTaskFilter(searchValue) {
         condition: {
             id: '1',
             field: 'title',
-            type: 'contains',
+            type: 'contain',
             value: searchValue
         }
     };

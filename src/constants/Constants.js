@@ -16,5 +16,6 @@ export default {
     archivedColor: '#5e666d',
     defaultTaskTemplateColor: '#ffd632',
     starredColor: '#fcde35',
-    unStarredColor: '#cccccc'
+    unStarredColor: '#cccccc',
+    badgeColor: '#008c4b'
 };
