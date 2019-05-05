@@ -8,7 +8,7 @@ import { deleteTag, updateTag } from 'utils/TagUtils';
 const getFilteredTasks = (state, action) => {
     const fields = getDefaultTaskFields(action.settings).concat(filterObjects(action.taskFields.all));
 
-    return state.all.filter(task => {
+    return state.filteredByVisibleState.filter(task => {
         if (!state.selectedTaskFilterDate ||
             moment(task.creationDate).isAfter(moment(state.selectedTaskFilterDate))) {
             return true;

@@ -1,5 +1,6 @@
 ## Todo List
 
+* Use mention in notes mention
 * Add sort order in filters
 * Add reminder and recurrence
 * Postpone Snooze

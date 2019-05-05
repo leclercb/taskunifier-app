@@ -8,7 +8,7 @@ import { deleteTag, updateTag } from 'utils/TagUtils';
 const getFilteredNotes = (state, action) => {
     const fields = getDefaultNoteFields(action.settings).concat(filterObjects(action.noteFields.all));
 
-    return state.all.filter(note => {
+    return state.filteredByVisibleState.filter(note => {
         if (!state.selectedNoteFilterDate ||
             moment(note.creationDate).isAfter(moment(state.selectedNoteFilterDate))) {
             return true;
