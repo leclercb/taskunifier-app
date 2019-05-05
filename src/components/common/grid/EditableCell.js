@@ -100,6 +100,7 @@ export function EditableCell(props) {
                         };
 
                         if (!isCommitOnChangeForType(field.type)) {
+                            extraProps.fieldmode = 'grid';
                             extraProps.onPressEnter = save;
                             extraProps.onBlur = save;
                         }

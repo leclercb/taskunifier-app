@@ -215,6 +215,17 @@ export const setTaskFilterManagerOptions = options => {
     };
 };
 
+export const setTaskEditionManagerOptions = options => {
+    return dispatch => {
+        dispatch({
+            type: 'SET_TASK_EDITION_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+};
+
 export const setTaskTemplateManagerOptions = options => {
     return dispatch => {
         dispatch({

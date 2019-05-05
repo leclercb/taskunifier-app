@@ -7,6 +7,7 @@ import {
     setNoteFilterManagerOptions,
     setSelectedView,
     setSettingManagerOptions,
+    setTaskEditionManagerOptions,
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions,
     synchronize
@@ -27,6 +28,7 @@ function withApp(Component) {
         categoryManager: state.app.categoryManager,
         noteFilterManager: state.app.noteFilterManager,
         taskFilterManager: state.app.taskFilterManager,
+        taskEditionManager: state.app.taskEditionManager,
         taskTemplateManager: state.app.taskTemplateManager,
         settingManager: state.app.settingManager,
         batchAddTasks: state.app.batchAddTasks
@@ -42,6 +44,7 @@ function withApp(Component) {
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setNoteFilterManagerOptions: options => dispatch(setNoteFilterManagerOptions(options)),
         setTaskFilterManagerOptions: options => dispatch(setTaskFilterManagerOptions(options)),
+        setTaskEditionManagerOptions: options => dispatch(setTaskEditionManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
         setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
         setBatchAddTasksOptions: options => dispatch(setBatchAddTasksOptions(options)),

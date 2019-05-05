@@ -2,15 +2,39 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import ModalRepeatManager from 'components/repeat/ModalRepeatManager';
-import { getKeysForType } from 'utils/RepeatUtils';
+import { formatRepeat, getKeysForType } from 'utils/RepeatUtils';
 
 class RepeatField extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            visible: false
+        };
+
+        this.setVisible = this.setVisible.bind(this);
+    }
+
+    setVisible(visible) {
+        if (this.state.visible !== visible) {
+            this.setState({
+                visible: visible
+            });
+        }
+    }
+
     render() {
         return (
             <React.Fragment>
                 <ModalRepeatManager
-                    visible={true}
-                    onClose={() => this.props.onBlur()}
+                    visible={this.props.fieldmode === 'grid' ? true : this.state.visible}
+                    onClose={() => {
+                        this.setVisible(false);
+
+                        if (this.props.onBlur) {
+                            this.props.onBlur();
+                        }
+                    }}
                     repeat={this.props.repeat || { type: 'none' }}
                     onUpdateRepeat={repeat => {
                         const keys = getKeysForType(repeat.type);
@@ -25,7 +49,13 @@ class RepeatField extends React.Component {
                     }} />
                 <Input
                     readOnly={true}
-                    {...this.props} />
+                    onClick={() => {
+                        if (this.props.fieldmode !== 'grid') {
+                            this.setVisible(true);
+                        }
+                    }}
+                    {...this.props}
+                    value={formatRepeat(this.props.repeat)} />
             </React.Fragment>
         );
     }

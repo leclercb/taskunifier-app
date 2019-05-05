@@ -26,6 +26,13 @@ function Header(props) {
         }).then(id => props.setSelectedTaskIds([id]));
     };
 
+    const onEditTask = () => {
+        props.setTaskEditionManagerOptions({
+            visible: true,
+            taskId: props.selectedTaskIds[0]
+        });
+    };
+
     const onRemoveTasks = () => {
         props.deleteTask(props.selectedTaskIds);
     };
@@ -78,11 +85,11 @@ function Header(props) {
         props.setSelectedView('note');
     };
 
-    const createButton = (icon, text, onClick) => {
+    const createButton = (icon, text, onClick, disabled = false) => {
         return (
             <React.Fragment>
                 <Tooltip placement="bottom" title={text}>
-                    <Button onClick={onClick}>
+                    <Button onClick={onClick} disabled={disabled}>
                         <Icon icon={icon} />
                     </Button>
                 </Tooltip>
@@ -128,6 +135,9 @@ function Header(props) {
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('plus', 'Add Task', onAddTask)
+                : null}
+            {(props.selectedView === 'task' || props.selectedView === 'task-calendar') ?
+                createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
                 : null}
             {props.selectedView === 'task' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)

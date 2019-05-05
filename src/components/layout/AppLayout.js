@@ -7,11 +7,12 @@ import withApp from 'containers/WithApp';
 import withBusy from 'containers/WithBusy';
 import withProcesses from 'containers/WithProcesses';
 import withSettings from 'containers/WithSettings';
+import NotificationManager from 'components/processes/NotificationManager';
 import ModalProcessManager from 'components/processes/ModalProcessManager';
 import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
-import NotificationManager from 'components/processes/NotificationManager';
+import ModalTaskEditionManager from 'components/tasks/edit/ModalTaskEditionManager';
 import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
 import ModalBatchAddTasks from 'components/tasks/batch/ModalBatchAddTasks';
@@ -40,6 +41,7 @@ function AppLayout(props) {
             <ModalCategoryManager />
             <ModalNoteFilterManager />
             <ModalTaskFilterManager />
+            <ModalTaskEditionManager />
             <ModalTaskTemplateManager />
             <ModalSettingManager />
             <ModalBatchAddTasks />

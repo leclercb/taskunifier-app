@@ -13,6 +13,10 @@ const App = () => (state = {
         visible: false,
         taskFilterId: null
     },
+    taskEditionManager: {
+        visible: false,
+        taskId: null
+    },
     taskTemplateManager: {
         visible: false,
         taskTemplateId: null
@@ -53,6 +57,14 @@ const App = () => (state = {
                 taskFilterManager: {
                     visible: 'visible' in action ? action.visible : state.taskFilterManager.visible,
                     taskFilterId: 'taskFilterId' in action ? action.taskFilterId : state.taskFilterManager.taskFilterId
+                }
+            };
+        case 'SET_TASK_EDITION_MANAGER_OPTIONS':
+            return {
+                ...state,
+                taskEditionManager: {
+                    visible: 'visible' in action ? action.visible : state.taskEditionManager.visible,
+                    taskId: 'taskId' in action ? action.taskId : state.taskEditionManager.taskId
                 }
             };
         case 'SET_TASK_TEMPLATE_MANAGER_OPTIONS':

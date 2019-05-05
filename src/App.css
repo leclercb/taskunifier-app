@@ -166,6 +166,11 @@
     padding: 8px !important;
 }
 
+.data-grid .ant-table-tbody > tr.ant-table-row-selected td {
+    background: none !important;
+    background-color: #b8ccbf !important;
+}
+
 .selected-list-item {
     background-color: #b8ccbf;
 }
