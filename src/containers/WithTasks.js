@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import { addTask, deleteTask, setSelectedTaskIds, updateTask } from 'actions/TaskActions';
-import { filterObjects } from 'utils/CategoryUtils';
+import { addTask, deleteTask, setSelectedTaskIds, setSelectedTaskFilter, updateTask } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
@@ -9,10 +8,10 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
             return {};
         }
 
-        let tasks = filterObjects(state.tasks.all);
+        let tasks = state.tasks.filteredByVisibleState;
 
         if (options && options.applySelectedTaskFilter === true) {
-            tasks = state.tasks.filtered;
+            tasks = state.tasks.filteredBySelectedFilter;
         }
 
         return {
@@ -26,7 +25,8 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
         addTask: task => dispatch(addTask(task)),
         updateTask: task => dispatch(updateTask(task)),
         deleteTask: taskId => dispatch(deleteTask(taskId)),
-        setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds))
+        setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
+        setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });
 
     return connect(

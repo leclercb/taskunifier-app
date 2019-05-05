@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskTemplates(Component, options = { actionsOnly: false }) {
@@ -10,7 +9,7 @@ function withTaskTemplates(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            taskTemplates: filterObjects(state.taskTemplates.all)
+            taskTemplates: state.taskTemplates.filteredByVisibleState
         };
     };
 

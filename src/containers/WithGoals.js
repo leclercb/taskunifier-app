@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
-import { filterArchivedObjects, filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withGoals(Component, options = { actionsOnly: false, filterArchived: false }) {
@@ -9,10 +8,10 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
             return {};
         }
 
-        let goals = filterObjects(state.goals.all);
+        let goals = state.goals.filteredByVisibleState;
 
         if (options && options.filterArchived === true) {
-            goals = filterArchivedObjects(goals);
+            goals = state.goals.filteredByNonArchived;
         }
 
         if ('excludeIds' in ownProps) {

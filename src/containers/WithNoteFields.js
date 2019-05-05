@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import { addNoteField, deleteNoteField, updateNoteField } from 'actions/NoteFieldActions';
 import { getDefaultNoteFields } from 'data/DataNoteFields';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withNoteFields(Component) {
     const mapStateToProps = state => ({
-        noteFields: getDefaultNoteFields().concat(filterObjects(state.noteFields.all))
+        noteFields: getDefaultNoteFields().concat(state.noteFields.filteredByVisibleState)
     });
 
     const mapDispatchToProps = dispatch => ({

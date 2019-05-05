@@ -66,4 +66,4 @@ const getExtraProps = state => {
         settings: state.settings,
         noteFields: state.noteFields
     };
-}
+};

@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { deleteTag, updateTag } from 'actions/TagActions';
 import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
@@ -10,7 +9,7 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
             return {};
         }
 
-        let tags = getTagsFromObjects(filterObjects(state.tasks.all).concat(filterObjects(state.notes.all)));
+        let tags = getTagsFromObjects(state.tasks.filteredByVisibleState.concat(state.notes.filteredByVisibleState));
 
         if (options && options.propertyId in ownProps) {
             tags = getTagsFromIds(tags, ownProps[options.propertyId]);

@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTask(Component, propertyId = 'taskId') {
     const mapStateToProps = (state, ownProps) => ({
-        task: filterObjects(state.tasks.all).find(task => task.id === ownProps[propertyId])
+        task: state.tasks.filteredByVisibleState.find(task => task.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

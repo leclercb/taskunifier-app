@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
-import { filterArchivedObjects, filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withFolders(Component, options = { actionsOnly: false, filterArchived: false }) {
@@ -9,10 +8,10 @@ function withFolders(Component, options = { actionsOnly: false, filterArchived: 
             return {};
         }
 
-        let folders = filterObjects(state.folders.all);
+        let folders = state.folders.filteredByVisibleState;
 
         if (options && options.filterArchived === true) {
-            folders = filterArchivedObjects(folders);
+            folders = state.folders.filteredByNonArchived;
         }
 
         return {

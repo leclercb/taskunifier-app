@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { filterArchivedObjects, filterObjects } from 'utils/CategoryUtils';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { addNoteFilter, deleteNoteFilter, updateNoteFilter } from 'actions/NoteFilterActions';
 import { addTaskFilter, deleteTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
@@ -10,6 +9,8 @@ import { deleteTag, updateTag } from 'actions/TagActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { getTagsFromObjects } from 'utils/TagUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { setSelectedNoteIds, setSelectedNoteFilter } from 'actions/NoteActions';
+import { setSelectedTaskIds, setSelectedTaskFilter } from 'actions/TaskActions';
 
 function withObjects(Component, options = {
     includeActions: false,
@@ -30,43 +31,43 @@ function withObjects(Component, options = {
         const data = {};
 
         if (options && options.includeContexts === true) {
-            data.contexts = filterObjects(state.contexts.all);
+            data.contexts = state.contexts.filteredByVisibleState;
         }
 
         if (options && options.includeFolders === true) {
-            data.folders = filterObjects(state.folders.all);
+            data.folders = state.folders.filteredByVisibleState;
 
             if (options.filterArchivedFolders === true) {
-                data.folders = filterArchivedObjects(data.folders);
+                //data.folders = data.folders.filteredByNonArchived;
             }
         }
 
         if (options && options.includeGoals === true) {
-            data.goals = filterObjects(state.goals.all);
+            data.goals = state.goals.filteredByVisibleState;
 
             if (options.filterArchivedGoals === true) {
-                data.goals = filterArchivedObjects(data.goals);
+                //data.goals = data.goals.filteredByNonArchived;
             }
         }
 
         if (options && options.includeLocations === true) {
-            data.locations = filterObjects(state.locations.all);
+            data.locations = state.locations.filteredByVisibleState;
         }
 
         if (options && options.includeTags === true) {
-            data.tags = getTagsFromObjects(filterObjects(state.tasks.all).concat(filterObjects(state.notes.all)));
+            data.tags = getTagsFromObjects(state.tasks.filteredByVisibleState.concat(state.notes.filteredByVisibleState));
         }
 
         if (options && options.includeTaskTemplates === true) {
-            data.taskTemplates = filterObjects(state.taskTemplates.all);
+            data.taskTemplates = state.taskTemplates.filteredByVisibleState;
         }
 
         if (options && options.includeNoteFilters === true) {
-            data.noteFilters = filterObjects(state.noteFilters.all);
+            data.noteFilters = state.noteFilters.filteredByVisibleState;
         }
 
         if (options && options.includeTaskFilters === true) {
-            data.taskFilters = filterObjects(state.taskFilters.all);
+            data.taskFilters = state.taskFilters.filteredByVisibleState;
         }
 
         if (options && options.includeSelectedNoteFilter === true) {
@@ -108,7 +109,11 @@ function withObjects(Component, options = {
             deleteNoteFilter: noteFilterId => dispatch(deleteNoteFilter(noteFilterId)),
             addTaskFilter: taskFilter => dispatch(addTaskFilter(taskFilter)),
             updateTaskFilter: taskFilter => dispatch(updateTaskFilter(taskFilter)),
-            deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId))
+            deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId)),
+            setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds)),
+            setSelectedNoteFilter: noteFilter => dispatch(setSelectedNoteFilter(noteFilter)),
+            setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
+            setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
         };
     };
 

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withContexts(Component, options = { actionsOnly: false }) {
@@ -10,7 +9,7 @@ function withContexts(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            contexts: filterObjects(state.contexts.all)
+            contexts: state.contexts.filteredByVisibleState
         };
     };
 

@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withLocations(Component, options = { actionsOnly: false }) {
@@ -10,7 +9,7 @@ function withLocations(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            locations: filterObjects(state.locations.all)
+            locations: state.locations.filteredByVisibleState
         };
     };
 

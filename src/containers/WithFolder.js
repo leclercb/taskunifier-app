@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withFolder(Component, propertyId = 'folderId') {
     const mapStateToProps = (state, ownProps) => ({
-        folder: filterObjects(state.folders.all).find(folder => folder.id === ownProps[propertyId])
+        folder: state.folders.filteredByVisibleState.find(folder => folder.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

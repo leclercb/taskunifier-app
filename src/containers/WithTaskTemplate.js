@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
     const mapStateToProps = (state, ownProps) => ({
-        taskTemplate: filterObjects(state.taskTemplates.all).find(taskTemplate => taskTemplate.id === ownProps[propertyId])
+        taskTemplate: state.taskTemplates.filteredByVisibleState.find(taskTemplate => taskTemplate.id === ownProps[propertyId])
     });
 
     const mapDispatchToProps = () => ({

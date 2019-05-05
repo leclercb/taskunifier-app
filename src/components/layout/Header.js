@@ -173,4 +173,4 @@ Header.propTypes = {
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withNotes(withTasks(Header, { actionsOnly: true }), { actionsOnly: true }));
+export default withApp(withNotes(withTasks(Header)));

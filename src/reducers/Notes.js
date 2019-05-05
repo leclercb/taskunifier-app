@@ -16,11 +16,12 @@ const getFilteredNotes = (state, action) => {
 
         return applyFilter(state.selectedNoteFilter, note, fields);
     });
-}
+};
 
 const Notes = () => (state = {
     all: [],
-    filtered: [],
+    filteredByVisibleState: [],
+    filteredBySelectedFilter: [],
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: null
@@ -38,7 +39,7 @@ const Notes = () => (state = {
 
             return {
                 ...state,
-                filtered: getFilteredNotes(state, action)
+                filteredBySelectedFilter: getFilteredNotes(state, action)
             };
         }
         case 'SET_SELECTED_NOTE_IDS': {
@@ -54,39 +55,53 @@ const Notes = () => (state = {
                 selectedNoteFilterDate: action.date
             };
 
-            newState.filtered = getFilteredNotes(newState, action);
+            newState.filteredBySelectedFilter = getFilteredNotes(newState, action);
 
             return newState;
         }
         case 'UPDATE_TAG': {
-            return {
-                ...state,
-                all: state.all.map(note => {
-                    if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
-                        note = { ...note };
-                        updateTag(note, action.tag.id, action.tag.title);
-                        note.updateDate = action.updateDate;
-                        note.state = 'TO_UPDATE';
-                    }
+            const newObjects = state.all.map(note => {
+                if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
+                    note = { ...note };
+                    updateTag(note, action.tag.id, action.tag.title);
+                    note.updateDate = action.updateDate;
+                    note.state = 'TO_UPDATE';
+                }
 
-                    return note;
-                })
+                return note;
+            });
+
+            const newState = {
+                ...state,
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
+
+            newState.filteredBySelectedFilter = getFilteredNotes(newState, action);
+
+            return newState;
         }
         case 'DELETE_TAG': {
-            return {
-                ...state,
-                all: state.all.map(note => {
-                    if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
-                        note = { ...note };
-                        deleteTag(note, action.tagId);
-                        note.updateDate = action.updateDate;
-                        note.state = 'TO_UPDATE';
-                    }
+            const newObjects = state.all.map(note => {
+                if (note.state === 'LOADED' || note.state === 'TO_UPDATE') {
+                    note = { ...note };
+                    deleteTag(note, action.tagId);
+                    note.updateDate = action.updateDate;
+                    note.state = 'TO_UPDATE';
+                }
 
-                    return note;
-                })
+                return note;
+            });
+
+            const newState = {
+                ...state,
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
+
+            newState.filteredBySelectedFilter = getFilteredNotes(newState, action);
+
+            return newState;
         }
         default:
             return state;

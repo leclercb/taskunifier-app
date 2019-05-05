@@ -16,11 +16,12 @@ const getFilteredTasks = (state, action) => {
 
         return applyFilter(state.selectedTaskFilter, task, fields);
     });
-}
+};
 
 const Tasks = () => (state = {
     all: [],
-    filtered: [],
+    filteredByVisibleState: [],
+    filteredBySelectedFilter: [],
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: null
@@ -38,7 +39,7 @@ const Tasks = () => (state = {
 
             return {
                 ...state,
-                filtered: getFilteredTasks(state, action)
+                filteredBySelectedFilter: getFilteredTasks(state, action)
             };
         }
         case 'SET_SELECTED_TASK_IDS': {
@@ -54,39 +55,53 @@ const Tasks = () => (state = {
                 selectedTaskFilterDate: action.date
             };
 
-            newState.filtered = getFilteredTasks(newState, action);
+            newState.filteredBySelectedFilter = getFilteredTasks(newState, action);
 
             return newState;
         }
         case 'UPDATE_TAG': {
-            return {
-                ...state,
-                all: state.all.map(task => {
-                    if (task.state === 'LOADED' || task.state === 'TO_UPDATE') {
-                        task = { ...task };
-                        updateTag(task, action.tag.id, action.tag.title);
-                        task.updateDate = action.updateDate;
-                        task.state = 'TO_UPDATE';
-                    }
+            const newObjects = state.all.map(task => {
+                if (task.state === 'LOADED' || task.state === 'TO_UPDATE') {
+                    task = { ...task };
+                    updateTag(task, action.tag.id, action.tag.title);
+                    task.updateDate = action.updateDate;
+                    task.state = 'TO_UPDATE';
+                }
 
-                    return task;
-                })
+                return task;
+            });
+
+            const newState = {
+                ...state,
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
+
+            newState.filteredBySelectedFilter = getFilteredTasks(newState, action);
+
+            return newState;
         }
         case 'DELETE_TAG': {
-            return {
-                ...state,
-                all: state.all.map(task => {
-                    if (task.state === 'LOADED' || task.state === 'TO_UPDATE') {
-                        task = { ...task };
-                        deleteTag(task, action.tagId);
-                        task.updateDate = action.updateDate;
-                        task.state = 'TO_UPDATE';
-                    }
+            const newObjects = state.all.map(task => {
+                if (task.state === 'LOADED' || task.state === 'TO_UPDATE') {
+                    task = { ...task };
+                    deleteTag(task, action.tagId);
+                    task.updateDate = action.updateDate;
+                    task.state = 'TO_UPDATE';
+                }
 
-                    return task;
-                })
+                return task;
+            });
+
+            const newState = {
+                ...state,
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
+
+            newState.filteredBySelectedFilter = getFilteredTasks(newState, action);
+
+            return newState;
         }
         default:
             return state;

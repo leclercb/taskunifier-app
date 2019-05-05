@@ -1,5 +1,8 @@
+import { filterObjects } from "utils/CategoryUtils";
+
 const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => (state = {
-    all: []
+    all: [],
+    filteredByVisibleState: []
 }, action) => {
     if (action.property !== property) {
         return state;
@@ -7,9 +10,12 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
 
     switch (action.type) {
         case 'SET_OBJECTS': {
+            const newObjects = [...(action.objects || [])];
+
             return {
                 ...state,
-                all: [...(action.objects || [])]
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
         }
         case 'ADD_OBJECT': {
@@ -49,25 +55,31 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
         case 'DELETE_OBJECT': {
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
 
+            const newObjects = state.all.map(object => {
+                if (object.state === 'LOADED' || object.state === 'TO_UPDATE') {
+                    if (objectIds.includes(object.id)) {
+                        object = { ...object };
+                        object.updateDate = action.updateDate;
+                        object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';
+                    }
+                }
+
+                return object;
+            });
+
             return {
                 ...state,
-                all: state.all.map(object => {
-                    if (object.state === 'LOADED' || object.state === 'TO_UPDATE') {
-                        if (objectIds.includes(object.id)) {
-                            object = { ...object };
-                            object.updateDate = action.updateDate;
-                            object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';
-                        }
-                    }
-    
-                    return object;
-                })
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
         }
         case 'CLEAN_OBJECTS': {
+            const newObjects = state.all.filter(object => object.state !== 'DELETED');
+
             return {
                 ...state,
-                all: state.all.filter(object => object.state !== 'DELETED')
+                all: newObjects,
+                filteredByVisibleState: filterObjects(newObjects)
             };
         }
         default:
@@ -76,16 +88,13 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
 };
 
 const addObject = (state, action) => {
-    const newState = {
-        ...state,
-        all: [...state.all]
-    };
+    const newObjects = [...state.all];
 
     if (!action.object.id) {
         throw Error('The object doesn\'t have an ID');
     }
 
-    const index = newState.all.findIndex(object => object.id === action.object.id);
+    const index = newObjects.findIndex(object => object.id === action.object.id);
 
     if (index >= 0) {
         throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
@@ -101,41 +110,48 @@ const addObject = (state, action) => {
         state: 'LOADED'
     };
 
-    newState.all.push(newObject);
+    newObjects.push(newObject);
 
-    return newState;
+    return {
+        ...state,
+        all: newObjects,
+        filteredByVisibleState: filterObjects(newObjects)
+    };
 };
 
 const updateObject = (state, action, onUpdate) => {
-    const newState = {
-        ...state,
-        all: [...state.all]
-    };
+    const newObjects = [...state.all];
 
     if (!action.object.id) {
         throw Error('The object doesn\'t have an ID');
     }
 
-    const index = newState.all.findIndex(object => object.id === action.object.id);
+    const index = newObjects.findIndex(object => object.id === action.object.id);
 
     if (index < 0) {
         throw Error(`The object with id "${action.object.id}" cannot be updated as it doesn't exist`);
     }
 
-    const oldObject = newState.all[index];
+    const oldObject = newObjects[index];
 
     if (oldObject.state !== 'LOADED' && oldObject.state !== 'TO_UPDATE') {
         throw Error('The object cannot be updated as it is not in a valid state');
     }
 
-    newState.all[index] = {
+    newObjects[index] = {
         ...action.object,
-        creationDate: newState.all[index].creationDate,
+        creationDate: newObjects[index].creationDate,
         updateDate: action.updateDate,
         state: 'TO_UPDATE'
     };
 
-    const newObject = onUpdate(newState.all[index], oldObject);
+    const newObject = onUpdate(newObjects[index], oldObject);
+
+    const newState = {
+        ...state,
+        all: newObjects,
+        filteredByVisibleState: filterObjects(newObjects)
+    };
 
     if (newObject) {
         newObject.id = action.generateId();

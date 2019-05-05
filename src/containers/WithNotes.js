@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import { addNote, deleteNote, setSelectedNoteIds, updateNote } from 'actions/NoteActions';
-import { filterObjects } from 'utils/CategoryUtils';
+import { addNote, deleteNote, setSelectedNoteIds, setSelectedNoteFilter, updateNote } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withNotes(Component, options = { applySelectedNoteFilter: false, actionsOnly: false }) {
@@ -9,10 +8,10 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
             return {};
         }
 
-        let notes = filterObjects(state.notes.all);
+        let notes = state.notes.filteredByVisibleState;
 
         if (options && options.applySelectedNoteFilter === true) {
-            notes = state.notes.filtered;
+            notes = state.notes.filteredBySelectedFilter;
         }
 
         return {
@@ -26,7 +25,8 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
         addNote: note => dispatch(addNote(note)),
         updateNote: note => dispatch(updateNote(note)),
         deleteNote: noteId => dispatch(deleteNote(noteId)),
-        setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds))
+        setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds)),
+        setSelectedNoteFilter: noteFilter => dispatch(setSelectedNoteFilter(noteFilter))
     });
 
     return connect(

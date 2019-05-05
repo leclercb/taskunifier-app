@@ -24,4 +24,4 @@ export const sortObjects = (filter, fields, a, b) => {
     }
 
     return 0;
-}
+};

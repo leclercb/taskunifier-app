@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { addContact, deleteContact, updateContact } from 'actions/ContactActions';
-import { filterObjects } from 'utils/CategoryUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withContacts(Component, options = { actionsOnly: false }) {
@@ -10,7 +9,7 @@ function withContacts(Component, options = { actionsOnly: false }) {
         }
 
         return {
-            contacts: filterObjects(state.contacts.all)
+            contacts: state.contacts.filteredByVisibleState
         };
     };
 
