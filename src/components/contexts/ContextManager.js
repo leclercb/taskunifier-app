@@ -43,7 +43,7 @@ function ContextManager(props) {
 
 ContextManager.propTypes = {
     contextId: PropTypes.string,
-    contexts: PropTypes.arrayOf(ContextPropType).isRequired,
+    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
     onContextSelection: PropTypes.func.isRequired,
     addContext: PropTypes.func.isRequired,
     updateContext: PropTypes.func.isRequired,

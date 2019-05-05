@@ -22,7 +22,7 @@ export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(p
 });
 
 TaskTemplateSelect.propTypes = {
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType).isRequired
+    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired
 };
 
 export default withTaskTemplates(TaskTemplateSelect);

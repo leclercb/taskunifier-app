@@ -140,7 +140,7 @@ function LinkedTaskGrid(props) {
 }
 
 LinkedTaskGrid.propTypes = {
-    linkedTasks: PropTypes.arrayOf(LinkedTaskPropType).isRequired,
+    linkedTasks: PropTypes.arrayOf(LinkedTaskPropType.isRequired).isRequired,
     updateLinkedTasks: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired

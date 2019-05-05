@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export function usePrevious(value, updateOnRender = true) {
+export const usePrevious = (value, updateOnRender = true) => {
     const ref = useRef();
 
     if (updateOnRender) {
@@ -14,4 +14,4 @@ export function usePrevious(value, updateOnRender = true) {
 
         return ref.current;
     }
-}
+};

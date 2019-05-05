@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'antd';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import withTaskFields from 'containers/WithTaskFields';
 import {
     getInputForType,
@@ -49,7 +49,7 @@ function TaskEditionForm(props) {
 
 TaskEditionForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType),
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired),
     task: TaskPropType.isRequired,
     updateTask: PropTypes.func.isRequired
 };

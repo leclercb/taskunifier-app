@@ -1,5 +1,34 @@
 import moment from 'moment';
 
+export const getCategoryForType = type => {
+    if (!type) {
+        return 'daily';
+    }
+
+    switch (type) {
+        case 'none':
+        case 'everyDay':
+        case 'everyWeekday':
+        case 'everyWeekend':
+        case 'everyXDays':
+        case 'everySelectedDay':
+            return 'daily';
+        case 'everyXWeeks':
+        case 'everyXWeeksOnDaysY':
+            return 'weekly';
+        case 'everyXMonths':
+        case 'dayXEveryYMonths':
+        case 'weekXDayYEveryZMonths':
+            return 'monthly';
+        case 'everyXYears':
+            return 'yearly';
+        case 'withParent':
+            return 'withParent';
+        default:
+            return 'daily';
+    }
+};
+
 export const getKeysForType = type => {
     if (!type) {
         return [];

@@ -43,7 +43,7 @@ function FolderManager(props) {
 
 FolderManager.propTypes = {
     folderId: PropTypes.string,
-    folders: PropTypes.arrayOf(FolderPropType).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
     onFolderSelection: PropTypes.func.isRequired,
     addFolder: PropTypes.func.isRequired,
     updateFolder: PropTypes.func.isRequired,

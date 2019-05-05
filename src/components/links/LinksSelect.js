@@ -21,7 +21,7 @@ export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
 });
 
 LinksSelect.propTypes = {
-    links: PropTypes.arrayOf(LinkPropType).isRequired
+    links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
 };
 
 export const LinkedContactLinksSelect = withLinkedContactLinks(LinksSelect);

@@ -54,7 +54,7 @@ function TaskFilterManager(props) {
 
 TaskFilterManager.propTypes = {
     taskFilterId: PropTypes.string,
-    taskFilters: PropTypes.arrayOf(TaskFilterPropType).isRequired,
+    taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
     onTaskFilterSelection: PropTypes.func.isRequired,
     addTaskFilter: PropTypes.func.isRequired,
     updateTaskFilter: PropTypes.func.isRequired,

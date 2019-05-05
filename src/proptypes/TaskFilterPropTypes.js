@@ -5,5 +5,5 @@ export const TaskFilterPropType = PropTypes.shape({
     title: PropTypes.string.isRequired,
     color: PropTypes.string,
     condition: PropTypes.object,
-    sortBy: PropTypes.arrayOf(PropTypes.string)
+    sortBy: PropTypes.arrayOf(PropTypes.string.isRequired)
 });

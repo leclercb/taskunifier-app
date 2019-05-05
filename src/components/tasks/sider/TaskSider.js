@@ -240,12 +240,12 @@ function TaskSider(props) {
 }
 
 TaskSider.propTypes = {
-    contexts: PropTypes.arrayOf(ContextPropType).isRequired,
-    folders: PropTypes.arrayOf(FolderPropType).isRequired,
-    goals: PropTypes.arrayOf(GoalPropType).isRequired,
-    locations: PropTypes.arrayOf(LocationPropType).isRequired,
-    tags: PropTypes.arrayOf(TagPropType).isRequired,
-    taskFilters: PropTypes.arrayOf(TaskFilterPropType).isRequired,
+    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
+    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
+    locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
+    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
+    taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
     selectedTaskFilter: TaskFilterPropType.isRequired,
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,

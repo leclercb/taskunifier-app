@@ -16,7 +16,7 @@ export const backupData = () => {
     return (dispatch, getState) => {
         return new Promise(resolve => {
             const path = join(getState().settings.dataFolder, 'backups', '' + Date.now().valueOf());
-            const promise = dispatch(_saveData(path, { message: 'Backup database' }));
+            const promise = dispatch(_saveData(path, { clean: false, message: 'Backup database' }));
 
             promise.then(() => {
                 dispatch(cleanBackups());
@@ -29,6 +29,7 @@ export const backupData = () => {
 export const deleteBackup = date => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
+            const state = getState();
             const processId = uuid();
 
             dispatch(updateProcess({
@@ -38,8 +39,8 @@ export const deleteBackup = date => {
             }));
 
             try {
-                const path = join(getState().settings.dataFolder, 'backups', '' + date);
-                deleteDirectory(path, getState().settings.dataFolder);
+                const path = join(state.settings.dataFolder, 'backups', '' + date);
+                deleteDirectory(path, state.settings.dataFolder);
 
                 dispatch(updateProcess({
                     id: processId,
@@ -63,8 +64,9 @@ export const deleteBackup = date => {
 export const cleanBackups = () => {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
+            const state = getState();
             const processId = uuid();
-            const maxBackups = getState().settings.maxBackups;
+            const maxBackups = state.settings.maxBackups;
 
             if (!maxBackups) {
                 reject();
@@ -78,9 +80,9 @@ export const cleanBackups = () => {
                 notify: true
             }));
 
-            const backups = getBackups(getState).sort((a, b) => Number(a) - Number(b));
-
+            const backups = getBackups(state);
             const promises = [];
+
             for (let index = 0; index < backups.length - maxBackups; index++) {
                 promises.push(dispatch(deleteBackup(backups[index])));
             }

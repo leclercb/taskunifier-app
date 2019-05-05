@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import MaskTextField from 'components/common/MaskTextField';
 import Spacer from 'components/common/Spacer';
+import { TimerPropType } from 'proptypes/TimerPropTypes';
 
 class TimerField extends React.Component {
     constructor(props) {
@@ -109,10 +110,7 @@ class TimerField extends React.Component {
 }
 
 TimerField.propTypes = {
-    timer: PropTypes.shape({
-        value: PropTypes.number.isRequired,
-        startDate: PropTypes.string
-    }),
+    timer: TimerPropType,
     onToggleEdit: PropTypes.func,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool

@@ -132,8 +132,8 @@ function TaskGrid(props) {
 }
 
 TaskGrid.propTypes = {
-    taskFields: PropTypes.arrayOf(FieldPropType).isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType).isRequired,
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
+    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired,
     selectedTaskFilter: TaskFilterPropType,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,

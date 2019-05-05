@@ -62,7 +62,7 @@ function NoteFilterConditionTree(props) {
 
 NoteFilterConditionTree.propTypes = {
     noteFilter: PropTypes.object.isRequired,
-    noteFields: PropTypes.arrayOf(FieldPropType),
+    noteFields: PropTypes.arrayOf(FieldPropType.isRequired),
     context: PropTypes.object,
     disabled: PropTypes.bool,
     updateNoteFilter: PropTypes.func.isRequired

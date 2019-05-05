@@ -119,11 +119,11 @@ function TaskQuickAdd(props) {
 }
 
 TaskQuickAdd.propTypes = {
-    contexts: PropTypes.arrayOf(ContextPropType).isRequired,
-    folders: PropTypes.arrayOf(FolderPropType).isRequired,
-    goals: PropTypes.arrayOf(GoalPropType).isRequired,
-    locations: PropTypes.arrayOf(LocationPropType).isRequired,
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType).isRequired,
+    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
+    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
+    locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
+    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     addTask: PropTypes.func.isRequired
 };
 

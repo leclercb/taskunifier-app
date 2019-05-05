@@ -19,7 +19,7 @@ export const TagsSelect = React.forwardRef(function TagsSelect(props, ref) {
 });
 
 TagsSelect.propTypes = {
-    tags: PropTypes.arrayOf(TagPropType).isRequired
+    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired
 };
 
 export default withTags(TagsSelect);

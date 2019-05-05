@@ -46,9 +46,9 @@ function TaskCalendar(props) {
 }
 
 TaskCalendar.propTypes = {
-    tasks: PropTypes.arrayOf(TaskPropType).isRequired,
+    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired
 };
 

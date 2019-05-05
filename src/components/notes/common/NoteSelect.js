@@ -22,7 +22,7 @@ export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
 });
 
 NoteSelect.propTypes = {
-    notes: PropTypes.arrayOf(NotePropType).isRequired
+    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired
 };
 
 export default withNotes(NoteSelect);

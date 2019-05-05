@@ -14,3 +14,11 @@
 
 * Sub-categories (children)
 * Group by
+
+## Reviewed
+
+* actions
+* constants
+* hooks
+* proptypes
+* store

@@ -7,12 +7,12 @@ import { cleanLocations, loadLocationsFromFile, saveLocationsToFile } from 'acti
 import { cleanNotes, loadNotesFromFile, saveNotesToFile } from 'actions/NoteActions';
 import { cleanNoteFields, loadNoteFieldsFromFile, saveNoteFieldsToFile } from 'actions/NoteFieldActions';
 import { cleanNoteFilters, loadNoteFiltersFromFile, saveNoteFiltersToFile } from 'actions/NoteFilterActions';
+import { updateProcess } from 'actions/ProcessActions';
+import { loadSettingsFromFile, saveSettingsToFile } from 'actions/SettingActions';
 import { cleanTasks, loadTasksFromFile, saveTasksToFile } from 'actions/TaskActions';
 import { cleanTaskFields, loadTaskFieldsFromFile, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
 import { cleanTaskFilters, loadTaskFiltersFromFile, saveTaskFiltersToFile } from 'actions/TaskFilterActions';
 import { cleanTaskTemplates, loadTaskTemplatesFromFile, saveTaskTemplatesToFile } from 'actions/TaskTemplateActions';
-import { updateProcess } from 'actions/ProcessActions';
-import { loadSettingsFromFile, saveSettingsToFile } from 'actions/SettingActions';
 import { createDirectory, getUserDataPath, join } from 'utils/ActionUtils';
 import { filterSettings } from 'utils/SettingUtils';
 
@@ -88,7 +88,7 @@ export const _saveData = (path, options = { clean: false, message: null }) => {
 
             createDirectory(path);
 
-            const saveAllFn = () => {
+            const saveAll = () => {
                 Promise.all([
                     dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(state.settings, true))),
                     dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(state.settings, false))),
@@ -122,9 +122,9 @@ export const _saveData = (path, options = { clean: false, message: null }) => {
             };
 
             if (options.clean === true) {
-                dispatch(cleanData()).finally(() => saveAllFn());
+                dispatch(cleanData()).finally(() => saveAll());
             } else {
-                saveAllFn();
+                saveAll();
             }
         });
     };

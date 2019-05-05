@@ -5,7 +5,7 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-04-30T22:34:12.805Z",
+        "updateDate": "2019-05-05T16:40:47.284Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
@@ -19,8 +19,7 @@
         "folder": "7ccd9fc1-a3fe-4ab9-9a93-d2aa0d3da900",
         "context": "37d6a815-e29a-441b-8002-afac65c571e8",
         "repeat": {
-            "type": "everySelectedDay",
-            "dayOfWeek": "2"
+            "type": "everyDay"
         },
         "linkedContacts": [
             {

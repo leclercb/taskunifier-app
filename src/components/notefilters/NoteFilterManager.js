@@ -54,7 +54,7 @@ function NoteFilterManager(props) {
 
 NoteFilterManager.propTypes = {
     noteFilterId: PropTypes.string,
-    noteFilters: PropTypes.arrayOf(NoteFilterPropType).isRequired,
+    noteFilters: PropTypes.arrayOf(NoteFilterPropType.isRequired).isRequired,
     onNoteFilterSelection: PropTypes.func.isRequired,
     addNoteFilter: PropTypes.func.isRequired,
     updateNoteFilter: PropTypes.func.isRequired,

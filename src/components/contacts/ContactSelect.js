@@ -21,7 +21,7 @@ export const ContactSelect = React.forwardRef(function ContactSelect(props, ref)
 });
 
 ContactSelect.propTypes = {
-    contacts: PropTypes.arrayOf(ContactPropType).isRequired
+    contacts: PropTypes.arrayOf(ContactPropType.isRequired).isRequired
 };
 
 export default withContacts(ContactSelect);

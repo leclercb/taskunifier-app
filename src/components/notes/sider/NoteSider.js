@@ -214,9 +214,9 @@ function NoteSider(props) {
 }
 
 NoteSider.propTypes = {
-    folders: PropTypes.arrayOf(FolderPropType).isRequired,
-    noteFilters: PropTypes.arrayOf(NoteFilterPropType).isRequired,
-    tags: PropTypes.arrayOf(TagPropType).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
+    noteFilters: PropTypes.arrayOf(NoteFilterPropType.isRequired).isRequired,
+    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
     selectedNoteFilter: NoteFilterPropType.isRequired,
     setSelectedNoteFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,

@@ -44,7 +44,7 @@ function TagManager(props) {
 
 TagManager.propTypes = {
     tagId: PropTypes.string,
-    tags: PropTypes.arrayOf(TagPropType).isRequired,
+    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
     onTagSelection: PropTypes.func.isRequired,
     updateTag: PropTypes.func.isRequired,
     deleteTag: PropTypes.func.isRequired

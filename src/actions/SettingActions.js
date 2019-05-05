@@ -1,9 +1,7 @@
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
-    return dispatch => {
-        return dispatch(loadFromFile('settings', file, data => dispatch(setSettings(data, core))));
-    };
+    return dispatch => dispatch(loadFromFile('settings', file, data => dispatch(setSettings(data, core))));
 };
 
 export const saveSettingsToFile = (file, data) => {

@@ -43,7 +43,7 @@ function LocationManager(props) {
 
 LocationManager.propTypes = {
     locationId: PropTypes.string,
-    locations: PropTypes.arrayOf(LocationPropType).isRequired,
+    locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
     onLocationSelection: PropTypes.func.isRequired,
     addLocation: PropTypes.func.isRequired,
     updateLocation: PropTypes.func.isRequired,

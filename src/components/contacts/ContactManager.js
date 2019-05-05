@@ -43,7 +43,7 @@ function ContactManager(props) {
 
 ContactManager.propTypes = {
     contactId: PropTypes.string,
-    contacts: PropTypes.arrayOf(ContactPropType).isRequired,
+    contacts: PropTypes.arrayOf(ContactPropType.isRequired).isRequired,
     onContactSelection: PropTypes.func.isRequired,
     addContact: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,

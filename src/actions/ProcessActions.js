@@ -23,13 +23,11 @@ export const clearProcesses = () => {
 
 export const updateProcess = process => {
     return dispatch => {
-        const action = {
+        dispatch({
             type: 'UPDATE_PROCESS',
             process: process,
             generateNotificationId: () => uuid()
-        };
-
-        dispatch(action);
+        });
 
         return Promise.resolve();
     };

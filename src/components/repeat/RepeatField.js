@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import ModalRepeatManager from 'components/repeat/ModalRepeatManager';
 import { formatRepeat, getKeysForType } from 'utils/RepeatUtils';
+import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
 class RepeatField extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class RepeatField extends React.Component {
                         }
                     }}
                     repeat={this.props.repeat || { type: 'none' }}
-                    onUpdateRepeat={repeat => {
+                    updateRepeat={repeat => {
                         const keys = getKeysForType(repeat.type);
 
                         Object.keys(repeat).forEach(key => {
@@ -62,9 +63,10 @@ class RepeatField extends React.Component {
 }
 
 RepeatField.propTypes = {
-    repeat: PropTypes.object,
+    repeat: RepeatPropType,
     onChange: PropTypes.func,
-    onBlur: PropTypes.func
+    onBlur: PropTypes.func,
+    fieldmode: PropTypes.oneOf(['default', 'grid'])
 };
 
 export default RepeatField;

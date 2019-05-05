@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputNumber, Radio } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
 function RepeatYearlyForm(props) {
     const { getFieldDecorator } = props.form;
@@ -41,11 +42,11 @@ function RepeatYearlyForm(props) {
 
 RepeatYearlyForm.propTypes = {
     form: PropTypes.object.isRequired,
-    repeat: PropTypes.object,
-    onUpdateRepeat: PropTypes.func.isRequired
+    repeat: RepeatPropType,
+    updateRepeat: PropTypes.func.isRequired
 };
 
 export default Form.create({
     name: 'repeat',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.onUpdateRepeat)
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.updateRepeat)
 })(RepeatYearlyForm);

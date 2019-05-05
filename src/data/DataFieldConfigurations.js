@@ -609,9 +609,10 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'repeat',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareRepeats(a, b),
-                render: value => (
-                    value ? formatRepeat(value) : <span>&nbsp;</span>
-                ),
+                render: value => {
+                    const result = formatRepeat(value);
+                    return result ? result : <span>&nbsp;</span>;
+                },
                 input: props => (
                     <RepeatField {...props} />
                 ),

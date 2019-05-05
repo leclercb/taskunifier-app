@@ -19,7 +19,7 @@ export function LinksTitle(props) {
 
 LinksTitle.propTypes = {
     linkIds: PropTypes.array,
-    links: PropTypes.arrayOf(LinkPropType).isRequired
+    links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
 };
 
 export const LinkedContactLinksTitle = withLinkedContactLinks(LinksTitle);

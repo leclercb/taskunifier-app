@@ -163,8 +163,8 @@ function Header(props) {
 Header.propTypes = {
     pro: PropTypes.bool.isRequired,
     selectedView: PropTypes.string.isRequired,
-    selectedNoteIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     addNote: PropTypes.func.isRequired,
     deleteNote: PropTypes.func.isRequired,
     addTask: PropTypes.func.isRequired,
@@ -178,6 +178,7 @@ Header.propTypes = {
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
+    setTaskEditionManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
     setBatchAddTasksOptions: PropTypes.func.isRequired,
     setSettingManagerOptions: PropTypes.func.isRequired

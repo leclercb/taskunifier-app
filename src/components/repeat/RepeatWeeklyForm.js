@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Checkbox, Form, InputNumber, Radio } from 'antd';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import { getDaysOfWeek } from 'utils/RepeatUtils';
+import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
 function RepeatWeeklyForm(props) {
     const { getFieldDecorator } = props.form;
@@ -65,11 +66,11 @@ function RepeatWeeklyForm(props) {
 
 RepeatWeeklyForm.propTypes = {
     form: PropTypes.object.isRequired,
-    repeat: PropTypes.object,
-    onUpdateRepeat: PropTypes.func.isRequired
+    repeat: RepeatPropType,
+    updateRepeat: PropTypes.func.isRequired
 };
 
 export default Form.create({
     name: 'repeat',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.onUpdateRepeat)
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.updateRepeat)
 })(RepeatWeeklyForm);

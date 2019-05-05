@@ -22,7 +22,7 @@ export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
 });
 
 GoalSelect.propTypes = {
-    goals: PropTypes.arrayOf(GoalPropType).isRequired
+    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired
 };
 
 export default withGoals(GoalSelect, { filterArchived: true });

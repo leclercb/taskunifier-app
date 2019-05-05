@@ -76,7 +76,7 @@ function NoteQuickAdd(props) {
 }
 
 NoteQuickAdd.propTypes = {
-    folders: PropTypes.arrayOf(FolderPropType).isRequired,
+    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
     addNote: PropTypes.func.isRequired
 };
 

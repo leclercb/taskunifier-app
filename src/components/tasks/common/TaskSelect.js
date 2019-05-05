@@ -32,7 +32,7 @@ export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
 });
 
 TaskSelect.propTypes = {
-    tasks: PropTypes.arrayOf(TaskPropType).isRequired,
+    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired
 };
 

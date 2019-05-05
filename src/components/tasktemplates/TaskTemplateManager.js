@@ -46,7 +46,7 @@ function TaskTemplateManager(props) {
 
 TaskTemplateManager.propTypes = {
     taskTemplateId: PropTypes.string,
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType).isRequired,
+    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired,
     onTaskTemplateSelection: PropTypes.func.isRequired,
     addTaskTemplate: PropTypes.func.isRequired,

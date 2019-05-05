@@ -140,7 +140,7 @@ function LinkedFileGrid(props) {
 }
 
 LinkedFileGrid.propTypes = {
-    linkedFiles: PropTypes.arrayOf(LinkedFilePropType).isRequired,
+    linkedFiles: PropTypes.arrayOf(LinkedFilePropType.isRequired).isRequired,
     updateLinkedFiles: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired

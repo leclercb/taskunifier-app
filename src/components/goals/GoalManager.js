@@ -43,7 +43,7 @@ function GoalManager(props) {
 
 GoalManager.propTypes = {
     goalId: PropTypes.string,
-    goals: PropTypes.arrayOf(GoalPropType).isRequired,
+    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
     onGoalSelection: PropTypes.func.isRequired,
     addGoal: PropTypes.func.isRequired,
     updateGoal: PropTypes.func.isRequired,

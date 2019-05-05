@@ -14,4 +14,4 @@ export const condition = PropTypes.oneOfType([
     PropTypes.shape(conditionLeaf).isRequired
 ]);
 
-conditionGroup.conditions = PropTypes.arrayOf(condition).isRequired;
+conditionGroup.conditions = PropTypes.arrayOf(condition.isRequired).isRequired;

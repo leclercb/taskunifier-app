@@ -140,7 +140,7 @@ function LinkedContactGrid(props) {
 }
 
 LinkedContactGrid.propTypes = {
-    linkedContacts: PropTypes.arrayOf(LinkedContactPropType).isRequired,
+    linkedContacts: PropTypes.arrayOf(LinkedContactPropType.isRequired).isRequired,
     updateLinkedContacts: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     updateSettings: PropTypes.func.isRequired
