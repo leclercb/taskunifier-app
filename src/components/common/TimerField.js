@@ -77,21 +77,17 @@ class TimerField extends React.Component {
         delete restProps.timer;
         delete restProps.onStartStop;
         delete restProps.onChange;
-        delete restProps.onToggleEdit;
         delete restProps.readOnly;
 
         const readOnly = this.props.readOnly;
-        const iconText = (
-            <span onClick={this.props.onToggleEdit}>{this.formatTime(timer.value)}</span>
-        );
 
         return (
             <React.Fragment>
                 <Icon
                     icon={timer.startDate ? 'pause' : 'play'}
                     style={{ cursor: 'pointer' }}
-                    onClick={this.onClick}
-                    text={readOnly ? iconText : null} />
+                    onIconClick={this.onClick}
+                    text={readOnly ? this.formatTime(timer.value) : null} />
                 {!readOnly &&
                     <React.Fragment>
                         <Spacer />
@@ -111,7 +107,6 @@ class TimerField extends React.Component {
 
 TimerField.propTypes = {
     timer: TimerPropType,
-    onToggleEdit: PropTypes.func,
     onChange: PropTypes.func,
     readOnly: PropTypes.bool
 };

@@ -9,6 +9,7 @@ function Icon(props) {
             <span onClick={props.onClick} style={props.globalStyle}>
                 <FontAwesomeIcon
                     icon={props.icon}
+                    onClick={props.onIconClick}
                     className={props.className}
                     style={{
                         color: props.color ? props.color : Constants.color,
@@ -28,7 +29,8 @@ Icon.propTypes = {
     style: PropTypes.object,
     globalStyle: PropTypes.object,
     className: PropTypes.string,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onIconClick: PropTypes.func
 };
 
 export default Icon;

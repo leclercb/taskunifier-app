@@ -7,6 +7,7 @@ import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
+import { onRowOnClick, onRowOnKeyDown } from 'components/common/grid/Table';
 import ResizableColumn from 'components/common/grid/ResizableColumn';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import DragableBodyRow from 'components/common/grid/DragableBodyRow';
@@ -120,7 +121,9 @@ function TaskGrid(props) {
                         },
                         moveRow: (dragRecord, dropRecord) => {
                             console.log(dragRecord, dropRecord);
-                        }
+                        },
+                        onClick: onRowOnClick(record, props.tasks, 'id', props.selectedTaskIds, props.setSelectedTaskIds),
+                        onKeyDown: onRowOnKeyDown(props.tasks, 'id', props.selectedTaskIds, props.setSelectedTaskIds)
                     };
                 }}
                 rowSelection={{

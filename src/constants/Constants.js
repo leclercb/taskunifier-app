@@ -15,7 +15,6 @@ export default {
     conditionTreeGroupNotActiveColor: '#e3afac',
     archivedColor: '#5e666d',
     defaultTaskTemplateColor: '#ffd632',
-    starredColor: '#fcde35',
     unStarredColor: '#cccccc',
     badgeColor: '#008c4b'
 };

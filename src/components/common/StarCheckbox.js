@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'components/common/Icon';
-import Constants from 'constants/Constants';
+import { Rate } from 'antd';
 
 class StarCheckbox extends React.Component {
     constructor(props) {
@@ -10,17 +9,13 @@ class StarCheckbox extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    onChange() {
-        this.props.onChange(!this.props.checked);
+    onChange(value) {
+        this.props.onChange(!!value);
     }
 
     render() {
         return (
-            <Icon
-                icon="star"
-                color={this.props.checked ? Constants.starredColor : 'grey'}
-                style={{ cursor: 'pointer' }}
-                onClick={this.onChange} />
+            <Rate {...this.props} count={1} value={this.props.checked ? 1 : 0} onChange={this.onChange} />
         );
     }
 }

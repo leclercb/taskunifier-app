@@ -1,6 +1,6 @@
 ## Todo List
 
-* Use mention in notes mention
+* Print tasks and notes
 * Add sort order in filters
 * Add reminder and recurrence
 * Postpone Snooze
@@ -13,6 +13,7 @@
 
 ## Future Features
 
+* Use "mention" in notes
 * Sub-categories (children)
 * Group by
 

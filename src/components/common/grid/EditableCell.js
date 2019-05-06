@@ -8,8 +8,7 @@ import {
     getValueFromEventForType,
     getValuePropNameForType,
     isAlwaysInEditionForType,
-    isCommitOnChangeForType,
-    isHandleToggleEdit
+    isCommitOnChangeForType
 } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import 'components/common/grid/EditableCell.css';
@@ -103,6 +102,7 @@ export function EditableCell(props) {
                             extraProps.fieldmode = 'grid';
                             extraProps.onPressEnter = save;
                             extraProps.onBlur = save;
+                            extraProps.autoFocus = true;
                         }
 
                         return (
@@ -129,7 +129,7 @@ export function EditableCell(props) {
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis'
                                         }}
-                                        onClick={isHandleToggleEdit(field.type) ? null : toggleEdit}>
+                                        onDoubleClick={toggleEdit}>
                                         {getRenderForType(
                                             field.type,
                                             field.options,
@@ -138,8 +138,7 @@ export function EditableCell(props) {
                                                 onChange: e => props.onSave({
                                                     ...record,
                                                     [dataIndex]: getValueFromEventForType(field.type)(e)
-                                                }),
-                                                onToggleEdit: toggleEdit
+                                                })
                                             })}
                                     </div>
                                 )

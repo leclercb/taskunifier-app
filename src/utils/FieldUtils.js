@@ -12,10 +12,6 @@ export const isCommitOnChangeForType = type => {
     return getFieldConfiguration(type).commitOnChange;
 };
 
-export const isHandleToggleEdit = type => {
-    return getFieldConfiguration(type).handleToggleEdit;
-};
-
 export const getNormalizeForType = type => {
     return getFieldConfiguration(type).normalize;
 };
