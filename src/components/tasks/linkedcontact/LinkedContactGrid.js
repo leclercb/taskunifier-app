@@ -74,7 +74,7 @@ function LinkedContactGrid(props) {
             render: value => getRenderForType(field.type, field.options, value),
             onHeaderCell: column => ({
                 width: column.width,
-                onResize: handleResize(field.id),
+                onResize: handleResize(field.id)
             }),
             onCell: record => ({
                 record: record,
@@ -104,8 +104,8 @@ function LinkedContactGrid(props) {
         ),
         onHeaderCell: column => ({
             width: column.width,
-            onResize: handleResize('delete'),
-        }),
+            onResize: handleResize('delete')
+        })
     });
 
     return (

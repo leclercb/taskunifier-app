@@ -30,7 +30,7 @@ BodyRow.propTypes = {
     isOver: PropTypes.bool.isRequired,
     connectDragSource: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
-    moveRow: PropTypes.func.isRequired,
+    moveRow: PropTypes.func.isRequired
 };
 
 const rowSource = {

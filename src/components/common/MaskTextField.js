@@ -88,7 +88,7 @@ export class MaskTextField extends Component {
         let options = {
             pattern: this.props.mask,
             value: this.props.value,
-            formatCharacters: this.props.formatCharacters,
+            formatCharacters: this.props.formatCharacters
         };
 
         if (this.props.placeholderChar) {
@@ -139,7 +139,7 @@ export class MaskTextField extends Component {
     _updatePattern(props) {
         this.mask.setPattern(props.mask, {
             value: this.mask.getRawValue(),
-            selection: getSelection(this.input),
+            selection: getSelection(this.input)
         });
     }
 
@@ -256,7 +256,7 @@ export class MaskTextField extends Component {
             onChange: this._onChange,
             onKeyDown: this._onKeyDown,
             onPaste: this._onPaste,
-            [this._keyPressPropName()]: this._onKeyPress,
+            [this._keyPressPropName()]: this._onKeyPress
         };
     }
 

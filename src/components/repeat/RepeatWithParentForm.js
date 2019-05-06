@@ -10,7 +10,7 @@ function RepeatWithParentForm(props) {
     const radioStyle = {
         display: 'block',
         height: '50px',
-        lineHeight: '50px',
+        lineHeight: '50px'
     };
 
     return (

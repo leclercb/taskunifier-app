@@ -13,7 +13,7 @@ export const setSettings = (settings, core = false) => {
         dispatch({
             type: 'SET_SETTINGS',
             core: core,
-            settings: settings,
+            settings: settings
         });
 
         return Promise.resolve();

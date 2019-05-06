@@ -31,7 +31,7 @@ function TagForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The title is required',
+                            message: 'The title is required'
                         }
                     ]
                 })(

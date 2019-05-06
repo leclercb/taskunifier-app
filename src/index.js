@@ -9,7 +9,7 @@ import 'index.css';
 window.addEventListener('error', function (e) {
     notification.error({
         message: 'An error occurred',
-        description: e.error.message,
+        description: e.error.message
     });
 
     return false;

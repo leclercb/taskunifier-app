@@ -11,7 +11,7 @@ function RepeatMonthlyForm(props) {
     const radioStyle = {
         display: 'block',
         height: '50px',
-        lineHeight: '50px',
+        lineHeight: '50px'
     };
 
     return (
@@ -27,7 +27,7 @@ function RepeatMonthlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of months is required',
+                                    message: 'The number of months is required'
                                 }
                             ]
                         })(
@@ -42,7 +42,7 @@ function RepeatMonthlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The day number is required',
+                                    message: 'The day number is required'
                                 }
                             ]
                         })(
@@ -54,7 +54,7 @@ function RepeatMonthlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of months is required',
+                                    message: 'The number of months is required'
                                 }
                             ]
                         })(
@@ -69,7 +69,7 @@ function RepeatMonthlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The week number is required',
+                                    message: 'The week number is required'
                                 }
                             ]
                         })(
@@ -85,7 +85,7 @@ function RepeatMonthlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The day of week is required',
+                                    message: 'The day of week is required'
                                 }
                             ]
                         })(
@@ -101,7 +101,7 @@ function RepeatMonthlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of months is required',
+                                    message: 'The number of months is required'
                                 }
                             ]
                         })(

@@ -47,7 +47,7 @@ function BatchAddTasks(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The titles are required',
+                            message: 'The titles are required'
                         }
                     ]
                 })(

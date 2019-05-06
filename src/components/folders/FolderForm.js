@@ -19,7 +19,7 @@ function FolderForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The title is required',
+                            message: 'The title is required'
                         }
                     ]
                 })(
@@ -34,7 +34,7 @@ function FolderForm(props) {
                     rules: [
                         {
                             required: true, 
-                            message: 'The color is required',
+                            message: 'The color is required'
                         }
                     ]
                 })(

@@ -157,5 +157,5 @@ EditableCell.propTypes = {
     rowProps: PropTypes.object,
     editable: PropTypes.bool,
     record: PropTypes.object,
-    onSave: PropTypes.func,
+    onSave: PropTypes.func
 };

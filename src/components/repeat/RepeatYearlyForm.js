@@ -10,7 +10,7 @@ function RepeatYearlyForm(props) {
     const radioStyle = {
         display: 'block',
         height: '50px',
-        lineHeight: '50px',
+        lineHeight: '50px'
     };
 
     return (
@@ -26,7 +26,7 @@ function RepeatYearlyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of years is required',
+                                    message: 'The number of years is required'
                                 }
                             ]
                         })(

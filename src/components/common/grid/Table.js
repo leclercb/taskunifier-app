@@ -105,9 +105,9 @@ export const Table = props => {
         onRow.onKeyDown = onKeyDown();
 
         return onRow;
-    }
+    };
 
-    return <InfinityTable {...wrappedProps} />
+    return <InfinityTable {...wrappedProps} />;
 };
 
 export default Table;

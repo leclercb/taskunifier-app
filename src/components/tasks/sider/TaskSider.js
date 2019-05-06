@@ -162,8 +162,8 @@ function TaskSider(props) {
                 fontWeight: 'bold',
                 marginLeft: 10,
                 marginBottom: 2
-            }} />
-    }
+            }} />;
+    };
 
     return (
         <React.Fragment>

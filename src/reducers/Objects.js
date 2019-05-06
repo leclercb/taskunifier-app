@@ -1,4 +1,4 @@
-import { filterByVisibleState } from "utils/CategoryUtils";
+import { filterByVisibleState } from 'utils/CategoryUtils';
 
 const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => (state = {
     all: [],

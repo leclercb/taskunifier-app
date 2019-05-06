@@ -58,7 +58,7 @@ TaskFilterManager.propTypes = {
     onTaskFilterSelection: PropTypes.func.isRequired,
     addTaskFilter: PropTypes.func.isRequired,
     updateTaskFilter: PropTypes.func.isRequired,
-    deleteTaskFilter: PropTypes.func.isRequired,
+    deleteTaskFilter: PropTypes.func.isRequired
 };
 
 export default withTaskFilters(TaskFilterManager);

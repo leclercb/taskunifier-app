@@ -11,7 +11,7 @@ function RepeatWeeklyForm(props) {
     const radioStyle = {
         display: 'block',
         height: '50px',
-        lineHeight: '50px',
+        lineHeight: '50px'
     };
 
     return (
@@ -27,7 +27,7 @@ function RepeatWeeklyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of weeks is required',
+                                    message: 'The number of weeks is required'
                                 }
                             ]
                         })(
@@ -42,7 +42,7 @@ function RepeatWeeklyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of weeks is required',
+                                    message: 'The number of weeks is required'
                                 }
                             ]
                         })(

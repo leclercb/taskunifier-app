@@ -18,7 +18,7 @@ function ContactForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The first name is required',
+                            message: 'The first name is required'
                         }
                     ]
                 })(
@@ -31,7 +31,7 @@ function ContactForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The last name is required',
+                            message: 'The last name is required'
                         }
                     ]
                 })(
@@ -44,7 +44,7 @@ function ContactForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The email is required',
+                            message: 'The email is required'
                         }
                     ]
                 })(
@@ -59,7 +59,7 @@ function ContactForm(props) {
                     rules: [
                         {
                             required: true, 
-                            message: 'The color is required',
+                            message: 'The color is required'
                         }
                     ]
                 })(

@@ -11,7 +11,7 @@ function RepeatDailyForm(props) {
     const radioStyle = {
         display: 'block',
         height: '50px',
-        lineHeight: '50px',
+        lineHeight: '50px'
     };
 
     return (
@@ -36,7 +36,7 @@ function RepeatDailyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The number of days is required',
+                                    message: 'The number of days is required'
                                 }
                             ]
                         })(
@@ -51,7 +51,7 @@ function RepeatDailyForm(props) {
                             rules: [
                                 {
                                     required: true,
-                                    message: 'The day of week is required',
+                                    message: 'The day of week is required'
                                 }
                             ]
                         })(

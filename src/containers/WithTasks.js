@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addTask, deleteTask, setSelectedTaskIds, setSelectedTaskFilter, updateTask } from 'actions/TaskActions';
+import { addTask, deleteTask, setSelectedTaskFilter, setSelectedTaskIds, updateTask } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { merge } from 'utils/ObjectUtils';
 

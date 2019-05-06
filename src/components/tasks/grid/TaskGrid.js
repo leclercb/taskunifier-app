@@ -50,7 +50,7 @@ function TaskGrid(props) {
         if (field.id === 'title') {
             sorter = {
                 defaultSortOrder: 'ascend',
-                sorter: (a, b) => sortObjects(props.selectedTaskFilter, props.taskFields, a, b),
+                sorter: (a, b) => sortObjects(props.selectedTaskFilter, props.taskFields, a, b)
             };
         }
 
@@ -65,7 +65,7 @@ function TaskGrid(props) {
             render: value => getRenderForType(field.type, field.options, value),
             onHeaderCell: column => ({
                 width: column.width,
-                onResize: handleResize(field.id),
+                onResize: handleResize(field.id)
             }),
             onCell: record => ({
                 width: width,
@@ -140,7 +140,7 @@ TaskGrid.propTypes = {
     setSelectedTaskIds: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
-    size: PropTypes.object.isRequired,
+    size: PropTypes.object.isRequired
 };
 
 // TODO remove

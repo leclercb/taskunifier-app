@@ -22,7 +22,7 @@ function GoalForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The title is required',
+                            message: 'The title is required'
                         }
                     ]
                 })(
@@ -37,7 +37,7 @@ function GoalForm(props) {
                     rules: [
                         {
                             required: true, 
-                            message: 'The color is required',
+                            message: 'The color is required'
                         }
                     ]
                 })(
@@ -50,7 +50,7 @@ function GoalForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The level is required',
+                            message: 'The level is required'
                         }
                     ]
                 })(

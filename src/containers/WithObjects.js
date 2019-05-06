@@ -9,8 +9,8 @@ import { deleteTag, updateTag } from 'actions/TagActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { getTagsFromObjects } from 'utils/TagUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { setSelectedNoteIds, setSelectedNoteFilter } from 'actions/NoteActions';
-import { setSelectedTaskIds, setSelectedTaskFilter } from 'actions/TaskActions';
+import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
+import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/TaskActions';
 import { merge } from 'utils/ObjectUtils';
 
 function withObjects(Component, options) {

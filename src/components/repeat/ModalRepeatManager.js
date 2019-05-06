@@ -13,7 +13,7 @@ function ModalRepeatManager(props) {
         });
 
         props.onClose();
-    }
+    };
 
     const onClose = () => {
         props.onClose();

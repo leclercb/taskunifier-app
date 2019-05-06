@@ -23,6 +23,10 @@
         "react"
     ],
     "rules": {
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
         "indent": [
             "off",
             4

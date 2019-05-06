@@ -26,7 +26,7 @@ function TaskTemplateForm(props) {
                     rules: [
                         {
                             required: true,
-                            message: 'The title is required',
+                            message: 'The title is required'
                         }
                     ]
                 })(
@@ -41,7 +41,7 @@ function TaskTemplateForm(props) {
                     rules: [
                         {
                             required: true, 
-                            message: 'The color is required',
+                            message: 'The color is required'
                         }
                     ]
                 })(
