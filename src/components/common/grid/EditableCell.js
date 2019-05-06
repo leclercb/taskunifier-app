@@ -25,7 +25,7 @@ const EditableRow = Component => ({ form, ...props }) => {
     delete trProps.rowProps;
 
     return (
-        <EditableContext.Provider value={form}>
+        <EditableContext.Provider value={{ form }}>
             {Component ? React.createElement(Component, { ...props, style }) : (
                 <tr {...trProps} />
             )}
@@ -89,9 +89,9 @@ export function EditableCell(props) {
 
     return (
         <td {...restProps}>
-            {editable ? (
-                <EditableContext.Consumer>
-                    {form => {
+            <EditableContext.Consumer>
+                {({ form }) => {
+                    if (editable) {
                         formRef.current = form;
 
                         const extraProps = {
@@ -105,8 +105,8 @@ export function EditableCell(props) {
                             extraProps.autoFocus = true;
                         }
 
-                        return (
-                            editing || isAlwaysInEditionForType(field.type) ? (
+                        if (editing || isAlwaysInEditionForType(field.type)) {
+                            return (
                                 <Form.Item style={{ margin: 0 }}>
                                     {form.getFieldDecorator(dataIndex, {
                                         rules: [],
@@ -120,32 +120,36 @@ export function EditableCell(props) {
                                             { ...extraProps })
                                     )}
                                 </Form.Item>
-                            ) : (
-                                    <div
-                                        className="editable-cell-value-wrap"
-                                        style={{
-                                            width: (width - 18),
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            textOverflow: 'ellipsis'
-                                        }}
-                                        onDoubleClick={toggleEdit}>
-                                        {getRenderForType(
-                                            field.type,
-                                            field.options,
-                                            getNormalizeForType(field.type)(record[dataIndex]),
-                                            {
-                                                onChange: e => props.onSave({
-                                                    ...record,
-                                                    [dataIndex]: getValueFromEventForType(field.type)(e)
-                                                })
-                                            })}
-                                    </div>
-                                )
+                            );
+                        }
+
+                        return (
+                            <div
+                                className="editable-cell-value-wrap"
+                                style={{
+                                    width: (width - 18),
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis'
+                                }}
+                                onDoubleClick={toggleEdit}>
+                                {getRenderForType(
+                                    field.type,
+                                    field.options,
+                                    getNormalizeForType(field.type)(record[dataIndex]),
+                                    {
+                                        onChange: e => props.onSave({
+                                            ...record,
+                                            [dataIndex]: getValueFromEventForType(field.type)(e)
+                                        })
+                                    })}
+                            </div>
                         );
-                    }}
-                </EditableContext.Consumer>
-            ) : restProps.children}
+                    } else {
+                        return restProps.children;
+                    }
+                }}
+            </EditableContext.Consumer>
         </td>
     );
 }

@@ -85,6 +85,7 @@ function TaskGrid(props) {
                 className="data-grid"
                 rowClassName={() => 'editable-row'}
                 scroll={{ y: props.size.element.height - 40 }}
+                pageSize={50}
                 components={components}
                 columns={columns}
                 dataSource={props.tasks}
