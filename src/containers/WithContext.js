@@ -1,18 +1,14 @@
 import { connect } from 'react-redux';
 import withBusyCheck from 'containers/WithBusyCheck';
 
-function withContext(Component, propertyId = 'contextId') {
+function withContext(Component, getId = ownProps => ownProps.contextId) {
     const mapStateToProps = (state, ownProps) => ({
-        context: state.contexts.filteredByVisibleState.find(context => context.id === ownProps[propertyId])
-    });
-
-    const mapDispatchToProps = () => ({
-
+        context: state.contexts.filteredByVisibleState.find(context => context.id === getId(ownProps))
     });
 
     return connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
     )(withBusyCheck(Component));
 }
 

@@ -1,12 +1,12 @@
 import moment from 'moment';
 import { getDefaultTaskFields } from 'data/DataTaskFields';
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
-import { filterObjects } from 'utils/CategoryUtils';
+import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { deleteTag, updateTag } from 'utils/TagUtils';
 
 const getFilteredTasks = (state, action) => {
-    const fields = getDefaultTaskFields(action.settings).concat(filterObjects(action.taskFields.all));
+    const fields = getDefaultTaskFields(action.settings).concat(filterByVisibleState(action.taskFields.all));
 
     return state.filteredByVisibleState.filter(task => {
         if (!state.selectedTaskFilterDate ||
@@ -74,7 +74,7 @@ const Tasks = () => (state = {
             const newState = {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
 
             newState.filteredBySelectedFilter = getFilteredTasks(newState, action);
@@ -96,7 +96,7 @@ const Tasks = () => (state = {
             const newState = {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
 
             newState.filteredBySelectedFilter = getFilteredTasks(newState, action);

@@ -5,13 +5,9 @@ function withBusy(Component) {
         busy: state.processes.busy
     });
 
-    const mapDispatchToProps = () => ({
-
-    });
-
     return connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
     )(Component);
 }
 

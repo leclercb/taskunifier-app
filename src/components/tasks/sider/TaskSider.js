@@ -283,7 +283,7 @@ TaskSider.propTypes = {
 };
 
 export default withApp(withObjects(TaskSider, {
-    includeActions: true,
+    includeDispatch: true,
     includeContexts: true,
     includeFolders: true,
     includeGoals: true,
@@ -292,6 +292,6 @@ export default withApp(withObjects(TaskSider, {
     includeTaskFilters: true,
     includeSelectedTaskFilter: true,
     includeTaskNumber: true,
-    filterArchivedFolders: true,
-    filterArchivedGoals: true
+    filteredByNonArchivedFolders: true,
+    filteredByNonArchivedGoals: true
 }));

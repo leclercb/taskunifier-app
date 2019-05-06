@@ -1,18 +1,21 @@
 import { connect } from 'react-redux';
 import { deleteTag, updateTag } from 'actions/TagActions';
-import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
+import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
 
-function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: false }) {
+function withTags(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true,
+        getId: ownProps => ownProps.tagIds
+    }, options || {});
+
     const mapStateToProps = (state, ownProps) => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
-
         let tags = getTagsFromObjects(state.tasks.filteredByVisibleState.concat(state.notes.filteredByVisibleState));
 
-        if (options && options.propertyId in ownProps) {
-            tags = getTagsFromIds(tags, ownProps[options.propertyId]);
+        if (options.getId) {
+            tags = getTagsFromIds(tags, options.getId(ownProps));
         }
 
         return {
@@ -26,8 +29,8 @@ function withTags(Component, options = { propertyId: 'tagIds', actionsOnly: fals
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

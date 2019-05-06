@@ -7,13 +7,9 @@ function withPro(Component) {
         pro: isValidLicense(state.settings.license)
     });
 
-    const mapDispatchToProps = () => ({
-
-    });
-
     return connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
     )(withBusyCheck(Component));
 }
 

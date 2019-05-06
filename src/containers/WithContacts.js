@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { addContact, deleteContact, updateContact } from 'actions/ContactActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withContacts(Component, options = { actionsOnly: false }) {
-    const mapStateToProps = state => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
+function withContacts(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true
+    }, options || {});
 
-        return {
-            contacts: state.contacts.filteredByVisibleState
-        };
-    };
+    const mapStateToProps = state => ({
+        contacts: state.contacts.filteredByVisibleState
+    });
 
     const mapDispatchToProps = dispatch => ({
         addContact: contact => dispatch(addContact(contact)),
@@ -20,8 +20,8 @@ function withContacts(Component, options = { actionsOnly: false }) {
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

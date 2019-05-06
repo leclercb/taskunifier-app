@@ -1,16 +1,19 @@
 import { connect } from 'react-redux';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withFolders(Component, options = { actionsOnly: false, filterArchived: false }) {
+function withFolders(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true,
+        filteredByNonArchived: false
+    }, options || {});
+    
     const mapStateToProps = state => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
-
         let folders = state.folders.filteredByVisibleState;
 
-        if (options && options.filterArchived === true) {
+        if (options.filteredByNonArchived === true) {
             folders = state.folders.filteredByNonArchived;
         }
 
@@ -26,8 +29,8 @@ function withFolders(Component, options = { actionsOnly: false, filterArchived: 
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

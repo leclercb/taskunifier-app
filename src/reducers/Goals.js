@@ -1,4 +1,4 @@
-import { filterArchivedObjects } from 'utils/CategoryUtils';
+import { filterByNonArchived } from 'utils/CategoryUtils';
 
 const Goals = () => (state = {
     all: [],
@@ -18,7 +18,7 @@ const Goals = () => (state = {
 
             return {
                 ...state,
-                filteredByNonArchived: filterArchivedObjects(state.all)
+                filteredByNonArchived: filterByNonArchived(state.all)
             };
         }
         default:

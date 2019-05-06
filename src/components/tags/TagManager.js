@@ -50,4 +50,4 @@ TagManager.propTypes = {
     deleteTag: PropTypes.func.isRequired
 };
 
-export default withTags(TagManager);
+export default withTags(TagManager, { getId: null });

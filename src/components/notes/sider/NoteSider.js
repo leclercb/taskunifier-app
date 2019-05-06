@@ -250,11 +250,11 @@ NoteSider.propTypes = {
 };
 
 export default withApp(withObjects(NoteSider, {
-    includeActions: true,
+    includeDispatch: true,
     includeFolders: true,
     includeNoteFilters: true,
     includeTags: true,
     includeSelectedNoteFilter: true,
     includeNoteNumber: true,
-    filterArchivedFolders: true
+    filteredByNonArchivedFolders: true
 }));

@@ -77,4 +77,4 @@ BatchAddTasks.propTypes = {
     onAdd: PropTypes.func.isRequired
 };
 
-export default withTasks(withTaskTemplates(Form.create({ name: 'batch' })(BatchAddTasks)), { actionsOnly: true });
+export default withTasks(withTaskTemplates(Form.create({ name: 'batch' })(BatchAddTasks)), { includeState: false });

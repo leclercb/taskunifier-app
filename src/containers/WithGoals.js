@@ -1,16 +1,19 @@
 import { connect } from 'react-redux';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withGoals(Component, options = { actionsOnly: false, filterArchived: false }) {
+function withGoals(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true,
+        filteredByNonArchived: false
+    }, options || {});
+
     const mapStateToProps = (state, ownProps) => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
-
         let goals = state.goals.filteredByVisibleState;
 
-        if (options && options.filterArchived === true) {
+        if (options.filteredByNonArchived === true) {
             goals = state.goals.filteredByNonArchived;
         }
 
@@ -30,8 +33,8 @@ function withGoals(Component, options = { actionsOnly: false, filterArchived: fa
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

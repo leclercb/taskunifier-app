@@ -1,19 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { getPriorities } from 'data/DataPriorities';
 
-function withPriority(Component, propertyId = 'priorityId') {
+function withPriority(Component, getId = ownProps => ownProps.priorityId) {
     function WithPriority(props) {
-        const priority = getPriorities().find(property => property.id === props[propertyId]);
+        const priority = getPriorities().find(property => property.id === getId(props));
 
         return (
             <Component {...props} priority={priority} />
         );
     }
-
-    WithPriority.propTypes = {
-        [propertyId]: PropTypes.string
-    };
 
     return WithPriority;
 }

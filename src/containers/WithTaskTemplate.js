@@ -1,18 +1,14 @@
 import { connect } from 'react-redux';
 import withBusyCheck from 'containers/WithBusyCheck';
 
-function withTaskTemplate(Component, propertyId = 'taskTemplateId') {
+function withTaskTemplate(Component, getId = ownProps => ownProps.taskTemplateId) {
     const mapStateToProps = (state, ownProps) => ({
-        taskTemplate: state.taskTemplates.filteredByVisibleState.find(taskTemplate => taskTemplate.id === ownProps[propertyId])
-    });
-
-    const mapDispatchToProps = () => ({
-
+        taskTemplate: state.taskTemplates.filteredByVisibleState.find(taskTemplate => taskTemplate.id === getId(ownProps))
     });
 
     return connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
     )(withBusyCheck(Component));
 }
 

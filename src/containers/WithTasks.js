@@ -1,16 +1,19 @@
 import { connect } from 'react-redux';
 import { addTask, deleteTask, setSelectedTaskIds, setSelectedTaskFilter, updateTask } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withTasks(Component, options = { applySelectedTaskFilter: false, actionsOnly: false }) {
+function withTasks(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true,
+        applySelectedTaskFilter: false
+    }, options || {});
+
     const mapStateToProps = state => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
-
         let tasks = state.tasks.filteredByVisibleState;
 
-        if (options && options.applySelectedTaskFilter === true) {
+        if (options.applySelectedTaskFilter === true) {
             tasks = state.tasks.filteredBySelectedFilter;
         }
 
@@ -30,8 +33,8 @@ function withTasks(Component, options = { applySelectedTaskFilter: false, action
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

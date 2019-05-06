@@ -24,6 +24,6 @@ LinksSelect.propTypes = {
     links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
 };
 
-export const LinkedContactLinksSelect = withLinkedContactLinks(LinksSelect);
-export const LinkedFileLinksSelect = withLinkedFileLinks(LinksSelect);
-export const LinkedTaskLinksSelect = withLinkedTaskLinks(LinksSelect);
+export const LinkedContactLinksSelect = withLinkedContactLinks(LinksSelect, { getId: null });
+export const LinkedFileLinksSelect = withLinkedFileLinks(LinksSelect, { getId: null });
+export const LinkedTaskLinksSelect = withLinkedTaskLinks(LinksSelect, { getId: null });

@@ -25,4 +25,4 @@ FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired
 };
 
-export default withFolders(FolderSelect, { filterArchived: true });
+export default withFolders(FolderSelect, { filteredByNonArchived: true });

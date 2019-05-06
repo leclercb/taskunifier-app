@@ -1,4 +1,4 @@
-import { filterObjects } from "utils/CategoryUtils";
+import { filterByVisibleState } from "utils/CategoryUtils";
 
 const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => (state = {
     all: [],
@@ -15,7 +15,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
             return {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
         }
         case 'ADD_OBJECT': {
@@ -70,7 +70,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
             return {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
         }
         case 'CLEAN_OBJECTS': {
@@ -79,7 +79,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
             return {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
         }
         default:
@@ -115,7 +115,7 @@ const addObject = (state, action) => {
     return {
         ...state,
         all: newObjects,
-        filteredByVisibleState: filterObjects(newObjects)
+        filteredByVisibleState: filterByVisibleState(newObjects)
     };
 };
 
@@ -150,7 +150,7 @@ const updateObject = (state, action, onUpdate) => {
     const newState = {
         ...state,
         all: newObjects,
-        filteredByVisibleState: filterObjects(newObjects)
+        filteredByVisibleState: filterByVisibleState(newObjects)
     };
 
     if (newObject) {

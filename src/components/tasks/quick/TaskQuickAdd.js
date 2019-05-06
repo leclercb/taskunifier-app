@@ -133,4 +133,4 @@ export default withTasks(withObjects(TaskQuickAdd, {
     includeGoals: true,
     includeLocations: true,
     includeTaskTemplates: true
-}), { actionsOnly: true });
+}), { includeState: false });

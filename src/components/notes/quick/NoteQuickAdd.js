@@ -82,4 +82,4 @@ NoteQuickAdd.propTypes = {
 
 export default withNotes(withObjects(NoteQuickAdd, {
     includeFolders: true
-}), { actionsOnly: true });
+}), { includeState: false });

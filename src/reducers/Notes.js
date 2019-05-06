@@ -1,12 +1,12 @@
 import moment from 'moment';
 import { getDefaultNoteFields } from 'data/DataNoteFields';
 import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
-import { filterObjects } from 'utils/CategoryUtils';
+import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { deleteTag, updateTag } from 'utils/TagUtils';
 
 const getFilteredNotes = (state, action) => {
-    const fields = getDefaultNoteFields(action.settings).concat(filterObjects(action.noteFields.all));
+    const fields = getDefaultNoteFields(action.settings).concat(filterByVisibleState(action.noteFields.all));
 
     return state.filteredByVisibleState.filter(note => {
         if (!state.selectedNoteFilterDate ||
@@ -74,7 +74,7 @@ const Notes = () => (state = {
             const newState = {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
 
             newState.filteredBySelectedFilter = getFilteredNotes(newState, action);
@@ -96,7 +96,7 @@ const Notes = () => (state = {
             const newState = {
                 ...state,
                 all: newObjects,
-                filteredByVisibleState: filterObjects(newObjects)
+                filteredByVisibleState: filterByVisibleState(newObjects)
             };
 
             newState.filteredBySelectedFilter = getFilteredNotes(newState, action);

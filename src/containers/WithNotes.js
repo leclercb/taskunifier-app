@@ -1,16 +1,19 @@
 import { connect } from 'react-redux';
 import { addNote, deleteNote, setSelectedNoteIds, setSelectedNoteFilter, updateNote } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withNotes(Component, options = { applySelectedNoteFilter: false, actionsOnly: false }) {
+function withNotes(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true,
+        applySelectedNoteFilter: false
+    }, options || {});
+
     const mapStateToProps = state => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
-
         let notes = state.notes.filteredByVisibleState;
 
-        if (options && options.applySelectedNoteFilter === true) {
+        if (options.applySelectedNoteFilter === true) {
             notes = state.notes.filteredBySelectedFilter;
         }
 
@@ -30,8 +33,8 @@ function withNotes(Component, options = { applySelectedNoteFilter: false, action
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

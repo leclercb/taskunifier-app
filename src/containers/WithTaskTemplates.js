@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withTaskTemplates(Component, options = { actionsOnly: false }) {
-    const mapStateToProps = state => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
+function withTaskTemplates(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true
+    }, options || {});
 
-        return {
-            taskTemplates: state.taskTemplates.filteredByVisibleState
-        };
-    };
+    const mapStateToProps = state => ({
+        taskTemplates: state.taskTemplates.filteredByVisibleState
+    });
 
     const mapDispatchToProps = dispatch => ({
         addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),
@@ -20,8 +20,8 @@ function withTaskTemplates(Component, options = { actionsOnly: false }) {
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

@@ -14,6 +14,7 @@ import { cleanTaskFields, loadTaskFieldsFromFile, saveTaskFieldsToFile } from 'a
 import { cleanTaskFilters, loadTaskFiltersFromFile, saveTaskFiltersToFile } from 'actions/TaskFilterActions';
 import { cleanTaskTemplates, loadTaskTemplatesFromFile, saveTaskTemplatesToFile } from 'actions/TaskTemplateActions';
 import { createDirectory, getUserDataPath, join } from 'utils/ActionUtils';
+import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
 
 export const _loadData = path => {
@@ -69,7 +70,12 @@ export const _loadData = path => {
 
 export const loadData = () => _loadData(null);
 
-export const _saveData = (path, options = { clean: false, message: null }) => {
+export const _saveData = (path, options) => {
+    options = merge({
+        clean: false,
+        message: null
+    }, options || {});
+
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();

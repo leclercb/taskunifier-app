@@ -1,13 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal } from 'antd';
-import withApp from 'containers/WithApp';
+import { Button, Form, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
+import withApp from 'containers/WithApp';
+import withTask from 'containers/WithTask';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function ModalTaskEditionManager(props) {
     const onCloseTaskEditionManager = () => {
-        props.setTaskEditionManagerOptions({ visible: false });
+        props.form.validateFields((error, values) => {
+            if (error) {
+                return;
+            }
+
+            props.updateTask({ ...props.task, ...values });
+            props.form.resetFields();
+            props.setTaskEditionManagerOptions({ visible: false });
+        });
     };
 
     return (
@@ -21,14 +31,18 @@ function ModalTaskEditionManager(props) {
                     Close
                 </Button>
             }>
-            <TaskEditionManager taskId={props.taskEditionManager.taskId} />
+            {props.task && <TaskEditionManager form={props.form} task={props.task} />}
         </Modal>
     );
 }
 
 ModalTaskEditionManager.propTypes = {
+    form: PropTypes.object.isRequired,
+    task: TaskPropType,
     taskEditionManager: PropTypes.object.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(ModalTaskEditionManager);
+export default Form.create({ name: 'task' })(withApp(withTask(
+    ModalTaskEditionManager,
+    ownProps => ownProps.taskEditionManager.taskId)));

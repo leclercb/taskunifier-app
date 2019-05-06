@@ -26,13 +26,9 @@ function withBusyCheck(Component) {
         busy: state.processes.busy
     });
 
-    const mapDispatchToProps = () => ({
-
-    });
-
     return connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
     )(WithBusyCheck);
 }
 

@@ -1,18 +1,14 @@
 import { connect } from 'react-redux';
 import withBusyCheck from 'containers/WithBusyCheck';
 
-function withFolder(Component, propertyId = 'folderId') {
+function withFolder(Component, getId = ownProps => ownProps.folderId) {
     const mapStateToProps = (state, ownProps) => ({
-        folder: state.folders.filteredByVisibleState.find(folder => folder.id === ownProps[propertyId])
-    });
-
-    const mapDispatchToProps = () => ({
-
+        folder: state.folders.filteredByVisibleState.find(folder => folder.id === getId(ownProps))
     });
 
     return connect(
         mapStateToProps,
-        mapDispatchToProps
+        null
     )(withBusyCheck(Component));
 }
 

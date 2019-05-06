@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { merge } from 'utils/ObjectUtils';
 
-function withContexts(Component, options = { actionsOnly: false }) {
-    const mapStateToProps = state => {
-        if (options && options.actionsOnly === true) {
-            return {};
-        }
+function withContexts(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true
+    }, options || {});
 
-        return {
-            contexts: state.contexts.filteredByVisibleState
-        };
-    };
+    const mapStateToProps = state => ({
+        contexts: state.contexts.filteredByVisibleState
+    });
 
     const mapDispatchToProps = dispatch => ({
         addContext: context => dispatch(addContext(context)),
@@ -20,8 +20,8 @@ function withContexts(Component, options = { actionsOnly: false }) {
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

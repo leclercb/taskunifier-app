@@ -25,4 +25,4 @@ GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired
 };
 
-export default withGoals(GoalSelect, { filterArchived: true });
+export default withGoals(GoalSelect, { filteredByNonArchived: true });

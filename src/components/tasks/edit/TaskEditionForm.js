@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'antd';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import withTaskFields from 'containers/WithTaskFields';
 import {
     getInputForType,
@@ -50,11 +49,7 @@ function TaskEditionForm(props) {
 TaskEditionForm.propTypes = {
     form: PropTypes.object.isRequired,
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired),
-    task: TaskPropType.isRequired,
-    updateTask: PropTypes.func.isRequired
+    task: TaskPropType.isRequired
 };
 
-export default Form.create({
-    name: 'task',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.task, props.updateTask)
-})(withTaskFields(TaskEditionForm));
+export default withTaskFields(TaskEditionForm, { includeDispatch: false });

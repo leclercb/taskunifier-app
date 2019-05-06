@@ -22,4 +22,4 @@ TagsSelect.propTypes = {
     tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired
 };
 
-export default withTags(TagsSelect);
+export default withTags(TagsSelect, { getId: null });

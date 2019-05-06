@@ -1,19 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { getStatuses } from 'data/DataStatuses';
 
-function withStatus(Component, propertyId = 'statusId') {
+function withStatus(Component, getId = ownProps => ownProps.statusId) {
     function WithStatus(props) {
-        const status = getStatuses().find(property => property.id === props[propertyId]);
+        const status = getStatuses().find(property => property.id === getId(props));
 
         return (
             <Component {...props} status={status} />
         );
     }
-
-    WithStatus.propTypes = {
-        [propertyId]: PropTypes.string
-    };
 
     return WithStatus;
 }

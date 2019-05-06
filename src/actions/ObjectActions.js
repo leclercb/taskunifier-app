@@ -2,14 +2,14 @@ import uuid from 'uuid';
 import moment from 'moment';
 import Constants from 'constants/Constants';
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
-import { filterStaticObjects } from 'utils/CategoryUtils';
+import { filterByStatic } from 'utils/CategoryUtils';
 
 export const loadObjectsFromFile = (property, file, extraProps) => {
     return dispatch => dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data, extraProps))));
 };
 
 export const saveObjectsToFile = (property, file, data) => {
-    return saveToFile(property, file, filterStaticObjects(data));
+    return saveToFile(property, file, filterByStatic(data));
 };
 
 export const setObjects = (property, objects, extraProps) => {
