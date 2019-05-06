@@ -1,14 +1,13 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { InfinityTable } from 'antd-table-infinity';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
-import { onRowOnClick, onRowOnKeyDown } from 'components/common/grid/Table';
 import ResizableColumn from 'components/common/grid/ResizableColumn';
+import Table from 'components/common/grid/Table';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import DragableBodyRow from 'components/common/grid/DragableBodyRow';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -84,7 +83,7 @@ function TaskGrid(props) {
 
     return (
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
-            <InfinityTable
+            <Table
                 rowKey="id"
                 className="data-grid"
                 rowClassName={() => 'editable-row'}
@@ -121,9 +120,7 @@ function TaskGrid(props) {
                         },
                         moveRow: (dragRecord, dropRecord) => {
                             console.log(dragRecord, dropRecord);
-                        },
-                        onClick: onRowOnClick(record, props.tasks, 'id', props.selectedTaskIds, props.setSelectedTaskIds),
-                        onKeyDown: onRowOnKeyDown(props.tasks, 'id', props.selectedTaskIds, props.setSelectedTaskIds)
+                        }
                     };
                 }}
                 rowSelection={{

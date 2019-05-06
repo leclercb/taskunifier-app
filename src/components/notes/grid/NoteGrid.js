@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InfinityTable } from 'antd-table-infinity';
 import withNoteFields from 'containers/WithNoteFields';
 import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
 import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
 import ResizableColumn from 'components/common/grid/ResizableColumn';
+import Table from 'components/common/grid/Table';
 import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
@@ -77,7 +77,7 @@ function NoteGrid(props) {
 
     return (
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
-            <InfinityTable
+            <Table
                 rowKey="id"
                 className="data-grid"
                 rowClassName={() => 'editable-row'}
