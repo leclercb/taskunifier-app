@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
@@ -79,8 +78,6 @@ function TaskGrid(props) {
         };
     });
 
-    const dummy = false;
-
     return (
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
             <Table
@@ -90,7 +87,7 @@ function TaskGrid(props) {
                 scroll={{ y: props.size.element.height - 40 }}
                 components={components}
                 columns={columns}
-                dataSource={dummy ? dummyTasks : props.tasks}
+                dataSource={props.tasks}
                 childrenColumnName='children'
                 bordered={true}
                 size="small"
@@ -142,27 +139,5 @@ TaskGrid.propTypes = {
     updateSettings: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
-
-// TODO remove
-const dummyTasks = createDummyTasks();
-
-function createDummyTasks() {
-    const tasks = [];
-
-    for (let i = 0; i < 1000; i++) {
-        tasks.push({
-            id: 'task-dummy-' + i,
-            refIds: {},
-            creationDate: moment().toJSON(),
-            state: moment().toJSON(),
-            title: 'Task Dummy ' + i,
-            color: '#ffffff',
-            completed: false,
-            importance: '0'
-        });
-    }
-
-    return tasks;
-}
 
 export default withSettings(withTaskFields(withTasks(withSize(TaskGrid), { applySelectedTaskFilter: true })));

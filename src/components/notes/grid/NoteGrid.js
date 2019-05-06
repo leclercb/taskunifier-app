@@ -47,7 +47,7 @@ function NoteGrid(props) {
         if (field.id === 'title') {
             sorter = {
                 defaultSortOrder: 'ascend',
-                sorter: (a, b) => sortObjects(props.selectedTaskFilter, props.taskFields, a, b)
+                sorter: (a, b) => sortObjects(props.selectedNoteFilter, props.noteFields, a, b)
             };
         }
 

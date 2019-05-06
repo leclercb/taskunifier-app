@@ -39,6 +39,7 @@ function ModalTaskEditionManager(props) {
 ModalTaskEditionManager.propTypes = {
     form: PropTypes.object.isRequired,
     task: TaskPropType,
+    updateTask: PropTypes.func.isRequired,
     taskEditionManager: PropTypes.object.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired
 };

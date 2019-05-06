@@ -26,6 +26,14 @@ function Header(props) {
         }).then(id => props.setSelectedTaskIds([id]));
     };
 
+    const onCreateDummyTasks = () => {
+        for (let i = 0; i < 1000; i++) {
+            props.addTask({
+                title: 'Dummy Task ' + i
+            });
+        }
+    }
+
     const onEditTask = () => {
         props.setTaskEditionManagerOptions({
             visible: true,
@@ -135,6 +143,9 @@ function Header(props) {
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('plus', 'Add Task', onAddTask)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('plus', 'Create Dummy Tasks', onCreateDummyTasks)
                 : null}
             {(props.selectedView === 'task' || props.selectedView === 'task-calendar') ?
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
