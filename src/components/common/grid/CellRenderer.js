@@ -81,8 +81,7 @@ function CellRenderer(props) {
 CellRenderer.propTypes = {
     field: FieldPropType.isRequired,
     value: PropTypes.any,
-    onChange: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired
+    onChange: PropTypes.func.isRequired
 };
 
 export default CellRenderer;

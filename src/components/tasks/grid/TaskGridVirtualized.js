@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AutoSizer, Column, Table } from 'react-virtualized';
+import { AutoSizer, Grid } from 'react-virtualized';
+import CellRenderer from 'components/common/grid/CellRenderer';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
-import CellRenderer from 'components/common/grid/CellRenderer';
-import { getValueFromEventForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { getTaskBackgroundColor } from 'utils/SettingUtils';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { getValueFromEventForType, getWidthForType } from 'utils/FieldUtils';
+import { merge } from 'utils/ObjectUtils';
+import { getTaskBackgroundColor } from 'utils/SettingUtils';
 import 'components/common/grid/EditableCell.css';
 
 function TaskGrid(props) {
@@ -18,62 +19,67 @@ function TaskGrid(props) {
         props.updateTask(task);
     };
 
-    const columns = props.taskFields.map(field => {
-        const settingKey = 'taskColumnWidth_' + field.id;
-        let width = Number(props.settings[settingKey]);
+    const cellRenderer = ({ columnIndex, key, rowIndex, style }) => {
+        const field = props.taskFields[columnIndex];
 
-        if (!width) {
-            width = getWidthForType(field.type);
+        if (rowIndex === 0) {
+            return (
+                <div
+                    key={key}
+                    style={style}>
+                    {field.title}
+                </div>
+            );
         }
 
+        const task = props.tasks[rowIndex - 1];
+
+        style = merge(style, {
+            backgroundColor: getTaskBackgroundColor(task, rowIndex - 1, props.settings),
+            textDecoration: task.completed ? 'line-through' : 'none'
+        })
+
         return (
-            <Column
-                key={field.id}
-                label={field.title}
-                dataKey={field.id}
-                width={width}
-                flexGrow={0}
-                flexShrink={0}
-                cellRenderer={({ cellData, rowData }) => (
-                    <CellRenderer
-                        field={field}
-                        value={cellData}
-                        onChange={event => {
-                            onUpdateTask({
-                                ...rowData,
-                                [field.id]: getValueFromEventForType(field.type)(event)
-                            });
-                        }}
-                        width={width} />
-                )} />
-        );
-    });
+            <div
+                key={key}
+                style={style}>
+                <CellRenderer
+                    field={field}
+                    value={task[field.id]}
+                    onChange={event => {
+                        onUpdateTask({
+                            ...task,
+                            [field.id]: getValueFromEventForType(field.type)(event)
+                        });
+                    }} />
+            </div>
+        )
+    }
 
     return (
         <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
             <AutoSizer>
                 {({ width, height }) => (
-                    <Table
+                    <Grid
                         width={width}
                         height={height}
-                        rowHeight={38}
                         headerHeight={20}
-                        rowCount={props.tasks.length}
-                        rowGetter={({ index }) => props.tasks[index]}
-                        rowStyle={({ index }) => {
-                            const task = props.tasks[index];
+                        columnCount={props.taskFields.length}
+                        columnWidth={({ index }) => {
+                            const field = props.taskFields[index];
+                            const settingKey = 'taskColumnWidth_' + field.id;
 
-                            if (!task) {
-                                return {};
+                            let width = Number(props.settings[settingKey]);
+
+                            if (!width) {
+                                width = getWidthForType(field.type);
                             }
 
-                            return {
-                                backgroundColor: getTaskBackgroundColor(task, index, props.settings),
-                                textDecoration: task.completed ? 'line-through' : 'none'
-                            };
-                        }}>
-                        {columns}
-                    </Table>
+                            return width;
+                        }}
+                        rowCount={props.tasks.length + 1}
+                        rowHeight={({index}) => index === 0 ? 20 : 38}
+                        cellRenderer={cellRenderer} />
                 )}
             </AutoSizer>
         </div>
