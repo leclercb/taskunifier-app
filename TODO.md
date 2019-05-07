@@ -1,6 +1,6 @@
 ## Todo List
 
-* https://github.com/bvaughn/react-virtualized/blob/master/source/Grid/Grid.example.js
+* Finish grid, resizable column, use react-draggable and remove react-resizable
 * Print tasks and notes
 * Add sort order in filters
 * Add reminder and recurrence

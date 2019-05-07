@@ -132,6 +132,31 @@
     margin-top: 3px !important;
 }
 
+/* React Draggable */
+
+.DragHandle {
+    cursor: col-resize;
+    color: #0085ff;
+}
+
+.DragHandle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.DragHandleActive,
+.DragHandleActive:hover {
+    color: #0b6fcc;
+    z-index: 3;
+}
+
+.DragHandleIcon {
+    flex: 0 0 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 /* React Resizable */
 
 .react-resizable {
@@ -166,7 +191,7 @@
     padding: 8px !important;
 }
 
-.data-grid .ant-table-tbody > tr.ant-table-row-selected td {
+.data-grid .ant-table-tbody>tr.ant-table-row-selected td {
     background: none !important;
     background-color: #b8ccbf !important;
 }
