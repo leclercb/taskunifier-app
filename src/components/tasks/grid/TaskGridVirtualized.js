@@ -5,15 +5,12 @@ import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
-import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
-import ResizableColumn from 'components/common/grid/ResizableColumn';
-import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
-import DragableBodyRow from 'components/common/grid/DragableBodyRow';
+import CellRenderer from 'components/common/grid/CellRenderer';
+import { getValueFromEventForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { sortObjects } from 'utils/SortUtils';
 import 'components/common/grid/EditableCell.css';
 
 function TaskGrid(props) {
@@ -23,7 +20,7 @@ function TaskGrid(props) {
 
     const columns = props.taskFields.map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
-        let width = props.settings[settingKey];
+        let width = Number(props.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -34,8 +31,21 @@ function TaskGrid(props) {
                 key={field.id}
                 label={field.title}
                 dataKey={field.id}
-                width={Number(width)}
-                cellRenderer={({ cellData }) => getRenderForType(field.type, field.options, cellData)} />
+                width={width}
+                flexGrow={0}
+                flexShrink={0}
+                cellRenderer={({ cellData, rowData }) => (
+                    <CellRenderer
+                        field={field}
+                        value={cellData}
+                        onChange={event => {
+                            onUpdateTask({
+                                ...rowData,
+                                [field.id]: getValueFromEventForType(field.type)(event)
+                            });
+                        }}
+                        width={width} />
+                )} />
         );
     });
 
@@ -46,7 +56,7 @@ function TaskGrid(props) {
                     <Table
                         width={width}
                         height={height}
-                        rowHeight={30}
+                        rowHeight={38}
                         headerHeight={20}
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}

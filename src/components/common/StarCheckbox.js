@@ -14,13 +14,26 @@ class StarCheckbox extends React.Component {
     }
 
     render() {
+        const wrappedProps = { ...this.props };
+        wrappedProps.count = 1;
+        wrappedProps.onChange = this.onChange;
+
+        if ('defaultChecked' in wrappedProps) {
+            wrappedProps.defaultValue = this.props.defaultChecked ? 1 : 0;
+        }
+
+        if ('checked' in wrappedProps) {
+            wrappedProps.value = this.props.checked ? 1 : 0;
+        }
+
         return (
-            <Rate {...this.props} count={1} value={this.props.checked ? 1 : 0} onChange={this.onChange} />
+            <Rate {...wrappedProps} />
         );
     }
 }
 
 StarCheckbox.propTypes = {
+    defaultChecked: PropTypes.bool,
     checked: PropTypes.bool,
     onChange: PropTypes.func
 };
