@@ -29,7 +29,11 @@ function Header(props) {
     const onCreateDummyTasks = () => {
         for (let i = 0; i < 1000; i++) {
             props.addTask({
-                title: 'Dummy Task ' + i
+                title: 'Dummy Task ' + (i + 1),
+                completed: Math.random() >= 0.5,
+                star: Math.random() >= 0.5,
+                progress: Math.floor((Math.random() * 100) + 1),
+                importance: Math.floor((Math.random() * 12) + 1)
             });
         }
     }

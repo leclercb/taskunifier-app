@@ -10,9 +10,9 @@ import withSettings from 'containers/WithSettings';
 
 import 'App.css';
 import 'font-awesome.js';
-import 'antd-table-infinity/index.css';
 import 'rc-color-picker/assets/index.css';
 import 'react-contexify/dist/ReactContexify.min.css';
+import 'react-virtualized/styles.css';
 
 const electron = window.require('electron');
 
