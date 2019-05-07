@@ -23,6 +23,12 @@ function TaskGrid(props) {
         const field = props.taskFields[columnIndex];
 
         if (rowIndex === 0) {
+            style = merge(style, {
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                padding: '0px 8px'
+            });
+
             return (
                 <div
                     key={key}
@@ -36,7 +42,10 @@ function TaskGrid(props) {
 
         style = merge(style, {
             backgroundColor: getTaskBackgroundColor(task, rowIndex - 1, props.settings),
-            textDecoration: task.completed ? 'line-through' : 'none'
+            textDecoration: task.completed ? 'line-through' : 'none',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0px 8px'
         })
 
         return (
@@ -78,7 +87,7 @@ function TaskGrid(props) {
                             return width;
                         }}
                         rowCount={props.tasks.length + 1}
-                        rowHeight={({index}) => index === 0 ? 20 : 38}
+                        rowHeight={({ index }) => index === 0 ? 20 : 38}
                         cellRenderer={cellRenderer} />
                 )}
             </AutoSizer>

@@ -1,4 +1,5 @@
 .cell-renderer-value-wrap {
+    width: 100%;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
