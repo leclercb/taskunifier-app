@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Col, Form, List, Row } from 'antd';
+import { Button, Col, Form, List, Row } from 'antd';
 import withSettings from 'containers/WithSettings';
 import { getCategories } from 'data/DataSettings';
 import Icon from 'components/common/Icon';
@@ -64,15 +64,19 @@ function SettingManager(props) {
                         renderItem={item => (
                             <List.Item>
                                 <Form.Item label={item.title} style={{ width: '100%' }}>
-                                    {getFieldDecorator(item.id, {
-                                        rules: [],
-                                        normalize: getNormalizeForType(item.type),
-                                        valuePropName: getValuePropNameForType(item.type),
-                                        getValueFromEvent: getValueFromEventForType(item.type),
-                                        initialValue: getNormalizeForType(item.type)(getSettingValue(item))
-                                    })(
-                                        getInputForType(item.type, item.options, { disabled: item.editable === false })
-                                    )}
+                                    {item.type === 'button' ?
+                                        (
+                                            <Button onClick={() => item.value(props.settings, props.updateSettings)}>
+                                                {item.title}
+                                            </Button>
+                                        ) : getFieldDecorator(item.id, {
+                                            rules: [],
+                                            normalize: getNormalizeForType(item.type),
+                                            valuePropName: getValuePropNameForType(item.type),
+                                            getValueFromEvent: getValueFromEventForType(item.type),
+                                            initialValue: getNormalizeForType(item.type)(getSettingValue(item))
+                                        })(getInputForType(item.type, item.options, { disabled: item.editable === false }))
+                                    }
                                 </Form.Item>
                             </List.Item>
                         )} />

@@ -16,6 +16,10 @@ export function getSettings() {
 
     getCategories().forEach(category => {
         category.settings.forEach(setting => {
+            if (setting.type === 'button') {
+                return;
+            }
+
             settings[setting.id] = setting.value;
         });
     });
@@ -175,6 +179,13 @@ export function getCategories() {
                     editable: true
                 },
                 {
+                    id: 'automaticBackup',
+                    title: 'Enable automatic backup',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
                     id: 'maxBackups',
                     title: 'Maximum number of backups to keep',
                     type: 'number',
@@ -224,10 +235,22 @@ export function getCategories() {
                     editable: true
                 },
                 {
+                    id: 'reset_default_colors',
+                    title: 'Reset default colors',
+                    type: 'button',
+                    value: (settings, updateSettings) => {
+                        updateSettings({
+                            evenColor: '#fafafa',
+                            oddColor: '#e8f1f7'
+                        });
+                    },
+                    editable: true
+                },
+                {
                     id: 'evenColor',
                     title: 'Even Color',
                     type: 'color',
-                    value: '#ffffff',
+                    value: '#fafafa',
                     editable: true
                 },
                 {
@@ -245,17 +268,63 @@ export function getCategories() {
             icon: 'paint-roller',
             settings: [
                 {
+                    id: 'reset_pastel_colors',
+                    title: 'Reset pastel colors',
+                    type: 'button',
+                    value: (settings, updateSettings) => {
+                        updateSettings({
+                            importance_0: '#fafafa',
+                            importance_1: '#fafafa',
+                            importance_2: '#eceff1',
+                            importance_3: '#eaf5fc',
+                            importance_4: '#e3f2fd',
+                            importance_5: '#f1f8e9',
+                            importance_6: '#e8f5e9',
+                            importance_7: '#fffde7',
+                            importance_8: '#fff8e1',
+                            importance_9: '#fff3e0',
+                            importance_10: '#fcebd4',
+                            importance_11: '#fbe9e7',
+                            importance_12: '#fce4ec'
+                        });
+                    },
+                    editable: true
+                },
+                {
+                    id: 'reset_bright_colors',
+                    title: 'Reset bright colors',
+                    type: 'button',
+                    value: (settings, updateSettings) => {
+                        updateSettings({
+                            importance_0: '#fafafa',
+                            importance_1: '#fafafa',
+                            importance_2: '#eceff1',
+                            importance_3: '#e1f5fe',
+                            importance_4: '#b3e5fc',
+                            importance_5: '#dcedc8',
+                            importance_6: '#c5e1a5',
+                            importance_7: '#fff9c4',
+                            importance_8: '#fff176',
+                            importance_9: '#ffe082',
+                            importance_10: '#ffd54f',
+                            importance_11: '#fcbfbf',
+                            importance_12: '#ffab91'
+                        });
+                    },
+                    editable: true
+                },
+                {
                     id: 'importance_0',
                     title: 'Importance 0',
                     type: 'color',
-                    value: '#ffffff',
+                    value: '#fafafa',
                     editable: true
                 },
                 {
                     id: 'importance_1',
                     title: 'Importance 1',
                     type: 'color',
-                    value: '#ffffff',
+                    value: '#fafafa',
                     editable: true
                 },
                 {
@@ -269,70 +338,70 @@ export function getCategories() {
                     id: 'importance_3',
                     title: 'Importance 3',
                     type: 'color',
-                    value: '#e1f5fe',
+                    value: '#eaf5fc',
                     editable: true
                 },
                 {
                     id: 'importance_4',
                     title: 'Importance 4',
                     type: 'color',
-                    value: '#b3e5fc',
+                    value: '#e3f2fd',
                     editable: true
                 },
                 {
                     id: 'importance_5',
                     title: 'Importance 5',
                     type: 'color',
-                    value: '#dcedc8',
+                    value: '#f1f8e9',
                     editable: true
                 },
                 {
                     id: 'importance_6',
                     title: 'Importance 6',
                     type: 'color',
-                    value: '#c5e1a5',
+                    value: '#e8f5e9',
                     editable: true
                 },
                 {
                     id: 'importance_7',
                     title: 'Importance 7',
                     type: 'color',
-                    value: '#fff9c4',
+                    value: '#fffde7',
                     editable: true
                 },
                 {
                     id: 'importance_8',
                     title: 'Importance 8',
                     type: 'color',
-                    value: '#fff176',
+                    value: '#fff8e1',
                     editable: true
                 },
                 {
                     id: 'importance_9',
                     title: 'Importance 9',
                     type: 'color',
-                    value: '#ffe082',
+                    value: '#fff3e0',
                     editable: true
                 },
                 {
                     id: 'importance_10',
                     title: 'Importance 10',
                     type: 'color',
-                    value: '#ffd54f',
+                    value: '#fcebd4',
                     editable: true
                 },
                 {
                     id: 'importance_11',
                     title: 'Importance 11',
                     type: 'color',
-                    value: '#fcbfbf',
+                    value: '#fbe9e7',
                     editable: true
                 },
                 {
                     id: 'importance_12',
                     title: 'Importance 12',
                     type: 'color',
-                    value: '#ffab91',
+                    value: '#fce4ec',
                     editable: true
                 }
             ]
