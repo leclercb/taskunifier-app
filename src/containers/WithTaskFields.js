@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addTaskField, deleteTaskField, updateTaskField } from 'actions/TaskFieldActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getDefaultTaskFields } from 'data/DataTaskFields';
+import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withTaskFields(Component, options) {
@@ -11,7 +11,7 @@ function withTaskFields(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => ({
-        taskFields: getDefaultTaskFields(state.settings).concat(state.taskFields.filteredByVisibleState)
+        taskFields: getTaskFieldsIncludingDefaults(state)
     });
 
     const mapDispatchToProps = dispatch => ({

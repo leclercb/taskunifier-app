@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
-import withBusyCheck from 'containers/WithBusyCheck';
 import { updateNote } from 'actions/NoteActions';
+import withBusyCheck from 'containers/WithBusyCheck';
+import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 
 function withNote(Component, getId = ownProps => ownProps.noteId) {
     const mapStateToProps = (state, ownProps) => ({
-        note: state.notes.filteredByVisibleState.find(note => note.id === getId(ownProps))
+        note: getNotesFilteredByVisibleState(state).find(note => note.id === getId(ownProps))
     });
 
     const mapDispatchToProps = dispatch => ({

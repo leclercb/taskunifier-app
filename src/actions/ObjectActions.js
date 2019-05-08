@@ -4,28 +4,27 @@ import Constants from 'constants/Constants';
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 import { filterByStatic } from 'utils/CategoryUtils';
 
-export const loadObjectsFromFile = (property, file, extraProps) => {
-    return dispatch => dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data, extraProps))));
+export const loadObjectsFromFile = (property, file) => {
+    return dispatch => dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
 };
 
 export const saveObjectsToFile = (property, file, data) => {
     return saveToFile(property, file, filterByStatic(data));
 };
 
-export const setObjects = (property, objects, extraProps) => {
+export const setObjects = (property, objects) => {
     return dispatch => {
         dispatch({
             type: 'SET_OBJECTS',
             property: property,
-            objects: objects,
-            ...extraProps
+            objects: objects
         });
 
         return Promise.resolve();
     };
 };
 
-export const addObject = (property, object, extraProps) => {
+export const addObject = (property, object) => {
     return dispatch => {
         const id = uuid();
 
@@ -38,30 +37,28 @@ export const addObject = (property, object, extraProps) => {
                 color: Constants.defaultObjectColor,
                 ...object,
                 id: id
-            },
-            ...extraProps
+            }
         });
 
         return Promise.resolve(id);
     };
 };
 
-export const updateObject = (property, object, extraProps) => {
+export const updateObject = (property, object) => {
     return dispatch => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property: property,
             generateId: () => uuid(),
             updateDate: moment().toJSON(),
-            object: object,
-            ...extraProps
+            object: object
         });
 
         return Promise.resolve();
     };
 };
 
-export const deleteObject = (property, objectId, extraProps) => {
+export const deleteObject = (property, objectId) => {
     return dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
@@ -69,20 +66,18 @@ export const deleteObject = (property, objectId, extraProps) => {
             generateId: () => uuid(),
             updateDate: moment().toJSON(),
             immediate: true,
-            objectId: objectId,
-            ...extraProps
+            objectId: objectId
         });
 
         return Promise.resolve();
     };
 };
 
-export const cleanObjects = (property, extraProps) => {
+export const cleanObjects = property => {
     return dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',
-            property: property,
-            ...extraProps
+            property: property
         });
 
         return Promise.resolve();

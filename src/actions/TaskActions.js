@@ -10,7 +10,7 @@ import {
 } from 'actions/ObjectActions';
 
 export const loadTasksFromFile = file => {
-    return (dispatch, getState) => dispatch(loadObjectsFromFile('tasks', file, getExtraProps(getState())));
+    return dispatch => dispatch(loadObjectsFromFile('tasks', file));
 };
 
 export const saveTasksToFile = (file, data) => {
@@ -18,23 +18,23 @@ export const saveTasksToFile = (file, data) => {
 };
 
 export const setTasks = tasks => {
-    return (dispatch, getState) => dispatch(setObjects('tasks', tasks, getExtraProps(getState())));
+    return dispatch => dispatch(setObjects('tasks', tasks));
 };
 
 export const addTask = task => {
-    return (dispatch, getState) => dispatch(addObject('tasks', task, getExtraProps(getState())));
+    return dispatch => dispatch(addObject('tasks', task));
 };
 
 export const updateTask = task => {
-    return (dispatch, getState) => dispatch(updateObject('tasks', task, getExtraProps(getState())));
+    return dispatch => dispatch(updateObject('tasks', task));
 };
 
 export const deleteTask = taskId => {
-    return (dispatch, getState) => dispatch(deleteObject('tasks', taskId, getExtraProps(getState())));
+    return dispatch => dispatch(deleteObject('tasks', taskId));
 };
 
 export const cleanTasks = () => {
-    return (dispatch, getState) => dispatch(cleanObjects('tasks', getExtraProps(getState())));
+    return dispatch => dispatch(cleanObjects('tasks'));
 };
 
 export const setSelectedTaskIds = taskIds => {
@@ -49,21 +49,13 @@ export const setSelectedTaskIds = taskIds => {
 };
 
 export const setSelectedTaskFilter = taskFilter => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'SET_SELECTED_TASK_FILTER',
             taskFilter: taskFilter,
-            date: moment().toJSON(),
-            ...getExtraProps(getState())
+            date: moment().toJSON()
         });
 
         return Promise.resolve();
-    };
-};
-
-const getExtraProps = state => {
-    return {
-        settings: state.settings,
-        taskFields: state.taskFields
     };
 };

@@ -5,7 +5,7 @@ import { ContextPropType } from 'proptypes/ContextPropTypes';
 import withContexts from 'containers/WithContexts';
 import Icon from 'components/common/Icon';
 
-export const ContextSelect = React.forwardRef(function ContextSelect(props, ref) {
+function ContextSelect(props, ref) {
     const { contexts, ...restProps } = props;
 
     restProps.value = props.contexts.find(context => context.id === restProps.value) ? restProps.value : null;
@@ -19,10 +19,13 @@ export const ContextSelect = React.forwardRef(function ContextSelect(props, ref)
             ))}
         </Select>
     );
-});
+};
 
 ContextSelect.propTypes = {
     contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired
 };
 
-export default withContexts(ContextSelect);
+const FRContextSelect = React.forwardRef(ContextSelect);
+
+export { FRContextSelect as ContextSelect };
+export default withContexts(FRContextSelect);

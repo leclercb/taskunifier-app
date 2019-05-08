@@ -7,7 +7,7 @@ import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
 import { getStatusColor } from 'utils/SettingUtils';
 
-export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
+function StatusSelect(props, ref) {
     const { statuses, ...restProps } = props;
 
     return (
@@ -19,11 +19,14 @@ export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
             ))}
         </Select>
     );
-});
+};
 
 StatusSelect.propTypes = {
     statuses: PropTypes.arrayOf(StatusPropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired
 };
 
-export default withStatuses(withSettings(StatusSelect));
+const FRStatusSelect = React.forwardRef(StatusSelect);
+
+export { FRStatusSelect as StatusSelect };
+export default withSettings(withStatuses(FRStatusSelect));

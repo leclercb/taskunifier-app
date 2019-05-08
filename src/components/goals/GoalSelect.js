@@ -5,7 +5,7 @@ import { GoalPropType } from 'proptypes/GoalPropTypes';
 import withGoals from 'containers/WithGoals';
 import Icon from 'components/common/Icon';
 
-export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
+function GoalSelect(props, ref) {
     const { goals, ...restProps } = props;
 
     restProps.value = props.goals.find(goal => goal.id === restProps.value) ? restProps.value : null;
@@ -19,10 +19,13 @@ export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
             ))}
         </Select>
     );
-});
+};
 
 GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired
 };
 
-export default withGoals(GoalSelect, { filteredByNonArchived: true });
+const FRGoalSelect = React.forwardRef(GoalSelect);
+
+export { FRGoalSelect as GoalSelect };
+export default withGoals(FRGoalSelect, { filteredByNonArchived: true });

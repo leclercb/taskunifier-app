@@ -6,7 +6,7 @@ import withLinkedContactLinks from 'containers/WithLinkedContactLinks';
 import withLinkedFileLinks from 'containers/WithLinkedFileLinks';
 import withLinkedTaskLinks from 'containers/WithLinkedTaskLinks';
 
-export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
+function LinksSelect(props, ref) {
     const { links, ...restProps } = props;
 
     return (
@@ -18,12 +18,14 @@ export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
             ))}
         </Select>
     );
-});
+};
 
 LinksSelect.propTypes = {
     links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
 };
 
-export const LinkedContactLinksSelect = withLinkedContactLinks(LinksSelect, { getId: null });
-export const LinkedFileLinksSelect = withLinkedFileLinks(LinksSelect, { getId: null });
-export const LinkedTaskLinksSelect = withLinkedTaskLinks(LinksSelect, { getId: null });
+const FRLinksSelect = React.forwardRef(LinksSelect);
+
+export const LinkedContactLinksSelect = withLinkedContactLinks(FRLinksSelect, { getId: null });
+export const LinkedFileLinksSelect = withLinkedFileLinks(FRLinksSelect, { getId: null });
+export const LinkedTaskLinksSelect = withLinkedTaskLinks(FRLinksSelect, { getId: null });

@@ -5,7 +5,7 @@ import { LocationPropType } from 'proptypes/LocationPropTypes';
 import withLocations from 'containers/WithLocations';
 import Icon from 'components/common/Icon';
 
-export const LocationSelect = React.forwardRef(function LocationSelect(props, ref) {
+function LocationSelect(props, ref) {
     const { locations, ...restProps } = props;
 
     restProps.value = props.locations.find(location => location.id === restProps.value) ? restProps.value : null;
@@ -19,10 +19,13 @@ export const LocationSelect = React.forwardRef(function LocationSelect(props, re
             ))}
         </Select>
     );
-});
+};
 
 LocationSelect.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired
 };
 
-export default withLocations(LocationSelect);
+const FRLocationSelect = React.forwardRef(LocationSelect);
+
+export { FRLocationSelect as LocationSelect };
+export default withLocations(FRLocationSelect);

@@ -4,7 +4,7 @@ import { TagPropType } from 'proptypes/TagPropTypes';
 import { Select, Tag } from 'antd';
 import withTags from 'containers/WithTags';
 
-export const TagsSelect = React.forwardRef(function TagsSelect(props, ref) {
+function TagsSelect(props, ref) {
     const { tags, ...restProps } = props;
 
     return (
@@ -16,10 +16,13 @@ export const TagsSelect = React.forwardRef(function TagsSelect(props, ref) {
             ))}
         </Select>
     );
-});
+};
 
 TagsSelect.propTypes = {
     tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired
 };
 
-export default withTags(TagsSelect, { getId: null });
+const FRTagsSelect = React.forwardRef(TagsSelect);
+
+export { FRTagsSelect as TagsSelect };
+export default withTags(FRTagsSelect, { getId: null });

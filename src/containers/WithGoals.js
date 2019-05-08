@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getGoalsFilteredByVisibleState, getGoalsFilteredByNonArchived } from 'selectors/GoalSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withGoals(Component, options) {
@@ -11,10 +12,10 @@ function withGoals(Component, options) {
     }, options || {});
 
     const mapStateToProps = (state, ownProps) => {
-        let goals = state.goals.filteredByVisibleState;
+        let goals = getGoalsFilteredByVisibleState(state);
 
         if (options.filteredByNonArchived === true) {
-            goals = state.goals.filteredByNonArchived;
+            goals = getGoalsFilteredByNonArchived(state);
         }
 
         if ('excludeIds' in ownProps) {

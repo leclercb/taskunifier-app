@@ -1,8 +1,5 @@
-import { filterByVisibleState } from 'utils/CategoryUtils';
-
 const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => (state = {
-    all: [],
-    filteredByVisibleState: []
+    all: []
 }, action) => {
     if (action.property !== property) {
         return state;
@@ -14,8 +11,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
 
             return {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
         }
         case 'ADD_OBJECT': {
@@ -69,8 +65,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
 
             return {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
         }
         case 'CLEAN_OBJECTS': {
@@ -78,8 +73,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
 
             return {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
         }
         default:
@@ -114,8 +108,7 @@ const addObject = (state, action) => {
 
     return {
         ...state,
-        all: newObjects,
-        filteredByVisibleState: filterByVisibleState(newObjects)
+        all: newObjects
     };
 };
 
@@ -149,8 +142,7 @@ const updateObject = (state, action, onUpdate) => {
 
     const newState = {
         ...state,
-        all: newObjects,
-        filteredByVisibleState: filterByVisibleState(newObjects)
+        all: newObjects
     };
 
     if (newObject) {

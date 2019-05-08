@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getFoldersFilteredByVisibleState, getFoldersFilteredByNonArchived } from 'selectors/FolderSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withFolders(Component, options) {
@@ -11,10 +12,10 @@ function withFolders(Component, options) {
     }, options || {});
     
     const mapStateToProps = state => {
-        let folders = state.folders.filteredByVisibleState;
+        let folders = getFoldersFilteredByVisibleState(state);
 
         if (options.filteredByNonArchived === true) {
-            folders = state.folders.filteredByNonArchived;
+            folders = getFoldersFilteredByNonArchived(state);
         }
 
         return {

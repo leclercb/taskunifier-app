@@ -5,7 +5,7 @@ import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import withTaskTemplates from 'containers/WithTaskTemplates';
 import Icon from 'components/common/Icon';
 
-export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(props, ref) {
+function TaskTemplateSelect(props, ref) {
     const { taskTemplates, ...restProps } = props;
 
     restProps.value = props.taskTemplates.find(taskTemplate => taskTemplate.id === restProps.value) ? restProps.value : null;
@@ -19,10 +19,13 @@ export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(p
             ))}
         </Select>
     );
-});
+};
 
 TaskTemplateSelect.propTypes = {
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired
 };
 
-export default withTaskTemplates(TaskTemplateSelect);
+const FRTaskTemplateSelect = React.forwardRef(TaskTemplateSelect);
+
+export { FRTaskTemplateSelect as TaskTemplateSelect };
+export default withTaskTemplates(FRTaskTemplateSelect);

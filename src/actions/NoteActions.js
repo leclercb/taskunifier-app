@@ -10,7 +10,7 @@ import {
 } from 'actions/ObjectActions';
 
 export const loadNotesFromFile = file => {
-    return (dispatch, getState) => dispatch(loadObjectsFromFile('notes', file, getExtraProps(getState())));
+    return dispatch => dispatch(loadObjectsFromFile('notes', file));
 };
 
 export const saveNotesToFile = (file, data) => {
@@ -18,23 +18,23 @@ export const saveNotesToFile = (file, data) => {
 };
 
 export const setNotes = notes => {
-    return (dispatch, getState) => dispatch(setObjects('notes', notes, getExtraProps(getState())));
+    return dispatch => dispatch(setObjects('notes', notes));
 };
 
 export const addNote = note => {
-    return (dispatch, getState) => dispatch(addObject('notes', note, getExtraProps(getState())));
+    return dispatch => dispatch(addObject('notes', note));
 };
 
 export const updateNote = note => {
-    return (dispatch, getState) => dispatch(updateObject('notes', note, getExtraProps(getState())));
+    return dispatch => dispatch(updateObject('notes', note));
 };
 
 export const deleteNote = noteId => {
-    return (dispatch, getState) => dispatch(deleteObject('notes', noteId, getExtraProps(getState())));
+    return dispatch => dispatch(deleteObject('notes', noteId));
 };
 
 export const cleanNotes = () => {
-    return (dispatch, getState) => dispatch(cleanObjects('notes', getExtraProps(getState())));
+    return dispatch => dispatch(cleanObjects('notes'));
 };
 
 export const setSelectedNoteIds = noteIds => {
@@ -49,21 +49,13 @@ export const setSelectedNoteIds = noteIds => {
 };
 
 export const setSelectedNoteFilter = noteFilter => {
-    return (dispatch, getState) => {
+    return dispatch => {
         dispatch({
             type: 'SET_SELECTED_NOTE_FILTER',
             noteFilter: noteFilter,
-            date: moment().toJSON(),
-            ...getExtraProps(getState())
+            date: moment().toJSON()
         });
 
         return Promise.resolve();
-    };
-};
-
-const getExtraProps = state => {
-    return {
-        settings: state.settings,
-        noteFields: state.noteFields
     };
 };

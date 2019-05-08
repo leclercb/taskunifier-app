@@ -3,8 +3,6 @@ import reduceReducers from 'reduce-reducers';
 import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 import App from 'reducers/App';
-import Folders from 'reducers/Folders';
-import Goals from 'reducers/Goals';
 import Notes from 'reducers/Notes';
 import Objects from 'reducers/Objects';
 import Processes from 'reducers/Processes';
@@ -17,20 +15,11 @@ export default combineReducers({
     app: App(),
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),
-    folders: reduceReducers({
-        all: [],
-        filteredByVisibleState: [],
-        filteredByNonArchived: []
-    }, Objects('folders'), Folders()),
-    goals: reduceReducers({
-        all: [],
-        filteredByVisibleState: [],
-        filteredByNonArchived: []
-    }, Objects('goals', onGoalUpdate), Goals()),
+    folders: Objects('folders'),
+    goals: Objects('goals', onGoalUpdate),
     locations: Objects('locations'),
     notes: reduceReducers({
         all: [],
-        filteredByVisibleState: [],
         selectedNoteIds: [],
         selectedNoteFilter: getDefaultSelectedNoteFilter(),
         selectedNoteFilterDate: null
@@ -39,7 +28,6 @@ export default combineReducers({
     noteFilters: Objects('noteFilters'),
     tasks: reduceReducers({
         all: [],
-        filteredByVisibleState: [],
         selectedTaskIds: [],
         selectedTaskFilter: getDefaultSelectedTaskFilter(),
         selectedTaskFilterDate: null

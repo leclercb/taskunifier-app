@@ -1,10 +1,8 @@
 import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
-import { filterByVisibleState } from 'utils/CategoryUtils';
 import { deleteTag, updateTag } from 'utils/TagUtils';
 
 const Notes = () => (state = {
     all: [],
-    filteredByVisibleState: [],
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: null
@@ -39,8 +37,7 @@ const Notes = () => (state = {
 
             const newState = {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
 
             return newState;
@@ -59,8 +56,7 @@ const Notes = () => (state = {
 
             const newState = {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
 
             return newState;

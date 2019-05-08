@@ -10,10 +10,17 @@ import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
 import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getSelectedNoteFilter, getNotesFilteredBySelectedFilter } from 'selectors/NoteSelectors';
-import { getSelectedTaskFilter, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
+import { getSelectedNoteFilter, getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getSelectedTaskFilter, getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
 import { getTagsFromObjects } from 'utils/TagUtils';
+import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
+import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import { getGoalsFilteredByVisibleState, getGoalsFilteredByNonArchived } from 'selectors/GoalSelectors';
+import { getFoldersFilteredByVisibleState, getFoldersFilteredByNonArchived } from 'selectors/FolderSelectors';
+import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 
 function withObjects(Component, options) {
     options = merge({
@@ -38,43 +45,43 @@ function withObjects(Component, options) {
         const data = {};
 
         if (options.includeContexts === true) {
-            data.contexts = state.contexts.filteredByVisibleState;
+            data.contexts = getContextsFilteredByVisibleState(state);
         }
 
         if (options.includeFolders === true) {
-            data.folders = state.folders.filteredByVisibleState;
+            data.folders = getFoldersFilteredByVisibleState(state);
 
             if (options.filteredByNonArchivedFolders === true) {
-                data.folders = state.folders.filteredByNonArchived;
+                data.folders = getFoldersFilteredByNonArchived(state);
             }
         }
 
         if (options.includeGoals === true) {
-            data.goals = state.goals.filteredByVisibleState;
+            data.goals = getGoalsFilteredByVisibleState(state);
 
             if (options.filteredByNonArchivedGoals === true) {
-                data.goals = state.goals.filteredByNonArchived;
+                data.goals = getGoalsFilteredByNonArchived(state);
             }
         }
 
         if (options.includeLocations === true) {
-            data.locations = state.locations.filteredByVisibleState;
+            data.locations = getLocationsFilteredByVisibleState(state);
         }
 
         if (options.includeTags === true) {
-            data.tags = getTagsFromObjects(state.tasks.filteredByVisibleState.concat(state.notes.filteredByVisibleState));
+            data.tags = getTagsFromObjects(getNotesFilteredByVisibleState(state).concat(getTasksFilteredByVisibleState(state)));
         }
 
         if (options.includeTaskTemplates === true) {
-            data.taskTemplates = state.taskTemplates.filteredByVisibleState;
+            data.taskTemplates = getTaskTemplatesFilteredByVisibleState(state);
         }
 
         if (options.includeNoteFilters === true) {
-            data.noteFilters = state.noteFilters.filteredByVisibleState;
+            data.noteFilters = getNoteFiltersFilteredByVisibleState(state);
         }
 
         if (options.includeTaskFilters === true) {
-            data.taskFilters = state.taskFilters.filteredByVisibleState;
+            data.taskFilters = getTaskFiltersFilteredByVisibleState(state);
         }
 
         if (options.includeSelectedNoteFilter === true) {

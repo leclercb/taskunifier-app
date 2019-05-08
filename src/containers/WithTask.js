@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { updateTask } from 'actions/TaskActions';
+import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 
 function withTask(Component, getId = ownProps => ownProps.taskId) {
     const mapStateToProps = (state, ownProps) => ({
-        task: state.tasks.filteredByVisibleState.find(task => task.id === getId(ownProps))
+        task: getTasksFilteredByVisibleState(state).find(task => task.id === getId(ownProps))
     });
 
     const mapDispatchToProps = dispatch => ({

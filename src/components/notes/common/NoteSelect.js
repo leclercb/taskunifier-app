@@ -5,7 +5,7 @@ import { NotePropType } from 'proptypes/NotePropTypes';
 import withNotes from 'containers/WithNotes';
 import Icon from 'components/common/Icon';
 
-export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
+function NoteSelect(props, ref) {
     const { notes, ...restProps } = props;
 
     restProps.value = props.notes.find(note => note.id === restProps.value) ? restProps.value : null;
@@ -19,10 +19,13 @@ export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
             ))}
         </Select>
     );
-});
+};
 
 NoteSelect.propTypes = {
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired
 };
 
-export default withNotes(NoteSelect);
+const FRNoteSelect = React.forwardRef(NoteSelect);
+
+export { FRNoteSelect as NoteSelect };
+export default withNotes(FRNoteSelect);

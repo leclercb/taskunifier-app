@@ -3,6 +3,8 @@ import { deleteTag, updateTag } from 'actions/TagActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { merge } from 'utils/ObjectUtils';
 import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
+import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 
 function withTags(Component, options) {
     options = merge({
@@ -12,7 +14,7 @@ function withTags(Component, options) {
     }, options || {});
 
     const mapStateToProps = (state, ownProps) => {
-        let tags = getTagsFromObjects(state.tasks.filteredByVisibleState.concat(state.notes.filteredByVisibleState));
+        let tags = getTagsFromObjects(getNotesFilteredByVisibleState(state).concat(getTasksFilteredByVisibleState(state)));
 
         if (options.getId) {
             tags = getTagsFromIds(tags, options.getId(ownProps));

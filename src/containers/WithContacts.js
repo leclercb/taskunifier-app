@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addContact, deleteContact, updateContact } from 'actions/ContactActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withContacts(Component, options) {
@@ -10,7 +11,7 @@ function withContacts(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => ({
-        contacts: state.contacts.filteredByVisibleState
+        contacts: getContactsFilteredByVisibleState(state)
     });
 
     const mapDispatchToProps = dispatch => ({

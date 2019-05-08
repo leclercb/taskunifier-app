@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withLocations(Component, options) {
@@ -10,7 +11,7 @@ function withLocations(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => ({
-        locations: state.locations.filteredByVisibleState
+        locations: getLocationsFilteredByVisibleState(state)
     });
 
     const mapDispatchToProps = dispatch => ({

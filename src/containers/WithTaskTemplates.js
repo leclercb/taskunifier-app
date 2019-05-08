@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withTaskTemplates(Component, options) {
@@ -10,7 +11,7 @@ function withTaskTemplates(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => ({
-        taskTemplates: state.taskTemplates.filteredByVisibleState
+        taskTemplates: getTaskTemplatesFilteredByVisibleState(state)
     });
 
     const mapDispatchToProps = dispatch => ({

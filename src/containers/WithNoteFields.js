@@ -1,11 +1,17 @@
 import { connect } from 'react-redux';
 import { addNoteField, deleteNoteField, updateNoteField } from 'actions/NoteFieldActions';
-import { getDefaultNoteFields } from 'data/DataNoteFields';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
+import { merge } from 'utils/ObjectUtils';
 
-function withNoteFields(Component) {
+function withNoteFields(Component, options) {
+    options = merge({
+        includeState: true,
+        includeDispatch: true
+    }, options || {});
+
     const mapStateToProps = state => ({
-        noteFields: getDefaultNoteFields().concat(state.noteFields.filteredByVisibleState)
+        noteFields: getNoteFieldsIncludingDefaults(state)
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -15,8 +21,8 @@ function withNoteFields(Component) {
     });
 
     return connect(
-        mapStateToProps,
-        mapDispatchToProps
+        options.includeState === true ? mapStateToProps : null,
+        options.includeDispatch === true ? mapDispatchToProps : null
     )(withBusyCheck(Component));
 }
 

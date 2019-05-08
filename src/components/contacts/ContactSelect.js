@@ -6,7 +6,7 @@ import withContacts from 'containers/WithContacts';
 import Icon from 'components/common/Icon';
 import { getContactTitle } from 'utils/ContactUtils';
 
-export const ContactSelect = React.forwardRef(function ContactSelect(props, ref) {
+function ContactSelect(props, ref) {
     const { contacts, ...restProps } = props;
 
     return (
@@ -18,10 +18,13 @@ export const ContactSelect = React.forwardRef(function ContactSelect(props, ref)
             ))}
         </Select>
     );
-});
+};
 
 ContactSelect.propTypes = {
     contacts: PropTypes.arrayOf(ContactPropType.isRequired).isRequired
 };
 
-export default withContacts(ContactSelect);
+const FRContactSelect = React.forwardRef(ContactSelect);
+
+export { FRContactSelect as ContactSelect };
+export default withContacts(FRContactSelect);

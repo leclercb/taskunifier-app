@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withContexts(Component, options) {
@@ -10,7 +11,7 @@ function withContexts(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => ({
-        contexts: state.contexts.filteredByVisibleState
+        contexts: getContextsFilteredByVisibleState(state)
     });
 
     const mapDispatchToProps = dispatch => ({

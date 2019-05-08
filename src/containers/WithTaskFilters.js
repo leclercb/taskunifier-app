@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { addTaskFilter, deleteTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 
 function withTaskFilters(Component) {
     const mapStateToProps = state => ({
-        taskFilters: state.taskFilters.filteredByVisibleState
+        taskFilters: getTaskFiltersFilteredByVisibleState(state)
     });
 
     const mapDispatchToProps = dispatch => ({

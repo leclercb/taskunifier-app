@@ -1,10 +1,8 @@
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
-import { filterByVisibleState } from 'utils/CategoryUtils';
 import { deleteTag, updateTag } from 'utils/TagUtils';
 
 const Tasks = () => (state = {
     all: [],
-    filteredByVisibleState: [],
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: null
@@ -39,8 +37,7 @@ const Tasks = () => (state = {
 
             const newState = {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
 
             return newState;
@@ -59,8 +56,7 @@ const Tasks = () => (state = {
 
             const newState = {
                 ...state,
-                all: newObjects,
-                filteredByVisibleState: filterByVisibleState(newObjects)
+                all: newObjects
             };
 
             return newState;

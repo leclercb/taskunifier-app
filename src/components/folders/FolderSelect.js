@@ -5,7 +5,7 @@ import { FolderPropType } from 'proptypes/FolderPropTypes';
 import withFolders from 'containers/WithFolders';
 import Icon from 'components/common/Icon';
 
-export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
+function FolderSelect(props, ref) {
     const { folders, ...restProps } = props;
 
     restProps.value = props.folders.find(folder => folder.id === restProps.value) ? restProps.value : null;
@@ -19,10 +19,13 @@ export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
             ))}
         </Select>
     );
-});
+};
 
 FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired
 };
 
-export default withFolders(FolderSelect, { filteredByNonArchived: true });
+const FRFolderSelect = React.forwardRef(FolderSelect);
+
+export { FRFolderSelect as FolderSelect };
+export default withFolders(FRFolderSelect, { filteredByNonArchived: true });
