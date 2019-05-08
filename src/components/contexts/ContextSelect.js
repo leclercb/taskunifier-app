@@ -5,13 +5,13 @@ import { ContextPropType } from 'proptypes/ContextPropTypes';
 import withContexts from 'containers/WithContexts';
 import Icon from 'components/common/Icon';
 
-function ContextSelect(props, ref) {
+export function ContextSelect(props) {
     const { contexts, ...restProps } = props;
 
     restProps.value = props.contexts.find(context => context.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {contexts.map(context => (
                 <Select.Option key={context.id} value={context.id}>
                     <Icon icon="circle" color={context.color} text={context.title} />
@@ -25,7 +25,4 @@ ContextSelect.propTypes = {
     contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired
 };
 
-const FRContextSelect = React.forwardRef(ContextSelect);
-
-export { FRContextSelect as ContextSelect };
-export default withContexts(FRContextSelect);
+export default withContexts(ContextSelect);

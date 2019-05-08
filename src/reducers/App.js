@@ -1,5 +1,14 @@
+import { getDefaultSelectedNoteFilter } from "data/DataNoteFilters";
+import { getDefaultSelectedTaskFilter } from "data/DataTaskFilters";
+
 const App = () => (state = {
     selectedView: 'task',
+    selectedNoteIds: [],
+    selectedNoteFilter: getDefaultSelectedNoteFilter(),
+    selectedNoteFilterDate: null,
+    selectedTaskIds: [],
+    selectedTaskFilter: getDefaultSelectedTaskFilter(),
+    selectedTaskFilterDate: null,
     categoryManager: {
         visible: false,
         category: 'contexts',
@@ -34,6 +43,36 @@ const App = () => (state = {
                 ...state,
                 selectedView: action.view
             };
+        case 'SET_SELECTED_NOTE_IDS': {
+            return {
+                ...state,
+                selectedNoteIds: action.noteIds
+            };
+        }
+        case 'SET_SELECTED_NOTE_FILTER': {
+            const newState = {
+                ...state,
+                selectedNoteFilter: action.noteFilter,
+                selectedNoteFilterDate: action.date
+            };
+
+            return newState;
+        }
+        case 'SET_SELECTED_TASK_IDS': {
+            return {
+                ...state,
+                selectedTaskIds: action.taskIds
+            };
+        }
+        case 'SET_SELECTED_TASK_FILTER': {
+            const newState = {
+                ...state,
+                selectedTaskFilter: action.taskFilter,
+                selectedTaskFilterDate: action.date
+            };
+
+            return newState;
+        }
         case 'SET_CATEGORY_MANAGER_OPTIONS':
             return {
                 ...state,

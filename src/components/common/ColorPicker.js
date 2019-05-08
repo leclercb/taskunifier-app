@@ -1,10 +1,10 @@
 import React from 'react';
 import RCColorPicker from 'rc-color-picker';
 
-function ColorPicker(props, ref) {
+function ColorPicker(props) {
     return (
-        <RCColorPicker ref={ref} {...props} />
+        <RCColorPicker {...props} />
     );
 };
 
-export default React.forwardRef(ColorPicker);
+export default ColorPicker;

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import { addTask, deleteTask, setSelectedTaskIds, updateTask } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getTasksFilteredByVisibleState, getSelectedTaskIds } from 'selectors/TaskSelectors';
 
 function withSelectedTasks(Component) {
     const mapStateToProps = state => ({
-        selectedTaskIds: state.tasks.selectedTaskIds,
-        selectedTasks: getTasksFilteredByVisibleState(state).filter(task => state.tasks.selectedTaskIds.includes(task.id))
+        selectedTaskIds: getSelectedTaskIds(state),
+        selectedTasks: getTasksFilteredByVisibleState(state).filter(task => getSelectedTaskIds(state).includes(task.id))
     });
 
     const mapDispatchToProps = dispatch => ({

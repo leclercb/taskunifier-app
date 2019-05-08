@@ -16,6 +16,8 @@ import { cleanTaskTemplates, loadTaskTemplatesFromFile, saveTaskTemplatesToFile 
 import { createDirectory, getUserDataPath, join } from 'utils/ActionUtils';
 import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
+import { getContacts } from 'selectors/ContactSelectors';
+import { getContexts } from 'selectors/ContextSelectors';
 
 export const _loadData = path => {
     return (dispatch, getState) => {
@@ -98,8 +100,8 @@ export const _saveData = (path, options) => {
                 Promise.all([
                     dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(state.settings, true))),
                     dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(state.settings, false))),
-                    dispatch(saveContactsToFile(join(path, 'contacts.json'), state.contacts.all)),
-                    dispatch(saveContextsToFile(join(path, 'contexts.json'), state.contexts.all)),
+                    dispatch(saveContactsToFile(join(path, 'contacts.json'), getContacts(state))),
+                    dispatch(saveContextsToFile(join(path, 'contexts.json'), getContexts(state))),
                     dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders.all)),
                     dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals.all)),
                     dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations.all)),

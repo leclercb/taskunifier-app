@@ -5,13 +5,13 @@ import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import withTaskTemplates from 'containers/WithTaskTemplates';
 import Icon from 'components/common/Icon';
 
-function TaskTemplateSelect(props, ref) {
+export function TaskTemplateSelect(props) {
     const { taskTemplates, ...restProps } = props;
 
     restProps.value = props.taskTemplates.find(taskTemplate => taskTemplate.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {taskTemplates.map(taskTemplate => (
                 <Select.Option key={taskTemplate.id} value={taskTemplate.id}>
                     <Icon icon="circle" color={taskTemplate.color} text={taskTemplate.title} />
@@ -25,7 +25,4 @@ TaskTemplateSelect.propTypes = {
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired
 };
 
-const FRTaskTemplateSelect = React.forwardRef(TaskTemplateSelect);
-
-export { FRTaskTemplateSelect as TaskTemplateSelect };
-export default withTaskTemplates(FRTaskTemplateSelect);
+export default withTaskTemplates(TaskTemplateSelect);

@@ -5,13 +5,13 @@ import { GoalPropType } from 'proptypes/GoalPropTypes';
 import withGoals from 'containers/WithGoals';
 import Icon from 'components/common/Icon';
 
-function GoalSelect(props, ref) {
+export function GoalSelect(props) {
     const { goals, ...restProps } = props;
 
     restProps.value = props.goals.find(goal => goal.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select allowClear={true} {...restProps}>
             {goals.map(goal => (
                 <Select.Option key={goal.id} value={goal.id}>
                     <Icon icon="circle" color={goal.color} text={goal.title} />
@@ -25,7 +25,4 @@ GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired
 };
 
-const FRGoalSelect = React.forwardRef(GoalSelect);
-
-export { FRGoalSelect as GoalSelect };
-export default withGoals(FRGoalSelect, { filteredByNonArchived: true });
+export default withGoals(GoalSelect, { filteredByNonArchived: true });
