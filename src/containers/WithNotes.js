@@ -1,6 +1,18 @@
 import { connect } from 'react-redux';
-import { addNote, deleteNote, setSelectedNoteFilter, setSelectedNoteIds, updateNote } from 'actions/NoteActions';
+import {
+    addNote,
+    deleteNote,
+    setSelectedNoteFilter,
+    setSelectedNoteIds,
+    updateNote
+} from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import {
+    getSelectedNoteIds,
+    getSelectedNoteFilter,
+    getNotesFilteredBySelectedFilter,
+    getNotesFilteredByVisibleState
+} from 'selectors/NoteSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withNotes(Component, options) {
@@ -11,16 +23,16 @@ function withNotes(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => {
-        let notes = state.notes.filteredByVisibleState;
+        let notes = getNotesFilteredByVisibleState(state);
 
         if (options.applySelectedNoteFilter === true) {
-            notes = state.notes.filteredBySelectedFilter;
+            notes = getNotesFilteredBySelectedFilter(state);
         }
 
         return {
             notes: notes,
-            selectedNoteIds: state.notes.selectedNoteIds,
-            selectedNoteFilter: state.notes.selectedNoteFilter
+            selectedNoteIds: getSelectedNoteIds(state),
+            selectedNoteFilter: getSelectedNoteFilter(state)
         };
     };
 

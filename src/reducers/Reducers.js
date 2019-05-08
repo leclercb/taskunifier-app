@@ -31,7 +31,6 @@ export default combineReducers({
     notes: reduceReducers({
         all: [],
         filteredByVisibleState: [],
-        filteredBySelectedFilter: [],
         selectedNoteIds: [],
         selectedNoteFilter: getDefaultSelectedNoteFilter(),
         selectedNoteFilterDate: null
@@ -41,7 +40,6 @@ export default combineReducers({
     tasks: reduceReducers({
         all: [],
         filteredByVisibleState: [],
-        filteredBySelectedFilter: [],
         selectedTaskIds: [],
         selectedTaskFilter: getDefaultSelectedTaskFilter(),
         selectedTaskFilterDate: null

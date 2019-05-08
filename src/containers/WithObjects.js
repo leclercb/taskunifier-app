@@ -7,11 +7,13 @@ import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { deleteTag, updateTag } from 'actions/TagActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
-import { getTagsFromObjects } from 'utils/TagUtils';
-import withBusyCheck from 'containers/WithBusyCheck';
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
 import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/TaskActions';
+import withBusyCheck from 'containers/WithBusyCheck';
+import { getSelectedNoteFilter, getNotesFilteredBySelectedFilter } from 'selectors/NoteSelectors';
+import { getSelectedTaskFilter, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
+import { getTagsFromObjects } from 'utils/TagUtils';
 
 function withObjects(Component, options) {
     options = merge({
@@ -76,19 +78,19 @@ function withObjects(Component, options) {
         }
 
         if (options.includeSelectedNoteFilter === true) {
-            data.selectedNoteFilter = state.notes.selectedNoteFilter;
+            data.selectedNoteFilter = getSelectedNoteFilter(state);
         }
 
         if (options.includeSelectedTaskFilter === true) {
-            data.selectedTaskFilter = state.tasks.selectedTaskFilter;
+            data.selectedTaskFilter = getSelectedTaskFilter(state);
         }
 
         if (options.includeNoteNumber === true) {
-            data.noteNumber = state.notes.filteredBySelectedFilter.length;
+            data.noteNumber = getNotesFilteredBySelectedFilter(state).length;
         }
 
         if (options.includeTaskNumber === true) {
-            data.taskNumber = state.tasks.filteredBySelectedFilter.length;
+            data.taskNumber = getTasksFilteredBySelectedFilter(state).length;
         }
 
         return data;

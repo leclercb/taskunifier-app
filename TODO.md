@@ -1,5 +1,6 @@
 ## Todo List
 
+* Finish selectors
 * Finish grid, resizable column, use react-draggable and remove react-resizable
 * Print tasks and notes
 * Add sort order in filters
