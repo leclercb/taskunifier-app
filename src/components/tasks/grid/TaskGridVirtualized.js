@@ -1,17 +1,18 @@
 import React from 'react';
+import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import Draggable from 'react-draggable';
-import { AutoSizer, Column, SortIndicator, Table } from 'react-virtualized';
+import { AutoSizer, Column, Table } from 'react-virtualized';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/grid/CellRenderer';
+import { multiSelectionHandler, moveHandler, resizableAndMovableColumn, resizeHandler } from 'components/common/grid/VirtualizedTable';
 import { getValueFromEventForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import 'components/common/grid/EditableCell.css';
 
 function TaskGrid(props) {
@@ -19,15 +20,12 @@ function TaskGrid(props) {
         props.updateTask(task);
     };
 
-    const onResize = (fieldId, width) => {
-        props.updateSettings({
-            ['taskColumnWidth_' + fieldId]: width
-        });
-    };
-
     let tableWidth = 0;
 
-    const columns = props.taskFields.map(field => {
+    const onResize = resizeHandler('taskColumnWidth_', props.updateSettings);
+    const onMove = moveHandler('taskColumnOrder_', props.taskFields, props.settings, props.updateSettings);
+
+    const columns = sortBy(props.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0).map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
         let width = Number(props.settings[settingKey]);
 
@@ -45,42 +43,11 @@ function TaskGrid(props) {
                 width={width}
                 flexGrow={0}
                 flexShrink={0}
-                headerRenderer={({
-                    dataKey,
-                    label,
-                    sortBy,
-                    sortDirection,
-                }) => {
-                    const showSortIndicator = sortBy === dataKey;
-                    const children = [
-                        <span
-                            className="ReactVirtualized__Table__headerTruncatedText"
-                            key="label"
-                            title={typeof label === 'string' ? label : null}>
-                            {label}
-                            <Draggable
-                                axis="x"
-                                defaultClassName="DragHandle"
-                                defaultClassNameDragging="DragHandleActive"
-                                onDrag={(event, { x }) => onResize(field.id, x)}
-                                position={{ x: 0 }}
-                                zIndex={999} >
-                                <span>⋮</span>
-                            </Draggable >
-                        </span>
-                    ];
-
-                    if (showSortIndicator) {
-                        children.push(
-                            <SortIndicator key="SortIndicator" sortDirection={sortDirection} />
-                        );
-                    }
-
-                    children.push(
-                    );
-
-                    return children;
-                }}
+                headerRenderer={data => resizableAndMovableColumn(
+                    data,
+                    ({ deltaX }) => onResize(field.id, width + deltaX),
+                    (dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)
+                )}
                 cellRenderer={({ cellData, rowData }) => (
                     <CellRenderer
                         field={field}
@@ -96,7 +63,7 @@ function TaskGrid(props) {
     });
 
     return (
-        <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
+        <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
             <AutoSizer>
                 {({ height }) => (
                     <Table
@@ -113,12 +80,21 @@ function TaskGrid(props) {
                                 return {};
                             }
 
+                            let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
+
+                            if (props.selectedTaskIds.includes(task.id)) {
+                                backgroundColor = '#b8ccbf';
+                            }
+
                             return {
-                                backgroundColor: getTaskBackgroundColor(task, index, props.settings),
+                                backgroundColor: backgroundColor,
                                 textDecoration: task.completed ? 'line-through' : 'none'
                             };
                         }}
-                        onRowClick={({ rowData }) => props.setSelectedTaskIds([rowData.id])}>
+                        onRowClick={multiSelectionHandler(
+                            rowData => rowData.id,
+                            props.selectedTaskIds,
+                            props.setSelectedTaskIds)} >
                         {columns}
                     </Table>
                 )}

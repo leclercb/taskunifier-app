@@ -14,6 +14,7 @@
 
 ## Future Features
 
+* Manage fields
 * Use "mention" in notes
 * Sub-categories (children)
 * Group by

@@ -332,7 +332,7 @@ export function getFieldConfiguration(type, options) {
                 sort: (a, b) => compareNumbers(a, b),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <InputNumber min={0} max={12} {...props} />
+                    <InputNumber min={0} max={12} {...props} style={{width: 60}} />
                 ),
                 conditionsFieldType: 'importance',
                 options: []
@@ -569,7 +569,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareNumbers(a, b),
-                render: value => value ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
+                render: value => Number.isInteger(value) ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber min={0} max={100} {...props} />
                 ),
