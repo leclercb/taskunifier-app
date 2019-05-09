@@ -37,14 +37,6 @@ export function getTaskBackgroundColor(task, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 }
 
-export function getLinkedContactBackgroundColor(linkedContact, index, settings) {
-    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-}
-
-export function getLinkedFileBackgroundColor(linkedFile, index, settings) {
-    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-}
-
-export function getLinkedTaskBackgroundColor(linkedTask, index, settings) {
+export function getLinkedObjectBackgroundColor(linkedObject, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 }

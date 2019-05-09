@@ -21,7 +21,7 @@ import { clearProcesses, setProcessesVisible } from 'actions/ProcessActions';
 import { isValidLicense } from 'utils/LicenseUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getSelectedView, getCategoryManager, getNoteFilterManager, getTaskFilterManager, getTaskTemplateManager, getSettingManager, getBatchAddTasksManager, getTaskEditionManager } from 'selectors/AppSelectors';
+import { getBatchAddTasksManager, getCategoryManager, getNoteFilterManager, getSelectedView, getSettingManager, getTaskEditionManager, getTaskFilterManager, getTaskTemplateManager } from 'selectors/AppSelectors';
 
 function withApp(Component) {
     const mapStateToProps = state => ({

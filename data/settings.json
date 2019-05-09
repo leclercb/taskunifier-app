@@ -80,5 +80,9 @@
     "taskColumnOrder_star": 17,
     "taskColumnWidth_title": 243,
     "taskColumnWidth_length": 83,
-    "taskColumnWidth_timer": 98
+    "taskColumnWidth_timer": 98,
+    "linkedContactColumnWidth_links": 554,
+    "linkedContactColumnOrder_links": 0,
+    "linkedContactColumnOrder_contact": 1,
+    "linkedContactColumnWidth_contact": 366
 }

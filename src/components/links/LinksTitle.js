@@ -8,7 +8,8 @@ import withLinkedTaskLinks from 'containers/WithLinkedTaskLinks';
 
 export function LinksTitle(props) {
     const links = props.links;
-    return links ? (
+
+    return links && links.length > 0 ? (
         <React.Fragment>
             {links.map(link => (
                 <Tag key={link.id} color={link.color}>{link.title}</Tag>

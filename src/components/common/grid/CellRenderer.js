@@ -6,10 +6,10 @@ import {
     getInputForType,
     getNormalizeForType,
     getRenderForType,
+    getValueFromEventForType,
     getValuePropNameForType,
     isAlwaysInEditionForType,
-    isCommitOnChangeForType,
-    getValueFromEventForType
+    isCommitOnChangeForType
 } from 'utils/FieldUtils';
 import 'components/common/grid/CellRenderer.css';
 
@@ -91,6 +91,7 @@ function CellRenderer(props) {
 }
 
 CellRenderer.propTypes = {
+    form: PropTypes.object.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func.isRequired

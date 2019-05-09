@@ -7,7 +7,8 @@ import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/grid/CellRenderer';
-import { moveHandler, multiSelectionHandler, resizableAndMovableColumn, resizeHandler } from 'components/common/grid/VirtualizedTable';
+import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/grid/ResizableAndMovableColumn';
+import { multiSelectionHandler } from 'components/common/grid/VirtualizedTable';
 import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
@@ -42,10 +43,14 @@ function TaskGrid(props) {
                 width={width}
                 flexGrow={0}
                 flexShrink={0}
-                headerRenderer={data => resizableAndMovableColumn(
-                    data,
-                    ({ deltaX }) => onResize(field.id, width + deltaX),
-                    (dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)
+                headerRenderer={data => (
+                    <ResizableAndMovableColumn
+                        dataKey={data.dataKey}
+                        label={data.label}
+                        sortBy={data.sortBy}
+                        sortDirection={data.sortDirection}
+                        onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
+                        onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
                 cellRenderer={({ cellData, rowData }) => (
                     <CellRenderer

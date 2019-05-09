@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Empty, Tabs } from 'antd';
-import withSelectedTasks from 'containers/WithSelectedTasks';
+import LinkedObjectTable from 'components/tasks/linkedobject/LinkedObjectTable';
 import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
-//import LinkedContactGrid from 'components/tasks/linkedcontact/LinkedContactGrid';
-//import LinkedFileGrid from 'components/tasks/linkedfile/LinkedFileGrid';
-//import LinkedTaskGrid from 'components/tasks/linkedtask/LinkedTaskGrid';
+import withSelectedTasks from 'containers/WithSelectedTasks';
+import { getDefaultLinkedContactFields } from 'data/DataLinkedContactFields';
+import { getDefaultLinkedFileFields } from 'data/DataLinkedFileFields';
+import { getDefaultLinkedTaskFields } from 'data/DataLinkedTaskFields';
+import 'components/tasks/tabs/TaskTabs.css';
 
 function TaskTabs(props) {
     if (props.selectedTasks.length !== 1) {
@@ -36,26 +38,35 @@ function TaskTabs(props) {
     };
 
     return (
-        <Tabs animated={false}>
+        <Tabs animated={false} className='ant-tabs-full-height'>
             <Tabs.TabPane tab="Note" key="note">
                 <TaskNoteForm
                     task={props.selectedTasks[0]}
                     updateTask={props.updateTask} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Contacts" key="linkedContacts">
-                {/*<LinkedContactGrid
-                    linkedContacts={props.selectedTasks[0].linkedContacts || []}
-                updateLinkedContacts={onUpdateLinkedContacts} />*/}
+                <LinkedObjectTable
+                    linkedObjectFields={getDefaultLinkedContactFields()}
+                    linkedObjects={props.selectedTasks[0].linkedContacts || []}
+                    updateLinkedObjects={onUpdateLinkedContacts}
+                    orderSettingPrefix='linkedContactColumnOrder_'
+                    widthSettingPrefix='linkedContactColumnWidth_' />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Files" key="linkedFiles">
-                {/*<LinkedFileGrid
-                    linkedFiles={props.selectedTasks[0].linkedFiles || []}
-                    updateLinkedFiles={onUpdateLinkedFiles} />*/}
+                <LinkedObjectTable
+                    linkedObjectFields={getDefaultLinkedFileFields()}
+                    linkedObjects={props.selectedTasks[0].linkedFiles || []}
+                    updateLinkedObjects={onUpdateLinkedFiles}
+                    orderSettingPrefix='linkedFileColumnOrder_'
+                    widthSettingPrefix='linkedFileColumnWidth_' />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Tasks" key="linkedTasks">
-                {/*<LinkedTaskGrid
-                    linkedTasks={props.selectedTasks[0].linkedTasks || []}
-                    updateLinkedTasks={onUpdateLinkedTasks} />*/}
+                <LinkedObjectTable
+                    linkedObjectFields={getDefaultLinkedTaskFields()}
+                    linkedObjects={props.selectedTasks[0].linkedTasks || []}
+                    updateLinkedObjects={onUpdateLinkedTasks}
+                    orderSettingPrefix='linkedTaskColumnOrder_'
+                    widthSettingPrefix='linkedTaskColumnWidth_' />
             </Tabs.TabPane>
         </Tabs>
     );
