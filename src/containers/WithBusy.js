@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
+import { isBusy } from 'selectors/ProcessSelectors';
 
 function withBusy(Component) {
     const mapStateToProps = state => ({
-        busy: state.processes.busy
+        busy: isBusy(state)
     });
 
     return connect(

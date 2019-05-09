@@ -1,15 +1,12 @@
 ## Todo List
 
-* Finish selectors
-* Finish grid, resizable column, use react-draggable and remove react-resizable
+* Rename grid to table and uncomment linked grids
 * Print tasks and notes
 * Add sort order in filters
 * Add reminder and recurrence
 * Postpone Snooze
 * Batch edit task
 * Sub-tasks
-* Grid fix scrollbars
-* Improve performances (use memo ?)
 * Try react-joyride
 * Electron proxy connection
 
@@ -26,4 +23,5 @@
 * constants
 * hooks
 * proptypes
+* selectors
 * store

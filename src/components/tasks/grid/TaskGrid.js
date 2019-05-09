@@ -1,130 +1,101 @@
 import React from 'react';
+import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
+import { AutoSizer, Column, Table } from 'react-virtualized';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
-import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
-import ResizableColumn from 'components/common/grid/ResizableColumn';
-import Table from 'components/common/grid/Table';
-import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
-import DragableBodyRow from 'components/common/grid/DragableBodyRow';
+import CellRenderer from 'components/common/grid/CellRenderer';
+import { moveHandler, multiSelectionHandler, resizableAndMovableColumn, resizeHandler } from 'components/common/grid/VirtualizedTable';
+import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { sortObjects } from 'utils/SortUtils';
-import 'components/common/grid/EditableCell.css';
 
 function TaskGrid(props) {
     const onUpdateTask = task => {
         props.updateTask(task);
     };
 
-    const components = {
-        header: {
-            cell: ResizableColumn
-        },
-        body: {
-            row: EditableFormRow(DragableBodyRow),
-            cell: EditableCell
-        }
-    };
+    let tableWidth = 0;
 
-    const handleResize = field => (e, { size }) => {
-        props.updateSettings({
-            ['taskColumnWidth_' + field]: size.width
-        });
-    };
+    const onResize = resizeHandler('taskColumnWidth_', props.updateSettings);
+    const onMove = moveHandler('taskColumnOrder_', props.taskFields, props.settings, props.updateSettings);
 
-    const columns = props.taskFields.map(field => {
+    const columns = sortBy(props.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0).map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
-        let width = props.settings[settingKey];
-        let sorter = {};
+        let width = Number(props.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
         }
 
-        if (field.id === 'title') {
-            sorter = {
-                defaultSortOrder: 'ascend',
-                sorter: (a, b) => sortObjects(props.selectedTaskFilter, props.taskFields, a, b)
-            };
-        }
+        tableWidth += width;
 
-        return {
-            ...field,
-            ...sorter,
-            width: width,
-            title: field.title,
-            dataIndex: field.id,
-            key: field.id,
-            editable: true,
-            render: value => getRenderForType(field.type, field.options, value),
-            onHeaderCell: column => ({
-                width: column.width,
-                onResize: handleResize(field.id)
-            }),
-            onCell: record => ({
-                width: width,
-                record: record,
-                editable: true,
-                field: field,
-                dataIndex: field.id,
-                title: field.title,
-                onSave: onUpdateTask
-            })
-        };
+        return (
+            <Column
+                key={field.id}
+                label={field.title}
+                dataKey={field.id}
+                width={width}
+                flexGrow={0}
+                flexShrink={0}
+                headerRenderer={data => resizableAndMovableColumn(
+                    data,
+                    ({ deltaX }) => onResize(field.id, width + deltaX),
+                    (dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)
+                )}
+                cellRenderer={({ cellData, rowData }) => (
+                    <CellRenderer
+                        field={field}
+                        value={cellData}
+                        onChange={allValues => onUpdateTask({
+                            ...rowData,
+                            ...allValues
+                        })} />
+                )} />
+        );
     });
 
     return (
-        <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
-            <Table
-                rowKey="id"
-                className="data-grid"
-                rowClassName={() => 'editable-row'}
-                scroll={{ y: props.size.element.height - 40 }}
-                pageSize={50}
-                components={components}
-                columns={columns}
-                dataSource={props.tasks}
-                childrenColumnName='children'
-                bordered={true}
-                size="small"
-                pagination={false}
-                onRow={(record, index) => {
-                    const bgColor = getTaskBackgroundColor(record, index, props.settings);
-                    const style = {};
+        <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
+            <AutoSizer>
+                {({ height }) => (
+                    <Table
+                        width={tableWidth}
+                        height={height}
+                        rowHeight={38}
+                        headerHeight={20}
+                        rowCount={props.tasks.length}
+                        rowGetter={({ index }) => props.tasks[index]}
+                        rowStyle={({ index }) => {
+                            const task = props.tasks[index];
 
-                    if (record.completed) {
-                        style.background = `repeating-linear-gradient(
-                            135deg, 
-                            ${bgColor}, 
-                            ${bgColor} 20px, 
-                            #b5c2c9 10px, 
-                            #b5c2c9 30px)`;
-                    } else {
-                        style.backgroundColor = bgColor;
-                    }
+                            if (!task) {
+                                return {};
+                            }
 
-                    return {
-                        index: index,
-                        rowProps: {
-                            record: record,
-                            onSave: onUpdateTask,
-                            getField: dataIndex => props.taskFields.find(field => field.id === dataIndex),
-                            style: style
-                        },
-                        moveRow: (dragRecord, dropRecord) => {
-                            console.log(dragRecord, dropRecord);
-                        }
-                    };
-                }}
-                rowSelection={{
-                    selectedRowKeys: props.selectedTaskIds,
-                    onChange: selectedRowKeys => props.setSelectedTaskIds(selectedRowKeys)
-                }} />
+                            let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
+
+                            if (props.selectedTaskIds.includes(task.id)) {
+                                backgroundColor = '#b8ccbf';
+                            }
+
+                            return {
+                                backgroundColor: backgroundColor,
+                                textDecoration: task.completed ? 'line-through' : 'none'
+                            };
+                        }}
+                        onRowClick={multiSelectionHandler(
+                            rowData => rowData.id,
+                            props.selectedTaskIds,
+                            props.setSelectedTaskIds)} >
+                        {columns}
+                    </Table>
+                )}
+            </AutoSizer>
         </div>
     );
 }

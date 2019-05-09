@@ -2,18 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withApp from 'containers/WithApp';
-import BatchAddTasks from 'components/tasks/batch/BatchAddTasks';
+import BatchAddTasksManager from 'components/tasks/batch/BatchAddTasksManager';
 import Icon from 'components/common/Icon';
 
-function ModalBatchAddTasks(props) {
+function ModalBatchAddTasksManager(props) {
     const onClose = () => {
-        props.setBatchAddTasksOptions({ visible: false });
+        props.setBatchAddTasksManagerOptions({ visible: false });
     };
 
     return (
         <Modal
             title={<Icon icon="magic" text="Batch Add Tasks" />}
-            visible={props.batchAddTasks.visible}
+            visible={props.batchAddTasksManager.visible}
             width="80%"
             closable={false}
             footer={
@@ -21,14 +21,14 @@ function ModalBatchAddTasks(props) {
                     Close
                 </Button>
             }>
-            <BatchAddTasks onAdd={() => onClose()} />
+            <BatchAddTasksManager onAdd={() => onClose()} />
         </Modal>
     );
 }
 
-ModalBatchAddTasks.propTypes = {
-    batchAddTasks: PropTypes.object.isRequired,
-    setBatchAddTasksOptions: PropTypes.func.isRequired
+ModalBatchAddTasksManager.propTypes = {
+    batchAddTasksManager: PropTypes.object.isRequired,
+    setBatchAddTasksManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(ModalBatchAddTasks);
+export default withApp(ModalBatchAddTasksManager);

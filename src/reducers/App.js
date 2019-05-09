@@ -33,7 +33,7 @@ const App = () => (state = {
     settingManager: {
         visible: false
     },
-    batchAddTasks: {
+    batchAddTasksManager: {
         visible: false
     }
 }, action) => {
@@ -121,11 +121,11 @@ const App = () => (state = {
                     visible: 'visible' in action ? action.visible : state.settingManager.visible
                 }
             };
-        case 'SET_BATCH_ADD_TASKS_OPTIONS':
+        case 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS':
             return {
                 ...state,
-                batchAddTasks: {
-                    visible: 'visible' in action ? action.visible : state.batchAddTasks.visible
+                batchAddTasksManager: {
+                    visible: 'visible' in action ? action.visible : state.batchAddTasksManager.visible
                 }
             };
         default:

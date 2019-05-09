@@ -81,8 +81,8 @@ function Header(props) {
         props.setTaskTemplateManagerOptions({ visible: true });
     };
 
-    const onSetBatchAddTasksVisible = () => {
-        props.setBatchAddTasksOptions({ visible: true });
+    const onSetBatchAddTasksManagerVisible = () => {
+        props.setBatchAddTasksManagerOptions({ visible: true });
     };
 
     const onShowTaskContent = () => {
@@ -158,7 +158,7 @@ function Header(props) {
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
-                createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksVisible)
+                createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
@@ -195,7 +195,7 @@ Header.propTypes = {
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
-    setBatchAddTasksOptions: PropTypes.func.isRequired,
+    setBatchAddTasksManagerOptions: PropTypes.func.isRequired,
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 

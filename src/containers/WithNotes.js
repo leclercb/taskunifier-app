@@ -8,10 +8,12 @@ import {
 } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
-    getNotesFilteredBySelectedFilter,
-    getNotesFilteredByVisibleState,
     getSelectedNoteFilter,
     getSelectedNoteIds
+} from 'selectors/AppSelectors';
+import {
+    getNotesFilteredBySelectedFilter,
+    getNotesFilteredByVisibleState
 } from 'selectors/NoteSelectors';
 import { merge } from 'utils/ObjectUtils';
 

@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { addNote, deleteNote, setSelectedNoteIds, updateNote } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getNotesFilteredByVisibleState, getSelectedNoteIds } from 'selectors/NoteSelectors';
+import { getSelectedNoteIds } from 'selectors/AppSelectors';
+import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 
 function withSelectedNotes(Component) {
     const mapStateToProps = state => ({

@@ -9,7 +9,7 @@ import withTasks from 'containers/WithTasks';
 import withTaskTemplates from 'containers/WithTaskTemplates';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
-function BatchAddTasks(props) {
+function BatchAddTasksManager(props) {
     const addTasks = () => {
         props.form.validateFields((error, values) => {
             if (error) {
@@ -70,11 +70,11 @@ function BatchAddTasks(props) {
     );
 }
 
-BatchAddTasks.propTypes = {
+BatchAddTasksManager.propTypes = {
     form: PropTypes.object.isRequired,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     addTask: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired
 };
 
-export default withTasks(withTaskTemplates(Form.create({ name: 'batch' })(BatchAddTasks)), { includeState: false });
+export default withTasks(withTaskTemplates(Form.create({ name: 'batch' })(BatchAddTasksManager)), { includeState: false });

@@ -293,10 +293,10 @@ export function setSettingManagerOptions(options) {
     };
 }
 
-export function setBatchAddTasksOptions(options) {
+export function setBatchAddTasksManagerOptions(options) {
     return dispatch => {
         dispatch({
-            type: 'SET_BATCH_ADD_TASKS_OPTIONS',
+            type: 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS',
             ...options
         });
 

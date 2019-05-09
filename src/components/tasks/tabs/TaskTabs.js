@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Empty, Tabs } from 'antd';
 import withSelectedTasks from 'containers/WithSelectedTasks';
 import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
-import LinkedContactGrid from 'components/tasks/linkedcontact/LinkedContactGrid';
-import LinkedFileGrid from 'components/tasks/linkedfile/LinkedFileGrid';
-import LinkedTaskGrid from 'components/tasks/linkedtask/LinkedTaskGrid';
+//import LinkedContactGrid from 'components/tasks/linkedcontact/LinkedContactGrid';
+//import LinkedFileGrid from 'components/tasks/linkedfile/LinkedFileGrid';
+//import LinkedTaskGrid from 'components/tasks/linkedtask/LinkedTaskGrid';
 
 function TaskTabs(props) {
     if (props.selectedTasks.length !== 1) {
@@ -43,19 +43,19 @@ function TaskTabs(props) {
                     updateTask={props.updateTask} />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Contacts" key="linkedContacts">
-                <LinkedContactGrid
+                {/*<LinkedContactGrid
                     linkedContacts={props.selectedTasks[0].linkedContacts || []}
-                    updateLinkedContacts={onUpdateLinkedContacts} />
+                updateLinkedContacts={onUpdateLinkedContacts} />*/}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Files" key="linkedFiles">
-                <LinkedFileGrid
+                {/*<LinkedFileGrid
                     linkedFiles={props.selectedTasks[0].linkedFiles || []}
-                    updateLinkedFiles={onUpdateLinkedFiles} />
+                    updateLinkedFiles={onUpdateLinkedFiles} />*/}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Tasks" key="linkedTasks">
-                <LinkedTaskGrid
+                {/*<LinkedTaskGrid
                     linkedTasks={props.selectedTasks[0].linkedTasks || []}
-                    updateLinkedTasks={onUpdateLinkedTasks} />
+                    updateLinkedTasks={onUpdateLinkedTasks} />*/}
             </Tabs.TabPane>
         </Tabs>
     );

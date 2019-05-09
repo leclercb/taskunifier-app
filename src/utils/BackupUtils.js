@@ -1,3 +1,4 @@
+import { getSettings } from 'selectors/SettingSelectors';
 import { getDirectories, getPathSeparator, join } from 'utils/ActionUtils';
 
 export function getBackupDate(directory) {
@@ -5,7 +6,7 @@ export function getBackupDate(directory) {
 }
 
 export function getBackups(state) {
-    const path = join(state.settings.dataFolder, 'backups');
+    const path = join(getSettings(state).dataFolder, 'backups');
     const backups = getDirectories(path).map(directory => getBackupDate(directory));
     return backups.sort((a, b) => Number(a) - Number(b));
 }

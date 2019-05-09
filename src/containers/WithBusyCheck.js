@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { isBusy } from 'selectors/ProcessSelectors';
 
 function withBusyCheck(Component) {
     class WithBusyCheck extends React.Component {
@@ -23,7 +24,7 @@ function withBusyCheck(Component) {
     };
 
     const mapStateToProps = state => ({
-        busy: state.processes.busy
+        busy: isBusy(state)
     });
 
     return connect(

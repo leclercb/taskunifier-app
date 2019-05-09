@@ -10,8 +10,9 @@ import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
 import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState, getSelectedNoteFilter } from 'selectors/NoteSelectors';
-import { getSelectedTaskFilter, getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getSelectedNoteFilter, getSelectedTaskFilter } from 'selectors/AppSelectors';
+import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
 import { getTagsFromObjects } from 'utils/TagUtils';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';

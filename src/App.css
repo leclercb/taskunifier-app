@@ -1,7 +1,7 @@
 /* Ant Design */
 
 .ant-btn {
-    border-width: 3px !important;
+    border-width: 2px !important;
 }
 
 .ant-menu-item {
@@ -19,14 +19,21 @@
     padding: 3px 50px !important;
 }
 
-.ant-spin-nested-loading,
-.ant-spin-container {
+.ant-spin-nested-loading, .ant-spin-container {
     min-height: 100%;
     height: 100%;
 }
 
 .ant-form-item {
     margin-bottom: 3px !important;
+}
+
+ant-input:focus {
+    box-shadow: none !important;
+}
+
+.ant-input[disabled] {
+    color: #000000 !important;
 }
 
 .ant-list {
@@ -36,29 +43,6 @@
 
 .ant-list-item:hover {
     cursor: pointer;
-}
-
-.ant-input[disabled] {
-    color: #000000 !important;
-}
-
-.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
-.ant-table-small>.ant-table-content>.ant-table-header>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
-.ant-table-small>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td {
-    padding: 0px 8px !important;
 }
 
 /* React SplitPane */
@@ -132,44 +116,7 @@
     margin-top: 3px !important;
 }
 
-/* React Resizable */
-
-.react-resizable {
-    position: relative;
-}
-
-.react-resizable-handle {
-    position: absolute;
-    width: 10px;
-    height: 100%;
-    bottom: 0;
-    right: -5px;
-    cursor: col-resize;
-}
-
 /* TaskUnifier */
-
-.data-grid {
-    width: max-content;
-    min-width: 100%;
-}
-
-.data-grid .ant-form-item-control {
-    line-height: normal !important;
-}
-
-.data-grid .ant-input:focus {
-    box-shadow: none !important;
-}
-
-.data-grid .ant-table-footer {
-    padding: 8px !important;
-}
-
-.data-grid .ant-table-tbody>tr.ant-table-row-selected td {
-    background: none !important;
-    background-color: #b8ccbf !important;
-}
 
 .selected-list-item {
     background-color: #b8ccbf;

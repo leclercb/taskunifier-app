@@ -1,17 +1,13 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
 import { getDefaultTaskFields } from 'data/DataTaskFields';
+import { getSelectedTaskFilter, getSelectedTaskFilterDate } from 'selectors/AppSelectors';
+import { getSettings } from 'selectors/SettingSelectors';
+import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
 
-const getTaskFields = state => state.taskFields;
-const getSettings = state => state.settings;
-
 export const getTasks = state => state.tasks;
-
-export const getSelectedTaskIds = state => state.app.selectedTaskIds;
-export const getSelectedTaskFilter = state => state.app.selectedTaskFilter;
-export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDate;
 
 export const getTasksFilteredByVisibleState = createSelector(
     [getTasks],

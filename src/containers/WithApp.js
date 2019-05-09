@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import {
     loadData,
     saveData,
-    setBatchAddTasksOptions,
+    setBatchAddTasksManagerOptions,
     setCategoryManagerOptions,
     setNoteFilterManagerOptions,
     setSelectedView,
@@ -20,18 +20,20 @@ import { updateSettings } from 'actions/SettingActions';
 import { clearProcesses, setProcessesVisible } from 'actions/ProcessActions';
 import { isValidLicense } from 'utils/LicenseUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getSettings } from 'selectors/SettingSelectors';
+import { getSelectedView, getCategoryManager, getNoteFilterManager, getTaskFilterManager, getTaskTemplateManager, getSettingManager, getBatchAddTasksManager, getTaskEditionManager } from 'selectors/AppSelectors';
 
 function withApp(Component) {
     const mapStateToProps = state => ({
-        pro: isValidLicense(state.settings.license),
-        selectedView: state.app.selectedView,
-        categoryManager: state.app.categoryManager,
-        noteFilterManager: state.app.noteFilterManager,
-        taskFilterManager: state.app.taskFilterManager,
-        taskEditionManager: state.app.taskEditionManager,
-        taskTemplateManager: state.app.taskTemplateManager,
-        settingManager: state.app.settingManager,
-        batchAddTasks: state.app.batchAddTasks
+        pro: isValidLicense(getSettings(state).license),
+        selectedView: getSelectedView(state),
+        categoryManager: getCategoryManager(state),
+        noteFilterManager: getNoteFilterManager(state),
+        taskFilterManager: getTaskFilterManager(state),
+        taskEditionManager: getTaskEditionManager(state),
+        taskTemplateManager: getTaskTemplateManager(state),
+        settingManager: getSettingManager(state),
+        batchAddTasksManager: getBatchAddTasksManager(state)
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -47,7 +49,7 @@ function withApp(Component) {
         setTaskEditionManagerOptions: options => dispatch(setTaskEditionManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
         setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
-        setBatchAddTasksOptions: options => dispatch(setBatchAddTasksOptions(options)),
+        setBatchAddTasksManagerOptions: options => dispatch(setBatchAddTasksManagerOptions(options)),
         setProcessesVisible: visible => dispatch(setProcessesVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
         updateSettings: settings => dispatch(updateSettings(settings))

@@ -9,7 +9,9 @@ import {
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
     getSelectedTaskFilter,
-    getSelectedTaskIds,
+    getSelectedTaskIds
+} from 'selectors/AppSelectors';
+import {
     getTasksFilteredBySelectedFilter,
     getTasksFilteredByVisibleState
 } from 'selectors/TaskSelectors';

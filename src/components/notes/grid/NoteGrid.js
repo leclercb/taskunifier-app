@@ -1,107 +1,100 @@
 import React from 'react';
+import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
+import { AutoSizer, Column, Table } from 'react-virtualized';
 import withNoteFields from 'containers/WithNoteFields';
 import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
-import { EditableCell, EditableFormRow } from 'components/common/grid/EditableCell';
-import ResizableColumn from 'components/common/grid/ResizableColumn';
-import Table from 'components/common/grid/Table';
-import { getRenderForType, getWidthForType } from 'utils/FieldUtils';
+import withSize from 'containers/WithSize';
+import CellRenderer from 'components/common/grid/CellRenderer';
+import { moveHandler, multiSelectionHandler, resizableAndMovableColumn, resizeHandler } from 'components/common/grid/VirtualizedTable';
+import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
-import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
-import { sortObjects } from 'utils/SortUtils';
-import 'components/common/grid/EditableCell.css';
 
 function NoteGrid(props) {
     const onUpdateNote = note => {
         props.updateNote(note);
     };
 
-    const components = {
-        header: {
-            cell: ResizableColumn
-        },
-        body: {
-            row: EditableFormRow(),
-            cell: EditableCell
-        }
-    };
+    let tableWidth = 0;
 
-    const handleResize = field => (e, { size }) => {
-        props.updateSettings({
-            ['noteColumnWidth_' + field]: size.width
-        });
-    };
+    const onResize = resizeHandler('noteColumnWidth_', props.updateSettings);
+    const onMove = moveHandler('noteColumnOrder_', props.noteFields, props.settings, props.updateSettings);
 
-    const columns = props.noteFields.map(field => {
+    const columns = sortBy(props.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0).map(field => {
         const settingKey = 'noteColumnWidth_' + field.id;
-        let width = props.settings[settingKey];
-        let sorter = {};
+        let width = Number(props.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
         }
 
-        if (field.id === 'title') {
-            sorter = {
-                defaultSortOrder: 'ascend',
-                sorter: (a, b) => sortObjects(props.selectedNoteFilter, props.noteFields, a, b)
-            };
-        }
+        tableWidth += width;
 
-        return {
-            ...field,
-            ...sorter,
-            width: width,
-            title: field.title,
-            dataIndex: field.id,
-            key: field.id,
-            editable: true,
-            render: value => getRenderForType(field.type, field.options, value),
-            onHeaderCell: column => ({
-                width: column.width,
-                onResize: handleResize(field.id)
-            }),
-            onCell: record => ({
-                record: record,
-                editable: true,
-                field: field,
-                dataIndex: field.id,
-                title: field.title,
-                onSave: onUpdateNote
-            })
-        };
+        return (
+            <Column
+                key={field.id}
+                label={field.title}
+                dataKey={field.id}
+                width={width}
+                flexGrow={0}
+                flexShrink={0}
+                headerRenderer={data => resizableAndMovableColumn(
+                    data,
+                    ({ deltaX }) => onResize(field.id, width + deltaX),
+                    (dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)
+                )}
+                cellRenderer={({ cellData, rowData }) => (
+                    <CellRenderer
+                        field={field}
+                        value={cellData}
+                        onChange={allValues => onUpdateNote({
+                            ...rowData,
+                            ...allValues
+                        })} />
+                )} />
+        );
     });
 
     return (
-        <div style={{ overflowY: 'auto', height: 'calc(100% - 40px)' }}>
-            <Table
-                rowKey="id"
-                className="data-grid"
-                rowClassName={() => 'editable-row'}
-                scroll={{ y: 500 }}
-                components={components}
-                columns={columns}
-                dataSource={props.notes}
-                bordered={true}
-                size="small"
-                pagination={false}
-                onRow={(record, index) => ({
-                    rowProps: {
-                        record: record,
-                        onSave: onUpdateNote,
-                        getField: dataIndex => props.noteFields.find(field => field.id === dataIndex),
-                        style: {
-                            backgroundColor: getNoteBackgroundColor(record, index, props.settings)
-                        }
-                    }
-                })}
-                rowSelection={{
-                    selectedRowKeys: props.selectedNoteIds,
-                    onChange: selectedRowKeys => props.setSelectedNoteIds(selectedRowKeys)
-                }} />
+        <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
+            <AutoSizer>
+                {({ height }) => (
+                    <Table
+                        width={tableWidth}
+                        height={height}
+                        rowHeight={38}
+                        headerHeight={20}
+                        rowCount={props.notes.length}
+                        rowGetter={({ index }) => props.notes[index]}
+                        rowStyle={({ index }) => {
+                            const note = props.notes[index];
+
+                            if (!note) {
+                                return {};
+                            }
+
+                            let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
+
+                            if (props.selectedNoteIds.includes(note.id)) {
+                                backgroundColor = '#b8ccbf';
+                            }
+
+                            return {
+                                backgroundColor: backgroundColor
+                            };
+                        }}
+                        onRowClick={multiSelectionHandler(
+                            rowData => rowData.id,
+                            props.selectedNoteIds,
+                            props.setSelectedNoteIds)} >
+                        {columns}
+                    </Table>
+                )}
+            </AutoSizer>
         </div>
     );
 }
@@ -114,7 +107,8 @@ NoteGrid.propTypes = {
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired,
     updateNote: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    updateSettings: PropTypes.func.isRequired,
+    size: PropTypes.object.isRequired
 };
 
-export default withSettings(withNoteFields(withNotes(NoteGrid, { applySelectedNoteFilter: true })));
+export default withSettings(withNoteFields(withNotes(withSize(NoteGrid), { applySelectedNoteFilter: true })));
