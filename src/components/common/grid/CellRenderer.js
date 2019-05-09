@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Form } from 'antd';
 import PropTypes from 'prop-types';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import {
@@ -7,7 +8,8 @@ import {
     getRenderForType,
     getValuePropNameForType,
     isAlwaysInEditionForType,
-    isCommitOnChangeForType
+    isCommitOnChangeForType,
+    getValueFromEventForType
 } from 'utils/FieldUtils';
 import 'components/common/grid/CellRenderer.css';
 
@@ -31,35 +33,43 @@ function CellRenderer(props) {
     };
 
     const onChange = event => {
-        toggleEdit();
-        props.onChange(event);
+        props.form.validateFields((error, values) => {
+            if (error && error[event.currentTarget.id]) {
+                return;
+            }
+
+            if (editing) {
+                toggleEdit();
+            }
+
+            props.onChange(values);
+        });
     };
 
     if (editing || isAlwaysInEditionForType(props.field.type)) {
-        let defaultValuePropName = getValuePropNameForType(props.field.type);
-        defaultValuePropName = 'default' + defaultValuePropName.charAt(0).toUpperCase() + defaultValuePropName.slice(1);
-
         const inputProps = {
             ref: inputRef,
-            fieldmode: 'grid',
-            [defaultValuePropName]: getNormalizeForType(props.field.type)(props.value)
+            fieldmode: 'grid'
         };
 
         if (editing) {
             inputProps.autoFocus = true;
         }
 
-        if (isCommitOnChangeForType(props.field.type)) {
-            inputProps.onChange = onChange;
-        } else {
+        if (!isCommitOnChangeForType(props.field.type)) {
             inputProps.onPressEnter = onChange;
             inputProps.onBlur = onChange;
         }
 
-        return getInputForType(
+        return props.form.getFieldDecorator(props.field.id, {
+            rules: [],
+            valuePropName: getValuePropNameForType(props.field.type),
+            getValueFromEvent: getValueFromEventForType(props.field.type),
+            initialValue: getNormalizeForType(props.field.type)(props.value)
+        })(getInputForType(
             props.field.type,
             props.field.options,
-            { ...inputProps }
+            { ...inputProps })
         );
     }
 
@@ -72,7 +82,9 @@ function CellRenderer(props) {
                 props.field.options,
                 getNormalizeForType(props.field.type)(props.value),
                 {
-                    onChange: onChange
+                    onChange: event => props.onChange({
+                        [props.field.id]: getValueFromEventForType(props.field.type)(event)
+                    })
                 })}
         </div>
     );
@@ -84,4 +96,10 @@ CellRenderer.propTypes = {
     onChange: PropTypes.func.isRequired
 };
 
-export default CellRenderer;
+export default Form.create({
+    onValuesChange: (props, changedValues, allValues) => {
+        if (isCommitOnChangeForType(props.field.type)) {
+            props.onChange(allValues);
+        }
+    }
+})(CellRenderer);

@@ -19,8 +19,8 @@ class LengthField extends React.Component {
     }
 
     formatLength(value) {
-        if (!value) {
-            return '00:00';
+        if (typeof value === 'undefined' || value === null) {
+            return null;
         }
 
         const minutes = Math.floor(value / 60).toString().padStart(2, '0');
@@ -47,15 +47,17 @@ class LengthField extends React.Component {
         const { length, readOnly, ...restProps } = this.props;
         delete restProps.onChange;
 
+        const formattedLength = this.formatLength(length);
+
         if (readOnly) {
-            return this.formatLength(length);
+            return formattedLength ? formattedLength : (<span>&nbsp;</span>);
         }
 
         return (
             <MaskTextField
                 ref={this.maskTextFieldRef}
                 mask="11:11"
-                value={this.formatLength(length)}
+                value={formattedLength}
                 onChange={e => this.onChange(e.target.value)}
                 style={{ width: 100 }}
                 {...restProps} />

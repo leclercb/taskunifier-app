@@ -35,20 +35,21 @@ class TimerField extends React.Component {
     }
 
     onClick() {
-        const value = this.props.timer ? this.props.timer.value : 0;
-        const startDate = this.props.timer ? this.props.timer.startDate : null;
-        const timer = {};
+        const timer = this.props.timer;
+        const value = timer ? timer.value : 0;
+        const startDate = timer ? timer.startDate : null;
+        const newTimer = {};
 
         if (startDate) {
-            timer.value = value + moment().diff(moment(startDate), 'seconds');
-            timer.startDate = null;
+            newTimer.value = value + moment().diff(moment(startDate), 'seconds');
+            newTimer.startDate = null;
         } else {
-            timer.value = value;
-            timer.startDate = moment().toJSON();
+            newTimer.value = value;
+            newTimer.startDate = moment().toJSON();
         }
 
         if (this.props.onChange) {
-            this.props.onChange(timer);
+            this.props.onChange(newTimer);
         }
     }
 
@@ -80,7 +81,7 @@ class TimerField extends React.Component {
         delete restProps.readOnly;
 
         const readOnly = this.props.readOnly;
-
+        
         return (
             <React.Fragment>
                 <Icon

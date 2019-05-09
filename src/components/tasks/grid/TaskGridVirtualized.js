@@ -52,12 +52,10 @@ function TaskGrid(props) {
                     <CellRenderer
                         field={field}
                         value={cellData}
-                        onChange={event => {
-                            onUpdateTask({
-                                ...rowData,
-                                [field.id]: getValueFromEventForType(field.type)(event)
-                            });
-                        }} />
+                        onChange={allValues => onUpdateTask({
+                            ...rowData,
+                            ...allValues
+                        })} />
                 )} />
         );
     });
