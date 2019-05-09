@@ -19,7 +19,7 @@ export function LocationSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 LocationSelect.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired

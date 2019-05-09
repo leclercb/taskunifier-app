@@ -108,6 +108,6 @@ function Table(props) {
     };
 
     return <InfinityTable {...wrappedProps} />;
-};
+}
 
 export default Table;

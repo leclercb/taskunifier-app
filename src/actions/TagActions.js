@@ -10,7 +10,7 @@ export function updateTag(tag) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function deleteTag(tagId) {
     return dispatch => {
@@ -22,4 +22,4 @@ export function deleteTag(tagId) {
 
         return Promise.resolve();
     };
-};
+}

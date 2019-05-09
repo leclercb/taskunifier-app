@@ -48,7 +48,7 @@ export function loadFromFile(property, file, onData) {
             }
         });
     };
-};
+}
 
 export function saveToFile(property, file, data) {
     return dispatch => {
@@ -81,29 +81,29 @@ export function saveToFile(property, file, data) {
             });
         });
     };
-};
+}
 
 export function getPathSeparator() {
     return sep;
-};
+}
 
 export function getUserDataPath() {
     return electron.remote.app.getPath('userData');
-};
+}
 
 export function getDirectories(path) {
     const isDirectory = path => fs.lstatSync(path).isDirectory();
     return fs.readdirSync(path).map(name => join(path, name)).filter(isDirectory);
-};
+}
 
 export function createDirectory(path) {
     if (!fs.existsSync(path)) {
         mkdirp(path);
     }
-};
+}
 
 export function deleteDirectory(path, dataFolder) {
     if (path && (path.startsWith(getUserDataPath()) || path.startsWith(dataFolder))) {
         rimraf.sync(path);
     }
-};
+}

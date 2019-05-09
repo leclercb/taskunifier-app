@@ -13,4 +13,4 @@ export function getColorFromIndex(index) {
         case 10:
         default: return 'purple';
     }
-};
+}

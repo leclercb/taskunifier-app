@@ -6,7 +6,7 @@ export function getLinksFromIds(links, linkIds) {
     }
 
     return links.filter(link => linkIds.includes(link.id));
-};
+}
 
 export function getLinksFromObjects(objects, property) {
     let links = [];
@@ -28,4 +28,4 @@ export function getLinksFromObjects(objects, property) {
         title: link,
         color: getColorFromIndex(index)
     }));
-};
+}

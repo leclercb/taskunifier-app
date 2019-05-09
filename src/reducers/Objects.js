@@ -5,7 +5,7 @@ const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => 
 
     switch (action.type) {
         case 'SET_OBJECTS': {
-            return [...(action.objects || [])]
+            return [...(action.objects || [])];
         }
         case 'ADD_OBJECT': {
             return addObject(state, action);

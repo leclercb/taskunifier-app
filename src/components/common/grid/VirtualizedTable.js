@@ -98,7 +98,7 @@ export const resizableAndMovableColumn = ({
     dataKey,
     label,
     sortBy,
-    sortDirection,
+    sortDirection
 }, onResize, onMove) => {
     const showSortIndicator = sortBy === dataKey;
 

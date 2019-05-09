@@ -16,7 +16,7 @@ export function TagsSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 TagsSelect.propTypes = {
     tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired

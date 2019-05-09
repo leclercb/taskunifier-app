@@ -6,7 +6,7 @@ export const loadSettingsFromFile = (file, core = false) => {
 
 export function saveSettingsToFile(file, data) {
     return saveToFile('settings', file, data);
-};
+}
 
 export const setSettings = (settings, core = false) => {
     return dispatch => {
@@ -29,4 +29,4 @@ export function updateSettings(settings) {
 
         return Promise.resolve();
     };
-};
+}

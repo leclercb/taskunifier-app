@@ -14,7 +14,7 @@ export function getDefaultFormItemLayout() {
             xl: { span: 10 }
         }
     };
-};
+}
 
 export function getDefaultTailFormItemLayout() {
     return {
@@ -33,7 +33,7 @@ export function getDefaultTailFormItemLayout() {
             }
         }
     };
-};
+}
 
 export function onFieldChangeForObjectUpdates(fields, object, updateObject, assign = false) {
     const values = {};
@@ -58,7 +58,7 @@ export function onFieldChangeForObjectUpdates(fields, object, updateObject, assi
             updateObject(updatedObject);
         }
     }
-};
+}
 
 function flattenFields(path, object) {
     if (typeof object !== 'object') {
@@ -76,4 +76,4 @@ function flattenFields(path, object) {
     });
 
     return array;
-};
+}

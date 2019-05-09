@@ -8,10 +8,10 @@ import {
 } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
-    getSelectedNoteIds,
-    getSelectedNoteFilter,
     getNotesFilteredBySelectedFilter,
-    getNotesFilteredByVisibleState
+    getNotesFilteredByVisibleState,
+    getSelectedNoteFilter,
+    getSelectedNoteIds
 } from 'selectors/NoteSelectors';
 import { merge } from 'utils/ObjectUtils';
 

@@ -41,8 +41,8 @@ export function verifyLicense(license) {
     } else {
         return null;
     }
-};
+}
 
 export function isValidLicense(license) {
     return verifyLicense(license) !== null;
-};
+}

@@ -4,4 +4,4 @@ export function onGoalUpdate(goal) {
     }
 
     return null;
-};
+}

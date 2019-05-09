@@ -7,7 +7,7 @@ import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/grid/CellRenderer';
-import { multiSelectionHandler, moveHandler, resizableAndMovableColumn, resizeHandler } from 'components/common/grid/VirtualizedTable';
+import { moveHandler, multiSelectionHandler, resizableAndMovableColumn, resizeHandler } from 'components/common/grid/VirtualizedTable';
 import { getValueFromEventForType, getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';

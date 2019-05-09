@@ -18,7 +18,7 @@ export function ContactSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 ContactSelect.propTypes = {
     contacts: PropTypes.arrayOf(ContactPropType.isRequired).isRequired

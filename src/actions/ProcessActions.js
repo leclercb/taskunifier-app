@@ -9,7 +9,7 @@ export function setProcessesVisible(visible) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function clearProcesses() {
     return dispatch => {
@@ -19,7 +19,7 @@ export function clearProcesses() {
 
         return Promise.resolve();
     };
-};
+}
 
 export function updateProcess(process) {
     return dispatch => {
@@ -31,7 +31,7 @@ export function updateProcess(process) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function deleteNotification(notificationId) {
     return dispatch => {
@@ -42,4 +42,4 @@ export function deleteNotification(notificationId) {
 
         return Promise.resolve();
     };
-};
+}

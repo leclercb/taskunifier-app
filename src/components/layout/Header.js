@@ -36,7 +36,7 @@ function Header(props) {
                 importance: Math.floor((Math.random() * 12) + 1)
             });
         }
-    }
+    };
 
     const onEditTask = () => {
         props.setTaskEditionManagerOptions({

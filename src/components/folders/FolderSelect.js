@@ -19,7 +19,7 @@ export function FolderSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired

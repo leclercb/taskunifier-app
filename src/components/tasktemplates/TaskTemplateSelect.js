@@ -19,7 +19,7 @@ export function TaskTemplateSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 TaskTemplateSelect.propTypes = {
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired

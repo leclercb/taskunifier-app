@@ -19,7 +19,7 @@ export function GoalSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired

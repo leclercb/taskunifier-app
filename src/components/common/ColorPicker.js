@@ -5,6 +5,6 @@ function ColorPicker(props) {
     return (
         <RCColorPicker {...props} />
     );
-};
+}
 
 export default ColorPicker;

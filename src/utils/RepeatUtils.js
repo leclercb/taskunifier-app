@@ -27,7 +27,7 @@ export function getCategoryForType(type) {
         default:
             return 'daily';
     }
-};
+}
 
 export function getKeysForType(type) {
     if (!type) {
@@ -64,7 +64,7 @@ export function getKeysForType(type) {
         default:
             return [];
     }
-};
+}
 
 export function canRepeat(task) {
     if (!task || !task.repeat || !task.repeat.type) {
@@ -80,7 +80,7 @@ export function canRepeat(task) {
     }
 
     return true;
-};
+}
 
 export function getNextDate(repeat, date) {
     if (!repeat || !date) {
@@ -231,7 +231,7 @@ export function getNextDate(repeat, date) {
             return null;
         }
     }
-};
+}
 
 export function getDaysOfWeek() {
     return [
@@ -264,7 +264,7 @@ export function getDaysOfWeek() {
             value: '7'
         }
     ];
-};
+}
 
 export function getWeekNumbers() {
     return [
@@ -289,7 +289,7 @@ export function getWeekNumbers() {
             value: 'last'
         }
     ];
-};
+}
 
 export function formatRepeat(repeat) {
     if (!repeat || !repeat.type) {
@@ -358,12 +358,12 @@ export function formatRepeat(repeat) {
         default:
             return '';
     }
-};
+}
 
 export function formatDayOfWeek(dayOfWeek) {
     const item = getDaysOfWeek().find(item => item.value === dayOfWeek);
     return item ? item.label : null;
-};
+}
 
 export function formatDayNb(dayNb) {
     switch (dayNb) {
@@ -376,9 +376,9 @@ export function formatDayNb(dayNb) {
         default:
             return dayNb + 'th';
     }
-};
+}
 
 export function formatWeekNb(weekNb) {
     const item = getWeekNumbers().find(item => item.value === weekNb);
     return item ? item.label : null;
-};
+}

@@ -11,23 +11,23 @@ export function filterSettings(settings, core) {
     });
 
     return newSettings;
-};
+}
 
 export function getImportanceColor(importance, settings) {
     return settings['importance_' + (importance ? importance : 0)];
-};
+}
 
 export function getPriorityColor(priority, settings) {
     return settings['priority_' + (priority ? priority : 'negative')];
-};
+}
 
 export function getStatusColor(status, settings) {
     return settings['status_' + (status ? status : 'negative')];
-};
+}
 
 export function getNoteBackgroundColor(note, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-};
+}
 
 export function getTaskBackgroundColor(task, index, settings) {
     if (settings.showImportanceColor) {
@@ -35,16 +35,16 @@ export function getTaskBackgroundColor(task, index, settings) {
     }
 
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-};
+}
 
 export function getLinkedContactBackgroundColor(linkedContact, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-};
+}
 
 export function getLinkedFileBackgroundColor(linkedFile, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-};
+}
 
 export function getLinkedTaskBackgroundColor(linkedTask, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
-};
+}

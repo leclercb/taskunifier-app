@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { filterByVisibleState, filterByNonArchived } from 'utils/CategoryUtils';
+import { filterByNonArchived, filterByVisibleState } from 'utils/CategoryUtils';
 
 export const getFolders = state => state.folders;
 

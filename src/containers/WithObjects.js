@@ -10,7 +10,7 @@ import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
 import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getSelectedNoteFilter, getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState, getSelectedNoteFilter } from 'selectors/NoteSelectors';
 import { getSelectedTaskFilter, getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
 import { getTagsFromObjects } from 'utils/TagUtils';
@@ -18,8 +18,8 @@ import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelect
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
-import { getGoalsFilteredByVisibleState, getGoalsFilteredByNonArchived } from 'selectors/GoalSelectors';
-import { getFoldersFilteredByVisibleState, getFoldersFilteredByNonArchived } from 'selectors/FolderSelectors';
+import { getGoalsFilteredByNonArchived, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
+import { getFoldersFilteredByNonArchived, getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 
 function withObjects(Component, options) {

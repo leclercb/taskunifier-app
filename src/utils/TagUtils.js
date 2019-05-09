@@ -6,7 +6,7 @@ export function getTagsFromIds(tags, tagIds) {
     }
 
     return tags.filter(tag => tagIds.includes(tag.id));
-};
+}
 
 export function getTagsFromObjects(objects) {
     let tags = [];
@@ -24,7 +24,7 @@ export function getTagsFromObjects(objects) {
         title: tag,
         color: getColorFromIndex(index)
     }));
-};
+}
 
 export function updateTag(object, tagId, newTagId) {
     if (!object.tags) {
@@ -33,7 +33,7 @@ export function updateTag(object, tagId, newTagId) {
 
     object.tags = object.tags.map(tag => tag === tagId ? newTagId : tag);
     object.tags = object.tags.filter((tag, index) => object.tags.indexOf(tag) === index);
-};
+}
 
 export function deleteTag(object, tagId) {
     if (!object.tags) {
@@ -41,4 +41,4 @@ export function deleteTag(object, tagId) {
     }
 
     object.tags = object.tags.filter(tag => tag !== tagId);
-};
+}

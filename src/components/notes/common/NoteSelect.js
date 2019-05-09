@@ -19,7 +19,7 @@ export function NoteSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 NoteSelect.propTypes = {
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired

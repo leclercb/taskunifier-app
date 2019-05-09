@@ -24,4 +24,4 @@ export function sortObjects(filter, fields, a, b) {
     }
 
     return 0;
-};
+}

@@ -20,4 +20,4 @@ export function onTaskUpdate(task, oldTask) {
     }
 
     return null;
-};
+}

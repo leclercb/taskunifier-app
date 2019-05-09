@@ -14,4 +14,4 @@ export function usePrevious(value, updateOnRender = true) {
 
         return ref.current;
     }
-};
+}

@@ -19,7 +19,7 @@ export function StatusSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 StatusSelect.propTypes = {
     statuses: PropTypes.arrayOf(StatusPropType.isRequired).isRequired,

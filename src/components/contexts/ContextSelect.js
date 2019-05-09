@@ -19,7 +19,7 @@ export function ContextSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 ContextSelect.propTypes = {
     contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired

@@ -11,31 +11,31 @@ import {
 
 export function loadNotesFromFile(file) {
     return dispatch => dispatch(loadObjectsFromFile('notes', file));
-};
+}
 
 export function saveNotesToFile(file, data) {
     return saveObjectsToFile('notes', file, data);
-};
+}
 
 export function setNotes(notes) {
     return dispatch => dispatch(setObjects('notes', notes));
-};
+}
 
 export function addNote(note) {
     return dispatch => dispatch(addObject('notes', note));
-};
+}
 
 export function updateNote(note) {
     return dispatch => dispatch(updateObject('notes', note));
-};
+}
 
 export function deleteNote(noteId) {
     return dispatch => dispatch(deleteObject('notes', noteId));
-};
+}
 
 export function cleanNotes() {
     return dispatch => dispatch(cleanObjects('notes'));
-};
+}
 
 export function setSelectedNoteIds(noteIds) {
     return dispatch => {
@@ -46,7 +46,7 @@ export function setSelectedNoteIds(noteIds) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function setSelectedNoteFilter(noteFilter) {
     return dispatch => {
@@ -58,4 +58,4 @@ export function setSelectedNoteFilter(noteFilter) {
 
         return Promise.resolve();
     };
-};
+}

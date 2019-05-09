@@ -18,7 +18,7 @@ export function LinksSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 LinksSelect.propTypes = {
     links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired

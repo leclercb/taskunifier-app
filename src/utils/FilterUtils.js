@@ -3,7 +3,7 @@ import { getFieldConditions } from 'data/DataFieldConditions';
 
 export function getConditionsForType(type) {
     return getFieldConditions(type);
-};
+}
 
 export function applyFilter(objectFilter, object, fields) {
     if (!objectFilter || !objectFilter.condition) {
@@ -11,7 +11,7 @@ export function applyFilter(objectFilter, object, fields) {
     }
 
     return applyCondition(objectFilter.condition, object, fields);
-};
+}
 
 function applyCondition(condition, object, fields) {
     if (condition.operator) {
@@ -68,4 +68,4 @@ function applyCondition(condition, object, fields) {
 
         return c.apply(condition.value, getValue(object, field.id));
     }
-};
+}

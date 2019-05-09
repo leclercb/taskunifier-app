@@ -29,7 +29,7 @@ export function TaskSelect(props) {
             ))}
         </Select>
     );
-};
+}
 
 TaskSelect.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,

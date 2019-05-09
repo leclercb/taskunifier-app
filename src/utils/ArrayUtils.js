@@ -7,4 +7,4 @@ export function move(array, oldIndex, newIndex) {
     }
 
     array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
-};
+}

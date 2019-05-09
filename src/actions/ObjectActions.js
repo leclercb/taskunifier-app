@@ -6,11 +6,11 @@ import { filterByStatic } from 'utils/CategoryUtils';
 
 export function loadObjectsFromFile(property, file) {
     return dispatch => dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
-};
+}
 
 export function saveObjectsToFile(property, file, data) {
     return saveToFile(property, file, filterByStatic(data));
-};
+}
 
 export function setObjects(property, objects) {
     return dispatch => {
@@ -22,7 +22,7 @@ export function setObjects(property, objects) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function addObject(property, object) {
     return dispatch => {
@@ -42,7 +42,7 @@ export function addObject(property, object) {
 
         return Promise.resolve(id);
     };
-};
+}
 
 export function updateObject(property, object) {
     return dispatch => {
@@ -56,7 +56,7 @@ export function updateObject(property, object) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function deleteObject(property, objectId) {
     return dispatch => {
@@ -71,7 +71,7 @@ export function deleteObject(property, objectId) {
 
         return Promise.resolve();
     };
-};
+}
 
 export function cleanObjects(property) {
     return dispatch => {
@@ -82,4 +82,4 @@ export function cleanObjects(property) {
 
         return Promise.resolve();
     };
-};
+}

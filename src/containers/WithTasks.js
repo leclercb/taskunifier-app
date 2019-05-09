@@ -8,8 +8,8 @@ import {
 } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
-    getSelectedTaskIds,
     getSelectedTaskFilter,
+    getSelectedTaskIds,
     getTasksFilteredBySelectedFilter,
     getTasksFilteredByVisibleState
 } from 'selectors/TaskSelectors';

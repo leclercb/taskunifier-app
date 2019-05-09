@@ -11,7 +11,7 @@ export function restoreBackup(backupId) {
         const path = join(getState().settings.dataFolder, 'backups', backupId);
         return dispatch(_loadData(path));
     };
-};
+}
 
 export function backupData() {
     return (dispatch, getState) => {
@@ -25,7 +25,7 @@ export function backupData() {
             });
         });
     };
-};
+}
 
 export function deleteBackup(date) {
     return (dispatch, getState) => {
@@ -60,7 +60,7 @@ export function deleteBackup(date) {
             }
         });
     };
-};
+}
 
 export function cleanBackups() {
     return (dispatch, getState) => {
@@ -105,4 +105,4 @@ export function cleanBackups() {
             });
         });
     };
-};
+}

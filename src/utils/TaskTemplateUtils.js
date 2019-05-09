@@ -9,4 +9,4 @@ export function applyTaskTemplate(taskTemplate, task) {
             task[key] = value;
         }
     });
-};
+}

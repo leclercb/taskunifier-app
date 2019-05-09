@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getGoalsFilteredByVisibleState, getGoalsFilteredByNonArchived } from 'selectors/GoalSelectors';
+import { getGoalsFilteredByNonArchived, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { merge } from 'utils/ObjectUtils';
 
 function withGoals(Component, options) {
