@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
-import { clearProcesses, deleteNotification, setProcessesVisible } from 'actions/ProcessActions';
+import { clearProcesses, deleteNotification, setThreadManagerVisible } from 'actions/ThreadActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getProcesses, getNotifications, isThreadManagerVisible } from 'selectors/ThreadSelectors';
 
 function withProcesses(Component) {
     const mapStateToProps = state => ({
-        processes: state.processes
+        threadManagerVisible: isThreadManagerVisible(state),
+        processes: getProcesses(state),
+        notifications: getNotifications(state)
     });
 
     const mapDispatchToProps = dispatch => ({
-        setProcessesVisible: visible => dispatch(setProcessesVisible(visible)),
+        setThreadManagerVisible: visible => dispatch(setThreadManagerVisible(visible)),
         clearProcesses: () => dispatch(clearProcesses()),
         deleteNotification: notificationId => dispatch(deleteNotification(notificationId))
     });

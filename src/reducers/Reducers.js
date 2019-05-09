@@ -3,15 +3,15 @@ import reduceReducers from 'reduce-reducers';
 import App from 'reducers/App';
 import Notes from 'reducers/Notes';
 import Objects from 'reducers/Objects';
-import Processes from 'reducers/Processes';
 import Settings from 'reducers/Settings';
 import Tasks from 'reducers/Tasks';
+import Thread from 'reducers/Thread';
 import { onGoalUpdate } from 'utils/GoalUtils';
 import { onTaskUpdate } from 'utils/TaskUtils';
 
 export default combineReducers({
     app: App(),
-    processes: Processes(),
+    thread: Thread(),
     settings: Settings(),
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),

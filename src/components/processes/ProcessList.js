@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert } from 'antd';
-import withProcesses from 'containers/WithProcesses';
 import Icon from 'components/common/Icon';
 import Constants from 'constants/Constants';
+import { ProcessPropType } from 'proptypes/ProcessPropTypes';
 
 function ProcessList(props) {
     const getIconFromState = state => {
@@ -32,7 +32,7 @@ function ProcessList(props) {
 
     return (
         <React.Fragment>
-            {props.processes.processes.map(process =>
+            {props.processes.map(process =>
                 <div key={process.id}>
                     <Icon
                         text={process.title}
@@ -48,7 +48,7 @@ function ProcessList(props) {
 }
 
 ProcessList.propTypes = {
-    processes: PropTypes.object.isRequired
+    processes: PropTypes.arrayOf(ProcessPropType).isRequired
 };
 
-export default withProcesses(ProcessList);
+export default ProcessList;

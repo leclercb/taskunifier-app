@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import moment from 'moment';
 import { _loadData, _saveData } from 'actions/AppActions';
-import { updateProcess } from 'actions/ProcessActions';
+import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { deleteDirectory, join } from 'utils/ActionUtils';
 import { getBackups } from 'utils/BackupUtils';

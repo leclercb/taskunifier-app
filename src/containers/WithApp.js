@@ -17,11 +17,20 @@ import {
     cleanBackups
 } from 'actions/BackupActions';
 import { updateSettings } from 'actions/SettingActions';
-import { clearProcesses, setProcessesVisible } from 'actions/ProcessActions';
+import { clearProcesses, setThreadManagerVisible } from 'actions/ThreadActions';
 import { isValidLicense } from 'utils/LicenseUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getBatchAddTasksManager, getCategoryManager, getNoteFilterManager, getSelectedView, getSettingManager, getTaskEditionManager, getTaskFilterManager, getTaskTemplateManager } from 'selectors/AppSelectors';
+import {
+    getBatchAddTasksManager,
+    getCategoryManager,
+    getNoteFilterManager,
+    getSelectedView,
+    getSettingManager,
+    getTaskEditionManager,
+    getTaskFilterManager,
+    getTaskTemplateManager
+} from 'selectors/AppSelectors';
 
 function withApp(Component) {
     const mapStateToProps = state => ({
@@ -49,10 +58,7 @@ function withApp(Component) {
         setTaskEditionManagerOptions: options => dispatch(setTaskEditionManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
         setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
-        setBatchAddTasksManagerOptions: options => dispatch(setBatchAddTasksManagerOptions(options)),
-        setProcessesVisible: visible => dispatch(setProcessesVisible(visible)),
-        clearProcesses: () => dispatch(clearProcesses()),
-        updateSettings: settings => dispatch(updateSettings(settings))
+        setBatchAddTasksManagerOptions: options => dispatch(setBatchAddTasksManagerOptions(options))
     });
 
     return connect(

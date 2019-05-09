@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
-import withProcesses from 'containers/WithProcesses';
+import withThread from 'containers/WithThread';
+import { NotificationPropType } from 'proptypes/NotificationPropTypes';
 
 function NotificationManager(props) {
     const getLevelFromState = state => {
@@ -17,12 +18,12 @@ function NotificationManager(props) {
     };
 
     useEffect(() => {
-        if (props.processes.notifications.length > 0) {
-            props.processes.notifications.forEach(notification => {
+        if (props.notifications.length > 0) {
+            props.notifications.forEach(notification => {
                 message[getLevelFromState(notification.process.state)](notification.process.title);
             });
 
-            props.deleteNotification(props.processes.notifications.map(notification => notification.id));
+            props.deleteNotification(props.notifications.map(notification => notification.id));
         }
     });
 
@@ -30,8 +31,8 @@ function NotificationManager(props) {
 }
 
 NotificationManager.propTypes = {
-    processes: PropTypes.object.isRequired,
+    notifications: PropTypes.arrayOf(NotificationPropType).isRequired,
     deleteNotification: PropTypes.func.isRequired
 };
 
-export default withProcesses(NotificationManager);
+export default withThread(NotificationManager);

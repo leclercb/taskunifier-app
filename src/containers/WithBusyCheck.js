@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isBusy } from 'selectors/ProcessSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 
 function withBusyCheck(Component) {
     class WithBusyCheck extends React.Component {

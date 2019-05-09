@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { isBusy } from 'selectors/ProcessSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 
 function withBusy(Component) {
     const mapStateToProps = state => ({

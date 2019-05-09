@@ -6,7 +6,7 @@ import Footer from 'components/layout/Footer';
 import withApp from 'containers/WithApp';
 import withBusy from 'containers/WithBusy';
 import NotificationManager from 'components/processes/NotificationManager';
-import ModalProcessManager from 'components/processes/ModalProcessManager';
+import ModalThreadManager from 'components/processes/ModalThreadManager';
 import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
@@ -35,7 +35,7 @@ function AppLayout(props) {
     return (
         <React.Fragment>
             <NotificationManager />
-            <ModalProcessManager />
+            <ModalThreadManager />
             <ModalCategoryManager />
             <ModalNoteFilterManager />
             <ModalTaskFilterManager />

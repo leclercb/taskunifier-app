@@ -1,9 +1,9 @@
 import uuid from 'uuid';
 
-export function setProcessesVisible(visible) {
+export function setThreadManagerVisible(visible) {
     return dispatch => {
         dispatch({
-            type: 'SET_PROCESSES_VISIBLE',
+            type: 'SET_THREAD_MANAGER_VISIBLE',
             visible: visible
         });
 

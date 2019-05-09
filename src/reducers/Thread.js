@@ -1,11 +1,11 @@
-const Processes = () => (state = {
+const Thread = () => (state = {
     busy: false,
     visible: false,
     processes: [],
     notifications: []
 }, action) => {
     switch (action.type) {
-        case 'SET_PROCESSES_VISIBLE': {
+        case 'SET_THREAD_MANAGER_VISIBLE': {
             return {
                 ...state,
                 visible: action.visible,
@@ -65,4 +65,4 @@ const Processes = () => (state = {
     }
 };
 
-export default Processes;
+export default Thread;
