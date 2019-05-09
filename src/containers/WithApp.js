@@ -16,11 +16,7 @@ import {
     backupData,
     cleanBackups
 } from 'actions/BackupActions';
-import { updateSettings } from 'actions/SettingActions';
-import { clearProcesses, setThreadManagerVisible } from 'actions/ThreadActions';
-import { isValidLicense } from 'utils/LicenseUtils';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getSettings } from 'selectors/SettingSelectors';
 import {
     getBatchAddTasksManager,
     getCategoryManager,
@@ -29,12 +25,13 @@ import {
     getSettingManager,
     getTaskEditionManager,
     getTaskFilterManager,
-    getTaskTemplateManager
+    getTaskTemplateManager,
+    isValidLicense
 } from 'selectors/AppSelectors';
 
 function withApp(Component) {
     const mapStateToProps = state => ({
-        pro: isValidLicense(getSettings(state).license),
+        pro: isValidLicense(state),
         selectedView: getSelectedView(state),
         categoryManager: getCategoryManager(state),
         noteFilterManager: getNoteFilterManager(state),

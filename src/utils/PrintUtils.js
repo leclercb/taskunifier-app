@@ -115,8 +115,6 @@ export function _printTable(doc, title, columns, records, subLevel = 0, printSub
         doc.text(title, 20, startY + 30);
     }
 
-    columns = _flattenColumns(columns);
-
     let autoTableColumns = columns.map((column, index) => {
         return {
             title: column.titleAsText ? column.titleAsText : column.title,

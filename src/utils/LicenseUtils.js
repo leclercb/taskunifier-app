@@ -42,7 +42,3 @@ export function verifyLicense(license) {
         return null;
     }
 }
-
-export function isValidLicense(license) {
-    return verifyLicense(license) !== null;
-}

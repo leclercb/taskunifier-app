@@ -3,6 +3,7 @@
 import React from 'react';
 import moment from 'moment';
 import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
+import { getFieldConditions } from 'data/DataFieldConditions';
 import ColorPicker from 'components/common/ColorPicker';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
 import StarCheckbox from 'components/common/StarCheckbox';
@@ -41,9 +42,12 @@ import TaskSelect from 'components/tasks/common/TaskSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { getFieldConditions } from 'data/DataFieldConditions';
-import { escape } from 'utils/RegexUtils';
-import { formatRepeat } from 'utils/RepeatUtils';
+import { getContacts } from 'selectors/ContactSelectors';
+import { getContactTitle } from 'utils/ContactUtils';
+import { getContexts } from 'selectors/ContextSelectors';
+import { getFolders } from 'selectors/FolderSelectors';
+import { getGoals } from 'selectors/GoalSelectors';
+import { getLocations } from 'selectors/LocationSelectors';
 import { store } from 'store/Store';
 import {
     compareBooleans,
@@ -56,6 +60,8 @@ import {
     compareStatuses,
     compareStrings
 } from 'utils/CompareUtils';
+import { escape } from 'utils/RegexUtils';
+import { formatRepeat } from 'utils/RepeatUtils';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -114,6 +120,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareBooleans(a, b),
+                toString: value => !!value,
                 render: value => <Checkbox checked={!!value} />,
                 input: props => (
                     <Checkbox {...props} data-prevent-default={true} />
@@ -134,6 +141,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'color',
                 getValueFromEvent: event => event.color,
                 sort: (a, b) => compareStrings(a, b),
+                toString: value => value,
                 render: value => <ColorPicker color={value} />,
                 input: props => (
                     <ColorPicker {...props} />
@@ -154,6 +162,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareContacts(store.getState().contacts, a, b),
+                toString: (value, state) => getContactTitle(getContacts(state).find(contact => contact.id === value)),
                 render: value => (
                     <ContactTitle contactId={value} />
                 ),
@@ -176,6 +185,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareObjects(store.getState().contexts, a, b),
+                toString: (value, state) => getContexts(state).find(context => context.id === value),
                 render: value => (
                     <ContextTitle contextId={value} />
                 ),
@@ -207,6 +217,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareDates(a, b, false),
+                toString: value => value ? moment(value).format(dateFormat) : '',
                 render: value => {
                     if (extended && Number.isInteger(value)) {
                         return value;
@@ -249,6 +260,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareDates(a, b, true),
+                toString: value => value ? moment(value).format(`${dateFormat} ${timeFormat}`) : '',
                 render: value => {
                     if (extended && Number.isInteger(value)) {
                         return value;
@@ -286,6 +298,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareObjects(store.getState().folders, a, b),
+                toString: (value, state) => getFolders(state).find(folder => folder.id === value),
                 render: value => (
                     <FolderTitle folderId={value} />
                 ),
@@ -308,6 +321,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareObjects(store.getState().goals, a, b),
+                toString: (value, state) => getGoals(state).find(goal => goal.id === value),
                 render: value => (
                     <GoalTitle goalId={value} />
                 ),
@@ -330,9 +344,10 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareNumbers(a, b),
+                toString: value => value,
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <InputNumber min={0} max={12} {...props} style={{width: 60}} />
+                    <InputNumber min={0} max={12} {...props} style={{ width: 60 }} />
                 ),
                 conditionsFieldType: 'importance',
                 options: []
@@ -438,6 +453,7 @@ export function getFieldConfiguration(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 sort: (a, b) => compareObjects(store.getState().locations, a, b),
+                toString: (value, state) => getLocations(state).find(location => location.id === value),
                 render: value => (
                     <LocationTitle locationId={value} />
                 ),

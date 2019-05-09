@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { clearProcesses, deleteNotification, setThreadManagerVisible } from 'actions/ThreadActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getProcesses, getNotifications, isThreadManagerVisible } from 'selectors/ThreadSelectors';
+import { getNotifications, getProcesses, isThreadManagerVisible } from 'selectors/ThreadSelectors';
 
 function withProcesses(Component) {
     const mapStateToProps = state => ({

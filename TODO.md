@@ -1,5 +1,6 @@
 ## Todo List
 
+* Continue implementation of toString
 * Print tasks and notes
 * Add sort order in filters
 * Add reminder and recurrence

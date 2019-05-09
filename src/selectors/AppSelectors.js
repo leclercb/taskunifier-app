@@ -1,3 +1,7 @@
+import { createSelector } from 'reselect';
+import { getSettings } from 'selectors/SettingSelectors';
+import { verifyLicense } from 'utils/LicenseUtils';
+
 export const getSelectedView = state => state.app.selectedView;
 export const getSelectedNoteIds = state => state.app.selectedNoteIds;
 export const getSelectedNoteFilter = state => state.app.selectedNoteFilter;
@@ -12,3 +16,10 @@ export const getTaskEditionManager = state => state.app.taskEditionManager;
 export const getTaskTemplateManager = state => state.app.taskTemplateManager;
 export const getSettingManager = state => state.app.settingManager;
 export const getBatchAddTasksManager = state => state.app.batchAddTasksManager;
+
+export const isValidLicense = createSelector(
+    [getSettings],
+    (settings) => {
+        return verifyLicense(settings.license) !== null;
+    }
+);
