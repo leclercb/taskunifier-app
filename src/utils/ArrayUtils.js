@@ -1,4 +1,4 @@
-export const move = (array, oldIndex, newIndex) => {
+export function move(array, oldIndex, newIndex) {
     if (newIndex >= array.length) {
         let k = newIndex - array.length + 1;
         while (k--) {

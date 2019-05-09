@@ -4,15 +4,15 @@ import Constants from 'constants/Constants';
 import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 import { filterByStatic } from 'utils/CategoryUtils';
 
-export const loadObjectsFromFile = (property, file) => {
+export function loadObjectsFromFile(property, file) {
     return dispatch => dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
 };
 
-export const saveObjectsToFile = (property, file, data) => {
+export function saveObjectsToFile(property, file, data) {
     return saveToFile(property, file, filterByStatic(data));
 };
 
-export const setObjects = (property, objects) => {
+export function setObjects(property, objects) {
     return dispatch => {
         dispatch({
             type: 'SET_OBJECTS',
@@ -24,7 +24,7 @@ export const setObjects = (property, objects) => {
     };
 };
 
-export const addObject = (property, object) => {
+export function addObject(property, object) {
     return dispatch => {
         const id = uuid();
 
@@ -44,7 +44,7 @@ export const addObject = (property, object) => {
     };
 };
 
-export const updateObject = (property, object) => {
+export function updateObject(property, object) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_OBJECT',
@@ -58,7 +58,7 @@ export const updateObject = (property, object) => {
     };
 };
 
-export const deleteObject = (property, objectId) => {
+export function deleteObject(property, objectId) {
     return dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
@@ -73,7 +73,7 @@ export const deleteObject = (property, objectId) => {
     };
 };
 
-export const cleanObjects = property => {
+export function cleanObjects(property) {
     return dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',

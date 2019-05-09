@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const updateTag = tag => {
+export function updateTag(tag) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_TAG',
@@ -12,7 +12,7 @@ export const updateTag = tag => {
     };
 };
 
-export const deleteTag = tagId => {
+export function deleteTag(tagId) {
     return dispatch => {
         dispatch({
             type: 'DELETE_TAG',

@@ -28,7 +28,7 @@ export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFi
     updateSettings(updatedSettings);
 };
 
-const DndWrapper = props => {
+function DndWrapper(props) {
     const {
         isOver,
         connectDragSource,
@@ -48,7 +48,7 @@ const DndWrapper = props => {
     delete restProps.onDrop;
 
     return connectDragSource(connectDropTarget(<div {...restProps} className={className} style={style} />));
-};
+}
 
 DndWrapper.propTypes = {
     data: PropTypes.object.isRequired,

@@ -2,17 +2,18 @@ import uuid from 'uuid';
 import moment from 'moment';
 import { _loadData, _saveData } from 'actions/AppActions';
 import { updateProcess } from 'actions/ProcessActions';
+import { getSettings } from 'selectors/SettingSelectors';
 import { deleteDirectory, join } from 'utils/ActionUtils';
 import { getBackups } from 'utils/BackupUtils';
 
-export const restoreBackup = backupId => {
+export function restoreBackup(backupId) {
     return (dispatch, getState) => {
         const path = join(getState().settings.dataFolder, 'backups', backupId);
         return dispatch(_loadData(path));
     };
 };
 
-export const backupData = () => {
+export function backupData() {
     return (dispatch, getState) => {
         return new Promise(resolve => {
             const path = join(getState().settings.dataFolder, 'backups', '' + Date.now().valueOf());
@@ -26,7 +27,7 @@ export const backupData = () => {
     };
 };
 
-export const deleteBackup = date => {
+export function deleteBackup(date) {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const state = getState();
@@ -39,8 +40,8 @@ export const deleteBackup = date => {
             }));
 
             try {
-                const path = join(state.settings.dataFolder, 'backups', '' + date);
-                deleteDirectory(path, state.settings.dataFolder);
+                const path = join(getSettings(state).dataFolder, 'backups', '' + date);
+                deleteDirectory(path, getSettings(state).dataFolder);
 
                 dispatch(updateProcess({
                     id: processId,
@@ -61,12 +62,12 @@ export const deleteBackup = date => {
     };
 };
 
-export const cleanBackups = () => {
+export function cleanBackups() {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const state = getState();
             const processId = uuid();
-            const maxBackups = state.settings.maxBackups;
+            const maxBackups = getSettings(state).maxBackups;
 
             if (!maxBackups) {
                 reject();

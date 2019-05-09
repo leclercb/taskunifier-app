@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadTaskFieldsFromFile = file => {
+export function loadTaskFieldsFromFile(file) {
     return loadObjectsFromFile('taskFields', file);
 };
 
-export const saveTaskFieldsToFile = (file, data) => {
+export function saveTaskFieldsToFile(file, data) {
     return saveObjectsToFile('taskFields', file, data);
 };
 
-export const setTaskFields = taskFields => {
+export function setTaskFields(taskFields) {
     return setObjects('taskFields', taskFields);
 };
 
-export const addTaskField = taskField => {
+export function addTaskField(taskField) {
     return addObject('taskFields', taskField);
 };
 
-export const updateTaskField = taskField => {
+export function updateTaskField(taskField) {
     return updateObject('taskFields', taskField);
 };
 
-export const deleteTaskField = taskFieldId => {
+export function deleteTaskField(taskFieldId) {
     return deleteObject('taskFields', taskFieldId);
 };
 
-export const cleanTaskFields = () => {
+export function cleanTaskFields() {
     return cleanObjects('taskFields');
 };

@@ -2,8 +2,9 @@ import { createSelector } from 'reselect';
 import { getDefaultTaskFields } from 'data/DataTaskFields';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 
+const getSettings = state => state.settings;
+
 export const getTaskFields = state => state.taskFields;
-export const getSettings = state => state.settings;
 
 export const getTaskFieldsFilteredByVisibleState = createSelector(
     [getTaskFields],

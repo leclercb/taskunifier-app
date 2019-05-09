@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadContactsFromFile = file => {
+export function loadContactsFromFile(file) {
     return loadObjectsFromFile('contacts', file);
 };
 
-export const saveContactsToFile = (file, data) => {
+export function saveContactsToFile(file, data) {
     return saveObjectsToFile('contacts', file, data);
 };
 
-export const setContacts = contacts => {
+export function setContacts(contacts) {
     return setObjects('contacts', contacts);
 };
 
-export const addContact = contact => {
+export function addContact(contact) {
     return addObject('contacts', contact);
 };
 
-export const updateContact = contact => {
+export function updateContact(contact) {
     return updateObject('contacts', contact);
 };
 
-export const deleteContact = contactId => {
+export function deleteContact(contactId) {
     return deleteObject('contacts', contactId);
 };
 
-export const cleanContacts = () => {
+export function cleanContacts() {
     return cleanObjects('contacts');
 };

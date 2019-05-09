@@ -13,13 +13,24 @@ import { cleanTasks, loadTasksFromFile, saveTasksToFile } from 'actions/TaskActi
 import { cleanTaskFields, loadTaskFieldsFromFile, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
 import { cleanTaskFilters, loadTaskFiltersFromFile, saveTaskFiltersToFile } from 'actions/TaskFilterActions';
 import { cleanTaskTemplates, loadTaskTemplatesFromFile, saveTaskTemplatesToFile } from 'actions/TaskTemplateActions';
+import { getContacts } from 'selectors/ContactSelectors';
+import { getContexts } from 'selectors/ContextSelectors';
+import { getFolders } from 'selectors/FolderSelectors';
+import { getGoals } from 'selectors/GoalSelectors';
+import { getLocations } from 'selectors/LocationSelectors';
+import { getNotes } from 'selectors/NoteSelectors';
+import { getNoteFields } from 'selectors/NoteFieldSelectors';
+import { getNoteFilters } from 'selectors/NoteFilterSelectors';
+import { getSettings } from 'selectors/SettingSelectors';
+import { getTasks } from 'selectors/TaskSelectors';
+import { getTaskFields } from 'selectors/TaskFieldSelectors';
+import { getTaskFilters } from 'selectors/TaskFilterSelectors';
+import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
 import { createDirectory, getUserDataPath, join } from 'utils/ActionUtils';
 import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
-import { getContacts } from 'selectors/ContactSelectors';
-import { getContexts } from 'selectors/ContextSelectors';
 
-export const _loadData = path => {
+export function _loadData(path) {
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -68,11 +79,13 @@ export const _loadData = path => {
             });
         });
     };
-};
+}
 
-export const loadData = () => _loadData(null);
+export function loadData() {
+    return _loadData(null);
+}
 
-export const _saveData = (path, options) => {
+export function _saveData(path, options) {
     options = merge({
         clean: false,
         message: null
@@ -98,20 +111,20 @@ export const _saveData = (path, options) => {
 
             const saveAll = () => {
                 Promise.all([
-                    dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(state.settings, true))),
-                    dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(state.settings, false))),
+                    dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true))),
+                    dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(getSettings(state), false))),
                     dispatch(saveContactsToFile(join(path, 'contacts.json'), getContacts(state))),
                     dispatch(saveContextsToFile(join(path, 'contexts.json'), getContexts(state))),
-                    dispatch(saveFoldersToFile(join(path, 'folders.json'), state.folders.all)),
-                    dispatch(saveGoalsToFile(join(path, 'goals.json'), state.goals.all)),
-                    dispatch(saveLocationsToFile(join(path, 'locations.json'), state.locations.all)),
-                    dispatch(saveNotesToFile(join(path, 'notes.json'), state.notes.all)),
-                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), state.noteFields.all)),
-                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), state.noteFilters.all)),
-                    dispatch(saveTasksToFile(join(path, 'tasks.json'), state.tasks.all)),
-                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), state.taskFields.all)),
-                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), state.taskFilters.all)),
-                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), state.taskTemplates.all))
+                    dispatch(saveFoldersToFile(join(path, 'folders.json'), getFolders(state))),
+                    dispatch(saveGoalsToFile(join(path, 'goals.json'), getGoals(state))),
+                    dispatch(saveLocationsToFile(join(path, 'locations.json'), getLocations(state))),
+                    dispatch(saveNotesToFile(join(path, 'notes.json'), getNotes(state))),
+                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), getNoteFields(state))),
+                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), getNoteFilters(state))),
+                    dispatch(saveTasksToFile(join(path, 'tasks.json'), getTasks(state))),
+                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), getTaskFields(state))),
+                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), getTaskFilters(state))),
+                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), getTaskTemplates(state)))
                 ]).then(() => {
                     dispatch(updateProcess({
                         id: processId,
@@ -136,11 +149,13 @@ export const _saveData = (path, options) => {
             }
         });
     };
-};
+}
 
-export const saveData = options => _saveData(null, options);
+export function saveData(options) {
+    return _saveData(null, options);
+}
 
-export const cleanData = () => {
+export function cleanData() {
     return dispatch => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -182,15 +197,15 @@ export const cleanData = () => {
             });
         });
     };
-};
+}
 
-export const synchronize = () => {
+export function synchronize() {
     return () => {
         return Promise.resolve();
     };
-};
+}
 
-export const setSelectedView = view => {
+export function setSelectedView(view) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_VIEW',
@@ -199,9 +214,9 @@ export const setSelectedView = view => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setCategoryManagerOptions = options => {
+export function setCategoryManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_CATEGORY_MANAGER_OPTIONS',
@@ -210,9 +225,9 @@ export const setCategoryManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setTaskFilterManagerOptions = options => {
+export function setTaskFilterManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_TASK_FILTER_MANAGER_OPTIONS',
@@ -221,9 +236,9 @@ export const setTaskFilterManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setTaskEditionManagerOptions = options => {
+export function setTaskEditionManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_TASK_EDITION_MANAGER_OPTIONS',
@@ -232,9 +247,9 @@ export const setTaskEditionManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setTaskTemplateManagerOptions = options => {
+export function setTaskTemplateManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_TASK_TEMPLATE_MANAGER_OPTIONS',
@@ -243,9 +258,9 @@ export const setTaskTemplateManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setNoteFilterManagerOptions = options => {
+export function setNoteFilterManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_NOTE_FILTER_MANAGER_OPTIONS',
@@ -254,9 +269,9 @@ export const setNoteFilterManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setNoteTemplateManagerOptions = options => {
+export function setNoteTemplateManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_NOTE_TEMPLATE_MANAGER_OPTIONS',
@@ -265,9 +280,9 @@ export const setNoteTemplateManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setSettingManagerOptions = options => {
+export function setSettingManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_SETTING_MANAGER_OPTIONS',
@@ -276,9 +291,9 @@ export const setSettingManagerOptions = options => {
 
         return Promise.resolve();
     };
-};
+}
 
-export const setBatchAddTasksOptions = options => {
+export function setBatchAddTasksOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_BATCH_ADD_TASKS_OPTIONS',
@@ -287,4 +302,4 @@ export const setBatchAddTasksOptions = options => {
 
         return Promise.resolve();
     };
-};
+}

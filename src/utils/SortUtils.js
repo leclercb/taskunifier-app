@@ -1,6 +1,6 @@
 import { getSortForType } from 'utils/FieldUtils';
 
-export const sortObjects = (filter, fields, a, b) => {
+export function sortObjects(filter, fields, a, b) {
     if (!filter || !filter.sortBy) {
         return 0;
     }

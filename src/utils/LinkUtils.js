@@ -1,6 +1,6 @@
 import { getColorFromIndex } from 'utils/ColorUtils';
 
-export const getLinksFromIds = (links, linkIds) => {
+export function getLinksFromIds(links, linkIds) {
     if (!linkIds) {
         return [];
     }
@@ -8,7 +8,7 @@ export const getLinksFromIds = (links, linkIds) => {
     return links.filter(link => linkIds.includes(link.id));
 };
 
-export const getLinksFromObjects = (objects, property) => {
+export function getLinksFromObjects(objects, property) {
     let links = [];
 
     objects.forEach(object => {

@@ -1,4 +1,4 @@
-export const applyTaskTemplate = (taskTemplate, task) => {
+export function applyTaskTemplate(taskTemplate, task) {
     if (!taskTemplate) {
         return;
     }

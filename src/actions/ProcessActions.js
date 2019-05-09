@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 
-export const setProcessesVisible = visible => {
+export function setProcessesVisible(visible) {
     return dispatch => {
         dispatch({
             type: 'SET_PROCESSES_VISIBLE',
@@ -11,7 +11,7 @@ export const setProcessesVisible = visible => {
     };
 };
 
-export const clearProcesses = () => {
+export function clearProcesses() {
     return dispatch => {
         dispatch({
             type: 'CLEAR_PROCESSES'
@@ -21,7 +21,7 @@ export const clearProcesses = () => {
     };
 };
 
-export const updateProcess = process => {
+export function updateProcess(process) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_PROCESS',
@@ -33,7 +33,7 @@ export const updateProcess = process => {
     };
 };
 
-export const deleteNotification = notificationId => {
+export function deleteNotification(notificationId) {
     return dispatch => {
         dispatch({
             type: 'DELETE_NOTIFICATION',

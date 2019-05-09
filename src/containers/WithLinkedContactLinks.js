@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { filterByVisibleState } from 'utils/CategoryUtils';
+import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { getLinksFromIds, getLinksFromObjects } from 'utils/LinkUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -10,7 +10,7 @@ function withLinkedContactLinks(Component, options) {
     }, options || {});
 
     const mapStateToProps = (state, ownProps) => {
-        let links = getLinksFromObjects(filterByVisibleState(state.tasks.all), 'linkedContacts');
+        let links = getLinksFromObjects(getTaskFiltersFilteredByVisibleState(state), 'linkedContacts');
 
         if (options.getId) {
             links = getLinksFromIds(links, options.getId(ownProps));

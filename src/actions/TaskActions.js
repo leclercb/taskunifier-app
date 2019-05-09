@@ -9,35 +9,35 @@ import {
     updateObject
 } from 'actions/ObjectActions';
 
-export const loadTasksFromFile = file => {
+export function loadTasksFromFile(file) {
     return dispatch => dispatch(loadObjectsFromFile('tasks', file));
 };
 
-export const saveTasksToFile = (file, data) => {
+export function saveTasksToFile(file, data) {
     return saveObjectsToFile('tasks', file, data);
 };
 
-export const setTasks = tasks => {
+export function setTasks(tasks) {
     return dispatch => dispatch(setObjects('tasks', tasks));
 };
 
-export const addTask = task => {
+export function addTask(task) {
     return dispatch => dispatch(addObject('tasks', task));
 };
 
-export const updateTask = task => {
+export function updateTask(task) {
     return dispatch => dispatch(updateObject('tasks', task));
 };
 
-export const deleteTask = taskId => {
+export function deleteTask(taskId) {
     return dispatch => dispatch(deleteObject('tasks', taskId));
 };
 
-export const cleanTasks = () => {
+export function cleanTasks() {
     return dispatch => dispatch(cleanObjects('tasks'));
 };
 
-export const setSelectedTaskIds = taskIds => {
+export function setSelectedTaskIds(taskIds) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_TASK_IDS',
@@ -48,7 +48,7 @@ export const setSelectedTaskIds = taskIds => {
     };
 };
 
-export const setSelectedTaskFilter = taskFilter => {
+export function setSelectedTaskFilter(taskFilter) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_TASK_FILTER',

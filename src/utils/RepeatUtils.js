@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const getCategoryForType = type => {
+export function getCategoryForType(type) {
     if (!type) {
         return 'daily';
     }
@@ -29,7 +29,7 @@ export const getCategoryForType = type => {
     }
 };
 
-export const getKeysForType = type => {
+export function getKeysForType(type) {
     if (!type) {
         return [];
     }
@@ -66,7 +66,7 @@ export const getKeysForType = type => {
     }
 };
 
-export const canRepeat = task => {
+export function canRepeat(task) {
     if (!task || !task.repeat || !task.repeat.type) {
         return false;
     }
@@ -82,7 +82,7 @@ export const canRepeat = task => {
     return true;
 };
 
-export const getNextDate = (repeat, date) => {
+export function getNextDate(repeat, date) {
     if (!repeat || !date) {
         return null;
     }
@@ -233,7 +233,7 @@ export const getNextDate = (repeat, date) => {
     }
 };
 
-export const getDaysOfWeek = () => {
+export function getDaysOfWeek() {
     return [
         {
             label: 'Monday',
@@ -266,7 +266,7 @@ export const getDaysOfWeek = () => {
     ];
 };
 
-export const getWeekNumbers = () => {
+export function getWeekNumbers() {
     return [
         {
             label: 'first',
@@ -291,7 +291,7 @@ export const getWeekNumbers = () => {
     ];
 };
 
-export const formatRepeat = repeat => {
+export function formatRepeat(repeat) {
     if (!repeat || !repeat.type) {
         return '';
     }
@@ -360,12 +360,12 @@ export const formatRepeat = repeat => {
     }
 };
 
-export const formatDayOfWeek = dayOfWeek => {
+export function formatDayOfWeek(dayOfWeek) {
     const item = getDaysOfWeek().find(item => item.value === dayOfWeek);
     return item ? item.label : null;
 };
 
-export const formatDayNb = dayNb => {
+export function formatDayNb(dayNb) {
     switch (dayNb) {
         case 1:
             return dayNb + 'st';
@@ -378,7 +378,7 @@ export const formatDayNb = dayNb => {
     }
 };
 
-export const formatWeekNb = weekNb => {
+export function formatWeekNb(weekNb) {
     const item = getWeekNumbers().find(item => item.value === weekNb);
     return item ? item.label : null;
 };

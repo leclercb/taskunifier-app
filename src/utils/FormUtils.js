@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { merge, setValue } from 'utils/ObjectUtils';
 
-export const getDefaultFormItemLayout = () => {
+export function getDefaultFormItemLayout() {
     return {
         labelCol: {
             xs: { span: 24 },
@@ -16,7 +16,7 @@ export const getDefaultFormItemLayout = () => {
     };
 };
 
-export const getDefaultTailFormItemLayout = () => {
+export function getDefaultTailFormItemLayout() {
     return {
         wrapperCol: {
             xs: {
@@ -35,7 +35,7 @@ export const getDefaultTailFormItemLayout = () => {
     };
 };
 
-export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assign = false) => {
+export function onFieldChangeForObjectUpdates(fields, object, updateObject, assign = false) {
     const values = {};
     const errors = [];
     let validating = false;
@@ -60,7 +60,7 @@ export const onFieldChangeForObjectUpdates = (fields, object, updateObject, assi
     }
 };
 
-const flattenFields = (path, object) => {
+function flattenFields(path, object) {
     if (typeof object !== 'object') {
         return [];
     }

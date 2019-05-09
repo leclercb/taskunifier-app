@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadGoalsFromFile = file => {
+export function loadGoalsFromFile(file) {
     return loadObjectsFromFile('goals', file);
 };
 
-export const saveGoalsToFile = (file, data) => {
+export function saveGoalsToFile(file, data) {
     return saveObjectsToFile('goals', file, data);
 };
 
-export const setGoals = goals => {
+export function setGoals(goals) {
     return setObjects('goals', goals);
 };
 
-export const addGoal = goal => {
+export function addGoal(goal) {
     return addObject('goals', goal);
 };
 
-export const updateGoal = goal => {
+export function updateGoal(goal) {
     return updateObject('goals', goal);
 };
 
-export const deleteGoal = goalId => {
+export function deleteGoal(goalId) {
     return deleteObject('goals', goalId);
 };
 
-export const cleanGoals = () => {
+export function cleanGoals() {
     return cleanObjects('goals');
 };

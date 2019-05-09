@@ -15,7 +15,7 @@ GQIDAQAB
 
 // TODO move to website
 /*
-export const createLicense = object => {
+export function createLicense(object) {
     const message = Buffer.from(JSON.stringify(object)).toString('hex');
 
     const sign = crypto.createSign('RSA-SHA256');
@@ -25,7 +25,7 @@ export const createLicense = object => {
 };
 */
 
-export const verifyLicense = license => {
+export function verifyLicense(license) {
     if (!license || license.length <= 512) {
         return null;
     }
@@ -43,6 +43,6 @@ export const verifyLicense = license => {
     }
 };
 
-export const isValidLicense = license => {
+export function isValidLicense(license) {
     return verifyLicense(license) !== null;
 };

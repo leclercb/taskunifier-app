@@ -1,11 +1,11 @@
 import { getValue } from 'utils/ObjectUtils';
 import { getFieldConditions } from 'data/DataFieldConditions';
 
-export const getConditionsForType = type => {
+export function getConditionsForType(type) {
     return getFieldConditions(type);
 };
 
-export const applyFilter = (objectFilter, object, fields) => {
+export function applyFilter(objectFilter, object, fields) {
     if (!objectFilter || !objectFilter.condition) {
         return true;
     }
@@ -13,7 +13,7 @@ export const applyFilter = (objectFilter, object, fields) => {
     return applyCondition(objectFilter.condition, object, fields);
 };
 
-const applyCondition = (condition, object, fields) => {
+function applyCondition(condition, object, fields) {
     if (condition.operator) {
         if (!condition.conditions || condition.conditions.length === 0) {
             return true;

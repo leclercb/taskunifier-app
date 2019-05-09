@@ -1,4 +1,4 @@
-export const getColorFromIndex = index => {
+export function getColorFromIndex(index) {
     switch (index % 11) {
         case 0: return 'magenta';
         case 1: return 'green';

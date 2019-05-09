@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadContextsFromFile = file => {
+export function loadContextsFromFile(file) {
     return loadObjectsFromFile('contexts', file);
 };
 
-export const saveContextsToFile = (file, data) => {
+export function saveContextsToFile(file, data) {
     return saveObjectsToFile('contexts', file, data);
 };
 
-export const setContexts = contexts => {
+export function setContexts(contexts) {
     return setObjects('contexts', contexts);
 };
 
-export const addContext = context => {
+export function addContext(context) {
     return addObject('contexts', context);
 };
 
-export const updateContext = context => {
+export function updateContext(context) {
     return updateObject('contexts', context);
 };
 
-export const deleteContext = contextId => {
+export function deleteContext(contextId) {
     return deleteObject('contexts', contextId);
 };
 
-export const cleanContexts = () => {
+export function cleanContexts() {
     return cleanObjects('contexts');
 };

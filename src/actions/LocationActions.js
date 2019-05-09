@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadLocationsFromFile = file => {
+export function loadLocationsFromFile(file) {
     return loadObjectsFromFile('locations', file);
 };
 
-export const saveLocationsToFile = (file, data) => {
+export function saveLocationsToFile(file, data) {
     return saveObjectsToFile('locations', file, data);
 };
 
-export const setLocations = locations => {
+export function setLocations(locations) {
     return setObjects('locations', locations);
 };
 
-export const addLocation = location => {
+export function addLocation(location) {
     return addObject('locations', location);
 };
 
-export const updateLocation = location => {
+export function updateLocation(location) {
     return updateObject('locations', location);
 };
 
-export const deleteLocation = locationId => {
+export function deleteLocation(locationId) {
     return deleteObject('locations', locationId);
 };
 
-export const cleanLocations = () => {
+export function cleanLocations() {
     return cleanObjects('locations');
 };

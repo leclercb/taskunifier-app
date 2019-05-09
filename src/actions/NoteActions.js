@@ -9,35 +9,35 @@ import {
     updateObject
 } from 'actions/ObjectActions';
 
-export const loadNotesFromFile = file => {
+export function loadNotesFromFile(file) {
     return dispatch => dispatch(loadObjectsFromFile('notes', file));
 };
 
-export const saveNotesToFile = (file, data) => {
+export function saveNotesToFile(file, data) {
     return saveObjectsToFile('notes', file, data);
 };
 
-export const setNotes = notes => {
+export function setNotes(notes) {
     return dispatch => dispatch(setObjects('notes', notes));
 };
 
-export const addNote = note => {
+export function addNote(note) {
     return dispatch => dispatch(addObject('notes', note));
 };
 
-export const updateNote = note => {
+export function updateNote(note) {
     return dispatch => dispatch(updateObject('notes', note));
 };
 
-export const deleteNote = noteId => {
+export function deleteNote(noteId) {
     return dispatch => dispatch(deleteObject('notes', noteId));
 };
 
-export const cleanNotes = () => {
+export function cleanNotes() {
     return dispatch => dispatch(cleanObjects('notes'));
 };
 
-export const setSelectedNoteIds = noteIds => {
+export function setSelectedNoteIds(noteIds) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_NOTE_IDS',
@@ -48,7 +48,7 @@ export const setSelectedNoteIds = noteIds => {
     };
 };
 
-export const setSelectedNoteFilter = noteFilter => {
+export function setSelectedNoteFilter(noteFilter) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_NOTE_FILTER',

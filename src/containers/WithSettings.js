@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { updateSettings } from 'actions/SettingActions';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { getSettings } from 'selectors/SettingSelectors';
 
 function withSettings(Component) {
     const mapStateToProps = state => ({
-        settings: state.settings
+        settings: getSettings(state)
     });
 
     const mapDispatchToProps = dispatch => ({

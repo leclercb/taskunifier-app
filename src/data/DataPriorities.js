@@ -2,7 +2,7 @@ export function getPriority(priorityId) {
     return getPriorities().find(priority => priority.id === priorityId);
 }
 
-export const getPriorityIndex = priorityId => {
+export function getPriorityIndex(priorityId) {
     return getPriorities().findIndex(priority => priority.id === priorityId) || 0;
 };
 

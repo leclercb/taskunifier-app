@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadTaskFiltersFromFile = file => {
+export function loadTaskFiltersFromFile(file) {
     return loadObjectsFromFile('taskFilters', file);
 };
 
-export const saveTaskFiltersToFile = (file, data) => {
+export function saveTaskFiltersToFile(file, data) {
     return saveObjectsToFile('taskFilters', file, data);
 };
 
-export const setTaskFilters = taskFilters => {
+export function setTaskFilters(taskFilters) {
     return setObjects('taskFilters', taskFilters);
 };
 
-export const addTaskFilter = taskFilter => {
+export function addTaskFilter(taskFilter) {
     return addObject('taskFilters', taskFilter);
 };
 
-export const updateTaskFilter = taskFilter => {
+export function updateTaskFilter(taskFilter) {
     return updateObject('taskFilters', taskFilter);
 };
 
-export const deleteTaskFilter = taskFilterId => {
+export function deleteTaskFilter(taskFilterId) {
     return deleteObject('taskFilters', taskFilterId);
 };
 
-export const cleanTaskFilters = () => {
+export function cleanTaskFilters() {
     return cleanObjects('taskFilters');
 };

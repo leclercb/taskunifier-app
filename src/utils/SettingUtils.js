@@ -1,6 +1,6 @@
 import { isCoreSetting } from 'data/DataSettings';
 
-export const filterSettings = (settings, core) => {
+export function filterSettings(settings, core) {
     const newSettings = {};
 
     Object.keys(settings).forEach(settingId => {
@@ -13,23 +13,23 @@ export const filterSettings = (settings, core) => {
     return newSettings;
 };
 
-export const getImportanceColor = (importance, settings) => {
+export function getImportanceColor(importance, settings) {
     return settings['importance_' + (importance ? importance : 0)];
 };
 
-export const getPriorityColor = (priority, settings) => {
+export function getPriorityColor(priority, settings) {
     return settings['priority_' + (priority ? priority : 'negative')];
 };
 
-export const getStatusColor = (status, settings) => {
+export function getStatusColor(status, settings) {
     return settings['status_' + (status ? status : 'negative')];
 };
 
-export const getNoteBackgroundColor = (note, index, settings) => {
+export function getNoteBackgroundColor(note, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
 
-export const getTaskBackgroundColor = (task, index, settings) => {
+export function getTaskBackgroundColor(task, index, settings) {
     if (settings.showImportanceColor) {
         return getImportanceColor(task.importance, settings);
     }
@@ -37,14 +37,14 @@ export const getTaskBackgroundColor = (task, index, settings) => {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
 
-export const getLinkedContactBackgroundColor = (linkedContact, index, settings) => {
+export function getLinkedContactBackgroundColor(linkedContact, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
 
-export const getLinkedFileBackgroundColor = (linkedFile, index, settings) => {
+export function getLinkedFileBackgroundColor(linkedFile, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };
 
-export const getLinkedTaskBackgroundColor = (linkedTask, index, settings) => {
+export function getLinkedTaskBackgroundColor(linkedTask, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 };

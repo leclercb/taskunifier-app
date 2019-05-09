@@ -8,7 +8,7 @@ const rimraf = electron.remote.require('rimraf');
 
 export const { join, sep } = electron.remote.require('path');
 
-export const loadFromFile = (property, file, onData) => {
+export function loadFromFile(property, file, onData) {
     return dispatch => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -50,7 +50,7 @@ export const loadFromFile = (property, file, onData) => {
     };
 };
 
-export const saveToFile = (property, file, data) => {
+export function saveToFile(property, file, data) {
     return dispatch => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -83,26 +83,26 @@ export const saveToFile = (property, file, data) => {
     };
 };
 
-export const getPathSeparator = () => {
+export function getPathSeparator() {
     return sep;
 };
 
-export const getUserDataPath = () => {
+export function getUserDataPath() {
     return electron.remote.app.getPath('userData');
 };
 
-export const getDirectories = path => {
+export function getDirectories(path) {
     const isDirectory = path => fs.lstatSync(path).isDirectory();
     return fs.readdirSync(path).map(name => join(path, name)).filter(isDirectory);
 };
 
-export const createDirectory = (path) => {
+export function createDirectory(path) {
     if (!fs.existsSync(path)) {
         mkdirp(path);
     }
 };
 
-export const deleteDirectory = (path, dataFolder) => {
+export function deleteDirectory(path, dataFolder) {
     if (path && (path.startsWith(getUserDataPath()) || path.startsWith(dataFolder))) {
         rimraf.sync(path);
     }

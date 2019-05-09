@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadNoteFieldsFromFile = file => {
+export function loadNoteFieldsFromFile(file) {
     return loadObjectsFromFile('noteFields', file);
 };
 
-export const saveNoteFieldsToFile = (file, data) => {
+export function saveNoteFieldsToFile(file, data) {
     return saveObjectsToFile('noteFields', file, data);
 };
 
-export const setNoteFields = noteFields => {
+export function setNoteFields(noteFields) {
     return setObjects('noteFields', noteFields);
 };
 
-export const addNoteField = noteField => {
+export function addNoteField(noteField) {
     return addObject('noteFields', noteField);
 };
 
-export const updateNoteField = noteField => {
+export function updateNoteField(noteField) {
     return updateObject('noteFields', noteField);
 };
 
-export const deleteNoteField = noteFieldId => {
+export function deleteNoteField(noteFieldId) {
     return deleteObject('noteFields', noteFieldId);
 };
 
-export const cleanNoteFields = () => {
+export function cleanNoteFields() {
     return cleanObjects('noteFields');
 };

@@ -3,7 +3,7 @@ import { InfinityTable } from 'antd-table-infinity';
 
 let TIMEOUT = null;
 
-export const Table = props => {
+function Table(props) {
     const onClick = (record) => event => {
         const ctrlKey = event.ctrlKey;
         let dataPreventDefault = false;

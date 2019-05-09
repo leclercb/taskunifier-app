@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadFoldersFromFile = file => {
+export function loadFoldersFromFile(file) {
     return loadObjectsFromFile('folders', file);
 };
 
-export const saveFoldersToFile = (file, data) => {
+export function saveFoldersToFile(file, data) {
     return saveObjectsToFile('folders', file, data);
 };
 
-export const setFolders = folders => {
+export function setFolders(folders) {
     return setObjects('folders', folders);
 };
 
-export const addFolder = folder => {
+export function addFolder(folder) {
     return addObject('folders', folder);
 };
 
-export const updateFolder = folder => {
+export function updateFolder(folder) {
     return updateObject('folders', folder);
 };
 
-export const deleteFolder = folderId => {
+export function deleteFolder(folderId) {
     return deleteObject('folders', folderId);
 };
 
-export const cleanFolders = () => {
+export function cleanFolders() {
     return cleanObjects('folders');
 };

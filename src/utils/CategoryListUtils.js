@@ -4,7 +4,7 @@ import Icon from 'components/common/Icon';
 import Constants from 'constants/Constants';
 import Spacer from 'components/common/Spacer';
 
-export const createAction = (icon, text, onClick, color) => (
+export function createAction(icon, text, onClick, color) (
     <Tooltip title={(
         <Icon
             icon={icon}
@@ -21,7 +21,7 @@ export const createAction = (icon, text, onClick, color) => (
     </Tooltip>
 );
 
-export const createActions = (item, onDuplicate, onDelete) => (
+export function createActions(item, onDuplicate, onDelete) (
     <React.Fragment>
         {createAction('copy', `Duplicate "${item.title}" ?`, onDuplicate)}
         <Spacer />

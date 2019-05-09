@@ -4,7 +4,7 @@ export const loadSettingsFromFile = (file, core = false) => {
     return dispatch => dispatch(loadFromFile('settings', file, data => dispatch(setSettings(data, core))));
 };
 
-export const saveSettingsToFile = (file, data) => {
+export function saveSettingsToFile(file, data) {
     return saveToFile('settings', file, data);
 };
 
@@ -20,7 +20,7 @@ export const setSettings = (settings, core = false) => {
     };
 };
 
-export const updateSettings = settings => {
+export function updateSettings(settings) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_SETTINGS',

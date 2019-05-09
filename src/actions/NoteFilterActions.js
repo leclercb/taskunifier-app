@@ -8,30 +8,30 @@ import {
     updateObject 
 } from 'actions/ObjectActions';
 
-export const loadNoteFiltersFromFile = file => {
+export function loadNoteFiltersFromFile(file) {
     return loadObjectsFromFile('noteFilters', file);
 };
 
-export const saveNoteFiltersToFile = (file, data) => {
+export function saveNoteFiltersToFile(file, data) {
     return saveObjectsToFile('noteFilters', file, data);
 };
 
-export const setNoteFilters = noteFilters => {
+export function setNoteFilters(noteFilters) {
     return setObjects('noteFilters', noteFilters);
 };
 
-export const addNoteFilter = noteFilter => {
+export function addNoteFilter(noteFilter) {
     return addObject('noteFilters', noteFilter);
 };
 
-export const updateNoteFilter = noteFilter => {
+export function updateNoteFilter(noteFilter) {
     return updateObject('noteFilters', noteFilter);
 };
 
-export const deleteNoteFilter = noteFilterId => {
+export function deleteNoteFilter(noteFilterId) {
     return deleteObject('noteFilters', noteFilterId);
 };
 
-export const cleanNoteFilters = () => {
+export function cleanNoteFilters() {
     return cleanObjects('noteFilters');
 };
