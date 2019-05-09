@@ -14,7 +14,7 @@ import 'rc-color-picker/assets/index.css';
 import 'react-contexify/dist/ReactContexify.min.css';
 import 'react-virtualized/styles.css';
 
-import 'components/common/grid/VirtualizedTable.css';
+import 'components/common/table/VirtualizedTable.css';
 
 const electron = window.require('electron');
 

@@ -6,16 +6,16 @@ import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
-import CellRenderer from 'components/common/grid/CellRenderer';
-import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/grid/ResizableAndMovableColumn';
-import { multiSelectionHandler } from 'components/common/grid/VirtualizedTable';
+import CellRenderer from 'components/common/table/CellRenderer';
+import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
+import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor } from 'utils/SettingUtils';
 
-function TaskGrid(props) {
+function TaskTable(props) {
     const onUpdateTask = task => {
         props.updateTask(task);
     };
@@ -105,7 +105,7 @@ function TaskGrid(props) {
     );
 }
 
-TaskGrid.propTypes = {
+TaskTable.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired,
@@ -117,4 +117,4 @@ TaskGrid.propTypes = {
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withTaskFields(withTasks(withSize(TaskGrid), { applySelectedTaskFilter: true })));
+export default withSettings(withTaskFields(withTasks(withSize(TaskTable), { applySelectedTaskFilter: true })));

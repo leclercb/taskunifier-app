@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import NoteSider from 'components/notes/sider/NoteSider';
-import NoteGrid from 'components/notes/grid/NoteGrid';
+import NoteTable from 'components/notes/table/NoteTable';
 import withSettings from 'containers/WithSettings';
 import NoteTabs from 'components/notes/tabs/NoteTabs';
 
@@ -33,7 +33,7 @@ function NoteView(props) {
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
-                    <NoteGrid />
+                    <NoteTable />
                 </div>
                 <div style={{ padding: 10, width: '100%' }}>
                     <NoteTabs />

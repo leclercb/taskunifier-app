@@ -3,7 +3,7 @@ import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import Draggable from 'react-draggable';
 import { SortIndicator } from 'react-virtualized';
-import DraggableElement from 'components/common/grid/DraggableElement';
+import DraggableElement from 'components/common/table/DraggableElement';
 import { move } from 'utils/ArrayUtils';
 
 export const resizeHandler = (prefix, updateSettings) => (fieldId, width) => {

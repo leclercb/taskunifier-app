@@ -11,7 +11,7 @@ import {
     isAlwaysInEditionForType,
     isCommitOnChangeForType
 } from 'utils/FieldUtils';
-import 'components/common/grid/CellRenderer.css';
+import 'components/common/table/CellRenderer.css';
 
 function CellRenderer(props) {
     const [editing, setEditing] = useState(false);
@@ -49,7 +49,7 @@ function CellRenderer(props) {
     if (editing || isAlwaysInEditionForType(props.field.type)) {
         const inputProps = {
             ref: inputRef,
-            fieldmode: 'grid'
+            fieldmode: 'table'
         };
 
         if (editing) {

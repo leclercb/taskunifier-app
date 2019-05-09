@@ -28,7 +28,7 @@ class RepeatField extends React.Component {
         return (
             <React.Fragment>
                 <ModalRepeatManager
-                    visible={this.props.fieldmode === 'grid' ? true : this.state.visible}
+                    visible={this.props.fieldmode === 'table' ? true : this.state.visible}
                     onClose={() => {
                         this.setVisible(false);
 
@@ -51,7 +51,7 @@ class RepeatField extends React.Component {
                 <Input
                     readOnly={true}
                     onClick={() => {
-                        if (this.props.fieldmode !== 'grid') {
+                        if (this.props.fieldmode !== 'table') {
                             this.setVisible(true);
                         }
                     }}
@@ -66,7 +66,7 @@ RepeatField.propTypes = {
     repeat: RepeatPropType,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    fieldmode: PropTypes.oneOf(['default', 'grid'])
+    fieldmode: PropTypes.oneOf(['default', 'table'])
 };
 
 export default RepeatField;

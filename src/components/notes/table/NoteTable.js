@@ -6,16 +6,16 @@ import withNoteFields from 'containers/WithNoteFields';
 import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
-import CellRenderer from 'components/common/grid/CellRenderer';
-import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/grid/ResizableAndMovableColumn';
-import { multiSelectionHandler } from 'components/common/grid/VirtualizedTable';
+import CellRenderer from 'components/common/table/CellRenderer';
+import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
+import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
-function NoteGrid(props) {
+function NoteTable(props) {
     const onUpdateNote = note => {
         props.updateNote(note);
     };
@@ -104,7 +104,7 @@ function NoteGrid(props) {
     );
 }
 
-NoteGrid.propTypes = {
+NoteTable.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired,
@@ -116,4 +116,4 @@ NoteGrid.propTypes = {
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withNoteFields(withNotes(withSize(NoteGrid), { applySelectedNoteFilter: true })));
+export default withSettings(withNoteFields(withNotes(withSize(NoteTable), { applySelectedNoteFilter: true })));

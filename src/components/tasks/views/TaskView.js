@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from 'components/tasks/sider/TaskSider';
-import TaskGrid from 'components/tasks/grid/TaskGrid';
+import TaskTable from 'components/tasks/table/TaskTable';
 import withSettings from 'containers/WithSettings';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
@@ -35,7 +35,7 @@ function TaskView(props) {
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
                     <TaskQuickAdd />
-                    <TaskGrid />
+                    <TaskTable />
                 </div>
                 <div style={{ padding: 10, width: '100%' }}>
                     <TaskTabs />

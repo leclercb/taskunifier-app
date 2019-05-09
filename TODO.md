@@ -1,6 +1,5 @@
 ## Todo List
 
-* Rename grid to table and uncomment linked grids
 * Print tasks and notes
 * Add sort order in filters
 * Add reminder and recurrence
