@@ -1,4 +1,4 @@
-const { app, ipcMain, BrowserWindow } = require('electron');
+const { app, ipcMain, shell, BrowserWindow } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
@@ -75,9 +75,9 @@ function createMainWindow() {
         window.show();
     });
 
-    window.on('close', e => {
+    window.on('close', event => {
         if (mainWindow) {
-            e.preventDefault();
+            event.preventDefault();
             mainWindow.webContents.send('app-close');
         }
     });
@@ -91,6 +91,24 @@ function createMainWindow() {
 
     return window;
 }
+
+ipcMain.on('pdf-viewer', (event, file) => {
+    /*
+    const pdfViewer = new BrowserWindow({
+        title: 'TaskUnifer 2 - PDF Viewer',
+        icon: 'public/resources/images/logo.png',
+        width: 800,
+        height: 600,
+        webPreferences: {
+            plugins: true
+        }
+    });
+
+    pdfViewer.loadURL(`file:///${file}`);
+    */
+
+   shell.openItem(file);
+});
 
 ipcMain.on('closed', () => {
     mainWindow = null;

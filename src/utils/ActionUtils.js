@@ -83,6 +83,18 @@ export function saveToFile(property, file, data) {
     };
 }
 
+export function saveBufferToFile(file, buffer) {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(file, buffer, err => {
+            if (err) {
+                reject();
+            } else {
+                resolve();
+            }
+        });
+    });
+}
+
 export function getPathSeparator() {
     return sep;
 }
