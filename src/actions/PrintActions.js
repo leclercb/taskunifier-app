@@ -1,6 +1,6 @@
-import { printDocument, printTable } from "utils/PrintUtils";
-import { getNoteFieldsIncludingDefaults } from "selectors/NoteFieldSelectors";
-import { getTaskFieldsIncludingDefaults } from "selectors/TaskFieldSelectors";
+import { printDocument, printTable } from 'utils/PrintUtils';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
+import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 
 export function printNotes(notes) {
     return (dispatch, getState) => {
