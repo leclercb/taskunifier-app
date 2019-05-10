@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getContactTitle } from "utils/ContactUtils";
+import { getContactTitle } from 'utils/ContactUtils';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 
@@ -76,7 +76,7 @@ export function toStringTimer(timer) {
     let value = timer.value || 0;
 
     if (timer.startDate) {
-        value = value + moment().diff(moment(timer.startDate), 'seconds')
+        value = value + moment().diff(moment(timer.startDate), 'seconds');
     }
 
     return toStringLength(value);

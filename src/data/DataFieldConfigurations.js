@@ -43,7 +43,6 @@ import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { getContacts } from 'selectors/ContactSelectors';
-import { getContactTitle } from 'utils/ContactUtils';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getGoals } from 'selectors/GoalSelectors';
@@ -65,16 +64,15 @@ import {
 import { escape } from 'utils/RegexUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 import {
-    toStringBoolean,
     toString,
+    toStringArray,
+    toStringBoolean,
     toStringContact,
-    toStringObject,
     toStringDate,
     toStringLength,
-    toStringArray,
     toStringNumber,
+    toStringObject,
     toStringPriority,
-    toStringArray,
     toStringStatus,
     toStringTimer
 } from 'utils/StringUtils';

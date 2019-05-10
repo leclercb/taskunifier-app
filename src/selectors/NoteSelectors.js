@@ -6,6 +6,7 @@ import { getNoteFields } from 'selectors/NoteFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
+import { sortObjects } from 'utils/SortUtils';
 
 export const getNotes = state => state.notes;
 
@@ -21,7 +22,7 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields) => {
         const fields = getDefaultNoteFields().concat(filterByVisibleState(noteFields));
 
-        return notes.filter(note => {
+        const filteredNotes = notes.filter(note => {
             if (!selectedNoteFilterDate || moment(note.creationDate).isAfter(moment(selectedNoteFilterDate))) {
                 return true;
             }
@@ -29,6 +30,6 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedNoteFilter, note, fields);
         });
 
-        return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState());
+        return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState());
     }
 );
