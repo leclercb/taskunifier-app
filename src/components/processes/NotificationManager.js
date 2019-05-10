@@ -31,7 +31,7 @@ function NotificationManager(props) {
 }
 
 NotificationManager.propTypes = {
-    notifications: PropTypes.arrayOf(NotificationPropType).isRequired,
+    notifications: PropTypes.arrayOf(NotificationPropType.isRequired).isRequired,
     deleteNotification: PropTypes.func.isRequired
 };
 

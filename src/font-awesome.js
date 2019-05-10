@@ -33,6 +33,7 @@ import {
     faPepperHot,
     faPlay,
     faPlus,
+    faPrint,
     faRetweet,
     faSave,
     faSearch,
@@ -77,6 +78,7 @@ library.add(faPause);
 library.add(faPepperHot);
 library.add(faPlay);
 library.add(faPlus);
+library.add(faPrint);
 library.add(faRetweet);
 library.add(faSave);
 library.add(faSearch);

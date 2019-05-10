@@ -79,7 +79,7 @@ function TaskFilterConditionForm(props) {
 
 TaskFilterConditionForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired),
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     condition: PropTypes.object.isRequired,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,

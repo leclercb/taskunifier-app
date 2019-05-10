@@ -48,7 +48,7 @@ function TaskEditionForm(props) {
 
 TaskEditionForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired),
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     task: TaskPropType.isRequired
 };
 

@@ -62,7 +62,7 @@ function TaskFilterConditionTree(props) {
 
 TaskFilterConditionTree.propTypes = {
     taskFilter: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired),
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     context: PropTypes.object,
     disabled: PropTypes.bool,
     updateTaskFilter: PropTypes.func.isRequired

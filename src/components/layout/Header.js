@@ -4,10 +4,13 @@ import { Button, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import withApp from 'containers/WithApp';
 import withNotes from 'containers/WithNotes';
+import withPrint from 'containers/WithPrint';
 import withTasks from 'containers/WithTasks';
 import Spacer from 'components/common/Spacer';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
+import { NotePropType } from 'proptypes/NotePropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function Header(props) {
     const onAddNote = () => {
@@ -18,6 +21,10 @@ function Header(props) {
 
     const onRemoveNotes = () => {
         props.deleteNote(props.selectedNoteIds);
+    };
+
+    const onPrintNotes = () => {
+        props.printNotes(props.notes);
     };
 
     const onAddTask = () => {
@@ -47,6 +54,10 @@ function Header(props) {
 
     const onRemoveTasks = () => {
         props.deleteTask(props.selectedTaskIds);
+    };
+
+    const onPrintTasks = () => {
+        props.printTasks(props.tasks);
     };
 
     const onLoad = () => {
@@ -143,6 +154,9 @@ function Header(props) {
                 createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
                 : null}
             {props.selectedView === 'note' ?
+                createButton('print', 'Print Notes', onPrintNotes)
+                : null}
+            {props.selectedView === 'note' ?
                 createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
@@ -151,6 +165,9 @@ function Header(props) {
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('plus', 'Create Dummy Tasks', onCreateDummyTasks)
                 : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
+                : null}
             {(props.selectedView === 'task' || props.selectedView === 'task-calendar') ?
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
                 : null}
@@ -158,7 +175,7 @@ function Header(props) {
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
-                createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
+                createButton('print', 'Print Tasks', onPrintTasks)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
@@ -166,6 +183,8 @@ function Header(props) {
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
                 : null}
+            <Spacer />
+            <Spacer />
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
             {createButton('folder-open', 'Load', onLoad)}
             {createButton('save', 'Save', onSave)}
@@ -177,13 +196,17 @@ function Header(props) {
 
 Header.propTypes = {
     pro: PropTypes.bool.isRequired,
+    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
+    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     selectedView: PropTypes.string.isRequired,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     addNote: PropTypes.func.isRequired,
     deleteNote: PropTypes.func.isRequired,
+    printNotes: PropTypes.func.isRequired,
     addTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
+    printTasks: PropTypes.func.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
@@ -199,4 +222,4 @@ Header.propTypes = {
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withNotes(withTasks(Header)));
+export default withApp(withNotes(withTasks(withPrint(Header))));

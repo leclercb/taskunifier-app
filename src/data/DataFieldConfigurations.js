@@ -42,14 +42,14 @@ import TaskSelect from 'components/tasks/common/TaskSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { getContacts } from 'selectors/ContactSelectors';
-import { getContexts } from 'selectors/ContextSelectors';
-import { getFolders } from 'selectors/FolderSelectors';
-import { getGoals } from 'selectors/GoalSelectors';
-import { getLocations } from 'selectors/LocationSelectors';
-import { getNotes } from 'selectors/NoteSelectors';
-import { getTasks } from 'selectors/TaskSelectors';
-import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
+import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
+import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
+import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
+import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
+import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import {
     compareBooleans,
     compareContacts,
@@ -175,8 +175,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareContacts(a, b, getContacts(state)),
-                toString: (value, state) => toStringContact(value, getContacts(state)),
+                compare: (a, b, state) => compareContacts(a, b, getContactsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringContact(value, getContactsFilteredByVisibleState(state)),
                 render: value => (
                     <ContactTitle contactId={value} />
                 ),
@@ -198,8 +198,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getContexts(state)),
-                toString: (value, state) => toStringObject(value, getContexts(state)),
+                compare: (a, b, state) => compareObjects(a, b, getContextsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getContextsFilteredByVisibleState(state)),
                 render: value => (
                     <ContextTitle contextId={value} />
                 ),
@@ -311,8 +311,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getFolders(state)),
-                toString: (value, state) => toStringObject(value, getFolders(state)),
+                compare: (a, b, state) => compareObjects(a, b, getFoldersFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getFoldersFilteredByVisibleState(state)),
                 render: value => (
                     <FolderTitle folderId={value} />
                 ),
@@ -334,8 +334,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getGoals(state)),
-                toString: (value, state) => toStringObject(value, getGoals(state)),
+                compare: (a, b, state) => compareObjects(a, b, getGoalsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getGoalsFilteredByVisibleState(state)),
                 render: value => (
                     <GoalTitle goalId={value} />
                 ),
@@ -470,8 +470,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getLocations(state)),
-                toString: (value, state) => toStringObject(value, getLocations(state)),
+                compare: (a, b, state) => compareObjects(a, b, getLocationsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getLocationsFilteredByVisibleState(state)),
                 render: value => (
                     <LocationTitle locationId={value} />
                 ),
@@ -525,8 +525,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getNotes(state)),
-                toString: (value, state) => toStringObject(value, getNotes(state)),
+                compare: (a, b, state) => compareObjects(a, b, getNotesFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getNotesFilteredByVisibleState(state)),
                 render: value => (
                     <NoteTitle noteId={value} />
                 ),
@@ -786,8 +786,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getTasks(state)),
-                toString: (value, state) => toStringObject(value, getTasks(state)),
+                compare: (a, b, state) => compareObjects(a, b, getTasksFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getTasksFilteredByVisibleState(state)),
                 render: value => (
                     <TaskTitle taskId={value} />
                 ),
@@ -809,8 +809,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getTaskTemplates(state)),
-                toString: (value, state) => toStringObject(value, getTaskTemplates(state)),
+                compare: (a, b, state) => compareObjects(a, b, getTaskTemplatesFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getTaskTemplatesFilteredByVisibleState(state)),
                 render: value => (
                     <TaskTemplateTitle taskTemplateId={value} />
                 ),

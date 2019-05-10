@@ -48,7 +48,7 @@ function ProcessList(props) {
 }
 
 ProcessList.propTypes = {
-    processes: PropTypes.arrayOf(ProcessPropType).isRequired
+    processes: PropTypes.arrayOf(ProcessPropType.isRequired).isRequired
 };
 
 export default ProcessList;

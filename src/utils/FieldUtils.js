@@ -28,8 +28,8 @@ export function getCompareForType(type, a, b, state) {
     return getFieldConfiguration(type).compare(a, b, state);
 }
 
-export function getToStringForType(type, options, a, b, state) {
-    return getFieldConfiguration(type, options).toString(a, b, state);
+export function getToStringForType(type, options, value, state) {
+    return getFieldConfiguration(type, options).toString(value, state);
 }
 
 export function getRenderForType(type, options, value, props) {

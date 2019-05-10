@@ -27,7 +27,7 @@ function ModalThreadManager(props) {
 }
 
 ModalThreadManager.propTypes = {
-    processes: PropTypes.arrayOf(ProcessPropType),
+    processes: PropTypes.arrayOf(ProcessPropType.isRequired).isRequired,
     threadManagerVisible: PropTypes.bool.isRequired,
     setThreadManagerVisible: PropTypes.func.isRequired
 };
