@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { getDefaultNoteFields } from 'data/DataNoteFields';
 import { getSelectedNoteFilter, getSelectedNoteFilterDate } from 'selectors/AppSelectors';
 import { getNoteFields } from 'selectors/NoteFieldSelectors';
+import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
 
@@ -27,5 +28,7 @@ export const getNotesFilteredBySelectedFilter = createSelector(
 
             return applyFilter(selectedNoteFilter, note, fields);
         });
+
+        return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState());
     }
 );

@@ -48,7 +48,9 @@ import { getContexts } from 'selectors/ContextSelectors';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getGoals } from 'selectors/GoalSelectors';
 import { getLocations } from 'selectors/LocationSelectors';
-import { store } from 'store/Store';
+import { getNotes } from 'selectors/NoteSelectors';
+import { getTasks } from 'selectors/TaskSelectors';
+import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
 import {
     compareBooleans,
     compareContacts,
@@ -62,6 +64,20 @@ import {
 } from 'utils/CompareUtils';
 import { escape } from 'utils/RegexUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
+import {
+    toStringBoolean,
+    toString,
+    toStringContact,
+    toStringObject,
+    toStringDate,
+    toStringLength,
+    toStringArray,
+    toStringNumber,
+    toStringPriority,
+    toStringArray,
+    toStringStatus,
+    toStringTimer
+} from 'utils/StringUtils';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -119,8 +135,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareBooleans(a, b),
-                toString: value => !!value,
+                compare: (a, b) => compareBooleans(a, b),
+                toString: value => toStringBoolean(value),
                 render: value => <Checkbox checked={!!value} />,
                 input: props => (
                     <Checkbox {...props} data-prevent-default={true} />
@@ -140,8 +156,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'color',
                 getValueFromEvent: event => event.color,
-                sort: (a, b) => compareStrings(a, b),
-                toString: value => value,
+                compare: (a, b) => compareStrings(a, b),
+                toString: value => toString(value),
                 render: value => <ColorPicker color={value} />,
                 input: props => (
                     <ColorPicker {...props} />
@@ -161,8 +177,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareContacts(store.getState().contacts, a, b),
-                toString: (value, state) => getContactTitle(getContacts(state).find(contact => contact.id === value)),
+                compare: (a, b, state) => compareContacts(a, b, getContacts(state)),
+                toString: (value, state) => toStringContact(value, getContacts(state)),
                 render: value => (
                     <ContactTitle contactId={value} />
                 ),
@@ -184,8 +200,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().contexts, a, b),
-                toString: (value, state) => getContexts(state).find(context => context.id === value),
+                compare: (a, b, state) => compareObjects(a, b, getContexts(state)),
+                toString: (value, state) => toStringObject(value, getContexts(state)),
                 render: value => (
                     <ContextTitle contextId={value} />
                 ),
@@ -216,8 +232,8 @@ export function getFieldConfiguration(type, options) {
                 },
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareDates(a, b, false),
-                toString: value => value ? moment(value).format(dateFormat) : '',
+                compare: (a, b) => compareDates(a, b, false),
+                toString: value => toStringDate(value, dateFormat),
                 render: value => {
                     if (extended && Number.isInteger(value)) {
                         return value;
@@ -259,8 +275,8 @@ export function getFieldConfiguration(type, options) {
                 },
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareDates(a, b, true),
-                toString: value => value ? moment(value).format(`${dateFormat} ${timeFormat}`) : '',
+                compare: (a, b) => compareDates(a, b, true),
+                toString: value => toStringDate(value, `${dateFormat} ${timeFormat}`),
                 render: value => {
                     if (extended && Number.isInteger(value)) {
                         return value;
@@ -297,8 +313,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().folders, a, b),
-                toString: (value, state) => getFolders(state).find(folder => folder.id === value),
+                compare: (a, b, state) => compareObjects(a, b, getFolders(state)),
+                toString: (value, state) => toStringObject(value, getFolders(state)),
                 render: value => (
                     <FolderTitle folderId={value} />
                 ),
@@ -320,8 +336,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().goals, a, b),
-                toString: (value, state) => getGoals(state).find(goal => goal.id === value),
+                compare: (a, b, state) => compareObjects(a, b, getGoals(state)),
+                toString: (value, state) => toStringObject(value, getGoals(state)),
                 render: value => (
                     <GoalTitle goalId={value} />
                 ),
@@ -343,8 +359,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareNumbers(a, b),
-                toString: value => value,
+                compare: (a, b) => compareNumbers(a, b),
+                toString: value => toStringNumber(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber min={0} max={12} {...props} style={{ width: 60 }} />
@@ -364,7 +380,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'length',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareNumbers(a, b),
+                compare: (a, b) => compareNumbers(a, b),
+                toString: value => toStringLength(value),
                 render: value => (
                     <LengthField length={value} readOnly={true} />
                 ),
@@ -386,7 +403,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: null,
+                compare: () => 0,
+                toString: value => toStringArray(value),
                 render: value => (
                     <LinkedContactLinksTitle linkIds={value} />
                 ),
@@ -408,7 +426,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: null,
+                compare: () => 0,
+                toString: value => toStringArray(value),
                 render: value => (
                     <LinkedFileLinksTitle linkIds={value} />
                 ),
@@ -430,7 +449,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: null,
+                compare: () => 0,
+                toString: value => toStringArray(value),
                 render: value => (
                     <LinkedTaskLinksTitle linkIds={value} />
                 ),
@@ -452,8 +472,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().locations, a, b),
-                toString: (value, state) => getLocations(state).find(location => location.id === value),
+                compare: (a, b, state) => compareObjects(a, b, getLocations(state)),
+                toString: (value, state) => toStringObject(value, getLocations(state)),
                 render: value => (
                     <LocationTitle locationId={value} />
                 ),
@@ -477,7 +497,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareNumbers(a, b),
+                compare: (a, b) => compareNumbers(a, b),
+                toString: value => toStringNumber(value, '', currency),
                 render: value => value ? currency + ' ' + value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber
@@ -506,7 +527,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().notes, a, b),
+                compare: (a, b, state) => compareObjects(a, b, getNotes(state)),
+                toString: (value, state) => toStringObject(value, getNotes(state)),
                 render: value => (
                     <NoteTitle noteId={value} />
                 ),
@@ -531,7 +553,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareNumbers(a, b),
+                compare: (a, b) => compareNumbers(a, b),
+                toString: value => toStringNumber(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber min={min} max={max} {...props} />
@@ -562,7 +585,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => comparePriorities(a, b),
+                compare: (a, b) => comparePriorities(a, b),
+                toString: value => toStringPriority(value),
                 render: value => (
                     <PriorityTitle priorityId={value} />
                 ),
@@ -584,7 +608,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareNumbers(a, b),
+                compare: (a, b) => compareNumbers(a, b),
+                toString: value => toStringNumber(value, '%'),
                 render: value => Number.isInteger(value) ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber min={0} max={100} {...props} />
@@ -604,7 +629,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'repeat',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareRepeats(a, b),
+                compare: (a, b) => compareRepeats(a, b),
+                toString: value => formatRepeat(value),
                 render: value => {
                     const result = formatRepeat(value);
                     return result ? result : <span>&nbsp;</span>;
@@ -630,7 +656,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareStrings(a, b),
+                compare: (a, b) => compareStrings(a, b),
+                toString: value => toString(value),
                 render: value => (
                     value ? value : <span>&nbsp;</span>
                 ),
@@ -671,7 +698,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: null,
+                compare: () => 0,
+                toString: value => toStringArray(value),
                 render: values => (
                     values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
                 ),
@@ -693,7 +721,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'checked',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareBooleans(a, b),
+                compare: (a, b) => compareBooleans(a, b),
+                toString: value => toStringBoolean(value),
                 render: value => <StarCheckbox checked={!!value} />,
                 input: props => (
                     <StarCheckbox {...props} />
@@ -713,7 +742,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareStatuses(a, b),
+                compare: (a, b) => compareStatuses(a, b),
+                toString: value => toStringStatus(value),
                 render: value => (
                     <StatusTitle statusId={value} />
                 ),
@@ -735,7 +765,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: null,
+                compare: () => 0,
+                toString: value => toStringArray(value),
                 render: value => (
                     <TagsTitle tagIds={value} />
                 ),
@@ -757,7 +788,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().tasks, a, b),
+                compare: (a, b, state) => compareObjects(a, b, getTasks(state)),
+                toString: (value, state) => toStringObject(value, getTasks(state)),
                 render: value => (
                     <TaskTitle taskId={value} />
                 ),
@@ -779,7 +811,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareObjects(store.getState().taskTemplates, a, b),
+                compare: (a, b, state) => compareObjects(a, b, getTaskTemplates(state)),
+                toString: (value, state) => toStringObject(value, getTaskTemplates(state)),
                 render: value => (
                     <TaskTemplateTitle taskTemplateId={value} />
                 ),
@@ -801,7 +834,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareStrings(a, b),
+                compare: (a, b) => compareStrings(a, b),
+                toString:value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Input.TextArea autosize={true} {...props} onPressEnter={null} />
@@ -821,7 +855,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'timer',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: null,
+                compare: () => 0,
+                toString:value => toStringTimer(value),
                 render: (value, props) => (
                     <TimerField
                         timer={value}
@@ -847,7 +882,8 @@ export function getFieldConfiguration(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                sort: (a, b) => compareStrings(a, b),
+                compare: (a, b) => compareStrings(a, b),
+                toString:value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Input {...props} />

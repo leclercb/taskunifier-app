@@ -10,7 +10,7 @@ export function compareBooleans(a, b) {
     return boolB - boolA;
 }
 
-export function compareContacts(contacts, a, b) {
+export function compareContacts(a, b, contacts) {
     const objectA = contacts.find(contact => contact.id === a);
     const objectB = contacts.find(contact => contact.id === b);
 
@@ -39,7 +39,7 @@ export function compareNumbers(a, b) {
     return numB - numA;
 }
 
-export function compareObjects(objects, a, b) {
+export function compareObjects(a, b, objects) {
     const objectA = objects.find(object => object.id === a);
     const objectB = objects.find(object => object.id === b);
 
@@ -55,7 +55,7 @@ export function compareRepeats(a, b) {
 }
 
 export function compareStatuses(a, b) {
-    return compareObjects(getStatuses(), a, b);
+    return compareObjects(a, b, getStatuses());
 }
 
 export function compareStrings(a, b) {

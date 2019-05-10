@@ -4,8 +4,10 @@ import { getDefaultTaskFields } from 'data/DataTaskFields';
 import { getSelectedTaskFilter, getSelectedTaskFilterDate } from 'selectors/AppSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
+import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
+import { sortObjects } from 'utils/SortUtils';
 
 export const getTasks = state => state.tasks;
 
@@ -21,12 +23,14 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     (tasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, settings) => {
         const fields = getDefaultTaskFields(settings).concat(filterByVisibleState(taskFields));
 
-        return tasks.filter(task => {
+        const filteredTasks = tasks.filter(task => {
             if (!selectedTaskFilterDate || moment(task.creationDate).isAfter(moment(selectedTaskFilterDate))) {
                 return true;
             }
 
             return applyFilter(selectedTaskFilter, task, fields);
         });
+
+        return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState());
     }
 );
