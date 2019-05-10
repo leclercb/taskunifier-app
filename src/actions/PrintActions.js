@@ -1,7 +1,7 @@
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { saveBufferToFile, join, createDirectory } from 'utils/ActionUtils';
+import { createDirectory, join, saveBufferToFile } from 'utils/ActionUtils';
 import { printDocument, printTable } from 'utils/PrintUtils';
 
 const electron = window.require('electron');
