@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
 import Header from 'components/layout/Header';
-import Footer from 'components/layout/Footer';
 import withApp from 'containers/WithApp';
 import withBusy from 'containers/WithBusy';
 import NotificationManager from 'components/processes/NotificationManager';
@@ -51,9 +50,6 @@ function AppLayout(props) {
                     <Layout style={{ height: '100%', position: 'relative' }}>
                         {getView()}
                     </Layout>
-                    <Layout.Footer style={{ textAlign: 'center' }}>
-                        <Footer />
-                    </Layout.Footer>
                 </Layout>
             </Spin>
         </React.Fragment>
