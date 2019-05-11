@@ -1,8 +1,6 @@
 ## Todo List
 
-* Fix forward ref (category manager)
 * Print tasks and notes
-* Add sort order in filters
 * Add reminder and recurrence
 * Postpone Snooze
 * Batch edit task

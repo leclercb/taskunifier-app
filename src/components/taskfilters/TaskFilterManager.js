@@ -1,12 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Divider, Empty, Row } from 'antd';
-import withTaskFilters from 'containers/WithTaskFilters';
-import TaskFilterList from 'components/taskfilters/TaskFilterList';
+import PropTypes from 'prop-types';
 import TaskFilterConditionTree from 'components/taskfilters/TaskFilterConditionTree';
+import TaskFilterList from 'components/taskfilters/TaskFilterList';
 import TaskFilterForm from 'components/taskfilters/TaskFilterForm';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import TaskSorterTable from 'components/taskfilters/TaskSorterTable';
+import withTaskFilters from 'containers/WithTaskFilters';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 
 function TaskFilterManager(props) {
     const selectedTaskFilterId = props.taskFilterId;

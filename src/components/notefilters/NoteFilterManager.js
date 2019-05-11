@@ -1,10 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Divider, Empty, Row } from 'antd';
-import withNoteFilters from 'containers/WithNoteFilters';
-import NoteFilterList from 'components/notefilters/NoteFilterList';
+import PropTypes from 'prop-types';
 import NoteFilterConditionTree from 'components/notefilters/NoteFilterConditionTree';
+import NoteFilterList from 'components/notefilters/NoteFilterList';
 import NoteFilterForm from 'components/notefilters/NoteFilterForm';
+import NoteSorterTable from 'components/notefilters/NoteSorterTable';
+import withNoteFilters from 'containers/WithNoteFilters';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 
 function NoteFilterManager(props) {
@@ -16,6 +17,13 @@ function NoteFilterManager(props) {
 
     const onNoteFilterSelection = noteFilter => {
         props.onNoteFilterSelection(noteFilter.id);
+    };
+
+    const onUpdateSorters = sorters => {
+        props.updateNoteFilter({
+            ...selectedNoteFilter,
+            sorters: sorters
+        });
     };
 
     const selectedNoteFilter = props.noteFilters.find(noteFilter => noteFilter.id === selectedNoteFilterId);
@@ -45,6 +53,11 @@ function NoteFilterManager(props) {
                             key={'conditionTree_' + selectedNoteFilterId}
                             noteFilter={selectedNoteFilter}
                             updateNoteFilter={props.updateNoteFilter} />
+                        <Divider />
+                        <NoteSorterTable
+                            key={'sorterTable_' + selectedNoteFilterId}
+                            sorters={selectedNoteFilter.sorters || []}
+                            updateSorters={onUpdateSorters} />
                     </React.Fragment>
                 ) : <Empty description="Please select a note filter" />}
             </Col>
