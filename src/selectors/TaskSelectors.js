@@ -1,7 +1,6 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
 import { getSelectedTaskFilter, getSelectedTaskFilterDate } from 'selectors/AppSelectors';
-import { getSettings } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';

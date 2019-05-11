@@ -8,7 +8,7 @@ export function sortObjects(objects, fields, filter, state) {
     return objects.sort((a, b) => {
         for (let sorter of filter.sorters) {
             const field = fields.find(field => field.id === sorter.field);
-            const sortDirection = sorter.direction
+            const sortDirection = sorter.direction;
 
             if (!field || !sortDirection) {
                 continue;
