@@ -5,13 +5,13 @@ import Icon from 'components/common/Icon';
 import withLocations from 'containers/WithLocations';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
 
-export function LocationSelect(props) {
+export const LocationSelect = React.forwardRef(function LocationSelect(props, ref) {
     const { locations, ...restProps } = props;
 
     restProps.value = locations.find(location => location.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {locations.map(location => (
                 <Select.Option key={location.id} value={location.id}>
                     <Icon icon="circle" color={location.color} text={location.title} />
@@ -19,7 +19,7 @@ export function LocationSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 LocationSelect.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired

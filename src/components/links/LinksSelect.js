@@ -6,11 +6,11 @@ import withLinkedContactLinks from 'containers/WithLinkedContactLinks';
 import withLinkedFileLinks from 'containers/WithLinkedFileLinks';
 import withLinkedTaskLinks from 'containers/WithLinkedTaskLinks';
 
-export function LinksSelect(props) {
+export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
     const { links, ...restProps } = props;
 
     return (
-        <Select mode="tags" allowClear={true} {...restProps}>
+        <Select ref={ref} mode="tags" allowClear={true} {...restProps}>
             {links.map(link => (
                 <Select.Option key={link.id} value={link.id}>
                     <Tag color={link.color}>{link.title}</Tag>
@@ -18,7 +18,7 @@ export function LinksSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 LinksSelect.propTypes = {
     links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired

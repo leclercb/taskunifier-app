@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withApp from 'containers/WithApp';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import CategoryManager from 'components/categories/CategoryManager';
+import withApp from 'containers/WithApp';
 
 function ModalCategoryManager(props) {
     const onCloseCategoryManager = () => {

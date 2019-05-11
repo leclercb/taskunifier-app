@@ -7,11 +7,11 @@ import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
 import { getPriorityColor } from 'utils/SettingUtils';
 
-function PrioritySelect(props) {
+const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
     const { priorities, ...restProps } = props;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {priorities.map(priority => (
                 <Select.Option key={priority.id} value={priority.id}>
                     <Icon icon="circle" color={getPriorityColor(priority.id, props.settings)} text={priority.title} />
@@ -19,7 +19,7 @@ function PrioritySelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 PrioritySelect.propTypes = {
     priorities: PropTypes.arrayOf(PriorityPropType.isRequired).isRequired,

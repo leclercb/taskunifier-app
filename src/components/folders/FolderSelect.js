@@ -5,13 +5,13 @@ import { FolderPropType } from 'proptypes/FolderPropTypes';
 import withFolders from 'containers/WithFolders';
 import Icon from 'components/common/Icon';
 
-export function FolderSelect(props) {
+export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
     const { folders, ...restProps } = props;
 
     restProps.value = folders.find(folder => folder.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {folders.map(folder => (
                 <Select.Option key={folder.id} value={folder.id}>
                     <Icon icon="circle" color={folder.color} text={folder.title} />
@@ -19,7 +19,7 @@ export function FolderSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired

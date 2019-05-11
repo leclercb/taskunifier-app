@@ -5,13 +5,13 @@ import { NotePropType } from 'proptypes/NotePropTypes';
 import withNotes from 'containers/WithNotes';
 import Icon from 'components/common/Icon';
 
-export function NoteSelect(props) {
+export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
     const { notes, ...restProps } = props;
 
     restProps.value = notes.find(note => note.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {notes.map(note => (
                 <Select.Option key={note.id} value={note.id}>
                     <Icon icon="circle" color={note.color} text={note.title} />
@@ -19,7 +19,7 @@ export function NoteSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 NoteSelect.propTypes = {
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired

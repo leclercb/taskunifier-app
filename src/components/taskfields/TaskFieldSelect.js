@@ -5,13 +5,13 @@ import Icon from 'components/common/Icon';
 import withTaskFields from 'containers/WithTaskFields';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 
-export function TaskFieldSelect(props) {
+export const TaskFieldSelect = React.forwardRef(function TaskFieldSelect(props, ref) {
     const { taskFields, ...restProps } = props;
 
     restProps.value = taskFields.find(taskField => taskField.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {taskFields.map(field => (
                 <Select.Option key={field.id} value={field.id}>
                     <Icon icon="circle" color={field.color} text={field.title} />
@@ -19,7 +19,7 @@ export function TaskFieldSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 TaskFieldSelect.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired

@@ -7,13 +7,13 @@ import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
-export function TaskSelect(props) {
+export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
     const { tasks, ...restProps } = props;
 
     restProps.value = props.tasks.find(task => task.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {tasks.map(task => (
                 <Select.Option key={task.id} value={task.id}>
                     <Icon
@@ -29,7 +29,7 @@ export function TaskSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 TaskSelect.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,

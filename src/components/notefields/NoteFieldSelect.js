@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import withNoteFields from 'containers/WithNoteFields';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 
-export function NoteFieldSelect(props) {
+export const NoteFieldSelect = React.forwardRef(function NoteFieldSelect(props, ref) {
     const { noteFields, ...restProps } = props;
 
     restProps.value = noteFields.find(noteField => noteField.id === restProps.value) ? restProps.value : null;
 
     return (
-        <Select allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...restProps}>
             {noteFields.map(field => (
                 <Select.Option key={field.id} value={field.id}>
                     <Tag color={field.color}>{field.title}</Tag>
@@ -18,7 +18,7 @@ export function NoteFieldSelect(props) {
             ))}
         </Select>
     );
-}
+});
 
 NoteFieldSelect.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
