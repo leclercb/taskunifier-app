@@ -643,7 +643,7 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
-                toString: value => toStringNumber(value, '%'),
+                toString: value => toStringNumber(value, '', '%'),
                 render: value => Number.isInteger(value) ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber min={0} max={100} {...props} />

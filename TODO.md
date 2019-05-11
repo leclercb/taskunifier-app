@@ -1,6 +1,5 @@
 ## Todo List
 
-* Print tasks and notes
 * Add reminder and recurrence
 * Postpone Snooze
 * Batch edit task
