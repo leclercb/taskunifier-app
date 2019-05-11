@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import withThread from 'containers/WithThread';
-import ProcessList from 'components/processes/ProcessList';
+import ProcessList from 'components/thread/ProcessList';
 import Icon from 'components/common/Icon';
 import { ProcessPropType } from 'proptypes/ProcessPropTypes';
 

@@ -154,6 +154,7 @@ function NoteSider(props) {
         return <Badge
             count={props.noteNumber}
             showZero={true}
+            overflowCount={9999}
             style={{
                 backgroundColor: Constants.badgeColor,
                 fontWeight: 'bold',

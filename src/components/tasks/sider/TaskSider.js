@@ -157,6 +157,7 @@ function TaskSider(props) {
         return <Badge
             count={props.taskNumber}
             showZero={true}
+            overflowCount={9999}
             style={{
                 backgroundColor: Constants.badgeColor,
                 fontWeight: 'bold',
