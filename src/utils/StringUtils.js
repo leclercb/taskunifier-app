@@ -2,6 +2,7 @@ import moment from 'moment';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
+import { getSortDirections } from 'data/DataSortDirections';
 
 export function toString(value) {
     if (typeof value === 'undefined' || value === null) {
@@ -56,6 +57,11 @@ export function toStringNumber(value, prefix = '', suffix = '') {
     }
 
     return prefix + value + suffix;
+}
+
+export function toStringSortDirection(value) {
+    const sortDirection = getSortDirections().find(sortDirection => sortDirection.id === value);
+    return sortDirection ? sortDirection.title : '';
 }
 
 export function toStringPriority(value) {

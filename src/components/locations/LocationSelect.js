@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { LocationPropType } from 'proptypes/LocationPropTypes';
-import withLocations from 'containers/WithLocations';
 import Icon from 'components/common/Icon';
+import withLocations from 'containers/WithLocations';
+import { LocationPropType } from 'proptypes/LocationPropTypes';
 
 export function LocationSelect(props) {
     const { locations, ...restProps } = props;
 
-    restProps.value = props.locations.find(location => location.id === restProps.value) ? restProps.value : null;
+    restProps.value = locations.find(location => location.id === restProps.value) ? restProps.value : null;
 
     return (
         <Select allowClear={true} {...restProps}>

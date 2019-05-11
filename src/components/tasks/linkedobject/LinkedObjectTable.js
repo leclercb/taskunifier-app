@@ -126,11 +126,11 @@ function LinkedObjectTable(props) {
             <div style={{ marginTop: 10 }}>
                 <Button onClick={() => onAddLinkedObject()}>
                     Add
-            </Button>
+                </Button>
                 <Spacer />
                 <Button onClick={() => onDeleteLinkedObjects(selectedLinkedObjectIds)}>
                     Delete
-            </Button>
+                </Button>
             </div>
         </React.Fragment>
     );

@@ -1,49 +1,49 @@
-import { getFieldConfiguration } from 'data/DataFieldConfigurations';
+import { getFieldType } from 'data/DataFieldTypes';
 
 export function getWidthForType(type) {
-    return getFieldConfiguration(type).width;
+    return getFieldType(type).width;
 }
 
 export function isAlwaysInEditionForType(type) {
-    return getFieldConfiguration(type).alwaysInEdition;
+    return getFieldType(type).alwaysInEdition;
 }
 
 export function isCommitOnChangeForType(type) {
-    return getFieldConfiguration(type).commitOnChange;
+    return getFieldType(type).commitOnChange;
 }
 
 export function getNormalizeForType(type) {
-    return getFieldConfiguration(type).normalize;
+    return getFieldType(type).normalize;
 }
 
 export function getValuePropNameForType(type) {
-    return getFieldConfiguration(type).valuePropName;
+    return getFieldType(type).valuePropName;
 }
 
 export function getValueFromEventForType(type) {
-    return getFieldConfiguration(type).getValueFromEvent;
+    return getFieldType(type).getValueFromEvent;
 }
 
 export function getCompareForType(type, a, b, state) {
-    return getFieldConfiguration(type).compare(a, b, state);
+    return getFieldType(type).compare(a, b, state);
 }
 
 export function getToStringForType(type, options, value, state) {
-    return getFieldConfiguration(type, options).toString(value, state);
+    return getFieldType(type, options).toString(value, state);
 }
 
 export function getRenderForType(type, options, value, props) {
-    return getFieldConfiguration(type, options).render(value, props);
+    return getFieldType(type, options).render(value, props);
 }
 
 export function getInputForType(type, options, props) {
-    return getFieldConfiguration(type, options).input(props);
+    return getFieldType(type, options).input(props);
 }
 
 export function getSelectForType(type) {
-    return getFieldConfiguration(type).select();
+    return getFieldType(type).select();
 }
 
 export function getConditionsFieldTypeForType(type) {
-    return getFieldConfiguration(type).conditionsFieldType;
+    return getFieldType(type).conditionsFieldType;
 }

@@ -8,7 +8,7 @@ import Icon from 'components/common/Icon';
 export function FolderSelect(props) {
     const { folders, ...restProps } = props;
 
-    restProps.value = props.folders.find(folder => folder.id === restProps.value) ? restProps.value : null;
+    restProps.value = folders.find(folder => folder.id === restProps.value) ? restProps.value : null;
 
     return (
         <Select allowClear={true} {...restProps}>

@@ -37,6 +37,10 @@ export function getTaskBackgroundColor(task, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 }
 
+export function getSorterBackgroundColor(sorter, index, settings) {
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+}
+
 export function getLinkedObjectBackgroundColor(linkedObject, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 }

@@ -8,7 +8,7 @@ import Icon from 'components/common/Icon';
 export function ContextSelect(props) {
     const { contexts, ...restProps } = props;
 
-    restProps.value = props.contexts.find(context => context.id === restProps.value) ? restProps.value : null;
+    restProps.value = contexts.find(context => context.id === restProps.value) ? restProps.value : null;
 
     return (
         <Select allowClear={true} {...restProps}>

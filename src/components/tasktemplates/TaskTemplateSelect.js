@@ -8,7 +8,7 @@ import Icon from 'components/common/Icon';
 export function TaskTemplateSelect(props) {
     const { taskTemplates, ...restProps } = props;
 
-    restProps.value = props.taskTemplates.find(taskTemplate => taskTemplate.id === restProps.value) ? restProps.value : null;
+    restProps.value = taskTemplates.find(taskTemplate => taskTemplate.id === restProps.value) ? restProps.value : null;
 
     return (
         <Select allowClear={true} {...restProps}>

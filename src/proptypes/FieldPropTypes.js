@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { getFieldTypes } from 'data/DataFieldConfigurations';
+import { getFieldTypes } from 'data/DataFieldTypes';
 
 export const FieldPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,

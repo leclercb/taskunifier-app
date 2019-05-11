@@ -84,5 +84,7 @@
     "linkedContactColumnWidth_links": 554,
     "linkedContactColumnOrder_links": 0,
     "linkedContactColumnOrder_contact": 1,
-    "linkedContactColumnWidth_contact": 366
+    "linkedContactColumnWidth_contact": 366,
+    "linkedTaskColumnWidth_links": 394,
+    "linkedFileColumnWidth_links": 384
 }

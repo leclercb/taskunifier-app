@@ -6,6 +6,7 @@ import TaskFilterList from 'components/taskfilters/TaskFilterList';
 import TaskFilterConditionTree from 'components/taskfilters/TaskFilterConditionTree';
 import TaskFilterForm from 'components/taskfilters/TaskFilterForm';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import TaskSorterTable from 'components/taskfilters/TaskSorterTable';
 
 function TaskFilterManager(props) {
     const selectedTaskFilterId = props.taskFilterId;
@@ -16,6 +17,13 @@ function TaskFilterManager(props) {
 
     const onTaskFilterSelection = taskFilter => {
         props.onTaskFilterSelection(taskFilter.id);
+    };
+
+    const onUpdateSorters = sorters => {
+        props.updateTaskFilter({
+            ...selectedTaskFilter,
+            sorters: sorters
+        });
     };
 
     const selectedTaskFilter = props.taskFilters.find(taskFilter => taskFilter.id === selectedTaskFilterId);
@@ -45,6 +53,11 @@ function TaskFilterManager(props) {
                             key={'conditionTree_' + selectedTaskFilterId}
                             taskFilter={selectedTaskFilter}
                             updateTaskFilter={props.updateTaskFilter} />
+                        <Divider />
+                        <TaskSorterTable
+                            key={'sorterTable_' + selectedTaskFilterId}
+                            sorters={selectedTaskFilter.sorters || []}
+                            updateSorters={onUpdateSorters} />
                     </React.Fragment>
                 ) : <Empty description="Please select a task filter" />}
             </Col>

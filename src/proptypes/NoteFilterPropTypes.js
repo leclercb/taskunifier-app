@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
+import { SorterPropType } from 'proptypes/SorterPropTypes';
 
 export const NoteFilterPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     color: PropTypes.string,
     condition: PropTypes.object,
-    sortBy: PropTypes.arrayOf(PropTypes.string.isRequired)
+    sorters: PropTypes.arrayOf(SorterPropType.isRequired)
 });

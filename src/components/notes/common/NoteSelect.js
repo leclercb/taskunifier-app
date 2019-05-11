@@ -8,7 +8,7 @@ import Icon from 'components/common/Icon';
 export function NoteSelect(props) {
     const { notes, ...restProps } = props;
 
-    restProps.value = props.notes.find(note => note.id === restProps.value) ? restProps.value : null;
+    restProps.value = notes.find(note => note.id === restProps.value) ? restProps.value : null;
 
     return (
         <Select allowClear={true} {...restProps}>

@@ -8,7 +8,7 @@ import Icon from 'components/common/Icon';
 export function GoalSelect(props) {
     const { goals, ...restProps } = props;
 
-    restProps.value = props.goals.find(goal => goal.id === restProps.value) ? restProps.value : null;
+    restProps.value = goals.find(goal => goal.id === restProps.value) ? restProps.value : null;
 
     return (
         <Select allowClear={true} {...restProps}>

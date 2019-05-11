@@ -28,17 +28,23 @@ import {
 } from 'components/links/LinksTitle';
 import LocationTitle from 'components/locations/LocationTitle';
 import LocationSelect from 'components/locations/LocationSelect';
+import NoteFieldTitle from 'components/notefields/NoteFieldTitle';
+import NoteFieldSelect from 'components/notefields/NoteFieldSelect';
 import NoteTitle from 'components/notes/common/NoteTitle';
 import NoteSelect from 'components/notes/common/NoteSelect';
 import PriorityTitle from 'components/priorities/PriorityTitle';
 import PrioritySelect from 'components/priorities/PrioritySelect';
 import RepeatField from 'components/repeat/RepeatField';
+import SortDirectionTitle from 'components/sorters/SortDirectionTitle';
+import SortDirectionSelect from 'components/sorters/SortDirectionSelect';
 import StatusTitle from 'components/statuses/StatusTitle';
 import StatusSelect from 'components/statuses/StatusSelect';
 import TagsTitle from 'components/tags/TagsTitle';
 import TagsSelect from 'components/tags/TagsSelect';
 import TaskTitle from 'components/tasks/common/TaskTitle';
 import TaskSelect from 'components/tasks/common/TaskSelect';
+import TaskFieldTitle from 'components/taskfields/TaskFieldTitle';
+import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
@@ -58,6 +64,7 @@ import {
     compareObjects,
     comparePriorities,
     compareRepeats,
+    compareSortDirections,
     compareStatuses,
     compareStrings
 } from 'utils/CompareUtils';
@@ -73,9 +80,12 @@ import {
     toStringNumber,
     toStringObject,
     toStringPriority,
+    toStringSortDirection,
     toStringStatus,
     toStringTimer
 } from 'utils/StringUtils';
+import { getNoteFieldsFilteredByVisibleState } from 'selectors/NoteFieldSelectors';
+import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -103,16 +113,19 @@ export function getFieldTypes() {
         'location',
         'money',
         'note',
+        'noteField',
         'number',
         'priority',
         'progress',
         'repeat',
         'select',
         'selectTags',
+        'sortDirection',
         'star',
         'status',
         'tags',
         'task',
+        'taskField',
         'taskTemplate',
         'text',
         'textarea',
@@ -120,7 +133,7 @@ export function getFieldTypes() {
     ];
 }
 
-export function getFieldConfiguration(type, options) {
+export function getFieldType(type, options) {
     let configuration = null;
 
     switch (type) {
@@ -539,6 +552,29 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
+        case 'noteField': {
+            configuration = {
+                title: 'Note Field',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                compare: (a, b, state) => compareObjects(a, b, getNoteFieldsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getNoteFieldsFilteredByVisibleState(state)),
+                render: value => (
+                    <NoteFieldTitle noteFieldId={value} />
+                ),
+                input: props => (
+                    <NoteFieldSelect {...props} />
+                ),
+                conditionsFieldType: 'noteField',
+                options: []
+            };
+
+            break;
+        }
         case 'number': {
             const min = options && options.min ? options.min : -Infinity;
             const max = options && options.max ? options.max : Infinity;
@@ -710,6 +746,29 @@ export function getFieldConfiguration(type, options) {
 
             break;
         }
+        case 'sortDirection': {
+            configuration = {
+                title: 'Sort Direction',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                compare: (a, b) => compareSortDirections(a, b),
+                toString: value => toStringSortDirection(value),
+                render: value => (
+                    <SortDirectionTitle sortDirectionId={value} />
+                ),
+                input: props => (
+                    <SortDirectionSelect {...props} />
+                ),
+                conditionsFieldType: 'sortDirection',
+                options: []
+            };
+
+            break;
+        }
         case 'star': {
             configuration = {
                 title: 'Star',
@@ -795,6 +854,29 @@ export function getFieldConfiguration(type, options) {
                     <TaskSelect {...props} />
                 ),
                 conditionsFieldType: 'task',
+                options: []
+            };
+
+            break;
+        }
+        case 'taskField': {
+            configuration = {
+                title: 'Task Field',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                compare: (a, b, state) => compareObjects(a, b, getTaskFieldsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getTaskFieldsFilteredByVisibleState(state)),
+                render: value => (
+                    <TaskFieldTitle taskFieldId={value} />
+                ),
+                input: props => (
+                    <TaskFieldSelect {...props} />
+                ),
+                conditionsFieldType: 'taskField',
                 options: []
             };
 

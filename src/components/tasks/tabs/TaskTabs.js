@@ -4,9 +4,9 @@ import { Empty, Tabs } from 'antd';
 import LinkedObjectTable from 'components/tasks/linkedobject/LinkedObjectTable';
 import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
 import withSelectedTasks from 'containers/WithSelectedTasks';
-import { getDefaultLinkedContactFields } from 'data/DataLinkedContactFields';
-import { getDefaultLinkedFileFields } from 'data/DataLinkedFileFields';
-import { getDefaultLinkedTaskFields } from 'data/DataLinkedTaskFields';
+import { getLinkedContactFields } from 'data/DataLinkedContactFields';
+import { getLinkedFileFields } from 'data/DataLinkedFileFields';
+import { getLinkedTaskFields } from 'data/DataLinkedTaskFields';
 import 'components/tasks/tabs/TaskTabs.css';
 
 function TaskTabs(props) {
@@ -46,7 +46,7 @@ function TaskTabs(props) {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Contacts" key="linkedContacts">
                 <LinkedObjectTable
-                    linkedObjectFields={getDefaultLinkedContactFields()}
+                    linkedObjectFields={getLinkedContactFields()}
                     linkedObjects={props.selectedTasks[0].linkedContacts || []}
                     updateLinkedObjects={onUpdateLinkedContacts}
                     orderSettingPrefix='linkedContactColumnOrder_'
@@ -54,7 +54,7 @@ function TaskTabs(props) {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Files" key="linkedFiles">
                 <LinkedObjectTable
-                    linkedObjectFields={getDefaultLinkedFileFields()}
+                    linkedObjectFields={getLinkedFileFields()}
                     linkedObjects={props.selectedTasks[0].linkedFiles || []}
                     updateLinkedObjects={onUpdateLinkedFiles}
                     orderSettingPrefix='linkedFileColumnOrder_'
@@ -62,7 +62,7 @@ function TaskTabs(props) {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Tasks" key="linkedTasks">
                 <LinkedObjectTable
-                    linkedObjectFields={getDefaultLinkedTaskFields()}
+                    linkedObjectFields={getLinkedTaskFields()}
                     linkedObjects={props.selectedTasks[0].linkedTasks || []}
                     updateLinkedObjects={onUpdateLinkedTasks}
                     orderSettingPrefix='linkedTaskColumnOrder_'

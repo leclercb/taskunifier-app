@@ -1,4 +1,4 @@
-export function getDefaultLinkedContactFields() {
+export function getLinkedContactFields() {
     return [
         {
             static: true,

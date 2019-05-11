@@ -7,7 +7,7 @@ import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
-import { sortObjects } from 'utils/SortUtils';
+import { sortObjects } from 'utils/SorterUtils';
 
 export const getTasks = state => state.tasks;
 
@@ -31,6 +31,6 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedTaskFilter, task, fields);
         });
 
-        return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState());
+        return sortObjects(filteredTasks, fields, selectedTaskFilter, store.getState());
     }
 );

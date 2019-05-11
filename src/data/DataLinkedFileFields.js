@@ -1,4 +1,4 @@
-export function getDefaultLinkedFileFields() {
+export function getLinkedFileFields() {
     return [
         {
             static: true,

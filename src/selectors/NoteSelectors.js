@@ -6,7 +6,7 @@ import { getNoteFields } from 'selectors/NoteFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
-import { sortObjects } from 'utils/SortUtils';
+import { sortObjects } from 'utils/SorterUtils';
 
 export const getNotes = state => state.notes;
 
@@ -30,6 +30,6 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedNoteFilter, note, fields);
         });
 
-        return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState());
+        return sortObjects(filteredNotes, fields, selectedNoteFilter, store.getState());
     }
 );

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { getContactTitle } from 'utils/ContactUtils';
+import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getPriorityIndex } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { formatRepeat } from 'utils/RepeatUtils';
@@ -44,6 +45,10 @@ export function compareObjects(a, b, objects) {
     const objectB = objects.find(object => object.id === b);
 
     return compareStrings(objectA ? objectA.title : '', objectB ? objectB.title : '');
+}
+
+export function compareSortDirections(a, b) {
+    return getSortDirectionIndex(b) - getSortDirectionIndex(a);
 }
 
 export function comparePriorities(a, b) {

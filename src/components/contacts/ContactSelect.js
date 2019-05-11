@@ -9,6 +9,8 @@ import { getContactTitle } from 'utils/ContactUtils';
 export function ContactSelect(props) {
     const { contacts, ...restProps } = props;
 
+    restProps.value = contacts.find(contact => contact.id === restProps.value) ? restProps.value : null;
+
     return (
         <Select allowClear={true} {...restProps}>
             {contacts.map(contact => (

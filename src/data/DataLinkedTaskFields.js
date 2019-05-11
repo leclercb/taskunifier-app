@@ -1,4 +1,4 @@
-export function getDefaultLinkedTaskFields() {
+export function getLinkedTaskFields() {
     return [
         {
             static: true,
