@@ -5,14 +5,14 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 export const getNoteFields = state => state.noteFields;
 
 export const getNoteFieldsFilteredByVisibleState = createSelector(
-    [getNoteFields],
+    getNoteFields,
     (noteFields) => {
         return filterByVisibleState(noteFields);
     }
 );
 
 export const getNoteFieldsIncludingDefaults = createSelector(
-    [getNoteFields],
+    getNoteFields,
     (noteFields) => {
         return getDefaultNoteFields().concat(filterByVisibleState(noteFields));
     }

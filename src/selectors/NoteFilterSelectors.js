@@ -4,7 +4,7 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 export const getNoteFilters = state => state.noteFilters;
 
 export const getNoteFiltersFilteredByVisibleState = createSelector(
-    [getNoteFilters],
+    getNoteFilters,
     (noteFilters) => {
         return filterByVisibleState(noteFilters);
     }

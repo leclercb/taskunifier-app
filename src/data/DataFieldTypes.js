@@ -84,8 +84,8 @@ import {
     toStringStatus,
     toStringTimer
 } from 'utils/StringUtils';
-import { getNoteFieldsFilteredByVisibleState } from 'selectors/NoteFieldSelectors';
-import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
+import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 
 function defaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -561,8 +561,8 @@ export function getFieldType(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getNoteFieldsFilteredByVisibleState(state)),
-                toString: (value, state) => toStringObject(value, getNoteFieldsFilteredByVisibleState(state)),
+                compare: (a, b, state) => compareObjects(a, b, getNoteFieldsIncludingDefaults(state)),
+                toString: (value, state) => toStringObject(value, getNoteFieldsIncludingDefaults(state)),
                 render: value => (
                     <NoteFieldTitle noteFieldId={value} />
                 ),
@@ -868,8 +868,8 @@ export function getFieldType(type, options) {
                 normalize: value => value,
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
-                compare: (a, b, state) => compareObjects(a, b, getTaskFieldsFilteredByVisibleState(state)),
-                toString: (value, state) => toStringObject(value, getTaskFieldsFilteredByVisibleState(state)),
+                compare: (a, b, state) => compareObjects(a, b, getTaskFieldsIncludingDefaults(state)),
+                toString: (value, state) => toStringObject(value, getTaskFieldsIncludingDefaults(state)),
                 render: value => (
                     <TaskFieldTitle taskFieldId={value} />
                 ),

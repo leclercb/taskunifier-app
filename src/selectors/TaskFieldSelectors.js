@@ -6,14 +6,15 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 export const getTaskFields = state => state.taskFields;
 
 export const getTaskFieldsFilteredByVisibleState = createSelector(
-    [getTaskFields],
+    getTaskFields,
     (taskFields) => {
         return filterByVisibleState(taskFields);
     }
 );
 
 export const getTaskFieldsIncludingDefaults = createSelector(
-    [getTaskFields, getSettings],
+    getTaskFields, 
+    getSettings,
     (taskFields, settings) => {
         return getDefaultTaskFields(settings).concat(filterByVisibleState(taskFields));
     }

@@ -4,14 +4,14 @@ import { filterByNonArchived, filterByVisibleState } from 'utils/CategoryUtils';
 export const getFolders = state => state.folders;
 
 export const getFoldersFilteredByVisibleState = createSelector(
-    [getFolders],
+    getFolders,
     (folders) => {
         return filterByVisibleState(folders);
     }
 );
 
 export const getFoldersFilteredByNonArchived = createSelector(
-    [getFolders],
+    getFolders,
     (folders) => {
         return filterByVisibleState(filterByNonArchived(folders));
     }

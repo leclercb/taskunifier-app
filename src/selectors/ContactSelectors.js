@@ -4,7 +4,7 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 export const getContacts = state => state.contacts;
 
 export const getContactsFilteredByVisibleState = createSelector(
-    [getContacts],
+    getContacts,
     (contacts) => {
         return filterByVisibleState(contacts);
     }

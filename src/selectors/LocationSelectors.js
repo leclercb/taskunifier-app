@@ -4,7 +4,7 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 export const getLocations = state => state.locations;
 
 export const getLocationsFilteredByVisibleState = createSelector(
-    [getLocations],
+    getLocations,
     (locations) => {
         return filterByVisibleState(locations);
     }

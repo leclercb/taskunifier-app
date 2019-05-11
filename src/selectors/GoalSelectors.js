@@ -4,14 +4,14 @@ import { filterByNonArchived, filterByVisibleState } from 'utils/CategoryUtils';
 export const getGoals = state => state.goals;
 
 export const getGoalsFilteredByVisibleState = createSelector(
-    [getGoals],
+    getGoals,
     (goals) => {
         return filterByVisibleState(goals);
     }
 );
 
 export const getGoalsFilteredByNonArchived = createSelector(
-    [getGoals],
+    getGoals,
     (goals) => {
         return filterByVisibleState(filterByNonArchived(goals));
     }

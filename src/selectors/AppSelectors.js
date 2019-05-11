@@ -18,7 +18,7 @@ export const getSettingManager = state => state.app.settingManager;
 export const getBatchAddTasksManager = state => state.app.batchAddTasksManager;
 
 export const isValidLicense = createSelector(
-    [getSettings],
+    getSettings,
     (settings) => {
         return verifyLicense(settings.license) !== null;
     }
