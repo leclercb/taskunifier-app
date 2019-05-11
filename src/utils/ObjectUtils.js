@@ -9,7 +9,7 @@ export function isObject(item) {
 }
 
 export function clone(o) {
-    if (o === undefined || o === null) {
+    if (o === undefined || o === null || typeof o !== 'object') {
         return o;
     }
 

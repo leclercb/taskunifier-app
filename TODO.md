@@ -2,7 +2,6 @@
 
 * Add reminder and recurrence
 * Postpone Snooze
-* Batch edit task
 * Sub-tasks
 * Try react-joyride
 * Electron proxy connection

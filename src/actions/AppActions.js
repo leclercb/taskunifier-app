@@ -216,6 +216,28 @@ export function setSelectedView(view) {
     };
 }
 
+export function setBatchAddTasksManagerOptions(options) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+}
+
+export function setBatchEditTasksManagerOptions(options) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_BATCH_EDIT_TASKS_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export function setCategoryManagerOptions(options) {
     return dispatch => {
         dispatch({
@@ -286,17 +308,6 @@ export function setSettingManagerOptions(options) {
     return dispatch => {
         dispatch({
             type: 'SET_SETTING_MANAGER_OPTIONS',
-            ...options
-        });
-
-        return Promise.resolve();
-    };
-}
-
-export function setBatchAddTasksManagerOptions(options) {
-    return dispatch => {
-        dispatch({
-            type: 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS',
             ...options
         });
 

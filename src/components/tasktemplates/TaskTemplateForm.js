@@ -40,7 +40,7 @@ function TaskTemplateForm(props) {
                     getValueFromEvent: event => event.color,
                     rules: [
                         {
-                            required: true, 
+                            required: true,
                             message: 'The color is required'
                         }
                     ]
@@ -73,7 +73,7 @@ TaskTemplateForm.propTypes = {
     updateTaskTemplate: PropTypes.func.isRequired
 };
 
-export default Form.create({
+export default withTaskFields(Form.create({
     name: 'taskTemplate',
     onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.taskTemplate, props.updateTaskTemplate)
-})(withTaskFields(TaskTemplateForm));
+})(TaskTemplateForm));

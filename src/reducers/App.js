@@ -9,6 +9,12 @@ const App = () => (state = {
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: null,
+    batchAddTasksManager: {
+        visible: false
+    },
+    batchEditTasksManager: {
+        visible: false
+    },
     categoryManager: {
         visible: false,
         category: 'contexts',
@@ -32,9 +38,6 @@ const App = () => (state = {
     },
     settingManager: {
         visible: false
-    },
-    batchAddTasksManager: {
-        visible: false
     }
 }, action) => {
     switch (action.type) {
@@ -43,36 +46,42 @@ const App = () => (state = {
                 ...state,
                 selectedView: action.view
             };
-        case 'SET_SELECTED_NOTE_IDS': {
+        case 'SET_SELECTED_NOTE_IDS':
             return {
                 ...state,
                 selectedNoteIds: action.noteIds
             };
-        }
-        case 'SET_SELECTED_NOTE_FILTER': {
-            const newState = {
+        case 'SET_SELECTED_NOTE_FILTER':
+            return {
                 ...state,
                 selectedNoteFilter: action.noteFilter,
                 selectedNoteFilterDate: action.date
             };
-
-            return newState;
-        }
-        case 'SET_SELECTED_TASK_IDS': {
+        case 'SET_SELECTED_TASK_IDS':
             return {
                 ...state,
                 selectedTaskIds: action.taskIds
             };
-        }
-        case 'SET_SELECTED_TASK_FILTER': {
-            const newState = {
+        case 'SET_SELECTED_TASK_FILTER':
+            return {
                 ...state,
                 selectedTaskFilter: action.taskFilter,
                 selectedTaskFilterDate: action.date
             };
-
-            return newState;
-        }
+        case 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS':
+            return {
+                ...state,
+                batchAddTasksManager: {
+                    visible: 'visible' in action ? action.visible : state.batchAddTasksManager.visible
+                }
+            };
+        case 'SET_BATCH_EDIT_TASKS_MANAGER_OPTIONS':
+            return {
+                ...state,
+                batchEditTasksManager: {
+                    visible: 'visible' in action ? action.visible : state.batchEditTasksManager.visible
+                }
+            };
         case 'SET_CATEGORY_MANAGER_OPTIONS':
             return {
                 ...state,
@@ -119,13 +128,6 @@ const App = () => (state = {
                 ...state,
                 settingManager: {
                     visible: 'visible' in action ? action.visible : state.settingManager.visible
-                }
-            };
-        case 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS':
-            return {
-                ...state,
-                batchAddTasksManager: {
-                    visible: 'visible' in action ? action.visible : state.batchAddTasksManager.visible
                 }
             };
         default:

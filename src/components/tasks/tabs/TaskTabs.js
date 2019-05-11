@@ -7,6 +7,7 @@ import withSelectedTasks from 'containers/WithSelectedTasks';
 import { getLinkedContactFields } from 'data/DataLinkedContactFields';
 import { getLinkedFileFields } from 'data/DataLinkedFileFields';
 import { getLinkedTaskFields } from 'data/DataLinkedTaskFields';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 import 'components/tasks/tabs/TaskTabs.css';
 
 function TaskTabs(props) {
@@ -73,7 +74,7 @@ function TaskTabs(props) {
 }
 
 TaskTabs.propTypes = {
-    selectedTasks: PropTypes.array.isRequired,
+    selectedTasks: PropTypes.arrayOf(TaskPropType).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired
 };

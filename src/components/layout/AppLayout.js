@@ -9,9 +9,10 @@ import ModalThreadManager from 'components/thread/ModalThreadManager';
 import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
+import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
+import ModalBatchEditTasksManager from 'components/tasks/batch/ModalBatchEditTasksManager';
 import ModalTaskEditionManager from 'components/tasks/edit/ModalTaskEditionManager';
 import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
-import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
 import NoteView from 'components/notes/views/NoteView';
 import TaskView from 'components/tasks/views/TaskView';
@@ -35,12 +36,13 @@ function AppLayout(props) {
         <React.Fragment>
             <NotificationManager />
             <ModalThreadManager />
+            <ModalBatchAddTasksManager />
+            <ModalBatchEditTasksManager />
             <ModalCategoryManager />
             <ModalNoteFilterManager />
             <ModalTaskFilterManager />
             <ModalTaskEditionManager />
             <ModalTaskTemplateManager />
-            <ModalBatchAddTasksManager />
             <ModalSettingManager />
             <Spin style={{ minHeight: '100%', height: '100%' }} spinning={props.busy}>
                 <Layout style={{ minHeight: '100%', height: '100%' }}>

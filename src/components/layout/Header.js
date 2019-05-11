@@ -76,6 +76,14 @@ function Header(props) {
         props.setSettingManagerOptions({ visible: true });
     };
 
+    const onSetBatchAddTasksManagerVisible = () => {
+        props.setBatchAddTasksManagerOptions({ visible: true });
+    };
+
+    const onSetBatchEditTasksManagerVisible = () => {
+        props.setBatchEditTasksManagerOptions({ visible: true });
+    };
+
     const onSetCategoryManagerVisible = () => {
         props.setCategoryManagerOptions({ visible: true });
     };
@@ -90,10 +98,6 @@ function Header(props) {
 
     const onSetTaskTemplateManagerVisible = () => {
         props.setTaskTemplateManagerOptions({ visible: true });
-    };
-
-    const onSetBatchAddTasksManagerVisible = () => {
-        props.setBatchAddTasksManagerOptions({ visible: true });
     };
 
     const onShowTaskContent = () => {
@@ -167,6 +171,9 @@ function Header(props) {
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
                 createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
                 : null}
             {(props.selectedView === 'task' || props.selectedView === 'task-calendar') ?
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
