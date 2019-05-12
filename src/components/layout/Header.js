@@ -2,15 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
+import LeftRight from 'components/common/LeftRight';
+import Logo from 'components/common/Logo';
+import Spacer from 'components/common/Spacer';
 import withApp from 'containers/WithApp';
 import withNotes from 'containers/WithNotes';
 import withPrint from 'containers/WithPrint';
 import withTasks from 'containers/WithTasks';
-import Spacer from 'components/common/Spacer';
-import LeftRight from 'components/common/LeftRight';
-import Logo from 'components/common/Logo';
+import withTaskTemplates from 'containers/WithTaskTemplates';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
+import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function Header(props) {
     const onAddNote = () => {
@@ -28,20 +32,34 @@ function Header(props) {
     };
 
     const onAddTask = () => {
-        props.addTask({
+        const task = {
             title: 'Untitled'
-        }).then(id => props.setSelectedTaskIds([id]));
+        };
+
+        const taskTemplate = props.taskTemplates.find(taskTemplate =>
+            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
+
+        applyTaskTemplate(taskTemplate, task);
+
+        props.addTask(task).then(id => props.setSelectedTaskIds([id]));
     };
 
     const onCreateDummyTasks = () => {
+        const taskTemplate = props.taskTemplates.find(taskTemplate =>
+            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
+
         for (let i = 0; i < 1000; i++) {
-            props.addTask({
+            const task = {
                 title: 'Dummy Task ' + (i + 1),
                 completed: Math.random() >= 0.5,
                 star: Math.random() >= 0.5,
                 progress: Math.floor((Math.random() * 100) + 1),
                 importance: Math.floor((Math.random() * 12) + 1)
-            });
+            };
+
+            applyTaskTemplate(taskTemplate, task);
+
+            props.addTask(task);
         }
     };
 
@@ -205,9 +223,11 @@ Header.propTypes = {
     pro: PropTypes.bool.isRequired,
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
+    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     selectedView: PropTypes.string.isRequired,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    selectedTaskFilter: TaskFilterPropType.isRequired,
     addNote: PropTypes.func.isRequired,
     deleteNote: PropTypes.func.isRequired,
     printNotes: PropTypes.func.isRequired,
@@ -229,4 +249,4 @@ Header.propTypes = {
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withNotes(withTasks(withPrint(Header))));
+export default withApp(withNotes(withTasks(withTaskTemplates(withPrint(Header)))));

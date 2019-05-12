@@ -1,6 +1,5 @@
 ## Todo List
 
-* Filter task template
 * Sorter reorder
 * Filter show expected date when number is used
 * Start data and due date reminders

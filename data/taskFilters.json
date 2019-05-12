@@ -80,5 +80,15 @@
                 "direction": "ascending"
             }
         ]
+    },
+    {
+        "title": "With Template",
+        "color": "#2098d4",
+        "id": "5199edcd-418d-4f57-bb08-d8c011626952",
+        "refIds": {},
+        "creationDate": "2019-05-12T06:57:05.091Z",
+        "updateDate": "2019-05-12T06:57:19.130Z",
+        "state": "TO_UPDATE",
+        "taskTemplate": "6431097b-6fdf-4730-8ef7-20e87e110791"
     }
 ]

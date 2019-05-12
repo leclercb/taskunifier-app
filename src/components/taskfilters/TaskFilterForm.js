@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
+import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
@@ -32,12 +33,20 @@ function TaskFilterForm(props) {
                     getValueFromEvent: event => event.color,
                     rules: [
                         {
-                            required: true, 
+                            required: true,
                             message: 'The color is required'
                         }
                     ]
                 })(
                     <ColorPicker />
+                )}
+            </Form.Item>
+            <Form.Item label="Task Template">
+                {getFieldDecorator('taskTemplate', {
+                    rules: [],
+                    initialValue: props.taskFilter.taskTemplate
+                })(
+                    <TaskTemplateSelect />
                 )}
             </Form.Item>
         </Form>

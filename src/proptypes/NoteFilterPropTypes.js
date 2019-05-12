@@ -5,6 +5,6 @@ export const NoteFilterPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     color: PropTypes.string,
-    condition: PropTypes.object,
-    sorters: PropTypes.arrayOf(SorterPropType.isRequired)
+    sorters: PropTypes.arrayOf(SorterPropType.isRequired),
+    condition: PropTypes.object
 });

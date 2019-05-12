@@ -13,6 +13,7 @@ import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
+import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
@@ -41,6 +42,11 @@ function TaskQuickAdd(props) {
         const newTask = {
             title: values[0]
         };
+
+        const taskTemplate = props.taskTemplates.find(taskTemplate =>
+            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
+
+        applyTaskTemplate(taskTemplate, newTask);
 
         values.forEach((value, index) => {
             if (index === 0) {
@@ -124,6 +130,7 @@ TaskQuickAdd.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
+    selectedTaskFilter: TaskFilterPropType.isRequired,
     addTask: PropTypes.func.isRequired
 };
 
@@ -132,5 +139,6 @@ export default withTasks(withObjects(TaskQuickAdd, {
     includeFolders: true,
     includeGoals: true,
     includeLocations: true,
-    includeTaskTemplates: true
+    includeTaskTemplates: true,
+    includeSelectedTaskFilter: true
 }), { includeState: false });
