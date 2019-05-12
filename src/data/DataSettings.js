@@ -217,7 +217,7 @@ export function getCategories() {
         },
         {
             id: 'taskTemplates',
-            title: 'Task Templates',
+            title: 'Task templates',
             icon: 'tasks',
             settings: [
                 {
@@ -248,30 +248,46 @@ export function getCategories() {
                     value: (settings, updateSettings) => {
                         updateSettings({
                             evenColor: '#fafafa',
-                            oddColor: '#e8f1f7'
+                            oddColor: '#e8f1f7',
+                            dueTodayForegroundColor: '#1b5e20',
+                            overdueForegroundColor: '#b71c1c'
                         });
                     },
                     editable: true
                 },
                 {
                     id: 'evenColor',
-                    title: 'Even Color',
+                    title: 'Even color',
                     type: 'color',
                     value: '#fafafa',
                     editable: true
                 },
                 {
                     id: 'oddColor',
-                    title: 'Odd Color',
+                    title: 'Odd color',
                     type: 'color',
                     value: '#e8f1f7',
+                    editable: true
+                },
+                {
+                    id: 'dueTodayForegroundColor',
+                    title: 'Due today foreground color',
+                    type: 'color',
+                    value: '#1b5e20',
+                    editable: true
+                },
+                {
+                    id: 'overdueForegroundColor',
+                    title: 'Overdue foreground color',
+                    type: 'color',
+                    value: '#b71c1c',
                     editable: true
                 }
             ]
         },
         {
             id: 'importanceColors',
-            title: 'Importance Colors',
+            title: 'Importance colors',
             icon: 'paint-roller',
             settings: [
                 {
@@ -415,7 +431,7 @@ export function getCategories() {
         },
         {
             id: 'priorityColors',
-            title: 'Priority Colors',
+            title: 'Priority colors',
             icon: 'paint-roller',
             settings: getPriorities().map(priority => ({
                 id: 'priority_' + priority.id,
@@ -427,7 +443,7 @@ export function getCategories() {
         },
         {
             id: 'statusColors',
-            title: 'Status Colors',
+            title: 'Status colors',
             icon: 'paint-roller',
             settings: getStatuses().map(status => ({
                 id: 'status_' + status.id,
@@ -444,7 +460,7 @@ export function getCategories() {
             settings: [
                 {
                     id: 'windowSizeWidth',
-                    title: 'Window Size - Width',
+                    title: 'Window size - Width',
                     type: 'number',
                     value: 1024,
                     editable: false,
@@ -452,7 +468,7 @@ export function getCategories() {
                 },
                 {
                     id: 'windowSizeHeight',
-                    title: 'Window Size - Height',
+                    title: 'Window size - Height',
                     type: 'number',
                     value: 768,
                     editable: false,
@@ -460,7 +476,7 @@ export function getCategories() {
                 },
                 {
                     id: 'windowPositionX',
-                    title: 'Window Position - X',
+                    title: 'Window position - X',
                     type: 'number',
                     value: null,
                     editable: false,
@@ -468,7 +484,7 @@ export function getCategories() {
                 },
                 {
                     id: 'windowPositionY',
-                    title: 'Window Position - Y',
+                    title: 'Window position - Y',
                     type: 'number',
                     value: null,
                     editable: false,
@@ -476,14 +492,14 @@ export function getCategories() {
                 },
                 {
                     id: 'verticalSplitPaneSize',
-                    title: 'Vertical Split Pane Size',
+                    title: 'Vertical split pane size',
                     type: 'number',
                     value: 300,
                     editable: false
                 },
                 {
                     id: 'horizontalSplitPaneSize',
-                    title: 'Horizontal Split Pane Size',
+                    title: 'Horizontal split pane size',
                     type: 'number',
                     value: 300,
                     editable: false

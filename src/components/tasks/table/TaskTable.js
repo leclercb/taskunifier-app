@@ -13,7 +13,7 @@ import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { getTaskBackgroundColor } from 'utils/SettingUtils';
+import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
@@ -82,6 +82,7 @@ function TaskTable(props) {
                                 return {};
                             }
 
+                            let foregroundColor = getTaskForegroundColor(task, index, props.settings);
                             let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
 
                             if (props.selectedTaskIds.includes(task.id)) {
@@ -89,6 +90,7 @@ function TaskTable(props) {
                             }
 
                             return {
+                                color: foregroundColor,
                                 backgroundColor: backgroundColor,
                                 textDecoration: task.completed ? 'line-through' : 'none'
                             };

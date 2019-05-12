@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { isCoreSetting } from 'data/DataSettings';
 
 export function filterSettings(settings, core) {
@@ -27,6 +28,18 @@ export function getStatusColor(status, settings) {
 
 export function getNoteBackgroundColor(note, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+}
+
+export function getTaskForegroundColor(task, index, settings) {
+    if (task.dueDate && moment().diff(moment(task.dueDate), 'days') === 0) {
+        return settings.dueTodayForegroundColor;
+    }
+
+    if (task.dueDate && moment().diff(moment(task.dueDate), 'days') > 0) {
+        return settings.overdueForegroundColor;
+    }
+
+    return 'initial';
 }
 
 export function getTaskBackgroundColor(task, index, settings) {
