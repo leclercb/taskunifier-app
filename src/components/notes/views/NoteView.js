@@ -7,13 +7,13 @@ import withSettings from 'containers/WithSettings';
 import NoteTabs from 'components/notes/tabs/NoteTabs';
 
 function NoteView(props) {
-    const onVerticalSplitPaneSizeChange = size => {
-        props.updateSettings({ verticalSplitPaneSize: size });
+    const onNoteViewSplitPaneSizeChange = size => {
+        props.updateSettings({ noteViewSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
-    const onHorizontalSplitPaneSizeChange = size => {
-        props.updateSettings({ horizontalSplitPaneSize: size });
+    const onNoteViewSubSplitPaneSizeChange = size => {
+        props.updateSettings({ noteViewSubSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
@@ -21,15 +21,15 @@ function NoteView(props) {
         <SplitPane
             split="vertical"
             minSize={200}
-            defaultSize={props.settings.verticalSplitPaneSize}
-            onChange={size => onVerticalSplitPaneSizeChange(size)}
+            defaultSize={props.settings.noteViewSplitPaneSize}
+            onChange={size => onNoteViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <NoteSider />
             <SplitPane
-                split="horizontal"
+                split={props.settings.noteViewSubSplitPaneMode}
                 minSize={200}
-                defaultSize={props.settings.horizontalSplitPaneSize}
-                onChange={size => onHorizontalSplitPaneSizeChange(size)}
+                defaultSize={props.settings.noteViewSubSplitPaneSize}
+                onChange={size => onNoteViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>

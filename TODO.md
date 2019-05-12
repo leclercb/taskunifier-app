@@ -6,7 +6,6 @@
 * Show completed tasks
 * Calendar Use due date, Use start date
 * Restore from backup
-* Show note editor in tasks view on the (left, bottom, top, right)
 * Show/hide columns
 * Print config (columns, size)
 

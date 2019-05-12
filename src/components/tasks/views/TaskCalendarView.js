@@ -8,19 +8,29 @@ import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
 
 function TaskCalendarView(props) {
+    const onTaskCalendarViewSplitPaneSizeChange = size => {
+        props.updateSettings({ taskCalendarViewSplitPaneSize: size });
+        window.dispatchEvent(new Event('app-resize'));
+    };
+
+    const onTaskCalendarViewSubSplitPaneSizeChange = size => {
+        props.updateSettings({ taskCalendarViewSubSplitPaneSize: size });
+        window.dispatchEvent(new Event('app-resize'));
+    };
+
     return (
         <SplitPane
             split="vertical"
             minSize={200}
-            defaultSize={props.settings.verticalSplitPaneSize}
-            onChange={size => props.updateSettings({ verticalSplitPaneSize: size })}
+            defaultSize={props.settings.taskCalendarViewSplitPaneSize}
+            onChange={size => onTaskCalendarViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <TaskSider />
             <SplitPane
-                split="horizontal"
+                split={props.settings.taskCalendarViewSubSplitPaneMode}
                 minSize={200}
-                defaultSize={props.settings.horizontalSplitPaneSize}
-                onChange={size => props.updateSettings({ horizontalSplitPaneSize: size })}
+                defaultSize={props.settings.taskCalendarViewSubSplitPaneSize}
+                onChange={size => onTaskCalendarViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>

@@ -18,7 +18,7 @@ function SettingManager(props) {
 
     const categories = getCategories();
     const category = categories.find(category => category.id === selectedCategoryId);
-    const settings = category.settings;
+    const settings = category.settings.filter(setting => setting.visible !== false);
 
     const getSettingValue = setting => {
         if (setting.id in props.settings) {

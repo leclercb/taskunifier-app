@@ -464,6 +464,7 @@ export function getCategories() {
                     type: 'number',
                     value: 1024,
                     editable: false,
+                    visible: false,
                     core: true
                 },
                 {
@@ -472,6 +473,7 @@ export function getCategories() {
                     type: 'number',
                     value: 768,
                     editable: false,
+                    visible: false,
                     core: true
                 },
                 {
@@ -480,6 +482,7 @@ export function getCategories() {
                     type: 'number',
                     value: null,
                     editable: false,
+                    visible: false,
                     core: true
                 },
                 {
@@ -488,21 +491,113 @@ export function getCategories() {
                     type: 'number',
                     value: null,
                     editable: false,
+                    visible: false,
                     core: true
                 },
                 {
-                    id: 'verticalSplitPaneSize',
-                    title: 'Vertical split pane size',
+                    id: 'noteViewSplitPaneSize',
+                    title: 'Note view split pane size',
                     type: 'number',
                     value: 300,
-                    editable: false
+                    editable: false,
+                    visible: false
                 },
                 {
-                    id: 'horizontalSplitPaneSize',
-                    title: 'Horizontal split pane size',
+                    id: 'noteViewSubSplitPaneSize',
+                    title: 'Note view sub split pane size',
                     type: 'number',
                     value: 300,
-                    editable: false
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'noteViewSubSplitPaneMode',
+                    title: 'Note view sub split pane mode',
+                    type: 'select',
+                    value: 'horizontal',
+                    editable: true,
+                    options: {
+                        values: [
+                            {
+                                title: 'Horizontal',
+                                value: 'horizontal'
+                            },
+                            {
+                                title: 'Vertical',
+                                value: 'vertical'
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: 'taskViewSplitPaneSize',
+                    title: 'Task view split pane size',
+                    type: 'number',
+                    value: 300,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskViewSubSplitPaneSize',
+                    title: 'Task view sub split pane size',
+                    type: 'number',
+                    value: 300,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskViewSubSplitPaneMode',
+                    title: 'Task view sub split pane mode',
+                    type: 'select',
+                    value: 'horizontal',
+                    editable: true,
+                    options: {
+                        values: [
+                            {
+                                title: 'Horizontal',
+                                value: 'horizontal'
+                            },
+                            {
+                                title: 'Vertical',
+                                value: 'vertical'
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: 'taskCalendarViewSplitPaneSize',
+                    title: 'Task calendar view split pane size',
+                    type: 'number',
+                    value: 300,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskCalendarSubSplitPaneSize',
+                    title: 'Task calendar view sub split pane size',
+                    type: 'number',
+                    value: 300,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskCalendarSubSplitPaneMode',
+                    title: 'Task calendar view sub split pane mode',
+                    type: 'select',
+                    value: 'horizontal',
+                    editable: true,
+                    options: {
+                        values: [
+                            {
+                                title: 'Horizontal',
+                                value: 'horizontal'
+                            },
+                            {
+                                title: 'Vertical',
+                                value: 'vertical'
+                            }
+                        ]
+                    }
                 }
             ]
         }
