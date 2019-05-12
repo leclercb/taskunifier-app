@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Modal } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DragDropContext } from 'react-dnd';
@@ -29,20 +30,36 @@ function App(props) {
             windowPositionX: position[0],
             windowPositionY: position[1]
         }).then(() => {
-            props.saveData({ clean: true }).finally(() => {
-                electron.ipcRenderer.send('closed');
-            });
+            const close = () => {
+                props.saveData({ clean: true }).finally(() => {
+                    electron.ipcRenderer.send('closed');
+                });
+            };
+
+            if (props.settings.confirmBeforeClosing) {
+                Modal.confirm({
+                    title: 'Do you want to close TaskUnifier 2 ?',
+                    onOk: () => {
+                        close();
+                    }
+                });
+            } else {
+                close();
+            }
         });
     };
 
     useEffect(() => {
         props.loadData();
+    }, []);
+
+    useEffect(() => {
         electron.ipcRenderer.on('app-close', onClose);
 
         return () => {
             electron.ipcRenderer.removeListener('app-close', onClose);
         };
-    }, []);
+    }, [props.settings]);
 
     useEffect(
         () => {

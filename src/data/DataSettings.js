@@ -62,6 +62,13 @@ export function getCategories() {
                     type: 'dateTime',
                     value: moment().toJSON(),
                     editable: false
+                },
+                {
+                    id: 'confirmBeforeClosing',
+                    title: 'Confirm before closing',
+                    type: 'boolean',
+                    value: false,
+                    editable: true
                 }
             ]
         },

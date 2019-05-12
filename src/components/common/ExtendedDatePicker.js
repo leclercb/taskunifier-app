@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DatePicker, InputNumber, Switch } from 'antd';
+import Spacer from 'components/common/Spacer';
 
 class ExtendedDatePicker extends React.Component {
     constructor(props) {
@@ -23,8 +24,15 @@ class ExtendedDatePicker extends React.Component {
                     unCheckedChildren="Use fixed date"
                     style={{ marginRight: 10 }} />
                 {Number.isInteger(this.props.value) ?
-                    (<InputNumber {...this.props} />) :
-                    (<DatePicker {...this.props} />)}
+                    (
+                        <React.Fragment>
+                            <InputNumber {...this.props} />
+                            <Spacer />
+                            <span>({moment().add(this.props.value, 'days').format(this.props.format)})</span>
+                        </React.Fragment>
+                    ) : (
+                        <DatePicker {...this.props} />
+                    )}
             </React.Fragment>
         );
     }

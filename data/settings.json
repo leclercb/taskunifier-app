@@ -2,6 +2,7 @@
     "automaticSave": false,
     "automaticSaveInterval": 15,
     "lastAutomaticSave": "2019-04-23T12:51:11.271Z",
+    "confirmBeforeClosing": true,
     "showStartTime": false,
     "showDueTime": false,
     "dateFormat": "DD/MM/YYYY",

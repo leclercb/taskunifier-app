@@ -1,12 +1,10 @@
 ## Todo List
 
 * Sorter reorder
-* Filter show expected date when number is used
-* Start data and due date reminders
+* Start date and due date reminders
 * Repeat from (due date, completion date)
 * Show completed tasks
 * Calendar Use due date, Use start date
-* Confirm before closing setting
 * Restore from backup
 * Show note editor in tasks view on the (left, bottom, top, right)
 * Color due today foreground (green)

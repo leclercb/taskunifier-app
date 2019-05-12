@@ -90,7 +90,7 @@ function NoteSorterTable(props) {
         <React.Fragment>
             <Table
                 width={tableWidth}
-                height={250}
+                height={150}
                 rowHeight={38}
                 headerHeight={20}
                 rowCount={props.sorters.length}
