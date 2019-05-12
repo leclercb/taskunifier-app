@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Checkbox, Col, Row } from 'antd';
+import { Button, Checkbox, Col, Form, Row } from 'antd';
 import Icon from 'components/common/Icon';
 import withSelectedTasks from 'containers/WithSelectedTasks';
 import { FieldPropType } from 'proptypes/FieldPropTypes';

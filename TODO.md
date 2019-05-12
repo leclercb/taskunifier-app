@@ -14,7 +14,6 @@
 * Show/hide columns
 * Print config (columns, size)
 
-* Add reminder and recurrence
 * Postpone Snooze
 * Sub-tasks
 * Try react-joyride
