@@ -1,5 +1,6 @@
 ## Todo List
 
+* DraggableElement type
 * Settings prop types shape
 * Sorter reorder
 * Show completed tasks

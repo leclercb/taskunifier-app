@@ -79,7 +79,7 @@
     "taskColumnOrder_priority": 4,
     "taskColumnOrder_importance": 3,
     "taskColumnOrder_status": 10,
-    "taskColumnOrder_note": 17,
+    "taskColumnOrder_note": 20,
     "taskColumnOrder_dueDate": 7,
     "taskColumnOrder_tags": 11,
     "taskColumnOrder_context": 12,
@@ -105,5 +105,12 @@
     "noteColumnOrder_tags": 2,
     "noteColumnOrder_folder": 3,
     "noteColumnWidth_tags": 183,
-    "noteColumnWidth_folder": 196
+    "noteColumnWidth_folder": 196,
+    "taskColumnOrder_startDateReminder": 17,
+    "taskColumnOrder_dueDateReminder": 18,
+    "taskColumnOrder_repeatFrom": 19,
+    "taskColumnWidth_note": 340,
+    "taskColumnWidth_startDateReminder": 167,
+    "taskColumnWidth_dueDateReminder": 151,
+    "taskColumnWidth_repeatFrom": 116
 }

@@ -14,10 +14,16 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
+import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
         props.updateTask(task);
+    };
+
+    const onDropTask = (dragData, dropData) => {
+        // TODO implement
+        console.log(dragData, dropData);
     };
 
     let tableWidth = 0;
@@ -33,7 +39,7 @@ function TaskTable(props) {
             width = getWidthForType(field.type);
         }
 
-        tableWidth += width;
+        tableWidth += width + 10;
 
         return (
             <Column
@@ -75,6 +81,9 @@ function TaskTable(props) {
                         headerHeight={20}
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}
+                        rowRenderer={props => (
+                            <DraggableRowRenderer {...props} onDrop={onDropTask} />
+                        )}
                         rowStyle={({ index }) => {
                             const task = props.tasks[index];
 

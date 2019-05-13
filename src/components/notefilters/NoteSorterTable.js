@@ -55,7 +55,7 @@ function NoteSorterTable(props) {
             width = getWidthForType(field.type);
         }
 
-        tableWidth += width;
+        tableWidth += width + 10;
 
         return (
             <Column
