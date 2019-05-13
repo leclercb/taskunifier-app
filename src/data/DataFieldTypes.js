@@ -82,11 +82,11 @@ import {
     toStringNumber,
     toStringObject,
     toStringPriority,
+    toStringReminder,
+    toStringRepeatFrom,
     toStringSortDirection,
     toStringStatus,
-    toStringTimer,
-    toStringReminder,
-    toStringRepeatFrom
+    toStringTimer
 } from 'utils/StringUtils';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';

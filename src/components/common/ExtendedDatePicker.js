@@ -39,6 +39,7 @@ class ExtendedDatePicker extends React.Component {
 }
 
 ExtendedDatePicker.propTypes = {
+    format: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.object

@@ -2,7 +2,7 @@ let TIMEOUT = null;
 
 export const multiSelectionHandler = (getId, selectedIds, setSelectedIds) => ({ event, rowData }) => {
     const rowId = getId(rowData);
-    const ctrlKey = event.ctrlKey;
+    const ctrlKey = event.ctrlKey || event.metaKey;
     let dataPreventDefault = false;
 
     if (event.target.attributes.getNamedItem('data-prevent-default') &&

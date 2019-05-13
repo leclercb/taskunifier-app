@@ -26,7 +26,6 @@ function BatchEditTasksManager(props) {
 
             props.taskFields.forEach(field => {
                 if (values.checked[field.id]) {
-                    console.log(field.id, clone(values.value[field.id]));
                     tasks.forEach(task => {
                         task[field.id] = clone(values.value[field.id]);
                     });

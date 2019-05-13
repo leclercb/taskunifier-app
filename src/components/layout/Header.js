@@ -246,6 +246,7 @@ Header.propTypes = {
     setTaskEditionManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
     setBatchAddTasksManagerOptions: PropTypes.func.isRequired,
+    setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
