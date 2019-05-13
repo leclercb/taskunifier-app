@@ -1,5 +1,6 @@
 ## Todo List
 
+* Evaluate flow
 * DraggableElement type
 * Settings prop types shape
 * Sorter reorder
