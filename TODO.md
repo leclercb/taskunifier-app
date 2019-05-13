@@ -1,6 +1,6 @@
 ## Todo List
 
-* Evaluate flow
+* Evaluate flow (https://pusher.com/tutorials/type-check-react-flow)
 * DraggableElement type
 * Settings prop types shape
 * Sorter reorder
