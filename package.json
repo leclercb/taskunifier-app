@@ -16,6 +16,7 @@
         "electron:start": "electron .",
         "electron:build": "electron-builder",
         "start": "yarn react:start",
+        "test": "yarn react:test",
         "pack": "electron-builder --dir",
         "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
     },
@@ -62,9 +63,13 @@
         "electron": "^4.1.4",
         "electron-builder": "^20.39.0",
         "electron-devtools-installer": "^2.2.4",
+        "enzyme": "^3.9.0",
+        "enzyme-adapter-react-16": "^1.13.0",
+        "enzyme-to-json": "^3.3.5",
         "eslint": "^5.16.0",
         "eslint-plugin-react": "^7.12.4",
         "express": "^4.16.4",
+        "react-test-renderer": "^16.8.6",
         "typescript": "^3.4.3"
     },
     "build": {
@@ -106,5 +111,10 @@
         "not dead",
         "not ie <= 11",
         "not op_mini all"
-    ]
+    ],
+    "jest": {
+        "snapshotSerializers": [
+            "enzyme-to-json/serializer"
+        ]
+    }
 }

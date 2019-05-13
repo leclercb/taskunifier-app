@@ -5,5 +5,11 @@ module.exports = {
         {
             plugin: CracoAntDesignPlugin
         }
-    ]
+    ],
+    jest: {
+        configure: jestConfig => {
+            jestConfig.transformIgnorePatterns = [];
+            return jestConfig;
+        }
+    }
 };

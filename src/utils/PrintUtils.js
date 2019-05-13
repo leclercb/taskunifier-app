@@ -1,8 +1,8 @@
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import moment from 'moment';
-import { merge } from './ObjectUtils';
-import { getToStringForType } from './FieldUtils';
+import { merge } from 'utils/ObjectUtils';
+import { getToStringForType } from 'utils/FieldUtils';
 import { checked, logo } from 'constants/Images';
 
 const DEFAULT_START_Y = 30;

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create action  "print" 1`] = `
+<div>
+  <Tooltip
+    arrowPointAtCenter={false}
+    autoAdjustOverflow={true}
+    mouseEnterDelay={0.1}
+    mouseLeaveDelay={0.1}
+    placement="top"
+    title={
+      <Icon
+        color="#00ffff"
+        icon="print"
+        text="Print"
+      />
+    }
+    transitionName="zoom-big-fast"
+  >
+    <span>
+      <Icon
+        className=""
+        color="#00ffff"
+        icon="print"
+        onClick={[MockFunction]}
+      />
+    </span>
+  </Tooltip>
+</div>
+`;
