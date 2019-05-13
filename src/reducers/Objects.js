@@ -1,4 +1,4 @@
-const Objects = (property, onUpdate = (object, oldObject, addObject) => { }) => (state = [], action) => {
+const Objects = (property, onUpdate = (object, oldObject, updateDate) => { }) => (state = [], action) => {
     if (action.property !== property) {
         return state;
     }
@@ -115,7 +115,7 @@ const updateObject = (state, action, onUpdate) => {
         state: 'TO_UPDATE'
     };
 
-    const newObject = onUpdate(newState[index], oldObject);
+    const newObject = onUpdate(newState[index], oldObject, action.updateDate);
 
     if (newObject) {
         newObject.id = action.generateId();

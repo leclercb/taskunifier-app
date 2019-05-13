@@ -69,6 +69,38 @@ export function toStringPriority(value) {
     return priority ? priority.title : '';
 }
 
+export function toStringRepeatFrom(value) {
+    switch (value) {
+        case 'dueDate':
+            return 'Due date';
+        case 'completionDate':
+        default:
+            return 'Completion date';
+    }
+}
+
+export function toStringReminder(value) {
+    const days = Math.floor(value / 1440);
+    const hours = Math.floor((value % 1440) / 60);
+    const minutes = value % 60;
+
+    let str = '';
+
+    if (days > 0) {
+        str += ' ' + days + ' day' + (days > 1 ? 's' : '');
+    }
+
+    if (hours > 0) {
+        str += ' ' + hours + ' hour' + (hours > 1 ? 's' : '');
+    }
+
+    if (minutes > 0) {
+        str += ' ' + minutes + ' minute' + (minutes > 1 ? 's' : '');
+    }
+
+    return str.trim();
+}
+
 export function toStringStatus(value) {
     const status = getStatuses().find(status => status.id === value);
     return status ? status.title : '';

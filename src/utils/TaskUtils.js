@@ -1,7 +1,8 @@
+import moment from 'moment';
 import { clone } from 'utils/ObjectUtils';
 import { canRepeat, getNextDate } from 'utils/RepeatUtils';
 
-export function onTaskUpdate(task, oldTask) {
+export function onTaskUpdate(task, oldTask, updateDate) {
     const newTask = clone(task);
 
     if (task.completed) {
@@ -12,8 +13,16 @@ export function onTaskUpdate(task, oldTask) {
         if (canRepeat(task)) {
             newTask.completed = false;
             newTask.progress = 0;
-            newTask.startDate = getNextDate(task.repeat, task.startDate);
-            newTask.dueDate = getNextDate(task.repeat, task.dueDate);
+
+            const diff = moment(newTask.dueDate).diff(newTask.startDate, 'seconds');
+
+            if (newTask.repeatFrom === 'dueDate') {
+                newTask.dueDate = getNextDate(task.repeat, task.dueDate);
+            } else {
+                newTask.dueDate = getNextDate(task.repeat, updateDate);
+            }
+
+            newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toJSON();
 
             return newTask;
         }

@@ -5,7 +5,7 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-05-05T16:40:47.284Z",
+        "updateDate": "2019-05-13T09:52:04.549Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
@@ -58,7 +58,9 @@
                     "My first task link"
                 ]
             }
-        ]
+        ],
+        "startDateReminder": 60,
+        "repeatFrom": "dueDate"
     },
     {
         "title": "Task 2 DEF",
@@ -66,7 +68,7 @@
         "id": "b43d6563-ef18-4dc4-8b18-4e450cc224c5",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.835Z",
-        "updateDate": "2019-05-12T08:29:29.891Z",
+        "updateDate": "2019-05-13T09:52:06.787Z",
         "state": "TO_UPDATE",
         "progress": 50,
         "priority": "high",
@@ -94,7 +96,9 @@
             ],
             "nbWeeks": 2
         },
-        "note": "The note of the task"
+        "note": "The note of the task",
+        "dueDateReminder": 720,
+        "repeatFrom": "completionDate"
     },
     {
         "title": "Task 3 GHI",

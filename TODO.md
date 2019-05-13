@@ -1,8 +1,6 @@
 ## Todo List
 
 * Sorter reorder
-* Start date and due date reminders
-* Repeat from (due date, completion date)
 * Show completed tasks
 * Calendar Use due date, Use start date
 * Restore from backup

@@ -32,6 +32,8 @@ import NoteFieldTitle from 'components/notefields/NoteFieldTitle';
 import NoteFieldSelect from 'components/notefields/NoteFieldSelect';
 import NoteTitle from 'components/notes/common/NoteTitle';
 import NoteSelect from 'components/notes/common/NoteSelect';
+import ReminderField from 'components/common/ReminderField';
+import RepeatFromField from 'components/common/RepeatFromField';
 import PriorityTitle from 'components/priorities/PriorityTitle';
 import PrioritySelect from 'components/priorities/PrioritySelect';
 import RepeatField from 'components/repeat/RepeatField';
@@ -82,7 +84,9 @@ import {
     toStringPriority,
     toStringSortDirection,
     toStringStatus,
-    toStringTimer
+    toStringTimer,
+    toStringReminder,
+    toStringRepeatFrom
 } from 'utils/StringUtils';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
@@ -117,7 +121,9 @@ export function getFieldTypes() {
         'number',
         'priority',
         'progress',
+        'reminder',
         'repeat',
+        'repeatFrom',
         'select',
         'selectTags',
         'sortDirection',
@@ -194,7 +200,7 @@ export function getFieldType(type, options) {
                     <ContactTitle contactId={value} />
                 ),
                 input: props => (
-                    <ContactSelect {...props} />
+                    <ContactSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'contact',
                 options: []
@@ -217,7 +223,7 @@ export function getFieldType(type, options) {
                     <ContextTitle contextId={value} />
                 ),
                 input: props => (
-                    <ContextSelect {...props} />
+                    <ContextSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'context',
                 options: []
@@ -330,7 +336,7 @@ export function getFieldType(type, options) {
                     <FolderTitle folderId={value} />
                 ),
                 input: props => (
-                    <FolderSelect {...props} />
+                    <FolderSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'folder',
                 options: []
@@ -353,7 +359,7 @@ export function getFieldType(type, options) {
                     <GoalTitle goalId={value} />
                 ),
                 input: props => (
-                    <GoalSelect {...props} />
+                    <GoalSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'goal',
                 options: []
@@ -420,7 +426,7 @@ export function getFieldType(type, options) {
                     <LinkedContactLinksTitle linkIds={value} />
                 ),
                 input: props => (
-                    <LinkedContactLinksSelect {...props} />
+                    <LinkedContactLinksSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'linkedContactLinks',
                 options: []
@@ -443,7 +449,7 @@ export function getFieldType(type, options) {
                     <LinkedFileLinksTitle linkIds={value} />
                 ),
                 input: props => (
-                    <LinkedFileLinksSelect {...props} />
+                    <LinkedFileLinksSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'linkedFileLinks',
                 options: []
@@ -466,7 +472,7 @@ export function getFieldType(type, options) {
                     <LinkedTaskLinksTitle linkIds={value} />
                 ),
                 input: props => (
-                    <LinkedTaskLinksSelect {...props} />
+                    <LinkedTaskLinksSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'linkedTaskLinks',
                 options: []
@@ -489,7 +495,7 @@ export function getFieldType(type, options) {
                     <LocationTitle locationId={value} />
                 ),
                 input: props => (
-                    <LocationSelect {...props} />
+                    <LocationSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'location',
                 options: []
@@ -544,7 +550,7 @@ export function getFieldType(type, options) {
                     <NoteTitle noteId={value} />
                 ),
                 input: props => (
-                    <NoteSelect {...props} />
+                    <NoteSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'note',
                 options: []
@@ -567,7 +573,7 @@ export function getFieldType(type, options) {
                     <NoteFieldTitle noteFieldId={value} />
                 ),
                 input: props => (
-                    <NoteFieldSelect {...props} />
+                    <NoteFieldSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'noteField',
                 options: []
@@ -625,7 +631,7 @@ export function getFieldType(type, options) {
                     <PriorityTitle priorityId={value} />
                 ),
                 input: props => (
-                    <PrioritySelect {...props} />
+                    <PrioritySelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'priority',
                 options: []
@@ -649,6 +655,29 @@ export function getFieldType(type, options) {
                     <InputNumber min={0} max={100} {...props} />
                 ),
                 conditionsFieldType: 'progress',
+                options: []
+            };
+
+            break;
+        }
+        case 'reminder': {
+            configuration = {
+                title: 'Reminder',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                compare: (a, b) => compareNumbers(a, b),
+                toString: value => toStringReminder(value),
+                render: value => (
+                    Number.isInteger(value) ? toStringReminder(value) : <span>&nbsp;</span>
+                ),
+                input: props => (
+                    <ReminderField {...props} />
+                ),
+                conditionsFieldType: 'reminder',
                 options: []
             };
 
@@ -678,6 +707,27 @@ export function getFieldType(type, options) {
 
             break;
         }
+        case 'repeatFrom': {
+            configuration = {
+                title: 'Repeat From',
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                normalize: value => value,
+                valuePropName: 'value',
+                getValueFromEvent: defaultGetValueFromEvent,
+                compare: (a, b) => compareStrings(a, b),
+                toString: value => toStringRepeatFrom(value),
+                render: value => toStringRepeatFrom(value),
+                input: props => (
+                    <RepeatFromField {...props} />
+                ),
+                conditionsFieldType: 'repeatFrom',
+                options: []
+            };
+
+            break;
+        }
         case 'select': {
             let values = options && options.values ? options.values : [];
             values = Array.isArray(values) ? values : [values];
@@ -696,7 +746,7 @@ export function getFieldType(type, options) {
                     value ? value : <span>&nbsp;</span>
                 ),
                 input: props => (
-                    <Select {...props}>
+                    <Select dropdownMatchSelectWidth={false} {...props}>
                         {values.map(value => {
                             value = typeof value === 'object' ? value : {
                                 title: value,
@@ -738,7 +788,7 @@ export function getFieldType(type, options) {
                     values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
                 ),
                 input: props => (
-                    <Select mode="tags" {...props} />
+                    <Select dropdownMatchSelectWidth={false} mode="tags" {...props} />
                 ),
                 conditionsFieldType: 'selectTags',
                 options: []
@@ -761,7 +811,7 @@ export function getFieldType(type, options) {
                     <SortDirectionTitle sortDirectionId={value} />
                 ),
                 input: props => (
-                    <SortDirectionSelect {...props} />
+                    <SortDirectionSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'sortDirection',
                 options: []
@@ -805,7 +855,7 @@ export function getFieldType(type, options) {
                     <StatusTitle statusId={value} />
                 ),
                 input: props => (
-                    <StatusSelect {...props} />
+                    <StatusSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'status',
                 options: []
@@ -828,7 +878,7 @@ export function getFieldType(type, options) {
                     <TagsTitle tagIds={value} />
                 ),
                 input: props => (
-                    <TagsSelect {...props} />
+                    <TagsSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'tags',
                 options: []
@@ -851,7 +901,7 @@ export function getFieldType(type, options) {
                     <TaskTitle taskId={value} />
                 ),
                 input: props => (
-                    <TaskSelect {...props} />
+                    <TaskSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'task',
                 options: []
@@ -874,7 +924,7 @@ export function getFieldType(type, options) {
                     <TaskFieldTitle taskFieldId={value} />
                 ),
                 input: props => (
-                    <TaskFieldSelect {...props} />
+                    <TaskFieldSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'taskField',
                 options: []
@@ -897,7 +947,7 @@ export function getFieldType(type, options) {
                     <TaskTemplateTitle taskTemplateId={value} />
                 ),
                 input: props => (
-                    <TaskTemplateSelect {...props} />
+                    <TaskTemplateSelect dropdownMatchSelectWidth={false} {...props} />
                 ),
                 conditionsFieldType: 'taskTemplate',
                 options: []
@@ -915,7 +965,7 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStrings(a, b),
-                toString:value => toString(value),
+                toString: value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Input.TextArea autosize={true} {...props} onPressEnter={null} />
@@ -936,7 +986,7 @@ export function getFieldType(type, options) {
                 valuePropName: 'timer',
                 getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
-                toString:value => toStringTimer(value),
+                toString: value => toStringTimer(value),
                 render: (value, props) => (
                     <TimerField
                         timer={value}
@@ -963,7 +1013,7 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStrings(a, b),
-                toString:value => toString(value),
+                toString: value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
                     <Input {...props} />
@@ -977,7 +1027,7 @@ export function getFieldType(type, options) {
     }
 
     configuration.select = () => (
-        <Select placeholder="Condition">
+        <Select dropdownMatchSelectWidth={false} placeholder="Condition">
             {getFieldConditions(type).map(condition => (
                 <Select.Option key={condition.type} value={condition.type}>
                     {condition.title}

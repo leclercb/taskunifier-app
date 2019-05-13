@@ -28,6 +28,10 @@
     margin-bottom: 3px !important;
 }
 
+.ant-select {
+    min-width: 100px;
+}
+
 ant-input:focus {
     box-shadow: none !important;
 }

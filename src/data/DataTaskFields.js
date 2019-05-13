@@ -129,6 +129,27 @@ export function getDefaultTaskFields(settings) {
         },
         {
             static: true,
+            id: 'repeatFrom',
+            title: 'Repeat From',
+            color: '#ffffff',
+            type: 'repeatFrom'
+        },
+        {
+            static: true,
+            id: 'startDateReminder',
+            title: 'Start date reminder',
+            color: '#ffffff',
+            type: 'reminder'
+        },
+        {
+            static: true,
+            id: 'dueDateReminder',
+            title: 'Due date reminder',
+            color: '#ffffff',
+            type: 'reminder'
+        },
+        {
+            static: true,
             id: 'note',
             title: 'Note',
             color: '#ffffff',

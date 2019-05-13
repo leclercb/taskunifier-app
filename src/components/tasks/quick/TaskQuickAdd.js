@@ -34,6 +34,12 @@ function TaskQuickAdd(props) {
         setOpen(true);
     };
 
+    const onFocus = () => {
+        if (values.length > 0) {
+            setOpen(true);
+        }
+    };
+
     const onBlur = () => {
         setOpen(false);
     };
@@ -77,6 +83,7 @@ function TaskQuickAdd(props) {
             placeholder="Quick add task..."
             onChange={onChange}
             onInputKeyDown={onKeyInputDown}
+            onFocus={onFocus}
             onBlur={onBlur}
             open={open}
             style={{ width: '100%', padding: 3 }}>
