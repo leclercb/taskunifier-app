@@ -1,5 +1,6 @@
 ## Todo List
 
+* Settings prop types shape
 * Sorter reorder
 * Show completed tasks
 * Calendar Use due date, Use start date
