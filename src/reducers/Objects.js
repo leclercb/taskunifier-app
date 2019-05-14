@@ -1,4 +1,6 @@
-const Objects = (property, onUpdate = (object, oldObject, updateDate) => { }) => (state = [], action) => {
+import { findParents } from 'utils/HierarchyUtils';
+
+const Objects = (property, onUpdate = null) => (state = [], action) => {
     if (action.property !== property) {
         return state;
     }
@@ -12,31 +14,6 @@ const Objects = (property, onUpdate = (object, oldObject, updateDate) => { }) =>
         }
         case 'UPDATE_OBJECT': {
             return updateObject(state, action, onUpdate);
-        }
-        case 'UPDATE_HIERARCHY': {
-            const newState = [...state];
-
-            if (!action.targetObject.id) {
-                throw Error('The target object doesn\'t have an ID');
-            }
-
-            if (!action.sourceObject.id) {
-                throw Error('The source object doesn\'t have an ID');
-            }
-
-            const targetIndex = newState.findIndex(object => object.id === action.targetObject.id);
-            const sourceIndex = newState.findIndex(object => object.id === action.sourceObject.id);
-
-            if (targetIndex < 0) {
-                throw Error(`The target object with id "${action.targetObject.id}" cannot be updated as it doesn't exist`);
-            }
-
-            if (sourceIndex < 0) {
-                throw Error(`The source object with id "${action.sourceObject.id}" cannot be updated as it doesn't exist`);
-            }
-
-            // TODO update objects reducer to handle children
-            break;
         }
         case 'DELETE_OBJECT': {
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
@@ -74,6 +51,10 @@ const addObject = (state, action) => {
         throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
     }
 
+    if (action.object.state !== 'LOADED') {
+        throw Error('The object cannot be added as it is not in a valid state');
+    }
+
     const newObject = {
         title: 'Untitled',
         color: null,
@@ -108,22 +89,36 @@ const updateObject = (state, action, onUpdate) => {
         throw Error('The object cannot be updated as it is not in a valid state');
     }
 
-    newState[index] = {
+    const updatedObject = {
         ...action.object,
         creationDate: newState[index].creationDate,
         updateDate: action.updateDate,
         state: 'TO_UPDATE'
     };
 
-    const newObject = onUpdate(newState[index], oldObject, action.updateDate);
+    const parents = findParents(updatedObject);
 
-    if (newObject) {
-        newObject.id = action.generateId();
+    if (parents.find(parent => parent.id === updatedObject.id)) {
+        throw Error('The parent cannot become a child of himself');
+    }
+
+    for (let i = 0; i < parents.length; i++) {
+        if (parents[i].state !== 'LOADED' && parents[i].state !== 'TO_UPDATE') {
+            throw Error('The parent object cannot be used as it is not in a valid state');
+        }
+    }
+
+    newState[index] = updatedObject;
+
+    const addedObject = onUpdate ? onUpdate(newState[index], oldObject, action.updateDate) : null;
+
+    if (addedObject) {
+        addedObject.id = action.generateId();
 
         return addObject(
             newState,
             {
-                object: newObject,
+                object: addedObject,
                 creationDate: action.updateDate
             });
     }

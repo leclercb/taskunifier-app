@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`find parents of object A 1`] = `Array []`;
+
+exports[`find parents of object A.A 1`] = `
+Array [
+  Object {
+    "id": "A",
+  },
+]
+`;
+
+exports[`find parents of object A.A.A 1`] = `
+Array [
+  Object {
+    "id": "A.A",
+    "parent": "A",
+  },
+  Object {
+    "id": "A",
+  },
+]
+`;
+
+exports[`find parents of object A.A.B 1`] = `
+Array [
+  Object {
+    "id": "A.A",
+    "parent": "A",
+  },
+  Object {
+    "id": "A",
+  },
+]
+`;
+
+exports[`find parents of object A.A.B.A 1`] = `
+Array [
+  Object {
+    "id": "A.A.B",
+    "parent": "A.A",
+  },
+  Object {
+    "id": "A.A",
+    "parent": "A",
+  },
+  Object {
+    "id": "A",
+  },
+]
+`;
+
+exports[`find parents of object A.A.B.A.A 1`] = `
+Array [
+  Object {
+    "id": "A.A.B.A",
+    "parent": "A.A.B",
+  },
+  Object {
+    "id": "A.A.B",
+    "parent": "A.A",
+  },
+  Object {
+    "id": "A.A",
+    "parent": "A",
+  },
+  Object {
+    "id": "A",
+  },
+]
+`;
+
+exports[`find parents of object A.B 1`] = `
+Array [
+  Object {
+    "id": "A",
+  },
+]
+`;
+
+exports[`find parents of object B.A 1`] = `
+Array [
+  Object {
+    "id": "B",
+  },
+]
+`;
