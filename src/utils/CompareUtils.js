@@ -4,7 +4,6 @@ import { getPriorityIndex } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getCompareForType } from 'utils/FieldUtils';
-import { findParents } from 'utils/HierarchyUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 
 export function compareBooleans(a, b) {
@@ -49,20 +48,20 @@ export function compareObjects(a, b, objects) {
     return compareStrings(objectA ? objectA.title : '', objectB ? objectB.title : '');
 }
 
-export function compareObjectsHierarchy(field, a, b, objects, state, indented) {
+export function compareObjectsHierarchy(field, a, b, state, indented) {
     if (indented) {
-        return compareObjectsIndented(field, a, b, objects, state);
+        return compareObjectsIndented(field, a, b, state);
     } else {
-        return compareObjectsUnindented(field, a, b, objects, state);
+        return compareObjectsUnindented(field, a, b, state);
     }
 }
 
-export function compareObjectsIndented(field, a, b, objects, state) {
+export function compareObjectsIndented(field, a, b, state) {
     const valueA = a[field.id];
     const valueB = b[field.id];
 
-    const parentsA = findParents(a, objects).reverse();
-    const parentsB = findParents(b, objects).reverse();
+    const parentsA = a._parents.reverse();
+    const parentsB = b._parents.reverse();
 
     let result = 0;
 
@@ -98,7 +97,7 @@ export function compareObjectsIndented(field, a, b, objects, state) {
     return result;
 }
 
-export function compareObjectsUnindented(field, a, b, objects, state) {
+export function compareObjectsUnindented(field, a, b, state) {
     const valueA = a[field.id];
     const valueB = b[field.id];
 

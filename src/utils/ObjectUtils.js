@@ -107,3 +107,11 @@ export function generateUniqueIds(object, key) {
         }
     }
 }
+
+export function removePrivateKeys(object) {
+    Object.keys(object).forEach(key => {
+        if (key.startsWith('_')) {
+            delete object[key];
+        }
+    })
+}

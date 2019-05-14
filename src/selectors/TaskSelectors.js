@@ -5,15 +5,30 @@ import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
-import { findParents } from 'utils/HierarchyUtils';
+import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { sortObjects } from 'utils/SorterUtils';
 
-export const getTasks = state => state.tasks;
+export const getTasks = createSelector(
+    state => state.tasks,
+    (tasks) => {
+        return tasks.map(task => ({
+            ...task,
+            _parents: findParents(task, tasks),
+            _children: findChildren(task, tasks)
+        }));
+    }
+);
 
 export const getTasksFilteredByVisibleState = createSelector(
     getTasks,
     (tasks) => {
-        return filterByVisibleState(tasks);
+        tasks = filterByVisibleState(tasks);
+
+        return tasks.map(task => ({
+            ...task,
+            _parentsFilteredByVisibleState: findParents(task, tasks),
+            _childrenFilteredByVisibleState: findChildren(task, tasks)
+        }));
     }
 );
 
@@ -32,10 +47,10 @@ export const getTasksFilteredBySelectedFilter = createSelector(
         });
 
         filteredTasks = filteredTasks.filter(task => {
-            const parents = findParents(task, tasks);
+            const parents = task._parentsFilteredByVisibleState;
 
             for (let parent of parents) {
-                if (parent.expanded === false || !filteredTasks.includes(parent)) {
+                if (parent.expanded === false || !filteredTasks.find(task => task.id === parent.id)) {
                     return false;
                 }
             }

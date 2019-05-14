@@ -24,7 +24,7 @@ export function onTaskUpdate(task, oldTask, updateDate) {
 
             newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toJSON();
 
-            return newTask;
+            return [newTask];
         }
     }
 

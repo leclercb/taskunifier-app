@@ -1,4 +1,5 @@
 import { findChildren, findParents } from 'utils/HierarchyUtils';
+import { removePrivateKeys } from 'utils/ObjectUtils';
 
 const Objects = (property, onUpdate = null) => (state = [], action) => {
     if (action.property !== property) {
@@ -68,13 +69,15 @@ const addObject = (state, action) => {
         state: 'LOADED'
     };
 
+    removePrivateKeys(newObject);
+
     newState.push(newObject);
 
     return newState;
 };
 
 const updateObject = (state, action, onUpdate) => {
-    const newState = [...state];
+    let newState = [...state];
 
     if (!action.object.id) {
         throw Error('The object doesn\'t have an ID');
@@ -99,6 +102,8 @@ const updateObject = (state, action, onUpdate) => {
         state: 'TO_UPDATE'
     };
 
+    removePrivateKeys(updatedObject);
+
     const parents = findParents(updatedObject, newState);
 
     if (parents.find(parent => parent.id === updatedObject.id)) {
@@ -113,17 +118,19 @@ const updateObject = (state, action, onUpdate) => {
 
     newState[index] = updatedObject;
 
-    const addedObject = onUpdate ? onUpdate(newState[index], oldObject, action.updateDate) : null;
+    const addedObjects = onUpdate ? onUpdate(newState[index], oldObject, action.updateDate) : null;
 
-    if (addedObject) {
-        addedObject.id = action.generateId();
+    if (addedObjects) {
+        addedObjects.forEach(addedObject => {
+            addedObject.id = action.generateId();
 
-        return addObject(
-            newState,
-            {
-                object: addedObject,
-                creationDate: action.updateDate
-            });
+            newState = addObject(
+                newState,
+                {
+                    object: addedObject,
+                    creationDate: action.updateDate
+                });
+        });
     }
 
     return newState;

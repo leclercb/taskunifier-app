@@ -15,7 +15,6 @@ import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
-import { findParents } from 'utils/HierarchyUtils';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
@@ -72,7 +71,7 @@ function TaskTable(props) {
                             ...rowData,
                             ...allValues
                         })}
-                        subLevel={field.id === 'title' ? findParents(rowData, props.tasks).length : 0}
+                        subLevel={field.id === 'title' ? rowData._parentsFilteredByVisibleState.length : 0}
                         expanded={field.id === 'title' ? rowData.expanded !== false : null}
                         onSetExpanded={expanded => onUpdateTask({
                             ...rowData,

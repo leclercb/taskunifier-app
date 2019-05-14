@@ -18,7 +18,7 @@ export function sortObjects(objects, fields, filter, state, indented = true) {
                 continue;
             }
 
-            result = compareObjectsHierarchy(field, a, b, objects, state, indented);
+            result = compareObjectsHierarchy(field, a, b, state, indented);
 
             if (sortDirection === 'descending') {
                 result *= -1;
@@ -30,7 +30,7 @@ export function sortObjects(objects, fields, filter, state, indented = true) {
         }
 
         if (result === 0) {
-            result = compareObjectsHierarchy('id', a, b, objects, state, indented);
+            result = compareObjectsHierarchy('id', a, b, state, indented);
         }
 
         return result;
