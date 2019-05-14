@@ -112,5 +112,11 @@
     "taskColumnWidth_note": 340,
     "taskColumnWidth_startDateReminder": 167,
     "taskColumnWidth_dueDateReminder": 151,
-    "taskColumnWidth_repeatFrom": 116
+    "taskColumnWidth_repeatFrom": 116,
+    "noteColumnVisible_id": false,
+    "noteColumnVisible_creationDate": false,
+    "noteColumnVisible_updateDate": false,
+    "taskColumnVisible_id": false,
+    "taskColumnVisible_creationDate": false,
+    "taskColumnVisible_updateDate": false
 }

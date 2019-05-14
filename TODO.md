@@ -1,17 +1,16 @@
 ## Todo List
 
-* Evaluate flow (https://pusher.com/tutorials/type-check-react-flow)
-* DraggableElement type
+* Delete sub-objects
 * Settings prop types shape
 * Sorter reorder
 * Show completed tasks
-* Calendar Use due date, Use start date
+* Calendar use due date, use start date
 * Restore from backup
-* Show/hide columns
+* Show/hide columns and fields
 * Print config (columns, size)
 
 * Postpone Snooze
-* Sub-tasks
+* Evaluate flow (https://pusher.com/tutorials/type-check-react-flow)
 * Try react-joyride
 * Electron proxy connection
 

@@ -11,3 +11,7 @@ export function findParents(o, objects) {
 
     return parents;
 }
+
+export function hasChildren(o, objects) {
+    return !!objects.find(object => object.parent === o.id);
+}

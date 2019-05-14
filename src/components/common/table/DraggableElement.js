@@ -25,6 +25,8 @@ function DndWrapper(props) {
 }
 
 DndWrapper.propTypes = {
+    dropType: PropTypes.string.isRequired,
+    dragType: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
     onDrop: PropTypes.func.isRequired,
     isOver: PropTypes.bool.isRequired,
@@ -50,7 +52,7 @@ const target = {
 };
 
 const dropTarget = DropTarget(
-    'row',
+    props => props.dropType,
     target,
     (connect, monitor) => ({
         connectDropTarget: connect.dropTarget(),
@@ -59,7 +61,7 @@ const dropTarget = DropTarget(
 );
 
 const dragSource = DragSource(
-    'row',
+    props => props.dragType,
     source,
     (connect) => ({
         connectDragSource: connect.dragSource()

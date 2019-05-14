@@ -31,6 +31,8 @@ export function ResizableAndMovableColumn(props) {
     return (
         <React.Fragment key={props.dataKey}>
             <DraggableElement
+                dragType="column"
+                dropType="column"
                 data={{
                     dataKey: props.dataKey,
                     label: props.label

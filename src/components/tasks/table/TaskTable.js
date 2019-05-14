@@ -15,6 +15,7 @@ import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
+import { findParents, hasChildren } from 'utils/HierarchyUtils';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
@@ -22,8 +23,10 @@ function TaskTable(props) {
     };
 
     const onDropTask = (dragData, dropData) => {
-        // TODO implement
-        console.log(dragData, dropData);
+        props.updateTask({
+            ...dragData.rowData,
+            parent: dropData.rowData.id
+        });
     };
 
     let tableWidth = 0;
@@ -31,7 +34,10 @@ function TaskTable(props) {
     const onResize = resizeHandler('taskColumnWidth_', props.updateSettings);
     const onMove = moveHandler('taskColumnOrder_', props.taskFields, props.settings, props.updateSettings);
 
-    const columns = sortBy(props.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0).map(field => {
+    const sortedFields = sortBy(props.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => props.settings['taskColumnVisible_' + field.id] !== false);
+
+    const columns = sortedAndFilteredFields.map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
         let width = Number(props.settings[settingKey]);
 
@@ -65,6 +71,12 @@ function TaskTable(props) {
                         onChange={allValues => onUpdateTask({
                             ...rowData,
                             ...allValues
+                        })}
+                        subLevel={field.id === 'title' ? findParents(rowData, props.tasks).length : 0}
+                        expanded={field.id === 'title' ? rowData.expanded !== false : null}
+                        onSetExpanded={expanded => onUpdateTask({
+                            ...rowData,
+                            expanded: expanded
                         })} />
                 )} />
         );
@@ -82,7 +94,11 @@ function TaskTable(props) {
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}
                         rowRenderer={props => (
-                            <DraggableRowRenderer {...props} onDrop={onDropTask} />
+                            <DraggableRowRenderer
+                                {...props}
+                                dragType="task"
+                                dropType="task"
+                                onDrop={onDropTask} />
                         )}
                         rowStyle={({ index }) => {
                             const task = props.tasks[index];

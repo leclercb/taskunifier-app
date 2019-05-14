@@ -1,8 +1,10 @@
 import moment from 'moment';
-import { getContactTitle } from 'utils/ContactUtils';
 import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getPriorityIndex } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
+import { getContactTitle } from 'utils/ContactUtils';
+import { getCompareForType } from 'utils/FieldUtils';
+import { findParents } from 'utils/HierarchyUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 
 export function compareBooleans(a, b) {
@@ -45,6 +47,62 @@ export function compareObjects(a, b, objects) {
     const objectB = objects.find(object => object.id === b);
 
     return compareStrings(objectA ? objectA.title : '', objectB ? objectB.title : '');
+}
+
+export function compareObjectsHierarchy(field, a, b, objects, state, indented) {
+    if (indented) {
+        return compareObjectsIndented(field, a, b, objects, state);
+    } else {
+        return compareObjectsUnindented(field, a, b, objects, state);
+    }
+}
+
+export function compareObjectsIndented(field, a, b, objects, state) {
+    const valueA = a[field.id];
+    const valueB = b[field.id];
+
+    const parentsA = findParents(a, objects).reverse();
+    const parentsB = findParents(b, objects).reverse();
+
+    let result = 0;
+
+    if (parentsA.length === 0 && parentsB.length === 0) {
+        result = getCompareForType(field.type, valueA, valueB, state);
+    } else if (a.parent === b.parent) {
+        result = getCompareForType(field.type, valueA, valueB, state);
+    } else if (parentsA.includes(b)) {
+        result = 1;
+    } else if (parentsB.includes(a)) {
+        result = -1;
+    } else {
+        parentsA.push(a);
+        parentsB.push(b);
+
+        for (let i = 0; i < Math.max(parentsA.length, parentsB.length); i++) {
+            if (i < parentsA.length) {
+                a = parentsA[i];
+            }
+
+            if (i < parentsB.length) {
+                b = parentsB[i];
+            }
+
+            if (a === b) {
+                continue;
+            }
+
+            result = getCompareForType(field.type, a[field.id], b[field.id], state);
+        }
+    }
+
+    return result;
+}
+
+export function compareObjectsUnindented(field, a, b, objects, state) {
+    const valueA = a[field.id];
+    const valueB = b[field.id];
+
+    return getCompareForType(field.type, valueA, valueB, state);
 }
 
 export function compareSortDirections(a, b) {

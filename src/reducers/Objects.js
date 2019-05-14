@@ -51,10 +51,6 @@ const addObject = (state, action) => {
         throw Error(`The object with id "${action.object.id}" cannot be added as it already exists`);
     }
 
-    if (action.object.state !== 'LOADED') {
-        throw Error('The object cannot be added as it is not in a valid state');
-    }
-
     const newObject = {
         title: 'Untitled',
         color: null,
@@ -96,7 +92,7 @@ const updateObject = (state, action, onUpdate) => {
         state: 'TO_UPDATE'
     };
 
-    const parents = findParents(updatedObject);
+    const parents = findParents(updatedObject, newState);
 
     if (parents.find(parent => parent.id === updatedObject.id)) {
         throw Error('The parent cannot become a child of himself');

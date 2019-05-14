@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Form } from 'antd';
 import PropTypes from 'prop-types';
+import Icon from 'components/common/Icon';
+import Spacer from 'components/common/Spacer';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import {
     getInputForType,
@@ -73,10 +75,32 @@ function CellRenderer(props) {
         );
     }
 
+    let indentationElement = null;
+    let expandElement = null;
+
+    if (props.subLevel) {
+        indentationElement = (
+            <Spacer size={props.subLevel * 20} />
+        );
+    }
+
+    if (typeof props.expanded === 'boolean') {
+        expandElement = (
+            <Icon
+                icon={props.expanded === false ? 'plus-square' : 'minus-square'}
+                style={{
+                    marginRight: 5
+                }}
+                onClick={() => props.onSetExpanded(!props.expanded)} />
+        );
+    }
+
     return (
         <div
             className="cell-renderer-value-wrap"
             onDoubleClick={toggleEdit}>
+            {indentationElement}
+            {expandElement}
             {getRenderForType(
                 props.field.type,
                 props.field.options,
@@ -94,7 +118,10 @@ CellRenderer.propTypes = {
     form: PropTypes.object.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
-    onChange: PropTypes.func.isRequired
+    onChange: PropTypes.func.isRequired,
+    subLevel: PropTypes.number,
+    expanded: PropTypes.bool,
+    onSetExpanded: PropTypes.func
 };
 
 export default Form.create({

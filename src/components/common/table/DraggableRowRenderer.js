@@ -13,7 +13,9 @@ export function DraggableRowRenderer({
     onRowRightClick,
     onDrop,
     rowData,
-    style
+    style,
+    dragType,
+    dropType
 }) {
     const a11yProps = { 'aria-rowindex': index + 1 };
 
@@ -48,6 +50,8 @@ export function DraggableRowRenderer({
             className={className}
             role="row"
             style={style}
+            dragType={dragType}
+            dropType={dropType}
             data={{
                 rowIndex: index,
                 rowData: rowData

@@ -25,7 +25,10 @@ function NoteTable(props) {
     const onResize = resizeHandler('noteColumnWidth_', props.updateSettings);
     const onMove = moveHandler('noteColumnOrder_', props.noteFields, props.settings, props.updateSettings);
 
-    const columns = sortBy(props.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0).map(field => {
+    const sortedFields = sortBy(props.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => props.settings['noteColumnVisible_' + field.id] !== false);
+
+    const columns = sortedAndFilteredFields.map(field => {
         const settingKey = 'noteColumnWidth_' + field.id;
         let width = Number(props.settings[settingKey]);
 
