@@ -15,7 +15,7 @@ import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
-import { findParents, hasChildren } from 'utils/HierarchyUtils';
+import { findParents } from 'utils/HierarchyUtils';
 
 function TaskTable(props) {
     const onUpdateTask = task => {

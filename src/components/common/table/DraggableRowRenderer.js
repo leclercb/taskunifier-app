@@ -73,5 +73,7 @@ DraggableRowRenderer.propTypes = {
     onRowRightClick: PropTypes.func,
     onDrop: PropTypes.func.isRequired,
     rowData: PropTypes.object.isRequired,
-    style: PropTypes.object
+    style: PropTypes.object,
+    dragType: PropTypes.string.isRequired,
+    dropType: PropTypes.string.isRequired
 };
