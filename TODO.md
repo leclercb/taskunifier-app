@@ -1,6 +1,5 @@
 ## Todo List
 
-* Delete sub-objects
 * Settings prop types shape
 * Sorter reorder
 * Show completed tasks
@@ -21,6 +20,7 @@
 * Use "mention" in notes
 * Sub-categories (children)
 * Group by
+* Rules
 
 ## Reviewed
 

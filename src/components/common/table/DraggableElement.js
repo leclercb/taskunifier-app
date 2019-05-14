@@ -18,6 +18,8 @@ function DndWrapper(props) {
         className += ' DropOver';
     }
 
+    delete restProps.dropType;
+    delete restProps.dragType;
     delete restProps.data;
     delete restProps.onDrop;
 

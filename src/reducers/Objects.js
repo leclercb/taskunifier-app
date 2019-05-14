@@ -1,4 +1,4 @@
-import { findParents } from 'utils/HierarchyUtils';
+import { findParents, findChildren } from 'utils/HierarchyUtils';
 
 const Objects = (property, onUpdate = null) => (state = [], action) => {
     if (action.property !== property) {
@@ -17,10 +17,17 @@ const Objects = (property, onUpdate = null) => (state = [], action) => {
         }
         case 'DELETE_OBJECT': {
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
+            const objects = state.filter(object => objectIds.includes(object.id));
+            const objectIdsWithChildren = [...objectIds];
+
+            objects.forEach(object => {
+                const children = findChildren(object, state);
+                objectIdsWithChildren.push(...children.map(child => child.id));
+            });
 
             return state.map(object => {
                 if (object.state === 'LOADED' || object.state === 'TO_UPDATE') {
-                    if (objectIds.includes(object.id)) {
+                    if (objectIdsWithChildren.includes(object.id)) {
                         object = { ...object };
                         object.updateDate = action.updateDate;
                         object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';

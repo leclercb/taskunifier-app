@@ -12,6 +12,17 @@ export function findParents(o, objects) {
     return parents;
 }
 
+export function findChildren(o, objects) {
+    const directChildren = objects.filter(object => object.parent === o.id);
+    const children = [...directChildren];
+
+    directChildren.forEach(child => {
+        children.push(...findChildren(child, objects));
+    })
+
+    return children;
+}
+
 export function hasChildren(o, objects) {
     return !!objects.find(object => object.parent === o.id);
 }
