@@ -1,4 +1,4 @@
-import { findParents, findChildren } from 'utils/HierarchyUtils';
+import { findChildren, findParents } from 'utils/HierarchyUtils';
 
 const Objects = (property, onUpdate = null) => (state = [], action) => {
     if (action.property !== property) {

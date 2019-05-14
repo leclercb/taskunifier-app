@@ -18,7 +18,7 @@ export function findChildren(o, objects) {
 
     directChildren.forEach(child => {
         children.push(...findChildren(child, objects));
-    })
+    });
 
     return children;
 }
