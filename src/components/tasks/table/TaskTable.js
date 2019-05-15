@@ -12,9 +12,10 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { TaskPropType, TaskMetaDataPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
+import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
@@ -46,6 +47,20 @@ function TaskTable(props) {
 
         tableWidth += width + 10;
 
+        const getExpandMode = task => {
+            let expanded = null;
+
+            if (field.id === 'title') {
+                if (hasChildren(task, props.tasksExpandedAndCollapsed)) {
+                    expanded = task.expanded !== false ? 'expanded' : 'collapsed';
+                } else {
+                    expanded = 'hidden';
+                }
+            }
+
+            return expanded;
+        };
+
         return (
             <Column
                 key={field.id}
@@ -71,8 +86,8 @@ function TaskTable(props) {
                             ...rowData,
                             ...allValues
                         })}
-                        subLevel={field.id === 'title' ? rowData._parentsFilteredByVisibleState.length : 0}
-                        expanded={field.id === 'title' ? rowData.expanded !== false : null}
+                        subLevel={field.id === 'title' ? getSubLevel(rowData, props.tasksMetaData) : 0}
+                        expandMode={getExpandMode(rowData)}
                         onSetExpanded={expanded => onUpdateTask({
                             ...rowData,
                             expanded: expanded
@@ -80,7 +95,7 @@ function TaskTable(props) {
                 )} />
         );
     });
-
+console.log(props.tasks);
     return (
         <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
             <AutoSizer>
@@ -134,6 +149,8 @@ function TaskTable(props) {
 TaskTable.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
+    tasksExpandedAndCollapsed: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
+    tasksMetaData: PropTypes.arrayOf(TaskMetaDataPropType.isRequired).isRequired,
     settings: PropTypes.object.isRequired,
     selectedTaskFilter: TaskFilterPropType,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
@@ -143,4 +160,7 @@ TaskTable.propTypes = {
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withTaskFields(withTasks(withSize(TaskTable), { applySelectedTaskFilter: true })));
+export default withSettings(withTaskFields(withTasks(withSize(TaskTable), {
+    includeMetaData: true,
+    applySelectedTaskFilter: true
+})));

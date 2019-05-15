@@ -5,39 +5,36 @@ import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
-import { findChildren, findParents } from 'utils/HierarchyUtils';
+import { findParents, findChildren } from 'utils/HierarchyUtils';
 import { sortObjects } from 'utils/SorterUtils';
 
-export const getTasks = createSelector(
-    state => state.tasks,
-    (tasks) => {
-        return tasks.map(task => ({
-            ...task,
-            _parents: findParents(task, tasks),
-            _children: findChildren(task, tasks)
-        }));
-    }
-);
+export const getTasks = state => state.tasks;
 
 export const getTasksFilteredByVisibleState = createSelector(
     getTasks,
     (tasks) => {
-        tasks = filterByVisibleState(tasks);
+        return filterByVisibleState(tasks);
+    }
+);
 
+export const getTasksMetaDataFilteredByVisibleState = createSelector(
+    getTasksFilteredByVisibleState,
+    (tasks) => {
         return tasks.map(task => ({
-            ...task,
-            _parentsFilteredByVisibleState: findParents(task, tasks),
-            _childrenFilteredByVisibleState: findChildren(task, tasks)
+            id: task.id,
+            parents: findParents(task, tasks),
+            children: findChildren(task, tasks)
         }));
     }
 );
 
 export const getTasksFilteredBySelectedFilter = createSelector(
     getTasksFilteredByVisibleState,
+    getTasksMetaDataFilteredByVisibleState,
     getSelectedTaskFilter,
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
-    (tasks, selectedTaskFilter, selectedTaskFilterDate, taskFields) => {
+    (tasks, tasksMetaData, selectedTaskFilter, selectedTaskFilterDate, taskFields) => {
         let filteredTasks = tasks.filter(task => {
             if (!selectedTaskFilterDate || moment(task.creationDate).isAfter(moment(selectedTaskFilterDate))) {
                 return true;
@@ -47,10 +44,10 @@ export const getTasksFilteredBySelectedFilter = createSelector(
         });
 
         filteredTasks = filteredTasks.filter(task => {
-            const parents = task._parentsFilteredByVisibleState;
+            const parents = tasksMetaData.find(meta => meta.id === task.id).parents;
 
             for (let parent of parents) {
-                if (parent.expanded === false || !filteredTasks.find(task => task.id === parent.id)) {
+                if (!filteredTasks.includes(parent)) {
                     return false;
                 }
             }
@@ -59,5 +56,23 @@ export const getTasksFilteredBySelectedFilter = createSelector(
         });
 
         return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState());
+    }
+);
+
+export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
+    getTasksFilteredBySelectedFilter,
+    getTasksMetaDataFilteredByVisibleState,
+    (tasks, tasksMetaData) => {
+        return tasks.filter(task => {
+            const parents = tasksMetaData.find(meta => meta.id === task.id).parents;
+
+            for (let parent of parents) {
+                if (parent.expanded === false) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
     }
 );

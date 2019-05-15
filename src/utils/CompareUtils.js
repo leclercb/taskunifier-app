@@ -5,6 +5,7 @@ import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getCompareForType } from 'utils/FieldUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
+import { getTasksMetaDataFilteredByVisibleState } from 'selectors/TaskSelectors';
 
 export function compareBooleans(a, b) {
     const boolA = a ? true : false;
@@ -60,8 +61,8 @@ export function compareObjectsIndented(field, a, b, state) {
     const valueA = a[field.id];
     const valueB = b[field.id];
 
-    const parentsA = a._parents.reverse();
-    const parentsB = b._parents.reverse();
+    const parentsA = [...getTasksMetaDataFilteredByVisibleState(state).find(meta => meta.id === a.id).parents].reverse();
+    const parentsB = [...getTasksMetaDataFilteredByVisibleState(state).find(meta => meta.id === b.id).parents].reverse();
 
     let result = 0;
 
@@ -91,6 +92,8 @@ export function compareObjectsIndented(field, a, b, state) {
             }
 
             result = getCompareForType(field.type, a[field.id], b[field.id], state);
+
+            break;
         }
     }
 

@@ -29,3 +29,9 @@ export const TaskPropType = PropTypes.shape({
     linkedFiles: PropTypes.arrayOf(LinkedFilePropType.isRequired),
     linkedTasks: PropTypes.arrayOf(LinkedTaskPropType.isRequired)
 });
+
+export const TaskMetaDataPropType = PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    parents: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
+    children: PropTypes.arrayOf(TaskPropType.isRequired).isRequired
+});

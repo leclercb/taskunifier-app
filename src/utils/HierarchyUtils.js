@@ -26,3 +26,8 @@ export function findChildren(o, objects) {
 export function hasChildren(o, objects) {
     return !!objects.find(object => object.parent === o.id);
 }
+
+export function getSubLevel(o, objectsMetaData) {
+    const metaData = objectsMetaData.find(metaData => metaData.id === o.id);
+    return metaData.parents.length;
+}

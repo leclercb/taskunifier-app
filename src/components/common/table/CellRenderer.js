@@ -14,6 +14,7 @@ import {
     isCommitOnChangeForType
 } from 'utils/FieldUtils';
 import 'components/common/table/CellRenderer.css';
+import Constants from 'constants/Constants';
 
 function CellRenderer(props) {
     const [editing, setEditing] = useState(false);
@@ -84,14 +85,38 @@ function CellRenderer(props) {
         );
     }
 
-    if (typeof props.expanded === 'boolean') {
+    if (props.expandMode) {
+        let expanded;
+        let icon;
+        let color;
+
+        switch (props.expandMode) {
+            case 'expanded':
+                expanded = true;
+                icon = 'minus-square';
+                color = Constants.color;
+                break;
+            case 'collapsed':
+                expanded = false;
+                icon = 'plus-square';
+                color = Constants.color;
+                break;
+            default:
+            case 'hidden':
+                expanded = false;
+                icon = 'plus-square';
+                color = 'transparent';
+                break;
+        }
+
         expandElement = (
             <Icon
-                icon={props.expanded === false ? 'plus-square' : 'minus-square'}
+                icon={icon}
+                color={color}
                 style={{
                     marginRight: 5
                 }}
-                onClick={() => props.onSetExpanded(!props.expanded)} />
+                onClick={() => props.onSetExpanded(!expanded)} />
         );
     }
 
@@ -120,7 +145,7 @@ CellRenderer.propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     subLevel: PropTypes.number,
-    expanded: PropTypes.bool,
+    expandMode: PropTypes.oneOf(['expanded', 'collapsed', 'hidden']),
     onSetExpanded: PropTypes.func
 };
 

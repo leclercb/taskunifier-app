@@ -13,7 +13,9 @@ import {
 } from 'selectors/AppSelectors';
 import {
     getTasksFilteredBySelectedFilter,
-    getTasksFilteredByVisibleState
+    getTasksFilteredByVisibleState,
+    getTasksFilteredBySelectedFilterAndExpanded,
+    getTasksMetaDataFilteredByVisibleState
 } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
 
@@ -21,21 +23,28 @@ function withTasks(Component, options) {
     options = merge({
         includeState: true,
         includeDispatch: true,
+        includeMetaData: false,
         applySelectedTaskFilter: false
     }, options || {});
 
     const mapStateToProps = state => {
-        let tasks = getTasksFilteredByVisibleState(state);
-
-        if (options.applySelectedTaskFilter === true) {
-            tasks = getTasksFilteredBySelectedFilter(state);
-        }
-
-        return {
-            tasks: tasks,
+        const result = {
             selectedTaskIds: getSelectedTaskIds(state),
             selectedTaskFilter: getSelectedTaskFilter(state)
         };
+
+        if (options.applySelectedTaskFilter === true) {
+            result.tasks = getTasksFilteredBySelectedFilterAndExpanded(state);
+            result.tasksExpandedAndCollapsed = getTasksFilteredBySelectedFilter(state);
+        } else {
+            result.tasks = getTasksFilteredByVisibleState(state);
+        }
+
+        if (options.includeMetaData === true) {
+            result.tasksMetaData = getTasksMetaDataFilteredByVisibleState(state);
+        }
+
+        return result;
     };
 
     const mapDispatchToProps = dispatch => ({
