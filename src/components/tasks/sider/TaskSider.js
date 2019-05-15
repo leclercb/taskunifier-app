@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Input, Menu, Popconfirm, Tooltip } from 'antd';
+import { Badge, Input, Menu, Popconfirm, Tooltip, Checkbox } from 'antd';
 import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
@@ -167,14 +167,22 @@ function TaskSider(props) {
     };
 
     return (
-        <React.Fragment>
+        <div style={{ backgroundColor: '#ffffff', height: '100%' }}>
+            <Checkbox
+                checked={props.showCompletedTasks}
+                onChange={() => props.setShowCompletedTasks(!props.showCompletedTasks)}
+                style={{
+                    margin: 10,
+                    marginBottom: 20
+                }}>
+                Show completed tasks
+            </Checkbox>
             <Menu
                 selectedKeys={[props.selectedTaskFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
                 onOpenChange={onOpenChange}
-                mode="inline"
-                style={{ height: '100%' }}>
+                mode="inline">
                 <Menu.Item
                     key={searchTaskFilter.id}
                     filter={searchTaskFilter}>
@@ -259,7 +267,7 @@ function TaskSider(props) {
                         () => props.deleteTaskFilter(taskFilter.id)))}
                 </Menu.SubMenu>
             </Menu >
-        </React.Fragment>
+        </div>
     );
 }
 
@@ -271,7 +279,9 @@ TaskSider.propTypes = {
     tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
     taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
     taskNumber: PropTypes.number.isRequired,
+    showCompletedTasks: PropTypes.bool.isRequired,
     selectedTaskFilter: TaskFilterPropType.isRequired,
+    setShowCompletedTasks: PropTypes.func.isRequired,
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
@@ -291,6 +301,7 @@ export default withApp(withObjects(TaskSider, {
     includeLocations: true,
     includeTags: true,
     includeTaskFilters: true,
+    includeShowCompletedTasks: true,
     includeSelectedTaskFilter: true,
     includeTaskNumber: true,
     filteredByNonArchivedFolders: true,

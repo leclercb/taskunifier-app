@@ -4,12 +4,14 @@ import {
     deleteTask,
     setSelectedTaskFilter,
     setSelectedTaskIds,
-    updateTask
+    updateTask,
+    setShowCompletedTasks
 } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
     getSelectedTaskFilter,
-    getSelectedTaskIds
+    getSelectedTaskIds,
+    isShowCompletedTasks
 } from 'selectors/AppSelectors';
 import {
     getTasksFilteredBySelectedFilter,
@@ -29,6 +31,7 @@ function withTasks(Component, options) {
 
     const mapStateToProps = state => {
         const result = {
+            showCompletedTasks: isShowCompletedTasks(state),
             selectedTaskIds: getSelectedTaskIds(state),
             selectedTaskFilter: getSelectedTaskFilter(state)
         };
@@ -51,6 +54,7 @@ function withTasks(Component, options) {
         addTask: task => dispatch(addTask(task)),
         updateTask: task => dispatch(updateTask(task)),
         deleteTask: taskId => dispatch(deleteTask(taskId)),
+        setShowCompletedTasks: show => dispatch(setShowCompletedTasks(show)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });

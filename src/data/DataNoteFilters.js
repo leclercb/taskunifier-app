@@ -1,10 +1,12 @@
+import uuid from 'uuid';
+
 export function createSearchNoteFilter(searchValue) {
     return {
         id: 'search',
         title: 'Search',
         icon: 'search',
         condition: {
-            id: '1',
+            id: uuid(),
             field: 'title',
             type: 'contains',
             value: searchValue

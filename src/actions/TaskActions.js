@@ -37,6 +37,17 @@ export function cleanTasks() {
     return dispatch => dispatch(cleanObjects('tasks'));
 }
 
+export function setShowCompletedTasks(show) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SHOW_COMPLETED_TASKS',
+            show: show
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export function setSelectedTaskIds(taskIds) {
     return dispatch => {
         dispatch({

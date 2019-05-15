@@ -8,9 +8,9 @@ import { addLocation, deleteLocation, updateLocation } from 'actions/LocationAct
 import { deleteTag, updateTag } from 'actions/TagActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
-import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/TaskActions';
+import { setSelectedTaskFilter, setSelectedTaskIds, setShowCompletedTasks } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getSelectedNoteFilter, getSelectedTaskFilter } from 'selectors/AppSelectors';
+import { getSelectedNoteFilter, getSelectedTaskFilter, isShowCompletedTasks } from 'selectors/AppSelectors';
 import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -35,6 +35,7 @@ function withObjects(Component, options) {
         includeNoteFilters: false,
         includeTaskFilters: false,
         includeSelectedNoteFilter: false,
+        includeShowCompletedTasks: false,
         includeSelectedTaskFilter: false,
         includeNoteNumber: false,
         includeTaskNumber: false,
@@ -89,6 +90,10 @@ function withObjects(Component, options) {
             data.selectedNoteFilter = getSelectedNoteFilter(state);
         }
 
+        if (options.includeShowCompletedTasks === true) {
+            data.showCompletedTasks = isShowCompletedTasks(state);
+        }
+
         if (options.includeSelectedTaskFilter === true) {
             data.selectedTaskFilter = getSelectedTaskFilter(state);
         }
@@ -130,6 +135,7 @@ function withObjects(Component, options) {
         deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId)),
         setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds)),
         setSelectedNoteFilter: noteFilter => dispatch(setSelectedNoteFilter(noteFilter)),
+        setShowCompletedTasks: show => dispatch(setShowCompletedTasks(show)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });

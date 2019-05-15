@@ -6,6 +6,7 @@ const App = () => (state = {
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: null,
+    showCompletedTasks: true,
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: null,
@@ -56,6 +57,11 @@ const App = () => (state = {
                 ...state,
                 selectedNoteFilter: action.noteFilter,
                 selectedNoteFilterDate: action.date
+            };
+        case 'SET_SHOW_COMPLETED_TASKS':
+            return {
+                ...state,
+                showCompletedTasks: action.show
             };
         case 'SET_SELECTED_TASK_IDS':
             return {

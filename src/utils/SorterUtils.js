@@ -1,6 +1,6 @@
 import { compareObjectsHierarchy } from 'utils/CompareUtils';
 
-export function sortObjects(objects, fields, filter, state, indented = true) {
+export function sortObjects(objects, fields, filter, state, getMetaDataFunction, indented) {
     let sorters = [];
 
     if (filter && filter.sorters) {
@@ -18,7 +18,7 @@ export function sortObjects(objects, fields, filter, state, indented = true) {
                 continue;
             }
 
-            result = compareObjectsHierarchy(field, a, b, state, indented);
+            result = compareObjectsHierarchy(field, a, b, state, getMetaDataFunction, indented);
 
             if (sortDirection === 'descending') {
                 result *= -1;
@@ -30,11 +30,11 @@ export function sortObjects(objects, fields, filter, state, indented = true) {
         }
 
         if (result === 0) {
-            result = compareObjectsHierarchy(fields.find(field => field.id = 'title'), a, b, state, indented);
+            result = compareObjectsHierarchy(fields.find(field => field.id = 'title'), a, b, state, getMetaDataFunction, indented);
         }
 
         if (result === 0) {
-            result = compareObjectsHierarchy(fields.find(field => field.id = 'id'), a, b, state, indented);
+            result = compareObjectsHierarchy(fields.find(field => field.id = 'id'), a, b, state, getMetaDataFunction, indented);
         }
 
         return result;

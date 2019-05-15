@@ -49,20 +49,20 @@ export function compareObjects(a, b, objects) {
     return compareStrings(objectA ? objectA.title : '', objectB ? objectB.title : '');
 }
 
-export function compareObjectsHierarchy(field, a, b, state, indented) {
+export function compareObjectsHierarchy(field, a, b, state, getMetaDataFunction, indented) {
     if (indented) {
-        return compareObjectsIndented(field, a, b, state);
+        return compareObjectsIndented(field, a, b, state, getMetaDataFunction);
     } else {
         return compareObjectsUnindented(field, a, b, state);
     }
 }
 
-export function compareObjectsIndented(field, a, b, state) {
+export function compareObjectsIndented(field, a, b, state, getMetaDataFunction) {
     const valueA = a[field.id];
     const valueB = b[field.id];
 
-    const parentsA = [...getTasksMetaDataFilteredByVisibleState(state).find(meta => meta.id === a.id).parents].reverse();
-    const parentsB = [...getTasksMetaDataFilteredByVisibleState(state).find(meta => meta.id === b.id).parents].reverse();
+    const parentsA = [...getMetaDataFunction(state).find(meta => meta.id === a.id).parents].reverse();
+    const parentsB = [...getMetaDataFunction(state).find(meta => meta.id === b.id).parents].reverse();
 
     let result = 0;
 

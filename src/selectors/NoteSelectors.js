@@ -30,6 +30,6 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedNoteFilter, note, noteFields);
         });
 
-        return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState());
+        return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
     }
 );

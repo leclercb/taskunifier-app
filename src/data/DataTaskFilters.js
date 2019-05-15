@@ -1,13 +1,42 @@
+import uuid from 'uuid';
+import { clone } from 'utils/ObjectUtils';
+
 export function createSearchTaskFilter(searchValue) {
     return {
         id: 'search',
         title: 'Search',
         icon: 'search',
         condition: {
-            id: '1',
+            id: uuid(),
             field: 'title',
             type: 'contain',
             value: searchValue
+        }
+    };
+}
+
+export function addNonCompletedTasksCondition(filter) {
+    filter = clone(filter);
+
+    const conditions = [
+        {
+            id: uuid(),
+            field: 'completed',
+            type: 'equal',
+            value: false
+        }
+    ];
+
+    if (filter.condition) {
+        conditions.push(filter.condition);
+    }
+
+    return {
+        ...filter,
+        condition: {
+            id: uuid(),
+            operator: 'AND',
+            conditions: conditions
         }
     };
 }
