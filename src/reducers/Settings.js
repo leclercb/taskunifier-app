@@ -1,6 +1,8 @@
 import { getSettings, isCoreSetting } from 'data/DataSettings';
 
-const Settings = () => (state = {}, action) => {
+const Settings = () => (state = {
+    ...getSettings()
+}, action) => {
     switch (action.type) {
         case 'SET_SETTINGS': {
             const coreSettings = {};
