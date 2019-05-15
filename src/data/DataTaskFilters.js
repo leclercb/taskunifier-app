@@ -19,7 +19,7 @@ export function hasCompletedTaskConditionOnly(filter) {
     if (filter.condition) {
         return filter.condition.field === 'completed' &&
             filter.condition.type === 'equal' &&
-            filter.condition.value === true
+            filter.condition.value === true;
     }
 
     return false;

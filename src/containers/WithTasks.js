@@ -4,8 +4,8 @@ import {
     deleteTask,
     setSelectedTaskFilter,
     setSelectedTaskIds,
-    updateTask,
-    setShowCompletedTasks
+    setShowCompletedTasks,
+    updateTask
 } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {

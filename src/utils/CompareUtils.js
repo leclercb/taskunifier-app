@@ -5,7 +5,6 @@ import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getCompareForType } from 'utils/FieldUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
-import { getTasksMetaDataFilteredByVisibleState } from 'selectors/TaskSelectors';
 
 export function compareBooleans(a, b) {
     const boolA = a ? true : false;

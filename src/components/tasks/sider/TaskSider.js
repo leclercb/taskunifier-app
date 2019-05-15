@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Input, Menu, Popconfirm, Tooltip, Checkbox } from 'antd';
+import { Badge, Checkbox, Input, Menu, Popconfirm, Tooltip } from 'antd';
 import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
