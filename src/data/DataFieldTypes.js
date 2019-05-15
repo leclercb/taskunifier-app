@@ -987,12 +987,16 @@ export function getFieldType(type, options) {
                 getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringTimer(value),
-                render: (value, props) => (
-                    <TimerField
-                        timer={value}
-                        readOnly={true}
-                        onChange={props ? props.onChange : null} />
-                ),
+                render: (value, props) => {
+                    /* eslint-disable */
+                    return (
+                        <TimerField
+                            timer={value}
+                            readOnly={true}
+                            onChange={props ? props.onChange : null} />
+                    );
+                    /* eslint-enable */
+                },
                 input: props => (
                     <TimerField {...props} />
                 ),

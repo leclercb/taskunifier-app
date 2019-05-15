@@ -113,5 +113,5 @@ export function removePrivateKeys(object) {
         if (key.startsWith('_')) {
             delete object[key];
         }
-    })
+    });
 }

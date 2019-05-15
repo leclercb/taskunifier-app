@@ -30,6 +30,10 @@ export function sortObjects(objects, fields, filter, state, indented = true) {
         }
 
         if (result === 0) {
+            result = compareObjectsHierarchy(fields.find(field => field.id = 'title'), a, b, state, indented);
+        }
+
+        if (result === 0) {
             result = compareObjectsHierarchy(fields.find(field => field.id = 'id'), a, b, state, indented);
         }
 

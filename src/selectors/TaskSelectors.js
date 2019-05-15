@@ -5,7 +5,7 @@ import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
-import { findParents, findChildren } from 'utils/HierarchyUtils';
+import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { sortObjects } from 'utils/SorterUtils';
 
 export const getTasks = state => state.tasks;

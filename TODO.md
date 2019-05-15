@@ -3,7 +3,7 @@
 * Settings prop types shape
 * Sorter reorder
 * Show completed tasks
-* Calendar use due date, use start date
+* Calendar use due date, use start date, sort tasks
 * Restore from backup
 * Show/hide columns and fields
 * Print config (columns, size)

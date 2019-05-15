@@ -12,7 +12,7 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskPropType, TaskMetaDataPropType } from 'proptypes/TaskPropTypes';
+import { TaskMetaDataPropType, TaskPropType } from 'proptypes/TaskPropTypes';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
@@ -95,7 +95,7 @@ function TaskTable(props) {
                 )} />
         );
     });
-console.log(props.tasks);
+    
     return (
         <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
             <AutoSizer>

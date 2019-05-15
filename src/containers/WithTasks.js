@@ -13,8 +13,8 @@ import {
 } from 'selectors/AppSelectors';
 import {
     getTasksFilteredBySelectedFilter,
-    getTasksFilteredByVisibleState,
     getTasksFilteredBySelectedFilterAndExpanded,
+    getTasksFilteredByVisibleState,
     getTasksMetaDataFilteredByVisibleState
 } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';

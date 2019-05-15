@@ -9,6 +9,7 @@ import { TaskTitle } from 'components/tasks/common/TaskTitle';
 import 'components/tasks/calendar/TaskCalendar.css';
 
 function TaskCalendar(props) {
+    // eslint-disable-next-line
     const getCellRender = unit => value => {
         const tasks = props.tasks.filter(task => {
             if (!task.startDate) {
