@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StatusPropType } from 'proptypes/StatusPropTypes';
 import withStatus from 'containers/WithStatus';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { StatusPropType } from 'proptypes/StatusPropTypes';
 import { getStatusColor } from 'utils/SettingUtils';
 
 export function StatusTitle(props) {
@@ -16,7 +17,7 @@ export function StatusTitle(props) {
 StatusTitle.propTypes = {
     statusId: PropTypes.string,
     status: StatusPropType,
-    settings: PropTypes.object.isRequired
+    settings: SettingsPropType.isRequired
 };
 
 export default withStatus(withSettings(StatusTitle));

@@ -11,6 +11,7 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import withSettings from 'containers/WithSettings';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { LinkedObjectPropType } from 'proptypes/LinkedObjectPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getWidthForType } from 'utils/FieldUtils';
 import { getLinkedObjectBackgroundColor } from 'utils/SettingUtils';
 
@@ -140,7 +141,7 @@ LinkedObjectTable.propTypes = {
     linkedObjectFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     linkedObjects: PropTypes.arrayOf(LinkedObjectPropType.isRequired).isRequired,
     updateLinkedObjects: PropTypes.func.isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     updateSettings: PropTypes.func.isRequired,
     orderSettingPrefix: PropTypes.string.isRequired,
     widthSettingPrefix: PropTypes.string.isRequired

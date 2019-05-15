@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { PriorityPropType } from 'proptypes/PriorityPropTypes';
 import withPriorities from 'containers/WithPriorities';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
+import { PriorityPropType } from 'proptypes/PriorityPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getPriorityColor } from 'utils/SettingUtils';
 
 const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
@@ -23,7 +24,7 @@ const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
 
 PrioritySelect.propTypes = {
     priorities: PropTypes.arrayOf(PriorityPropType.isRequired).isRequired,
-    settings: PropTypes.object.isRequired
+    settings: SettingsPropType.isRequired
 };
 
 export default withPriorities(withSettings(PrioritySelect));

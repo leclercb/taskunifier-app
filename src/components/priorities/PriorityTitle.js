@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PriorityPropType } from 'proptypes/PriorityPropTypes';
 import withPriority from 'containers/WithPriority';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
+import { PriorityPropType } from 'proptypes/PriorityPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getPriorityColor } from 'utils/SettingUtils';
 
 export function PriorityTitle(props) {
@@ -16,7 +17,7 @@ export function PriorityTitle(props) {
 PriorityTitle.propTypes = {
     priorityId: PropTypes.string,
     priority: PriorityPropType,
-    settings: PropTypes.object.isRequired
+    settings: SettingsPropType.isRequired
 };
 
 export default withPriority(withSettings(PriorityTitle));

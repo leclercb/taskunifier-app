@@ -5,6 +5,7 @@ import withTaskTemplates from 'containers/WithTaskTemplates';
 import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
 import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
 import withSettings from 'containers/WithSettings';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 
 function TaskTemplateManager(props) {
@@ -47,7 +48,7 @@ function TaskTemplateManager(props) {
 TaskTemplateManager.propTypes = {
     taskTemplateId: PropTypes.string,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     onTaskTemplateSelection: PropTypes.func.isRequired,
     addTaskTemplate: PropTypes.func.isRequired,
     updateTaskTemplate: PropTypes.func.isRequired,

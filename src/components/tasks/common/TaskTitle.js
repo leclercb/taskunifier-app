@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
 import withTask from 'containers/WithTask';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
 export function TaskTitle(props) {
@@ -26,7 +27,7 @@ export function TaskTitle(props) {
 TaskTitle.propTypes = {
     taskId: PropTypes.string,
     task: TaskPropType,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     style: PropTypes.object
 };
 

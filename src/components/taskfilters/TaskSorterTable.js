@@ -12,6 +12,7 @@ import withSettings from 'containers/WithSettings';
 import { getWidthForType } from 'utils/FieldUtils';
 import { getSorterBackgroundColor } from 'utils/SettingUtils';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
 
 function TaskSorterTable(props) {
@@ -134,7 +135,7 @@ function TaskSorterTable(props) {
 TaskSorterTable.propTypes = {
     sorters: PropTypes.arrayOf(SorterPropType.isRequired).isRequired,
     updateSorters: PropTypes.func.isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 

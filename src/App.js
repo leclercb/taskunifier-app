@@ -131,7 +131,14 @@ function App(props) {
 }
 
 App.propTypes = {
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+        confirmBeforeClosing: PropTypes.bool.isRequired,
+        automaticSave: PropTypes.bool.isRequired,
+        automaticSaveInterval: PropTypes.number.isRequired,
+        automaticBackup: PropTypes.bool.isRequired,
+        automaticBackupInterval: PropTypes.number.isRequired,
+        lastAutomaticBackup: PropTypes.string.isRequired
+    }).isRequired,
     updateSettings: PropTypes.func.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,

@@ -12,6 +12,7 @@ import withSettings from 'containers/WithSettings';
 import { getWidthForType } from 'utils/FieldUtils';
 import { getSorterBackgroundColor } from 'utils/SettingUtils';
 import { getNoteSorterFields } from 'data/DataNoteSorterFields';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
 
 function NoteSorterTable(props) {
@@ -134,7 +135,7 @@ function NoteSorterTable(props) {
 NoteSorterTable.propTypes = {
     sorters: PropTypes.arrayOf(SorterPropType.isRequired).isRequired,
     updateSorters: PropTypes.func.isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 

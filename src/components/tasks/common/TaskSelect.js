@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
 export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
@@ -33,7 +34,7 @@ export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
 
 TaskSelect.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    settings: PropTypes.object.isRequired
+    settings: SettingsPropType.isRequired
 };
 
 export default withSettings(withTasks(TaskSelect));

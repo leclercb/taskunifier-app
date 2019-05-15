@@ -13,6 +13,7 @@ import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
 function NoteTable(props) {
@@ -110,7 +111,7 @@ function NoteTable(props) {
 NoteTable.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     selectedNoteFilter: NoteFilterPropType,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired,

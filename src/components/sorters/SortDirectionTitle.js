@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { SortDirectionPropType } from 'proptypes/SortDirectionPropTypes';
 import withSortDirection from 'containers/WithSortDirection';
-import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
 
 export function SortDirectionTitle(props) {
@@ -14,8 +13,7 @@ export function SortDirectionTitle(props) {
 
 SortDirectionTitle.propTypes = {
     sortDirectionId: PropTypes.string,
-    sortDirection: SortDirectionPropType,
-    settings: PropTypes.object.isRequired
+    sortDirection: SortDirectionPropType
 };
 
-export default withSortDirection(withSettings(SortDirectionTitle));
+export default withSortDirection(SortDirectionTitle);

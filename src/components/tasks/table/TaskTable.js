@@ -7,15 +7,16 @@ import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
+import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import { getWidthForType } from 'utils/FieldUtils';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskMetaDataPropType, TaskPropType } from 'proptypes/TaskPropTypes';
-import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
-import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
+import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
@@ -151,7 +152,7 @@ TaskTable.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     tasksExpandedAndCollapsed: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     tasksMetaData: PropTypes.arrayOf(TaskMetaDataPropType.isRequired).isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     selectedTaskFilter: TaskFilterPropType,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,

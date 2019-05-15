@@ -46,7 +46,11 @@ function TaskView(props) {
 }
 
 TaskView.propTypes = {
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+        taskViewSplitPaneSize: PropTypes.number.isRequired,
+        taskViewSubSplitPaneMode: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
+        taskViewSubSplitPaneSize: PropTypes.number.isRequired
+    }).isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 

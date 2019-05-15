@@ -44,7 +44,11 @@ function NoteView(props) {
 }
 
 NoteView.propTypes = {
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+        noteViewSplitPaneSize: PropTypes.number.isRequired,
+        noteViewSubSplitPaneMode: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
+        noteViewSubSplitPaneSize: PropTypes.number.isRequired
+    }).isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 

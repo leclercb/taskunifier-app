@@ -48,7 +48,11 @@ function TaskCalendarView(props) {
 }
 
 TaskCalendarView.propTypes = {
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+        taskCalendarViewSplitPaneSize: PropTypes.number.isRequired,
+        taskCalendarViewSubSplitPaneMode: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
+        taskCalendarViewSubSplitPaneSize: PropTypes.number.isRequired
+    }).isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 

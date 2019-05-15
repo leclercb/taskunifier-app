@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Calendar } from 'antd';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import { TaskTitle } from 'components/tasks/common/TaskTitle';
 import 'components/tasks/calendar/TaskCalendar.css';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskCalendar(props) {
     // eslint-disable-next-line
@@ -48,7 +49,7 @@ function TaskCalendar(props) {
 
 TaskCalendar.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: SettingsPropType.isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired
 };

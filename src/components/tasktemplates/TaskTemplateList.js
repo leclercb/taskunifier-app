@@ -57,7 +57,9 @@ TaskTemplateList.propTypes = {
     addTaskTemplate: PropTypes.func.isRequired,
     deleteTaskTemplate: PropTypes.func.isRequired,
     onTaskTemplateSelection: PropTypes.func.isRequired,
-    settings: PropTypes.object.isRequired,
+    settings: PropTypes.shape({
+        defaultTaskTemplate: PropTypes.string
+    }).isRequired,
     updateSettings: PropTypes.func.isRequired
 };
 
