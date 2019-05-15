@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
@@ -5,11 +6,11 @@ const App = () => (state = {
     selectedView: 'task',
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
-    selectedNoteFilterDate: null,
+    selectedNoteFilterDate: moment().toJSON(),
     showCompletedTasks: true,
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
-    selectedTaskFilterDate: null,
+    selectedTaskFilterDate: moment().toJSON(),
     batchAddTasksManager: {
         visible: false
     },

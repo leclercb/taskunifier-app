@@ -23,7 +23,7 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     getNoteFieldsIncludingDefaults,
     (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields) => {
         const filteredNotes = notes.filter(note => {
-            if (!selectedNoteFilterDate || moment(note.creationDate).isAfter(moment(selectedNoteFilterDate))) {
+            if (moment(note.creationDate).isAfter(moment(selectedNoteFilterDate))) {
                 return true;
             }
 

@@ -7,7 +7,7 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { sortObjects } from 'utils/SorterUtils';
-import { addNonCompletedTasksCondition } from 'data/DataTaskFilters';
+import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
 
 export const getTasks = state => state.tasks;
 
@@ -37,12 +37,12 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
     (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields) => {
-        if (!showCompletedTasks) {
+        if (!showCompletedTasks && !hasCompletedTaskConditionOnly(selectedTaskFilter)) {
             selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);
         }
 
         let filteredTasks = tasks.filter(task => {
-            if (!selectedTaskFilterDate || moment(task.creationDate).isAfter(moment(selectedTaskFilterDate))) {
+            if (moment(task.creationDate).isAfter(moment(selectedTaskFilterDate))) {
                 return true;
             }
 
