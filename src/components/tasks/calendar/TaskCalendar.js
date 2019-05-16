@@ -15,12 +15,13 @@ function TaskCalendar(props) {
         return task.startDate &&
             (props.calendarDateMode === 'both' || props.calendarDateMode === 'startDate') &&
             moment(task.startDate).isSame(value, unit);
-    }
+    };
+    
     const matchDueDateMode = (task, unit, value) => {
         return task.dueDate &&
             (props.calendarDateMode === 'both' || props.calendarDateMode === 'dueDate') &&
             moment(task.dueDate).isSame(value, unit);
-    }
+    };
 
     // eslint-disable-next-line react/display-name
     const getCellRender = unit => value => {
