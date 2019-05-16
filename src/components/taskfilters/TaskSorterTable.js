@@ -110,7 +110,7 @@ function TaskSorterTable(props) {
                     }
 
                     return {
-                        backgroundColor: backgroundColor
+                        backgroundColor
                     };
                 }}
                 onRowClick={multiSelectionHandler(

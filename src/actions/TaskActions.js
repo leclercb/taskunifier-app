@@ -41,7 +41,7 @@ export function setShowCompletedTasks(show) {
     return dispatch => {
         dispatch({
             type: 'SET_SHOW_COMPLETED_TASKS',
-            show: show
+            show
         });
 
         return Promise.resolve();
@@ -52,7 +52,7 @@ export function setSelectedTaskIds(taskIds) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_TASK_IDS',
-            taskIds: taskIds
+            taskIds
         });
 
         return Promise.resolve();
@@ -63,7 +63,7 @@ export function setSelectedTaskFilter(taskFilter) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_TASK_FILTER',
-            taskFilter: taskFilter,
+            taskFilter,
             date: moment().toJSON()
         });
 

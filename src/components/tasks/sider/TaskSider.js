@@ -104,15 +104,15 @@ function TaskSider(props) {
     const addObject = category => {
         props.setCategoryManagerOptions({
             visible: true,
-            category: category
+            category
         });
     };
 
     const editObject = (category, objectId) => {
         props.setCategoryManagerOptions({
             visible: true,
-            category: category,
-            objectId: objectId
+            category,
+            objectId
         });
     };
 
@@ -125,13 +125,13 @@ function TaskSider(props) {
     const editTaskFilter = taskFilterId => {
         props.setTaskFilterManagerOptions({
             visible: true,
-            taskFilterId: taskFilterId
+            taskFilterId
         });
     };
 
     const createTaskFilterForObject = (object, field, condition = {
         id: null,
-        field: field,
+        field,
         type: 'equal',
         value: object.id
     }) => {
@@ -139,7 +139,7 @@ function TaskSider(props) {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition: condition
+            condition
         };
     };
 

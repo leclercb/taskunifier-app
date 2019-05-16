@@ -1,17 +1,21 @@
 import PropTypes from 'prop-types';
 
-export const conditionGroup = {
+const ConditionGroupPropTypes = {
     id: PropTypes.string.isRequired,
     operator: PropTypes.oneOf(['AND', 'OR', 'NOT']).isRequired
 };
 
-export const conditionLeaf = {
+const ConditionLeafPropTypes = {
     id: PropTypes.string.isRequired
 };
 
-export const condition = PropTypes.oneOfType([
-    PropTypes.shape(conditionGroup).isRequired,
-    PropTypes.shape(conditionLeaf).isRequired
+export const ConditionGroupPropType = PropTypes.shape(ConditionGroupPropTypes);
+
+export const ConditionLeafPropType = PropTypes.shape(ConditionLeafPropTypes);
+
+export const ConditionPropType = PropTypes.oneOfType([
+    ConditionGroupPropType.isRequired,
+    ConditionLeafPropType.isRequired
 ]);
 
-conditionGroup.conditions = PropTypes.arrayOf(condition.isRequired).isRequired;
+ConditionGroupPropTypes.conditions = PropTypes.arrayOf(ConditionPropType.isRequired).isRequired;

@@ -42,7 +42,7 @@ function TaskFilterConditionTree(props) {
     const onSaveCondition = condition => {
         props.updateTaskFilter({
             ...props.taskFilter,
-            condition: condition
+            condition
         });
     };
 

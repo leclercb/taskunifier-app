@@ -4,7 +4,7 @@ import uuid from 'uuid';
 import { Empty } from 'antd';
 import AddButton from 'components/common/conditiontree/AddButton';
 import Condition from 'components/common/conditiontree/Condition';
-import { condition } from 'components/common/conditiontree/ConditionPropTypes';
+import { ConditionPropType } from 'components/common/conditiontree/ConditionPropTypes';
 import { clone } from 'utils/ObjectUtils';
 import 'components/common/conditiontree/ConditionTree.css';
 
@@ -103,7 +103,7 @@ function ConditionTree(props) {
 }
 
 ConditionTree.propTypes = {
-    condition: condition,
+    condition: ConditionPropType,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     addMenuItems: PropTypes.node.isRequired,

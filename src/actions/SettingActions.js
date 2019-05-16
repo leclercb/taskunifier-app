@@ -12,8 +12,8 @@ export const setSettings = (settings, core = false) => {
     return dispatch => {
         dispatch({
             type: 'SET_SETTINGS',
-            core: core,
-            settings: settings
+            core,
+            settings
         });
 
         return Promise.resolve();
@@ -24,7 +24,7 @@ export function updateSettings(settings) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_SETTINGS',
-            settings: settings
+            settings
         });
 
         return Promise.resolve();

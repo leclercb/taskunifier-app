@@ -110,7 +110,7 @@ function NoteSorterTable(props) {
                     }
 
                     return {
-                        backgroundColor: backgroundColor
+                        backgroundColor
                     };
                 }}
                 onRowClick={multiSelectionHandler(

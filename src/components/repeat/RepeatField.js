@@ -19,7 +19,7 @@ class RepeatField extends React.Component {
     setVisible(visible) {
         if (this.state.visible !== visible) {
             this.setState({
-                visible: visible
+                visible
             });
         }
     }

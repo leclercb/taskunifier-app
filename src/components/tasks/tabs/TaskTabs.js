@@ -20,21 +20,21 @@ function TaskTabs(props) {
     const onUpdateLinkedContacts = linkedContacts => {
         props.updateTask({
             ...props.selectedTasks[0],
-            linkedContacts: linkedContacts
+            linkedContacts
         });
     };
 
     const onUpdateLinkedFiles = linkedFiles => {
         props.updateTask({
             ...props.selectedTasks[0],
-            linkedFiles: linkedFiles
+            linkedFiles
         });
     };
 
     const onUpdateLinkedTasks = linkedTasks => {
         props.updateTask({
             ...props.selectedTasks[0],
-            linkedTasks: linkedTasks
+            linkedTasks
         });
     };
 

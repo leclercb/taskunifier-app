@@ -17,7 +17,7 @@ function withLinkedTaskLinks(Component, options) {
         }
 
         return {
-            links: links
+            links
         };
     };
 

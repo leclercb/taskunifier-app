@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from 'antd';
 import { DragSource } from 'react-dnd';
 import ItemTypes from 'components/common/conditiontree/ItemTypes';
-import { conditionGroup, conditionLeaf } from 'components/common/conditiontree/ConditionPropTypes';
+import { ConditionGroupPropType, ConditionLeafPropType } from 'components/common/conditiontree/ConditionPropTypes';
 
 function ConditionLeaf(props) {
     const condition = props.condition;
@@ -36,8 +36,8 @@ function ConditionLeaf(props) {
 }
 
 ConditionLeaf.propTypes = {
-    condition: PropTypes.shape(conditionLeaf).isRequired,
-    parentCondition: PropTypes.shape(conditionGroup),
+    condition: ConditionLeafPropType.isRequired,
+    parentCondition: ConditionGroupPropType,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     getLeafComponent: PropTypes.any.isRequired,

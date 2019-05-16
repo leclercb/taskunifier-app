@@ -17,7 +17,7 @@ function withLinkedContactLinks(Component, options) {
         }
 
         return {
-            links: links
+            links
         };
     };
 

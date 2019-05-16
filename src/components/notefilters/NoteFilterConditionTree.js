@@ -42,7 +42,7 @@ function NoteFilterConditionTree(props) {
     const onSaveCondition = condition => {
         props.updateNoteFilter({
             ...props.noteFilter,
-            condition: condition
+            condition
         });
     };
 

@@ -91,7 +91,7 @@ function TaskTable(props) {
                         expandMode={getExpandMode(rowData)}
                         onSetExpanded={expanded => onUpdateTask({
                             ...rowData,
-                            expanded: expanded
+                            expanded
                         })} />
                 )} />
         );
@@ -131,7 +131,7 @@ function TaskTable(props) {
 
                             return {
                                 color: foregroundColor,
-                                backgroundColor: backgroundColor,
+                                backgroundColor,
                                 textDecoration: task.completed ? 'line-through' : 'none'
                             };
                         }}

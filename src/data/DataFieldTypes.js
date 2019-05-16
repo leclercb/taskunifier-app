@@ -750,7 +750,7 @@ export function getFieldType(type, options) {
                         {values.map(value => {
                             value = typeof value === 'object' ? value : {
                                 title: value,
-                                value: value
+                                value
                             };
 
                             return (

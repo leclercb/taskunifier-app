@@ -22,7 +22,7 @@ function TaskFilterManager(props) {
     const onUpdateSorters = sorters => {
         props.updateTaskFilter({
             ...selectedTaskFilter,
-            sorters: sorters
+            sorters
         });
     };
 

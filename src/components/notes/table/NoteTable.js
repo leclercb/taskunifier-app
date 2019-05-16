@@ -93,7 +93,7 @@ function NoteTable(props) {
                             }
 
                             return {
-                                backgroundColor: backgroundColor
+                                backgroundColor
                             };
                         }}
                         onRowClick={multiSelectionHandler(

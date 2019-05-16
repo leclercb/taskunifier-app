@@ -112,7 +112,7 @@ function LinkedObjectTable(props) {
                                 }
 
                                 return {
-                                    backgroundColor: backgroundColor
+                                    backgroundColor
                                 };
                             }}
                             onRowClick={multiSelectionHandler(

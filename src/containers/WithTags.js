@@ -21,7 +21,7 @@ function withTags(Component, options) {
         }
 
         return {
-            tags: tags
+            tags
         };
     };
 

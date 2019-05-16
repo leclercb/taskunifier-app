@@ -32,7 +32,7 @@ function withNotes(Component, options) {
         }
 
         return {
-            notes: notes,
+            notes,
             selectedNoteIds: getSelectedNoteIds(state),
             selectedNoteFilter: getSelectedNoteFilter(state)
         };

@@ -5,7 +5,7 @@ import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from 'components/common/conditiontree/ItemTypes';
 import AddButton from 'components/common/conditiontree/AddButton';
 import Condition from 'components/common/conditiontree/Condition';
-import { conditionGroup } from 'components/common/conditiontree/ConditionPropTypes';
+import { ConditionGroupPropType } from 'components/common/conditiontree/ConditionPropTypes';
 import Constants from 'constants/Constants';
 
 function ConditionGroup(props) {
@@ -98,8 +98,8 @@ function ConditionGroup(props) {
 }
 
 ConditionGroup.propTypes = {
-    condition: PropTypes.shape(conditionGroup).isRequired,
-    parentCondition: PropTypes.shape(conditionGroup),
+    condition: ConditionGroupPropType.isRequired,
+    parentCondition: ConditionGroupPropType,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     onAdd: PropTypes.func.isRequired,

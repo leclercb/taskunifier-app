@@ -101,15 +101,15 @@ function NoteSider(props) {
     const addObject = category => {
         props.setCategoryManagerOptions({
             visible: true,
-            category: category
+            category
         });
     };
 
     const editObject = (category, objectId) => {
         props.setCategoryManagerOptions({
             visible: true,
-            category: category,
-            objectId: objectId
+            category,
+            objectId
         });
     };
 
@@ -122,13 +122,13 @@ function NoteSider(props) {
     const editNoteFilter = noteFilterId => {
         props.setNoteFilterManagerOptions({
             visible: true,
-            noteFilterId: noteFilterId
+            noteFilterId
         });
     };
 
     const createNoteFilterForObject = (object, field, condition = {
         id: null,
-        field: field,
+        field,
         type: 'equal',
         value: object.id
     }) => {
@@ -136,7 +136,7 @@ function NoteSider(props) {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition: condition
+            condition
         };
     };
 

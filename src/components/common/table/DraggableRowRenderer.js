@@ -54,7 +54,7 @@ export function DraggableRowRenderer({
             dropType={dropType}
             data={{
                 rowIndex: index,
-                rowData: rowData
+                rowData
             }}
             onDrop={(dragData, dropData) => onDrop(dragData, dropData)}>
             {columns}

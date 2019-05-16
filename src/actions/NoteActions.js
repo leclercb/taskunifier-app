@@ -41,7 +41,7 @@ export function setSelectedNoteIds(noteIds) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_NOTE_IDS',
-            noteIds: noteIds
+            noteIds
         });
 
         return Promise.resolve();
@@ -52,7 +52,7 @@ export function setSelectedNoteFilter(noteFilter) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_NOTE_FILTER',
-            noteFilter: noteFilter,
+            noteFilter,
             date: moment().toJSON()
         });
 

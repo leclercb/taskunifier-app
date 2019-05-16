@@ -22,7 +22,7 @@ function NoteFilterManager(props) {
     const onUpdateSorters = sorters => {
         props.updateNoteFilter({
             ...selectedNoteFilter,
-            sorters: sorters
+            sorters
         });
     };
 

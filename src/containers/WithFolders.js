@@ -19,7 +19,7 @@ function withFolders(Component, options) {
         }
 
         return {
-            folders: folders
+            folders
         };
     };
 

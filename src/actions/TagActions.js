@@ -5,7 +5,7 @@ export function updateTag(tag) {
         dispatch({
             type: 'UPDATE_TAG',
             updateDate: moment().toJSON(),
-            tag: tag
+            tag
         });
 
         return Promise.resolve();
@@ -17,7 +17,7 @@ export function deleteTag(tagId) {
         dispatch({
             type: 'DELETE_TAG',
             updateDate: moment().toJSON(),
-            tagId: tagId
+            tagId
         });
 
         return Promise.resolve();

@@ -209,7 +209,7 @@ export function setSelectedView(view) {
     return dispatch => {
         dispatch({
             type: 'SET_SELECTED_VIEW',
-            view: view
+            view
         });
 
         return Promise.resolve();

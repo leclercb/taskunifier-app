@@ -4,7 +4,7 @@ export function setThreadManagerVisible(visible) {
     return dispatch => {
         dispatch({
             type: 'SET_THREAD_MANAGER_VISIBLE',
-            visible: visible
+            visible
         });
 
         return Promise.resolve();
@@ -25,7 +25,7 @@ export function updateProcess(process) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_PROCESS',
-            process: process,
+            process,
             generateNotificationId: () => uuid()
         });
 
@@ -37,7 +37,7 @@ export function deleteNotification(notificationId) {
     return dispatch => {
         dispatch({
             type: 'DELETE_NOTIFICATION',
-            notificationId: notificationId
+            notificationId
         });
 
         return Promise.resolve();

@@ -17,7 +17,7 @@ function withLinkedFileLinks(Component, options) {
         }
 
         return {
-            links: links
+            links
         };
     };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ConditionLeaf from 'components/common/conditiontree/ConditionLeaf';
 import ConditionGroup from 'components/common/conditiontree/ConditionGroup';
-import { condition, conditionGroup } from 'components/common/conditiontree/ConditionPropTypes';
+import { ConditionGroupPropType, ConditionPropType } from 'components/common/conditiontree/ConditionPropTypes';
 
 function Condition(props) {
     if (props.condition.operator) {
@@ -35,8 +35,8 @@ function Condition(props) {
 }
 
 Condition.propTypes = {
-    condition: condition.isRequired,
-    parentCondition: PropTypes.shape(conditionGroup),
+    condition: ConditionPropType.isRequired,
+    parentCondition: ConditionGroupPropType,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
     onAdd: PropTypes.func.isRequired,

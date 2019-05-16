@@ -36,6 +36,13 @@
             "error",
             "unix"
         ],
+        "object-shorthand": [
+            "error",
+            "always"
+        ],
+        "prefer-destructuring": [
+            "error"
+        ],
         "quotes": [
             "error",
             "single"

@@ -46,7 +46,7 @@ export function addNonCompletedTasksCondition(filter) {
         condition: {
             id: uuid(),
             operator: 'AND',
-            conditions: conditions
+            conditions
         }
     };
 }

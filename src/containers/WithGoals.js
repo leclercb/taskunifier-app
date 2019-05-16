@@ -23,7 +23,7 @@ function withGoals(Component, options) {
         }
 
         return {
-            goals: goals
+            goals
         };
     };
 

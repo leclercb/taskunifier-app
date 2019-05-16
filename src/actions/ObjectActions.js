@@ -16,8 +16,8 @@ export function setObjects(property, objects) {
     return dispatch => {
         dispatch({
             type: 'SET_OBJECTS',
-            property: property,
-            objects: objects
+            property,
+            objects
         });
 
         return Promise.resolve();
@@ -30,13 +30,13 @@ export function addObject(property, object) {
 
         dispatch({
             type: 'ADD_OBJECT',
-            property: property,
+            property,
             generateId: () => uuid(),
             creationDate: moment().toJSON(),
             object: {
                 color: Constants.defaultObjectColor,
                 ...object,
-                id: id
+                id
             }
         });
 
@@ -48,10 +48,10 @@ export function updateObject(property, object) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_OBJECT',
-            property: property,
+            property,
             generateId: () => uuid(),
             updateDate: moment().toJSON(),
-            object: object
+            object
         });
 
         return Promise.resolve();
@@ -62,11 +62,11 @@ export function deleteObject(property, objectId) {
     return dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
-            property: property,
+            property,
             generateId: () => uuid(),
             updateDate: moment().toJSON(),
             immediate: true,
-            objectId: objectId
+            objectId
         });
 
         return Promise.resolve();
@@ -77,7 +77,7 @@ export function cleanObjects(property) {
     return dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',
-            property: property
+            property
         });
 
         return Promise.resolve();
