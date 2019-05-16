@@ -27,6 +27,22 @@ export function getSettings() {
     return settings;
 }
 
+export function getCategorySettings(category, options = {}) {
+    const settings = category.settings;
+
+    const { noteFields, taskFields } = options;
+
+    if (category.type === 'noteField' && noteFields) {
+        noteFields.forEach(field => settings.push(category.createSetting(field)));
+    }
+
+    if (category.type === 'taskField' && taskFields) {
+        taskFields.forEach(field => settings.push(category.createSetting(field)));
+    }
+
+    return settings;
+}
+
 export function getCategories() {
     return [
         {
@@ -228,6 +244,84 @@ export function getCategories() {
                     editable: true
                 }
             ]
+        },
+        {
+            id: 'noteTable',
+            title: 'Note table',
+            icon: 'book',
+            type: 'noteField',
+            settings: [
+                {
+                    id: `noteColumnVisible_id`,
+                    title: `Show column "ID"`,
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: `noteColumnVisible_creationDate`,
+                    title: `Show column "Creation date"`,
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: `noteColumnVisible_updateDate`,
+                    title: `Show column "Update date"`,
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                }
+            ],
+            createSetting: field => ({
+                id: `noteColumnVisible_${field.id}`,
+                title: `Show column "${field.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: true
+            })
+        },
+        {
+            id: 'taskTable',
+            title: 'Task table',
+            icon: 'tasks',
+            type: 'taskField',
+            settings: [
+                {
+                    id: `taskColumnVisible_id`,
+                    title: `Show column "ID"`,
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: `taskColumnVisible_creationDate`,
+                    title: `Show column "Creation date"`,
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: `taskColumnVisible_updateDate`,
+                    title: `Show column "Update date"`,
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                }
+            ],
+            createSetting: field => ({
+                id: `taskColumnVisible_${field.id}`,
+                title: `Show column "${field.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: true
+            })
         },
         {
             id: 'colors',

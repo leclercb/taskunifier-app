@@ -48,12 +48,12 @@ function NoteFilterManager(props) {
                             key={selectedNoteFilterId}
                             noteFilter={selectedNoteFilter}
                             updateNoteFilter={props.updateNoteFilter} />
-                        <Divider />
+                        <Divider>Filters</Divider>
                         <NoteFilterConditionTree
                             key={'conditionTree_' + selectedNoteFilterId}
                             noteFilter={selectedNoteFilter}
                             updateNoteFilter={props.updateNoteFilter} />
-                        <Divider />
+                        <Divider>Sorters</Divider>
                         <NoteSorterTable
                             key={'sorterTable_' + selectedNoteFilterId}
                             sorters={selectedNoteFilter.sorters || []}

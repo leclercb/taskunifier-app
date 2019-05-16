@@ -21,6 +21,10 @@ function CellRenderer(props) {
     const inputRef = useRef();
 
     const toggleEdit = () => {
+        if (!props.field.editable) {
+            return;
+        }
+
         const newEditing = !editing;
         setEditing(newEditing);
 
@@ -122,7 +126,7 @@ function CellRenderer(props) {
 
     return (
         <div
-            className="cell-renderer-value-wrap"
+            className={'cell-renderer-value-wrap ' + (props.field.editable ? 'editable' : '')}
             onDoubleClick={toggleEdit}>
             {indentationElement}
             {expandElement}

@@ -1,18 +1,20 @@
+import { addColorsToArray } from "utils/ColorUtils";
+
 export function getLinkedFileFields() {
-    return [
+    return addColorsToArray([
         {
             static: true,
             id: 'links',
             title: 'Links',
-            color: '#ffffff',
-            type: 'linkedFileLinks'
+            type: 'linkedFileLinks',
+            editable: true
         },
         {
             static: true,
             id: 'file',
             title: 'File',
-            color: '#ffffff',
-            type: 'text'
+            type: 'text',
+            editable: true
         }
-    ];
+    ]);
 }

@@ -1,18 +1,20 @@
+import { addColorsToArray } from "utils/ColorUtils";
+
 export function getTaskSorterFields() {
-    return [
+    return addColorsToArray([
         {
             static: true,
             id: 'field',
             title: 'Field',
-            color: '#ffffff',
-            type: 'taskField'
+            type: 'taskField',
+            editable: true
         },
         {
             static: true,
             id: 'direction',
             title: 'Direction',
-            color: '#ffffff',
-            type: 'sortDirection'
+            type: 'sortDirection',
+            editable: true
         }
-    ];
+    ]);
 }

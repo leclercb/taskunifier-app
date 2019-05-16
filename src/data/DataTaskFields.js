@@ -1,95 +1,97 @@
+import { addColorsToArray } from "utils/ColorUtils";
+
 export function getDefaultTaskFields(settings) {
-    return [
+    return addColorsToArray([
         {
             static: true,
             id: 'id',
             title: 'ID',
-            color: '#ffffff',
-            type: 'text'
+            type: 'text',
+            editable: false
         },
         {
             static: true,
             id: 'creationDate',
             title: 'Creation date',
-            color: '#ffffff',
-            type: 'dateTime'
+            type: 'dateTime',
+            editable: false
         },
         {
             static: true,
             id: 'updateDate',
             title: 'Update date',
-            color: '#ffffff',
-            type: 'dateTime'
+            type: 'dateTime',
+            editable: false
         },
         {
             static: true,
             id: 'title',
             title: 'Title',
-            color: '#ffffff',
-            type: 'text'
+            type: 'text',
+            editable: true
         },
         {
             static: true,
             id: 'star',
             title: 'Star',
-            color: '#ffffff',
-            type: 'star'
+            type: 'star',
+            editable: true
         },
         {
             static: true,
             id: 'completed',
             title: 'Completed',
-            color: '#ffffff',
-            type: 'boolean'
+            type: 'boolean',
+            editable: true
         },
         {
             static: true,
             id: 'progress',
             title: 'Progress',
-            color: '#ffffff',
-            type: 'progress'
+            type: 'progress',
+            editable: true
         },
         {
             static: true,
             id: 'length',
             title: 'Length',
-            color: '#ffffff',
-            type: 'length'
+            type: 'length',
+            editable: true
         },
         {
             static: true,
             id: 'timer',
             title: 'Timer',
-            color: '#ffffff',
-            type: 'timer'
+            type: 'timer',
+            editable: true
         },
         {
             static: true,
             id: 'priority',
             title: 'Priority',
-            color: '#ffffff',
-            type: 'priority'
+            type: 'priority',
+            editable: true
         },
         {
             static: true,
             id: 'importance',
             title: 'Importance',
-            color: '#ffffff',
-            type: 'importance'
+            type: 'importance',
+            editable: true
         },
         {
             static: true,
             id: 'status',
             title: 'Status',
-            color: '#ffffff',
-            type: 'status'
+            type: 'status',
+            editable: true
         },
         {
             static: true,
             id: 'startDate',
             title: 'Start date',
-            color: '#ffffff',
             type: (settings.showStartTime ? 'dateTime' : 'date'),
+            editable: true,
             options: {
                 dateFormat: settings.dateFormat,
                 timeFormat: settings.timeFormat
@@ -99,8 +101,8 @@ export function getDefaultTaskFields(settings) {
             static: true,
             id: 'dueDate',
             title: 'Due date',
-            color: '#ffffff',
             type: (settings.showDueTime ? 'dateTime' : 'date'),
+            editable: true,
             options: {
                 dateFormat: settings.dateFormat,
                 timeFormat: settings.timeFormat
@@ -110,71 +112,71 @@ export function getDefaultTaskFields(settings) {
             static: true,
             id: 'tags',
             title: 'Tags',
-            color: '#ffffff',
-            type: 'tags'
+            type: 'tags',
+            editable: true
         },
         {
             static: true,
             id: 'context',
             title: 'Context',
-            color: '#ffffff',
-            type: 'context'
+            type: 'context',
+            editable: true
         },
         {
             static: true,
             id: 'folder',
             title: 'Folder',
-            color: '#ffffff',
-            type: 'folder'
+            type: 'folder',
+            editable: true
         },
         {
             static: true,
             id: 'goal',
             title: 'Goal',
-            color: '#ffffff',
-            type: 'goal'
+            type: 'goal',
+            editable: true
         },
         {
             static: true,
             id: 'location',
             title: 'Location',
-            color: '#ffffff',
-            type: 'location'
+            type: 'location',
+            editable: true
         },
         {
             static: true,
             id: 'repeat',
             title: 'Repeat',
-            color: '#ffffff',
-            type: 'repeat'
+            type: 'repeat',
+            editable: true
         },
         {
             static: true,
             id: 'repeatFrom',
             title: 'Repeat From',
-            color: '#ffffff',
-            type: 'repeatFrom'
+            type: 'repeatFrom',
+            editable: true
         },
         {
             static: true,
             id: 'startDateReminder',
             title: 'Start date reminder',
-            color: '#ffffff',
-            type: 'reminder'
+            type: 'reminder',
+            editable: true
         },
         {
             static: true,
             id: 'dueDateReminder',
             title: 'Due date reminder',
-            color: '#ffffff',
-            type: 'reminder'
+            type: 'reminder',
+            editable: true
         },
         {
             static: true,
             id: 'note',
             title: 'Note',
-            color: '#ffffff',
-            type: 'textarea'
+            type: 'textarea',
+            editable: true
         }
-    ];
+    ]);
 }

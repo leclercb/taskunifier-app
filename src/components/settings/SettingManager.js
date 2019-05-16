@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, List, Row } from 'antd';
-import withSettings from 'containers/WithSettings';
-import { getCategories } from 'data/DataSettings';
 import Icon from 'components/common/Icon';
+import withNoteFields from 'containers/WithNoteFields';
+import withSettings from 'containers/WithSettings';
+import withTaskFields from 'containers/WithTaskFields';
+import { getCategories, getCategorySettings } from 'data/DataSettings';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import {
     getInputForType,
@@ -11,14 +15,18 @@ import {
     getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 
 function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
 
     const categories = getCategories();
     const category = categories.find(category => category.id === selectedCategoryId);
-    const settings = category.settings.filter(setting => setting.visible !== false);
+    const settings = getCategorySettings(
+        category,
+        {
+            noteFields: props.noteFields,
+            taskFields: props.taskFields
+        }).filter(setting => setting.visible !== false);
 
     const getSettingValue = setting => {
         if (setting.id in props.settings) {
@@ -88,11 +96,13 @@ function SettingManager(props) {
 
 SettingManager.propTypes = {
     form: PropTypes.object.isRequired,
+    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     settings: SettingsPropType,
     updateSettings: PropTypes.func.isRequired
 };
 
-export default withSettings(Form.create({
+export default withNoteFields(withTaskFields(withSettings(Form.create({
     name: 'settings',
     onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings, props.updateSettings)
-})(SettingManager));
+})(SettingManager))));

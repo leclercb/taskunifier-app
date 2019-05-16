@@ -48,12 +48,12 @@ function TaskFilterManager(props) {
                             key={selectedTaskFilterId}
                             taskFilter={selectedTaskFilter}
                             updateTaskFilter={props.updateTaskFilter} />
-                        <Divider />
+                        <Divider>Filters</Divider>
                         <TaskFilterConditionTree
                             key={'conditionTree_' + selectedTaskFilterId}
                             taskFilter={selectedTaskFilter}
                             updateTaskFilter={props.updateTaskFilter} />
-                        <Divider />
+                        <Divider>Sorters</Divider>
                         <TaskSorterTable
                             key={'sorterTable_' + selectedTaskFilterId}
                             sorters={selectedTaskFilter.sorters || []}

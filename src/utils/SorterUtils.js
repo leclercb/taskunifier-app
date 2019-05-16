@@ -30,11 +30,11 @@ export function sortObjects(objects, fields, filter, state, getMetaDataFunction,
         }
 
         if (result === 0) {
-            result = compareObjectsHierarchy(fields.find(field => field.id = 'title'), a, b, state, getMetaDataFunction, indented);
+            result = compareObjectsHierarchy(fields.find(field => field.id === 'title'), a, b, state, getMetaDataFunction, indented);
         }
 
         if (result === 0) {
-            result = compareObjectsHierarchy(fields.find(field => field.id = 'id'), a, b, state, getMetaDataFunction, indented);
+            result = compareObjectsHierarchy(fields.find(field => field.id === 'id'), a, b, state, getMetaDataFunction, indented);
         }
 
         return result;

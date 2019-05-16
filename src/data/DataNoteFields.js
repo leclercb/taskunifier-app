@@ -1,53 +1,55 @@
+import { addColorsToArray } from "utils/ColorUtils";
+
 export function getDefaultNoteFields() {
-    return [
+    return addColorsToArray([
         {
             static: true,
             id: 'id',
             title: 'ID',
-            color: '#ffffff',
-            type: 'text'
+            type: 'text',
+            editable: false
         },
         {
             static: true,
             id: 'creationDate',
             title: 'Creation date',
-            color: '#ffffff',
-            type: 'dateTime'
+            type: 'dateTime',
+            editable: false
         },
         {
             static: true,
             id: 'updateDate',
             title: 'Update date',
-            color: '#ffffff',
-            type: 'dateTime'
+            type: 'dateTime',
+            editable: false
         },
         {
             static: true,
             id: 'title',
             title: 'Title',
-            color: '#ffffff',
-            type: 'text'
+            type: 'text',
+            editable: true
         },
         {
             static: true,
             id: 'star',
             title: 'Star',
-            color: '#ffffff',
-            type: 'star'
+            type: 'star',
+            editable: true
         },
         {
             static: true,
             id: 'tags',
             title: 'Tags',
-            color: '#ffffff',
-            type: 'tags'
+            type: 'tags',
+            editable: true
         },
         {
             static: true,
             id: 'folder',
             title: 'Folder',
-            color: '#ffffff',
-            type: 'folder'
+            type: 'folder',
+            editable: true
         }
-    ];
+    ]);
 }

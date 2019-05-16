@@ -1,18 +1,20 @@
+import { addColorsToArray } from "utils/ColorUtils";
+
 export function getLinkedTaskFields() {
-    return [
+    return addColorsToArray([
         {
             static: true,
             id: 'links',
             title: 'Links',
-            color: '#ffffff',
-            type: 'linkedTaskLinks'
+            type: 'linkedTaskLinks',
+            editable: true
         },
         {
             static: true,
             id: 'task',
             title: 'Task',
-            color: '#ffffff',
-            type: 'task'
+            type: 'task',
+            editable: true
         }
-    ];
+    ]);
 }

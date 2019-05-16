@@ -1,18 +1,20 @@
+import { addColorsToArray } from "utils/ColorUtils";
+
 export function getLinkedContactFields() {
-    return [
+    return addColorsToArray([
         {
             static: true,
             id: 'links',
             title: 'Links',
-            color: '#ffffff',
-            type: 'linkedContactLinks'
+            type: 'linkedContactLinks',
+            editable: true
         },
         {
             static: true,
             id: 'contact',
             title: 'Contact',
-            color: '#ffffff',
-            type: 'contact'
+            type: 'contact',
+            editable: true
         }
-    ];
+    ]);
 }

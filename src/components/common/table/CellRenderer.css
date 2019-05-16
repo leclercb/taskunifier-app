@@ -11,6 +11,6 @@
     padding: 3px 3px;
 }
 
-.cell-renderer-value-wrap:hover {
+.cell-renderer-value-wrap.editable:hover {
     border: 1px solid #d9d9d9;
 }
