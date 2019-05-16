@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import {
     addTask,
     deleteTask,
+    setCalendarDateMode,
     setSelectedTaskFilter,
     setSelectedTaskIds,
     setShowCompletedTasks,
@@ -9,6 +10,7 @@ import {
 } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
+    getCalendarDateMode,
     getSelectedTaskFilter,
     getSelectedTaskIds,
     isShowCompletedTasks
@@ -32,6 +34,7 @@ function withTasks(Component, options) {
     const mapStateToProps = state => {
         const result = {
             showCompletedTasks: isShowCompletedTasks(state),
+            calendarDateMode: getCalendarDateMode(state),
             selectedTaskIds: getSelectedTaskIds(state),
             selectedTaskFilter: getSelectedTaskFilter(state)
         };
@@ -55,6 +58,7 @@ function withTasks(Component, options) {
         updateTask: task => dispatch(updateTask(task)),
         deleteTask: taskId => dispatch(deleteTask(taskId)),
         setShowCompletedTasks: show => dispatch(setShowCompletedTasks(show)),
+        setCalendarDateMode: show => dispatch(setCalendarDateMode(show)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });

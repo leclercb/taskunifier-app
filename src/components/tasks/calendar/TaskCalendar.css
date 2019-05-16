@@ -14,8 +14,10 @@
 
 .task-list li.selected {
     border: 1px solid #008c4b;
+    padding: 3px;
 }
 
 .task-list li:hover {
     border: 1px solid #008c4b;
+    padding: 3px;
 }

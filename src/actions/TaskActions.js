@@ -48,6 +48,17 @@ export function setShowCompletedTasks(show) {
     };
 }
 
+export function setCalendarDateMode(mode) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_CALENDAR_DATE_MODE',
+            mode
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export function setSelectedTaskIds(taskIds) {
     return dispatch => {
         dispatch({

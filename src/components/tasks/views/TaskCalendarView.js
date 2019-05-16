@@ -25,7 +25,7 @@ function TaskCalendarView(props) {
             defaultSize={props.settings.taskCalendarViewSplitPaneSize}
             onChange={size => onTaskCalendarViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
-            <TaskSider />
+            <TaskSider mode="calendar" />
             <SplitPane
                 split={props.settings.taskCalendarViewSubSplitPaneMode}
                 minSize={200}

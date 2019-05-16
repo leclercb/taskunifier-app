@@ -8,9 +8,9 @@ import { addLocation, deleteLocation, updateLocation } from 'actions/LocationAct
 import { deleteTag, updateTag } from 'actions/TagActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
-import { setSelectedTaskFilter, setSelectedTaskIds, setShowCompletedTasks } from 'actions/TaskActions';
+import { setCalendarDateMode, setSelectedTaskFilter, setSelectedTaskIds, setShowCompletedTasks } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getSelectedNoteFilter, getSelectedTaskFilter, isShowCompletedTasks } from 'selectors/AppSelectors';
+import { getCalendarDateMode, getSelectedNoteFilter, getSelectedTaskFilter, isShowCompletedTasks } from 'selectors/AppSelectors';
 import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -36,6 +36,7 @@ function withObjects(Component, options) {
         includeTaskFilters: false,
         includeSelectedNoteFilter: false,
         includeShowCompletedTasks: false,
+        includeCalendarDateMode: false,
         includeSelectedTaskFilter: false,
         includeNoteNumber: false,
         includeTaskNumber: false,
@@ -94,6 +95,10 @@ function withObjects(Component, options) {
             data.showCompletedTasks = isShowCompletedTasks(state);
         }
 
+        if (options.includeCalendarDateMode === true) {
+            data.calendarDateMode = getCalendarDateMode(state);
+        }
+
         if (options.includeSelectedTaskFilter === true) {
             data.selectedTaskFilter = getSelectedTaskFilter(state);
         }
@@ -136,6 +141,7 @@ function withObjects(Component, options) {
         setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds)),
         setSelectedNoteFilter: noteFilter => dispatch(setSelectedNoteFilter(noteFilter)),
         setShowCompletedTasks: show => dispatch(setShowCompletedTasks(show)),
+        setCalendarDateMode: show => dispatch(setCalendarDateMode(show)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });

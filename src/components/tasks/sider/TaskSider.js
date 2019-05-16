@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Checkbox, Input, Menu, Popconfirm, Tooltip } from 'antd';
+import { Badge, Checkbox, Input, Menu, Popconfirm, Radio, Tooltip } from 'antd';
 import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
@@ -170,15 +170,56 @@ function TaskSider(props) {
 
     return (
         <div style={{ backgroundColor: '#ffffff', height: '100%' }}>
-            <Checkbox
-                checked={props.showCompletedTasks}
-                onChange={() => props.setShowCompletedTasks(!props.showCompletedTasks)}
-                style={{
-                    margin: 10,
-                    marginBottom: 20
+            {props.mode === 'table' ? (
+                <Checkbox
+                    checked={props.showCompletedTasks}
+                    onChange={() => props.setShowCompletedTasks(!props.showCompletedTasks)}
+                    style={{
+                        padding: 10,
+                        paddingBottom: 20
+                    }}>
+                    Show completed tasks
+                </Checkbox>
+            ) : null}
+            {props.mode === 'calendar' ? (
+                <div style={{
+                    padding: 10,
+                    paddingBottom: 20
                 }}>
-                Show completed tasks
-            </Checkbox>
+                    <div style={{ marginBottom: 10 }}>Show tasks by:</div>
+                    <Radio.Group
+                        value={props.calendarDateMode}
+                        onChange={value => props.setCalendarDateMode(value)}>
+                        <Radio
+                            value="both"
+                            style={{
+                                border: `1px solid ${Constants.calendarDateMode_both}`,
+                                borderRadius: 10,
+                                padding: 3
+                            }}>
+                            Both
+                        </Radio>
+                        <Radio
+                            value="startDate"
+                            style={{
+                                border: `1px solid ${Constants.calendarDateMode_startDate}`,
+                                borderRadius: 10,
+                                padding: 3
+                            }}>
+                            Start date
+                        </Radio>
+                        <Radio
+                            value="dueDate"
+                            style={{
+                                border: `1px solid ${Constants.calendarDateMode_dueDate}`,
+                                borderRadius: 10,
+                                padding: 3
+                            }}>
+                            Due date
+                        </Radio>
+                    </Radio.Group>
+                </div>
+            ) : null}
             <Menu
                 selectedKeys={[props.selectedTaskFilter.id]}
                 openKeys={openKeys}
@@ -274,6 +315,7 @@ function TaskSider(props) {
 }
 
 TaskSider.propTypes = {
+    mode: PropTypes.oneOf(['table', 'calendar']).isRequired,
     contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
@@ -282,8 +324,10 @@ TaskSider.propTypes = {
     taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
     taskNumber: PropTypes.number.isRequired,
     showCompletedTasks: PropTypes.bool.isRequired,
+    calendarDateMode: PropTypes.oneOf(['both', 'startDate', 'dueDate']).isRequired,
     selectedTaskFilter: TaskFilterPropType.isRequired,
     setShowCompletedTasks: PropTypes.func.isRequired,
+    setCalendarDateMode: PropTypes.func.isRequired,
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
@@ -304,6 +348,7 @@ export default withApp(withObjects(TaskSider, {
     includeTags: true,
     includeTaskFilters: true,
     includeShowCompletedTasks: true,
+    includeCalendarDateMode: true,
     includeSelectedTaskFilter: true,
     includeTaskNumber: true,
     filteredByNonArchivedFolders: true,

@@ -706,7 +706,7 @@ export function getCategories() {
                     visible: false
                 },
                 {
-                    id: 'taskCalendarSubSplitPaneSize',
+                    id: 'taskCalendarViewSubSplitPaneSize',
                     title: 'Task calendar view sub split pane size',
                     type: 'number',
                     value: 300,
@@ -714,7 +714,7 @@ export function getCategories() {
                     visible: false
                 },
                 {
-                    id: 'taskCalendarSubSplitPaneMode',
+                    id: 'taskCalendarViewSubSplitPaneMode',
                     title: 'Task calendar view sub split pane mode',
                     type: 'select',
                     value: 'horizontal',

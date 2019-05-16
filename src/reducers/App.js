@@ -8,6 +8,7 @@ const App = () => (state = {
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: moment().toJSON(),
     showCompletedTasks: true,
+    calendarDateMode: 'both',
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: moment().toJSON(),
@@ -63,6 +64,11 @@ const App = () => (state = {
             return {
                 ...state,
                 showCompletedTasks: action.show
+            };
+        case 'SET_CALENDAR_DATE_MODE':
+            return {
+                ...state,
+                calendarDateMode: action.mode
             };
         case 'SET_SELECTED_TASK_IDS':
             return {

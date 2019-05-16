@@ -25,7 +25,7 @@ function TaskView(props) {
             defaultSize={props.settings.taskViewSplitPaneSize}
             onChange={size => onTaskViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
-            <TaskSider />
+            <TaskSider mode="table" />
             <SplitPane
                 split={props.settings.taskViewSubSplitPaneMode}
                 minSize={200}
