@@ -6,6 +6,7 @@ import { Column, Table } from 'react-virtualized';
 import uuid from 'uuid';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
+import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import withSettings from 'containers/WithSettings';
@@ -14,6 +15,7 @@ import { getSorterBackgroundColor } from 'utils/SettingUtils';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
+import { move } from 'utils/ArrayUtils';
 
 function TaskSorterTable(props) {
     const [selectedSorterIds, setSelectedSorterIds] = useState([]);
@@ -40,6 +42,12 @@ function TaskSorterTable(props) {
 
     const onDeleteSorters = sorterIds => {
         const sorters = props.sorters.filter(sorter => !sorterIds.includes(sorter.id));
+        props.updateSorters(sorters);
+    };
+
+    const onDropTaskSorter = (dragData, dropData) => {
+        const sorters = [...props.sorters];
+        move(sorters, dragData.rowIndex, dropData.rowIndex);
         props.updateSorters(sorters);
     };
 
@@ -96,6 +104,13 @@ function TaskSorterTable(props) {
                 headerHeight={20}
                 rowCount={props.sorters.length}
                 rowGetter={({ index }) => props.sorters[index]}
+                rowRenderer={props => (
+                    <DraggableRowRenderer
+                        {...props}
+                        dragType="taskSorter"
+                        dropType="taskSorter"
+                        onDrop={onDropTaskSorter} />
+                )}
                 rowStyle={({ index }) => {
                     const sorter = props.sorters[index];
 

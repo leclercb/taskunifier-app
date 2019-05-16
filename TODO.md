@@ -1,6 +1,6 @@
 ## Todo List
 
-* Sorter reorder
+* No-drag from fields
 * Calendar use due date, use start date, sort tasks
 * Restore from backup
 * Print config (columns, size)
