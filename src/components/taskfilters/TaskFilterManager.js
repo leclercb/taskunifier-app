@@ -38,9 +38,7 @@ function TaskFilterManager(props) {
                     deleteTaskFilter={props.deleteTaskFilter}
                     onTaskFilterSelection={onTaskFilterSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedTaskFilter ? (
                     <React.Fragment>

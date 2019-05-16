@@ -30,9 +30,7 @@ function TagManager(props) {
                     deleteTag={props.deleteTag}
                     onTagSelection={onTagSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedTag ? (
                     <TagForm key={selectedTagId} tag={selectedTag} updateTag={updateTag} />

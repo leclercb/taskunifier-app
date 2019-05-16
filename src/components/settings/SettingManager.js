@@ -60,9 +60,7 @@ function SettingManager(props) {
                     )}
                 />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 <Form {...formItemLayout}>
                     <List

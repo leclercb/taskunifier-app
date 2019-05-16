@@ -29,9 +29,7 @@ function ContactManager(props) {
                     deleteContact={props.deleteContact}
                     onContactSelection={onContactSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedContact ? (
                     <ContactForm key={selectedContactId} contact={selectedContact} updateContact={props.updateContact} />

@@ -29,9 +29,7 @@ function FolderManager(props) {
                     deleteFolder={props.deleteFolder}
                     onFolderSelection={onFolderSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedFolder ? (
                     <FolderForm key={selectedFolderId} folder={selectedFolder} updateFolder={props.updateFolder} />

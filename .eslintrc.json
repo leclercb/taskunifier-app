@@ -59,6 +59,15 @@
                 "prop": "parens-new-line"
             }
         ],
+        "react/no-array-index-key": [
+            "error"
+        ],
+        "react/require-render-return": [
+            "error"
+        ],
+        "react/self-closing-comp": [
+            "error"
+        ],
         "semi": [
             "error",
             "always"

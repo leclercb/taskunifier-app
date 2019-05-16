@@ -29,9 +29,7 @@ function ContextManager(props) {
                     deleteContext={props.deleteContext}
                     onContextSelection={onContextSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedContext ? (
                     <ContextForm key={selectedContextId} context={selectedContext} updateContext={props.updateContext} />

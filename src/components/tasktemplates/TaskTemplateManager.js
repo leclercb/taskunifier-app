@@ -33,9 +33,7 @@ function TaskTemplateManager(props) {
                     settings={props.settings}
                     updateSettings={props.updateSettings} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedTaskTemplate ? (
                     <TaskTemplateForm key={selectedTaskTemplateId} taskTemplate={selectedTaskTemplate} updateTaskTemplate={props.updateTaskTemplate} />

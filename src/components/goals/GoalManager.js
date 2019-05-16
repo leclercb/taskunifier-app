@@ -29,9 +29,7 @@ function GoalManager(props) {
                     deleteGoal={props.deleteGoal}
                     onGoalSelection={onGoalSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedGoal ? (
                     <GoalForm key={selectedGoalId} goal={selectedGoal} updateGoal={props.updateGoal} />

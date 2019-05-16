@@ -38,9 +38,7 @@ function NoteFilterManager(props) {
                     deleteNoteFilter={props.deleteNoteFilter}
                     onNoteFilterSelection={onNoteFilterSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedNoteFilter ? (
                     <React.Fragment>

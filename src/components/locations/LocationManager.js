@@ -29,9 +29,7 @@ function LocationManager(props) {
                     deleteLocation={props.deleteLocation}
                     onLocationSelection={onLocationSelection} />
             </Col>
-            <Col span={2}>
-
-            </Col>
+            <Col span={2} />
             <Col span={16}>
                 {selectedLocation ? (
                     <LocationForm key={selectedLocationId} location={selectedLocation} updateLocation={props.updateLocation} />

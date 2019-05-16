@@ -12,7 +12,7 @@ function LeftRight(props) {
                     {props.right}
                 </div>
             </div>
-            <div style={{ clear: 'both' }}></div>
+            <div style={{ clear: 'both' }} />
         </React.Fragment>
     );
 }
