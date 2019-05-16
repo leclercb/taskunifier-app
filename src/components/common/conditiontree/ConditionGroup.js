@@ -25,8 +25,7 @@ function ConditionGroup(props) {
         };
     }
 
-    const condition = props.condition;
-    const parentCondition = props.parentCondition;
+    const { condition, parentCondition } = props;
 
     return <div className='condition-group-container'>
         {props.connectDragSource(props.connectDropTarget(

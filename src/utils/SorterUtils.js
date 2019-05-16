@@ -4,7 +4,7 @@ export function sortObjects(objects, fields, filter, state, getMetaDataFunction,
     let sorters = [];
 
     if (filter && filter.sorters) {
-        sorters = filter.sorters;
+        sorters = filter.sorters; // eslint-disable-line prefer-destructuring
     }
 
     return objects.sort((a, b) => {

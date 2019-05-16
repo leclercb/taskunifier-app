@@ -9,8 +9,7 @@ import LocationManager from 'components/locations/LocationManager';
 import TagManager from 'components/tags/TagManager';
 
 function CategoryManager(props) {
-    const category = props.category;
-    const objectId = props.objectId;
+    const { category, objectId } = props;
 
     const onActiveKeyChange = activeKey => {
         props.onCategorySelection(activeKey);

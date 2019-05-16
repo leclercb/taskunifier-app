@@ -50,7 +50,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
         });
 
         filteredTasks = filteredTasks.filter(task => {
-            const parents = tasksMetaData.find(meta => meta.id === task.id).parents;
+            const { parents } = tasksMetaData.find(meta => meta.id === task.id);
 
             for (let parent of parents) {
                 if (!filteredTasks.includes(parent)) {
@@ -70,7 +70,7 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
     getTasksMetaDataFilteredByVisibleState,
     (tasks, tasksMetaData) => {
         return tasks.filter(task => {
-            const parents = tasksMetaData.find(meta => meta.id === task.id).parents;
+            const { parents } = tasksMetaData.find(meta => meta.id === task.id);
 
             for (let parent of parents) {
                 if (parent.expanded === false) {

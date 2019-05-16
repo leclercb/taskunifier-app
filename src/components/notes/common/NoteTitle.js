@@ -5,7 +5,7 @@ import withNote from 'containers/WithNote';
 import Icon from 'components/common/Icon';
 
 export function NoteTitle(props) {
-    const note = props.note;
+    const { note } = props;
 
     return note ? (
         <Icon

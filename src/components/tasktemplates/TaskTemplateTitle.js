@@ -5,7 +5,7 @@ import withTaskTemplate from 'containers/WithTaskTemplate';
 import Icon from 'components/common/Icon';
 
 export function TaskTemplateTitle(props) {
-    const taskTemplate = props.taskTemplate;
+    const { taskTemplate } = props;
     return taskTemplate ? <Icon icon="circle" color={taskTemplate.color} text={taskTemplate.title} /> : <span>&nbsp;</span>;
 }
 

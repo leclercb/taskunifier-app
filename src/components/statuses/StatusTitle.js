@@ -8,7 +8,7 @@ import { StatusPropType } from 'proptypes/StatusPropTypes';
 import { getStatusColor } from 'utils/SettingUtils';
 
 export function StatusTitle(props) {
-    const status = props.status;
+    const { status } = props;
     return status ? (
         <Icon icon="circle" color={getStatusColor(status.id, props.settings)} text={status.title} />
     ) : (<span>&nbsp;</span>);

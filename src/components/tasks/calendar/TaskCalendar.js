@@ -10,7 +10,7 @@ import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskCalendar(props) {
-    // eslint-disable-next-line
+    // eslint-disable-next-line react/display-name
     const getCellRender = unit => value => {
         const tasks = props.tasks.filter(task => {
             if (!task.startDate) {

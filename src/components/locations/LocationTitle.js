@@ -5,7 +5,7 @@ import withLocation from 'containers/WithLocation';
 import Icon from 'components/common/Icon';
 
 export function LocationTitle(props) {
-    const location = props.location;
+    const { location } = props;
     return location ? <Icon icon="circle" color={location.color} text={location.title} /> : <span>&nbsp;</span>;
 }
 

@@ -6,7 +6,7 @@ import Icon from 'components/common/Icon';
 import { getContactTitle } from 'utils/ContactUtils';
 
 export function ContactTitle(props) {
-    const contact = props.contact;
+    const { contact } = props;
     return contact ? <Icon icon="circle" color={contact.color} text={getContactTitle(contact)} /> : <span>&nbsp;</span>;
 }
 

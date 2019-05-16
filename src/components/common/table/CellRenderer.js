@@ -94,12 +94,12 @@ function CellRenderer(props) {
             case 'expanded':
                 expanded = true;
                 icon = 'minus-square';
-                color = Constants.color;
+                color = Constants.color; // eslint-disable-line prefer-destructuring
                 break;
             case 'collapsed':
                 expanded = false;
                 icon = 'plus-square';
-                color = Constants.color;
+                color = Constants.color; // eslint-disable-line prefer-destructuring
                 break;
             default:
             case 'hidden':

@@ -5,7 +5,7 @@ import withContext from 'containers/WithContext';
 import Icon from 'components/common/Icon';
 
 export function ContextTitle(props) {
-    const context = props.context;
+    const { context } = props;
     return context ? <Icon icon="circle" color={context.color} text={context.title} /> : <span>&nbsp;</span>;
 }
 

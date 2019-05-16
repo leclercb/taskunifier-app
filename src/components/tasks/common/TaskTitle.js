@@ -8,7 +8,7 @@ import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
 export function TaskTitle(props) {
-    const task = props.task;
+    const { task } = props;
 
     return task ? (
         <Icon

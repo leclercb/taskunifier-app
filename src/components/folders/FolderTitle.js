@@ -5,7 +5,7 @@ import withFolder from 'containers/WithFolder';
 import Icon from 'components/common/Icon';
 
 export function FolderTitle(props) {
-    const folder = props.folder;
+    const { folder } = props;
     return folder ? <Icon icon="circle" color={folder.color} text={folder.title} /> : <span>&nbsp;</span>;
 }
 

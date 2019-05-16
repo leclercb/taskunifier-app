@@ -5,7 +5,7 @@ import withNoteField from 'containers/WithNoteField';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 
 export function NoteFieldTitle(props) {
-    const noteField = props.noteField;
+    const { noteField } = props;
     return noteField ? <Icon icon="circle" color={noteField.color} text={noteField.title} /> : <span>&nbsp;</span>;
 }
 

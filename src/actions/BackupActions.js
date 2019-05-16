@@ -67,7 +67,7 @@ export function cleanBackups() {
         return new Promise((resolve, reject) => {
             const state = getState();
             const processId = uuid();
-            const maxBackups = getSettings(state).maxBackups;
+            const { maxBackups } = getSettings(state);
 
             if (!maxBackups) {
                 reject();

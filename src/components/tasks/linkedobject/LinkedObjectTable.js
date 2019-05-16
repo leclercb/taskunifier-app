@@ -18,7 +18,7 @@ import { getLinkedObjectBackgroundColor } from 'utils/SettingUtils';
 function LinkedObjectTable(props) {
     const [selectedLinkedObjectIds, setSelectedLinkedObjectIds] = useState([]);
 
-    const linkedObjectFields = props.linkedObjectFields;
+    const { linkedObjectFields } = props;
 
     const onAddLinkedObject = () => {
         props.updateLinkedObjects([

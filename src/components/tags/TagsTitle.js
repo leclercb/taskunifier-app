@@ -5,7 +5,7 @@ import { TagPropType } from 'proptypes/TagPropTypes';
 import withTags from 'containers/WithTags';
 
 export function TagsTitle(props) {
-    const tags = props.tags;
+    const { tags } = props;
     return tags ? (
         <React.Fragment>
             {tags.map(tag => (

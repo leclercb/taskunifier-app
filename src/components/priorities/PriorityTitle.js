@@ -8,7 +8,7 @@ import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getPriorityColor } from 'utils/SettingUtils';
 
 export function PriorityTitle(props) {
-    const priority = props.priority;
+    const { priority } = props;
     return priority ? (
         <Icon icon="circle" color={getPriorityColor(priority.id, props.settings)} text={priority.title} />
     ) : (<span>&nbsp;</span>);

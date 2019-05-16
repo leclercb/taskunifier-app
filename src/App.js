@@ -65,8 +65,7 @@ function App(props) {
         () => {
             let interval = null;
 
-            const automaticSave = props.settings.automaticSave;
-            const automaticSaveInterval = props.settings.automaticSaveInterval;
+            const { automaticSave, automaticSaveInterval } = props.settings;
 
             if (automaticSave &&
                 Number.isInteger(automaticSaveInterval) &&
@@ -95,9 +94,7 @@ function App(props) {
             let interval = null;
 
             interval = setInterval(() => {
-                const automaticBackup = props.settings.automaticBackup;
-                const automaticBackupInterval = props.settings.automaticBackupInterval;
-                const lastAutomaticBackup = props.settings.lastAutomaticBackup;
+                const { automaticBackup, automaticBackupInterval, lastAutomaticBackup } = props.settings;
 
                 if (automaticBackup &&
                     Number.isInteger(automaticBackupInterval) &&

@@ -5,7 +5,7 @@ import withTaskField from 'containers/WithTaskField';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 
 export function TaskFieldTitle(props) {
-    const taskField = props.taskField;
+    const { taskField } = props;
     return taskField ? <Icon icon="circle" color={taskField.color} text={taskField.title} /> : <span>&nbsp;</span>;
 }
 

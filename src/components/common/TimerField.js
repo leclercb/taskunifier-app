@@ -35,7 +35,7 @@ class TimerField extends React.Component {
     }
 
     onClick() {
-        const timer = this.props.timer;
+        const { timer } = this.props;
         const value = timer ? timer.value : 0;
         const startDate = timer ? timer.startDate : null;
         const newTimer = {};
@@ -80,8 +80,8 @@ class TimerField extends React.Component {
         delete restProps.onChange;
         delete restProps.readOnly;
 
-        const readOnly = this.props.readOnly;
-        
+        const { readOnly } = this.props;
+
         return (
             <React.Fragment>
                 <Icon

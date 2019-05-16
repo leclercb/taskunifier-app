@@ -988,14 +988,14 @@ export function getFieldType(type, options) {
                 compare: () => 0,
                 toString: value => toStringTimer(value),
                 render: (value, props) => {
-                    /* eslint-disable */
+                    /* eslint-disable react/prop-types */
                     return (
                         <TimerField
                             timer={value}
                             readOnly={true}
                             onChange={props ? props.onChange : null} />
                     );
-                    /* eslint-enable */
+                    /* eslint-enable react/prop-types */
                 },
                 input: props => (
                     <TimerField {...props} />

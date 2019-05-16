@@ -5,7 +5,7 @@ import withGoal from 'containers/WithGoal';
 import Icon from 'components/common/Icon';
 
 export function GoalTitle(props) {
-    const goal = props.goal;
+    const { goal } = props;
     return goal ? <Icon icon="circle" color={goal.color} text={goal.title} /> : <span>&nbsp;</span>;
 }
 

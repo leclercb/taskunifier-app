@@ -5,7 +5,7 @@ import withSortDirection from 'containers/WithSortDirection';
 import Icon from 'components/common/Icon';
 
 export function SortDirectionTitle(props) {
-    const sortDirection = props.sortDirection;
+    const { sortDirection } = props;
     return sortDirection ? (
         <Icon icon="circle" color={sortDirection.color} text={sortDirection.title} />
     ) : (<span>&nbsp;</span>);

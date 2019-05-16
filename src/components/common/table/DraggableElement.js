@@ -12,7 +12,7 @@ function DndWrapper(props) {
 
     const style = { ...restProps.style, cursor: 'move' };
 
-    let className = restProps.className;
+    let { className } = restProps;
 
     if (isOver) {
         className += ' DropOver';
