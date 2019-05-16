@@ -1,4 +1,4 @@
-import { addColorsToArray } from "utils/ColorUtils";
+import { addColorsToArray } from 'utils/ColorUtils';
 
 export function getDefaultTaskFields(settings) {
     return addColorsToArray([

@@ -36,9 +36,6 @@
             "error",
             "unix"
         ],
-        "no-param-reassign": [
-            "error"
-        ],
         "object-shorthand": [
             "error",
             "always"

@@ -28,7 +28,7 @@ export function getSettings() {
 }
 
 export function getCategorySettings(category, options = {}) {
-    const settings = category.settings;
+    const {settings} = category;
 
     const { noteFields, taskFields } = options;
 
@@ -252,24 +252,24 @@ export function getCategories() {
             type: 'noteField',
             settings: [
                 {
-                    id: `noteColumnVisible_id`,
-                    title: `Show column "ID"`,
+                    id: 'noteColumnVisible_id',
+                    title: 'Show column "ID"',
                     type: 'boolean',
                     value: false,
                     editable: false,
                     visible: false
                 },
                 {
-                    id: `noteColumnVisible_creationDate`,
-                    title: `Show column "Creation date"`,
+                    id: 'noteColumnVisible_creationDate',
+                    title: 'Show column "Creation date"',
                     type: 'boolean',
                     value: false,
                     editable: false,
                     visible: false
                 },
                 {
-                    id: `noteColumnVisible_updateDate`,
-                    title: `Show column "Update date"`,
+                    id: 'noteColumnVisible_updateDate',
+                    title: 'Show column "Update date"',
                     type: 'boolean',
                     value: false,
                     editable: false,
@@ -291,24 +291,24 @@ export function getCategories() {
             type: 'taskField',
             settings: [
                 {
-                    id: `taskColumnVisible_id`,
-                    title: `Show column "ID"`,
+                    id: 'taskColumnVisible_id',
+                    title: 'Show column "ID"',
                     type: 'boolean',
                     value: false,
                     editable: false,
                     visible: false
                 },
                 {
-                    id: `taskColumnVisible_creationDate`,
-                    title: `Show column "Creation date"`,
+                    id: 'taskColumnVisible_creationDate',
+                    title: 'Show column "Creation date"',
                     type: 'boolean',
                     value: false,
                     editable: false,
                     visible: false
                 },
                 {
-                    id: `taskColumnVisible_updateDate`,
-                    title: `Show column "Update date"`,
+                    id: 'taskColumnVisible_updateDate',
+                    title: 'Show column "Update date"',
                     type: 'boolean',
                     value: false,
                     editable: false,

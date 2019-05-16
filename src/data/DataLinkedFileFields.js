@@ -1,4 +1,4 @@
-import { addColorsToArray } from "utils/ColorUtils";
+import { addColorsToArray } from 'utils/ColorUtils';
 
 export function getLinkedFileFields() {
     return addColorsToArray([
