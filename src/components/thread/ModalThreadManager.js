@@ -16,11 +16,11 @@ function ModalThreadManager(props) {
             title={<Icon icon="cogs" text="Progress" />}
             visible={props.threadManagerVisible}
             closable={false}
-            footer={
+            footer={(
                 <Button onClick={onOk}>
                     Close
                 </Button>
-            }>
+            )}>
             <ProcessList processes={props.processes} />
         </Modal>
     );

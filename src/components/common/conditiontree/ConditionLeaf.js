@@ -21,7 +21,7 @@ function ConditionLeaf(props) {
                         onUpdate: props.onUpdate
                     })
             }
-            {props.disabled ? null :
+            {props.disabled ? null : (
                 <div className='condition-actions'>
                     <Button
                         shape="circle"
@@ -29,7 +29,7 @@ function ConditionLeaf(props) {
                         size="small"
                         onClick={() => props.onDelete(condition, parentCondition)} />
                 </div>
-            }
+            )}
         </div>
     );
 }

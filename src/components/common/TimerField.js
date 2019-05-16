@@ -89,7 +89,7 @@ class TimerField extends React.Component {
                     style={{ cursor: 'pointer' }}
                     onIconClick={this.onClick}
                     text={readOnly ? this.formatTime(timer.value) : null} />
-                {!readOnly &&
+                {!readOnly && (
                     <React.Fragment>
                         <Spacer />
                         <MaskTextField
@@ -100,7 +100,7 @@ class TimerField extends React.Component {
                             style={{ width: 100 }}
                             {...restProps} />
                     </React.Fragment>
-                }
+                )}
             </React.Fragment>
         );
     }

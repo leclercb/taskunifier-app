@@ -154,16 +154,18 @@ function TaskSider(props) {
             return null;
         }
 
-        return <Badge
-            count={props.taskNumber}
-            showZero={true}
-            overflowCount={9999}
-            style={{
-                backgroundColor: Constants.badgeColor,
-                fontWeight: 'bold',
-                marginLeft: 10,
-                marginBottom: 2
-            }} />;
+        return (
+            <Badge
+                count={props.taskNumber}
+                showZero={true}
+                overflowCount={9999}
+                style={{
+                    backgroundColor: Constants.badgeColor,
+                    fontWeight: 'bold',
+                    marginLeft: 10,
+                    marginBottom: 2
+                }} />
+        );
     };
 
     return (

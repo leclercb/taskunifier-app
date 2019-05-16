@@ -32,7 +32,7 @@ function ProcessList(props) {
 
     return (
         <React.Fragment>
-            {props.processes.map(process =>
+            {props.processes.map(process => (
                 <div key={process.id}>
                     <Icon
                         text={process.title}
@@ -42,7 +42,7 @@ function ProcessList(props) {
                         <Alert type="error" message={process.error} showIcon={true} />
                     ) : null}
                 </div>
-            )}
+            ))}
         </React.Fragment>
     );
 }

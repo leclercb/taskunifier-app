@@ -27,73 +27,77 @@ function ConditionGroup(props) {
 
     const { condition, parentCondition } = props;
 
-    return <div className='condition-group-container'>
-        {props.connectDragSource(props.connectDropTarget(
-            <div className='condition-group-operator' style={{ background: colors[condition.operator] }}>
-                <div className='condition-group-operator-text'>
-                    <Select
-                        defaultValue={condition.operator}
-                        style={{ width: 80 }}
-                        disabled={props.disabled}
-                        onChange={(value) => {
-                            condition.operator = value;
-                            props.onUpdate(condition);
-                        }}>
-                        <Select.Option value="AND">AND</Select.Option>
-                        <Select.Option value="OR">OR</Select.Option>
-                        <Select.Option value="NOT">NOT</Select.Option>
-                    </Select>
-                </div>
-                {props.disabled ? null :
-                    <div className='condition-group-operator-actions'>
-                        <AddButton onClick={(key) => props.onAdd(condition, key)}>
-                            {props.addMenuItems}
-                        </AddButton>
-                        <br />
-                        <Button
-                            shape="circle"
-                            icon="minus"
-                            size="small"
-                            onClick={() => props.onDelete(condition, parentCondition)} />
+    return (
+        <div className='condition-group-container'>
+            {props.connectDragSource(props.connectDropTarget(
+                <div className='condition-group-operator' style={{ background: colors[condition.operator] }}>
+                    <div className='condition-group-operator-text'>
+                        <Select
+                            defaultValue={condition.operator}
+                            style={{ width: 80 }}
+                            disabled={props.disabled}
+                            onChange={(value) => {
+                                condition.operator = value;
+                                props.onUpdate(condition);
+                            }}>
+                            <Select.Option value="AND">AND</Select.Option>
+                            <Select.Option value="OR">OR</Select.Option>
+                            <Select.Option value="NOT">NOT</Select.Option>
+                        </Select>
                     </div>
-                }
+                    {props.disabled ? null : (
+                        <div className='condition-group-operator-actions'>
+                            <AddButton onClick={(key) => props.onAdd(condition, key)}>
+                                {props.addMenuItems}
+                            </AddButton>
+                            <br />
+                            <Button
+                                shape="circle"
+                                icon="minus"
+                                size="small"
+                                onClick={() => props.onDelete(condition, parentCondition)} />
+                        </div>
+                    )}
+                </div>
+            ))}
+            <div className='condition-group-content'>
+                {condition.conditions.map(cond => {
+                    return (
+                        <Condition
+                            key={cond.id}
+                            condition={cond}
+                            parentCondition={condition}
+                            context={props.context}
+                            disabled={props.disabled}
+                            onAdd={props.onAdd}
+                            onDelete={props.onDelete}
+                            onUpdate={props.onUpdate}
+                            onEndDrag={props.onEndDrag}
+                            addMenuItems={props.addMenuItems}
+                            getLeafComponent={props.getLeafComponent} />
+                    );
+                })}
+
+                {(condition.operator === 'AND' || condition.operator === 'OR') && condition.conditions.length < 2 ? (
+                    <Alert
+                        message="Warning"
+                        description={'A condition group with operator \'' + condition.operator + '\' must contain at least two sub-conditions.'}
+                        type="warning"
+                        showIcon
+                    />
+                ) : null}
+
+                {condition.operator === 'NOT' && condition.conditions.length !== 1 ? (
+                    <Alert
+                        message="Warning"
+                        description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
+                        type="warning"
+                        showIcon
+                    />
+                ) : null}
             </div>
-        ))}
-        <div className='condition-group-content'>
-            {condition.conditions.map(cond => {
-                return <Condition
-                    key={cond.id}
-                    condition={cond}
-                    parentCondition={condition}
-                    context={props.context}
-                    disabled={props.disabled}
-                    onAdd={props.onAdd}
-                    onDelete={props.onDelete}
-                    onUpdate={props.onUpdate}
-                    onEndDrag={props.onEndDrag}
-                    addMenuItems={props.addMenuItems}
-                    getLeafComponent={props.getLeafComponent} />;
-            })}
-
-            {(condition.operator === 'AND' || condition.operator === 'OR') && condition.conditions.length < 2 ? (
-                <Alert
-                    message="Warning"
-                    description={'A condition group with operator \'' + condition.operator + '\' must contain at least two sub-conditions.'}
-                    type="warning"
-                    showIcon
-                />
-            ) : null}
-
-            {condition.operator === 'NOT' && condition.conditions.length !== 1 ? (
-                <Alert
-                    message="Warning"
-                    description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
-                    type="warning"
-                    showIcon
-                />
-            ) : null}
         </div>
-    </div>;
+    );
 }
 
 ConditionGroup.propTypes = {

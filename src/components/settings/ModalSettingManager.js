@@ -17,11 +17,11 @@ function ModalSettingManager(props) {
             width="80%"
             closable={false}
             onOk={onOk}
-            footer={
+            footer={(
                 <Button onClick={onOk}>
                     Close
                 </Button>
-            }>
+            )}>
             <SettingManager />
         </Modal>
     );

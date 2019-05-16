@@ -25,13 +25,13 @@ function ModalRepeatManager(props) {
             visible={props.visible}
             width="60%"
             closable={false}
-            footer={
+            footer={(
                 <React.Fragment>
                     <Button onClick={onDoNotRepeat}>Do Not Repeat</Button>
                     <Spacer />
                     <Button onClick={onClose}>Close</Button>
                 </React.Fragment>
-            }>
+            )}>
             <RepeatManager repeat={props.repeat} updateRepeat={props.updateRepeat} />
         </Modal>
     );

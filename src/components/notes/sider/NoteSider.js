@@ -151,16 +151,18 @@ function NoteSider(props) {
             return null;
         }
 
-        return <Badge
-            count={props.noteNumber}
-            showZero={true}
-            overflowCount={9999}
-            style={{
-                backgroundColor: Constants.badgeColor,
-                fontWeight: 'bold',
-                marginLeft: 10,
-                marginBottom: 2
-            }} />;
+        return (
+            <Badge
+                count={props.noteNumber}
+                showZero={true}
+                overflowCount={9999}
+                style={{
+                    backgroundColor: Constants.badgeColor,
+                    fontWeight: 'bold',
+                    marginLeft: 10,
+                    marginBottom: 2
+                }} />
+        );
     };
 
     return (

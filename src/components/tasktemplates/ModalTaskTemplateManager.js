@@ -20,11 +20,11 @@ function ModalTaskTemplateManager(props) {
             visible={props.taskTemplateManager.visible}
             width="80%"
             closable={false}
-            footer={
+            footer={(
                 <Button onClick={onCloseTaskTemplateManager}>
                     Close
                 </Button>
-            }>
+            )}>
             <TaskTemplateManager
                 taskTemplateId={props.taskTemplateManager.taskTemplateId}
                 onTaskTemplateSelection={onTaskTemplateSelection} />

@@ -26,11 +26,11 @@ function ModalTaskEditionManager(props) {
             visible={props.taskEditionManager.visible}
             width="80%"
             closable={false}
-            footer={
+            footer={(
                 <Button onClick={onCloseTaskEditionManager}>
                     Close
                 </Button>
-            }>
+            )}>
             {props.task && <TaskEditionManager form={props.form} task={props.task} />}
         </Modal>
     );

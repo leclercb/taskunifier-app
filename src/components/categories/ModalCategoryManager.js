@@ -20,11 +20,11 @@ function ModalCategoryManager(props) {
             visible={props.categoryManager.visible}
             width="80%"
             closable={false}
-            footer={
+            footer={(
                 <Button onClick={onCloseCategoryManager}>
                     Close
                 </Button>
-            }>
+            )}>
             <CategoryManager
                 category={props.categoryManager.category}
                 objectId={props.categoryManager.objectId}

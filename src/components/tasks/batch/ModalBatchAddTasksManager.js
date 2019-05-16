@@ -16,11 +16,11 @@ function ModalBatchAddTasksManager(props) {
             visible={props.batchAddTasksManager.visible}
             width="80%"
             closable={false}
-            footer={
+            footer={(
                 <Button onClick={onClose}>
                     Close
                 </Button>
-            }>
+            )}>
             <BatchAddTasksManager onAdd={() => onClose()} />
         </Modal>
     );
