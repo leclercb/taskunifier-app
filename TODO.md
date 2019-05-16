@@ -3,7 +3,6 @@
 * Sorter reorder
 * Calendar use due date, use start date, sort tasks
 * Restore from backup
-* Show/hide fields
 * Print config (columns, size)
 
 * Postpone Snooze

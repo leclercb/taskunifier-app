@@ -324,6 +324,45 @@ export function getCategories() {
             })
         },
         {
+            id: 'taskFields',
+            title: 'Task fields',
+            icon: 'tasks',
+            type: 'taskField',
+            settings: [
+                {
+                    id: 'taskFieldVisible_id',
+                    title: 'Show field "ID"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskFieldVisible_creationDate',
+                    title: 'Show field "Creation date"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskFieldVisible_updateDate',
+                    title: 'Show field "Update date"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                }
+            ],
+            createSetting: field => ({
+                id: `taskFieldVisible_${field.id}`,
+                title: `Show field "${field.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: true
+            })
+        },
+        {
             id: 'colors',
             title: 'Colors',
             icon: 'paint-roller',
