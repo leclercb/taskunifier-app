@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar';
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import { TaskTitle } from 'components/tasks/common/TaskTitle';
@@ -19,7 +19,7 @@ function Event({ event }) {
         <TaskTitle
             task={event.task}
             settings={event.settings} />
-    )
+    );
 }
 
 function EventWrapper({ event, children }) {
@@ -31,7 +31,7 @@ function EventWrapper({ event, children }) {
             }}>
             {children}
         </div>
-    )
+    );
 }
 
 function TaskCalendar(props) {
@@ -48,7 +48,7 @@ function TaskCalendar(props) {
                     title: task.title,
                     start: moment(task.startDate).toDate(),
                     end: moment(task.startDate).add(task.length, 'minutes').toDate(),
-                    task: task,
+                    task,
                     settings: props.settings,
                     mode: 'startDate'
                 });
@@ -60,7 +60,7 @@ function TaskCalendar(props) {
                     title: task.title,
                     start: moment(task.dueDate).subtract(task.length, 'minutes').toDate(),
                     end: moment(task.dueDate).toDate(),
-                    task: task,
+                    task,
                     settings: props.settings,
                     mode: 'dueDate'
                 });

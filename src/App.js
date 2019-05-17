@@ -13,7 +13,7 @@ import 'App.css';
 import 'font-awesome.js';
 import 'rc-color-picker/assets/index.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-contexify/dist/ReactContexify.min.css';
 import 'react-virtualized/styles.css';
 import 'components/common/table/VirtualizedTable.css';
