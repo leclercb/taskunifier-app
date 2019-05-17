@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from 'components/tasks/sider/TaskSider';
-import TaskCalendar from 'components/tasks/calendar/TaskCalendar';
+import TaskCalendar from 'components/tasks/calendar/TaskBigCalendar';
 import withSettings from 'containers/WithSettings';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';

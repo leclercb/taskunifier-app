@@ -1,5 +1,6 @@
 ## Todo List
 
+* Finish big calendar
 * No-drag from fields
 * Restore from backup
 * Print config (columns, size)
