@@ -1,6 +1,7 @@
 ## Todo List
 
 * Finish big calendar
+* Fix date moment when validate form
 * No-drag from fields
 * Restore from backup
 * Print config (columns, size)
