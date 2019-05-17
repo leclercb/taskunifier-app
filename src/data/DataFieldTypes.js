@@ -241,10 +241,6 @@ export function getFieldType(type, options) {
                 alwaysInEdition: false,
                 commitOnChange: true,
                 normalize: value => {
-                    if (Number.isInteger(value)) {
-                        return value;
-                    }
-
                     return value ? moment(value) : null;
                 },
                 valuePropName: 'value',
@@ -284,10 +280,6 @@ export function getFieldType(type, options) {
                 alwaysInEdition: false,
                 commitOnChange: true,
                 normalize: value => {
-                    if (Number.isInteger(value)) {
-                        return value;
-                    }
-
                     return value ? moment(value) : null;
                 },
                 valuePropName: 'value',

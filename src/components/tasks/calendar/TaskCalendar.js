@@ -23,9 +23,17 @@ function Event({ event }) {
 }
 
 function EventWrapper({ event, children }) {
+    let className;
+
+    if (event.mode === 'startDate') {
+        className = 'wrapper-start-date';
+    } else {
+        className = 'wrapper-due-date';
+    }
+
     return (
         <div
-            className="wrapper-start-date"
+            className={className}
             style={{
                 backgroundColor: getImportanceColor(event.task.importance, event.settings)
             }}>
@@ -70,13 +78,28 @@ function TaskCalendar(props) {
         return events;
     };
 
-    const onEventResize = ({ event, start, end }) => {
-        console.log(event, start, end);
+    const onSelectEvent = event => {
+        props.setSelectedTaskIds([event.task.id]);
+    }
+
+    const onEventChange = ({ event, start, end }) => {
+        if (event.mode === 'startDate') {
+            props.updateTask({
+                ...event.task,
+                startDate: moment(start).toJSON(),
+                length: moment(end).diff(moment(start), 'minutes')
+            });
+        } else {
+            props.updateTask({
+                ...event.task,
+                dueDate: moment(end).toJSON(),
+                length: moment(end).diff(moment(start), 'minutes')
+            });
+        }
     };
 
-    const onEventDrop = ({ event, start, end, isAllDay }) => {
-        console.log(event, start, end, isAllDay);
-    };
+    const events = getEvents();
+    const selectedEvent = props.selectedTaskIds.length === 1 ? events.find(event => event.task.id === props.selectedTaskIds[0]) : null;
 
     return (
         <div style={{
@@ -85,14 +108,16 @@ function TaskCalendar(props) {
         }}>
             <DnDCalendar
                 className="task-calendar"
-                events={getEvents()}
+                events={events}
                 localizer={localizer}
                 defaultDate={new Date()}
                 defaultView="month"
-                onEventDrop={onEventDrop}
-                onEventResize={onEventResize}
+                onSelectEvent={onSelectEvent}
+                onEventDrop={onEventChange}
+                onEventResize={onEventChange}
                 resizable={true}
                 selectable={true}
+                selected={selectedEvent}
                 components={{
                     event: Event,
                     eventWrapper: EventWrapper
@@ -105,6 +130,7 @@ TaskCalendar.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    updateTask: PropTypes.func.isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired
 };
 
