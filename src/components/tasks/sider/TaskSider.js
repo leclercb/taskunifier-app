@@ -189,11 +189,14 @@ function TaskSider(props) {
                     <div style={{ marginBottom: 10 }}>Show tasks by:</div>
                     <Radio.Group
                         value={props.calendarDateMode}
-                        onChange={value => props.setCalendarDateMode(value)}>
+                        onChange={event => props.setCalendarDateMode(event.target.value)}>
                         <Radio
                             value="both"
                             style={{
-                                border: `1px solid ${Constants.calendarDateMode_both}`,
+                                borderTop: `1px solid ${Constants.calendarDateMode_startDate}`,
+                                borderLeft: `1px solid ${Constants.calendarDateMode_startDate}`,
+                                borderBottom: `1px solid ${Constants.calendarDateMode_dueDate}`,
+                                borderRight: `1px solid ${Constants.calendarDateMode_dueDate}`,
                                 borderRadius: 10,
                                 padding: 3
                             }}>

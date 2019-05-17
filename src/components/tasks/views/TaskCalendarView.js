@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from 'components/tasks/sider/TaskSider';
-import TaskCalendar from 'components/tasks/calendar/TaskBigCalendar';
+import TaskCalendar from 'components/tasks/calendar/TaskCalendar';
 import withSettings from 'containers/WithSettings';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
@@ -35,9 +35,7 @@ function TaskCalendarView(props) {
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
                     <TaskQuickAdd />
-                    <div style={{ overflowY: 'auto', height: '100%', backgroundColor: '#ffffff' }}>
-                        <TaskCalendar />
-                    </div>
+                    <TaskCalendar />
                 </div>
                 <div style={{ padding: 10, width: '100%' }}>
                     <TaskTabs />

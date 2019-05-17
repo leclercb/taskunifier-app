@@ -63,6 +63,8 @@
     "taskViewSubSplitPaneSize": 299,
     "taskViewSubSplitPaneMode": "horizontal",
     "taskCalendarViewSplitPaneSize": 300,
+    "taskCalendarViewSubSplitPaneSize": 300,
+    "taskCalendarViewSubSplitPaneMode": "horizontal",
     "taskCalendarSubSplitPaneSize": 300,
     "taskCalendarSubSplitPaneMode": "horizontal",
     "taskColumnWidth_star": 45,

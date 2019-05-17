@@ -5,13 +5,13 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-05-16T11:09:36.541Z",
+        "updateDate": "2019-05-17T11:27:56.617Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
         "importance": 4,
-        "startDate": "2019-04-15T08:11:19.684Z",
-        "dueDate": "2019-04-23T08:11:34.587Z",
+        "startDate": "2019-05-15T00:00:00.684Z",
+        "dueDate": "2019-05-23T00:00:00.587Z",
         "tags": [
             "T01",
             "T02",
@@ -78,7 +78,8 @@
             }
         ],
         "startDateReminder": 60,
-        "repeatFrom": "dueDate"
+        "repeatFrom": "dueDate",
+        "length": 120
     },
     {
         "title": "Task 2 DEF",
@@ -86,13 +87,13 @@
         "id": "b43d6563-ef18-4dc4-8b18-4e450cc224c5",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.835Z",
-        "updateDate": "2019-05-13T09:52:06.787Z",
+        "updateDate": "2019-05-17T11:28:04.961Z",
         "state": "TO_UPDATE",
         "progress": 50,
         "priority": "high",
         "importance": 9,
-        "startDate": "2019-04-18T08:11:21.892Z",
-        "dueDate": "2019-04-20T08:11:30.428Z",
+        "startDate": "2019-05-18T00:00:00.892Z",
+        "dueDate": "2019-05-20T00:00:00.428Z",
         "tags": [
             "T1",
             "T2",
@@ -116,7 +117,8 @@
         },
         "note": "The note of the task",
         "dueDateReminder": 720,
-        "repeatFrom": "completionDate"
+        "repeatFrom": "completionDate",
+        "length": 180
     },
     {
         "title": "Task 3 GHI",
@@ -124,13 +126,13 @@
         "id": "167c98c5-6670-4600-9528-4611b5e31131",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:28.409Z",
-        "updateDate": "2019-05-16T11:08:40.174Z",
+        "updateDate": "2019-05-17T11:28:13.898Z",
         "state": "TO_UPDATE",
         "progress": 100,
         "priority": "top",
         "importance": 6,
-        "startDate": "2019-04-29T08:11:24.803Z",
-        "dueDate": "2019-04-30T08:11:27.700Z",
+        "startDate": "2019-05-29T00:00:00.803Z",
+        "dueDate": "2019-05-30T00:00:00.700Z",
         "tags": [
             "T3",
             "T4"

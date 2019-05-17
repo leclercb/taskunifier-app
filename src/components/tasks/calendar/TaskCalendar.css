@@ -1,23 +1,23 @@
-.task-list {
-    list-style: none;
-    margin: 0;
+.task-calendar .rbc-event {
+    border: none !important;
+    color: inherit;
+    background-color: inherit;
     padding: 0;
 }
 
-.task-list li {
-    border-radius: 4px;
-    margin: 2px 0px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.task-calendar .rbc-event-label {
+    margin-bottom: 5px;
 }
 
-.task-list li.selected {
-    border: 1px solid #008c4b;
-    padding: 3px;
+.task-calendar .wrapper-start-date .rbc-event {
+    border: 2px solid #32cd32 !important;
 }
 
-.task-list li:hover {
-    border: 1px solid #008c4b;
-    padding: 3px;
+.task-calendar .wrapper-due-date .rbc-event {
+    border: 2px solid #1e90ff !important;
+}
+
+.task-calendar .wrapper-start-date .rbc-selected, .task-calendar .wrapper-due-date .rbc-selected {
+    border: 2px solid #008c4b !important;
+    background-color: inherit;
 }
