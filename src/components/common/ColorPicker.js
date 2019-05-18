@@ -25,6 +25,6 @@ class ColorPicker extends React.Component {
 ColorPicker.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func
-}
+};
 
 export default ColorPicker;

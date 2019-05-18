@@ -43,7 +43,7 @@ function CellRenderer(props) {
                 onChange={props.onChange}
                 editing={editing}
                 toggleEdit={toggleEdit} />
-        )
+        );
     }
 
     return (

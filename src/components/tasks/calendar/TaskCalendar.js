@@ -22,6 +22,10 @@ function Event({ event }) {
     );
 }
 
+Event.propTypes = {
+    event: PropTypes.object.isRequired
+};
+
 function EventWrapper({ event, children }) {
     let className;
 
@@ -41,6 +45,11 @@ function EventWrapper({ event, children }) {
         </div>
     );
 }
+
+EventWrapper.propTypes = {
+    event: PropTypes.object.isRequired,
+    children: PropTypes.any.isRequired
+};
 
 function TaskCalendar(props) {
     const getEvents = () => {
@@ -80,7 +89,7 @@ function TaskCalendar(props) {
 
     const onSelectEvent = event => {
         props.setSelectedTaskIds([event.task.id]);
-    }
+    };
 
     const onEventChange = ({ event, start, end }) => {
         if (event.mode === 'startDate') {
@@ -131,7 +140,8 @@ TaskCalendar.propTypes = {
     settings: SettingsPropType.isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     updateTask: PropTypes.func.isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired
+    setSelectedTaskIds: PropTypes.func.isRequired,
+    calendarDateMode: PropTypes.oneOf(['both', 'startDate', 'dueDate']).isRequired
 };
 
 export default withSettings(withTasks(TaskCalendar, { applySelectedTaskFilter: true }));

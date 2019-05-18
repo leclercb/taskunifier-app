@@ -17,14 +17,14 @@ class DatePicker extends React.Component {
     }
 
     render() {
-        let { value, onChange, ...wrappedProps } = this.props;
+        let { value, ...wrappedProps } = this.props;
 
         if (value) {
             value = moment(value);
         }
 
         return (
-            <AntDatePicker value={value} onChange={this.onChange} {...wrappedProps} />
+            <AntDatePicker {...wrappedProps} value={value} onChange={this.onChange} />
         );
     }
 }

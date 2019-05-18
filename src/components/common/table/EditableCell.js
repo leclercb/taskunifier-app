@@ -55,7 +55,7 @@ EditableCell.propTypes = {
     onChange: PropTypes.func.isRequired,
     editing: PropTypes.bool.isRequired,
     toggleEdit: PropTypes.func.isRequired
-}
+};
 
 export default Form.create({
     onValuesChange: (props, changedValues, allValues) => {

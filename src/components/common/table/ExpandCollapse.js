@@ -41,6 +41,6 @@ function ExpandCollapse(props) {
 ExpandCollapse.propTypes = {
     expandMode: PropTypes.oneOf(['expanded', 'collapsed', 'hidden']).isRequired,
     onSetExpanded: PropTypes.func.isRequired
-}
+};
 
 export default ExpandCollapse;
