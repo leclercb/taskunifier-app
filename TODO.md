@@ -4,8 +4,10 @@
 * No-drag from fields
 * Restore from backup
 * Print config (columns, size)
-
 * Postpone Snooze
+
+## To Try
+
 * Evaluate flow (https://pusher.com/tutorials/type-check-react-flow)
 * Try react-joyride
 * Electron proxy connection
