@@ -25,6 +25,9 @@ class RepeatField extends React.Component {
     }
 
     render() {
+        const { ...wrappedProps } = this.props;
+        delete wrappedProps.onBlur;
+
         return (
             <React.Fragment>
                 <ModalRepeatManager
@@ -55,7 +58,7 @@ class RepeatField extends React.Component {
                             this.setVisible(true);
                         }
                     }}
-                    {...this.props}
+                    {...wrappedProps}
                     value={formatRepeat(this.props.repeat)} />
             </React.Fragment>
         );

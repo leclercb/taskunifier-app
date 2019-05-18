@@ -5,9 +5,7 @@ import withNoteFields from 'containers/WithNoteFields';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import {
     getInputForType,
-    getNormalizeForType,
     getSelectForType,
-    getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
@@ -58,10 +56,8 @@ function NoteFilterConditionForm(props) {
                 <Col span={10}>
                     <Form.Item>
                         {getFieldDecorator('value', {
-                            rules: [],
                             valuePropName: getValuePropNameForType(field.type),
-                            getValueFromEvent: getValueFromEventForType(field.type),
-                            initialValue: getNormalizeForType(field.type)(props.condition.value)
+                            initialValue: props.condition.value
                         })(
                             getInputForType(field.type, field.options)
                         )}

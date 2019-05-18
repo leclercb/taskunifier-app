@@ -2,9 +2,10 @@
 
 import React from 'react';
 import moment from 'moment';
-import { Checkbox, DatePicker, Input, InputNumber, Progress, Select, Tag } from 'antd';
+import { Checkbox, Input, InputNumber, Progress, Select, Tag } from 'antd';
 import { getFieldConditions } from 'data/DataFieldConditions';
 import ColorPicker from 'components/common/ColorPicker';
+import DatePicker from 'components/common/DatePicker';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
 import StarCheckbox from 'components/common/StarCheckbox';
 import ContactTitle from 'components/contacts/ContactTitle';
@@ -91,7 +92,7 @@ import {
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 
-function defaultGetValueFromEvent(e) {
+export function getDefaultGetValueFromEvent(e) {
     if (!e || !e.target) {
         return e;
     }
@@ -149,9 +150,7 @@ export function getFieldType(type, options) {
                 width: 100,
                 alwaysInEdition: true,
                 commitOnChange: true,
-                normalize: value => value,
                 valuePropName: 'checked',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareBooleans(a, b),
                 toString: value => toStringBoolean(value),
                 render: value => <Checkbox checked={!!value} />,
@@ -170,9 +169,7 @@ export function getFieldType(type, options) {
                 width: 100,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'color',
-                getValueFromEvent: event => event.color,
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
                 render: value => <ColorPicker color={value} />,
@@ -191,9 +188,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareContacts(a, b, getContactsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringContact(value, getContactsFilteredByVisibleState(state)),
                 render: value => (
@@ -214,9 +209,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getContextsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getContextsFilteredByVisibleState(state)),
                 render: value => (
@@ -240,11 +233,7 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: true,
-                normalize: value => {
-                    return value ? moment(value) : null;
-                },
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareDates(a, b, false),
                 toString: value => toStringDate(value, dateFormat),
                 render: value => {
@@ -279,11 +268,7 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: true,
-                normalize: value => {
-                    return value ? moment(value) : null;
-                },
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareDates(a, b, true),
                 toString: value => toStringDate(value, `${dateFormat} ${timeFormat}`),
                 render: value => {
@@ -319,9 +304,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getFoldersFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getFoldersFilteredByVisibleState(state)),
                 render: value => (
@@ -342,9 +325,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getGoalsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getGoalsFilteredByVisibleState(state)),
                 render: value => (
@@ -365,9 +346,7 @@ export function getFieldType(type, options) {
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value),
                 render: value => value ? value : <span>&nbsp;</span>,
@@ -386,9 +365,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'length',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringLength(value),
                 render: value => (
@@ -409,9 +386,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringArray(value),
                 render: value => (
@@ -432,9 +407,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringArray(value),
                 render: value => (
@@ -455,9 +428,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringArray(value),
                 render: value => (
@@ -478,9 +449,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getLocationsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getLocationsFilteredByVisibleState(state)),
                 render: value => (
@@ -503,9 +472,7 @@ export function getFieldType(type, options) {
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value, '', currency),
                 render: value => value ? currency + ' ' + value : <span>&nbsp;</span>,
@@ -533,9 +500,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getNotesFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getNotesFilteredByVisibleState(state)),
                 render: value => (
@@ -556,9 +521,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getNoteFieldsIncludingDefaults(state)),
                 toString: (value, state) => toStringObject(value, getNoteFieldsIncludingDefaults(state)),
                 render: value => (
@@ -582,9 +545,7 @@ export function getFieldType(type, options) {
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value),
                 render: value => value ? value : <span>&nbsp;</span>,
@@ -614,9 +575,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => comparePriorities(a, b),
                 toString: value => toStringPriority(value),
                 render: value => (
@@ -637,9 +596,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value, '', '%'),
                 render: value => Number.isInteger(value) ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
@@ -658,9 +615,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringReminder(value),
                 render: value => (
@@ -681,9 +636,7 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'repeat',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareRepeats(a, b),
                 toString: value => formatRepeat(value),
                 render: value => {
@@ -705,9 +658,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toStringRepeatFrom(value),
                 render: value => toStringRepeatFrom(value),
@@ -729,9 +680,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
                 render: value => (
@@ -771,9 +720,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringArray(value),
                 render: values => (
@@ -794,9 +741,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareSortDirections(a, b),
                 toString: value => toStringSortDirection(value),
                 render: value => (
@@ -817,9 +762,7 @@ export function getFieldType(type, options) {
                 width: 100,
                 alwaysInEdition: true,
                 commitOnChange: true,
-                normalize: value => value,
                 valuePropName: 'checked',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareBooleans(a, b),
                 toString: value => toStringBoolean(value),
                 render: value => <StarCheckbox checked={!!value} />,
@@ -838,9 +781,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStatuses(a, b),
                 toString: value => toStringStatus(value),
                 render: value => (
@@ -861,9 +802,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringArray(value),
                 render: value => (
@@ -884,9 +823,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getTasksFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getTasksFilteredByVisibleState(state)),
                 render: value => (
@@ -907,9 +844,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getTaskFieldsIncludingDefaults(state)),
                 toString: (value, state) => toStringObject(value, getTaskFieldsIncludingDefaults(state)),
                 render: value => (
@@ -930,9 +865,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b, state) => compareObjects(a, b, getTaskTemplatesFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getTaskTemplatesFilteredByVisibleState(state)),
                 render: value => (
@@ -953,9 +886,7 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
@@ -974,9 +905,7 @@ export function getFieldType(type, options) {
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'timer',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: () => 0,
                 toString: value => toStringTimer(value),
                 render: (value, props) => {
@@ -1005,9 +934,7 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
-                normalize: value => value,
                 valuePropName: 'value',
-                getValueFromEvent: defaultGetValueFromEvent,
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,

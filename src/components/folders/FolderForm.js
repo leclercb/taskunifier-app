@@ -30,7 +30,6 @@ function FolderForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.folder.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, 

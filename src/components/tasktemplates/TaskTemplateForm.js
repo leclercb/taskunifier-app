@@ -8,8 +8,6 @@ import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/F
 import withTaskFields from 'containers/WithTaskFields';
 import {
     getInputForType,
-    getNormalizeForType,
-    getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
 
@@ -37,7 +35,6 @@ function TaskTemplateForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.taskTemplate.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true,
@@ -52,11 +49,8 @@ function TaskTemplateForm(props) {
             {props.taskFields.map(field => (
                 <Form.Item key={field.id} label={field.title}>
                     {getFieldDecorator('properties.' + field.id, {
-                        rules: [],
-                        normalize: getNormalizeForType(field.type),
                         valuePropName: getValuePropNameForType(field.type),
-                        getValueFromEvent: getValueFromEventForType(field.type),
-                        initialValue: getNormalizeForType(field.type)(props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : null)
+                        initialValue: props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : null
                     })(
                         getInputForType(field.type, field.options)
                     )}

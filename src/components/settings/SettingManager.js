@@ -11,8 +11,6 @@ import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 import {
     getInputForType,
-    getNormalizeForType,
-    getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
 
@@ -76,11 +74,8 @@ function SettingManager(props) {
                                                 {item.title}
                                             </Button>
                                         ) : getFieldDecorator(item.id, {
-                                            rules: [],
-                                            normalize: getNormalizeForType(item.type),
                                             valuePropName: getValuePropNameForType(item.type),
-                                            getValueFromEvent: getValueFromEventForType(item.type),
-                                            initialValue: getNormalizeForType(item.type)(getSettingValue(item))
+                                            initialValue: getSettingValue(item)
                                         })(getInputForType(item.type, item.options, { disabled: item.editable === false }))
                                     }
                                 </Form.Item>

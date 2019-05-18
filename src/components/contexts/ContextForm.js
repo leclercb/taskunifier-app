@@ -29,7 +29,6 @@ function ContextForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.context.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, 

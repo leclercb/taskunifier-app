@@ -7,8 +7,6 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import {
     getInputForType,
-    getNormalizeForType,
-    getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
@@ -54,9 +52,7 @@ function BatchEditTasksManager(props) {
                             )
                         )}>
                             {getFieldDecorator('value.' + field.id, {
-                                normalize: getNormalizeForType(field.type),
-                                valuePropName: getValuePropNameForType(field.type),
-                                getValueFromEvent: getValueFromEventForType(field.type)
+                                valuePropName: getValuePropNameForType(field.type)
                             })(
                                 getInputForType(field.type, field.options)
                             )}

@@ -7,8 +7,6 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import {
     getInputForType,
-    getNormalizeForType,
-    getValueFromEventForType,
     getValuePropNameForType
 } from 'utils/FieldUtils';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
@@ -34,11 +32,8 @@ function TaskEditionForm(props) {
                     <Col key={field.id} span={12}>
                         <Form.Item label={field.title}>
                             {getFieldDecorator(field.id, {
-                                rules: [],
-                                normalize: getNormalizeForType(field.type),
                                 valuePropName: getValuePropNameForType(field.type),
-                                getValueFromEvent: getValueFromEventForType(field.type),
-                                initialValue: getNormalizeForType(field.type)(props.task[field.id])
+                                initialValue: props.task[field.id]
                             })(
                                 getInputForType(field.type, field.options)
                             )}

@@ -30,7 +30,6 @@ function TaskFilterForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.taskFilter.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true,
@@ -43,7 +42,6 @@ function TaskFilterForm(props) {
             </Form.Item>
             <Form.Item label="Task Template">
                 {getFieldDecorator('taskTemplate', {
-                    rules: [],
                     initialValue: props.taskFilter.taskTemplate
                 })(
                     <TaskTemplateSelect />

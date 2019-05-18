@@ -30,7 +30,9 @@ class ReminderField extends React.Component {
     }
 
     onChange(value) {
-        this.props.onChange(this.toNumber(value));
+        if (this.props.onChange) {
+            this.props.onChange(this.toNumber(value));
+        }
     }
 
     onSearch(value) {

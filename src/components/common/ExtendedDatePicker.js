@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { DatePicker, InputNumber, Switch } from 'antd';
+import { InputNumber, Switch } from 'antd';
+import DatePicker from 'components/common/DatePicker';
 import Spacer from 'components/common/Spacer';
 
 class ExtendedDatePicker extends React.Component {
@@ -12,14 +13,17 @@ class ExtendedDatePicker extends React.Component {
     }
 
     onChange(checked) {
-        this.props.onChange(checked ? 0 : moment());
+        if (this.props.onChange) {
+            this.props.onChange(checked ? 0 : moment().toJSON());
+        }
     }
 
     render() {
         return (
             <React.Fragment>
                 <Switch
-                    checked={Number.isInteger(this.props.value)} onChange={this.onChange}
+                    checked={Number.isInteger(this.props.value)}
+                    onChange={this.onChange}
                     checkedChildren="Use number of days from now"
                     unCheckedChildren="Use fixed date"
                     style={{ marginRight: 10 }} />
@@ -42,7 +46,7 @@ ExtendedDatePicker.propTypes = {
     format: PropTypes.string.isRequired,
     value: PropTypes.oneOfType([
         PropTypes.number,
-        PropTypes.object
+        PropTypes.string
     ]),
     onChange: PropTypes.func
 };

@@ -26,21 +26,23 @@ export function createAction(icon, text, onClick, color) {
 export function createActions(item, onDuplicate, onDelete) {
     return (
         <React.Fragment>
-            {createAction('copy', `Duplicate "${item.title}" ?`, onDuplicate)}
+            {onDuplicate ? createAction('copy', `Duplicate "${item.title}" ?`, onDuplicate) : null}
             <Spacer />
-            <Popconfirm
-                title={(
-                    <Icon
-                        icon="trash-alt"
-                        color={Constants.color}
-                        text={`Do you really want to delete "${item.title}" ?`} />
-                )}
-                placement="right"
-                onConfirm={() => onDelete(item.id)}
-                okText="Yes"
-                cancelText="No">
-                {createAction('trash-alt', `Delete "${item.title}" ?`)}
-            </Popconfirm>
+            {onDelete ? (
+                <Popconfirm
+                    title={(
+                        <Icon
+                            icon="trash-alt"
+                            color={Constants.color}
+                            text={`Do you really want to delete "${item.title}" ?`} />
+                    )}
+                    placement="right"
+                    onConfirm={() => onDelete(item.id)}
+                    okText="Yes"
+                    cancelText="No">
+                    {createAction('trash-alt', `Delete "${item.title}" ?`)}
+                </Popconfirm>
+            ) : null}
         </React.Fragment>
     );
 }

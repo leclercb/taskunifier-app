@@ -55,7 +55,6 @@ function ContactForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.contact.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, 

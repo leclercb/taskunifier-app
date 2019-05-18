@@ -19,7 +19,7 @@ class RepeatFromField extends React.Component {
 }
 
 RepeatFromField.propTypes = {
-    value: PropTypes.number,
+    value: PropTypes.string,
     onChange: PropTypes.func
 };
 

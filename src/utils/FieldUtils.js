@@ -12,16 +12,8 @@ export function isCommitOnChangeForType(type) {
     return getFieldType(type).commitOnChange;
 }
 
-export function getNormalizeForType(type) {
-    return getFieldType(type).normalize;
-}
-
 export function getValuePropNameForType(type) {
     return getFieldType(type).valuePropName;
-}
-
-export function getValueFromEventForType(type) {
-    return getFieldType(type).getValueFromEvent;
 }
 
 export function getCompareForType(type, a, b, state) {

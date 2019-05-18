@@ -1,4 +1,3 @@
-import moment from 'moment';
 import { merge, setValue } from 'utils/ObjectUtils';
 
 export function getDefaultFormItemLayout() {
@@ -41,7 +40,7 @@ export function onFieldChangeForObjectUpdates(fields, object, updateObject, assi
     let validating = false;
 
     flattenFields(null, fields).forEach(field => {
-        setValue(values, field.name, moment.isMoment(field.value) ? field.value.toJSON() : field.value);
+        setValue(values, field.name, field.value);
         errors.push(...(field.errors || []));
 
         if (field.validating) {

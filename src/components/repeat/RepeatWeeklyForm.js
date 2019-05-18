@@ -51,8 +51,7 @@ function RepeatWeeklyForm(props) {
                         <span style={{ marginLeft: 10 }}>week(s) on</span>
                         <div style={{ marginLeft: 40 }}>
                             {getFieldDecorator('daysOfWeek', {
-                                initialValue: props.repeat ? props.repeat.daysOfWeek : null,
-                                rules: []
+                                initialValue: props.repeat ? props.repeat.daysOfWeek : null
                             })(
                                 <Checkbox.Group disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} options={getDaysOfWeek()} />
                             )}

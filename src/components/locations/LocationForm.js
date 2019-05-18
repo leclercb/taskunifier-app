@@ -29,7 +29,6 @@ function LocationForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.location.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, 

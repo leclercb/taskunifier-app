@@ -33,7 +33,6 @@ function GoalForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.goal.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, 
@@ -65,8 +64,7 @@ function GoalForm(props) {
             </Form.Item>
             <Form.Item label="Contributes To">
                 {getFieldDecorator('contributesTo', {
-                    initialValue: props.goal.contributesTo,
-                    rules: []
+                    initialValue: props.goal.contributesTo
                 })(
                     <GoalSelect excludeIds={[props.goal.id]} disabled={props.goal.level === 'lifeTime'} />
                 )}

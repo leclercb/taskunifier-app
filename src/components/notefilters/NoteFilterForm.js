@@ -29,7 +29,6 @@ function NoteFilterForm(props) {
                 {getFieldDecorator('color', {
                     initialValue: props.noteFilter.color,
                     valuePropName: 'color',
-                    getValueFromEvent: event => event.color,
                     rules: [
                         {
                             required: true, 
