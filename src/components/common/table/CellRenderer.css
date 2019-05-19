@@ -1,7 +1,7 @@
 .cell-renderer-value-wrap {
     float: left;
     width: 100%;
-    cursor: pointer;
+    cursor: pointer !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

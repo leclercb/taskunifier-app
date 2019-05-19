@@ -24,16 +24,12 @@ function EditableCell(props) {
 
     const inputProps = {
         ref: props.inputRef,
-        fieldmode: 'table'
+        fieldMode: 'table',
+        onCommit: onChange
     };
 
     if (props.editing) {
         inputProps.autoFocus = true;
-    }
-
-    if (!isCommitOnChangeForType(props.field.type)) {
-        inputProps.onPressEnter = onChange;
-        inputProps.onBlur = onChange;
     }
 
     return props.form.getFieldDecorator(props.field.id, {

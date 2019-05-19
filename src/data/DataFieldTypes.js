@@ -143,6 +143,13 @@ export function getFieldTypes() {
 export function getFieldType(type, options) {
     let configuration = null;
 
+    const removeExtraProps = props => {
+        const { ...wrappedProps } = props;
+        delete wrappedProps.fieldMode;
+        delete wrappedProps.onCommit;
+        return wrappedProps;
+    }
+
     switch (type) {
         case 'boolean': {
             configuration = {
@@ -155,7 +162,9 @@ export function getFieldType(type, options) {
                 toString: value => toStringBoolean(value),
                 render: value => <Checkbox checked={!!value} />,
                 input: props => (
-                    <Checkbox {...props} data-prevent-default={true} />
+                    <Checkbox
+                        data-prevent-default={true}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'boolean',
                 options: []
@@ -174,7 +183,9 @@ export function getFieldType(type, options) {
                 toString: value => toString(value),
                 render: value => <ColorPicker color={value} />,
                 input: props => (
-                    <ColorPicker {...props} />
+                    <ColorPicker
+                        onBlur={props.onCommit}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'color',
                 options: []
@@ -195,7 +206,10 @@ export function getFieldType(type, options) {
                     <ContactTitle contactId={value} />
                 ),
                 input: props => (
-                    <ContactSelect dropdownMatchSelectWidth={false} {...props} />
+                    <ContactSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'contact',
                 options: []
@@ -216,7 +230,10 @@ export function getFieldType(type, options) {
                     <ContextTitle contextId={value} />
                 ),
                 input: props => (
-                    <ContextSelect dropdownMatchSelectWidth={false} {...props} />
+                    <ContextSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'context',
                 options: []
@@ -232,7 +249,7 @@ export function getFieldType(type, options) {
                 title: 'Date',
                 width: 250,
                 alwaysInEdition: false,
-                commitOnChange: true,
+                commitOnChange: false,
                 valuePropName: 'value',
                 compare: (a, b) => compareDates(a, b, false),
                 toString: value => toStringDate(value, dateFormat),
@@ -243,9 +260,31 @@ export function getFieldType(type, options) {
 
                     return value ? moment(value).format(dateFormat) : (<span>&nbsp;</span>);
                 },
-                input: props => extended ?
-                    <ExtendedDatePicker format={dateFormat} {...props} /> :
-                    <DatePicker format={dateFormat} {...props} />,
+                input: props => {
+                    if (extended) {
+                        return (
+                            <ExtendedDatePicker
+                                onOpenChange={status => {
+                                    if (props.onCommit && !status) {
+                                        props.onCommit();
+                                    }
+                                }}
+                                format={dateFormat}
+                                {...removeExtraProps(props)} />
+                        );
+                    }
+
+                    return (
+                        <DatePicker
+                            onOpenChange={status => {
+                                if (props.onCommit && !status) {
+                                    props.onCommit();
+                                }
+                            }}
+                            format={dateFormat}
+                            {...removeExtraProps(props)} />
+                    );
+                },
                 conditionsFieldType: 'date',
                 options: [
                     {
@@ -267,7 +306,7 @@ export function getFieldType(type, options) {
                 title: 'Date time',
                 width: 250,
                 alwaysInEdition: false,
-                commitOnChange: true,
+                commitOnChange: false,
                 valuePropName: 'value',
                 compare: (a, b) => compareDates(a, b, true),
                 toString: value => toStringDate(value, `${dateFormat} ${timeFormat}`),
@@ -278,9 +317,33 @@ export function getFieldType(type, options) {
 
                     return value ? moment(value).format(`${dateFormat} ${timeFormat}`) : (<span>&nbsp;</span>);
                 },
-                input: props => extended ?
-                    <ExtendedDatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} /> :
-                    <DatePicker showTime={{ format: timeFormat }} format={`${dateFormat} ${timeFormat}`} {...props} />,
+                input: props => {
+                    if (extended) {
+                        return (
+                            <ExtendedDatePicker
+                                onOpenChange={status => {
+                                    if (props.onCommit && !status) {
+                                        props.onCommit();
+                                    }
+                                }}
+                                showTime={{ format: timeFormat }}
+                                format={`${dateFormat} ${timeFormat}`}
+                                {...removeExtraProps(props)} />
+                        );
+                    }
+
+                    return (
+                        <DatePicker
+                            onOpenChange={status => {
+                                if (props.onCommit && !status) {
+                                    props.onCommit();
+                                }
+                            }}
+                            showTime={{ format: timeFormat }}
+                            format={`${dateFormat} ${timeFormat}`}
+                            {...removeExtraProps(props)} />
+                    );
+                },
                 conditionsFieldType: 'dateTime',
                 options: [
                     {
@@ -311,7 +374,10 @@ export function getFieldType(type, options) {
                     <FolderTitle folderId={value} />
                 ),
                 input: props => (
-                    <FolderSelect dropdownMatchSelectWidth={false} {...props} />
+                    <FolderSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'folder',
                 options: []
@@ -332,7 +398,10 @@ export function getFieldType(type, options) {
                     <GoalTitle goalId={value} />
                 ),
                 input: props => (
-                    <GoalSelect dropdownMatchSelectWidth={false} {...props} />
+                    <GoalSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'goal',
                 options: []
@@ -351,7 +420,12 @@ export function getFieldType(type, options) {
                 toString: value => toStringNumber(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <InputNumber min={0} max={12} {...props} style={{ width: 60 }} />
+                    <InputNumber
+                        onBlur={props.onCommit}
+                        min={0}
+                        max={12}
+                        style={{ width: 60 }}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'importance',
                 options: []
@@ -372,7 +446,10 @@ export function getFieldType(type, options) {
                     <LengthField length={value} readOnly={true} />
                 ),
                 input: props => (
-                    <LengthField {...props} />
+                    <LengthField
+                        onBlur={props.onCommit}
+                        onPressEnter={props.onCommit}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'length',
                 options: []
@@ -393,7 +470,10 @@ export function getFieldType(type, options) {
                     <LinkedContactLinksTitle linkIds={value} />
                 ),
                 input: props => (
-                    <LinkedContactLinksSelect dropdownMatchSelectWidth={false} {...props} />
+                    <LinkedContactLinksSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'linkedContactLinks',
                 options: []
@@ -414,7 +494,10 @@ export function getFieldType(type, options) {
                     <LinkedFileLinksTitle linkIds={value} />
                 ),
                 input: props => (
-                    <LinkedFileLinksSelect dropdownMatchSelectWidth={false} {...props} />
+                    <LinkedFileLinksSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'linkedFileLinks',
                 options: []
@@ -435,7 +518,10 @@ export function getFieldType(type, options) {
                     <LinkedTaskLinksTitle linkIds={value} />
                 ),
                 input: props => (
-                    <LinkedTaskLinksSelect dropdownMatchSelectWidth={false} {...props} />
+                    <LinkedTaskLinksSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'linkedTaskLinks',
                 options: []
@@ -456,7 +542,10 @@ export function getFieldType(type, options) {
                     <LocationTitle locationId={value} />
                 ),
                 input: props => (
-                    <LocationSelect dropdownMatchSelectWidth={false} {...props} />
+                    <LocationSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'location',
                 options: []
@@ -478,9 +567,10 @@ export function getFieldType(type, options) {
                 render: value => value ? currency + ' ' + value : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber
+                        onBlur={props.onCommit}
                         formatter={value => `${currency} ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         parser={value => value.replace('/(' + escape(currency) + ')\\s?|(,*)/g', '')}
-                        {...props} />
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'money',
                 options: [
@@ -507,7 +597,10 @@ export function getFieldType(type, options) {
                     <NoteTitle noteId={value} />
                 ),
                 input: props => (
-                    <NoteSelect dropdownMatchSelectWidth={false} {...props} />
+                    <NoteSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'note',
                 options: []
@@ -528,7 +621,10 @@ export function getFieldType(type, options) {
                     <NoteFieldTitle noteFieldId={value} />
                 ),
                 input: props => (
-                    <NoteFieldSelect dropdownMatchSelectWidth={false} {...props} />
+                    <NoteFieldSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'noteField',
                 options: []
@@ -550,7 +646,11 @@ export function getFieldType(type, options) {
                 toString: value => toStringNumber(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <InputNumber min={min} max={max} {...props} />
+                    <InputNumber
+                        onBlur={props.onCommit}
+                        min={min}
+                        max={max}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'number',
                 options: [
@@ -582,7 +682,10 @@ export function getFieldType(type, options) {
                     <PriorityTitle priorityId={value} />
                 ),
                 input: props => (
-                    <PrioritySelect dropdownMatchSelectWidth={false} {...props} />
+                    <PrioritySelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'priority',
                 options: []
@@ -601,7 +704,11 @@ export function getFieldType(type, options) {
                 toString: value => toStringNumber(value, '', '%'),
                 render: value => Number.isInteger(value) ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
                 input: props => (
-                    <InputNumber min={0} max={100} {...props} />
+                    <InputNumber
+                        onBlur={props.onCommit}
+                        min={0}
+                        max={100}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'progress',
                 options: []
@@ -622,7 +729,9 @@ export function getFieldType(type, options) {
                     Number.isInteger(value) ? toStringReminder(value) : <span>&nbsp;</span>
                 ),
                 input: props => (
-                    <ReminderField {...props} />
+                    <ReminderField
+                        onBlur={props.onCommit}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'reminder',
                 options: []
@@ -644,7 +753,14 @@ export function getFieldType(type, options) {
                     return result ? result : <span>&nbsp;</span>;
                 },
                 input: props => (
-                    <RepeatField {...props} />
+                    <RepeatField
+                        fieldMode={props.fieldMode}
+                        onOpenChange={status => {
+                            if (props.onCommit && !status) {
+                                props.onCommit();
+                            }
+                        }}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'repeat',
                 options: []
@@ -663,7 +779,9 @@ export function getFieldType(type, options) {
                 toString: value => toStringRepeatFrom(value),
                 render: value => toStringRepeatFrom(value),
                 input: props => (
-                    <RepeatFromField {...props} />
+                    <RepeatFromField
+                        onBlur={props.onCommit}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'repeatFrom',
                 options: []
@@ -687,7 +805,10 @@ export function getFieldType(type, options) {
                     value ? value : <span>&nbsp;</span>
                 ),
                 input: props => (
-                    <Select dropdownMatchSelectWidth={false} {...props}>
+                    <Select
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)}>
                         {values.map(value => {
                             value = typeof value === 'object' ? value : {
                                 title: value,
@@ -727,7 +848,11 @@ export function getFieldType(type, options) {
                     values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
                 ),
                 input: props => (
-                    <Select dropdownMatchSelectWidth={false} mode="tags" {...props} />
+                    <Select
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        mode="tags"
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'selectTags',
                 options: []
@@ -748,7 +873,10 @@ export function getFieldType(type, options) {
                     <SortDirectionTitle sortDirectionId={value} />
                 ),
                 input: props => (
-                    <SortDirectionSelect dropdownMatchSelectWidth={false} {...props} />
+                    <SortDirectionSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'sortDirection',
                 options: []
@@ -767,7 +895,7 @@ export function getFieldType(type, options) {
                 toString: value => toStringBoolean(value),
                 render: value => <StarCheckbox checked={!!value} />,
                 input: props => (
-                    <StarCheckbox {...props} />
+                    <StarCheckbox {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'star',
                 options: []
@@ -788,7 +916,10 @@ export function getFieldType(type, options) {
                     <StatusTitle statusId={value} />
                 ),
                 input: props => (
-                    <StatusSelect dropdownMatchSelectWidth={false} {...props} />
+                    <StatusSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'status',
                 options: []
@@ -809,7 +940,10 @@ export function getFieldType(type, options) {
                     <TagsTitle tagIds={value} />
                 ),
                 input: props => (
-                    <TagsSelect dropdownMatchSelectWidth={false} {...props} />
+                    <TagsSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'tags',
                 options: []
@@ -830,7 +964,10 @@ export function getFieldType(type, options) {
                     <TaskTitle taskId={value} />
                 ),
                 input: props => (
-                    <TaskSelect dropdownMatchSelectWidth={false} {...props} />
+                    <TaskSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'task',
                 options: []
@@ -851,7 +988,10 @@ export function getFieldType(type, options) {
                     <TaskFieldTitle taskFieldId={value} />
                 ),
                 input: props => (
-                    <TaskFieldSelect dropdownMatchSelectWidth={false} {...props} />
+                    <TaskFieldSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'taskField',
                 options: []
@@ -872,7 +1012,10 @@ export function getFieldType(type, options) {
                     <TaskTemplateTitle taskTemplateId={value} />
                 ),
                 input: props => (
-                    <TaskTemplateSelect dropdownMatchSelectWidth={false} {...props} />
+                    <TaskTemplateSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'taskTemplate',
                 options: []
@@ -891,7 +1034,10 @@ export function getFieldType(type, options) {
                 toString: value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <Input.TextArea autosize={true} {...props} onPressEnter={null} />
+                    <Input.TextArea
+                        onBlur={props.onCommit}
+                        autosize={true}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'textarea',
                 options: []
@@ -919,7 +1065,10 @@ export function getFieldType(type, options) {
                     /* eslint-enable react/prop-types */
                 },
                 input: props => (
-                    <TimerField {...props} />
+                    <TimerField
+                        onBlur={props.onCommit}
+                        onPressEnter={props.onCommit}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'boolean',
                 options: []
@@ -939,7 +1088,10 @@ export function getFieldType(type, options) {
                 toString: value => toString(value),
                 render: value => value ? value : <span>&nbsp;</span>,
                 input: props => (
-                    <Input {...props} />
+                    <Input
+                        onBlur={props.onCommit}
+                        onPressEnter={props.onCommit}
+                        {...removeExtraProps(props)} />
                 ),
                 conditionsFieldType: 'text',
                 options: []

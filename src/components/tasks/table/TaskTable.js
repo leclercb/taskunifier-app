@@ -7,7 +7,6 @@ import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
-import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import { getWidthForType } from 'utils/FieldUtils';
@@ -79,24 +78,41 @@ function TaskTable(props) {
                         onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
-                cellRenderer={({ cellData, rowData }) => (
-                    <CellRenderer
-                        field={field}
-                        value={cellData}
-                        onChange={allValues => onUpdateTask({
-                            ...rowData,
-                            ...allValues
-                        })}
-                        subLevel={field.id === 'title' ? getSubLevel(rowData, props.tasksMetaData) : 0}
-                        expandMode={getExpandMode(rowData)}
-                        onSetExpanded={expanded => onUpdateTask({
-                            ...rowData,
-                            expanded
-                        })} />
-                )} />
+                cellRenderer={({ cellData, rowData }) => {
+                    let dndProps = {};
+
+                    if (field.id === 'title') {
+                        dndProps = {
+                            dndEnabled: true,
+                            dragType: 'task',
+                            dropType: 'task',
+                            dndData: {
+                                rowData
+                            },
+                            onDrop: onDropTask
+                        };
+                    }
+
+                    return (
+                        <CellRenderer
+                            field={field}
+                            value={cellData}
+                            onChange={allValues => onUpdateTask({
+                                ...rowData,
+                                ...allValues
+                            })}
+                            subLevel={field.id === 'title' ? getSubLevel(rowData, props.tasksMetaData) : 0}
+                            expandMode={getExpandMode(rowData)}
+                            onSetExpanded={expanded => onUpdateTask({
+                                ...rowData,
+                                expanded
+                            })}
+                            {...dndProps} />
+                    );
+                }} />
         );
     });
-    
+
     return (
         <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
             <AutoSizer>
@@ -108,13 +124,6 @@ function TaskTable(props) {
                         headerHeight={20}
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}
-                        rowRenderer={props => (
-                            <DraggableRowRenderer
-                                {...props}
-                                dragType="task"
-                                dropType="task"
-                                onDrop={onDropTask} />
-                        )}
                         rowStyle={({ index }) => {
                             const task = props.tasks[index];
 

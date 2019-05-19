@@ -340,7 +340,7 @@ export function formatRepeat(repeat) {
                 return '';
             }
 
-            return `Every ${formatDayNb(repeat.dayNb)}th day of every ${repeat.nbMonths} month${repeat.nbMonths > 1 ? 's' : ''}`;
+            return `Every ${formatDayNb(repeat.dayNb)} day of every ${repeat.nbMonths} month${repeat.nbMonths > 1 ? 's' : ''}`;
         case 'weekXDayYEveryZMonths':
             if (!repeat.weekNb || !repeat.dayOfWeek || !repeat.nbMonths) {
                 return '';

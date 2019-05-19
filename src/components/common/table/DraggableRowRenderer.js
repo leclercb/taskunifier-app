@@ -56,7 +56,7 @@ export function DraggableRowRenderer({
                 rowIndex: index,
                 rowData
             }}
-            onDrop={(dragData, dropData) => onDrop(dragData, dropData)}>
+            onDrop={onDrop}>
             {columns}
         </DraggableElement>
     );

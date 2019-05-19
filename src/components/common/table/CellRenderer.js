@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Spacer from 'components/common/Spacer';
+import DraggableElement from 'components/common/table/DraggableElement';
 import ExpandCollapse from 'components/common/table/ExpandCollapse';
 import EditableCell from 'components/common/table/EditableCell';
 import { getDefaultGetValueFromEvent } from 'data/DataFieldTypes';
@@ -46,10 +47,8 @@ function CellRenderer(props) {
         );
     }
 
-    return (
-        <div
-            className={'cell-renderer-value-wrap ' + (props.field.editable ? 'editable' : '')}
-            onDoubleClick={toggleEdit}>
+    const children = (
+        <React.Fragment>
             {props.subLevel ? (
                 <Spacer size={props.subLevel * 20} />
             ) : null}
@@ -65,6 +64,28 @@ function CellRenderer(props) {
                         [props.field.id]: getDefaultGetValueFromEvent(props.field.type)(event)
                     })
                 })}
+        </React.Fragment>
+    );
+
+    if (props.dndEnabled) {
+        return (
+            <DraggableElement
+                className={'cell-renderer-value-wrap ' + (props.field.editable ? 'editable' : '')}
+                onDoubleClick={toggleEdit}
+                dragType={props.dragType}
+                dropType={props.dropType}
+                data={props.dndData}
+                onDrop={props.onDrop}>
+                {children}
+            </DraggableElement>
+        );
+    }
+
+    return (
+        <div
+            className={'cell-renderer-value-wrap ' + (props.field.editable ? 'editable' : '')}
+            onDoubleClick={toggleEdit}>
+            {children}
         </div>
     );
 }
@@ -75,7 +96,12 @@ CellRenderer.propTypes = {
     onChange: PropTypes.func.isRequired,
     subLevel: PropTypes.number,
     expandMode: PropTypes.oneOf(['expanded', 'collapsed', 'hidden']),
-    onSetExpanded: PropTypes.func
+    onSetExpanded: PropTypes.func,
+    dndEnabled: PropTypes.bool,
+    dropType: PropTypes.string,
+    dragType: PropTypes.string,
+    dndData: PropTypes.object,
+    onDrop: PropTypes.func
 };
 
 export default CellRenderer;

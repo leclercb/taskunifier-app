@@ -24,7 +24,10 @@ class DatePicker extends React.Component {
         }
 
         return (
-            <AntDatePicker {...wrappedProps} value={value} onChange={this.onChange} />
+            <AntDatePicker
+                {...wrappedProps}
+                value={value}
+                onChange={this.onChange} />
         );
     }
 }
