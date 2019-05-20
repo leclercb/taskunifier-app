@@ -405,6 +405,14 @@ export function getCategories() {
                     value: false,
                     editable: false,
                     visible: false
+                },
+                {
+                    id: 'taskColumnVisible_note',
+                    title: 'Show column "Note"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
                 }
             ],
             createSetting: field => ({
