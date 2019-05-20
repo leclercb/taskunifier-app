@@ -33,13 +33,13 @@ import {
     toStringLength,
     toStringNumber,
     toStringObject,
+    toStringPassword,
     toStringPriority,
     toStringReminder,
     toStringRepeatFrom,
     toStringSortDirection,
     toStringStatus,
-    toStringTimer,
-    toStringPassword
+    toStringTimer
 } from 'utils/StringUtils';
 
 export function getFieldTypes() {

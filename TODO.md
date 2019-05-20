@@ -8,7 +8,6 @@
 
 * Evaluate flow (https://pusher.com/tutorials/type-check-react-flow)
 * Try react-joyride
-* Electron proxy connection
 
 ## Future Features
 

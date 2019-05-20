@@ -134,14 +134,12 @@ export function getCategories() {
                     id: 'testConnection',
                     title: 'Test connection',
                     type: 'button',
-                    value: (settings, updateSettings) => {
-                        testConnection(settings).then(result => {
+                    value: settings => {
+                        testConnection(settings).then(() => {
                             message.success('Connection test succeeded');
-                            console.log(result);
-                        }).catch(reason => {
+                        }).catch(() => {
                             message.error('Connection test failed');
-                            console.log(reason);
-                        })
+                        });
                     },
                     editable: true
                 }

@@ -54,9 +54,9 @@ import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { escape } from 'utils/RegexUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 import {
+    toStringPassword,
     toStringReminder,
-    toStringRepeatFrom,
-    toStringPassword
+    toStringRepeatFrom
 } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {
