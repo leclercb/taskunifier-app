@@ -10,37 +10,42 @@ class RepeatField extends React.Component {
         super(props);
 
         this.state = {
-            visible: false
+            opened: props.defaultOpened
         };
 
-        this.setVisible = this.setVisible.bind(this);
+        this.setOpened = this.setOpened.bind(this);
     }
 
-    setVisible(visible) {
-        if (this.state.visible !== visible) {
+    setOpened(opened) {
+        if (this.state.opened !== opened) {
             this.setState({
-                visible
+                opened
             });
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.defaultOpened !== prevProps.defaultOpened) {
+            this.setOpened(this.props.defaultOpened);
+        }
+    }
+
     render() {
-        const { ...wrappedProps } = this.props;
-        delete wrappedProps.fieldMode;
-        delete wrappedProps.onOpenChange;
+        const { repeat, onChange, onOpenChange, ...wrappedProps } = this.props;
+        delete wrappedProps.defaultOpened;
 
         return (
             <React.Fragment>
                 <ModalRepeatManager
-                    visible={this.props.fieldMode === 'table' ? true : this.state.visible}
+                    visible={this.state.opened}
                     onClose={() => {
-                        this.setVisible(false);
+                        this.setOpened(false);
 
-                        if (this.props.onOpenChange) {
-                            this.props.onOpenChange(false);
+                        if (onOpenChange) {
+                            onOpenChange(false);
                         }
                     }}
-                    repeat={this.props.repeat || { type: 'none' }}
+                    repeat={repeat || { type: 'none' }}
                     updateRepeat={repeat => {
                         const keys = getKeysForType(repeat.type);
 
@@ -50,19 +55,19 @@ class RepeatField extends React.Component {
                             }
                         });
 
-                        this.props.onChange(repeat);
+                        onChange(repeat);
                     }} />
                 <Input
-                    readOnly={true}
-                    onClick={() => {
-                        this.setVisible(true);
-
-                        if (this.props.onOpenChange) {
-                            this.props.onOpenChange(true);
-                        }
-                    }}
                     {...wrappedProps}
-                    value={formatRepeat(this.props.repeat)} />
+                    readOnly={true}
+                    value={formatRepeat(repeat)}
+                    onClick={() => {
+                        this.setOpened(true);
+
+                        if (onOpenChange) {
+                            onOpenChange(true);
+                        }
+                    }} />
             </React.Fragment>
         );
     }
@@ -70,9 +75,14 @@ class RepeatField extends React.Component {
 
 RepeatField.propTypes = {
     repeat: RepeatPropType,
+    defaultOpened: PropTypes.bool,
     onChange: PropTypes.func,
     onOpenChange: PropTypes.func,
     fieldMode: PropTypes.oneOf(['default', 'table'])
 };
+
+RepeatField.defaultProps = {
+    defaultOpened: false
+}
 
 export default RepeatField;

@@ -61,7 +61,7 @@ function CellRenderer(props) {
                 props.value,
                 {
                     onChange: event => props.onChange({
-                        [props.field.id]: getDefaultGetValueFromEvent(props.field.type)(event)
+                        [props.field.id]: getDefaultGetValueFromEvent(event)
                     })
                 })}
         </React.Fragment>

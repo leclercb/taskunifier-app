@@ -754,7 +754,7 @@ export function getFieldType(type, options) {
                 },
                 input: props => (
                     <RepeatField
-                        fieldMode={props.fieldMode}
+                        defaultOpened={props.fieldMode === 'table'}
                         onOpenChange={status => {
                             if (props.onCommit && !status) {
                                 props.onCommit();

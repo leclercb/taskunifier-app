@@ -637,7 +637,7 @@ export function getCategories() {
                 },
                 {
                     id: 'noteViewSubSplitPaneSize',
-                    title: 'Note view sub split pane size',
+                    title: 'Note view split pane size',
                     type: 'number',
                     value: 300,
                     editable: false,
@@ -645,7 +645,7 @@ export function getCategories() {
                 },
                 {
                     id: 'noteViewSubSplitPaneMode',
-                    title: 'Note view sub split pane mode',
+                    title: 'Note view split pane mode',
                     type: 'select',
                     value: 'horizontal',
                     editable: true,
@@ -672,7 +672,7 @@ export function getCategories() {
                 },
                 {
                     id: 'taskViewSubSplitPaneSize',
-                    title: 'Task view sub split pane size',
+                    title: 'Task view split pane size',
                     type: 'number',
                     value: 300,
                     editable: false,
@@ -680,7 +680,7 @@ export function getCategories() {
                 },
                 {
                     id: 'taskViewSubSplitPaneMode',
-                    title: 'Task view sub split pane mode',
+                    title: 'Task view split pane mode',
                     type: 'select',
                     value: 'horizontal',
                     editable: true,
@@ -707,7 +707,7 @@ export function getCategories() {
                 },
                 {
                     id: 'taskCalendarViewSubSplitPaneSize',
-                    title: 'Task calendar view sub split pane size',
+                    title: 'Task calendar view split pane size',
                     type: 'number',
                     value: 300,
                     editable: false,
@@ -715,7 +715,7 @@ export function getCategories() {
                 },
                 {
                     id: 'taskCalendarViewSubSplitPaneMode',
-                    title: 'Task calendar view sub split pane mode',
+                    title: 'Task calendar view split pane mode',
                     type: 'select',
                     value: 'horizontal',
                     editable: true,
