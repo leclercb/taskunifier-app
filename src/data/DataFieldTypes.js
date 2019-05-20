@@ -38,7 +38,8 @@ import {
     toStringRepeatFrom,
     toStringSortDirection,
     toStringStatus,
-    toStringTimer
+    toStringTimer,
+    toStringPassword
 } from 'utils/StringUtils';
 
 export function getFieldTypes() {
@@ -61,6 +62,7 @@ export function getFieldTypes() {
         'note',
         'noteField',
         'number',
+        'password',
         'priority',
         'progress',
         'reminder',
@@ -130,15 +132,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue === !!taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return !!conditionValue === !!objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue !== !!taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return !!conditionValue !== !!objectValue;
                         }
                     }
                 ],
@@ -161,15 +163,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -192,15 +194,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -223,15 +225,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -256,99 +258,99 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue && !taskValue) {
+                            if (!conditionValue && !objectValue) {
                                 return true;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(conditionValue).isSame(moment(taskValue), 'day');
+                            return moment(conditionValue).isSame(moment(objectValue), 'day');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue && !taskValue) {
+                            if (!conditionValue && !objectValue) {
                                 return false;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return true;
                             }
 
-                            return !moment(conditionValue).isSame(moment(taskValue), 'day');
+                            return !moment(conditionValue).isSame(moment(objectValue), 'day');
                         }
                     },
                     {
                         type: 'before',
                         title: 'Before',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isBefore(moment(conditionValue), 'day');
+                            return moment(objectValue).isBefore(moment(conditionValue), 'day');
                         }
                     },
                     {
                         type: 'beforeOrEqual',
                         title: 'Before or equals',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'day');
+                            return moment(objectValue).isSameOrBefore(moment(conditionValue), 'day');
                         }
                     },
                     {
                         type: 'after',
                         title: 'After',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isAfter(moment(conditionValue), 'day');
+                            return moment(objectValue).isAfter(moment(conditionValue), 'day');
                         }
                     },
                     {
                         type: 'afterOrEqual',
                         title: 'After or equals',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'day');
+                            return moment(objectValue).isSameOrAfter(moment(conditionValue), 'day');
                         }
                     }
                 ],
@@ -380,99 +382,99 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue && !taskValue) {
+                            if (!conditionValue && !objectValue) {
                                 return true;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(conditionValue).isSame(moment(taskValue), 'minute');
+                            return moment(conditionValue).isSame(moment(objectValue), 'minute');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue && !taskValue) {
+                            if (!conditionValue && !objectValue) {
                                 return false;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return true;
                             }
 
-                            return !moment(conditionValue).isSame(moment(taskValue), 'minute');
+                            return !moment(conditionValue).isSame(moment(objectValue), 'minute');
                         }
                     },
                     {
                         type: 'before',
                         title: 'Before',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isBefore(moment(conditionValue), 'minute');
+                            return moment(objectValue).isBefore(moment(conditionValue), 'minute');
                         }
                     },
                     {
                         type: 'beforeOrEqual',
                         title: 'Before or equals',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'minute');
+                            return moment(objectValue).isSameOrBefore(moment(conditionValue), 'minute');
                         }
                     },
                     {
                         type: 'after',
                         title: 'After',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isAfter(moment(conditionValue), 'minute');
+                            return moment(objectValue).isAfter(moment(conditionValue), 'minute');
                         }
                     },
                     {
                         type: 'afterOrEqual',
                         title: 'After or equals',
-                        apply: (conditionValue, taskValue) => {
+                        apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
                                 conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'minute');
+                            return moment(objectValue).isSameOrAfter(moment(conditionValue), 'minute');
                         }
                     }
                 ],
@@ -506,15 +508,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -537,15 +539,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -568,59 +570,59 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue < taskValue;
+                            return conditionValue < objectValue;
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue <= taskValue;
+                            return conditionValue <= objectValue;
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue > taskValue;
+                            return conditionValue > objectValue;
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue >= taskValue;
+                            return conditionValue >= objectValue;
                         }
                     }
                 ],
@@ -643,59 +645,59 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue < taskValue;
+                            return conditionValue < objectValue;
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue <= taskValue;
+                            return conditionValue <= objectValue;
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue > taskValue;
+                            return conditionValue > objectValue;
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue >= taskValue;
+                            return conditionValue >= objectValue;
                         }
                     }
                 ],
@@ -718,8 +720,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
                             return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
@@ -728,8 +730,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
                             return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
@@ -755,8 +757,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
                             return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
@@ -765,8 +767,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
                             return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
@@ -792,8 +794,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
                             return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
@@ -802,8 +804,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskLinks = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
                             return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
@@ -829,15 +831,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -862,59 +864,59 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue < taskValue;
+                            return conditionValue < objectValue;
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue <= taskValue;
+                            return conditionValue <= objectValue;
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue > taskValue;
+                            return conditionValue > objectValue;
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue >= taskValue;
+                            return conditionValue >= objectValue;
                         }
                     }
                 ],
@@ -943,15 +945,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -974,15 +976,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1005,59 +1007,59 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue < taskValue;
+                            return conditionValue < objectValue;
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue <= taskValue;
+                            return conditionValue <= objectValue;
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue > taskValue;
+                            return conditionValue > objectValue;
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue >= taskValue;
+                            return conditionValue >= objectValue;
                         }
                     }
                 ],
@@ -1078,6 +1080,51 @@ export function getFieldType(type, options) {
 
             break;
         }
+        case 'password': {
+            configuration = {
+                title: 'Password',
+                width: 250,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                valuePropName: 'value',
+                compare: (a, b) => compareStrings(a, b),
+                toString: value => toStringPassword(value),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
+                        }
+                    },
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, objectValue) => {
+                            return (objectValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, objectValue) => {
+                            return !(objectValue || '').includes(conditionValue);
+                        }
+                    }
+                ],
+                conditionsFieldType: 'password',
+                options: []
+            };
+
+            break;
+        }
         case 'priority': {
             configuration = {
                 title: 'Priority',
@@ -1091,75 +1138,75 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return getPriorityIndex(conditionValue) < getPriorityIndex(taskValue);
+                            return getPriorityIndex(conditionValue) < getPriorityIndex(objectValue);
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return getPriorityIndex(conditionValue) <= getPriorityIndex(taskValue);
+                            return getPriorityIndex(conditionValue) <= getPriorityIndex(objectValue);
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return getPriorityIndex(conditionValue) > getPriorityIndex(taskValue);
+                            return getPriorityIndex(conditionValue) > getPriorityIndex(objectValue);
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            if (!conditionValue || !taskValue) {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return getPriorityIndex(conditionValue) >= getPriorityIndex(taskValue);
+                            return getPriorityIndex(conditionValue) >= getPriorityIndex(objectValue);
                         }
                     }
                 ],
@@ -1182,59 +1229,59 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue < taskValue;
+                            return conditionValue < objectValue;
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue <= taskValue;
+                            return conditionValue <= objectValue;
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue > taskValue;
+                            return conditionValue > objectValue;
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
-                        apply: (conditionValue, taskValue) => {
-                            if (!conditionValue || !taskValue) {
+                        apply: (conditionValue, objectValue) => {
+                            if (!conditionValue || !objectValue) {
                                 return false;
                             }
 
-                            return conditionValue >= taskValue;
+                            return conditionValue >= objectValue;
                         }
                     }
                 ],
@@ -1257,15 +1304,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return equals(conditionValue, taskValue);
+                        apply: (conditionValue, objectValue) => {
+                            return equals(conditionValue, objectValue);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !equals(conditionValue, taskValue);
+                        apply: (conditionValue, objectValue) => {
+                            return !equals(conditionValue, objectValue);
                         }
                     }
                 ],
@@ -1288,15 +1335,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return equals(conditionValue, taskValue);
+                        apply: (conditionValue, objectValue) => {
+                            return equals(conditionValue, objectValue);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !equals(conditionValue, taskValue);
+                        apply: (conditionValue, objectValue) => {
+                            return !equals(conditionValue, objectValue);
                         }
                     }
                 ],
@@ -1319,15 +1366,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1350,15 +1397,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1387,8 +1434,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
                             return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
@@ -1397,8 +1444,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
                             return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
@@ -1424,15 +1471,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue === !!taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return !!conditionValue === !!objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue !== !!taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return !!conditionValue !== !!objectValue;
                         }
                     }
                 ],
@@ -1455,15 +1502,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue === !!taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return !!conditionValue === !!objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return !!conditionValue !== !!taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return !!conditionValue !== !!objectValue;
                         }
                     }
                 ],
@@ -1486,15 +1533,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1517,8 +1564,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
                             return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
@@ -1527,8 +1574,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            const taskTags = taskValue || [];
+                        apply: (conditionValue, objectValue) => {
+                            const taskTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
                             return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
@@ -1554,15 +1601,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1585,15 +1632,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1616,15 +1663,15 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     }
                 ],
@@ -1647,29 +1694,29 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            return (taskValue || '').includes(conditionValue);
+                        apply: (conditionValue, objectValue) => {
+                            return (objectValue || '').includes(conditionValue);
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            return !(taskValue || '').includes(conditionValue);
+                        apply: (conditionValue, objectValue) => {
+                            return !(objectValue || '').includes(conditionValue);
                         }
                     }
                 ],
@@ -1692,8 +1739,8 @@ export function getFieldType(type, options) {
                     {
                         type: 'started',
                         title: 'Started',
-                        apply: (conditionValue, taskValue) => {
-                            const startDate = taskValue ? taskValue.startDate : null;
+                        apply: (conditionValue, objectValue) => {
+                            const startDate = objectValue ? objectValue.startDate : null;
                             return !!startDate === conditionValue;
                         }
                     }
@@ -1718,29 +1765,29 @@ export function getFieldType(type, options) {
                     {
                         type: 'equal',
                         title: 'Equals',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue === taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
-                        apply: (conditionValue, taskValue) => {
-                            return conditionValue !== taskValue;
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
                         }
                     },
                     {
                         type: 'contain',
                         title: 'Contains',
-                        apply: (conditionValue, taskValue) => {
-                            return (taskValue || '').includes(conditionValue);
+                        apply: (conditionValue, objectValue) => {
+                            return (objectValue || '').includes(conditionValue);
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
-                        apply: (conditionValue, taskValue) => {
-                            return !(taskValue || '').includes(conditionValue);
+                        apply: (conditionValue, objectValue) => {
+                            return !(objectValue || '').includes(conditionValue);
                         }
                     }
                 ],

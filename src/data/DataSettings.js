@@ -1,4 +1,6 @@
+import { message } from 'antd';
 import moment from 'moment';
+import { testConnection } from 'actions/ProxyActions';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getUserDataPath } from 'utils/ActionUtils';
@@ -28,7 +30,7 @@ export function getSettings() {
 }
 
 export function getCategorySettings(category, options = {}) {
-    const {settings} = category;
+    const { settings } = category;
 
     const { noteFields, taskFields } = options;
 
@@ -84,6 +86,63 @@ export function getCategories() {
                     title: 'Confirm before closing',
                     type: 'boolean',
                     value: false,
+                    editable: true
+                }
+            ]
+        },
+        {
+            id: 'proxy',
+            title: 'Proxy',
+            icon: 'network-wired',
+            settings: [
+                {
+                    id: 'proxyEnabled',
+                    title: 'Proxy enabled',
+                    type: 'boolean',
+                    value: false,
+                    editable: true
+                },
+                {
+                    id: 'proxyHost',
+                    title: 'Proxy host',
+                    type: 'text',
+                    value: '',
+                    editable: true
+                },
+                {
+                    id: 'proxyPort',
+                    title: 'Proxy port',
+                    type: 'number',
+                    value: 0,
+                    editable: true
+                },
+                {
+                    id: 'proxyUsername',
+                    title: 'Proxy username',
+                    type: 'text',
+                    value: '',
+                    editable: true
+                },
+                {
+                    id: 'proxyPassword',
+                    title: 'Proxy password',
+                    type: 'password',
+                    value: '',
+                    editable: true
+                },
+                {
+                    id: 'testConnection',
+                    title: 'Test connection',
+                    type: 'button',
+                    value: (settings, updateSettings) => {
+                        testConnection(settings).then(result => {
+                            message.success('Connection test succeeded');
+                            console.log(result);
+                        }).catch(reason => {
+                            message.error('Connection test failed');
+                            console.log(reason);
+                        })
+                    },
                     editable: true
                 }
             ]
@@ -375,7 +434,7 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: 'reset_default_colors',
+                    id: 'resetDefaultColors',
                     title: 'Reset default colors',
                     type: 'button',
                     value: (settings, updateSettings) => {
@@ -424,7 +483,7 @@ export function getCategories() {
             icon: 'paint-roller',
             settings: [
                 {
-                    id: 'reset_pastel_colors',
+                    id: 'resetPastelColors',
                     title: 'Reset pastel colors',
                     type: 'button',
                     value: (settings, updateSettings) => {
@@ -447,7 +506,7 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: 'reset_bright_colors',
+                    id: 'resetBrightColors',
                     title: 'Reset bright colors',
                     type: 'button',
                     value: (settings, updateSettings) => {

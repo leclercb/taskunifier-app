@@ -29,6 +29,7 @@ import {
     faKey,
     faMagic,
     faMinusSquare,
+    faNetworkWired,
     faPaintRoller,
     faPause,
     faPepperHot,
@@ -76,6 +77,7 @@ library.add(faHome);
 library.add(faKey);
 library.add(faMagic);
 library.add(faMinusSquare);
+library.add(faNetworkWired);
 library.add(faPaintRoller);
 library.add(faPause);
 library.add(faPepperHot);

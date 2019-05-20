@@ -64,6 +64,10 @@ export function toStringSortDirection(value) {
     return sortDirection ? sortDirection.title : '';
 }
 
+export function toStringPassword(value) {
+    return value.replace(/./g, '*');
+}
+
 export function toStringPriority(value) {
     const priority = getPriorities().find(priority => priority.id === value);
     return priority ? priority.title : '';

@@ -55,7 +55,8 @@ import { escape } from 'utils/RegexUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toStringReminder,
-    toStringRepeatFrom
+    toStringRepeatFrom,
+    toStringPassword
 } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {
@@ -405,6 +406,19 @@ export function getFieldComponents(type, options) {
                         onBlur={props.onCommit}
                         min={min}
                         max={max}
+                        {...removeExtraProps(props)} />
+                )
+            };
+
+            break;
+        }
+        case 'password': {
+            configuration = {
+                render: value => value ? toStringPassword(value) : <span>&nbsp;</span>,
+                input: props => (
+                    <Input.Password
+                        onBlur={props.onCommit}
+                        onPressEnter={props.onCommit}
                         {...removeExtraProps(props)} />
                 )
             };
