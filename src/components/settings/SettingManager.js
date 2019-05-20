@@ -68,7 +68,7 @@ function SettingManager(props) {
                                 <Form.Item label={item.title} style={{ width: '100%' }}>
                                     {item.type === 'button' ?
                                         (
-                                            <Button onClick={() => item.value(props.settings, props.updateSettings)}>
+                                            <Button onClick={() => item.value(props.settings, props.updateSettings, props.dispatcher)}>
                                                 {item.title}
                                             </Button>
                                         ) : getFieldDecorator(item.id, {
@@ -90,10 +90,20 @@ SettingManager.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     settings: SettingsPropType,
-    updateSettings: PropTypes.func.isRequired
+    updateSettings: PropTypes.func.isRequired,
+    dispatcher: PropTypes.func.isRequired
 };
 
-export default withNoteFields(withTaskFields(withSettings(Form.create({
-    name: 'settings',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings, props.updateSettings)
-})(SettingManager))));
+export default withNoteFields(
+    withTaskFields(
+        withSettings(
+            Form.create({
+                name: 'settings',
+                onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings, props.updateSettings)
+            })(SettingManager),
+            {
+                includeDispatcher: true
+            }
+        )
+    )
+);
