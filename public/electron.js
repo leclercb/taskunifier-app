@@ -92,6 +92,14 @@ function createMainWindow() {
     return window;
 }
 
+ipcMain.on('get-version', event => {
+    event.returnValue = app.getVersion();
+});
+
+ipcMain.on('open-file', (event, file) => {
+    shell.openItem(file);
+});
+
 ipcMain.on('pdf-viewer', (event, file) => {
     /*
     const pdfViewer = new BrowserWindow({
@@ -107,7 +115,7 @@ ipcMain.on('pdf-viewer', (event, file) => {
     pdfViewer.loadURL(`file:///${file}`);
     */
 
-   shell.openItem(file);
+    shell.openItem(file);
 });
 
 ipcMain.on('closed', () => {

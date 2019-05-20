@@ -125,3 +125,32 @@ export function compareStatuses(a, b) {
 export function compareStrings(a, b) {
     return (a || '').localeCompare((b || ''), undefined, { sensitivity: 'base' });
 }
+
+export function compareVersions(a, b) {
+    const matchA = a.match(/^([0-9]+)\.([0-9]+)\.([0-9]+).*$/);
+    const matchB = b.match(/^([0-9]+)\.([0-9]+)\.([0-9]+).*$/);
+
+    if (!matchA && !matchB) {
+        return 0;
+    }
+
+    if (!matchA) {
+        return 1;
+    }
+
+    if (!matchB) {
+        return -1;
+    }
+
+    for (let i = 0; i < 3; i++) {
+        const nbA = Number.parseInt(matchA[i]);
+        const nbB = Number.parseInt(matchB[i]);
+        const result = compareNumbers(nbA, nbB);
+
+        if (result !== 0) {
+            return result;
+        }
+    }
+
+    return 0;
+}

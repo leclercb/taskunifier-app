@@ -1,9 +1,12 @@
-import { message } from 'antd';
+import React from 'react';
+import { Button, message } from 'antd';
 import moment from 'moment';
-import { testConnection } from 'actions/ProxyActions';
+import { getLatestVersion, testConnection } from 'actions/RequestActions';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getUserDataPath } from 'utils/ActionUtils';
+import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
+import { compareVersions } from 'utils/CompareUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -52,6 +55,33 @@ export function getCategories() {
             title: 'General',
             icon: 'home',
             settings: [
+                {
+                    id: 'checkVersion',
+                    title: 'Check version',
+                    type: 'button',
+                    value: settings => {
+                        getLatestVersion(settings).then(version => {
+                            const latestVersion = version;
+                            const appVersion = getAppVersion();
+
+                            if (compareVersions(appVersion, latestVersion) > 0) {
+                                message.info(
+                                    <span>
+                                        {`A new version is available: ${latestVersion}`}
+                                        <br />
+                                        <br />
+                                        <Button onClick={() => downloadVersion()}>
+                                            Click here to download it !
+                                        </Button>
+                                    </span>
+                                );
+                            } else {
+                                message.info('You already have the latest version');
+                            }
+                        });
+                    },
+                    editable: true
+                },
                 {
                     id: 'dataFolder',
                     title: 'Data folder location',

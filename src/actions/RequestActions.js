@@ -27,3 +27,17 @@ export function testConnection(settings) {
             responseType: 'text'
         });
 }
+
+export function getLatestVersion(settings) {
+    return sendRequest(
+        settings,
+        {
+            method: 'GET',
+            url: 'http://taskunifier.sourceforge.net/version.txt',
+            responseType: 'text'
+        }).then(result => {
+            return result.data;
+        }).catch(() => {
+            return Promise.resolve(null);
+        });
+}
