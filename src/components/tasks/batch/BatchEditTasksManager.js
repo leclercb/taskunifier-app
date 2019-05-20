@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Col, Form, Row } from 'antd';
 import Icon from 'components/common/Icon';
 import withSelectedTasks from 'containers/WithSelectedTasks';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import {
-    getInputForType,
-    getValuePropNameForType
-} from 'utils/FieldUtils';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import withTaskFields from 'containers/WithTaskFields';
 import { clone } from 'utils/ObjectUtils';

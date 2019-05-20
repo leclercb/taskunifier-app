@@ -1,20 +1,17 @@
 import { connect } from 'react-redux';
+import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/AppActions';
+import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks } from 'actions/SettingActions';
 import {
     addTask,
     deleteTask,
-    setCalendarDateMode,
-    setSelectedTaskFilter,
-    setSelectedTaskIds,
-    setShowCompletedTasks,
     updateTask
 } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
-    getCalendarDateMode,
     getSelectedTaskFilter,
-    getSelectedTaskIds,
-    isShowCompletedTasks
+    getSelectedTaskIds
 } from 'selectors/AppSelectors';
+import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks } from 'selectors/SettingSelectors';
 import {
     getTasksFilteredBySelectedFilter,
     getTasksFilteredBySelectedFilterAndExpanded,
@@ -33,6 +30,7 @@ function withTasks(Component, options) {
 
     const mapStateToProps = state => {
         const result = {
+            selectedCalendarView: getSelectedCalendarView(state),
             showCompletedTasks: isShowCompletedTasks(state),
             calendarDateMode: getCalendarDateMode(state),
             selectedTaskIds: getSelectedTaskIds(state),
@@ -57,8 +55,9 @@ function withTasks(Component, options) {
         addTask: task => dispatch(addTask(task)),
         updateTask: task => dispatch(updateTask(task)),
         deleteTask: taskId => dispatch(deleteTask(taskId)),
+        setSelectedCalendarView: show => dispatch(setSelectedCalendarView(show)),
         setShowCompletedTasks: show => dispatch(setShowCompletedTasks(show)),
-        setCalendarDateMode: show => dispatch(setCalendarDateMode(show)),
+        setCalendarDateMode: mode => dispatch(setCalendarDateMode(mode)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });

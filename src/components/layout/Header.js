@@ -123,7 +123,7 @@ function Header(props) {
     };
 
     const onShowTaskCalendarContent = () => {
-        props.setSelectedView('task-calendar');
+        props.setSelectedView('taskCalendar');
     };
 
     const onShowNoteContent = () => {
@@ -159,7 +159,7 @@ function Header(props) {
                     <Icon icon="tasks" text="Tasks" />
                 </Button>
                 <Button
-                    type={props.selectedView === 'task-calendar' ? 'dashed' : 'default'}
+                    type={props.selectedView === 'taskCalendar' ? 'dashed' : 'default'}
                     onClick={onShowTaskCalendarContent}>
                     <Icon icon="calendar-alt" text="Calendar" />
                 </Button>
@@ -181,31 +181,31 @@ function Header(props) {
             {props.selectedView === 'note' ?
                 createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('plus', 'Add Task', onAddTask)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('plus', 'Create Dummy Tasks', onCreateDummyTasks)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
                 : null}
-            {(props.selectedView === 'task' || props.selectedView === 'task-calendar') ?
+            {(props.selectedView === 'task' || props.selectedView === 'taskCalendar') ?
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
                 : null}
-            {props.selectedView === 'task' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('print', 'Print Tasks', onPrintTasks)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'task-calendar' ?
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
                 : null}
             <Spacer />
@@ -224,7 +224,7 @@ Header.propTypes = {
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
-    selectedView: PropTypes.string.isRequired,
+    selectedView: PropTypes.oneOf(['note', 'task', 'taskCalendar']).isRequired,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     selectedTaskFilter: TaskFilterPropType.isRequired,

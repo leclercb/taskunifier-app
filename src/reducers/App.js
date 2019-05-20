@@ -3,12 +3,9 @@ import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
-    selectedView: 'task',
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: moment().toJSON(),
-    showCompletedTasks: true,
-    calendarDateMode: 'both',
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: moment().toJSON(),
@@ -44,11 +41,6 @@ const App = () => (state = {
     }
 }, action) => {
     switch (action.type) {
-        case 'SET_SELECTED_VIEW':
-            return {
-                ...state,
-                selectedView: action.view
-            };
         case 'SET_SELECTED_NOTE_IDS':
             return {
                 ...state,
@@ -59,16 +51,6 @@ const App = () => (state = {
                 ...state,
                 selectedNoteFilter: action.noteFilter,
                 selectedNoteFilterDate: action.date
-            };
-        case 'SET_SHOW_COMPLETED_TASKS':
-            return {
-                ...state,
-                showCompletedTasks: action.show
-            };
-        case 'SET_CALENDAR_DATE_MODE':
-            return {
-                ...state,
-                calendarDateMode: action.mode
             };
         case 'SET_SELECTED_TASK_IDS':
             return {

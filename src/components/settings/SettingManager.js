@@ -5,14 +5,12 @@ import Icon from 'components/common/Icon';
 import withNoteFields from 'containers/WithNoteFields';
 import withSettings from 'containers/WithSettings';
 import withTaskFields from 'containers/WithTaskFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { getCategories, getCategorySettings } from 'data/DataSettings';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
-import {
-    getInputForType,
-    getValuePropNameForType
-} from 'utils/FieldUtils';
 
 function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');

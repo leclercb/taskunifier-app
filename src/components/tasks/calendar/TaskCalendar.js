@@ -1,55 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import BigCalendar from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import withTasks from 'containers/WithTasks';
+import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
+import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
+import withApp from 'containers/WithApp';
 import withSettings from 'containers/WithSettings';
-import { TaskTitle } from 'components/tasks/common/TaskTitle';
+import withTasks from 'containers/WithTasks';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import 'components/tasks/calendar/TaskCalendar.css';
-import { getImportanceColor } from 'utils/SettingUtils';
 
 const localizer = BigCalendar.momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(BigCalendar);
-
-function Event({ event }) {
-    return (
-        <TaskTitle
-            task={event.task}
-            settings={event.settings} />
-    );
-}
-
-Event.propTypes = {
-    event: PropTypes.object.isRequired
-};
-
-function EventWrapper({ event, children }) {
-    let className;
-
-    if (event.mode === 'startDate') {
-        className = 'wrapper-start-date';
-    } else {
-        className = 'wrapper-due-date';
-    }
-
-    return (
-        <div
-            className={className}
-            style={{
-                backgroundColor: getImportanceColor(event.task.importance, event.settings)
-            }}>
-            {children}
-        </div>
-    );
-}
-
-EventWrapper.propTypes = {
-    event: PropTypes.object.isRequired,
-    children: PropTypes.any.isRequired
-};
 
 function TaskCalendar(props) {
     const getEvents = () => {
@@ -67,7 +31,8 @@ function TaskCalendar(props) {
                     end: moment(task.startDate).add(task.length, 'minutes').toDate(),
                     task,
                     settings: props.settings,
-                    mode: 'startDate'
+                    mode: 'startDate',
+                    selected: props.selectedTaskIds.includes(task.id)
                 });
             }
 
@@ -79,7 +44,8 @@ function TaskCalendar(props) {
                     end: moment(task.dueDate).toDate(),
                     task,
                     settings: props.settings,
-                    mode: 'dueDate'
+                    mode: 'dueDate',
+                    selected: props.selectedTaskIds.includes(task.id)
                 });
             }
         });
@@ -87,8 +53,35 @@ function TaskCalendar(props) {
         return events;
     };
 
+    const onView = view => {
+        props.setSelectedCalendarView(view);
+    };
+
     const onSelectEvent = event => {
         props.setSelectedTaskIds([event.task.id]);
+    };
+
+    const onDoubleClickEvent = event => {
+        props.setTaskEditionManagerOptions({
+            visible: true,
+            taskId: event.task.id
+        });
+    };
+
+    const onSelectSlot = ({ start, end, action }) => {
+        if (action === 'select' && ['week', 'work_week', 'day'].includes(props.selectedCalendarView)) {
+            props.addTask({
+                title: 'Untitled',
+                startDate: moment(start).toJSON(),
+                dueDate: moment(end).toJSON(),
+                length: moment(end).diff(moment(start), 'minutes')
+            }).then(id => {
+                props.setTaskEditionManagerOptions({
+                    visible: true,
+                    taskId: id
+                });
+            });
+        }
     };
 
     const onEventChange = ({ event, start, end }) => {
@@ -107,9 +100,6 @@ function TaskCalendar(props) {
         }
     };
 
-    const events = getEvents();
-    const selectedEvent = props.selectedTaskIds.length === 1 ? events.find(event => event.task.id === props.selectedTaskIds[0]) : null;
-
     return (
         <div style={{
             height: 'calc(100% - 40px)',
@@ -117,19 +107,22 @@ function TaskCalendar(props) {
         }}>
             <DnDCalendar
                 className="task-calendar"
-                events={events}
+                view={props.selectedCalendarView}
+                events={getEvents()}
                 localizer={localizer}
                 defaultDate={new Date()}
                 defaultView="month"
+                onView={onView}
                 onSelectEvent={onSelectEvent}
+                onDoubleClickEvent={onDoubleClickEvent}
+                onSelectSlot={onSelectSlot}
                 onEventDrop={onEventChange}
                 onEventResize={onEventChange}
                 resizable={true}
                 selectable={true}
-                selected={selectedEvent}
                 components={{
-                    event: Event,
-                    eventWrapper: EventWrapper
+                    event: CalendarEvent,
+                    eventWrapper: CalendarEventWrapper
                 }} />
         </div>
     );
@@ -139,9 +132,13 @@ TaskCalendar.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    addTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
-    calendarDateMode: PropTypes.oneOf(['both', 'startDate', 'dueDate']).isRequired
+    selectedCalendarView: PropTypes.oneOf(['month', 'week', 'work_week', 'day', 'agenda']).isRequired,
+    calendarDateMode: PropTypes.oneOf(['both', 'startDate', 'dueDate']).isRequired,
+    setSelectedCalendarView: PropTypes.func.isRequired,
+    setTaskEditionManagerOptions: PropTypes.func.isRequired
 };
 
-export default withSettings(withTasks(TaskCalendar, { applySelectedTaskFilter: true }));
+export default withApp(withSettings(withTasks(TaskCalendar, { applySelectedTaskFilter: true })));

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import uuid from 'uuid';
 import { cleanContacts, loadContactsFromFile, saveContactsToFile } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, saveContextsToFile } from 'actions/ContextActions';
@@ -205,11 +206,46 @@ export function synchronize() {
     };
 }
 
-export function setSelectedView(view) {
+export function setSelectedNoteIds(noteIds) {
     return dispatch => {
         dispatch({
-            type: 'SET_SELECTED_VIEW',
-            view
+            type: 'SET_SELECTED_NOTE_IDS',
+            noteIds
+        });
+
+        return Promise.resolve();
+    };
+}
+
+export function setSelectedNoteFilter(noteFilter) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SELECTED_NOTE_FILTER',
+            noteFilter,
+            date: moment().toJSON()
+        });
+
+        return Promise.resolve();
+    };
+}
+
+export function setSelectedTaskIds(taskIds) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SELECTED_TASK_IDS',
+            taskIds
+        });
+
+        return Promise.resolve();
+    };
+}
+
+export function setSelectedTaskFilter(taskFilter) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SELECTED_TASK_FILTER',
+            taskFilter,
+            date: moment().toJSON()
         });
 
         return Promise.resolve();

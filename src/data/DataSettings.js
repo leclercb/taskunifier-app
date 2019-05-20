@@ -592,6 +592,94 @@ export function getCategories() {
             icon: 'desktop',
             settings: [
                 {
+                    id: 'selectedView',
+                    title: 'Selected view',
+                    type: 'select',
+                    options: {
+                        values: [
+                            {
+                                title: 'Calendar',
+                                value: 'taskCalendar'
+                            },
+                            {
+                                title: 'Notes',
+                                value: 'note'
+                            },
+                            {
+                                title: 'Tasks',
+                                value: 'task'
+                            }
+                        ]
+                    },
+                    value: 'task',
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'selectedCalendarView',
+                    title: 'Selected calendar view',
+                    type: 'select',
+                    options: {
+                        values: [
+                            {
+                                title: 'Agenda',
+                                value: 'agenda'
+                            },
+                            {
+                                title: 'Day',
+                                value: 'day'
+                            },
+                            {
+                                title: 'Month',
+                                value: 'month'
+                            },
+                            {
+                                title: 'Week',
+                                value: 'week'
+                            },
+                            {
+                                title: 'Work week',
+                                value: 'work_week'
+                            }
+                        ]
+                    },
+                    value: 'month',
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'showCompletedTasks',
+                    title: 'Show completed tasks',
+                    type: 'boolean',
+                    value: true,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'calendarDateMode',
+                    title: 'Calendar date mode',
+                    type: 'select',
+                    options: {
+                        values: [
+                            {
+                                title: 'Both',
+                                value: 'both'
+                            },
+                            {
+                                title: 'Due date',
+                                value: 'dueDate'
+                            },
+                            {
+                                title: 'Start date',
+                                value: 'startDate'
+                            }
+                        ]
+                    },
+                    value: 'both',
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'windowSizeWidth',
                     title: 'Window size - Width',
                     type: 'number',

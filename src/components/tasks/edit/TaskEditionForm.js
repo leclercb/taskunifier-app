@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'antd';
 import withSettings from 'containers/WithSettings';
 import withTaskFields from 'containers/WithTaskFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import {
-    getInputForType,
-    getValuePropNameForType
-} from 'utils/FieldUtils';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 
 function TaskEditionForm(props) {

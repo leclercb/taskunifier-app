@@ -1,11 +1,8 @@
 import { Form } from 'antd';
 import PropTypes from 'prop-types';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import {
-    getInputForType,
-    getValuePropNameForType,
-    isCommitOnChangeForType
-} from 'utils/FieldUtils';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType, isCommitOnChangeForType } from 'data/DataFieldTypes';
 
 function EditableCell(props) {
     const onChange = event => {

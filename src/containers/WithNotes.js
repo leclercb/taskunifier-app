@@ -1,9 +1,8 @@
+import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/AppActions';
 import { connect } from 'react-redux';
 import {
     addNote,
     deleteNote,
-    setSelectedNoteFilter,
-    setSelectedNoteIds,
     updateNote
 } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';

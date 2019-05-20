@@ -1,6 +1,5 @@
 ## Todo List
 
-* Finish big calendar
 * Restore from backup
 * Print config (columns, size)
 * Postpone Snooze

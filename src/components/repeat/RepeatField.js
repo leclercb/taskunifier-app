@@ -83,6 +83,6 @@ RepeatField.propTypes = {
 
 RepeatField.defaultProps = {
     defaultOpened: false
-}
+};
 
 export default RepeatField;

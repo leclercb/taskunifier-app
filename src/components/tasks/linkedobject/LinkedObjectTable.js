@@ -9,10 +9,10 @@ import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import withSettings from 'containers/WithSettings';
+import { getWidthForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { LinkedObjectPropType } from 'proptypes/LinkedObjectPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { getWidthForType } from 'utils/FieldUtils';
 import { getLinkedObjectBackgroundColor } from 'utils/SettingUtils';
 
 function LinkedObjectTable(props) {

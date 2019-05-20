@@ -2,12 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Input, Row } from 'antd';
 import withNoteFields from 'containers/WithNoteFields';
+import { getInputForType, getSelectForType } from 'data/DataFieldComponents';
+import { getConditionsFieldTypeForType, getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import {
-    getInputForType,
-    getSelectForType,
-    getValuePropNameForType
-} from 'utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function NoteFilterConditionForm(props) {
@@ -25,6 +22,7 @@ function NoteFilterConditionForm(props) {
     };
 
     const field = props.noteFields.find(field => field.id === props.condition.field);
+    const conditionFieldType = getConditionsFieldTypeForType(field.type);
 
     return (
         <Form {...formItemLayout}>
@@ -56,10 +54,13 @@ function NoteFilterConditionForm(props) {
                 <Col span={10}>
                     <Form.Item>
                         {getFieldDecorator('value', {
-                            valuePropName: getValuePropNameForType(field.type),
+                            valuePropName: getValuePropNameForType(conditionFieldType),
                             initialValue: props.condition.value
                         })(
-                            getInputForType(field.type, field.options)
+                            getInputForType(conditionFieldType, {
+                                ...(field.type === conditionFieldType ? field.options : {}),
+                                extended: true
+                            })
                         )}
                     </Form.Item>
                 </Col>

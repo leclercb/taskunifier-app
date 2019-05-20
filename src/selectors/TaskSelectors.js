@@ -1,13 +1,14 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { getSelectedTaskFilter, getSelectedTaskFilterDate, isShowCompletedTasks } from 'selectors/AppSelectors';
+import { getSelectedTaskFilter, getSelectedTaskFilterDate } from 'selectors/AppSelectors';
+import { isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
 import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { sortObjects } from 'utils/SorterUtils';
-import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
 
 export const getTasks = state => state.tasks;
 

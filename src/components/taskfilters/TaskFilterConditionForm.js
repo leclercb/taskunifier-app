@@ -2,13 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Input, Row } from 'antd';
 import withTaskFields from 'containers/WithTaskFields';
+import { getInputForType, getSelectForType } from 'data/DataFieldComponents';
+import { getConditionsFieldTypeForType, getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import {
-    getConditionsFieldTypeForType,
-    getInputForType,
-    getSelectForType,
-    getValuePropNameForType
-} from 'utils/FieldUtils';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function TaskFilterConditionForm(props) {

@@ -10,7 +10,7 @@ import { DraggableRowRenderer } from 'components/common/table/DraggableRowRender
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import withSettings from 'containers/WithSettings';
-import { getWidthForType } from 'utils/FieldUtils';
+import { getWidthForType } from 'data/DataFieldTypes';
 import { getSorterBackgroundColor } from 'utils/SettingUtils';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';

@@ -1,27 +1,28 @@
 import { connect } from 'react-redux';
+import { setSelectedNoteFilter, setSelectedNoteIds, setSelectedTaskFilter, setSelectedTaskIds } from 'actions/AppActions';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
-import { addNoteFilter, deleteNoteFilter, updateNoteFilter } from 'actions/NoteFilterActions';
-import { addTaskFilter, deleteTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
+import { addNoteFilter, deleteNoteFilter, updateNoteFilter } from 'actions/NoteFilterActions';
+import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks } from 'actions/SettingActions';
 import { deleteTag, updateTag } from 'actions/TagActions';
+import { addTaskFilter, deleteTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
-import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/NoteActions';
-import { setCalendarDateMode, setSelectedTaskFilter, setSelectedTaskIds, setShowCompletedTasks } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getCalendarDateMode, getSelectedNoteFilter, getSelectedTaskFilter, isShowCompletedTasks } from 'selectors/AppSelectors';
-import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
-import { getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
-import { merge } from 'utils/ObjectUtils';
-import { getTagsFromObjects } from 'utils/TagUtils';
-import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
-import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
-import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
-import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import { getSelectedNoteFilter, getSelectedTaskFilter } from 'selectors/AppSelectors';
+import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getGoalsFilteredByNonArchived, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getFoldersFilteredByNonArchived, getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
-import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
+import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
+import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks } from 'selectors/SettingSelectors';
+import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
+import { getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { merge } from 'utils/ObjectUtils';
+import { getTagsFromObjects } from 'utils/TagUtils';
 
 function withObjects(Component, options) {
     options = merge({
@@ -35,6 +36,7 @@ function withObjects(Component, options) {
         includeNoteFilters: false,
         includeTaskFilters: false,
         includeSelectedNoteFilter: false,
+        includeSelectedCalendarView: false,
         includeShowCompletedTasks: false,
         includeCalendarDateMode: false,
         includeSelectedTaskFilter: false,
@@ -91,6 +93,10 @@ function withObjects(Component, options) {
             data.selectedNoteFilter = getSelectedNoteFilter(state);
         }
 
+        if (options.includeSelectedCalendarView === true) {
+            data.selectedCalendarView = getSelectedCalendarView(state);
+        }
+
         if (options.includeShowCompletedTasks === true) {
             data.showCompletedTasks = isShowCompletedTasks(state);
         }
@@ -140,8 +146,9 @@ function withObjects(Component, options) {
         deleteTaskFilter: taskFilterId => dispatch(deleteTaskFilter(taskFilterId)),
         setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds)),
         setSelectedNoteFilter: noteFilter => dispatch(setSelectedNoteFilter(noteFilter)),
+        setSelectedCalendarView: view => dispatch(setSelectedCalendarView(view)),
         setShowCompletedTasks: show => dispatch(setShowCompletedTasks(show)),
-        setCalendarDateMode: show => dispatch(setCalendarDateMode(show)),
+        setCalendarDateMode: mode => dispatch(setCalendarDateMode(mode)),
         setSelectedTaskIds: taskIds => dispatch(setSelectedTaskIds(taskIds)),
         setSelectedTaskFilter: taskFilter => dispatch(setSelectedTaskFilter(taskFilter))
     });

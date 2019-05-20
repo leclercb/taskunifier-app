@@ -1,4 +1,3 @@
-import moment from 'moment';
 import {
     addObject,
     cleanObjects,
@@ -35,27 +34,4 @@ export function deleteNote(noteId) {
 
 export function cleanNotes() {
     return dispatch => dispatch(cleanObjects('notes'));
-}
-
-export function setSelectedNoteIds(noteIds) {
-    return dispatch => {
-        dispatch({
-            type: 'SET_SELECTED_NOTE_IDS',
-            noteIds
-        });
-
-        return Promise.resolve();
-    };
-}
-
-export function setSelectedNoteFilter(noteFilter) {
-    return dispatch => {
-        dispatch({
-            type: 'SET_SELECTED_NOTE_FILTER',
-            noteFilter,
-            date: moment().toJSON()
-        });
-
-        return Promise.resolve();
-    };
 }

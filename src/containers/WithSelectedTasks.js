@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import { addTask, deleteTask, setSelectedTaskIds, updateTask } from 'actions/TaskActions';
+import { setSelectedTaskIds } from 'actions/AppActions';
+import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';

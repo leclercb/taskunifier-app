@@ -2,14 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
+import withTaskFields from 'containers/WithTaskFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
-import withTaskFields from 'containers/WithTaskFields';
-import {
-    getInputForType,
-    getValuePropNameForType
-} from 'utils/FieldUtils';
 
 function TaskTemplateForm(props) {
     const { getFieldDecorator } = props.form;

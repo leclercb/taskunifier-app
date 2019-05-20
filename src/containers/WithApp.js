@@ -6,7 +6,6 @@ import {
     setBatchEditTasksManagerOptions,
     setCategoryManagerOptions,
     setNoteFilterManagerOptions,
-    setSelectedView,
     setSettingManagerOptions,
     setTaskEditionManagerOptions,
     setTaskFilterManagerOptions,
@@ -17,19 +16,20 @@ import {
     backupData,
     cleanBackups
 } from 'actions/BackupActions';
+import { setSelectedView } from 'actions/SettingActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
     getBatchAddTasksManager,
     getBatchEditTasksManager,
     getCategoryManager,
     getNoteFilterManager,
-    getSelectedView,
     getSettingManager,
     getTaskEditionManager,
     getTaskFilterManager,
     getTaskTemplateManager,
     isValidLicense
 } from 'selectors/AppSelectors';
+import { getSelectedView } from 'selectors/SettingSelectors';
 
 function withApp(Component) {
     const mapStateToProps = state => ({

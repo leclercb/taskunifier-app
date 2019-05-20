@@ -1,62 +1,13 @@
-/* eslint react/display-name: 0 */
-
-import React from 'react';
 import moment from 'moment';
-import { Checkbox, Input, InputNumber, Progress, Select, Tag } from 'antd';
-import { getFieldConditions } from 'data/DataFieldConditions';
-import ColorPicker from 'components/common/ColorPicker';
-import DatePicker from 'components/common/DatePicker';
-import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
-import StarCheckbox from 'components/common/StarCheckbox';
-import ContactTitle from 'components/contacts/ContactTitle';
-import ContactSelect from 'components/contacts/ContactSelect';
-import ContextTitle from 'components/contexts/ContextTitle';
-import ContextSelect from 'components/contexts/ContextSelect';
-import FolderTitle from 'components/folders/FolderTitle';
-import FolderSelect from 'components/folders/FolderSelect';
-import GoalTitle from 'components/goals/GoalTitle';
-import GoalSelect from 'components/goals/GoalSelect';
-import LengthField from 'components/common/LengthField';
-import {
-    LinkedContactLinksSelect,
-    LinkedFileLinksSelect,
-    LinkedTaskLinksSelect
-} from 'components/links/LinksSelect';
-import {
-    LinkedContactLinksTitle,
-    LinkedFileLinksTitle,
-    LinkedTaskLinksTitle
-} from 'components/links/LinksTitle';
-import LocationTitle from 'components/locations/LocationTitle';
-import LocationSelect from 'components/locations/LocationSelect';
-import NoteFieldTitle from 'components/notefields/NoteFieldTitle';
-import NoteFieldSelect from 'components/notefields/NoteFieldSelect';
-import NoteTitle from 'components/notes/common/NoteTitle';
-import NoteSelect from 'components/notes/common/NoteSelect';
-import ReminderField from 'components/common/ReminderField';
-import RepeatFromField from 'components/common/RepeatFromField';
-import PriorityTitle from 'components/priorities/PriorityTitle';
-import PrioritySelect from 'components/priorities/PrioritySelect';
-import RepeatField from 'components/repeat/RepeatField';
-import SortDirectionTitle from 'components/sorters/SortDirectionTitle';
-import SortDirectionSelect from 'components/sorters/SortDirectionSelect';
-import StatusTitle from 'components/statuses/StatusTitle';
-import StatusSelect from 'components/statuses/StatusSelect';
-import TagsTitle from 'components/tags/TagsTitle';
-import TagsSelect from 'components/tags/TagsSelect';
-import TaskTitle from 'components/tasks/common/TaskTitle';
-import TaskSelect from 'components/tasks/common/TaskSelect';
-import TaskFieldTitle from 'components/taskfields/TaskFieldTitle';
-import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
-import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
-import TimerField from 'components/common/TimerField';
-import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import { getPriorityIndex } from 'data/DataPriorities';
 import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import {
@@ -71,7 +22,7 @@ import {
     compareStatuses,
     compareStrings
 } from 'utils/CompareUtils';
-import { escape } from 'utils/RegexUtils';
+import { equals } from 'utils/ObjectUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toString,
@@ -89,16 +40,6 @@ import {
     toStringStatus,
     toStringTimer
 } from 'utils/StringUtils';
-import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
-import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
-
-export function getDefaultGetValueFromEvent(e) {
-    if (!e || !e.target) {
-        return e;
-    }
-    const { target } = e;
-    return target.type === 'checkbox' ? target.checked : target.value;
-}
 
 export function getFieldTypes() {
     return [
@@ -140,15 +81,40 @@ export function getFieldTypes() {
     ];
 }
 
+export function getWidthForType(type) {
+    return getFieldType(type).width;
+}
+
+export function isAlwaysInEditionForType(type) {
+    return getFieldType(type).alwaysInEdition;
+}
+
+export function isCommitOnChangeForType(type) {
+    return getFieldType(type).commitOnChange;
+}
+
+export function getValuePropNameForType(type) {
+    return getFieldType(type).valuePropName;
+}
+
+export function getCompareForType(type, a, b, state) {
+    return getFieldType(type).compare(a, b, state);
+}
+
+export function getToStringForType(type, options, value, state) {
+    return getFieldType(type, options).toString(value, state);
+}
+
+export function getConditionsForType(type) {
+    return getFieldType(type).conditions;
+}
+
+export function getConditionsFieldTypeForType(type) {
+    return getFieldType(type).conditionsFieldType;
+}
+
 export function getFieldType(type, options) {
     let configuration = null;
-
-    const removeExtraProps = props => {
-        const { ...wrappedProps } = props;
-        delete wrappedProps.fieldMode;
-        delete wrappedProps.onCommit;
-        return wrappedProps;
-    }
 
     switch (type) {
         case 'boolean': {
@@ -160,12 +126,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'checked',
                 compare: (a, b) => compareBooleans(a, b),
                 toString: value => toStringBoolean(value),
-                render: value => <Checkbox checked={!!value} />,
-                input: props => (
-                    <Checkbox
-                        data-prevent-default={true}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue === !!taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue !== !!taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'boolean',
                 options: []
             };
@@ -181,12 +157,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'color',
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
-                render: value => <ColorPicker color={value} />,
-                input: props => (
-                    <ColorPicker
-                        onBlur={props.onCommit}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'color',
                 options: []
             };
@@ -202,15 +188,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareContacts(a, b, getContactsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringContact(value, getContactsFilteredByVisibleState(state)),
-                render: value => (
-                    <ContactTitle contactId={value} />
-                ),
-                input: props => (
-                    <ContactSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'contact',
                 options: []
             };
@@ -226,15 +219,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getContextsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getContextsFilteredByVisibleState(state)),
-                render: value => (
-                    <ContextTitle contextId={value} />
-                ),
-                input: props => (
-                    <ContextSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'context',
                 options: []
             };
@@ -242,7 +242,6 @@ export function getFieldType(type, options) {
             break;
         }
         case 'date': {
-            const extended = options && options.extended === true;
             const dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
 
             configuration = {
@@ -253,38 +252,106 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareDates(a, b, false),
                 toString: value => toStringDate(value, dateFormat),
-                render: value => {
-                    if (extended && Number.isInteger(value)) {
-                        return value;
-                    }
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
 
-                    return value ? moment(value).format(dateFormat) : (<span>&nbsp;</span>);
-                },
-                input: props => {
-                    if (extended) {
-                        return (
-                            <ExtendedDatePicker
-                                onOpenChange={status => {
-                                    if (props.onCommit && !status) {
-                                        props.onCommit();
-                                    }
-                                }}
-                                format={dateFormat}
-                                {...removeExtraProps(props)} />
-                        );
-                    }
+                            if (!conditionValue && !taskValue) {
+                                return true;
+                            }
 
-                    return (
-                        <DatePicker
-                            onOpenChange={status => {
-                                if (props.onCommit && !status) {
-                                    props.onCommit();
-                                }
-                            }}
-                            format={dateFormat}
-                            {...removeExtraProps(props)} />
-                    );
-                },
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(conditionValue).isSame(moment(taskValue), 'day');
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue && !taskValue) {
+                                return false;
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return true;
+                            }
+
+                            return !moment(conditionValue).isSame(moment(taskValue), 'day');
+                        }
+                    },
+                    {
+                        type: 'before',
+                        title: 'Before',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isBefore(moment(conditionValue), 'day');
+                        }
+                    },
+                    {
+                        type: 'beforeOrEqual',
+                        title: 'Before or equals',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'day');
+                        }
+                    },
+                    {
+                        type: 'after',
+                        title: 'After',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isAfter(moment(conditionValue), 'day');
+                        }
+                    },
+                    {
+                        type: 'afterOrEqual',
+                        title: 'After or equals',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'day');
+                        }
+                    }
+                ],
                 conditionsFieldType: 'date',
                 options: [
                     {
@@ -298,7 +365,6 @@ export function getFieldType(type, options) {
             break;
         }
         case 'dateTime': {
-            const extended = options && options.extended === true;
             const dateFormat = options && options.dateFormat ? options.dateFormat : 'DD/MM/YYYY';
             const timeFormat = options && options.timeFormat ? options.timeFormat : 'HH:mm';
 
@@ -310,40 +376,106 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareDates(a, b, true),
                 toString: value => toStringDate(value, `${dateFormat} ${timeFormat}`),
-                render: value => {
-                    if (extended && Number.isInteger(value)) {
-                        return value;
-                    }
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
 
-                    return value ? moment(value).format(`${dateFormat} ${timeFormat}`) : (<span>&nbsp;</span>);
-                },
-                input: props => {
-                    if (extended) {
-                        return (
-                            <ExtendedDatePicker
-                                onOpenChange={status => {
-                                    if (props.onCommit && !status) {
-                                        props.onCommit();
-                                    }
-                                }}
-                                showTime={{ format: timeFormat }}
-                                format={`${dateFormat} ${timeFormat}`}
-                                {...removeExtraProps(props)} />
-                        );
-                    }
+                            if (!conditionValue && !taskValue) {
+                                return true;
+                            }
 
-                    return (
-                        <DatePicker
-                            onOpenChange={status => {
-                                if (props.onCommit && !status) {
-                                    props.onCommit();
-                                }
-                            }}
-                            showTime={{ format: timeFormat }}
-                            format={`${dateFormat} ${timeFormat}`}
-                            {...removeExtraProps(props)} />
-                    );
-                },
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(conditionValue).isSame(moment(taskValue), 'minute');
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue && !taskValue) {
+                                return false;
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return true;
+                            }
+
+                            return !moment(conditionValue).isSame(moment(taskValue), 'minute');
+                        }
+                    },
+                    {
+                        type: 'before',
+                        title: 'Before',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isBefore(moment(conditionValue), 'minute');
+                        }
+                    },
+                    {
+                        type: 'beforeOrEqual',
+                        title: 'Before or equals',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrBefore(moment(conditionValue), 'minute');
+                        }
+                    },
+                    {
+                        type: 'after',
+                        title: 'After',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isAfter(moment(conditionValue), 'minute');
+                        }
+                    },
+                    {
+                        type: 'afterOrEqual',
+                        title: 'After or equals',
+                        apply: (conditionValue, taskValue) => {
+                            if (Number.isInteger(conditionValue)) {
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return moment(taskValue).isSameOrAfter(moment(conditionValue), 'minute');
+                        }
+                    }
+                ],
                 conditionsFieldType: 'dateTime',
                 options: [
                     {
@@ -370,15 +502,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getFoldersFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getFoldersFilteredByVisibleState(state)),
-                render: value => (
-                    <FolderTitle folderId={value} />
-                ),
-                input: props => (
-                    <FolderSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'folder',
                 options: []
             };
@@ -394,15 +533,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getGoalsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getGoalsFilteredByVisibleState(state)),
-                render: value => (
-                    <GoalTitle goalId={value} />
-                ),
-                input: props => (
-                    <GoalSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'goal',
                 options: []
             };
@@ -418,15 +564,66 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value),
-                render: value => value ? value : <span>&nbsp;</span>,
-                input: props => (
-                    <InputNumber
-                        onBlur={props.onCommit}
-                        min={0}
-                        max={12}
-                        style={{ width: 60 }}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue < taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue <= taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue >= taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'importance',
                 options: []
             };
@@ -442,15 +639,66 @@ export function getFieldType(type, options) {
                 valuePropName: 'length',
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringLength(value),
-                render: value => (
-                    <LengthField length={value} readOnly={true} />
-                ),
-                input: props => (
-                    <LengthField
-                        onBlur={props.onCommit}
-                        onPressEnter={props.onCommit}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue < taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue <= taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue >= taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'length',
                 options: []
             };
@@ -466,15 +714,28 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: () => 0,
                 toString: value => toStringArray(value),
-                render: value => (
-                    <LinkedContactLinksTitle linkIds={value} />
-                ),
-                input: props => (
-                    <LinkedContactLinksSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    }
+                ],
                 conditionsFieldType: 'linkedContactLinks',
                 options: []
             };
@@ -490,15 +751,28 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: () => 0,
                 toString: value => toStringArray(value),
-                render: value => (
-                    <LinkedFileLinksTitle linkIds={value} />
-                ),
-                input: props => (
-                    <LinkedFileLinksSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    }
+                ],
                 conditionsFieldType: 'linkedFileLinks',
                 options: []
             };
@@ -514,15 +788,28 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: () => 0,
                 toString: value => toStringArray(value),
-                render: value => (
-                    <LinkedTaskLinksTitle linkIds={value} />
-                ),
-                input: props => (
-                    <LinkedTaskLinksSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskLinks = taskValue || [];
+                            const conditionLinks = conditionValue || [];
+
+                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                        }
+                    }
+                ],
                 conditionsFieldType: 'linkedTaskLinks',
                 options: []
             };
@@ -538,15 +825,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getLocationsFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getLocationsFilteredByVisibleState(state)),
-                render: value => (
-                    <LocationTitle locationId={value} />
-                ),
-                input: props => (
-                    <LocationSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'location',
                 options: []
             };
@@ -564,14 +858,66 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value, '', currency),
-                render: value => value ? currency + ' ' + value : <span>&nbsp;</span>,
-                input: props => (
-                    <InputNumber
-                        onBlur={props.onCommit}
-                        formatter={value => `${currency} ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace('/(' + escape(currency) + ')\\s?|(,*)/g', '')}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue < taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue <= taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue >= taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'money',
                 options: [
                     {
@@ -593,15 +939,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getNotesFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getNotesFilteredByVisibleState(state)),
-                render: value => (
-                    <NoteTitle noteId={value} />
-                ),
-                input: props => (
-                    <NoteSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'note',
                 options: []
             };
@@ -617,15 +970,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getNoteFieldsIncludingDefaults(state)),
                 toString: (value, state) => toStringObject(value, getNoteFieldsIncludingDefaults(state)),
-                render: value => (
-                    <NoteFieldTitle noteFieldId={value} />
-                ),
-                input: props => (
-                    <NoteFieldSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'noteField',
                 options: []
             };
@@ -633,9 +993,6 @@ export function getFieldType(type, options) {
             break;
         }
         case 'number': {
-            const min = options && options.min ? options.min : -Infinity;
-            const max = options && options.max ? options.max : Infinity;
-
             configuration = {
                 title: 'Number',
                 width: 150,
@@ -644,14 +1001,66 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value),
-                render: value => value ? value : <span>&nbsp;</span>,
-                input: props => (
-                    <InputNumber
-                        onBlur={props.onCommit}
-                        min={min}
-                        max={max}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue < taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue <= taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue >= taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'number',
                 options: [
                     {
@@ -678,15 +1087,82 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => comparePriorities(a, b),
                 toString: value => toStringPriority(value),
-                render: value => (
-                    <PriorityTitle priorityId={value} />
-                ),
-                input: props => (
-                    <PrioritySelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return getPriorityIndex(conditionValue) < getPriorityIndex(taskValue);
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return getPriorityIndex(conditionValue) <= getPriorityIndex(taskValue);
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return getPriorityIndex(conditionValue) > getPriorityIndex(taskValue);
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return getPriorityIndex(conditionValue) >= getPriorityIndex(taskValue);
+                        }
+                    }
+                ],
                 conditionsFieldType: 'priority',
                 options: []
             };
@@ -702,14 +1178,66 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringNumber(value, '', '%'),
-                render: value => Number.isInteger(value) ? <Progress percent={value} size="small" /> : <span>&nbsp;</span>,
-                input: props => (
-                    <InputNumber
-                        onBlur={props.onCommit}
-                        min={0}
-                        max={100}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue < taskValue;
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue <= taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue > taskValue;
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, taskValue) => {
+                            if (!conditionValue || !taskValue) {
+                                return false;
+                            }
+
+                            return conditionValue >= taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'progress',
                 options: []
             };
@@ -725,14 +1253,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
                 toString: value => toStringReminder(value),
-                render: value => (
-                    Number.isInteger(value) ? toStringReminder(value) : <span>&nbsp;</span>
-                ),
-                input: props => (
-                    <ReminderField
-                        onBlur={props.onCommit}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return equals(conditionValue, taskValue);
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !equals(conditionValue, taskValue);
+                        }
+                    }
+                ],
                 conditionsFieldType: 'reminder',
                 options: []
             };
@@ -748,20 +1284,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'repeat',
                 compare: (a, b) => compareRepeats(a, b),
                 toString: value => formatRepeat(value),
-                render: value => {
-                    const result = formatRepeat(value);
-                    return result ? result : <span>&nbsp;</span>;
-                },
-                input: props => (
-                    <RepeatField
-                        defaultOpened={props.fieldMode === 'table'}
-                        onOpenChange={status => {
-                            if (props.onCommit && !status) {
-                                props.onCommit();
-                            }
-                        }}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return equals(conditionValue, taskValue);
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !equals(conditionValue, taskValue);
+                        }
+                    }
+                ],
                 conditionsFieldType: 'repeat',
                 options: []
             };
@@ -777,12 +1315,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toStringRepeatFrom(value),
-                render: value => toStringRepeatFrom(value),
-                input: props => (
-                    <RepeatFromField
-                        onBlur={props.onCommit}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'repeatFrom',
                 options: []
             };
@@ -790,9 +1338,6 @@ export function getFieldType(type, options) {
             break;
         }
         case 'select': {
-            let values = options && options.values ? options.values : [];
-            values = Array.isArray(values) ? values : [values];
-
             configuration = {
                 title: 'Select',
                 width: 200,
@@ -801,28 +1346,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
-                render: value => (
-                    value ? value : <span>&nbsp;</span>
-                ),
-                input: props => (
-                    <Select
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)}>
-                        {values.map(value => {
-                            value = typeof value === 'object' ? value : {
-                                title: value,
-                                value
-                            };
-
-                            return (
-                                <Select.Option key={value.value} value={value.value}>
-                                    {value.title}
-                                </Select.Option>
-                            );
-                        })}
-                    </Select>
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'select',
                 options: [
                     {
@@ -844,16 +1383,28 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: () => 0,
                 toString: value => toStringArray(value),
-                render: values => (
-                    values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
-                ),
-                input: props => (
-                    <Select
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        mode="tags"
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskTags = taskValue || [];
+                            const conditionTags = conditionValue || [];
+
+                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskTags = taskValue || [];
+                            const conditionTags = conditionValue || [];
+
+                            return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                        }
+                    }
+                ],
                 conditionsFieldType: 'selectTags',
                 options: []
             };
@@ -869,15 +1420,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareSortDirections(a, b),
                 toString: value => toStringSortDirection(value),
-                render: value => (
-                    <SortDirectionTitle sortDirectionId={value} />
-                ),
-                input: props => (
-                    <SortDirectionSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue === !!taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue !== !!taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'sortDirection',
                 options: []
             };
@@ -893,10 +1451,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'checked',
                 compare: (a, b) => compareBooleans(a, b),
                 toString: value => toStringBoolean(value),
-                render: value => <StarCheckbox checked={!!value} />,
-                input: props => (
-                    <StarCheckbox {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue === !!taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return !!conditionValue !== !!taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'star',
                 options: []
             };
@@ -912,15 +1482,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareStatuses(a, b),
                 toString: value => toStringStatus(value),
-                render: value => (
-                    <StatusTitle statusId={value} />
-                ),
-                input: props => (
-                    <StatusSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'status',
                 options: []
             };
@@ -936,15 +1513,28 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: () => 0,
                 toString: value => toStringArray(value),
-                render: value => (
-                    <TagsTitle tagIds={value} />
-                ),
-                input: props => (
-                    <TagsSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            const taskTags = taskValue || [];
+                            const conditionTags = conditionValue || [];
+
+                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            const taskTags = taskValue || [];
+                            const conditionTags = conditionValue || [];
+
+                            return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                        }
+                    }
+                ],
                 conditionsFieldType: 'tags',
                 options: []
             };
@@ -960,15 +1550,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getTasksFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getTasksFilteredByVisibleState(state)),
-                render: value => (
-                    <TaskTitle taskId={value} />
-                ),
-                input: props => (
-                    <TaskSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'task',
                 options: []
             };
@@ -984,15 +1581,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getTaskFieldsIncludingDefaults(state)),
                 toString: (value, state) => toStringObject(value, getTaskFieldsIncludingDefaults(state)),
-                render: value => (
-                    <TaskFieldTitle taskFieldId={value} />
-                ),
-                input: props => (
-                    <TaskFieldSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'taskField',
                 options: []
             };
@@ -1008,15 +1612,22 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b, state) => compareObjects(a, b, getTaskTemplatesFilteredByVisibleState(state)),
                 toString: (value, state) => toStringObject(value, getTaskTemplatesFilteredByVisibleState(state)),
-                render: value => (
-                    <TaskTemplateTitle taskTemplateId={value} />
-                ),
-                input: props => (
-                    <TaskTemplateSelect
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'taskTemplate',
                 options: []
             };
@@ -1032,13 +1643,36 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
-                render: value => value ? value : <span>&nbsp;</span>,
-                input: props => (
-                    <Input.TextArea
-                        onBlur={props.onCommit}
-                        autosize={true}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            return (taskValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            return !(taskValue || '').includes(conditionValue);
+                        }
+                    }
+                ],
                 conditionsFieldType: 'textarea',
                 options: []
             };
@@ -1054,22 +1688,16 @@ export function getFieldType(type, options) {
                 valuePropName: 'timer',
                 compare: () => 0,
                 toString: value => toStringTimer(value),
-                render: (value, props) => {
-                    /* eslint-disable react/prop-types */
-                    return (
-                        <TimerField
-                            timer={value}
-                            readOnly={true}
-                            onChange={props ? props.onChange : null} />
-                    );
-                    /* eslint-enable react/prop-types */
-                },
-                input: props => (
-                    <TimerField
-                        onBlur={props.onCommit}
-                        onPressEnter={props.onCommit}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'started',
+                        title: 'Started',
+                        apply: (conditionValue, taskValue) => {
+                            const startDate = taskValue ? taskValue.startDate : null;
+                            return !!startDate === conditionValue;
+                        }
+                    }
+                ],
                 conditionsFieldType: 'boolean',
                 options: []
             };
@@ -1086,13 +1714,36 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
-                render: value => value ? value : <span>&nbsp;</span>,
-                input: props => (
-                    <Input
-                        onBlur={props.onCommit}
-                        onPressEnter={props.onCommit}
-                        {...removeExtraProps(props)} />
-                ),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue === taskValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, taskValue) => {
+                            return conditionValue !== taskValue;
+                        }
+                    },
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, taskValue) => {
+                            return (taskValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, taskValue) => {
+                            return !(taskValue || '').includes(conditionValue);
+                        }
+                    }
+                ],
                 conditionsFieldType: 'text',
                 options: []
             };
@@ -1100,16 +1751,6 @@ export function getFieldType(type, options) {
             break;
         }
     }
-
-    configuration.select = () => (
-        <Select dropdownMatchSelectWidth={false} placeholder="Condition">
-            {getFieldConditions(type).map(condition => (
-                <Select.Option key={condition.type} value={condition.type}>
-                    {condition.title}
-                </Select.Option>
-            ))}
-        </Select>
-    );
 
     return configuration;
 }

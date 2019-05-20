@@ -4,12 +4,9 @@ import Spacer from 'components/common/Spacer';
 import DraggableElement from 'components/common/table/DraggableElement';
 import ExpandCollapse from 'components/common/table/ExpandCollapse';
 import EditableCell from 'components/common/table/EditableCell';
-import { getDefaultGetValueFromEvent } from 'data/DataFieldTypes';
+import { getDefaultGetValueFromEvent, getRenderForType } from 'data/DataFieldComponents';
+import { isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import {
-    getRenderForType,
-    isAlwaysInEditionForType
-} from 'utils/FieldUtils';
 import 'components/common/table/CellRenderer.css';
 
 function CellRenderer(props) {

@@ -1,9 +1,9 @@
 import moment from 'moment';
-import { getSortDirectionIndex } from 'data/DataSortDirections';
+import { getCompareForType } from 'data/DataFieldTypes';
 import { getPriorityIndex } from 'data/DataPriorities';
+import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
-import { getCompareForType } from 'utils/FieldUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 
 export function compareBooleans(a, b) {

@@ -30,3 +30,27 @@ export function updateSettings(settings) {
         return Promise.resolve();
     };
 }
+
+export function setSelectedView(view) {
+    return updateSettings({
+        selectedView: view
+    });
+}
+
+export function setSelectedCalendarView(view) {
+    return updateSettings({
+        selectedCalendarView: view
+    });
+}
+
+export function setShowCompletedTasks(show) {
+    return updateSettings({
+        showCompletedTasks: show
+    });
+}
+
+export function setCalendarDateMode(mode) {
+    return updateSettings({
+        calendarDateMode: mode
+    });
+}

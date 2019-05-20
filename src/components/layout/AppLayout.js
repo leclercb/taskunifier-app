@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
-import Header from 'components/layout/Header';
-import withApp from 'containers/WithApp';
-import withBusy from 'containers/WithBusy';
-import NotificationManager from 'components/thread/NotificationManager';
-import ModalThreadManager from 'components/thread/ModalThreadManager';
 import ModalCategoryManager from 'components/categories/ModalCategoryManager';
+import Header from 'components/layout/Header';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
+import NoteView from 'components/notes/views/NoteView';
+import ModalSettingManager from 'components/settings/ModalSettingManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
 import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
 import ModalBatchEditTasksManager from 'components/tasks/batch/ModalBatchEditTasksManager';
 import ModalTaskEditionManager from 'components/tasks/edit/ModalTaskEditionManager';
-import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
-import ModalSettingManager from 'components/settings/ModalSettingManager';
-import NoteView from 'components/notes/views/NoteView';
-import TaskView from 'components/tasks/views/TaskView';
 import TaskCalendarView from 'components/tasks/views/TaskCalendarView';
+import TaskView from 'components/tasks/views/TaskView';
+import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
+import NotificationManager from 'components/thread/NotificationManager';
+import ModalThreadManager from 'components/thread/ModalThreadManager';
+import withApp from 'containers/WithApp';
+import withBusy from 'containers/WithBusy';
 
 function AppLayout(props) {
     const getView = () => {
@@ -25,7 +25,7 @@ function AppLayout(props) {
                 return <NoteView />;
             case 'task':
                 return <TaskView />;
-            case 'task-calendar':
+            case 'taskCalendar':
                 return <TaskCalendarView />;
             default:
                 return <TaskView />;
@@ -60,7 +60,7 @@ function AppLayout(props) {
 
 AppLayout.propTypes = {
     busy: PropTypes.bool.isRequired,
-    selectedView: PropTypes.string.isRequired
+    selectedView: PropTypes.oneOf(['note', 'task', 'taskCalendar']).isRequired
 };
 
 export default withApp(withBusy(AppLayout));
