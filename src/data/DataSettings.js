@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, message } from 'antd';
+import { Button, notification } from 'antd';
 import moment from 'moment';
 import { getLatestVersion, testConnection } from 'actions/RequestActions';
 import { getPriorities } from 'data/DataPriorities';
@@ -65,18 +65,18 @@ export function getCategories() {
                             const appVersion = getAppVersion();
 
                             if (compareVersions(appVersion, latestVersion) > 0) {
-                                message.info(
-                                    <span>
-                                        {`A new version is available: ${latestVersion}`}
-                                        <br />
-                                        <br />
+                                notification.info({
+                                    message: `A new version is available: ${latestVersion}`,
+                                    description: (
                                         <Button onClick={() => downloadVersion()}>
                                             Click here to download it !
                                         </Button>
-                                    </span>
-                                );
+                                    )
+                                });
                             } else {
-                                message.info('You already have the latest version');
+                                notification.success({
+                                    message: 'You already have the latest version'
+                                });
                             }
                         });
                     },
@@ -166,9 +166,14 @@ export function getCategories() {
                     type: 'button',
                     value: settings => {
                         testConnection(settings).then(() => {
-                            message.success('Connection test succeeded');
-                        }).catch(() => {
-                            message.error('Connection test failed');
+                            notification.success({
+                                message: 'Connection test succeeded'
+                            });
+                        }).catch(reason => {
+                            notification.error({
+                                message: 'Connection test failed',
+                                description: reason.toString()
+                            });
                         });
                     },
                     editable: true
