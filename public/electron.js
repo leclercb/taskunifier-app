@@ -1,4 +1,4 @@
-const { app, ipcMain, shell, BrowserWindow } = require('electron');
+const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const fs = require('fs');
 const path = require('path');
 
@@ -94,6 +94,10 @@ function createMainWindow() {
 
 ipcMain.on('get-version', event => {
     event.returnValue = app.getVersion();
+});
+
+ipcMain.on('show-open-dialog', (event, options) => {
+    event.returnValue = dialog.showOpenDialog(options);
 });
 
 ipcMain.on('open-file', (event, file) => {

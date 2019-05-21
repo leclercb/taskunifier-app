@@ -1,6 +1,5 @@
 ## Todo List
 
-* Linked files, open file action
 * Print config (columns, size)
 * Postpone Snooze
 

@@ -50,6 +50,7 @@ export function getFieldTypes() {
         'context',
         'date',
         'dateTime',
+        'file',
         'folder',
         'goal',
         'importance',
@@ -491,6 +492,51 @@ export function getFieldType(type, options) {
                         type: 'text'
                     }
                 ]
+            };
+
+            break;
+        }
+        case 'file': {
+            configuration = {
+                title: 'File',
+                width: 250,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                valuePropName: 'value',
+                compare: (a, b) => compareStrings(a, b),
+                toString: value => toString(value),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
+                        }
+                    },
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, objectValue) => {
+                            return (objectValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, objectValue) => {
+                            return !(objectValue || '').includes(conditionValue);
+                        }
+                    }
+                ],
+                conditionsFieldType: 'file',
+                options: []
             };
 
             break;

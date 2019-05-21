@@ -7,6 +7,7 @@ import { getFieldType } from 'data/DataFieldTypes';
 import ColorPicker from 'components/common/ColorPicker';
 import DatePicker from 'components/common/DatePicker';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
+import FileField from 'components/common/FileField';
 import StarCheckbox from 'components/common/StarCheckbox';
 import ContactTitle from 'components/contacts/ContactTitle';
 import ContactSelect from 'components/contacts/ContactSelect';
@@ -225,6 +226,21 @@ export function getFieldComponents(type, options) {
                             {...removeExtraProps(props)} />
                     );
                 }
+            };
+
+            break;
+        }
+        case 'file': {
+            configuration = {
+                render: value => (
+                    <FileField value={value} readOnly={true} />
+                ),
+                input: props => (
+                    <FileField
+                        onBlur={props.onCommit}
+                        onPressEnter={props.onCommit}
+                        {...removeExtraProps(props)} />
+                )
             };
 
             break;

@@ -13,7 +13,7 @@ export function getLinkedFileFields() {
             static: true,
             id: 'file',
             title: 'File',
-            type: 'text',
+            type: 'file',
             editable: true
         }
     ]);
