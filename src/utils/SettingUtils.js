@@ -14,6 +14,14 @@ export function filterSettings(settings, core) {
     return newSettings;
 }
 
+export function formatDate(date, settings, showTime = true) {
+    if (!showTime) {
+        return moment(date).format(settings.dateFormat);
+    }
+
+    return moment(date).format(`${settings.dateFormat} ${settings.timeFormat}`);
+}
+
 export function getImportanceColor(importance, settings) {
     return settings['importance_' + (importance ? importance : 0)];
 }

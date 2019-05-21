@@ -2,6 +2,7 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faArchive,
+    faBell,
     faBomb,
     faBook,
     faBoxOpen,
@@ -22,6 +23,7 @@ import {
     faEdit,
     faExclamationCircle,
     faExclamationTriangle,
+    faEyeSlash,
     faFilter,
     faFolder,
     faFolderOpen,
@@ -50,6 +52,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(faArchive);
+library.add(faBell);
 library.add(faBomb);
 library.add(faBook);
 library.add(faBoxOpen);
@@ -70,6 +73,7 @@ library.add(faDesktop);
 library.add(faEdit);
 library.add(faExclamationCircle);
 library.add(faExclamationTriangle);
+library.add(faEyeSlash);
 library.add(faFilter);
 library.add(faFolder);
 library.add(faFolderOpen);

@@ -13,6 +13,7 @@ export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDa
 export const getBatchAddTasksManager = state => state.app.batchAddTasksManager;
 export const getBatchEditTasksManager = state => state.app.batchEditTasksManager;
 export const getCategoryManager = state => state.app.categoryManager;
+export const getReminderManager = state => state.app.reminderManager;
 export const getNoteFilterManager = state => state.app.noteFilterManager;
 export const getTaskFilterManager = state => state.app.taskFilterManager;
 export const getTaskEditionManager = state => state.app.taskEditionManager;

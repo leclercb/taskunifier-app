@@ -5,6 +5,7 @@ import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import Header from 'components/layout/Header';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
 import NoteView from 'components/notes/views/NoteView';
+import ModalReminderManager from 'components/reminders/ModalReminderManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
 import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
@@ -39,6 +40,7 @@ function AppLayout(props) {
             <ModalBatchAddTasksManager />
             <ModalBatchEditTasksManager />
             <ModalCategoryManager />
+            <ModalReminderManager />
             <ModalNoteFilterManager />
             <ModalTaskFilterManager />
             <ModalTaskEditionManager />

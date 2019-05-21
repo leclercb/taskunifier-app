@@ -106,6 +106,10 @@ function Header(props) {
         props.setCategoryManagerOptions({ visible: true });
     };
 
+    const onSetReminderManagerVisible = () => {
+        props.setReminderManagerOptions({ visible: true });
+    };
+
     const onSetNoteFilterManagerVisible = () => {
         props.setNoteFilterManagerOptions({ visible: true });
     };
@@ -211,6 +215,7 @@ function Header(props) {
             <Spacer />
             <Spacer />
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
+            {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
             {createButton('folder-open', 'Load', onLoad)}
             {createButton('save', 'Save', onSave)}
             {createButton('box-open', 'Backup', onBackup)}
@@ -241,6 +246,7 @@ Header.propTypes = {
     setSelectedNoteIds: PropTypes.func.isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
+    setReminderManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired,

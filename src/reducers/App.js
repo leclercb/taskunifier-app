@@ -20,6 +20,9 @@ const App = () => (state = {
         category: 'contexts',
         objectId: null
     },
+    reminderManager: {
+        visible: false
+    },
     noteFilterManager: {
         visible: false,
         noteFilterId: null
@@ -84,6 +87,13 @@ const App = () => (state = {
                     visible: 'visible' in action ? action.visible : state.categoryManager.visible,
                     category: 'category' in action ? action.category : state.categoryManager.category,
                     objectId: 'objectId' in action ? action.objectId : state.categoryManager.objectId
+                }
+            };
+        case 'SET_REMINDER_MANAGER_OPTIONS':
+            return {
+                ...state,
+                reminderManager: {
+                    visible: 'visible' in action ? action.visible : state.reminderManager.visible
                 }
             };
         case 'SET_NOTE_FILTER_MANAGER_OPTIONS':

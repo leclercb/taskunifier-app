@@ -294,6 +294,17 @@ export function setCategoryManagerOptions(options) {
     };
 }
 
+export function setReminderManagerOptions(options) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_REMINDER_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export function setTaskFilterManagerOptions(options) {
     return dispatch => {
         dispatch({
