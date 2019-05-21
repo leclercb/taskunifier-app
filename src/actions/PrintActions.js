@@ -6,7 +6,7 @@ import { getSettings } from 'selectors/SettingSelectors';
 import { createDirectory, join, saveBufferToFile } from 'utils/ActionUtils';
 import { printDocument, printTable } from 'utils/PrintUtils';
 
-const electron = window.require('electron');
+const { ipcRenderer } = window.require('electron');
 
 export function printNotes(tasks) {
     return (dispatch, getState) => {
@@ -59,7 +59,7 @@ function printObjects(dispatch, state, fields, objects, fileName, documentTitle,
             saveBufferToFile(
                 file,
                 new Uint8Array(doc.output('arraybuffer'))).then(() => {
-                    electron.ipcRenderer.send('pdf-viewer', file);
+                    ipcRenderer.send('pdf-viewer', file);
 
                     dispatch(updateProcess({
                         id: processId,

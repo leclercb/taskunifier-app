@@ -92,6 +92,14 @@ function createMainWindow() {
     return window;
 }
 
+ipcMain.on('get-current-window-size', event => {
+    event.returnValue = mainWindow.getSize();
+});
+
+ipcMain.on('get-current-window-position', event => {
+    event.returnValue = mainWindow.getPosition();
+});
+
 ipcMain.on('get-version', event => {
     event.returnValue = app.getVersion();
 });

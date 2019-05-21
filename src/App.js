@@ -18,12 +18,12 @@ import 'react-contexify/dist/ReactContexify.min.css';
 import 'react-virtualized/styles.css';
 import 'components/common/table/VirtualizedTable.css';
 
-const electron = window.require('electron');
+const { ipcRenderer } = window.require('electron');
 
 function App(props) {
     const onClose = () => {
-        const size = electron.remote.getCurrentWindow().getSize();
-        const position = electron.remote.getCurrentWindow().getPosition();
+        const size = ipcRenderer.sendSync('get-current-window-size');
+        const position = ipcRenderer.sendSync('get-current-window-position');
 
         props.updateSettings({
             windowSizeWidth: size[0],
@@ -33,7 +33,7 @@ function App(props) {
         }).then(() => {
             const close = () => {
                 props.saveData({ clean: true }).finally(() => {
-                    electron.ipcRenderer.send('closed');
+                    ipcRenderer.send('closed');
                 });
             };
 
@@ -55,10 +55,10 @@ function App(props) {
     }, []);
 
     useEffect(() => {
-        electron.ipcRenderer.on('app-close', onClose);
+        ipcRenderer.on('app-close', onClose);
 
         return () => {
-            electron.ipcRenderer.removeListener('app-close', onClose);
+            ipcRenderer.removeListener('app-close', onClose);
         };
     }, [props.settings]);
 
