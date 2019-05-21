@@ -1,0 +1,24 @@
+[
+    {
+        "title": "Filter by star and sort by title descending",
+        "color": "#e63535",
+        "id": "1f7a3a87-552a-4425-8fb3-81def5f36bc3",
+        "refIds": {},
+        "creationDate": "2019-05-11T09:40:59.231Z",
+        "updateDate": "2019-05-11T09:46:22.651Z",
+        "state": "TO_UPDATE",
+        "condition": {
+            "id": "0935aaa9-a6fc-4622-9cc1-054f23405022",
+            "field": "star",
+            "type": "equal",
+            "value": true
+        },
+        "sorters": [
+            {
+                "id": "9c7a5bcf-bcd8-4679-8916-3857ef3690ba",
+                "field": "title",
+                "direction": "descending"
+            }
+        ]
+    }
+]

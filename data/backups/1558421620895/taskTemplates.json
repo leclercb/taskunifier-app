@@ -1,0 +1,21 @@
+[
+    {
+        "title": "Test Task Template",
+        "color": "#b17070",
+        "id": "6431097b-6fdf-4730-8ef7-20e87e110791",
+        "refIds": {},
+        "creationDate": "2019-05-11T15:30:28.274Z",
+        "updateDate": "2019-05-12T06:56:45.533Z",
+        "state": "TO_UPDATE",
+        "properties": {
+            "title": "",
+            "priority": "high",
+            "startDate": "2019-05-12T06:55:56.219Z",
+            "dueDate": "2019-05-13T06:55:58.470Z",
+            "folder": "7ccd9fc1-a3fe-4ab9-9a93-d2aa0d3da900",
+            "location": "19a04367-c245-43c3-9b90-48d33dfe2e1c",
+            "context": "26525d43-68cb-4270-962e-515da08e5d9e",
+            "length": 60
+        }
+    }
+]

@@ -31,7 +31,11 @@ import { createDirectory, getUserDataPath, join } from 'utils/ActionUtils';
 import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
 
-export function _loadData(path) {
+export function _loadData(path, options) {
+    options = merge({
+        skipSettings: false
+    }, options || {});
+
     return (dispatch, getState) => {
         return new Promise((resolve, reject) => {
             const processId = uuid();
@@ -48,8 +52,7 @@ export function _loadData(path) {
                     path = getState().settings.dataFolder;
                 }
 
-                Promise.all([
-                    dispatch(loadSettingsFromFile(join(path, 'settings.json'))),
+                const promises = [
                     dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
                     dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
                     dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
@@ -62,7 +65,13 @@ export function _loadData(path) {
                     dispatch(loadTaskFieldsFromFile(join(path, 'taskFields.json'))),
                     dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
                     dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
-                ]).then(() => {
+                ];
+
+                if (!options.skipSettings) {
+                    promises.unshift(dispatch(loadSettingsFromFile(join(path, 'settings.json'))));
+                }
+
+                Promise.all(promises).then(() => {
                     dispatch(updateProcess({
                         id: processId,
                         state: 'COMPLETED'
@@ -82,8 +91,8 @@ export function _loadData(path) {
     };
 }
 
-export function loadData() {
-    return _loadData(null);
+export function loadData(options) {
+    return _loadData(null, options);
 }
 
 export function _saveData(path, options) {

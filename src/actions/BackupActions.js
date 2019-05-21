@@ -9,7 +9,7 @@ import { getBackups } from 'utils/BackupUtils';
 export function restoreBackup(backupId) {
     return (dispatch, getState) => {
         const path = join(getState().settings.dataFolder, 'backups', backupId);
-        return dispatch(_loadData(path));
+        return dispatch(_loadData(path, { skipSettings: true }));
     };
 }
 
