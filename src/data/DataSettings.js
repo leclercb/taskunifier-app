@@ -1,12 +1,14 @@
 import React from 'react';
-import { Button, notification } from 'antd';
+import { Button, Modal, Select, notification } from 'antd';
 import moment from 'moment';
+import { restoreBackup } from 'actions/BackupActions';
 import { getLatestVersion, testConnection } from 'actions/RequestActions';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getUserDataPath } from 'utils/ActionUtils';
-import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
+import { getBackups } from 'utils/BackupUtils';
 import { compareVersions } from 'utils/CompareUtils';
+import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -294,13 +296,6 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: 'automaticBackup',
-                    title: 'Enable automatic backup',
-                    type: 'boolean',
-                    value: true,
-                    editable: true
-                },
-                {
                     id: 'maxBackups',
                     title: 'Maximum number of backups to keep',
                     type: 'number',
@@ -320,6 +315,33 @@ export function getCategories() {
                     type: 'dateTime',
                     value: moment().toJSON(),
                     editable: false
+                },
+                {
+                    id: 'restoreFromBackup',
+                    title: 'Restore from backup',
+                    type: 'button',
+                    value: (settings, updateSettings, dispatcher) => {
+                        const backups = getBackups(settings);
+                        let selectedBackup = null;
+
+                        Modal.confirm({
+                            title: 'Restore from backup',
+                            content: (
+                                <Select onChange={value => selectedBackup = value} style={{ width: 200 }}>
+                                    {backups.map(backup => (
+                                        <Select.Option key={backup} value={backup}>
+                                            {moment(backup).format(`${settings.dateFormat} ${settings.timeFormat}`)}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            ),
+                            okText: 'Restore',
+                            onOk: () => {
+                                dispatcher(restoreBackup(selectedBackup.toString()));
+                            }
+                        });
+                    },
+                    editable: true
                 }
             ]
         },

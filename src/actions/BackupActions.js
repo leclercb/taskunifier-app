@@ -81,7 +81,7 @@ export function cleanBackups() {
                 notify: true
             }));
 
-            const backups = getBackups(state);
+            const backups = getBackups(getSettings(state));
             const promises = [];
 
             for (let index = 0; index < backups.length - maxBackups; index++) {
