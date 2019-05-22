@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Divider, Empty, Row, Form } from 'antd';
+import { Col, Divider, Empty, Form, Row } from 'antd';
 import PropTypes from 'prop-types';
 import FilterConditionTree from 'components/filters/FilterConditionTree';
 import FilterList from 'components/filters/FilterList';
@@ -50,15 +50,19 @@ function TaskFilterManager(props) {
                             key={selectedTaskFilterId}
                             filter={selectedTaskFilter}
                             updateFilter={props.updateTaskFilter}
-                            extraFields={(props, getFieldDecorator) => (
-                                <Form.Item label="Task Template">
-                                    {getFieldDecorator('taskTemplate', {
-                                        initialValue: props.filter.taskTemplate
-                                    })(
-                                        <TaskTemplateSelect />
-                                    )}
-                                </Form.Item>
-                            )} />
+                            extraFields={(props, getFieldDecorator) => {
+                                /* eslint-disable react/prop-types */
+                                return (
+                                    <Form.Item label="Task Template">
+                                        {getFieldDecorator('taskTemplate', {
+                                            initialValue: props.filter.taskTemplate
+                                        })(
+                                            <TaskTemplateSelect />
+                                        )}
+                                    </Form.Item>
+                                );
+                                /* eslint-enable react/prop-types */
+                            }} />
                         <Divider>Filters</Divider>
                         <FilterConditionTree
                             key={'conditionTree_' + selectedTaskFilterId}

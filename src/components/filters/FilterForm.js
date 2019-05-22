@@ -48,7 +48,7 @@ FilterForm.propTypes = {
     form: PropTypes.object.isRequired,
     filter: FilterPropType.isRequired,
     updateFilter: PropTypes.func.isRequired,
-    extraField: PropTypes.func
+    extraFields: PropTypes.func
 };
 
 export default Form.create({

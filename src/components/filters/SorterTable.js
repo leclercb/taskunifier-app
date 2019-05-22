@@ -113,7 +113,7 @@ function SorterTable(props) {
     return (
         <React.Fragment>
             {props.sorters.length === 0 && (
-                <Empty description={"No sorter, click on the \"Add\" button to add your first sorter !"} />
+                <Empty description={'No sorter, click on the "Add" button to add your first sorter !'} />
             )}
             {props.sorters.length > 0 && (
                 <Table
