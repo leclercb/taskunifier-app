@@ -1,12 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReminderList from 'components/reminders/ReminderList';
 
-function ReminderManager() {
+function ReminderManager(props) {
     return (
-        <ReminderList />
+        <ReminderList date={props.date} />
     );
 }
 
-ReminderManager.propTypes = {};
+ReminderManager.propTypes = {
+    date: PropTypes.string.isRequired
+};
 
 export default ReminderManager;

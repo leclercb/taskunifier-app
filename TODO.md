@@ -1,7 +1,7 @@
 ## Todo List
 
+* Add/remove fields
 * Print config (columns, size)
-* Postpone Snooze
 
 ## To Try
 
@@ -10,7 +10,6 @@
 
 ## Future Features
 
-* Add/remove fields
 * Synchronize
 * Use "mention" in notes
 * Sub-categories (children)

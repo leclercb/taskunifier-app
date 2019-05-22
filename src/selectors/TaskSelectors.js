@@ -8,6 +8,7 @@ import { filterByVisibleState } from 'utils/CategoryUtils';
 import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
 import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
+import { showReminder } from 'utils/ReminderUtils';
 import { sortObjects } from 'utils/SorterUtils';
 
 export const getTasks = state => state.tasks;
@@ -80,6 +81,24 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
             }
 
             return true;
+        });
+    }
+);
+
+export const getTaskReminders = createSelector(
+    getTasksFilteredBySelectedFilter,
+    (state, props) => props.date,
+    (tasks, date) => {
+        return tasks.filter(task => {
+            if (showReminder(task.startDate, task.startDateReminder, date)) {
+                return true;
+            }
+
+            if (showReminder(task.dueDate, task.dueDateReminder, date)) {
+                return true;
+            }
+
+            return false;
         });
     }
 );
