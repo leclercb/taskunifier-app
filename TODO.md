@@ -1,5 +1,6 @@
 ## Todo List
 
+* Merge note and task filters
 * Add/remove fields
 * Print config (columns, size)
 
