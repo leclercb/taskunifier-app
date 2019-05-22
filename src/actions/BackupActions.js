@@ -1,10 +1,19 @@
 import uuid from 'uuid';
 import moment from 'moment';
+import { getDirectories, getPathSeparator, deleteDirectory, join } from 'actions/ActionUtils';
 import { _loadData, _saveData } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
-import { deleteDirectory, join } from 'utils/ActionUtils';
-import { getBackups } from 'utils/BackupUtils';
+
+export function getBackupDate(directory) {
+    return Number(directory.substr(directory.lastIndexOf(getPathSeparator()) + 1));
+}
+
+export function getBackups(settings) {
+    const path = join(settings.dataFolder, 'backups');
+    const backups = getDirectories(path).map(directory => getBackupDate(directory));
+    return backups.sort((a, b) => Number(a) - Number(b));
+}
 
 export function restoreBackup(backupId) {
     return (dispatch, getState) => {

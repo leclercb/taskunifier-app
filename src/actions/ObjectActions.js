@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import moment from 'moment';
+import { loadFromFile, saveToFile } from 'actions/ActionUtils';
 import Constants from 'constants/Constants';
-import { loadFromFile, saveToFile } from 'utils/ActionUtils';
 import { filterByStatic } from 'utils/CategoryUtils';
 
 export function loadObjectsFromFile(property, file) {
