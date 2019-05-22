@@ -3,19 +3,18 @@ import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import { Empty, Menu } from 'antd';
 import ConditionTree from 'components/common/conditiontree/ConditionTree';
+import FilterConditionForm from 'components/filters/FilterConditionForm';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import withNoteFields from 'containers/WithNoteFields';
-import NoteFilterConditionForm from 'components/notefilters/NoteFilterConditionForm';
 
-function NoteFilterEmpty() {
+function FilterEmpty() {
     return (
         <Empty />
     );
 }
 
-function NoteFilterConditionTree(props) {
+function FilterConditionTree(props) {
     const createLeafObject = (parentCondition, key) => {
-        const field = props.noteFields.find(field => field.id === key);
+        const field = props.context.fields.find(field => field.id === key);
 
         if (!field) {
             throw new Error('Unknown condition field "' + key + '"');
@@ -24,24 +23,24 @@ function NoteFilterConditionTree(props) {
         return {
             id: uuid(),
             field: field.id,
-            type: 'equal',
+            type: null,
             value: null
         };
     };
 
     const getLeafComponent = condition => {
-        const field = props.noteFields.find(field => field.id === condition.field);
+        const field = props.context.fields.find(field => field.id === condition.field);
 
         if (!field) {
-            return NoteFilterEmpty;
+            return FilterEmpty;
         }
 
-        return NoteFilterConditionForm;
+        return FilterConditionForm;
     };
 
     const onSaveCondition = condition => {
-        props.updateNoteFilter({
-            ...props.noteFilter,
+        props.updateFilter({
+            ...props.filter,
             condition
         });
     };
@@ -49,9 +48,9 @@ function NoteFilterConditionTree(props) {
     return (
         <ConditionTree
             disabled={!!props.disabled}
-            condition={props.noteFilter.condition}
+            condition={props.filter.condition}
             context={props.context}
-            addMenuItems={props.noteFields.map(field => (
+            addMenuItems={props.context.fields.map(field => (
                 <Menu.Item key={field.id}>{field.title}</Menu.Item>
             ))}
             createLeafObject={createLeafObject}
@@ -60,12 +59,13 @@ function NoteFilterConditionTree(props) {
     );
 }
 
-NoteFilterConditionTree.propTypes = {
-    noteFilter: PropTypes.object.isRequired,
-    noteFields: PropTypes.arrayOf(FieldPropType.isRequired),
-    context: PropTypes.object,
+FilterConditionTree.propTypes = {
+    filter: PropTypes.object.isRequired,
+    context: PropTypes.shape({
+        fields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
+    }).isRequired,
     disabled: PropTypes.bool,
-    updateNoteFilter: PropTypes.func.isRequired
+    updateFilter: PropTypes.func.isRequired
 };
 
-export default withNoteFields(NoteFilterConditionTree);
+export default FilterConditionTree;

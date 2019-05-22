@@ -2,11 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
-import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import { FilterPropType } from 'proptypes/FilterPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
-function TaskFilterForm(props) {
+function FilterForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
@@ -15,7 +14,7 @@ function TaskFilterForm(props) {
         <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
-                    initialValue: props.taskFilter.title,
+                    initialValue: props.filter.title,
                     rules: [
                         {
                             required: true,
@@ -28,7 +27,7 @@ function TaskFilterForm(props) {
             </Form.Item>
             <Form.Item label="Color">
                 {getFieldDecorator('color', {
-                    initialValue: props.taskFilter.color,
+                    initialValue: props.filter.color,
                     valuePropName: 'color',
                     rules: [
                         {
@@ -40,24 +39,19 @@ function TaskFilterForm(props) {
                     <ColorPicker />
                 )}
             </Form.Item>
-            <Form.Item label="Task Template">
-                {getFieldDecorator('taskTemplate', {
-                    initialValue: props.taskFilter.taskTemplate
-                })(
-                    <TaskTemplateSelect />
-                )}
-            </Form.Item>
+            {props.extraFields ? props.extraFields(props, getFieldDecorator) : null}
         </Form>
     );
 }
 
-TaskFilterForm.propTypes = {
+FilterForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFilter: TaskFilterPropType.isRequired,
-    updateTaskFilter: PropTypes.func.isRequired
+    filter: FilterPropType.isRequired,
+    updateFilter: PropTypes.func.isRequired,
+    extraField: PropTypes.func
 };
 
 export default Form.create({
-    name: 'taskFilter',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.taskFilter, props.updateTaskFilter)
-})(TaskFilterForm);
+    name: 'filter',
+    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.filter, props.updateFilter)
+})(FilterForm);

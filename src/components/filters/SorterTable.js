@@ -6,21 +6,18 @@ import { Column, Table } from 'react-virtualized';
 import uuid from 'uuid';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
-import { DraggableRowRenderer } from 'components/common/table/DraggableRowRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import withSettings from 'containers/WithSettings';
-import { getWidthForType } from 'data/DataFieldTypes';
-import { getSorterBackgroundColor } from 'utils/SettingUtils';
-import { getTaskSorterFields } from 'data/DataTaskSorterFields';
+import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
 import { move } from 'utils/ArrayUtils';
+import { getSorterBackgroundColor } from 'utils/SettingUtils';
 
-function TaskSorterTable(props) {
+function SorterTable(props) {
     const [selectedSorterIds, setSelectedSorterIds] = useState([]);
-
-    const sorterFields = getTaskSorterFields();
 
     const onAddSorter = () => {
         props.updateSorters([
@@ -45,7 +42,7 @@ function TaskSorterTable(props) {
         props.updateSorters(sorters);
     };
 
-    const onDropTaskSorter = (dragData, dropData) => {
+    const onDropSorter = (dragData, dropData) => {
         const sorters = [...props.sorters];
         move(sorters, dragData.rowIndex, dropData.rowIndex);
         props.updateSorters(sorters);
@@ -53,11 +50,11 @@ function TaskSorterTable(props) {
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler('taskSorterColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('taskSorterColumnOrder_', sorterFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler(props.widthSettingPrefix, props.updateSettings);
+    const onMove = moveHandler(props.orderSettingPrefix, props.sorterFields, props.settings, props.updateSettings);
 
-    const columns = sortBy(sorterFields, field => props.settings['taskSorterColumnOrder_' + field.id] || 0).map(field => {
-        const settingKey = 'taskSorterColumnWidth_' + field.id;
+    const columns = sortBy(props.sorterFields, field => props.settings[props.orderSettingPrefix + field.id] || 0).map(field => {
+        const settingKey = props.widthSettingPrefix + field.id;
         let width = Number(props.settings[settingKey]);
 
         if (!width) {
@@ -83,15 +80,33 @@ function TaskSorterTable(props) {
                         onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
-                cellRenderer={({ cellData, rowData }) => (
-                    <CellRenderer
-                        field={field}
-                        value={cellData}
-                        onChange={allValues => onUpdateSorter({
-                            ...rowData,
-                            ...allValues
-                        })} />
-                )} />
+                cellRenderer={({ cellData, rowData, rowIndex }) => {
+                    let dndProps = {};
+
+                    if (!isAlwaysInEditionForType(field.type)) {
+                        dndProps = {
+                            dndEnabled: true,
+                            dragType: 'sorter',
+                            dropType: 'sorter',
+                            dndData: {
+                                rowData,
+                                rowIndex
+                            },
+                            onDrop: onDropSorter
+                        };
+                    }
+
+                    return (
+                        <CellRenderer
+                            field={field}
+                            value={cellData}
+                            onChange={allValues => onUpdateSorter({
+                                ...rowData,
+                                ...allValues
+                            })}
+                            {...dndProps} />
+                    );
+                }} />
         );
     });
 
@@ -108,13 +123,6 @@ function TaskSorterTable(props) {
                     headerHeight={20}
                     rowCount={props.sorters.length}
                     rowGetter={({ index }) => props.sorters[index]}
-                    rowRenderer={props => (
-                        <DraggableRowRenderer
-                            {...props}
-                            dragType="taskSorter"
-                            dropType="taskSorter"
-                            onDrop={onDropTaskSorter} />
-                    )}
                     rowStyle={({ index }) => {
                         const sorter = props.sorters[index];
 
@@ -152,11 +160,14 @@ function TaskSorterTable(props) {
     );
 }
 
-TaskSorterTable.propTypes = {
+SorterTable.propTypes = {
     sorters: PropTypes.arrayOf(SorterPropType.isRequired).isRequired,
+    sorterFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     updateSorters: PropTypes.func.isRequired,
     settings: SettingsPropType.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    updateSettings: PropTypes.func.isRequired,
+    orderSettingPrefix: PropTypes.string.isRequired,
+    widthSettingPrefix: PropTypes.string.isRequired
 };
 
-export default withSettings(TaskSorterTable);
+export default withSettings(SorterTable);

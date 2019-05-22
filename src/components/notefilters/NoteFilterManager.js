@@ -1,12 +1,15 @@
 import React from 'react';
 import { Col, Divider, Empty, Row } from 'antd';
 import PropTypes from 'prop-types';
-import NoteFilterConditionTree from 'components/notefilters/NoteFilterConditionTree';
-import NoteFilterList from 'components/notefilters/NoteFilterList';
-import NoteFilterForm from 'components/notefilters/NoteFilterForm';
-import NoteSorterTable from 'components/notefilters/NoteSorterTable';
+import FilterConditionTree from 'components/filters/FilterConditionTree';
+import FilterList from 'components/filters/FilterList';
+import FilterForm from 'components/filters/FilterForm';
+import SorterTable from 'components/filters/SorterTable';
+import withNoteFields from 'containers/WithNoteFields';
 import withNoteFilters from 'containers/WithNoteFilters';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
+import { getNoteSorterFields } from 'data/DataNoteSorterFields';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
 
 function NoteFilterManager(props) {
     const selectedNoteFilterId = props.noteFilterId;
@@ -31,31 +34,37 @@ function NoteFilterManager(props) {
     return (
         <Row>
             <Col span={6}>
-                <NoteFilterList
-                    noteFilters={props.noteFilters}
-                    selectedNoteFilterId={selectedNoteFilterId}
-                    addNoteFilter={onAddNoteFilter}
-                    deleteNoteFilter={props.deleteNoteFilter}
-                    onNoteFilterSelection={onNoteFilterSelection} />
+                <FilterList
+                    filters={props.noteFilters}
+                    selectedFilterId={selectedNoteFilterId}
+                    addFilter={onAddNoteFilter}
+                    deleteFilter={props.deleteNoteFilter}
+                    onFilterSelection={onNoteFilterSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedNoteFilter ? (
                     <React.Fragment>
-                        <NoteFilterForm
+                        <FilterForm
                             key={selectedNoteFilterId}
-                            noteFilter={selectedNoteFilter}
-                            updateNoteFilter={props.updateNoteFilter} />
+                            filter={selectedNoteFilter}
+                            updateFilter={props.updateNoteFilter} />
                         <Divider>Filters</Divider>
-                        <NoteFilterConditionTree
+                        <FilterConditionTree
                             key={'conditionTree_' + selectedNoteFilterId}
-                            noteFilter={selectedNoteFilter}
-                            updateNoteFilter={props.updateNoteFilter} />
+                            filter={selectedNoteFilter}
+                            context={{
+                                fields: props.noteFields
+                            }}
+                            updateFilter={props.updateNoteFilter} />
                         <Divider>Sorters</Divider>
-                        <NoteSorterTable
+                        <SorterTable
                             key={'sorterTable_' + selectedNoteFilterId}
                             sorters={selectedNoteFilter.sorters || []}
-                            updateSorters={onUpdateSorters} />
+                            sorterFields={getNoteSorterFields()}
+                            updateSorters={onUpdateSorters}
+                            orderSettingPrefix="noteSorterColumnOrder_"
+                            widthSettingPrefix="noteSorterColumnWidth_" />
                     </React.Fragment>
                 ) : <Empty description="Please select a note filter" />}
             </Col>
@@ -66,10 +75,11 @@ function NoteFilterManager(props) {
 NoteFilterManager.propTypes = {
     noteFilterId: PropTypes.string,
     noteFilters: PropTypes.arrayOf(NoteFilterPropType.isRequired).isRequired,
+    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onNoteFilterSelection: PropTypes.func.isRequired,
     addNoteFilter: PropTypes.func.isRequired,
     updateNoteFilter: PropTypes.func.isRequired,
     deleteNoteFilter: PropTypes.func.isRequired
 };
 
-export default withNoteFilters(NoteFilterManager);
+export default withNoteFields(withNoteFilters(NoteFilterManager));

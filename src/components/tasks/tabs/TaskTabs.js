@@ -39,7 +39,7 @@ function TaskTabs(props) {
     };
 
     return (
-        <Tabs animated={false} className='ant-tabs-full-height'>
+        <Tabs animated={false} className="ant-tabs-full-height">
             <Tabs.TabPane tab="Note" key="note">
                 <TaskNoteForm
                     task={props.selectedTasks[0]}
@@ -50,24 +50,24 @@ function TaskTabs(props) {
                     linkedObjectFields={getLinkedContactFields()}
                     linkedObjects={props.selectedTasks[0].linkedContacts || []}
                     updateLinkedObjects={onUpdateLinkedContacts}
-                    orderSettingPrefix='linkedContactColumnOrder_'
-                    widthSettingPrefix='linkedContactColumnWidth_' />
+                    orderSettingPrefix="linkedContactColumnOrder_"
+                    widthSettingPrefix="linkedContactColumnWidth_" />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Files" key="linkedFiles">
                 <LinkedObjectTable
                     linkedObjectFields={getLinkedFileFields()}
                     linkedObjects={props.selectedTasks[0].linkedFiles || []}
                     updateLinkedObjects={onUpdateLinkedFiles}
-                    orderSettingPrefix='linkedFileColumnOrder_'
-                    widthSettingPrefix='linkedFileColumnWidth_' />
+                    orderSettingPrefix="linkedFileColumnOrder_"
+                    widthSettingPrefix="linkedFileColumnWidth_" />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Linked Tasks" key="linkedTasks">
                 <LinkedObjectTable
                     linkedObjectFields={getLinkedTaskFields()}
                     linkedObjects={props.selectedTasks[0].linkedTasks || []}
                     updateLinkedObjects={onUpdateLinkedTasks}
-                    orderSettingPrefix='linkedTaskColumnOrder_'
-                    widthSettingPrefix='linkedTaskColumnWidth_' />
+                    orderSettingPrefix="linkedTaskColumnOrder_"
+                    widthSettingPrefix="linkedTaskColumnWidth_" />
             </Tabs.TabPane>
         </Tabs>
     );

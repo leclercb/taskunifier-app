@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Input, Row } from 'antd';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType, getSelectForType } from 'data/DataFieldComponents';
 import { getConditionsFieldTypeForType, getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
-function TaskFilterConditionForm(props) {
+function FilterConditionForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = {
@@ -21,7 +20,7 @@ function TaskFilterConditionForm(props) {
         }
     };
 
-    const field = props.taskFields.find(field => field.id === props.condition.field);
+    const field = props.context.fields.find(field => field.id === props.condition.field);
     const conditionFieldType = getConditionsFieldTypeForType(field.type);
 
     return (
@@ -69,16 +68,17 @@ function TaskFilterConditionForm(props) {
     );
 }
 
-TaskFilterConditionForm.propTypes = {
+FilterConditionForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     condition: PropTypes.object.isRequired,
-    context: PropTypes.object,
+    context: PropTypes.shape({
+        fields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
+    }).isRequired,
     disabled: PropTypes.bool.isRequired,
     onUpdate: PropTypes.func.isRequired
 };
 
-export default withTaskFields(Form.create({
+export default Form.create({
     name: 'condition',
     onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.condition, props.onUpdate, true)
-})(TaskFilterConditionForm));
+})(FilterConditionForm);

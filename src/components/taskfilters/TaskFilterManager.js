@@ -1,12 +1,16 @@
 import React from 'react';
-import { Col, Divider, Empty, Row } from 'antd';
+import { Col, Divider, Empty, Row, Form } from 'antd';
 import PropTypes from 'prop-types';
-import TaskFilterConditionTree from 'components/taskfilters/TaskFilterConditionTree';
-import TaskFilterList from 'components/taskfilters/TaskFilterList';
-import TaskFilterForm from 'components/taskfilters/TaskFilterForm';
-import TaskSorterTable from 'components/taskfilters/TaskSorterTable';
+import FilterConditionTree from 'components/filters/FilterConditionTree';
+import FilterList from 'components/filters/FilterList';
+import FilterForm from 'components/filters/FilterForm';
+import SorterTable from 'components/filters/SorterTable';
+import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
+import withTaskFields from 'containers/WithTaskFields';
 import withTaskFilters from 'containers/WithTaskFilters';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import { getTaskSorterFields } from 'data/DataTaskSorterFields';
+import { FieldPropType } from 'proptypes/FieldPropTypes';
 
 function TaskFilterManager(props) {
     const selectedTaskFilterId = props.taskFilterId;
@@ -31,31 +35,46 @@ function TaskFilterManager(props) {
     return (
         <Row>
             <Col span={6}>
-                <TaskFilterList
-                    taskFilters={props.taskFilters}
-                    selectedTaskFilterId={selectedTaskFilterId}
-                    addTaskFilter={onAddTaskFilter}
-                    deleteTaskFilter={props.deleteTaskFilter}
-                    onTaskFilterSelection={onTaskFilterSelection} />
+                <FilterList
+                    filters={props.taskFilters}
+                    selectedFilterId={selectedTaskFilterId}
+                    addFilter={onAddTaskFilter}
+                    deleteFilter={props.deleteTaskFilter}
+                    onFilterSelection={onTaskFilterSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedTaskFilter ? (
                     <React.Fragment>
-                        <TaskFilterForm
+                        <FilterForm
                             key={selectedTaskFilterId}
-                            taskFilter={selectedTaskFilter}
-                            updateTaskFilter={props.updateTaskFilter} />
+                            filter={selectedTaskFilter}
+                            updateFilter={props.updateTaskFilter}
+                            extraFields={(props, getFieldDecorator) => (
+                                <Form.Item label="Task Template">
+                                    {getFieldDecorator('taskTemplate', {
+                                        initialValue: props.filter.taskTemplate
+                                    })(
+                                        <TaskTemplateSelect />
+                                    )}
+                                </Form.Item>
+                            )} />
                         <Divider>Filters</Divider>
-                        <TaskFilterConditionTree
+                        <FilterConditionTree
                             key={'conditionTree_' + selectedTaskFilterId}
-                            taskFilter={selectedTaskFilter}
-                            updateTaskFilter={props.updateTaskFilter} />
+                            filter={selectedTaskFilter}
+                            context={{
+                                fields: props.taskFields
+                            }}
+                            updateFilter={props.updateTaskFilter} />
                         <Divider>Sorters</Divider>
-                        <TaskSorterTable
+                        <SorterTable
                             key={'sorterTable_' + selectedTaskFilterId}
                             sorters={selectedTaskFilter.sorters || []}
-                            updateSorters={onUpdateSorters} />
+                            sorterFields={getTaskSorterFields()}
+                            updateSorters={onUpdateSorters}
+                            orderSettingPrefix="taskSorterColumnOrder_"
+                            widthSettingPrefix="taskSorterColumnWidth_" />
                     </React.Fragment>
                 ) : <Empty description="Please select a task filter" />}
             </Col>
@@ -66,10 +85,11 @@ function TaskFilterManager(props) {
 TaskFilterManager.propTypes = {
     taskFilterId: PropTypes.string,
     taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
+    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onTaskFilterSelection: PropTypes.func.isRequired,
     addTaskFilter: PropTypes.func.isRequired,
     updateTaskFilter: PropTypes.func.isRequired,
     deleteTaskFilter: PropTypes.func.isRequired
 };
 
-export default withTaskFilters(TaskFilterManager);
+export default withTaskFields(withTaskFilters(TaskFilterManager));

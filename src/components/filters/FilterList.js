@@ -5,37 +5,37 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import { createActions } from 'utils/CategoryListUtils';
 
-function NoteFilterList(props) {
+function FilterList(props) {
     return (
         <React.Fragment>
             <List
                 size="small"
                 bordered={true}
-                dataSource={props.noteFilters}
+                dataSource={props.filters}
                 style={{ minHeight: 400, maxHeight: 400, overflowY: 'auto' }}
                 renderItem={item => (
                     <List.Item
-                        onClick={() => props.onNoteFilterSelection(item)}
-                        className={item.id === props.selectedNoteFilterId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addNoteFilter(item), () => props.deleteNoteFilter(item.id))}>
+                        onClick={() => props.onFilterSelection(item)}
+                        className={item.id === props.selectedFilterId ? 'selected-list-item' : null}>
+                        <LeftRight right={createActions(item, () => props.addFilter(item), () => props.deleteFilter(item.id))}>
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addNoteFilter()} style={{ marginTop: 5 }}>
+            <Button onClick={() => props.addFilter()} style={{ marginTop: 5 }}>
                 <Icon icon="plus" text="Add" />
             </Button>
         </React.Fragment>
     );
 }
 
-NoteFilterList.propTypes = {
-    noteFilters: PropTypes.array.isRequired,
-    selectedNoteFilterId: PropTypes.string,
-    addNoteFilter: PropTypes.func.isRequired,
-    deleteNoteFilter: PropTypes.func.isRequired,
-    onNoteFilterSelection: PropTypes.func.isRequired
+FilterList.propTypes = {
+    filters: PropTypes.array.isRequired,
+    selectedFilterId: PropTypes.string,
+    addFilter: PropTypes.func.isRequired,
+    deleteFilter: PropTypes.func.isRequired,
+    onFilterSelection: PropTypes.func.isRequired
 };
 
-export default NoteFilterList;
+export default FilterList;
