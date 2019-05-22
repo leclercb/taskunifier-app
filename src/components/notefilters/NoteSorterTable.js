@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Empty } from 'antd';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { Column, Table } from 'react-virtualized';
@@ -97,43 +97,48 @@ function NoteSorterTable(props) {
 
     return (
         <React.Fragment>
-            <Table
-                width={tableWidth}
-                height={150}
-                rowHeight={38}
-                headerHeight={20}
-                rowCount={props.sorters.length}
-                rowGetter={({ index }) => props.sorters[index]}
-                rowRenderer={props => (
-                    <DraggableRowRenderer
-                        {...props}
-                        dragType="noteSorter"
-                        dropType="noteSorter"
-                        onDrop={onDropNoteSorter} />
-                )}
-                rowStyle={({ index }) => {
-                    const sorter = props.sorters[index];
+            {props.sorters.length === 0 && (
+                <Empty description={"No sorter, click on the \"Add\" button to add your first sorter !"} />
+            )}
+            {props.sorters.length > 0 && (
+                <Table
+                    width={tableWidth}
+                    height={150}
+                    rowHeight={38}
+                    headerHeight={20}
+                    rowCount={props.sorters.length}
+                    rowGetter={({ index }) => props.sorters[index]}
+                    rowRenderer={props => (
+                        <DraggableRowRenderer
+                            {...props}
+                            dragType="noteSorter"
+                            dropType="noteSorter"
+                            onDrop={onDropNoteSorter} />
+                    )}
+                    rowStyle={({ index }) => {
+                        const sorter = props.sorters[index];
 
-                    if (!sorter) {
-                        return {};
-                    }
+                        if (!sorter) {
+                            return {};
+                        }
 
-                    let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
+                        let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
 
-                    if (selectedSorterIds.includes(sorter.id)) {
-                        backgroundColor = '#b8ccbf';
-                    }
+                        if (selectedSorterIds.includes(sorter.id)) {
+                            backgroundColor = '#b8ccbf';
+                        }
 
-                    return {
-                        backgroundColor
-                    };
-                }}
-                onRowClick={multiSelectionHandler(
-                    rowData => rowData.id,
-                    selectedSorterIds,
-                    setSelectedSorterIds)} >
-                {columns}
-            </Table>
+                        return {
+                            backgroundColor
+                        };
+                    }}
+                    onRowClick={multiSelectionHandler(
+                        rowData => rowData.id,
+                        selectedSorterIds,
+                        setSelectedSorterIds)} >
+                    {columns}
+                </Table>
+            )}
             <div style={{ marginTop: 10 }}>
                 <Button onClick={() => onAddSorter()}>
                     Add

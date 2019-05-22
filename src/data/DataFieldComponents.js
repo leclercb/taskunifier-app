@@ -716,7 +716,7 @@ export function getFieldComponents(type, options) {
 
     configuration.select = () => (
         <Select dropdownMatchSelectWidth={false} placeholder="Condition">
-            {getFieldType(type).map(condition => (
+            {getFieldType(type).conditions.map(condition => (
                 <Select.Option key={condition.type} value={condition.type}>
                     {condition.title}
                 </Select.Option>
