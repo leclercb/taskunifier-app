@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Select, notification } from 'antd';
 import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
-import { restoreBackup, getBackups } from 'actions/BackupActions';
+import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { getLatestVersion, testConnection } from 'actions/RequestActions';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';

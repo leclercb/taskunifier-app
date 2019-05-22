@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 import moment from 'moment';
-import { getDirectories, getPathSeparator, deleteDirectory, join } from 'actions/ActionUtils';
+import { deleteDirectory, getDirectories, getPathSeparator, join } from 'actions/ActionUtils';
 import { _loadData, _saveData } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
