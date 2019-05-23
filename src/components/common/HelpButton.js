@@ -9,7 +9,7 @@ function HelpButton(props) {
             id: props.id,
             run: true
         });
-    }
+    };
 
     return (
         <Icon

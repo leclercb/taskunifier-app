@@ -54,10 +54,10 @@ import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { formatRepeat } from 'utils/RepeatUtils';
 import {
+    toStringNumber,
     toStringPassword,
     toStringReminder,
-    toStringRepeatFrom,
-    toStringNumber
+    toStringRepeatFrom
 } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {

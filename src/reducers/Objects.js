@@ -1,5 +1,5 @@
 import { findChildren, findParents } from 'utils/HierarchyUtils';
-import { removePrivateKeys, clone } from 'utils/ObjectUtils';
+import { clone, removePrivateKeys } from 'utils/ObjectUtils';
 
 const Objects = (property, onUpdate = null) => (state = [], action) => {
     if (action.property !== property) {

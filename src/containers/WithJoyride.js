@@ -15,7 +15,7 @@ function withJoyride(Component) {
             if ([STATUS.FINISHED, STATUS.SKIPPED].includes(status)) {
                 props.setJoyrideOptions({ run: false });
             }
-        }
+        };
 
         const { joyride, ...restProps } = props;
 
@@ -26,13 +26,13 @@ function withJoyride(Component) {
                     callback={callback}
                     styles={{
                         options: {
-                            zIndex: 2000,
+                            zIndex: 2000
                         }
                     }}
                     {...getConfig(joyride.id)} />
                 <Component {...restProps} />
             </React.Fragment>
-        )
+        );
     }
 
     WithJoyride.propTypes = {
@@ -40,7 +40,7 @@ function withJoyride(Component) {
             id: PropTypes.string,
             run: PropTypes.bool
         }).isRequired,
-        children: PropTypes.node
+        setJoyrideOptions: PropTypes.func.isRequired
     };
 
     const mapStateToProps = state => ({
