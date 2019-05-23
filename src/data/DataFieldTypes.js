@@ -123,6 +123,7 @@ export function getFieldType(type, options) {
         case 'boolean': {
             configuration = {
                 title: 'Boolean',
+                allowCreation: true,
                 width: 100,
                 alwaysInEdition: true,
                 commitOnChange: true,
@@ -154,6 +155,7 @@ export function getFieldType(type, options) {
         case 'color': {
             configuration = {
                 title: 'Color',
+                allowCreation: true,
                 width: 100,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -185,6 +187,7 @@ export function getFieldType(type, options) {
         case 'contact': {
             configuration = {
                 title: 'Contact',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -216,6 +219,7 @@ export function getFieldType(type, options) {
         case 'context': {
             configuration = {
                 title: 'Context',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -249,6 +253,7 @@ export function getFieldType(type, options) {
 
             configuration = {
                 title: 'Date',
+                allowCreation: true,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -373,6 +378,7 @@ export function getFieldType(type, options) {
 
             configuration = {
                 title: 'Date time',
+                allowCreation: true,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -499,6 +505,7 @@ export function getFieldType(type, options) {
         case 'file': {
             configuration = {
                 title: 'File',
+                allowCreation: true,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -544,6 +551,7 @@ export function getFieldType(type, options) {
         case 'folder': {
             configuration = {
                 title: 'Folder',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -575,6 +583,7 @@ export function getFieldType(type, options) {
         case 'goal': {
             configuration = {
                 title: 'Goal',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -606,6 +615,7 @@ export function getFieldType(type, options) {
         case 'importance': {
             configuration = {
                 title: 'Importance',
+                allowCreation: true,
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -681,6 +691,7 @@ export function getFieldType(type, options) {
         case 'length': {
             configuration = {
                 title: 'Length',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -756,6 +767,7 @@ export function getFieldType(type, options) {
         case 'linkedContactLinks': {
             configuration = {
                 title: 'Linked Contact Links',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -793,6 +805,7 @@ export function getFieldType(type, options) {
         case 'linkedFileLinks': {
             configuration = {
                 title: 'Linked File Links',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -830,6 +843,7 @@ export function getFieldType(type, options) {
         case 'linkedTaskLinks': {
             configuration = {
                 title: 'Linked Task Links',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -867,6 +881,7 @@ export function getFieldType(type, options) {
         case 'location': {
             configuration = {
                 title: 'Location',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -899,13 +914,14 @@ export function getFieldType(type, options) {
             const currency = options && options.currency ? options.currency : '€';
 
             configuration = {
-                title: 'Money Dollar',
+                title: 'Money',
+                allowCreation: true,
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
-                toString: value => toStringNumber(value, '', currency),
+                toString: value => toStringNumber(value, currency + ' '),
                 conditions: [
                     {
                         type: 'equal',
@@ -981,6 +997,7 @@ export function getFieldType(type, options) {
         case 'note': {
             configuration = {
                 title: 'Note',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1012,6 +1029,7 @@ export function getFieldType(type, options) {
         case 'noteField': {
             configuration = {
                 title: 'Note Field',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1043,6 +1061,7 @@ export function getFieldType(type, options) {
         case 'number': {
             configuration = {
                 title: 'Number',
+                allowCreation: true,
                 width: 150,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1129,6 +1148,7 @@ export function getFieldType(type, options) {
         case 'password': {
             configuration = {
                 title: 'Password',
+                allowCreation: true,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1174,6 +1194,7 @@ export function getFieldType(type, options) {
         case 'priority': {
             configuration = {
                 title: 'Priority',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1265,6 +1286,7 @@ export function getFieldType(type, options) {
         case 'progress': {
             configuration = {
                 title: 'Progress',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1340,6 +1362,7 @@ export function getFieldType(type, options) {
         case 'reminder': {
             configuration = {
                 title: 'Reminder',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1371,6 +1394,7 @@ export function getFieldType(type, options) {
         case 'repeat': {
             configuration = {
                 title: 'Repeat',
+                allowCreation: false,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1402,6 +1426,7 @@ export function getFieldType(type, options) {
         case 'repeatFrom': {
             configuration = {
                 title: 'Repeat From',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1433,6 +1458,7 @@ export function getFieldType(type, options) {
         case 'select': {
             configuration = {
                 title: 'Select',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1470,6 +1496,7 @@ export function getFieldType(type, options) {
         case 'selectTags': {
             configuration = {
                 title: 'Select Tags',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1499,7 +1526,13 @@ export function getFieldType(type, options) {
                     }
                 ],
                 conditionsFieldType: 'selectTags',
-                options: []
+                options: [
+                    {
+                        id: 'values',
+                        title: 'Values',
+                        type: 'selectTags'
+                    }
+                ]
             };
 
             break;
@@ -1507,6 +1540,7 @@ export function getFieldType(type, options) {
         case 'sortDirection': {
             configuration = {
                 title: 'Sort Direction',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1538,6 +1572,7 @@ export function getFieldType(type, options) {
         case 'star': {
             configuration = {
                 title: 'Star',
+                allowCreation: true,
                 width: 100,
                 alwaysInEdition: true,
                 commitOnChange: true,
@@ -1569,6 +1604,7 @@ export function getFieldType(type, options) {
         case 'status': {
             configuration = {
                 title: 'Status',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1600,6 +1636,7 @@ export function getFieldType(type, options) {
         case 'tags': {
             configuration = {
                 title: 'Tags',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1637,6 +1674,7 @@ export function getFieldType(type, options) {
         case 'task': {
             configuration = {
                 title: 'Task',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1668,6 +1706,7 @@ export function getFieldType(type, options) {
         case 'taskField': {
             configuration = {
                 title: 'Task Field',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1699,6 +1738,7 @@ export function getFieldType(type, options) {
         case 'taskTemplate': {
             configuration = {
                 title: 'Task Template',
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1730,6 +1770,7 @@ export function getFieldType(type, options) {
         case 'textarea': {
             configuration = {
                 title: 'Text Area',
+                allowCreation: true,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1775,6 +1816,7 @@ export function getFieldType(type, options) {
         case 'timer': {
             configuration = {
                 title: 'Timer',
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 commitOnChange: false,
@@ -1801,6 +1843,7 @@ export function getFieldType(type, options) {
         default: {
             configuration = {
                 title: 'Text',
+                allowCreation: true,
                 width: 250,
                 alwaysInEdition: false,
                 commitOnChange: false,

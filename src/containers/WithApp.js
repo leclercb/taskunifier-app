@@ -9,6 +9,7 @@ import {
     setReminderManagerOptions,
     setSettingManagerOptions,
     setTaskEditionManagerOptions,
+    setTaskFieldManagerOptions,
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions,
     synchronize
@@ -27,6 +28,7 @@ import {
     getReminderManager,
     getSettingManager,
     getTaskEditionManager,
+    getTaskFieldManager,
     getTaskFilterManager,
     getTaskTemplateManager,
     isValidLicense
@@ -42,6 +44,7 @@ function withApp(Component) {
         categoryManager: getCategoryManager(state),
         reminderManager: getReminderManager(state),
         noteFilterManager: getNoteFilterManager(state),
+        taskFieldManager: getTaskFieldManager(state),
         taskFilterManager: getTaskFilterManager(state),
         taskEditionManager: getTaskEditionManager(state),
         taskTemplateManager: getTaskTemplateManager(state),
@@ -60,6 +63,7 @@ function withApp(Component) {
         setCategoryManagerOptions: options => dispatch(setCategoryManagerOptions(options)),
         setReminderManagerOptions: options => dispatch(setReminderManagerOptions(options)),
         setNoteFilterManagerOptions: options => dispatch(setNoteFilterManagerOptions(options)),
+        setTaskFieldManagerOptions: options => dispatch(setTaskFieldManagerOptions(options)),
         setTaskFilterManagerOptions: options => dispatch(setTaskFilterManagerOptions(options)),
         setTaskEditionManagerOptions: options => dispatch(setTaskEditionManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),

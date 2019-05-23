@@ -16,6 +16,7 @@ import {
     faCircle,
     faCog,
     faCogs,
+    faColumns,
     faCompass,
     faCopy,
     faCubes,
@@ -29,6 +30,7 @@ import {
     faFolderOpen,
     faHome,
     faKey,
+    faList,
     faMagic,
     faMinusSquare,
     faNetworkWired,
@@ -66,6 +68,7 @@ library.add(faChevronCircleRight);
 library.add(faCircle);
 library.add(faCog);
 library.add(faCogs);
+library.add(faColumns);
 library.add(faCompass);
 library.add(faCopy);
 library.add(faCubes);
@@ -79,6 +82,7 @@ library.add(faFolder);
 library.add(faFolderOpen);
 library.add(faHome);
 library.add(faKey);
+library.add(faList);
 library.add(faMagic);
 library.add(faMinusSquare);
 library.add(faNetworkWired);

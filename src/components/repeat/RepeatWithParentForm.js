@@ -16,7 +16,7 @@ function RepeatWithParentForm(props) {
     return (
         <Form>
             {getFieldDecorator('type', {
-                initialValue: props.repeat ? props.repeat.type : null
+                initialValue: props.repeat ? props.repeat.type : undefined
             })(
                 <Radio.Group>
                     <Radio style={radioStyle} value='withParent'>

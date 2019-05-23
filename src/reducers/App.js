@@ -27,6 +27,10 @@ const App = () => (state = {
         visible: false,
         noteFilterId: null
     },
+    taskFieldManager: {
+        visible: false,
+        taskFieldId: null
+    },
     taskFilterManager: {
         visible: false,
         taskFilterId: null
@@ -102,6 +106,14 @@ const App = () => (state = {
                 noteFilterManager: {
                     visible: 'visible' in action ? action.visible : state.noteFilterManager.visible,
                     noteFilterId: 'noteFilterId' in action ? action.noteFilterId : state.noteFilterManager.noteFilterId
+                }
+            };
+        case 'SET_TASK_FIELD_MANAGER_OPTIONS':
+            return {
+                ...state,
+                taskFieldManager: {
+                    visible: 'visible' in action ? action.visible : state.taskFieldManager.visible,
+                    taskFieldId: 'taskFieldId' in action ? action.taskFieldId : state.taskFieldManager.taskFieldId
                 }
             };
         case 'SET_TASK_FILTER_MANAGER_OPTIONS':

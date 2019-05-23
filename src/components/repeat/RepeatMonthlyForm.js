@@ -17,13 +17,13 @@ function RepeatMonthlyForm(props) {
     return (
         <Form>
             {getFieldDecorator('type', {
-                initialValue: props.repeat ? props.repeat.type : null
+                initialValue: props.repeat ? props.repeat.type : undefined
             })(
                 <Radio.Group>
                     <Radio style={radioStyle} value='everyXMonths'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbMonths', {
-                            initialValue: props.repeat ? props.repeat.nbMonths : null,
+                            initialValue: props.repeat ? props.repeat.nbMonths : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -38,7 +38,7 @@ function RepeatMonthlyForm(props) {
                     <Radio style={radioStyle} value='dayXEveryYMonths'>
                         <span style={{ marginRight: 10 }}>Day</span>
                         {getFieldDecorator('dayNb', {
-                            initialValue: props.repeat ? props.repeat.dayNb : null,
+                            initialValue: props.repeat ? props.repeat.dayNb : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -50,7 +50,7 @@ function RepeatMonthlyForm(props) {
                         )}
                         <span style={{ margin: '0px 10px' }}>of every</span>
                         {getFieldDecorator('nbMonths', {
-                            initialValue: props.repeat ? props.repeat.nbMonths : null,
+                            initialValue: props.repeat ? props.repeat.nbMonths : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -65,7 +65,7 @@ function RepeatMonthlyForm(props) {
                     <Radio style={radioStyle} value='weekXDayYEveryZMonths'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('weekNb', {
-                            initialValue: props.repeat ? props.repeat.weekNb : null,
+                            initialValue: props.repeat ? props.repeat.weekNb : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -81,7 +81,7 @@ function RepeatMonthlyForm(props) {
                         )}
                         <span style={{ marginRight: 10 }}>&nbsp;</span>
                         {getFieldDecorator('dayOfWeek', {
-                            initialValue: props.repeat ? props.repeat.dayOfWeek : null,
+                            initialValue: props.repeat ? props.repeat.dayOfWeek : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -97,7 +97,7 @@ function RepeatMonthlyForm(props) {
                         )}
                         <span style={{ margin: '0px 10px' }}>of every</span>
                         {getFieldDecorator('nbMonths', {
-                            initialValue: props.repeat ? props.repeat.nbMonths : null,
+                            initialValue: props.repeat ? props.repeat.nbMonths : undefined,
                             rules: [
                                 {
                                     required: true,

@@ -8,6 +8,7 @@ import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { compareVersions } from 'utils/CompareUtils';
 import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
+import { setTaskFieldManagerOptions } from 'actions/AppActions';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -34,7 +35,7 @@ export function getSettings() {
 }
 
 export function getCategorySettings(category, options = {}) {
-    const { settings } = category;
+    const settings = [...category.settings];
 
     const { noteFields, taskFields } = options;
 
@@ -404,6 +405,15 @@ export function getCategories() {
             type: 'taskField',
             settings: [
                 {
+                    id: 'editCustomTaskFields',
+                    title: 'Edit custom task fields',
+                    type: 'button',
+                    value: (settings, updateSettings, dispatcher) => {
+                        dispatcher(setTaskFieldManagerOptions({ visible: true }));
+                    },
+                    editable: true
+                },
+                {
                     id: 'taskColumnVisible_id',
                     title: 'Show column "ID"',
                     type: 'boolean',
@@ -450,6 +460,15 @@ export function getCategories() {
             icon: 'tasks',
             type: 'taskField',
             settings: [
+                {
+                    id: 'editCustomTaskFields',
+                    title: 'Edit custom task fields',
+                    type: 'button',
+                    value: (settings, updateSettings, dispatcher) => {
+                        dispatcher(setTaskFieldManagerOptions({ visible: true }));
+                    },
+                    editable: true
+                },
                 {
                     id: 'taskFieldVisible_id',
                     title: 'Show field "ID"',

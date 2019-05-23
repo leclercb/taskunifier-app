@@ -17,13 +17,13 @@ function RepeatWeeklyForm(props) {
     return (
         <Form>
             {getFieldDecorator('type', {
-                initialValue: props.repeat ? props.repeat.type : null
+                initialValue: props.repeat ? props.repeat.type : undefined
             })(
                 <Radio.Group>
                     <Radio style={radioStyle} value='everyXWeeks'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbWeeks', {
-                            initialValue: props.repeat ? props.repeat.nbWeeks : null,
+                            initialValue: props.repeat ? props.repeat.nbWeeks : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -38,7 +38,7 @@ function RepeatWeeklyForm(props) {
                     <Radio style={radioStyle} value='everyXWeeksOnDaysY'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbWeeks', {
-                            initialValue: props.repeat ? props.repeat.nbWeeks : null,
+                            initialValue: props.repeat ? props.repeat.nbWeeks : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -51,7 +51,7 @@ function RepeatWeeklyForm(props) {
                         <span style={{ marginLeft: 10 }}>week(s) on</span>
                         <div style={{ marginLeft: 40 }}>
                             {getFieldDecorator('daysOfWeek', {
-                                initialValue: props.repeat ? props.repeat.daysOfWeek : null
+                                initialValue: props.repeat ? props.repeat.daysOfWeek : undefined
                             })(
                                 <Checkbox.Group disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} options={getDaysOfWeek()} />
                             )}

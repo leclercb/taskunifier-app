@@ -15,6 +15,7 @@ export const getBatchEditTasksManager = state => state.app.batchEditTasksManager
 export const getCategoryManager = state => state.app.categoryManager;
 export const getReminderManager = state => state.app.reminderManager;
 export const getNoteFilterManager = state => state.app.noteFilterManager;
+export const getTaskFieldManager = state => state.app.taskFieldManager;
 export const getTaskFilterManager = state => state.app.taskFilterManager;
 export const getTaskEditionManager = state => state.app.taskEditionManager;
 export const getTaskTemplateManager = state => state.app.taskTemplateManager;

@@ -1,5 +1,5 @@
 import { findChildren, findParents } from 'utils/HierarchyUtils';
-import { removePrivateKeys } from 'utils/ObjectUtils';
+import { removePrivateKeys, clone } from 'utils/ObjectUtils';
 
 const Objects = (property, onUpdate = null) => (state = [], action) => {
     if (action.property !== property) {
@@ -62,7 +62,7 @@ const addObject = (state, action) => {
     const newObject = {
         title: 'Untitled',
         color: null,
-        ...action.object,
+        ...clone(action.object),
         refIds: {},
         creationDate: action.creationDate,
         updateDate: action.creationDate,

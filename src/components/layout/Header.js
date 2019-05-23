@@ -114,6 +114,10 @@ function Header(props) {
         props.setNoteFilterManagerOptions({ visible: true });
     };
 
+    const onSetTaskFieldManagerVisible = () => {
+        props.setTaskFieldManagerOptions({ visible: true });
+    };
+
     const onSetTaskFilterManagerVisible = () => {
         props.setTaskFilterManagerOptions({ visible: true });
     };
@@ -192,14 +196,14 @@ function Header(props) {
                 createButton('plus', 'Create Dummy Tasks', onCreateDummyTasks)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                createButton('magic', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
-                : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
+                createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
                 : null}
             {(props.selectedView === 'task' || props.selectedView === 'taskCalendar') ?
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
                 : null}
+                {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+                    createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
+                    : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
@@ -211,6 +215,9 @@ function Header(props) {
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
+                : null}
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+                createButton('columns', 'Task Field Manager', onSetTaskFieldManagerVisible)
                 : null}
             <Spacer />
             <Spacer />
@@ -248,6 +255,7 @@ Header.propTypes = {
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setReminderManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
+    setTaskFieldManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired,
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,

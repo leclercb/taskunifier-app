@@ -1,11 +1,11 @@
 ## Todo List
 
-* Add/remove fields
+* Batch add sub-tasks
 * Print config (columns, size)
 
 ## To Try
 
-* Evaluate flow (https://pusher.com/tutorials/type-check-react-flow)
+* Evaluate flow
 * Try react-joyride
 * Evaluate cloud
 

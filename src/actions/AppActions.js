@@ -305,6 +305,17 @@ export function setReminderManagerOptions(options) {
     };
 }
 
+export function setTaskFieldManagerOptions(options) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_TASK_FIELD_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export function setTaskFilterManagerOptions(options) {
     return dispatch => {
         dispatch({

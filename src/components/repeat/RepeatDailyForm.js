@@ -17,7 +17,7 @@ function RepeatDailyForm(props) {
     return (
         <Form>
             {getFieldDecorator('type', {
-                initialValue: props.repeat ? props.repeat.type : null
+                initialValue: props.repeat ? props.repeat.type : undefined
             })(
                 <Radio.Group>
                     <Radio style={radioStyle} value='everyDay'>
@@ -32,7 +32,7 @@ function RepeatDailyForm(props) {
                     <Radio style={radioStyle} value='everyXDays'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbDays', {
-                            initialValue: props.repeat ? props.repeat.nbDays : null,
+                            initialValue: props.repeat ? props.repeat.nbDays : undefined,
                             rules: [
                                 {
                                     required: true,
@@ -47,7 +47,7 @@ function RepeatDailyForm(props) {
                     <Radio style={radioStyle} value='everySelectedDay'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('dayOfWeek', {
-                            initialValue: props.repeat ? props.repeat.dayOfWeek : null,
+                            initialValue: props.repeat ? props.repeat.dayOfWeek : undefined,
                             rules: [
                                 {
                                     required: true,

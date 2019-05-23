@@ -52,12 +52,12 @@ import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { escape } from 'utils/RegexUtils';
 import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toStringPassword,
     toStringReminder,
-    toStringRepeatFrom
+    toStringRepeatFrom,
+    toStringNumber
 } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {
@@ -369,12 +369,12 @@ export function getFieldComponents(type, options) {
             const currency = options && options.currency ? options.currency : '€';
 
             configuration = {
-                render: value => value ? currency + ' ' + value : <span>&nbsp;</span>,
+                render: value => value ? toStringNumber(value, currency + ' ') : <span>&nbsp;</span>,
                 input: props => (
                     <InputNumber
                         onBlur={props.onCommit}
-                        formatter={value => `${currency} ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        parser={value => value.replace('/(' + escape(currency) + ')\\s?|(,*)/g', '')}
+                        formatter={value => toStringNumber(value, currency + ' ')}
+                        parser={value => value.replace(currency + ' ', '')}
                         {...removeExtraProps(props)} />
                 )
             };
@@ -548,17 +548,35 @@ export function getFieldComponents(type, options) {
             break;
         }
         case 'selectTags': {
+            let values = options && options.values ? options.values : [];
+            values = Array.isArray(values) ? values : [values];
+
             configuration = {
                 render: values => (
                     values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
                 ),
-                input: props => (
-                    <Select
-                        onBlur={props.onCommit}
-                        dropdownMatchSelectWidth={false}
-                        mode="tags"
-                        {...removeExtraProps(props)} />
-                )
+                input: props => {
+                    return (
+                        <Select
+                            onBlur={props.onCommit}
+                            dropdownMatchSelectWidth={false}
+                            mode="tags"
+                            {...removeExtraProps(props)}>
+                            {values.map(value => {
+                                value = typeof value === 'object' ? value : {
+                                    title: value,
+                                    value
+                                };
+
+                                return (
+                                    <Select.Option key={value.value} value={value.value}>
+                                        {value.title}
+                                    </Select.Option>
+                                );
+                            })}
+                        </Select>
+                    );
+                }
             };
 
             break;

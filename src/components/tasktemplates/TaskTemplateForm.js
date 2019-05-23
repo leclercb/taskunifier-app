@@ -48,7 +48,7 @@ function TaskTemplateForm(props) {
                 <Form.Item key={field.id} label={field.title}>
                     {getFieldDecorator('properties.' + field.id, {
                         valuePropName: getValuePropNameForType(field.type),
-                        initialValue: props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : null
+                        initialValue: props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : undefined
                     })(
                         getInputForType(field.type, field.options)
                     )}

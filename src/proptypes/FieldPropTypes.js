@@ -5,5 +5,7 @@ export const FieldPropType = PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     color: PropTypes.string,
-    type: PropTypes.oneOf(getFieldTypes()).isRequired
+    type: PropTypes.oneOf(getFieldTypes()).isRequired,
+    editable: PropTypes.bool.isRequired,
+    options: PropTypes.object
 });

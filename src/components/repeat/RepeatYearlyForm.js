@@ -16,13 +16,13 @@ function RepeatYearlyForm(props) {
     return (
         <Form>
             {getFieldDecorator('type', {
-                initialValue: props.repeat ? props.repeat.type : null
+                initialValue: props.repeat ? props.repeat.type : undefined
             })(
                 <Radio.Group>
                     <Radio style={radioStyle} value='everyXYears'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbYears', {
-                            initialValue: props.repeat ? props.repeat.nbYears : null,
+                            initialValue: props.repeat ? props.repeat.nbYears : undefined,
                             rules: [
                                 {
                                     required: true,

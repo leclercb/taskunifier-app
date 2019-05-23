@@ -7,6 +7,7 @@ import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManage
 import NoteView from 'components/notes/views/NoteView';
 import ModalReminderManager from 'components/reminders/ModalReminderManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
+import ModalTaskFieldManager from 'components/taskfields/ModalTaskFieldManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
 import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
 import ModalBatchEditTasksManager from 'components/tasks/batch/ModalBatchEditTasksManager';
@@ -42,6 +43,7 @@ function AppLayout(props) {
             <ModalCategoryManager />
             <ModalReminderManager />
             <ModalNoteFilterManager />
+            <ModalTaskFieldManager />
             <ModalTaskFilterManager />
             <ModalTaskEditionManager />
             <ModalTaskTemplateManager />
