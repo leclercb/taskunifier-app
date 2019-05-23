@@ -1,11 +1,10 @@
 {
-    "name": "taskunifier2",
+    "name": "taskunifier-2",
     "description": "TaskUnifier 2 - Take GTD to the next level",
     "author": "BL-IT",
     "version": "0.1.0",
     "private": true,
     "main": "public/electron.js",
-    "homepage": "./",
     "scripts": {
         "react:start": "BROWSER=none; craco start",
         "react:build": "craco build",
