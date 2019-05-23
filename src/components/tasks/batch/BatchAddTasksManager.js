@@ -31,7 +31,7 @@ function BatchAddTasksManager(props) {
                     if (match[2]) {
                         const task = {};
                         applyTaskTemplate(taskTemplate, task);
-                        task.title = match[2];
+                        task.title = match[2]; // eslint-disable-line prefer-destructuring
                         promises.push(props.addTask(task));
 
                         let subLevel = match[1].length;
@@ -112,6 +112,7 @@ BatchAddTasksManager.propTypes = {
     form: PropTypes.object.isRequired,
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     addTask: PropTypes.func.isRequired,
+    updateTask: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired
 };
 
