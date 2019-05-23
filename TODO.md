@@ -2,10 +2,6 @@
 
 * Print config (columns, size)
 * Continue improving joyride
-
-## To Try
-
-* Evaluate flow
 * Evaluate cloud
 
 ## Future Features
@@ -15,12 +11,3 @@
 * Sub-categories (children)
 * Group by
 * Rules
-
-## Reviewed
-
-* actions
-* constants
-* hooks
-* proptypes
-* selectors
-* store
