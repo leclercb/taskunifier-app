@@ -10,7 +10,7 @@ function GoalManager(props) {
     const selectedGoalId = props.goalId;
 
     const onAddGoal = goal => {
-        props.addGoal(goal).then(id => props.onGoalSelection(id));
+        props.addGoal(goal).then(goal => props.onGoalSelection(goal.id));
     };
 
     const onGoalSelection = goal => {

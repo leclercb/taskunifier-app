@@ -10,7 +10,7 @@ function ContactManager(props) {
     const selectedContactId = props.contactId;
 
     const onAddContact = contact => {
-        props.addContact(contact).then(id => props.onContactSelection(id));
+        props.addContact(contact).then(contact => props.onContactSelection(contact.id));
     };
 
     const onContactSelection = contact => {

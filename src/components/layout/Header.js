@@ -20,7 +20,7 @@ function Header(props) {
     const onAddNote = () => {
         props.addNote({
             title: 'Untitled'
-        }).then(id => props.setSelectedNoteIds([id]));
+        }).then(note => props.setSelectedNoteIds([note.id]));
     };
 
     const onRemoveNotes = () => {
@@ -41,7 +41,7 @@ function Header(props) {
 
         applyTaskTemplate(taskTemplate, task);
 
-        props.addTask(task).then(id => props.setSelectedTaskIds([id]));
+        props.addTask(task).then(task => props.setSelectedTaskIds([task.id]));
     };
 
     const onCreateDummyTasks = () => {

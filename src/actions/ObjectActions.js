@@ -25,7 +25,7 @@ export function setObjects(property, objects) {
 }
 
 export function addObject(property, object) {
-    return dispatch => {
+    return (dispatch, getState) => {
         const id = uuid();
 
         dispatch({
@@ -40,12 +40,13 @@ export function addObject(property, object) {
             }
         });
 
-        return Promise.resolve(id);
+        const newObject = getState()[property].find(item => item.id === id);
+        return Promise.resolve(newObject);
     };
 }
 
 export function updateObject(property, object) {
-    return dispatch => {
+    return (dispatch, getState) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property,
@@ -54,7 +55,8 @@ export function updateObject(property, object) {
             object
         });
 
-        return Promise.resolve();
+        const updatedObject = getState()[property].find(item => item.id === object.id);
+        return Promise.resolve(updatedObject);
     };
 }
 

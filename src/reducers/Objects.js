@@ -97,7 +97,7 @@ const updateObject = (state, action, onUpdate) => {
 
     const updatedObject = {
         ...action.object,
-        creationDate: newState[index].creationDate,
+        creationDate: oldObject.creationDate,
         updateDate: action.updateDate,
         state: 'TO_UPDATE'
     };

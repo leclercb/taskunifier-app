@@ -10,7 +10,7 @@ function TaskFieldManager(props) {
     const selectedTaskFieldId = props.taskFieldId;
 
     const onAddTaskField = taskField => {
-        props.addTaskField(taskField).then(id => props.onTaskFieldSelection(id));
+        props.addTaskField(taskField).then(taskField => props.onTaskFieldSelection(taskField.id));
     };
 
     const onTaskFieldSelection = taskField => {

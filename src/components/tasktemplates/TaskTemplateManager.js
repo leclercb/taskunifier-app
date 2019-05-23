@@ -12,7 +12,7 @@ function TaskTemplateManager(props) {
     const selectedTaskTemplateId = props.taskTemplateId;
 
     const onAddTaskTemplate = taskTemplate => {
-        props.addTaskTemplate(taskTemplate).then(id => props.onTaskTemplateSelection(id));
+        props.addTaskTemplate(taskTemplate).then(taskTemplate => props.onTaskTemplateSelection(taskTemplate.id));
     };
 
     const onTaskTemplateSelection = taskTemplate => {

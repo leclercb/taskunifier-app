@@ -15,7 +15,7 @@ function NoteFilterManager(props) {
     const selectedNoteFilterId = props.noteFilterId;
 
     const onAddNoteFilter = noteFilter => {
-        props.addNoteFilter(noteFilter).then(id => props.onNoteFilterSelection(id));
+        props.addNoteFilter(noteFilter).then(noteFilter => props.onNoteFilterSelection(noteFilter.id));
     };
 
     const onNoteFilterSelection = noteFilter => {

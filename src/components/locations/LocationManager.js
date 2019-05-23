@@ -10,7 +10,7 @@ function LocationManager(props) {
     const selectedLocationId = props.locationId;
 
     const onAddLocation = location => {
-        props.addLocation(location).then(id => props.onLocationSelection(id));
+        props.addLocation(location).then(location => props.onLocationSelection(location.id));
     };
 
     const onLocationSelection = location => {

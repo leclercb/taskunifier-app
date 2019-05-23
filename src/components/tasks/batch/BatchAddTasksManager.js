@@ -19,17 +19,55 @@ function BatchAddTasksManager(props) {
             if (values.titles) {
                 const taskTemplate = props.taskTemplates.find(taskTemplate => taskTemplate.id === values.taskTemplate);
                 const tokens = values.titles.split('\n');
+                const taskSubLevels = [];
+                const promises = [];
+
+                let previousSubLevel = -1;
+                let previousRawSubLevel = -1;
 
                 tokens.forEach(token => {
-                    if (token) {
+                    const match = token.match(/^\s*([-*]*)\s*(.*)\s*$/);
+
+                    if (match[2]) {
                         const task = {};
                         applyTaskTemplate(taskTemplate, task);
-                        task.title = token;
-                        props.addTask(task);
+                        task.title = match[2];
+                        promises.push(props.addTask(task));
+
+                        let subLevel = match[1].length;
+
+                        if (subLevel > previousRawSubLevel) {
+                            subLevel = previousSubLevel + 1;
+                        } else if (subLevel < previousRawSubLevel) {
+                            subLevel = previousSubLevel + (subLevel - previousRawSubLevel);
+                            subLevel = subLevel < 0 ? 0 : subLevel;
+                        } else {
+                            subLevel = previousSubLevel;
+                        }
+
+                        taskSubLevels.push(subLevel);
+
+                        previousSubLevel = subLevel;
+                        previousRawSubLevel = match[1].length;
                     }
                 });
 
-                props.onAdd();
+                Promise.all(promises).then(tasks => {
+                    const parents = [];
+
+                    tasks.forEach((task, index) => {
+                        parents[taskSubLevels[index]] = task.id;
+
+                        if (taskSubLevels[index] === 0) {
+                            return;
+                        }
+
+                        props.updateTask({
+                            ...task,
+                            parent: parents[taskSubLevels[index] - 1]
+                        });
+                    });
+                });
             }
         });
     };

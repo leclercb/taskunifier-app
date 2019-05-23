@@ -10,7 +10,7 @@ function ContextManager(props) {
     const selectedContextId = props.contextId;
 
     const onAddContext = context => {
-        props.addContext(context).then(id => props.onContextSelection(id));
+        props.addContext(context).then(context => props.onContextSelection(context.id));
     };
 
     const onContextSelection = context => {

@@ -16,7 +16,7 @@ function TaskFilterManager(props) {
     const selectedTaskFilterId = props.taskFilterId;
 
     const onAddTaskFilter = taskFilter => {
-        props.addTaskFilter(taskFilter).then(id => props.onTaskFilterSelection(id));
+        props.addTaskFilter(taskFilter).then(taskFilter => props.onTaskFilterSelection(taskFilter.id));
     };
 
     const onTaskFilterSelection = taskFilter => {

@@ -75,10 +75,10 @@ function TaskCalendar(props) {
                 startDate: moment(start).toJSON(),
                 dueDate: moment(end).toJSON(),
                 length: moment(end).diff(moment(start), 'minutes')
-            }).then(id => {
+            }).then(task => {
                 props.setTaskEditionManagerOptions({
                     visible: true,
-                    taskId: id
+                    taskId: task.id
                 });
             });
         }

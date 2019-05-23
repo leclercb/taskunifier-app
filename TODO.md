@@ -1,6 +1,5 @@
 ## Todo List
 
-* Batch add sub-tasks
 * Print config (columns, size)
 * Continue improving joyride
 
