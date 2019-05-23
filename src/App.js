@@ -7,6 +7,7 @@ import { useInterval } from 'hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from 'components/layout/AppLayout';
 import withApp from 'containers/WithApp';
+import withJoyride from 'containers/WithJoyride';
 import withSettings from 'containers/WithSettings';
 
 import 'App.css';
@@ -143,4 +144,4 @@ App.propTypes = {
     backupData: PropTypes.func.isRequired
 };
 
-export default DragDropContext(HTML5Backend)(withApp(withSettings(App)));
+export default DragDropContext(HTML5Backend)(withApp(withSettings(withJoyride(App))));

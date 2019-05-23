@@ -261,6 +261,17 @@ export function setSelectedTaskFilter(taskFilter) {
     };
 }
 
+export function setJoyrideOptions(options) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_JOYRIDE_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+}
+
 export function setBatchAddTasksManagerOptions(options) {
     return dispatch => {
         dispatch({

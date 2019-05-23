@@ -169,7 +169,9 @@ function TaskSider(props) {
     };
 
     return (
-        <div style={{ backgroundColor: '#ffffff', height: '100%' }}>
+        <div
+            className="joyride-task-sider"
+            style={{ backgroundColor: '#ffffff', height: '100%' }}>
             {props.mode === 'table' ? (
                 <Checkbox
                     checked={props.showCompletedTasks}

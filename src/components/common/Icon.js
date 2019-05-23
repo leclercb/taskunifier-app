@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
 import Constants from 'constants/Constants';
 
 function Icon(props) {
@@ -12,6 +12,7 @@ function Icon(props) {
                     onClick={props.onIconClick}
                     className={props.className}
                     style={{
+                        fontSize: props.size ? props.size : undefined,
                         color: props.color ? props.color : Constants.color,
                         marginRight: props.text ? 10 : 0,
                         ...(props.style || {})
@@ -24,6 +25,7 @@ function Icon(props) {
 
 Icon.propTypes = {
     icon: PropTypes.string.isRequired,
+    size: PropTypes.number,
     color: PropTypes.string,
     text: PropTypes.node,
     style: PropTypes.object,

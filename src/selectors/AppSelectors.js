@@ -10,6 +10,8 @@ export const getSelectedTaskIds = state => state.app.selectedTaskIds;
 export const getSelectedTaskFilter = state => state.app.selectedTaskFilter;
 export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDate;
 
+export const getJoyrideOptions = state => state.app.joyride;
+
 export const getBatchAddTasksManager = state => state.app.batchAddTasksManager;
 export const getBatchEditTasksManager = state => state.app.batchEditTasksManager;
 export const getCategoryManager = state => state.app.categoryManager;

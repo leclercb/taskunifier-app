@@ -9,6 +9,10 @@ const App = () => (state = {
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: moment().toJSON(),
+    joyride: {
+        id: null,
+        run: false
+    },
     batchAddTasksManager: {
         visible: false
     },
@@ -69,6 +73,14 @@ const App = () => (state = {
                 ...state,
                 selectedTaskFilter: action.taskFilter,
                 selectedTaskFilterDate: action.date
+            };
+        case 'SET_JOYRIDE_OPTIONS':
+            return {
+                ...state,
+                joyride: {
+                    id: 'id' in action ? action.id : state.joyride.id,
+                    run: 'run' in action ? action.run : state.joyride.run
+                }
             };
         case 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS':
             return {

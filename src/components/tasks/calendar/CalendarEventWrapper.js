@@ -26,7 +26,7 @@ function CalendarEventWrapper({ event, children }) {
 
 CalendarEventWrapper.propTypes = {
     event: PropTypes.object.isRequired,
-    children: PropTypes.any.isRequired
+    children: PropTypes.node.isRequired
 };
 
 export default CalendarEventWrapper;

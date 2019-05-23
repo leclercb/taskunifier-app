@@ -2,11 +2,11 @@
 
 * Batch add sub-tasks
 * Print config (columns, size)
+* Continue improving joyride
 
 ## To Try
 
 * Evaluate flow
-* Try react-joyride
 * Evaluate cloud
 
 ## Future Features

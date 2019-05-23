@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
+import HelpButton from 'components/common/HelpButton';
 import Icon from 'components/common/Icon';
+import Spacer from 'components/common/Spacer';
 import CategoryManager from 'components/categories/CategoryManager';
 import withApp from 'containers/WithApp';
 
@@ -21,9 +23,13 @@ function ModalCategoryManager(props) {
             width="80%"
             closable={false}
             footer={(
-                <Button onClick={onCloseCategoryManager}>
-                    Close
-                </Button>
+                <React.Fragment>
+                    <HelpButton id="categoryManager" />
+                    <Spacer />
+                    <Button onClick={onCloseCategoryManager}>
+                        Close
+                    </Button>
+                </React.Fragment>
             )}>
             <CategoryManager
                 category={props.categoryManager.category}

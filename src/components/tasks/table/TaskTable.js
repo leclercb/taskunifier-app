@@ -114,7 +114,9 @@ function TaskTable(props) {
     });
 
     return (
-        <div style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
+        <div
+            className="joyride-task-table"
+            style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
             <AutoSizer>
                 {({ height }) => (
                     <Table
