@@ -1,5 +1,6 @@
 const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
 const isDevelopment = require('electron-is-dev');
@@ -98,6 +99,10 @@ ipcMain.on('get-current-window-size', event => {
 
 ipcMain.on('get-current-window-position', event => {
     event.returnValue = mainWindow.getPosition();
+});
+
+ipcMain.on('get-os-platform', event => {
+    event.returnValue = os.platform();
 });
 
 ipcMain.on('get-version', event => {
