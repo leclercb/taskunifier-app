@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Empty, Form, Input, Select } from 'antd';
+import ColorPicker from 'components/common/ColorPicker';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getFieldType, getFieldTypes, getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -26,6 +27,20 @@ function TaskFieldForm(props) {
                     ]
                 })(
                     <Input />
+                )}
+            </Form.Item>
+            <Form.Item label="Color">
+                {getFieldDecorator('color', {
+                    initialValue: props.taskField.color,
+                    valuePropName: 'color',
+                    rules: [
+                        {
+                            required: true,
+                            message: 'The color is required'
+                        }
+                    ]
+                })(
+                    <ColorPicker placement="bottomLeft" />
                 )}
             </Form.Item>
             <Form.Item label="Type">
