@@ -1,6 +1,8 @@
-import queryString from 'query-string';
+import moment from 'moment';
+import qs from 'qs';
 import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
+import { updateSettings } from 'actions/SettingActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getAppVersion } from 'utils/VersionUtils';
 
@@ -15,7 +17,7 @@ export function authorize() {
             scope: 'basic tasks notes lists write'
         };
 
-        const url = `https://api.toodledo.com/3/account/authorize.php?${queryString.stringify(params)}`;
+        const url = `https://api.toodledo.com/3/account/authorize.php?${qs.stringify(params)}`;
 
         ipcRenderer.send('open-external', url);
 
@@ -25,14 +27,16 @@ export function authorize() {
 
 export function getToken(code) {
     return (dispatch, getState) => {
+        const settings = getSettings(getState());
+
         return sendRequest(
-            getSettings(getState()),
+            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
                     username: 'taskunifier2',
-                    password: 'secret'
+                    password: '***REMOVED***'
                 },
                 data: {
                     grant_type: 'authorization_code',
@@ -40,27 +44,47 @@ export function getToken(code) {
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
                 }
+            }).then(result => {
+                return dispatch(updateSettings({
+                    toodledo: {
+                        accessToken: result.data.access_token,
+                        accessTokenCreationDate: moment().toJSON(),
+                        accessTokenExpiresIn: result.data.expires_in,
+                        refreshToken: result.data.access_token
+                    }
+                }));
             });
     };
 }
 
-export function getRefreshedToken(refreshToken) {
+export function getRefreshedToken() {
     return (dispatch, getState) => {
+        const settings = getSettings(getState());
+
         return sendRequest(
-            getSettings(getState()),
+            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
                     username: 'taskunifier2',
-                    password: 'secret'
+                    password: '***REMOVED***'
                 },
                 data: {
                     grant_type: 'refresh_token',
-                    refresh_token: refreshToken,
+                    refresh_token: settings.toodledo.refreshToken,
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
                 }
+            }).then(result => {
+                return dispatch(updateSettings({
+                    toodledo: {
+                        accessToken: result.data.access_token,
+                        accessTokenCreationDate: moment().toJSON(),
+                        accessTokenExpiresIn: result.data.expires_in,
+                        refreshToken: result.data.access_token
+                    }
+                }));
             });
     };
 }

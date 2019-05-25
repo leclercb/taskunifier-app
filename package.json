@@ -34,7 +34,7 @@
         "lodash": "^4.17.11",
         "mkdirp": "^0.5.1",
         "moment": "^2.24.0",
-        "query-string": "^6.5.0",
+        "qs": "^6.7.0",
         "rc-color-picker": "^1.2.6",
         "react": "^16.8.6",
         "react-big-calendar": "^0.21.0",

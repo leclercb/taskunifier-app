@@ -4,6 +4,7 @@ import App from 'reducers/App';
 import Notes from 'reducers/Notes';
 import Objects from 'reducers/Objects';
 import Settings from 'reducers/Settings';
+import Synchronization from 'reducers/Synchronization';
 import Tasks from 'reducers/Tasks';
 import Thread from 'reducers/Thread';
 import { onGoalUpdate } from 'utils/GoalUtils';
@@ -11,8 +12,6 @@ import { onTaskUpdate } from 'utils/TaskUtils';
 
 export default combineReducers({
     app: App(),
-    thread: Thread(),
-    settings: Settings(),
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),
     folders: Objects('folders'),
@@ -21,8 +20,11 @@ export default combineReducers({
     notes: reduceReducers([], Objects('notes'), Notes()),
     noteFields: Objects('noteFields'),
     noteFilters: Objects('noteFilters'),
+    settings: Settings(),
+    synchronization: Synchronization(),
     tasks: reduceReducers([], Objects('tasks', onTaskUpdate), Tasks()),
     taskFields: Objects('taskFields'),
     taskFilters: Objects('taskFilters'),
-    taskTemplates: Objects('taskTemplates')
+    taskTemplates: Objects('taskTemplates'),
+    thread: Thread()
 });

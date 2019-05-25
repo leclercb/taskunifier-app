@@ -136,5 +136,11 @@
     "taskColumnWidth_repeatFrom": 116,
     "taskColumnOrder_id": 0,
     "taskColumnOrder_creationDate": 1,
-    "taskColumnOrder_updateDate": 2
+    "taskColumnOrder_updateDate": 2,
+    "toodledo": {
+        "accessToken": "338392879559552d423eee36f2ff0e12d06ee774",
+        "accessTokenCreationDate": "2019-05-25T09:38:56.178Z",
+        "accessTokenExpiresIn": 7200,
+        "refreshToken": "338392879559552d423eee36f2ff0e12d06ee774"
+    }
 }

@@ -1,16 +1,23 @@
 import { sendRequest } from 'actions/RequestActions';
+import { updateToodledoData } from 'actions/SynchronizationActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
-export function getAccountInfo(accessToken) {
+export function getAccountInfo() {
     return (dispatch, getState) => {
+        const settings = getSettings(getState());
+
         return sendRequest(
-            getSettings(getState()),
+            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/get.php',
-                data: {
-                    'access_token': accessToken
+                params: {
+                    'access_token': settings.toodledo.accessToken
                 }
+            }).then(result => {
+                return dispatch(updateToodledoData({
+                    accountInfo: result.data
+                }));
             });
     };
 }

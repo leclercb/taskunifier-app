@@ -1,0 +1,1 @@
+export const getToodledoData = state => state.synchronization.toodledo;

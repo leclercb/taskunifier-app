@@ -13,14 +13,18 @@ function SynchronizationManager(props) {
     };
 
     const onGetToken = () => {
-
+        props.getToken(code);
     };
+
+    const onShowAccountInfo = () => {
+        props.getAccountInfo();
+    }
 
     const onCodeChange = event => {
         setCode(event.target.value);
     };
 
-    if (!props.settings.refreshToken) {
+    if (!props.settings.toodledo || !props.settings.toodledo.refreshToken) {
         return (
             <React.Fragment>
                 {!code && (
@@ -42,14 +46,31 @@ function SynchronizationManager(props) {
         );
     }
 
+    if (props.toodledo.accountInfo) {
+        return (
+            <React.Fragment>
+                Your account information:
+                <div>
+                    {JSON.stringify(props.toodledo)}
+                </div>
+            </React.Fragment>
+        );
+    }
+
     return (
-        'You are logged in'
+        <Button onClick={onShowAccountInfo}>
+            Show account info
+        </Button>
     );
 }
 
 SynchronizationManager.propTypes = {
+    toodledo: PropTypes.object.isRequired,
     settings: SettingsPropType.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    updateSettings: PropTypes.func.isRequired,
+    authorize: PropTypes.func.isRequired,
+    getToken: PropTypes.func.isRequired,
+    getAccountInfo: PropTypes.func.isRequired
 };
 
 export default withSettings(withSynchronization(SynchronizationManager));
