@@ -7,16 +7,20 @@ import { getAppVersion } from 'utils/VersionUtils';
 const { ipcRenderer } = window.require('electron');
 
 export function authorize() {
-    const params = {
-        'response_type': 'code',
-        'client_id': 'taskunifier2',
-        'state': uuid(),
-        'scope': 'basic tasks notes lists write'
+    return () => {
+        const params = {
+            'response_type': 'code',
+            'client_id': 'taskunifier2',
+            'state': uuid(),
+            'scope': 'basic tasks notes lists write'
+        };
+
+        const url = `https://api.toodledo.com/3/account/authorize.php?${queryString.stringify(params)}`;
+
+        ipcRenderer.send('open-external', url);
+
+        return Promise.resolve();
     };
-
-    const url = `https://api.toodledo.com/3/account/authorize.php?${queryString.stringify(params)}`;
-
-    ipcRenderer.send('open-file', url);
 }
 
 export function getToken(code) {
@@ -40,7 +44,7 @@ export function getToken(code) {
     };
 }
 
-export function refreshToken(refreshToken) {
+export function getRefreshedToken(refreshToken) {
     return (dispatch, getState) => {
         return sendRequest(
             getSettings(getState()),

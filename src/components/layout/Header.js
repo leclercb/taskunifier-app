@@ -90,10 +90,6 @@ function Header(props) {
         props.backupData();
     };
 
-    const onSetSettingsVisible = () => {
-        props.setSettingManagerOptions({ visible: true });
-    };
-
     const onSetBatchAddTasksManagerVisible = () => {
         props.setBatchAddTasksManagerOptions({ visible: true });
     };
@@ -124,6 +120,14 @@ function Header(props) {
 
     const onSetTaskTemplateManagerVisible = () => {
         props.setTaskTemplateManagerOptions({ visible: true });
+    };
+
+    const onSetSettingsVisible = () => {
+        props.setSettingManagerOptions({ visible: true });
+    };
+
+    const onSetSynchronizationVisible = () => {
+        props.setSynchronizationManagerOptions({ visible: true });
     };
 
     const onShowTaskContent = () => {
@@ -201,9 +205,9 @@ function Header(props) {
             {(props.selectedView === 'task' || props.selectedView === 'taskCalendar') ?
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
                 : null}
-                {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                    createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
-                    : null}
+            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
+                : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
@@ -227,6 +231,7 @@ function Header(props) {
             {createButton('save', 'Save', onSave)}
             {createButton('box-open', 'Backup', onBackup)}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
+            {createButton('cogs', 'Synchronization', onSetSynchronizationVisible)}
         </LeftRight>
     );
 }
@@ -261,7 +266,8 @@ Header.propTypes = {
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
     setBatchAddTasksManagerOptions: PropTypes.func.isRequired,
     setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
-    setSettingManagerOptions: PropTypes.func.isRequired
+    setSettingManagerOptions: PropTypes.func.isRequired,
+    setSynchronizationManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(withNotes(withTasks(withTaskTemplates(withPrint(Header)))));

@@ -49,6 +49,9 @@ const App = () => (state = {
     },
     settingManager: {
         visible: false
+    },
+    synchronizationManager: {
+        visible: false
     }
 }, action) => {
     switch (action.type) {
@@ -157,6 +160,13 @@ const App = () => (state = {
                 ...state,
                 settingManager: {
                     visible: 'visible' in action ? action.visible : state.settingManager.visible
+                }
+            };
+        case 'SET_SYNCHRONIZATION_MANAGER_OPTIONS':
+            return {
+                ...state,
+                synchronizationManager: {
+                    visible: 'visible' in action ? action.visible : state.synchronizationManager.visible
                 }
             };
         default:

@@ -7,6 +7,7 @@ import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManage
 import NoteView from 'components/notes/views/NoteView';
 import ModalReminderManager from 'components/reminders/ModalReminderManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
+import ModalSynchronizationManager from 'components/synchronization/ModalSynchronizationManager';
 import ModalTaskFieldManager from 'components/taskfields/ModalTaskFieldManager';
 import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManager';
 import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
@@ -48,6 +49,7 @@ function AppLayout(props) {
             <ModalTaskEditionManager />
             <ModalTaskTemplateManager />
             <ModalSettingManager />
+            <ModalSynchronizationManager />
             <Spin style={{ minHeight: '100%', height: '100%' }} spinning={props.busy}>
                 <Layout style={{ minHeight: '100%', height: '100%' }}>
                     <Layout.Header>

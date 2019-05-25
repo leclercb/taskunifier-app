@@ -117,6 +117,10 @@ ipcMain.on('open-file', (event, file) => {
     shell.openItem(file);
 });
 
+ipcMain.on('open-external', (event, url) => {
+    shell.openExternal(url);
+});
+
 ipcMain.on('pdf-viewer', (event, file) => {
     /*
     const pdfViewer = new BrowserWindow({

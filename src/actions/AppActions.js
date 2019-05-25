@@ -392,3 +392,14 @@ export function setSettingManagerOptions(options) {
         return Promise.resolve();
     };
 }
+
+export function setSynchronizationManagerOptions(options) {
+    return dispatch => {
+        dispatch({
+            type: 'SET_SYNCHRONIZATION_MANAGER_OPTIONS',
+            ...options
+        });
+
+        return Promise.resolve();
+    };
+}

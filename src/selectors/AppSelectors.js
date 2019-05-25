@@ -22,6 +22,7 @@ export const getTaskFilterManager = state => state.app.taskFilterManager;
 export const getTaskEditionManager = state => state.app.taskEditionManager;
 export const getTaskTemplateManager = state => state.app.taskTemplateManager;
 export const getSettingManager = state => state.app.settingManager;
+export const getSynchronizationManager = state => state.app.synchronizationManager;
 
 export const isValidLicense = createSelector(
     getSettings,

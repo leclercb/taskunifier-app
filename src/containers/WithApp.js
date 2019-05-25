@@ -8,6 +8,7 @@ import {
     setNoteFilterManagerOptions,
     setReminderManagerOptions,
     setSettingManagerOptions,
+    setSynchronizationManagerOptions,
     setTaskEditionManagerOptions,
     setTaskFieldManagerOptions,
     setTaskFilterManagerOptions,
@@ -27,6 +28,7 @@ import {
     getNoteFilterManager,
     getReminderManager,
     getSettingManager,
+    getSynchronizationManager,
     getTaskEditionManager,
     getTaskFieldManager,
     getTaskFilterManager,
@@ -48,7 +50,8 @@ function withApp(Component) {
         taskFilterManager: getTaskFilterManager(state),
         taskEditionManager: getTaskEditionManager(state),
         taskTemplateManager: getTaskTemplateManager(state),
-        settingManager: getSettingManager(state)
+        settingManager: getSettingManager(state),
+        synchronizationManager: getSynchronizationManager(state)
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -67,7 +70,8 @@ function withApp(Component) {
         setTaskFilterManagerOptions: options => dispatch(setTaskFilterManagerOptions(options)),
         setTaskEditionManagerOptions: options => dispatch(setTaskEditionManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
-        setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options))
+        setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
+        setSynchronizationManagerOptions: options => dispatch(setSynchronizationManagerOptions(options))
     });
 
     return connect(
