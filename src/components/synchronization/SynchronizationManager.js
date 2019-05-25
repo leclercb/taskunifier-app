@@ -18,7 +18,7 @@ function SynchronizationManager(props) {
 
     const onShowAccountInfo = () => {
         props.getAccountInfo();
-    }
+    };
 
     const onCodeChange = event => {
         setCode(event.target.value);
