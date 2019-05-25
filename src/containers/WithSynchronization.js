@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { getAccountInfo } from 'actions/toodledo/AccountInfo';
-import { authorize, getToken, getRefreshedToken } from 'actions/toodledo/Authorization';
+import { authorize, getRefreshedToken, getToken } from 'actions/toodledo/Authorization';
 import withBusyCheck from 'containers/WithBusyCheck';
 
 function withSynchronization(Component) {

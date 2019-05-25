@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import withSettings from 'containers/WithSettings';
@@ -10,15 +10,15 @@ function SynchronizationManager(props) {
 
     const onAuthorize = () => {
         props.authorize();
-    }
+    };
 
     const onGetToken = () => {
 
-    }
+    };
 
     const onCodeChange = event => {
         setCode(event.target.value);
-    }
+    };
 
     if (!props.settings.refreshToken) {
         return (
@@ -39,11 +39,11 @@ function SynchronizationManager(props) {
                     )}
                 </div>
             </React.Fragment>
-        )
+        );
     }
 
     return (
-        "You are logged in"
+        'You are logged in'
     );
 }
 

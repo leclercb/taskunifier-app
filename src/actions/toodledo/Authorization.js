@@ -9,10 +9,10 @@ const { ipcRenderer } = window.require('electron');
 export function authorize() {
     return () => {
         const params = {
-            'response_type': 'code',
-            'client_id': 'taskunifier2',
-            'state': uuid(),
-            'scope': 'basic tasks notes lists write'
+            response_type: 'code',
+            client_id: 'taskunifier2',
+            state: uuid(),
+            scope: 'basic tasks notes lists write'
         };
 
         const url = `https://api.toodledo.com/3/account/authorize.php?${queryString.stringify(params)}`;
@@ -35,10 +35,10 @@ export function getToken(code) {
                     password: 'secret'
                 },
                 data: {
-                    'grant_type': 'authorization_code',
-                    'code': code,
-                    'vers': getAppVersion(),
-                    'device': ipcRenderer.sendSync('get-os-platform')
+                    grant_type: 'authorization_code',
+                    code,
+                    vers: getAppVersion(),
+                    device: ipcRenderer.sendSync('get-os-platform')
                 }
             });
     };
@@ -56,10 +56,10 @@ export function getRefreshedToken(refreshToken) {
                     password: 'secret'
                 },
                 data: {
-                    'grant_type': 'refresh_token',
-                    'refresh_token': refreshToken,
-                    'vers': getAppVersion(),
-                    'device': ipcRenderer.sendSync('get-os-platform')
+                    grant_type: 'refresh_token',
+                    refresh_token: refreshToken,
+                    vers: getAppVersion(),
+                    device: ipcRenderer.sendSync('get-os-platform')
                 }
             });
     };
