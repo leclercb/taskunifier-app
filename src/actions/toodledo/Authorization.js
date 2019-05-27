@@ -50,7 +50,7 @@ export function getToken(code) {
                         accessToken: result.data.access_token,
                         accessTokenCreationDate: moment().toJSON(),
                         accessTokenExpiresIn: result.data.expires_in,
-                        refreshToken: result.data.access_token
+                        refreshToken: result.data.refresh_token
                     }
                 }));
             });
@@ -82,7 +82,7 @@ export function getRefreshedToken() {
                         accessToken: result.data.access_token,
                         accessTokenCreationDate: moment().toJSON(),
                         accessTokenExpiresIn: result.data.expires_in,
-                        refreshToken: result.data.access_token
+                        refreshToken: result.data.refresh_token
                     }
                 }));
             });

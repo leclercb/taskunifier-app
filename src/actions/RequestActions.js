@@ -1,9 +1,22 @@
 const electron = window.require('electron');
 const axios = electron.remote.require('axios');
+const httpsProxyAgent = electron.remote.require('https-proxy-agent');
 
 export function sendRequest(settings, config) {
     if (!settings.proxyEnabled || !settings.proxyHost || !settings.proxyPort) {
         return axios(config);
+    }
+
+    const protocol = new URL(config.url).protocol;
+
+    if (protocol === 'https:') {
+        return axios.create({
+            httpsAgent: new httpsProxyAgent({
+                host: settings.proxyHost,
+                port: settings.proxyPort,
+                auth: `${settings.proxyUsername}:${settings.proxyPassword}`
+            })
+        })(config);
     }
 
     return axios.create({
