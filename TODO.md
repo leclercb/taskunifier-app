@@ -2,6 +2,7 @@
 
 * Synchronize
 * Normalizer for every field type
+* Add pro checks
 * Print config (columns, size)
 * Continue improving joyride
 
