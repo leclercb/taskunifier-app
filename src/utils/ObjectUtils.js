@@ -96,18 +96,6 @@ export function setValue(object, path, value, safe = false) {
     }
 }
 
-export function generateUniqueIds(object, key) {
-    if (object && typeof object === 'object') {
-        if (!Array.isArray(object)) {
-            object[key] = uuid();
-        }
-
-        for (let k in object) {
-            generateUniqueIds(object[k], key);
-        }
-    }
-}
-
 export function removePrivateKeys(object) {
     Object.keys(object).forEach(key => {
         if (key.startsWith('_')) {
