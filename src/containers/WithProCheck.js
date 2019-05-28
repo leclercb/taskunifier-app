@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ProMessage from 'components/pro/ProMessage';
 import withBusyCheck from 'containers/WithBusyCheck';
@@ -20,6 +21,10 @@ function withProCheck(Component) {
             );
         }
     }
+
+    WithProCheck.propTypes = {
+        pro: PropTypes.bool.isRequired
+    };
 
     const mapStateToProps = state => ({
         pro: isValidLicense(state)

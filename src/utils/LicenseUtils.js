@@ -28,7 +28,7 @@ export function verifyLicense(license) {
         const content = Buffer.from(message, 'hex').toString();
 
         try {
-            return JSON.parse(content)
+            return JSON.parse(content);
         } catch (e) {
             return null;
         }

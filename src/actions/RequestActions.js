@@ -1,4 +1,4 @@
-import Constants from "constants/Constants";
+import Constants from 'constants/Constants';
 
 const electron = window.require('electron');
 const axios = electron.remote.require('axios');
@@ -9,7 +9,7 @@ export function sendRequest(settings, config) {
         return axios(config);
     }
 
-    const protocol = new URL(config.url).protocol;
+    const { protocol } = new URL(config.url);
 
     if (protocol === 'https:') {
         return axios.create({

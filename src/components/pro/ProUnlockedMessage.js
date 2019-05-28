@@ -20,6 +20,6 @@ export function ProUnlockedMessage({ license }) {
 
 ProUnlockedMessage.propTypes = {
     license: PropTypes.object
-}
+};
 
 export default ProUnlockedMessage;

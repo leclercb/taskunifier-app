@@ -8,7 +8,7 @@ const { ipcRenderer } = window.require('electron');
 export function ProLockedMessage() {
     const onClick = () => {
         ipcRenderer.send('open-external', Constants.purchaseUrl);
-    }
+    };
 
     return (
         <Empty

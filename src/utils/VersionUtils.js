@@ -1,4 +1,4 @@
-import Constants from "constants/Constants";
+import Constants from 'constants/Constants';
 
 const { ipcRenderer } = window.require('electron');
 
