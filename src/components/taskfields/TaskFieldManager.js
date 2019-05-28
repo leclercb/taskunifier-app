@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
 import withTaskFields from 'containers/WithTaskFields';
+import withProCheck from 'containers/WithProCheck';
 import TaskFieldList from 'components/taskfields/TaskFieldList';
 import TaskFieldForm from 'components/taskfields/TaskFieldForm';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -48,4 +49,4 @@ TaskFieldManager.propTypes = {
     deleteTaskField: PropTypes.func.isRequired
 };
 
-export default withTaskFields(TaskFieldManager);
+export default withProCheck(withTaskFields(TaskFieldManager));

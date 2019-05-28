@@ -1,4 +1,8 @@
 export default {
+    connectionTestUrl: 'http://www.google.com',
+    purchaseUrl: 'http://taskunifier.sourceforge.net/app.html',
+    downloadUrl: 'http://taskunifier.sourceforge.net/app.html',
+    versionUrl: 'http://taskunifier.sourceforge.net/version.txt',
     color: '#008c4b',
     fadeColor: '#e3f2eb',
     lightColor: '#b8ccbf',
@@ -15,7 +19,6 @@ export default {
     conditionTreeGroupNotActiveColor: '#e3afac',
     archivedColor: '#5e666d',
     defaultTaskTemplateColor: '#ffd632',
-    unStarredColor: '#cccccc',
     badgeColor: '#008c4b',
     calendarDateMode_startDate: '#32cd32',
     calendarDateMode_dueDate: '#1e90ff'

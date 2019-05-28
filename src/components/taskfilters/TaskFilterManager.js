@@ -6,6 +6,7 @@ import FilterList from 'components/filters/FilterList';
 import FilterForm from 'components/filters/FilterForm';
 import SorterTable from 'components/filters/SorterTable';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
+import withProCheck from 'containers/WithProCheck';
 import withTaskFields from 'containers/WithTaskFields';
 import withTaskFilters from 'containers/WithTaskFilters';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
@@ -96,4 +97,4 @@ TaskFilterManager.propTypes = {
     deleteTaskFilter: PropTypes.func.isRequired
 };
 
-export default withTaskFields(withTaskFilters(TaskFilterManager));
+export default withProCheck(withTaskFields(withTaskFilters(TaskFilterManager)));

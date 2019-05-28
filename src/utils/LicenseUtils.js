@@ -13,18 +13,6 @@ zpOv9IGF0By1PJySxY+KZtq/elnhDcct2S28sIh5+3l2fEDz6e8DFLNnHdJ9ofWT
 GQIDAQAB
 -----END PUBLIC KEY-----`;
 
-// TODO move to website
-/*
-export function createLicense(object) {
-    const message = Buffer.from(JSON.stringify(object)).toString('hex');
-
-    const sign = crypto.createSign('RSA-SHA256');
-    sign.update(message);
-
-    return sign.sign(PRIVATE_KEY).toString('hex') + message;
-};
-*/
-
 export function verifyLicense(license) {
     if (!license || license.length <= 512) {
         return null;
@@ -37,7 +25,13 @@ export function verifyLicense(license) {
     verifier.update(message);
 
     if (verifier.verify(PUBLIC_KEY, signature, 'hex')) {
-        return Buffer.from(message, 'hex').toString();
+        const content = Buffer.from(message, 'hex').toString();
+
+        try {
+            return JSON.parse(content)
+        } catch (e) {
+            return null;
+        }
     } else {
         return null;
     }

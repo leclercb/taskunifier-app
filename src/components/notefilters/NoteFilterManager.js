@@ -7,6 +7,7 @@ import FilterForm from 'components/filters/FilterForm';
 import SorterTable from 'components/filters/SorterTable';
 import withNoteFields from 'containers/WithNoteFields';
 import withNoteFilters from 'containers/WithNoteFilters';
+import withProCheck from 'containers/WithProCheck';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 import { getNoteSorterFields } from 'data/DataNoteSorterFields';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -82,4 +83,4 @@ NoteFilterManager.propTypes = {
     deleteNoteFilter: PropTypes.func.isRequired
 };
 
-export default withNoteFields(withNoteFilters(NoteFilterManager));
+export default withProCheck(withNoteFields(withNoteFilters(NoteFilterManager)));

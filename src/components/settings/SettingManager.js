@@ -65,18 +65,26 @@ function SettingManager(props) {
                         dataSource={settings}
                         renderItem={item => (
                             <List.Item>
-                                <Form.Item label={item.title} style={{ width: '100%' }}>
-                                    {item.type === 'button' ?
-                                        (
-                                            <Button onClick={() => item.value(props.settings, props.updateSettings, props.dispatcher)}>
-                                                {item.title}
-                                            </Button>
-                                        ) : getFieldDecorator(item.id, {
-                                            valuePropName: getValuePropNameForType(item.type),
-                                            initialValue: getSettingValue(item)
-                                        })(getInputForType(item.type, item.options, { disabled: item.editable === false }))
-                                    }
-                                </Form.Item>
+                                {item.type === 'component' ?
+                                    (
+                                        <div style={{ width: '100%', margin: '20px 0px' }}>
+                                            {item.value(props.settings, props.updateSettings, props.dispatcher)}
+                                        </div>
+                                    ) : (
+                                        <Form.Item label={item.title} style={{ width: '100%' }}>
+                                            {item.type === 'button' ? (
+                                                <Button onClick={() => item.value(props.settings, props.updateSettings, props.dispatcher)}>
+                                                    {item.title}
+                                                </Button>
+                                            ) : null}
+                                            {item.type !== 'button' && item.type !== 'component' ? (
+                                                getFieldDecorator(item.id, {
+                                                    valuePropName: getValuePropNameForType(item.type),
+                                                    initialValue: getSettingValue(item)
+                                                })(getInputForType(item.type, item.options, { disabled: item.editable === false }))
+                                            ) : null}
+                                        </Form.Item>
+                                    )}
                             </List.Item>
                         )} />
                 </Form>

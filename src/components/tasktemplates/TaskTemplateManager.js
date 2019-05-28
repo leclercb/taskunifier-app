@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withTaskTemplates from 'containers/WithTaskTemplates';
 import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
 import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
+import withProCheck from 'containers/WithProCheck';
 import withSettings from 'containers/WithSettings';
+import withTaskTemplates from 'containers/WithTaskTemplates';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 
@@ -54,4 +55,4 @@ TaskTemplateManager.propTypes = {
     updateSettings: PropTypes.func.isRequired
 };
 
-export default withSettings(withTaskTemplates(TaskTemplateManager));
+export default withProCheck(withSettings(withTaskTemplates(TaskTemplateManager)));

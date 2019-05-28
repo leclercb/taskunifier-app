@@ -4,11 +4,14 @@ import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { getLatestVersion, testConnection } from 'actions/RequestActions';
+import ProLockedMessage from 'components/pro/ProLockedMessage';
+import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { compareVersions } from 'utils/CompareUtils';
 import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
 import { setTaskFieldManagerOptions } from 'actions/AppActions';
+import { verifyLicense } from 'utils/LicenseUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -23,6 +26,10 @@ export function getSettings() {
 
     getCategories().forEach(category => {
         category.settings.forEach(setting => {
+            if (setting.type === 'component') {
+                return;
+            }
+
             if (setting.type === 'button') {
                 return;
             }
@@ -183,6 +190,35 @@ export function getCategories() {
             ]
         },
         {
+            id: 'license',
+            title: 'License',
+            icon: 'key',
+            settings: [
+                {
+                    id: 'license',
+                    title: 'License',
+                    type: 'textarea',
+                    value: null,
+                    editable: true
+                },
+                {
+                    id: 'licenseIsValid',
+                    title: '',
+                    type: 'component',
+                    value: settings => {
+                        const license = verifyLicense(settings.license);
+                        
+                        if (license) {
+                            return (<ProUnlockedMessage license={license} />);
+                        } else {
+                            return (<ProLockedMessage />);
+                        }
+                    },
+                    editable: false
+                }
+            ]
+        },
+        {
             id: 'date',
             title: 'Date',
             icon: 'calendar-alt',
@@ -265,20 +301,6 @@ export function getCategories() {
                         ]
                     },
                     value: 'HH:mm',
-                    editable: true
-                }
-            ]
-        },
-        {
-            id: 'license',
-            title: 'License',
-            icon: 'key',
-            settings: [
-                {
-                    id: 'license',
-                    title: 'License',
-                    type: 'textarea',
-                    value: null,
                     editable: true
                 }
             ]

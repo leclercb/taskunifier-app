@@ -31,6 +31,8 @@ import {
     faHome,
     faKey,
     faList,
+    faLock,
+    faLockOpen,
     faMagic,
     faMinusSquare,
     faNetworkWired,
@@ -84,6 +86,8 @@ library.add(faFolderOpen);
 library.add(faHome);
 library.add(faKey);
 library.add(faList);
+library.add(faLock);
+library.add(faLockOpen);
 library.add(faMagic);
 library.add(faMinusSquare);
 library.add(faNetworkWired);

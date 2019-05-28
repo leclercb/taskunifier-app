@@ -1,3 +1,5 @@
+import Constants from "constants/Constants";
+
 const { ipcRenderer } = window.require('electron');
 
 export function getAppVersion() {
@@ -5,5 +7,5 @@ export function getAppVersion() {
 }
 
 export function downloadVersion() {
-    return ipcRenderer.send('open-file', 'http://taskunifier.sourceforge.net/app.html');
+    return ipcRenderer.send('open-file', Constants.downloadUrl);
 }

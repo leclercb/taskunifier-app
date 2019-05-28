@@ -1,3 +1,5 @@
+import Constants from "constants/Constants";
+
 const electron = window.require('electron');
 const axios = electron.remote.require('axios');
 const httpsProxyAgent = electron.remote.require('https-proxy-agent');
@@ -36,7 +38,7 @@ export function testConnection(settings) {
         settings,
         {
             method: 'GET',
-            url: 'http://www.google.com',
+            url: Constants.connectionTestUrl,
             responseType: 'text'
         });
 }
@@ -46,7 +48,7 @@ export function getLatestVersion(settings) {
         settings,
         {
             method: 'GET',
-            url: 'http://taskunifier.sourceforge.net/version.txt',
+            url: Constants.versionUrl,
             responseType: 'text'
         }).then(result => {
             return result.data;
