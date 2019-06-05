@@ -40,7 +40,7 @@ function App(props) {
 
             if (props.settings.confirmBeforeClosing) {
                 Modal.confirm({
-                    title: 'Do you want to close TaskUnifier 2 ?',
+                    title: 'Do you want to close TaskUnifier ?',
                     onOk: () => {
                         close();
                     }

@@ -1,6 +1,6 @@
 {
-    "name": "taskunifier-2",
-    "description": "TaskUnifier 2 - Take GTD to the next level",
+    "name": "taskunifier-app",
+    "description": "TaskUnifier - Manage your tasks and improve your productivity",
     "author": "BL-IT",
     "version": "0.1.0",
     "private": true,
@@ -77,9 +77,9 @@
         "typescript": "^3.4.3"
     },
     "build": {
-        "appId": "com.bl-it.taskunifier2",
+        "appId": "com.bl-it.taskunifier",
         "compression": "normal",
-        "productName": "TaskUnifier 2",
+        "productName": "TaskUnifier",
         "directories": {
             "buildResources": "build",
             "output": "dist"
@@ -103,7 +103,7 @@
                 "snap",
                 "AppImage"
             ],
-            "description": "TaskUnifier 2 - Take GTD to the next level",
+            "description": "TaskUnifier - Manage your tasks and improve your productivity",
             "category": "Office;ProjectManagement"
         }
     },
