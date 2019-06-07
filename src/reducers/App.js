@@ -5,10 +5,10 @@ import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 const App = () => (state = {
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
-    selectedNoteFilterDate: moment().toJSON(),
+    selectedNoteFilterDate: moment().toISOString(),
     selectedTaskIds: [],
     selectedTaskFilter: getDefaultSelectedTaskFilter(),
-    selectedTaskFilterDate: moment().toJSON(),
+    selectedTaskFilterDate: moment().toISOString(),
     joyride: {
         id: null,
         run: false

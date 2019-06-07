@@ -75,7 +75,7 @@ function App(props) {
                 interval = setInterval(() => {
                     props.saveData();
                     props.updateSettings({
-                        lastAutomaticSave: moment().toJSON()
+                        lastAutomaticSave: moment().toISOString()
                     });
                 }, automaticSaveInterval * 60 * 1000);
 
@@ -105,7 +105,7 @@ function App(props) {
                     (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
                     props.backupData();
                     props.updateSettings({
-                        lastAutomaticBackup: moment().toJSON()
+                        lastAutomaticBackup: moment().toISOString()
                     });
                 }
             }, 30 * 1000);

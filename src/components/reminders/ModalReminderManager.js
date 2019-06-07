@@ -9,10 +9,10 @@ import ReminderManager from 'components/reminders/ReminderManager';
 import { useInterval } from 'hooks/UseInterval';
 
 function ModalReminderManager(props) {
-    const [date, setDate] = useState(moment().toJSON());
+    const [date, setDate] = useState(moment().toISOString());
 
     useInterval(() => {
-        setDate(moment().toJSON());
+        setDate(moment().toISOString());
     }, 30000);
 
     const onShowReminderManager = () => {

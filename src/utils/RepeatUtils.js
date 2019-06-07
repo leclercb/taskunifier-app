@@ -95,7 +95,7 @@ export function getNextDate(repeat, date) {
             const d = moment(date);
             d.add(1, 'days');
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'everyWeekday': {
             const days = [1, 2, 3, 4, 5];
@@ -108,7 +108,7 @@ export function getNextDate(repeat, date) {
                 }
             }
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'everyWeekend': {
             const days = [6, 7];
@@ -121,7 +121,7 @@ export function getNextDate(repeat, date) {
                 }
             }
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'everyXDays': {
             if (!repeat.nbDays) {
@@ -131,7 +131,7 @@ export function getNextDate(repeat, date) {
             const d = moment(date);
             d.add(repeat.nbDays, 'days');
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'everySelectedDay': {
             if (!repeat.dayOfWeek) {
@@ -144,7 +144,7 @@ export function getNextDate(repeat, date) {
 
             for (let i = 0; i < 7; i++) {
                 if (days.includes(d.isoWeekday())) {
-                    return d.toJSON();
+                    return d.toISOString();
                 } else {
                     d.add(1, 'days');
                 }
@@ -160,7 +160,7 @@ export function getNextDate(repeat, date) {
             const d = moment(date);
             d.add(repeat.nbWeeks, 'weeks');
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'everyXWeeksOnDaysY': {
             if (!repeat.nbWeeks || !repeat.daysOfWeek) {
@@ -174,7 +174,7 @@ export function getNextDate(repeat, date) {
 
             for (let i = 0; i < 7; i++) {
                 if (days.includes(d.isoWeekday())) {
-                    return d.toJSON();
+                    return d.toISOString();
                 } else {
                     d.add(1, 'days');
                 }
@@ -190,7 +190,7 @@ export function getNextDate(repeat, date) {
             const d = moment(date);
             d.add(repeat.nbMonths, 'months');
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'dayXEveryYMonths': {
             if (!repeat.dayNb || !repeat.nbMonths) {
@@ -209,7 +209,7 @@ export function getNextDate(repeat, date) {
                 d.add(repeat.nbMonths, 'months');
             }
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'weekXDayYEveryZMonths': {
             return null; // TODO implement
@@ -222,7 +222,7 @@ export function getNextDate(repeat, date) {
             const d = moment(date);
             d.add(repeat.nbYears, 'years');
 
-            return d.toJSON();
+            return d.toISOString();
         }
         case 'withParent': {
             return null; // TODO implement

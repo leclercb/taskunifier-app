@@ -266,7 +266,7 @@ export function getFieldType(type, options) {
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue && !objectValue) {
@@ -285,7 +285,7 @@ export function getFieldType(type, options) {
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue && !objectValue) {
@@ -304,7 +304,7 @@ export function getFieldType(type, options) {
                         title: 'Before',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -319,7 +319,7 @@ export function getFieldType(type, options) {
                         title: 'Before or equals',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -334,7 +334,7 @@ export function getFieldType(type, options) {
                         title: 'After',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -349,7 +349,7 @@ export function getFieldType(type, options) {
                         title: 'After or equals',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -391,7 +391,7 @@ export function getFieldType(type, options) {
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue && !objectValue) {
@@ -410,7 +410,7 @@ export function getFieldType(type, options) {
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue && !objectValue) {
@@ -429,7 +429,7 @@ export function getFieldType(type, options) {
                         title: 'Before',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -444,7 +444,7 @@ export function getFieldType(type, options) {
                         title: 'Before or equals',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -459,7 +459,7 @@ export function getFieldType(type, options) {
                         title: 'After',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {
@@ -474,7 +474,7 @@ export function getFieldType(type, options) {
                         title: 'After or equals',
                         apply: (conditionValue, objectValue) => {
                             if (Number.isInteger(conditionValue)) {
-                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toJSON();
+                                conditionValue = moment().add(Number.parseInt(conditionValue), 'days').toISOString();
                             }
 
                             if (!conditionValue || !objectValue) {

@@ -48,7 +48,7 @@ export function getToken(code) {
                 return dispatch(updateSettings({
                     toodledo: {
                         accessToken: result.data.access_token,
-                        accessTokenCreationDate: moment().toJSON(),
+                        accessTokenCreationDate: moment().toISOString(),
                         accessTokenExpiresIn: result.data.expires_in,
                         refreshToken: result.data.refresh_token
                     }
@@ -80,7 +80,7 @@ export function getRefreshedToken() {
                 return dispatch(updateSettings({
                     toodledo: {
                         accessToken: result.data.access_token,
-                        accessTokenCreationDate: moment().toJSON(),
+                        accessTokenCreationDate: moment().toISOString(),
                         accessTokenExpiresIn: result.data.expires_in,
                         refreshToken: result.data.refresh_token
                     }

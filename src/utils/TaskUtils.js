@@ -22,7 +22,7 @@ export function onTaskUpdate(task, oldTask, updateDate) {
                 newTask.dueDate = getNextDate(task.repeat, updateDate);
             }
 
-            newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toJSON();
+            newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toISOString();
 
             return [newTask];
         }

@@ -45,7 +45,7 @@ class TimerField extends React.Component {
             newTimer.startDate = null;
         } else {
             newTimer.value = value;
-            newTimer.startDate = moment().toJSON();
+            newTimer.startDate = moment().toISOString();
         }
 
         if (this.props.onChange) {
@@ -60,7 +60,7 @@ class TimerField extends React.Component {
 
         const timer = {
             value: this.parseTime(value),
-            startDate: this.props.timer && this.props.timer.startDate ? moment().toJSON() : null
+            startDate: this.props.timer && this.props.timer.startDate ? moment().toISOString() : null
         };
 
         if (this.props.onChange) {

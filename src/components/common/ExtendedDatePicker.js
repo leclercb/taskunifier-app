@@ -14,7 +14,7 @@ class ExtendedDatePicker extends React.Component {
 
     onChange(checked) {
         if (this.props.onChange) {
-            this.props.onChange(checked ? 0 : moment().toJSON());
+            this.props.onChange(checked ? 0 : moment().toISOString());
         }
     }
 

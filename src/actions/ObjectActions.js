@@ -32,7 +32,7 @@ export function addObject(property, object) {
             type: 'ADD_OBJECT',
             property,
             generateId: () => uuid(),
-            creationDate: moment().toJSON(),
+            creationDate: moment().toISOString(),
             object: {
                 color: Constants.defaultObjectColor,
                 ...object,
@@ -51,7 +51,7 @@ export function updateObject(property, object) {
             type: 'UPDATE_OBJECT',
             property,
             generateId: () => uuid(),
-            updateDate: moment().toJSON(),
+            updateDate: moment().toISOString(),
             object
         });
 
@@ -66,7 +66,7 @@ export function deleteObject(property, objectId) {
             type: 'DELETE_OBJECT',
             property,
             generateId: () => uuid(),
-            updateDate: moment().toJSON(),
+            updateDate: moment().toISOString(),
             immediate: true,
             objectId
         });

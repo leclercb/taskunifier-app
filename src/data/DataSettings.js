@@ -117,7 +117,7 @@ export function getCategories() {
                     id: 'lastAutomaticSave',
                     title: 'Last automatic save',
                     type: 'dateTime',
-                    value: moment().toJSON(),
+                    value: moment().toISOString(),
                     editable: false
                 },
                 {
@@ -335,7 +335,7 @@ export function getCategories() {
                     id: 'lastAutomaticBackup',
                     title: 'Last automatic backup',
                     type: 'dateTime',
-                    value: moment().toJSON(),
+                    value: moment().toISOString(),
                     editable: false
                 },
                 {

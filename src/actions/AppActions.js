@@ -231,7 +231,7 @@ export function setSelectedNoteFilter(noteFilter) {
         dispatch({
             type: 'SET_SELECTED_NOTE_FILTER',
             noteFilter,
-            date: moment().toJSON()
+            date: moment().toISOString()
         });
 
         return Promise.resolve();
@@ -254,7 +254,7 @@ export function setSelectedTaskFilter(taskFilter) {
         dispatch({
             type: 'SET_SELECTED_TASK_FILTER',
             taskFilter,
-            date: moment().toJSON()
+            date: moment().toISOString()
         });
 
         return Promise.resolve();

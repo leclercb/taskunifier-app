@@ -12,7 +12,7 @@ class DatePicker extends React.Component {
 
     onChange(value) {
         if (this.props.onChange) {
-            this.props.onChange(value ? value.toJSON() : null);
+            this.props.onChange(value ? value.toISOString() : null);
         }
     }
 

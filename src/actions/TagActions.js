@@ -4,7 +4,7 @@ export function updateTag(tag) {
     return dispatch => {
         dispatch({
             type: 'UPDATE_TAG',
-            updateDate: moment().toJSON(),
+            updateDate: moment().toISOString(),
             tag
         });
 
@@ -16,7 +16,7 @@ export function deleteTag(tagId) {
     return dispatch => {
         dispatch({
             type: 'DELETE_TAG',
-            updateDate: moment().toJSON(),
+            updateDate: moment().toISOString(),
             tagId
         });
 

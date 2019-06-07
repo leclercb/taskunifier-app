@@ -72,8 +72,8 @@ function TaskCalendar(props) {
         if (action === 'select' && ['week', 'work_week', 'day'].includes(props.selectedCalendarView)) {
             props.addTask({
                 title: 'Untitled',
-                startDate: moment(start).toJSON(),
-                dueDate: moment(end).toJSON(),
+                startDate: moment(start).toISOString(),
+                dueDate: moment(end).toISOString(),
                 length: moment(end).diff(moment(start), 'minutes')
             }).then(task => {
                 props.setTaskEditionManagerOptions({
@@ -88,13 +88,13 @@ function TaskCalendar(props) {
         if (event.mode === 'startDate') {
             props.updateTask({
                 ...event.task,
-                startDate: moment(start).toJSON(),
+                startDate: moment(start).toISOString(),
                 length: moment(end).diff(moment(start), 'minutes')
             });
         } else {
             props.updateTask({
                 ...event.task,
-                dueDate: moment(end).toJSON(),
+                dueDate: moment(end).toISOString(),
                 length: moment(end).diff(moment(start), 'minutes')
             });
         }
