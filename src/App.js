@@ -22,46 +22,46 @@ import 'components/common/table/VirtualizedTable.css';
 const { ipcRenderer } = window.require('electron');
 
 function App(props) {
-    const onClose = () => {
-        const size = ipcRenderer.sendSync('get-current-window-size');
-        const position = ipcRenderer.sendSync('get-current-window-position');
-
-        props.updateSettings({
-            windowSizeWidth: size[0],
-            windowSizeHeight: size[1],
-            windowPositionX: position[0],
-            windowPositionY: position[1]
-        }).then(() => {
-            const close = () => {
-                props.saveData({ clean: true }).finally(() => {
-                    ipcRenderer.send('closed');
-                });
-            };
-
-            if (props.settings.confirmBeforeClosing) {
-                Modal.confirm({
-                    title: 'Do you want to close TaskUnifier ?',
-                    onOk: () => {
-                        close();
-                    }
-                });
-            } else {
-                close();
-            }
-        });
-    };
-
     useEffect(() => {
         props.loadData();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
+        const onClose = () => {
+            const size = ipcRenderer.sendSync('get-current-window-size');
+            const position = ipcRenderer.sendSync('get-current-window-position');
+
+            props.updateSettings({
+                windowSizeWidth: size[0],
+                windowSizeHeight: size[1],
+                windowPositionX: position[0],
+                windowPositionY: position[1]
+            }).then(() => {
+                const close = () => {
+                    props.saveData({ clean: true }).finally(() => {
+                        ipcRenderer.send('closed');
+                    });
+                };
+
+                if (props.settings.confirmBeforeClosing) {
+                    Modal.confirm({
+                        title: 'Do you want to close TaskUnifier ?',
+                        onOk: () => {
+                            close();
+                        }
+                    });
+                } else {
+                    close();
+                }
+            });
+        };
+
         ipcRenderer.on('app-close', onClose);
 
         return () => {
             ipcRenderer.removeListener('app-close', onClose);
         };
-    }, [props.settings]);
+    }, [props.settings]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(
         () => {
@@ -85,6 +85,7 @@ function App(props) {
                 clearInterval(interval);
             };
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             props.settings.automaticSave,
             props.settings.automaticSaveInterval
@@ -113,6 +114,7 @@ function App(props) {
                 clearInterval(interval);
             };
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             props.settings.automaticBackup,
             props.settings.automaticBackupInterval,

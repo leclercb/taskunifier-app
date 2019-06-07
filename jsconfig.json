@@ -1,4 +1,5 @@
 {
+    "baseUrl": "src/",
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2016",
