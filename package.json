@@ -2,7 +2,7 @@
     "name": "taskunifier-app",
     "description": "TaskUnifier - Manage your tasks and improve your productivity",
     "author": "BL-IT",
-    "version": "0.1.0",
+    "version": "0.1.0-alpha",
     "private": true,
     "main": "public/electron.js",
     "scripts": {
@@ -11,9 +11,7 @@
         "react:babel": "node node_modules/babel-cli/bin/babel.js src -d lib --copy-files",
         "react:lint": "node node_modules/eslint/bin/eslint.js src",
         "react:test": "craco test",
-        "react:deploy": "node server.js",
         "electron:start": "electron .",
-        "electron:build": "electron-builder",
         "start": "yarn react:start",
         "test": "yarn react:test",
         "pack": "electron-builder --dir",
@@ -72,7 +70,6 @@
         "enzyme-to-json": "^3.3.5",
         "eslint": "^5.16.0",
         "eslint-plugin-react": "^7.13.0",
-        "express": "^4.17.1",
         "react-test-renderer": "^16.8.6",
         "typescript": "^3.5.1"
     },
@@ -88,18 +85,25 @@
             "icon": "assets/icon.icns",
             "type": "distribution",
             "target": [
-                "pkg",
                 "dmg"
             ],
-            "category": "public.app-category.productivity"
+            "category": "public.app-category.productivity",
+            "publish": {
+                "provider": "s3",
+                "bucket": "taskunifier"
+            }
         },
         "win": {
-            "target": "nsis",
+            "target": [
+                "portable",
+                "nsis"
+            ],
             "icon": "assets/icon.ico"
         },
         "linux": {
             "icon": "assets/icon.png",
             "target": [
+                "tar.gz",
                 "snap",
                 "AppImage"
             ],
