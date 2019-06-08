@@ -5,6 +5,7 @@
     "version": "0.1.0-alpha",
     "private": true,
     "main": "public/electron.js",
+    "homepage": "./",
     "scripts": {
         "react:start": "BROWSER=none PORT=3000 craco start",
         "react:build": "craco build",
