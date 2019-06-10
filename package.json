@@ -88,18 +88,22 @@
             "target": [
                 "dmg"
             ],
-            "category": "public.app-category.productivity",
             "publish": {
                 "provider": "s3",
                 "bucket": "taskunifier"
-            }
+            },
+            "category": "public.app-category.productivity"
         },
         "win": {
+            "icon": "assets/icon.ico",
             "target": [
                 "portable",
                 "nsis"
             ],
-            "icon": "assets/icon.ico"
+            "publish": {
+                "provider": "s3",
+                "bucket": "taskunifier"
+            }
         },
         "linux": {
             "icon": "assets/icon.png",
@@ -108,6 +112,10 @@
                 "snap",
                 "AppImage"
             ],
+            "publish": {
+                "provider": "s3",
+                "bucket": "taskunifier"
+            },
             "description": "TaskUnifier - Manage your tasks and improve your productivity",
             "category": "Office;ProjectManagement"
         }
