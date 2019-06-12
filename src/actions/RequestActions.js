@@ -51,7 +51,7 @@ export function getLatestVersion(settings) {
             url: Constants.versionUrl,
             responseType: 'text'
         }).then(result => {
-            return result.data;
+            return result.data.number;
         }).catch(() => {
             return Promise.resolve(null);
         });
