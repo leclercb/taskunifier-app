@@ -26,7 +26,5 @@ export const getSynchronizationManager = state => state.app.synchronizationManag
 
 export const isValidLicense = createSelector(
     getSettings,
-    (settings) => {
-        return verifyLicense(settings.license);
-    }
+    settings => !!verifyLicense(settings.license)
 );

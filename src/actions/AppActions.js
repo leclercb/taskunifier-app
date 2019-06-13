@@ -97,6 +97,7 @@ export function loadData(options) {
 
 export function _saveData(path, options) {
     options = merge({
+        coreSettingsOnly: false,
         clean: false,
         message: null
     }, options || {});
@@ -120,22 +121,29 @@ export function _saveData(path, options) {
             createDirectory(path);
 
             const saveAll = () => {
-                Promise.all([
-                    dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true))),
-                    dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(getSettings(state), false))),
-                    dispatch(saveContactsToFile(join(path, 'contacts.json'), getContacts(state))),
-                    dispatch(saveContextsToFile(join(path, 'contexts.json'), getContexts(state))),
-                    dispatch(saveFoldersToFile(join(path, 'folders.json'), getFolders(state))),
-                    dispatch(saveGoalsToFile(join(path, 'goals.json'), getGoals(state))),
-                    dispatch(saveLocationsToFile(join(path, 'locations.json'), getLocations(state))),
-                    dispatch(saveNotesToFile(join(path, 'notes.json'), getNotes(state))),
-                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), getNoteFields(state))),
-                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), getNoteFilters(state))),
-                    dispatch(saveTasksToFile(join(path, 'tasks.json'), getTasks(state))),
-                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), getTaskFields(state))),
-                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), getTaskFilters(state))),
-                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), getTaskTemplates(state)))
-                ]).then(() => {
+                const promises = [
+                    dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true)))
+                ];
+
+                if (!options.coreSettingsOnly) {
+                    promises.push(
+                        dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(getSettings(state), false))),
+                        dispatch(saveContactsToFile(join(path, 'contacts.json'), getContacts(state))),
+                        dispatch(saveContextsToFile(join(path, 'contexts.json'), getContexts(state))),
+                        dispatch(saveFoldersToFile(join(path, 'folders.json'), getFolders(state))),
+                        dispatch(saveGoalsToFile(join(path, 'goals.json'), getGoals(state))),
+                        dispatch(saveLocationsToFile(join(path, 'locations.json'), getLocations(state))),
+                        dispatch(saveNotesToFile(join(path, 'notes.json'), getNotes(state))),
+                        dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), getNoteFields(state))),
+                        dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), getNoteFilters(state))),
+                        dispatch(saveTasksToFile(join(path, 'tasks.json'), getTasks(state))),
+                        dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), getTaskFields(state))),
+                        dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), getTaskFilters(state))),
+                        dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), getTaskTemplates(state)))
+                    );
+                }
+
+                Promise.all(promises).then(() => {
                     dispatch(updateProcess({
                         id: processId,
                         state: 'COMPLETED'

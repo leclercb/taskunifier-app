@@ -1,16 +1,17 @@
 import React from 'react';
-import { Button, Modal, Select, notification } from 'antd';
+import { Button, Checkbox, Modal, Select, notification } from 'antd';
 import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { getLatestVersion, testConnection } from 'actions/RequestActions';
+import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { compareVersions } from 'utils/CompareUtils';
 import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
-import { setTaskFieldManagerOptions } from 'actions/AppActions';
+import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { verifyLicense } from 'utils/LicenseUtils';
 
 export function isCoreSetting(settingId) {
@@ -96,6 +97,42 @@ export function getCategories() {
                     title: 'Data folder location',
                     type: 'text',
                     value: getUserDataPath(),
+                    editable: false,
+                    core: true
+                },
+                {
+                    id: 'changeDataFolder',
+                    title: 'Change data folder location',
+                    type: 'button',
+                    value: (settings, updateSettings, dispatcher) => {
+                        let dataFolder = null;
+                        let copy = false;
+
+                        Modal.confirm({
+                            title: 'Change data folder location',
+                            content: (
+                                <React.Fragment>
+                                    <FileField
+                                        onChange={value => dataFolder = value}
+                                        style={{
+                                            width: 400,
+                                            marginBottom: 10
+                                        }} />
+                                    <Checkbox
+                                        onChange={event => copy = event.target.checked}>
+                                        Copy current data to the new data folder location
+                                    </Checkbox>
+                                </React.Fragment>
+                            ),
+                            okText: 'Change',
+                            onOk: async () => {
+                                await updateSettings({ dataFolder });
+                                await dispatcher(saveData({ coreSettingsOnly: !copy }));
+                                await loadData();
+                            },
+                            width: 500
+                        });
+                    },
                     editable: true,
                     core: true
                 },
@@ -207,7 +244,7 @@ export function getCategories() {
                     type: 'component',
                     value: settings => {
                         const license = verifyLicense(settings.license);
-                        
+
                         if (license) {
                             return (<ProUnlockedMessage license={license} />);
                         } else {

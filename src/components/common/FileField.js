@@ -9,14 +9,35 @@ class FileField extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            value: props.value
+        };
+
         this.selectingFile = false;
 
+        this.onChange = this.onChange.bind(this);
         this.onOpenFile = this.onOpenFile.bind(this);
         this.onSelectFile = this.onSelectFile.bind(this);
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.value !== prevProps.value) {
+            this.setState({
+                value: this.props.value
+            });
+        }
+    }
+
+    onChange(value) {
+        this.setState({ value });
+
+        if (this.props.onChange) {
+            this.props.onChange(value);
+        }
+    }
+
     onOpenFile() {
-        return ipcRenderer.send('open-file', this.props.value);
+        return ipcRenderer.send('open-file', this.state.value);
     }
 
     onSelectFile() {
@@ -29,7 +50,7 @@ class FileField extends React.Component {
         });
 
         if (files && files.length === 1) {
-            this.props.onChange(files[0]);
+            this.onChange(files[0]);
 
             if (this.props.onPressEnter) {
                 this.props.onPressEnter();
@@ -50,13 +71,15 @@ class FileField extends React.Component {
                     icon={'folder-open'}
                     style={{ cursor: 'pointer' }}
                     onIconClick={this.onOpenFile}
-                    text={this.props.value} />
+                    text={this.state.value} />
             );
         }
 
         return (
             <Input
                 {...this.props}
+                value={this.state.value}
+                onChange={this.onChange}
                 onBlur={() => {
                     if (this.props.onBlur) {
                         setTimeout(() => {
