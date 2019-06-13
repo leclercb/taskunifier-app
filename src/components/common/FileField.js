@@ -79,7 +79,7 @@ class FileField extends React.Component {
             <Input
                 {...this.props}
                 value={this.state.value}
-                onChange={this.onChange}
+                onChange={event => this.onChange(event.target.value)}
                 onBlur={() => {
                     if (this.props.onBlur) {
                         setTimeout(() => {

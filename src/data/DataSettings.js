@@ -120,15 +120,18 @@ export function getCategories() {
                                         }} />
                                     <Checkbox
                                         onChange={event => copy = event.target.checked}>
-                                        Copy current data to the new data folder location
+                                        Copy current data to the new data folder location.
+                                        <br />
+                                        This will override any data in the selected folder !
                                     </Checkbox>
                                 </React.Fragment>
                             ),
                             okText: 'Change',
                             onOk: async () => {
+                                await dispatcher(saveData());
                                 await updateSettings({ dataFolder });
                                 await dispatcher(saveData({ coreSettingsOnly: !copy }));
-                                await loadData();
+                                await dispatcher(loadData());
                             },
                             width: 500
                         });
