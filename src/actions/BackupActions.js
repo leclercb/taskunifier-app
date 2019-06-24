@@ -5,15 +5,15 @@ import { _loadData, _saveData } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
-export function getBackupDate(directory) {
-    return Number(directory.substr(directory.lastIndexOf(getPathSeparator()) + 1));
+export function getBackupId(directory) {
+    return directory.substr(directory.lastIndexOf(getPathSeparator()) + 1);
 }
 
 export async function getBackups(settings) {
     const path = join(settings.dataFolder, 'backups');
     const directories = await getDirectories(path);
-    const backups = directories.map(directory => getBackupDate(directory));
-    return backups.sort((a, b) => Number(a) - Number(b));
+    const backups = directories.map(directory => getBackupId(directory));
+    return backups.sort((a, b) => moment(a).diff(moment(b)));
 }
 
 export function restoreBackup(backupId) {
@@ -25,7 +25,7 @@ export function restoreBackup(backupId) {
 
 export function backupData() {
     return async (dispatch, getState) => {
-        const path = join(getState().settings.dataFolder, 'backups', '' + Date.now().valueOf());
+        const path = join(getState().settings.dataFolder, 'backups', moment().toISOString());
         await dispatch(_saveData(path, { clean: false, message: 'Backup database' }));
         await dispatch(cleanBackups());
     };

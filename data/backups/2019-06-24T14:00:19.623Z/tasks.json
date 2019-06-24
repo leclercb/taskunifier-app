@@ -5,7 +5,7 @@
         "id": "42b29875-1ca1-49c9-92e3-972ce02e4ca4",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.225Z",
-        "updateDate": "2019-05-17T11:27:56.617Z",
+        "updateDate": "2019-05-23T09:28:58.382Z",
         "state": "TO_UPDATE",
         "progress": 19,
         "priority": "medium",
@@ -77,7 +77,7 @@
                 ]
             }
         ],
-        "startDateReminder": 60,
+        "startDateReminder": null,
         "repeatFrom": "dueDate",
         "length": 120
     },
@@ -87,7 +87,7 @@
         "id": "b43d6563-ef18-4dc4-8b18-4e450cc224c5",
         "refIds": {},
         "creationDate": "2019-04-23T08:10:27.835Z",
-        "updateDate": "2019-05-17T11:28:04.961Z",
+        "updateDate": "2019-05-23T09:28:58.382Z",
         "state": "TO_UPDATE",
         "progress": 50,
         "priority": "high",
@@ -116,7 +116,7 @@
             "nbWeeks": 2
         },
         "note": "The note of the task",
-        "dueDateReminder": 720,
+        "dueDateReminder": null,
         "repeatFrom": "completionDate",
         "length": 180
     },
