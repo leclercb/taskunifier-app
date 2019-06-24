@@ -68,18 +68,18 @@ function TaskCalendar(props) {
         });
     };
 
-    const onSelectSlot = ({ start, end, action }) => {
+    const onSelectSlot = async ({ start, end, action }) => {
         if (action === 'select' && ['week', 'work_week', 'day'].includes(props.selectedCalendarView)) {
-            props.addTask({
+            const task = await props.addTask({
                 title: 'Untitled',
                 startDate: moment(start).toISOString(),
                 dueDate: moment(end).toISOString(),
                 length: moment(end).diff(moment(start), 'minutes')
-            }).then(task => {
-                props.setTaskEditionManagerOptions({
-                    visible: true,
-                    taskId: task.id
-                });
+            });
+
+            props.setTaskEditionManagerOptions({
+                visible: true,
+                taskId: task.id
             });
         }
     };

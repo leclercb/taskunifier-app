@@ -12,7 +12,8 @@
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
             "runtimeArgs": [
                 ".",
-                "--enable-logging"
+                "--enable-logging",
+                "--no-sandbox"
             ],
             "windows": {
                 "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"

@@ -16,8 +16,9 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 function TaskFilterManager(props) {
     const selectedTaskFilterId = props.taskFilterId;
 
-    const onAddTaskFilter = taskFilter => {
-        props.addTaskFilter(taskFilter).then(taskFilter => props.onTaskFilterSelection(taskFilter.id));
+    const onAddTaskFilter = async taskFilter => {
+        taskFilter = await props.addTaskFilter(taskFilter);
+        props.onTaskFilterSelection(taskFilter.id);
     };
 
     const onTaskFilterSelection = taskFilter => {

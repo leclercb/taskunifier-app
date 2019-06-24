@@ -9,11 +9,11 @@ export function ProUnlockedMessage({ license }) {
         <Empty
             image={(<Icon color={Constants.fadeColor} icon="lock-open" size={64} />)}
             description={(
-                <React.Fragment>
-                    <p>TaskUnifier Pro has been successfully activated !</p>
-                    <p><strong>Owner: </strong>{license.firstname} {license.lastname}</p>
-                    <p><strong>Email: </strong>{license.email}</p>
-                </React.Fragment>
+                <span>
+                    TaskUnifier Pro has been successfully activated !<br />
+                    <strong>Owner: </strong>{license.firstname} {license.lastname}<br />
+                    <strong>Email: </strong>{license.email}
+                </span>
             )} />
     );
 }

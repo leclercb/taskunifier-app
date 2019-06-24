@@ -9,8 +9,9 @@ import { LocationPropType } from 'proptypes/LocationPropTypes';
 function LocationManager(props) {
     const selectedLocationId = props.locationId;
 
-    const onAddLocation = location => {
-        props.addLocation(location).then(location => props.onLocationSelection(location.id));
+    const onAddLocation = async location => {
+        location = await props.addLocation(location);
+        props.onLocationSelection(location.id);
     };
 
     const onLocationSelection = location => {

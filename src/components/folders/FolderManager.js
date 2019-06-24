@@ -9,8 +9,9 @@ import { FolderPropType } from 'proptypes/FolderPropTypes';
 function FolderManager(props) {
     const selectedFolderId = props.folderId;
 
-    const onAddFolder = folder => {
-        props.addFolder(folder).then(folder => props.onFolderSelection(folder.id));
+    const onAddFolder = async folder => {
+        folder = await props.addFolder(folder);
+        props.onFolderSelection(folder.id);
     };
 
     const onFolderSelection = folder => {

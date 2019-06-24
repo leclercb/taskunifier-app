@@ -9,10 +9,9 @@ import { TagPropType } from 'proptypes/TagPropTypes';
 function TagManager(props) {
     const selectedTagId = props.tagId;
 
-    const updateTag = tag => {
-        props.updateTag(tag).then(() => {
-            props.onTagSelection(tag.title);
-        });
+    const updateTag = async tag => {
+        await props.updateTag(tag);
+        props.onTagSelection(tag.title);
     };
 
     const onTagSelection = tag => {

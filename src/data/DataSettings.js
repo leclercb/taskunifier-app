@@ -69,26 +69,25 @@ export function getCategories() {
                     id: 'checkVersion',
                     title: 'Check version',
                     type: 'button',
-                    value: settings => {
-                        getLatestVersion(settings).then(version => {
-                            const latestVersion = version;
-                            const appVersion = getAppVersion();
+                    value: async settings => {
+                        const version = await getLatestVersion(settings);
+                        const latestVersion = version;
+                        const appVersion = getAppVersion();
 
-                            if (compareVersions(appVersion, latestVersion) > 0) {
-                                notification.info({
-                                    message: `A new version is available: ${latestVersion}`,
-                                    description: (
-                                        <Button onClick={() => downloadVersion()}>
-                                            Click here to download it !
+                        if (compareVersions(appVersion, latestVersion) > 0) {
+                            notification.info({
+                                message: `A new version is available: ${latestVersion}`,
+                                description: (
+                                    <Button onClick={() => downloadVersion()}>
+                                        Click here to download it !
                                         </Button>
-                                    )
-                                });
-                            } else {
-                                notification.success({
-                                    message: 'You already have the latest version'
-                                });
-                            }
-                        });
+                                )
+                            });
+                        } else {
+                            notification.success({
+                                message: 'You already have the latest version'
+                            });
+                        }
                     },
                     editable: true
                 },
@@ -213,17 +212,18 @@ export function getCategories() {
                     id: 'testConnection',
                     title: 'Test connection',
                     type: 'button',
-                    value: settings => {
-                        testConnection(settings).then(() => {
+                    value: async settings => {
+                        try {
+                            await testConnection(settings);
                             notification.success({
                                 message: 'Connection test succeeded'
                             });
-                        }).catch(reason => {
+                        } catch (error) {
                             notification.error({
                                 message: 'Connection test failed',
-                                description: reason.toString()
+                                description: error.toString()
                             });
-                        });
+                        }
                     },
                     editable: true
                 }
@@ -382,8 +382,8 @@ export function getCategories() {
                     id: 'restoreFromBackup',
                     title: 'Restore from backup',
                     type: 'button',
-                    value: (settings, updateSettings, dispatcher) => {
-                        const backups = getBackups(settings);
+                    value: async (settings, updateSettings, dispatcher) => {
+                        const backups = await getBackups(settings);
                         let selectedBackup = null;
 
                         Modal.confirm({

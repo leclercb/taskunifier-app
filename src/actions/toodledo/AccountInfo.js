@@ -3,10 +3,10 @@ import { updateToodledoData } from 'actions/SynchronizationActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
 export function getAccountInfo() {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
-        return sendRequest(
+        const result = await sendRequest(
             settings,
             {
                 method: 'POST',
@@ -14,10 +14,10 @@ export function getAccountInfo() {
                 params: {
                     'access_token': settings.toodledo.accessToken
                 }
-            }).then(result => {
-                return dispatch(updateToodledoData({
-                    accountInfo: result.data
-                }));
             });
+
+        await dispatch(updateToodledoData({
+            accountInfo: result.data
+        }));
     };
 }

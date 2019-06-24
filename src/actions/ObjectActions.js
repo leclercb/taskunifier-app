@@ -13,19 +13,17 @@ export function saveObjectsToFile(property, file, data) {
 }
 
 export function setObjects(property, objects) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'SET_OBJECTS',
             property,
             objects
         });
-
-        return Promise.resolve();
     };
 }
 
 export function addObject(property, object) {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const id = uuid();
 
         dispatch({
@@ -40,13 +38,12 @@ export function addObject(property, object) {
             }
         });
 
-        const newObject = getState()[property].find(item => item.id === id);
-        return Promise.resolve(newObject);
+        return getState()[property].find(item => item.id === id);
     };
 }
 
 export function updateObject(property, object) {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property,
@@ -55,13 +52,12 @@ export function updateObject(property, object) {
             object
         });
 
-        const updatedObject = getState()[property].find(item => item.id === object.id);
-        return Promise.resolve(updatedObject);
+        return getState()[property].find(item => item.id === object.id);
     };
 }
 
 export function deleteObject(property, objectId) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
             property,
@@ -70,18 +66,14 @@ export function deleteObject(property, objectId) {
             immediate: true,
             objectId
         });
-
-        return Promise.resolve();
     };
 }
 
 export function cleanObjects(property) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'CLEAN_OBJECTS',
             property
         });
-
-        return Promise.resolve();
     };
 }

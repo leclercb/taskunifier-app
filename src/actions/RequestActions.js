@@ -43,16 +43,14 @@ export function testConnection(settings) {
         });
 }
 
-export function getLatestVersion(settings) {
-    return sendRequest(
+export async function getLatestVersion(settings) {
+    const result = await sendRequest(
         settings,
         {
             method: 'GET',
             url: Constants.versionUrl,
             responseType: 'text'
-        }).then(result => {
-            return result.data.number;
-        }).catch(() => {
-            return Promise.resolve(null);
         });
+
+    return result.data.number;
 }

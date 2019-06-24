@@ -1,45 +1,37 @@
 import uuid from 'uuid';
 
 export function setThreadManagerVisible(visible) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'SET_THREAD_MANAGER_VISIBLE',
             visible
         });
-
-        return Promise.resolve();
     };
 }
 
 export function clearProcesses() {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'CLEAR_PROCESSES'
         });
-
-        return Promise.resolve();
     };
 }
 
 export function updateProcess(process) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'UPDATE_PROCESS',
             process,
             generateNotificationId: () => uuid()
         });
-
-        return Promise.resolve();
     };
 }
 
 export function deleteNotification(notificationId) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'DELETE_NOTIFICATION',
             notificationId
         });
-
-        return Promise.resolve();
     };
 }

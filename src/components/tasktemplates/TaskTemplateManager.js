@@ -12,8 +12,9 @@ import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 function TaskTemplateManager(props) {
     const selectedTaskTemplateId = props.taskTemplateId;
 
-    const onAddTaskTemplate = taskTemplate => {
-        props.addTaskTemplate(taskTemplate).then(taskTemplate => props.onTaskTemplateSelection(taskTemplate.id));
+    const onAddTaskTemplate = async taskTemplate => {
+        taskTemplate = await props.addTaskTemplate(taskTemplate);
+        props.onTaskTemplateSelection(taskTemplate.id);
     };
 
     const onTaskTemplateSelection = taskTemplate => {

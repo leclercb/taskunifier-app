@@ -9,25 +9,21 @@ export function saveSettingsToFile(file, data) {
 }
 
 export const setSettings = (settings, core = false) => {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'SET_SETTINGS',
             core,
             settings
         });
-
-        return Promise.resolve();
     };
 };
 
 export function updateSettings(settings) {
-    return dispatch => {
+    return async dispatch => {
         dispatch({
             type: 'UPDATE_SETTINGS',
             settings
         });
-
-        return Promise.resolve();
     };
 }
 

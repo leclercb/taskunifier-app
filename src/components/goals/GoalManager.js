@@ -9,8 +9,9 @@ import { GoalPropType } from 'proptypes/GoalPropTypes';
 function GoalManager(props) {
     const selectedGoalId = props.goalId;
 
-    const onAddGoal = goal => {
-        props.addGoal(goal).then(goal => props.onGoalSelection(goal.id));
+    const onAddGoal = async goal => {
+        goal = await props.addGoal(goal);
+        props.onGoalSelection(goal.id);
     };
 
     const onGoalSelection = goal => {

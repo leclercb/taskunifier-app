@@ -10,8 +10,9 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 function TaskFieldManager(props) {
     const selectedTaskFieldId = props.taskFieldId;
 
-    const onAddTaskField = taskField => {
-        props.addTaskField(taskField).then(taskField => props.onTaskFieldSelection(taskField.id));
+    const onAddTaskField = async taskField => {
+        taskField = await props.addTaskField(taskField);
+        props.onTaskFieldSelection(taskField.id);
     };
 
     const onTaskFieldSelection = taskField => {

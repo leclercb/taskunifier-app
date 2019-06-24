@@ -1,6 +1,5 @@
 ## Todo List
 
-* Use async/await
 * Synchronize
 * Normalizer for every field type
 * Print config (columns, size)

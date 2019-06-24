@@ -9,8 +9,9 @@ import { ContactPropType } from 'proptypes/ContactPropTypes';
 function ContactManager(props) {
     const selectedContactId = props.contactId;
 
-    const onAddContact = contact => {
-        props.addContact(contact).then(contact => props.onContactSelection(contact.id));
+    const onAddContact = async contact => {
+        contact = await props.addContact(contact);
+        props.onContactSelection(contact.id);
     };
 
     const onContactSelection = contact => {

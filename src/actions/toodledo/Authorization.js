@@ -9,7 +9,7 @@ import { getAppVersion } from 'utils/VersionUtils';
 const { ipcRenderer } = window.require('electron');
 
 export function authorize() {
-    return () => {
+    return async () => {
         const params = {
             response_type: 'code',
             client_id: 'taskunifier2',
@@ -20,16 +20,14 @@ export function authorize() {
         const url = `https://api.toodledo.com/3/account/authorize.php?${qs.stringify(params)}`;
 
         ipcRenderer.send('open-external', url);
-
-        return Promise.resolve();
     };
 }
 
 export function getToken(code) {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
-        return sendRequest(
+        const result = await sendRequest(
             settings,
             {
                 method: 'POST',
@@ -44,24 +42,24 @@ export function getToken(code) {
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
                 }
-            }).then(result => {
-                return dispatch(updateSettings({
-                    toodledo: {
-                        accessToken: result.data.access_token,
-                        accessTokenCreationDate: moment().toISOString(),
-                        accessTokenExpiresIn: result.data.expires_in,
-                        refreshToken: result.data.refresh_token
-                    }
-                }));
             });
+
+        await dispatch(updateSettings({
+            toodledo: {
+                accessToken: result.data.access_token,
+                accessTokenCreationDate: moment().toISOString(),
+                accessTokenExpiresIn: result.data.expires_in,
+                refreshToken: result.data.refresh_token
+            }
+        }));
     };
 }
 
 export function getRefreshedToken() {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
-        return sendRequest(
+        const result = await sendRequest(
             settings,
             {
                 method: 'POST',
@@ -76,15 +74,15 @@ export function getRefreshedToken() {
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
                 }
-            }).then(result => {
-                return dispatch(updateSettings({
-                    toodledo: {
-                        accessToken: result.data.access_token,
-                        accessTokenCreationDate: moment().toISOString(),
-                        accessTokenExpiresIn: result.data.expires_in,
-                        refreshToken: result.data.refresh_token
-                    }
-                }));
             });
+
+        await dispatch(updateSettings({
+            toodledo: {
+                accessToken: result.data.access_token,
+                accessTokenCreationDate: moment().toISOString(),
+                accessTokenExpiresIn: result.data.expires_in,
+                refreshToken: result.data.refresh_token
+            }
+        }));
     };
 }

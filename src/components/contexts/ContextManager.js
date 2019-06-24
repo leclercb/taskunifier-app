@@ -9,8 +9,9 @@ import { ContextPropType } from 'proptypes/ContextPropTypes';
 function ContextManager(props) {
     const selectedContextId = props.contextId;
 
-    const onAddContext = context => {
-        props.addContext(context).then(context => props.onContextSelection(context.id));
+    const onAddContext = async context => {
+        context = await props.addContext(context);
+        props.onContextSelection(context.id);
     };
 
     const onContextSelection = context => {

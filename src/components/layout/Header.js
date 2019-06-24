@@ -17,10 +17,9 @@ import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function Header(props) {
-    const onAddNote = () => {
-        props.addNote({
-            title: 'Untitled'
-        }).then(note => props.setSelectedNoteIds([note.id]));
+    const onAddNote = async () => {
+        const note = await props.addNote({ title: 'Untitled' });
+        props.setSelectedNoteIds([note.id]);
     };
 
     const onRemoveNotes = () => {
@@ -31,8 +30,8 @@ function Header(props) {
         props.printNotes(props.notes);
     };
 
-    const onAddTask = () => {
-        const task = {
+    const onAddTask = async () => {
+        let task = {
             title: 'Untitled'
         };
 
@@ -41,7 +40,8 @@ function Header(props) {
 
         applyTaskTemplate(taskTemplate, task);
 
-        props.addTask(task).then(task => props.setSelectedTaskIds([task.id]));
+        task = await props.addTask(task);
+        props.setSelectedTaskIds([task.id]);
     };
 
     const onCreateDummyTasks = () => {

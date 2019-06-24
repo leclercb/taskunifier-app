@@ -11,7 +11,7 @@ import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function BatchAddTasksManager(props) {
     const addTasks = () => {
-        props.form.validateFields((error, values) => {
+        props.form.validateFields(async (error, values) => {
             if (error) {
                 return;
             }
@@ -52,20 +52,20 @@ function BatchAddTasksManager(props) {
                     }
                 });
 
-                Promise.all(promises).then(tasks => {
-                    const parents = [];
+                const tasks = await Promise.all(promises);
 
-                    tasks.forEach((task, index) => {
-                        parents[taskSubLevels[index]] = task.id;
+                const parents = [];
 
-                        if (taskSubLevels[index] === 0) {
-                            return;
-                        }
+                tasks.forEach((task, index) => {
+                    parents[taskSubLevels[index]] = task.id;
 
-                        props.updateTask({
-                            ...task,
-                            parent: parents[taskSubLevels[index] - 1]
-                        });
+                    if (taskSubLevels[index] === 0) {
+                        return;
+                    }
+
+                    props.updateTask({
+                        ...task,
+                        parent: parents[taskSubLevels[index] - 1]
                     });
                 });
             }

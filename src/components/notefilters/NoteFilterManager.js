@@ -15,8 +15,9 @@ import { FieldPropType } from 'proptypes/FieldPropTypes';
 function NoteFilterManager(props) {
     const selectedNoteFilterId = props.noteFilterId;
 
-    const onAddNoteFilter = noteFilter => {
-        props.addNoteFilter(noteFilter).then(noteFilter => props.onNoteFilterSelection(noteFilter.id));
+    const onAddNoteFilter = async noteFilter => {
+        noteFilter = await props.addNoteFilter(noteFilter);
+        props.onNoteFilterSelection(noteFilter.id);
     };
 
     const onNoteFilterSelection = noteFilter => {

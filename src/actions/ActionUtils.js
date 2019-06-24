@@ -1,3 +1,4 @@
+import { Promise } from "bluebird";
 import uuid from 'uuid';
 import { updateProcess } from 'actions/ThreadActions';
 
@@ -6,93 +7,92 @@ const fs = electron.remote.require('fs');
 const mkdirp = electron.remote.require('mkdirp');
 const rimraf = electron.remote.require('rimraf');
 
+const mkdirpAsync = Promise.promisify(mkdirp);
+const rimrafAsync = Promise.promisify(rimraf);
+
+const accessAsync = Promise.promisify(fs.access);
+const lstatAsync = Promise.promisify(fs.lstat);
+const readdirAsync = Promise.promisify(fs.readdir);
+const readFileAsync = Promise.promisify(fs.readFile);
+const writeFileAsync = Promise.promisify(fs.writeFile);
+
 export const { join, sep } = electron.remote.require('path');
 
 export function loadFromFile(property, file, onData) {
-    return dispatch => {
-        return new Promise((resolve, reject) => {
-            const processId = uuid();
+    return async dispatch => {
+        const processId = uuid();
+
+        dispatch(updateProcess({
+            id: processId,
+            state: 'RUNNING',
+            title: `Load "${property}" from file`
+        }));
+
+        try {
+            await accessAsync(file, fs.constants.F_OK);
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'COMPLETED'
+            }));
+
+            await onData(null);
+
+            throw error;
+        }
+
+        try {
+            const data = await readFileAsync(file, 'utf-8');
 
             dispatch(updateProcess({
                 id: processId,
-                state: 'RUNNING',
-                title: `Load "${property}" from file`
+                state: 'COMPLETED'
             }));
 
-            if (!fs.existsSync(file)) {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'COMPLETED'
-                }));
+            await onData(JSON.parse(data));
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                error: error.toString()
+            }));
 
-                onData(null).then(() => resolve()).catch(() => reject());
-            } else {
-                fs.readFile(file, 'utf-8', (err, data) => {
-                    if (err) {
-                        dispatch(updateProcess({
-                            id: processId,
-                            state: 'ERROR',
-                            error: err.toString()
-                        }));
-
-                        reject();
-                    } else {
-                        dispatch(updateProcess({
-                            id: processId,
-                            state: 'COMPLETED'
-                        }));
-
-                        onData(JSON.parse(data)).then(() => resolve()).catch(() => reject());
-                    }
-                });
-            }
-        });
+            throw error;
+        }
     };
 }
 
 export function saveToFile(property, file, data) {
-    return dispatch => {
-        return new Promise((resolve, reject) => {
-            const processId = uuid();
+    return async dispatch => {
+        const processId = uuid();
+
+        dispatch(updateProcess({
+            id: processId,
+            state: 'RUNNING',
+            title: `Save "${property}" to file`
+        }));
+
+        try {
+            await writeFileAsync(file, JSON.stringify(data, null, 4));
 
             dispatch(updateProcess({
                 id: processId,
-                state: 'RUNNING',
-                title: `Save "${property}" to file`
+                state: 'COMPLETED'
+            }));
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                error: error.toString()
             }));
 
-            fs.writeFile(file, JSON.stringify(data, null, 4), err => {
-                if (err) {
-                    dispatch(updateProcess({
-                        id: processId,
-                        state: 'ERROR',
-                        error: err.toString()
-                    }));
-
-                    reject();
-                } else {
-                    dispatch(updateProcess({
-                        id: processId,
-                        state: 'COMPLETED'
-                    }));
-
-                    resolve();
-                }
-            });
-        });
+            throw error;
+        }
     };
 }
 
-export function saveBufferToFile(file, buffer) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile(file, buffer, err => {
-            if (err) {
-                reject();
-            } else {
-                resolve();
-            }
-        });
-    });
+export async function saveBufferToFile(file, buffer) {
+    await writeFileAsync(file, buffer);
 }
 
 export function getPathSeparator() {
@@ -103,19 +103,22 @@ export function getUserDataPath() {
     return electron.remote.app.getPath('userData');
 }
 
-export function getDirectories(path) {
-    const isDirectory = path => fs.lstatSync(path).isDirectory();
-    return fs.readdirSync(path).map(name => join(path, name)).filter(isDirectory);
+export async function getDirectories(path) {
+    const paths = (await readdirAsync(path)).map(name => join(path, name));
+    const lstats = await Promise.all(paths.map(path => lstatAsync(path)));
+    return paths.filter((item, i) => lstats[i].isDirectory());
 }
 
-export function createDirectory(path) {
-    if (!fs.existsSync(path)) {
-        mkdirp(path);
+export async function createDirectory(path) {
+    try {
+        await accessAsync(path, fs.constants.F_OK);
+    } catch (error) {
+        await mkdirpAsync(path);
     }
 }
 
-export function deleteDirectory(path, dataFolder) {
+export async function deleteDirectory(path, dataFolder) {
     if (path && (path.startsWith(getUserDataPath()) || path.startsWith(dataFolder))) {
-        rimraf.sync(path);
+        await rimrafAsync(path);
     }
 }
