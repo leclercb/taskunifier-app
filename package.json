@@ -9,8 +9,8 @@
     "scripts": {
         "react:start": "BROWSER=none PORT=3000 craco start",
         "react:build": "craco build",
-        "react:babel": "node node_modules/babel-cli/bin/babel.js src -d lib --copy-files",
-        "react:lint": "node node_modules/eslint/bin/eslint.js src",
+        "react:babel": "babel src -d lib --copy-files",
+        "lint": "eslint src",
         "react:test": "craco test",
         "electron:start": "electron .",
         "start": "yarn react:start",
