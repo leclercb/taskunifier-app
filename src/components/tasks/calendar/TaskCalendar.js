@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import BigCalendar from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
@@ -12,8 +12,8 @@ import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import 'components/tasks/calendar/TaskCalendar.css';
 
-const localizer = BigCalendar.momentLocalizer(moment);
-const DnDCalendar = withDragAndDrop(BigCalendar);
+const localizer = momentLocalizer(moment);
+const DnDCalendar = withDragAndDrop(Calendar);
 
 function TaskCalendar(props) {
     const getEvents = () => {

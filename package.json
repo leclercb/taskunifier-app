@@ -8,13 +8,12 @@
     "homepage": "./",
     "scripts": {
         "react:start": "craco start",
-        "react:build": "craco build",
-        "react:babel": "babel src -d lib --copy-files",
-        "lint": "eslint src",
-        "react:test": "craco test",
         "electron:start": "electron .",
-        "start": "yarn react:start",
-        "test": "yarn react:test",
+        "start": "craco start",
+        "build": "craco build",
+        "lint": "eslint src",
+        "test": "craco test",
+        "babel": "babel src -d lib --copy-files",
         "pack": "electron-builder --dir",
         "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
     },
@@ -99,7 +98,13 @@
             "icon": "assets/icon.ico",
             "target": [
                 "portable",
-                "nsis"
+                {
+                    "target": "nsis",
+                    "arch": [
+                        "x64",
+                        "ia32"
+                    ]
+                }
             ],
             "publish": {
                 "provider": "s3",
