@@ -1,4 +1,4 @@
-import { Promise } from "bluebird";
+import { Promise } from 'bluebird';
 import uuid from 'uuid';
 import { updateProcess } from 'actions/ThreadActions';
 
