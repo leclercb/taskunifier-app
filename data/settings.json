@@ -3,7 +3,7 @@
     "automaticSaveInterval": 15,
     "lastAutomaticSave": "2019-04-23T12:51:11.271Z",
     "confirmBeforeClosing": true,
-    "proxyEnabled": false,
+    "proxyEnabled": true,
     "proxyHost": "***REMOVED***",
     "proxyPort": 9512,
     "proxyUsername": "***REMOVED***",
@@ -136,11 +136,5 @@
     "taskColumnWidth_repeatFrom": 116,
     "taskColumnOrder_id": 0,
     "taskColumnOrder_creationDate": 1,
-    "taskColumnOrder_updateDate": 2,
-    "toodledo": {
-        "accessToken": "fba4351cc82b2ec41953cbc1f2c1f764383db1ff",
-        "accessTokenCreationDate": "2019-05-27T07:57:36.288Z",
-        "accessTokenExpiresIn": 7200,
-        "refreshToken": "fba4351cc82b2ec41953cbc1f2c1f764383db1ff"
-    }
+    "taskColumnOrder_updateDate": 2
 }

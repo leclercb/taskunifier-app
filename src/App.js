@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Modal } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { DragDropContext } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { useInterval } from 'hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from 'components/layout/AppLayout';
@@ -127,7 +127,9 @@ function App(props) {
     }, null);
 
     return (
-        <AppLayout />
+        <DndProvider backend={HTML5Backend}>
+            <AppLayout />
+        </DndProvider>
     );
 }
 
@@ -146,4 +148,4 @@ App.propTypes = {
     backupData: PropTypes.func.isRequired
 };
 
-export default DragDropContext(HTML5Backend)(withApp(withSettings(withJoyride(App))));
+export default withApp(withSettings(withJoyride(App)));
