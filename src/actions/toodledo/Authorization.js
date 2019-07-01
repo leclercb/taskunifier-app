@@ -12,7 +12,7 @@ export function authorize() {
     return async () => {
         const params = {
             response_type: 'code',
-            client_id: 'taskunifier2',
+            client_id: process.env.REACT_APP_TOODLEDO_USERNAME,
             state: uuid(),
             scope: 'basic tasks notes lists write'
         };
@@ -33,8 +33,8 @@ export function getToken(code) {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: 'taskunifier2',
-                    password: '***REMOVED***'
+                    username: process.env.REACT_APP_TOODLEDO_USERNAME,
+                    password: process.env.REACT_APP_TOODLEDO_PASSWORD
                 },
                 data: {
                     grant_type: 'authorization_code',
@@ -65,8 +65,8 @@ export function getRefreshedToken() {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: 'taskunifier2',
-                    password: '***REMOVED***'
+                    username: process.env.REACT_APP_TOODLEDO_USERNAME,
+                    password: process.env.REACT_APP_TOODLEDO_PASSWORD
                 },
                 data: {
                     grant_type: 'refresh_token',
