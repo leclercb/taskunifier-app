@@ -38,7 +38,7 @@ export function loadFromFile(property, file, onData) {
 
             await onData(null);
 
-            throw error;
+            return;
         }
 
         try {
