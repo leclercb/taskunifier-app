@@ -1,6 +1,5 @@
 ## Todo List
 
-* Remove history for open source
 * Synchronize
 * Import/Export (+ from TaskUnifier Classic)
 * Normalizer for every field type
