@@ -89,8 +89,7 @@
                 "dmg"
             ],
             "publish": {
-                "provider": "s3",
-                "bucket": "taskunifier"
+                "provider": "github"
             },
             "category": "public.app-category.productivity"
         },
@@ -107,8 +106,7 @@
                 }
             ],
             "publish": {
-                "provider": "s3",
-                "bucket": "taskunifier"
+                "provider": "github"
             }
         },
         "linux": {
@@ -119,8 +117,7 @@
                 "AppImage"
             ],
             "publish": {
-                "provider": "s3",
-                "bucket": "taskunifier"
+                "provider": "github"
             },
             "description": "TaskUnifier - Manage your tasks and improve your productivity",
             "category": "Office;ProjectManagement"
