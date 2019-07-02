@@ -17,7 +17,7 @@ export function printDocument(title, orientation = 'p') {
     doc.setFillColor(0, 140, 75);
     doc.rect(0, 50, doc.internal.pageSize.getWidth(), 10, 'F');
 
-    // ***REMOVED*** Logo
+    // TaskUnifier Logo
     doc.addImage(logo, 'PNG', doc.internal.pageSize.getWidth() - 50, 10, 32, 32);
 
     // TaskUnifier
