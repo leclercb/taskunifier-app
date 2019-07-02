@@ -1,44 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from 'antd';
-import ColorPicker from 'components/common/ColorPicker';
+import { Form } from 'antd';
+import { getContextFields } from 'data/DataContextFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function ContextForm(props) {
+    const fields = getContextFields();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                    initialValue: props.context.title,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The title is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.context.color,
-                    valuePropName: 'color',
-                    rules: [
-                        {
-                            required: true, 
-                            message: 'The color is required'
-                        }
-                    ]
-                })(
-                    <ColorPicker placement="bottomLeft" />
-                )}
-            </Form.Item>
+            {fields.filter(field => field.visible !== false).map(field => (
+                <Form.Item key={field.id} label={field.title}>
+                    {getFieldDecorator(field.id, {
+                        valuePropName: getValuePropNameForType(field.type),
+                        initialValue: props.context[field.id]
+                    })(
+                        getInputForType(field.type, field.options)
+                    )}
+                </Form.Item>
+            ))}
         </Form>
     );
 }

@@ -1,82 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Form, Input, Select } from 'antd';
-import ColorPicker from 'components/common/ColorPicker';
+import { Form } from 'antd';
+import { getGoalFields } from 'data/DataGoalFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
-import { getGoalLevels } from 'data/DataGoalLevels';
-import GoalSelect from 'components/goals/GoalSelect';
-import Icon from 'components/common/Icon';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function GoalForm(props) {
+    const fields = getGoalFields();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                    initialValue: props.goal.title,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The title is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.goal.color,
-                    valuePropName: 'color',
-                    rules: [
-                        {
-                            required: true, 
-                            message: 'The color is required'
-                        }
-                    ]
-                })(
-                    <ColorPicker />
-                )}
-            </Form.Item>
-            <Form.Item label="Level">
-                {getFieldDecorator('level', {
-                    initialValue: props.goal.level,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The level is required'
-                        }
-                    ]
-                })(
-                    <Select>
-                        {getGoalLevels().map(level => (
-                            <Select.Option key={level.id} value={level.id}>
-                                <Icon icon="circle" color={level.color} text={level.title} />
-                            </Select.Option>
-                        ))}
-                    </Select>
-                )}
-            </Form.Item>
-            <Form.Item label="Contributes To">
-                {getFieldDecorator('contributesTo', {
-                    initialValue: props.goal.contributesTo
-                })(
-                    <GoalSelect excludeIds={[props.goal.id]} disabled={props.goal.level === 'lifeTime'} />
-                )}
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                {getFieldDecorator('archived', {
-                    initialValue: props.goal.archived,
-                    valuePropName: 'checked'
-                })(
-                    <Checkbox>Archived</Checkbox>
-                )}
-            </Form.Item>
+            {fields.filter(field => field.visible !== false).map(field => {
+                const fieldProps = {};
+
+                if (field.type === 'goalContributesTo') {
+                    fieldProps.excludeIds = [props.goal.id];
+                    fieldProps.disabled = props.goal.level === 'lifeTime';
+                }
+
+                return (
+                    <Form.Item key={field.id} label={field.title}>
+                        {getFieldDecorator(field.id, {
+                            valuePropName: getValuePropNameForType(field.type),
+                            initialValue: props.goal[field.id]
+                        })(
+                            getInputForType(field.type, field.options, fieldProps)
+                        )}
+                    </Form.Item>
+                );
+            })}
         </Form>
     );
 }

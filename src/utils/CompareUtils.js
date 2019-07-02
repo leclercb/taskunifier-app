@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { getCompareForType } from 'data/DataFieldTypes';
+import { getGoalLevelIndex } from 'data/DataGoalLevels';
 import { getPriorityIndex } from 'data/DataPriorities';
 import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getStatuses } from 'data/DataStatuses';
@@ -120,6 +121,10 @@ export function compareRepeats(a, b) {
 
 export function compareStatuses(a, b) {
     return compareObjects(a, b, getStatuses());
+}
+
+export function compareGoalLevels(a, b) {
+    return getGoalLevelIndex(b) - getGoalLevelIndex(a);
 }
 
 export function compareStrings(a, b) {

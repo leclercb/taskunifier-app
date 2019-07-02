@@ -3,11 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { notification } from 'antd';
 import App from 'App';
-import { initializeApi } from 'api/Api';
 import { store } from 'store/Store';
 import 'index.css';
-
-initializeApi();
 
 window.addEventListener('error', function (e) {
     notification.error({

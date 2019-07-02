@@ -1,1 +1,24 @@
-[]
+[
+    {
+        "title": "Goal 1",
+        "color": "#da1414",
+        "id": "749b9ddb-5492-4ef6-9aaf-725dab225cf5",
+        "refIds": {},
+        "creationDate": "2019-07-02T08:10:06.455Z",
+        "updateDate": "2019-07-02T08:10:22.511Z",
+        "state": "TO_UPDATE",
+        "level": "longTerm",
+        "archived": true
+    },
+    {
+        "title": "Goal 2",
+        "color": "#0bf024",
+        "id": "4c0e7601-6c04-46ef-9cc0-d2bd6f8e09ea",
+        "refIds": {},
+        "creationDate": "2019-07-02T08:10:23.954Z",
+        "updateDate": "2019-07-02T08:10:33.054Z",
+        "state": "TO_UPDATE",
+        "level": "lifeTime",
+        "contributesTo": null
+    }
+]

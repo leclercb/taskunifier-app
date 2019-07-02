@@ -14,6 +14,7 @@ import {
     compareBooleans,
     compareContacts,
     compareDates,
+    compareGoalLevels,
     compareNumbers,
     compareObjects,
     comparePriorities,
@@ -30,6 +31,7 @@ import {
     toStringBoolean,
     toStringContact,
     toStringDate,
+    toStringGoalLevel,
     toStringLength,
     toStringNumber,
     toStringObject,
@@ -53,6 +55,8 @@ export function getFieldTypes() {
         'file',
         'folder',
         'goal',
+        'goalContributesTo',
+        'goalLevel',
         'importance',
         'length',
         'linkedContactLinks',
@@ -607,6 +611,70 @@ export function getFieldType(type, options) {
                     }
                 ],
                 conditionsFieldType: 'goal',
+                options: []
+            };
+
+            break;
+        }
+        case 'goalContributesTo': {
+            configuration = {
+                title: 'Goal Contributes To',
+                allowCreation: false,
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                valuePropName: 'value',
+                compare: (a, b, state) => compareObjects(a, b, getGoalsFilteredByVisibleState(state)),
+                toString: (value, state) => toStringObject(value, getGoalsFilteredByVisibleState(state)),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
+                        }
+                    }
+                ],
+                conditionsFieldType: 'goalContributesTo',
+                options: []
+            };
+
+            break;
+        }
+        case 'goalLevel': {
+            configuration = {
+                title: 'Goal Level',
+                allowCreation: false,
+                width: 200,
+                alwaysInEdition: false,
+                commitOnChange: false,
+                valuePropName: 'value',
+                compare: (a, b) => compareGoalLevels(a, b),
+                toString: value => toStringGoalLevel(value),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue === objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, objectValue) => {
+                            return conditionValue !== objectValue;
+                        }
+                    }
+                ],
+                conditionsFieldType: 'goalLevel',
                 options: []
             };
 

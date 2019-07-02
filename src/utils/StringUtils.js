@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { getContactTitle } from 'utils/ContactUtils';
-import { getPriorities } from 'data/DataPriorities';
+import { getGoalLevel } from 'data/DataGoalLevels';
+import { getPriority } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getSortDirections } from 'data/DataSortDirections';
 
@@ -69,7 +70,7 @@ export function toStringPassword(value) {
 }
 
 export function toStringPriority(value) {
-    const priority = getPriorities().find(priority => priority.id === value);
+    const priority = getPriority(value);
     return priority ? priority.title : '';
 }
 
@@ -122,4 +123,9 @@ export function toStringTimer(timer) {
     }
 
     return toStringLength(value);
+}
+
+export function toStringGoalLevel(value) {
+    const goalLevel = getGoalLevel(value);
+    return goalLevel ? goalLevel.title : '';
 }

@@ -1,53 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Form, Input } from 'antd';
-import ColorPicker from 'components/common/ColorPicker';
+import { Form } from 'antd';
+import { getFolderFields } from 'data/DataFolderFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function FolderForm(props) {
+    const fields = getFolderFields();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                    initialValue: props.folder.title,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The title is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.folder.color,
-                    valuePropName: 'color',
-                    rules: [
-                        {
-                            required: true, 
-                            message: 'The color is required'
-                        }
-                    ]
-                })(
-                    <ColorPicker />
-                )}
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                {getFieldDecorator('archived', {
-                    initialValue: props.folder.archived,
-                    valuePropName: 'checked'
-                })(
-                    <Checkbox>Archived</Checkbox>
-                )}
-            </Form.Item>
+            {fields.filter(field => field.visible !== false).map(field => (
+                <Form.Item key={field.id} label={field.title}>
+                    {getFieldDecorator(field.id, {
+                        valuePropName: getValuePropNameForType(field.type),
+                        initialValue: props.folder[field.id]
+                    })(
+                        getInputForType(field.type, field.options)
+                    )}
+                </Form.Item>
+            ))}
         </Form>
     );
 }

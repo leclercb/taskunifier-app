@@ -1,65 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from 'antd';
-import ColorPicker from 'components/common/ColorPicker';
+import { Form } from 'antd';
+import { getLocationFields } from 'data/DataLocationFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function LocationForm(props) {
+    const fields = getLocationFields();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                    initialValue: props.location.title,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The title is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.location.color,
-                    valuePropName: 'color',
-                    rules: [
-                        {
-                            required: true, 
-                            message: 'The color is required'
-                        }
-                    ]
-                })(
-                    <ColorPicker />
-                )}
-            </Form.Item>
-            <Form.Item label="Description">
-                {getFieldDecorator('description', {
-                    initialValue: props.location.description
-                })(
-                    <Input.TextArea />
-                )}
-            </Form.Item>
-            <Form.Item label="Latitude">
-                {getFieldDecorator('latitude', {
-                    initialValue: props.location.latitude
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Longitude">
-                {getFieldDecorator('longitude', {
-                    initialValue: props.location.longitude
-                })(
-                    <Input />
-                )}
-            </Form.Item>
+            {fields.filter(field => field.visible !== false).map(field => (
+                <Form.Item key={field.id} label={field.title}>
+                    {getFieldDecorator(field.id, {
+                        valuePropName: getValuePropNameForType(field.type),
+                        initialValue: props.location[field.id]
+                    })(
+                        getInputForType(field.type, field.options)
+                    )}
+                </Form.Item>
+            ))}
         </Form>
     );
 }

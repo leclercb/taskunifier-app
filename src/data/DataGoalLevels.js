@@ -1,3 +1,11 @@
+export function getGoalLevel(goalLevelId) {
+    return getGoalLevels().find(goalLevel => goalLevel.id === goalLevelId);
+}
+
+export function getGoalLevelIndex(goalLevelId) {
+    return getGoalLevels().findIndex(goalLevel => goalLevel.id === goalLevelId) || 0;
+}
+
 export function getGoalLevels() {
     return [
         {

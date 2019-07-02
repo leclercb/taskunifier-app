@@ -1,70 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from 'antd';
-import ColorPicker from 'components/common/ColorPicker';
+import { Form } from 'antd';
+import { getContactFields } from 'data/DataContactFields';
+import { getInputForType } from 'data/DataFieldComponents';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { ContactPropType } from 'proptypes/ContactPropTypes';
 import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
 
 function ContactForm(props) {
+    const fields = getContactFields();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
     return (
         <Form {...formItemLayout}>
-            <Form.Item label="First Name">
-                {getFieldDecorator('firstName', {
-                    initialValue: props.contact.firstName,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The first name is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Last Name">
-                {getFieldDecorator('lastName', {
-                    initialValue: props.contact.lastName,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The last name is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Email">
-                {getFieldDecorator('email', {
-                    initialValue: props.contact.email,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The email is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
-            </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.contact.color,
-                    valuePropName: 'color',
-                    rules: [
-                        {
-                            required: true, 
-                            message: 'The color is required'
-                        }
-                    ]
-                })(
-                    <ColorPicker placement="bottomLeft" />
-                )}
-            </Form.Item>
+            {fields.filter(field => field.visible !== false).map(field => (
+                <Form.Item key={field.id} label={field.title}>
+                    {getFieldDecorator(field.id, {
+                        valuePropName: getValuePropNameForType(field.type),
+                        initialValue: props.contact[field.id]
+                    })(
+                        getInputForType(field.type, field.options)
+                    )}
+                </Form.Item>
+            ))}
         </Form>
     );
 }

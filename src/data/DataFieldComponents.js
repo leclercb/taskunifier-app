@@ -15,6 +15,8 @@ import ContextTitle from 'components/contexts/ContextTitle';
 import ContextSelect from 'components/contexts/ContextSelect';
 import FolderTitle from 'components/folders/FolderTitle';
 import FolderSelect from 'components/folders/FolderSelect';
+import GoalLevelTitle from 'components/goals/GoalLevelTitle';
+import GoalLevelSelect from 'components/goals/GoalLevelSelect';
 import GoalTitle from 'components/goals/GoalTitle';
 import GoalSelect from 'components/goals/GoalSelect';
 import LengthField from 'components/common/LengthField';
@@ -267,6 +269,36 @@ export function getFieldComponents(type, options) {
                 ),
                 input: props => (
                     <GoalSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
+                )
+            };
+
+            break;
+        }
+        case 'goalContributesTo': {
+            configuration = {
+                render: value => (
+                    <GoalTitle goalId={value} />
+                ),
+                input: props => (
+                    <GoalSelect
+                        onBlur={props.onCommit}
+                        dropdownMatchSelectWidth={false}
+                        {...removeExtraProps(props)} />
+                )
+            };
+
+            break;
+        }
+        case 'goalLevel': {
+            configuration = {
+                render: value => (
+                    <GoalLevelTitle goalLevelId={value} />
+                ),
+                input: props => (
+                    <GoalLevelSelect
                         onBlur={props.onCommit}
                         dropdownMatchSelectWidth={false}
                         {...removeExtraProps(props)} />
