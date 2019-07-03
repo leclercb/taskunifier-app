@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { synchronize } from 'actions/SynchronizationActions';
 import { getAccountInfo } from 'actions/toodledo/AccountInfo';
 import { authorize, getRefreshedToken, getToken } from 'actions/toodledo/Authorization';
 import withBusyCheck from 'containers/WithBusyCheck';
@@ -10,6 +11,7 @@ function withSynchronization(Component) {
     });
 
     const mapDispatchToProps = dispatch => ({
+        synchronize: () => dispatch(synchronize()),
         authorize: () => dispatch(authorize()),
         getToken: code => dispatch(getToken(code)),
         getRefreshedToken: () => dispatch(getRefreshedToken()),

@@ -213,12 +213,6 @@ export function cleanData() {
     };
 }
 
-export function synchronize() {
-    return async () => {
-
-    };
-}
-
 export function setSelectedNoteIds(noteIds) {
     return async dispatch => {
         dispatch({

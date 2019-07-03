@@ -1,24 +1,29 @@
 import React, { useState } from 'react';
 import { Button, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import Spacer from 'components/common/Spacer';
 import withSettings from 'containers/WithSettings';
 import withSynchronization from 'containers/WithSynchronization';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 
 function SynchronizationManager(props) {
     const [code, setCode] = useState('');
 
-    const onAuthorize = () => {
-        props.authorize();
+    const onAuthorize = async () => {
+        await props.authorize();
     };
 
-    const onGetToken = () => {
-        props.getToken(code);
+    const onGetToken = async () => {
+        await props.getToken(code);
     };
 
-    const onShowAccountInfo = () => {
-        props.getAccountInfo();
+    const onShowAccountInfo = async () => {
+        await props.getAccountInfo();
     };
+
+    const onSynchronize = async () => {
+        await props.synchronize();
+    }
 
     const onCodeChange = event => {
         setCode(event.target.value);
@@ -58,9 +63,15 @@ function SynchronizationManager(props) {
     }
 
     return (
-        <Button onClick={onShowAccountInfo}>
-            Show account info
-        </Button>
+        <React.Fragment>
+            <Button onClick={onShowAccountInfo}>
+                Show account info
+            </Button>
+            <Spacer />
+            <Button onClick={onSynchronize}>
+                Synchronize
+            </Button>
+        </React.Fragment>
     );
 }
 
@@ -70,7 +81,8 @@ SynchronizationManager.propTypes = {
     updateSettings: PropTypes.func.isRequired,
     authorize: PropTypes.func.isRequired,
     getToken: PropTypes.func.isRequired,
-    getAccountInfo: PropTypes.func.isRequired
+    getAccountInfo: PropTypes.func.isRequired,
+    synchronize: PropTypes.func.isRequired
 };
 
 export default withSettings(withSynchronization(SynchronizationManager));

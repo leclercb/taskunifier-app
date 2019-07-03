@@ -12,8 +12,7 @@ import {
     setTaskEditionManagerOptions,
     setTaskFieldManagerOptions,
     setTaskFilterManagerOptions,
-    setTaskTemplateManagerOptions,
-    synchronize
+    setTaskTemplateManagerOptions
 } from 'actions/AppActions';
 import {
     backupData,
@@ -59,7 +58,6 @@ function withApp(Component) {
         saveData: options => dispatch(saveData(options)),
         backupData: () => dispatch(backupData()),
         cleanBackups: () => dispatch(cleanBackups()),
-        synchronize: () => dispatch(synchronize()),
         setSelectedView: view => dispatch(setSelectedView(view)),
         setBatchAddTasksManagerOptions: options => dispatch(setBatchAddTasksManagerOptions(options)),
         setBatchEditTasksManagerOptions: options => dispatch(setBatchEditTasksManagerOptions(options)),
