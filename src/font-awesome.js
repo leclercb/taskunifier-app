@@ -49,6 +49,7 @@ import {
     faSearch,
     faSpinner,
     faStar,
+    faSyncAlt,
     faTag,
     faTasks,
     faThumbtack,
@@ -104,6 +105,7 @@ library.add(faSave);
 library.add(faSearch);
 library.add(faSpinner);
 library.add(faStar);
+library.add(faSyncAlt);
 library.add(faTag);
 library.add(faTasks);
 library.add(faThumbtack);

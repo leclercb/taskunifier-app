@@ -12,7 +12,7 @@ function ModalSynchronizationManager(props) {
 
     return (
         <Modal
-            title={<Icon icon="cogs" text="Synchronization Manager" />}
+            title={<Icon icon="sync-alt" text="Synchronization Manager" />}
             visible={props.synchronizationManager.visible}
             width="50%"
             closable={false}

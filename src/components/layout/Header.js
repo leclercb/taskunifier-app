@@ -231,7 +231,7 @@ function Header(props) {
             {createButton('save', 'Save', onSave)}
             {createButton('box-open', 'Backup', onBackup)}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
-            {createButton('cogs', 'Synchronization', onSetSynchronizationVisible)}
+            {createButton('sync-alt', 'Synchronization', onSetSynchronizationVisible)}
         </LeftRight>
     );
 }
