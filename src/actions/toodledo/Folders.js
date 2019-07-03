@@ -77,5 +77,5 @@ export function convertFolderToTaskUnifier(folder) {
         },
         title: folder.name,
         archived: folder.archived === 1 ? true : false
-    }
+    };
 }

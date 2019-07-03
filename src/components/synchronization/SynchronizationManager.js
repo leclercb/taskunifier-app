@@ -23,7 +23,7 @@ function SynchronizationManager(props) {
 
     const onSynchronize = async () => {
         await props.synchronize();
-    }
+    };
 
     const onCodeChange = event => {
         setCode(event.target.value);

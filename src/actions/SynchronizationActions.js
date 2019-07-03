@@ -1,11 +1,9 @@
 import uuid from 'uuid';
-import moment from 'moment';
-import { _loadData, _saveData } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { addRemoteFolder } from 'actions/toodledo/Folders';
-import { getFolders } from "selectors/FolderSelectors";
+import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { filterByVisibleState } from "utils/CategoryUtils";
+import { filterByVisibleState } from 'utils/CategoryUtils';
 import { setFolders } from 'actions/FolderActions';
 
 export function updateToodledoData(data) {
