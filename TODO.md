@@ -1,5 +1,6 @@
 ## Todo List
 
+* Sign binaries
 * Synchronize
 * Import/Export (+ from TaskUnifier Classic)
 * Normalizer for every field type
