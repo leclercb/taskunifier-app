@@ -19,7 +19,7 @@ export default {
     conditionTreeGroupNotActiveColor: '#e3afac',
     archivedColor: '#5e666d',
     defaultTaskTemplateColor: '#ffd632',
-    badgeColor: '#008c4b',
+    badgeColor: '#0e67c4',
     calendarDateMode_startDate: '#32cd32',
     calendarDateMode_dueDate: '#1e90ff'
 };
