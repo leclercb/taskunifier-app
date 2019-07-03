@@ -108,7 +108,7 @@ function LinkedObjectTable(props) {
                                 let backgroundColor = getLinkedObjectBackgroundColor(linkedObject, index, props.settings);
 
                                 if (selectedLinkedObjectIds.includes(linkedObject.id)) {
-                                    backgroundColor = '#b8ccbf';
+                                    backgroundColor = '#e3ebf2';
                                 }
 
                                 return {

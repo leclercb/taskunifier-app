@@ -58,7 +58,7 @@ ant-input:focus {
 /* React SplitPane */
 
 .Resizer {
-    background: #000;
+    background: #000000;
     opacity: .2;
     z-index: 1;
     -moz-box-sizing: border-box;
@@ -113,7 +113,7 @@ ant-input:focus {
 
 .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
     color: black !important;
-    background-color: #b8ccbf !important;
+    background-color: #e3ebf2 !important;
 }
 
 /* RC Color Picker */
@@ -129,9 +129,9 @@ ant-input:focus {
 /* TaskUnifier */
 
 .selected-list-item {
-    background-color: #b8ccbf;
+    background-color: #e3ebf2;
 }
 
 .object-actions:hover {
-    color: #008c4b !important;
+    color: #0e67c4 !important;
 }

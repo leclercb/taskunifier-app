@@ -89,7 +89,7 @@ function NoteTable(props) {
                             let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
 
                             if (props.selectedNoteIds.includes(note.id)) {
-                                backgroundColor = '#b8ccbf';
+                                backgroundColor = '#e3ebf2';
                             }
 
                             return {

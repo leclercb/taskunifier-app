@@ -137,7 +137,7 @@ function TaskTable(props) {
                             let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
 
                             if (props.selectedTaskIds.includes(task.id)) {
-                                backgroundColor = '#b8ccbf';
+                                backgroundColor = '#e3ebf2';
                             }
 
                             return {

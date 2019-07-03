@@ -133,7 +133,7 @@ function SorterTable(props) {
                         let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
 
                         if (selectedSorterIds.includes(sorter.id)) {
-                            backgroundColor = '#b8ccbf';
+                            backgroundColor = '#e3ebf2';
                         }
 
                         return {
