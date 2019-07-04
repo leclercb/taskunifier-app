@@ -1,3 +1,4 @@
+import { updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 
@@ -29,7 +30,13 @@ export async function addRemoteFolder(settings, folder) {
 
     checkResult(result);
 
-    folder.refIds.toodledo = result.data[0].id;
+    updateFolder({
+        ...folder,
+        refIds: {
+            ...folder.refIds,
+            toodledo: result.data[0].id
+        }
+    });
 }
 
 export async function editRemoteFolder(settings, folder) {

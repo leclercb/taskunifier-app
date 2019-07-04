@@ -4,7 +4,6 @@ import { addRemoteFolder } from 'actions/toodledo/Folders';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
-import { setFolders } from 'actions/FolderActions';
 
 export function updateToodledoData(data) {
     return async dispatch => {
@@ -42,8 +41,6 @@ export function synchronizeFolders() {
                 .map(folder => addRemoteFolder(settings, folder));
 
             await Promise.all(promises);
-
-            await dispatch(setFolders(folders));
 
             dispatch(updateProcess({
                 id: processId,
