@@ -31,15 +31,36 @@ const Objects = (property, onUpdate = null) => (state = [], action) => {
                     if (objectIdsWithChildren.includes(object.id)) {
                         object = { ...object };
                         object.updateDate = action.updateDate;
-                        object.state = action.immediate === true ? 'DELETED' : 'TO_DELETE';
+                        object.state = 'TO_DELETE';
                     }
+
+                    return object;
+                }
+
+                if (object.state === 'TO_DELETE') {
+                    if (objectIdsWithChildren.includes(object.id)) {
+                        object = { ...object };
+                        object.state = 'DELETED';
+                    }
+
+                    return object;
                 }
 
                 return object;
             });
         }
         case 'CLEAN_OBJECTS': {
-            return state.filter(object => object.state !== 'DELETED');
+            return state.filter(object => {
+                if (object.state === 'DELETED') {
+                    return false;
+                }
+
+                if (object.state === 'TO_DELETE' && Object.keys(object.refIds).length === 0) {
+                    return false;
+                }
+
+                return true;
+            });
         }
         default:
             return state;

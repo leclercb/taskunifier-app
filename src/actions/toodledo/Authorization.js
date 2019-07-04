@@ -23,7 +23,9 @@ export function authorize() {
     };
 }
 
-export function getToken(code) {
+export function createToken(code) {
+    console.debug('createToken', code);
+
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
@@ -55,7 +57,9 @@ export function getToken(code) {
     };
 }
 
-export function getRefreshedToken() {
+export function refreshToken() {
+    console.debug('refreshToken');
+
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 

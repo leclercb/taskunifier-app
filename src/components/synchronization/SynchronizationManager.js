@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, notification } from 'antd';
 import PropTypes from 'prop-types';
 import Spacer from 'components/common/Spacer';
 import withSettings from 'containers/WithSettings';
@@ -10,19 +10,44 @@ function SynchronizationManager(props) {
     const [code, setCode] = useState('');
 
     const onAuthorize = async () => {
-        await props.authorize();
+        try {
+            await props.authorize();
+        } catch (error) {
+            notification.error({
+                message: 'An error occurred',
+                description: error.toString()
+            });
+        }
     };
 
-    const onGetToken = async () => {
-        await props.getToken(code);
+    const onCreateToken = async () => {
+        try {
+            await props.createToken(code);
+        } catch (error) {
+            notification.error({
+                message: 'An error occurred',
+                description: error.toString()
+            });
+        }
     };
 
     const onShowAccountInfo = async () => {
-        await props.getAccountInfo();
+        try {
+            await props.getAccountInfo();
+        } catch (error) {
+            notification.error({
+                message: 'An error occurred',
+                description: error.toString()
+            });
+        }
     };
 
     const onSynchronize = async () => {
-        await props.synchronize();
+        try {
+            await props.synchronize();
+        } catch (error) {
+            
+        }
     };
 
     const onCodeChange = event => {
@@ -42,7 +67,7 @@ function SynchronizationManager(props) {
                         <Input value={code} onChange={onCodeChange} />
                     </Form.Item>
                     {code && (
-                        <Button onClick={onGetToken}>
+                        <Button onClick={onCreateToken}>
                             Click here to connect
                         </Button>
                     )}
@@ -80,7 +105,7 @@ SynchronizationManager.propTypes = {
     settings: SettingsPropType.isRequired,
     updateSettings: PropTypes.func.isRequired,
     authorize: PropTypes.func.isRequired,
-    getToken: PropTypes.func.isRequired,
+    createToken: PropTypes.func.isRequired,
     getAccountInfo: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired
 };

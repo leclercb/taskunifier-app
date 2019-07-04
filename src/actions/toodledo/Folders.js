@@ -1,72 +1,103 @@
-import { updateFolder } from 'actions/FolderActions';
+import { updateFolder, deleteFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { getSettings } from 'selectors/SettingSelectors';
 
-export async function getRemoteFolders(settings) {
-    const result = await sendRequest(
-        settings,
-        {
-            method: 'GET',
-            url: 'https://api.toodledo.com/3/folders/get.php',
-            params: {
-                access_token: settings.toodledo.accessToken
-            }
-        });
+export function getRemoteFolders() {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const settings = getSettings(state);
 
-    return result.map(folder => convertFolderToTaskUnifier(folder));
+        const result = await sendRequest(
+            settings,
+            {
+                method: 'GET',
+                url: 'https://api.toodledo.com/3/folders/get.php',
+                params: {
+                    access_token: settings.toodledo.accessToken
+                }
+            });
+
+        checkResult(result);
+
+        return result.data.map(folder => convertFolderToTaskUnifier(folder));
+    };
 }
 
-export async function addRemoteFolder(settings, folder) {
-    const result = await sendRequest(
-        settings,
-        {
-            method: 'POST',
-            url: 'https://api.toodledo.com/3/folders/add.php',
-            params: {
-                access_token: settings.toodledo.accessToken,
-                ...convertFolderToToodledo(folder)
+export function addRemoteFolder(folder) {
+    console.debug('addRemoteFolder', folder);
+
+    return async (dispatch, getState) => {
+        const state = getState();
+        const settings = getSettings(state);
+
+        const result = await sendRequest(
+            settings,
+            {
+                method: 'POST',
+                url: 'https://api.toodledo.com/3/folders/add.php',
+                params: {
+                    access_token: settings.toodledo.accessToken,
+                    ...convertFolderToToodledo(folder)
+                }
+            });
+
+        checkResult(result);
+
+        await dispatch(updateFolder({
+            ...folder,
+            refIds: {
+                ...folder.refIds,
+                toodledo: result.data[0].id
             }
-        });
-
-    checkResult(result);
-
-    updateFolder({
-        ...folder,
-        refIds: {
-            ...folder.refIds,
-            toodledo: result.data[0].id
-        }
-    });
+        }));
+    };
 }
 
-export async function editRemoteFolder(settings, folder) {
-    const result = await sendRequest(
-        settings,
-        {
-            method: 'POST',
-            url: 'https://api.toodledo.com/3/folders/edit.php',
-            data: {
-                access_token: settings.toodledo.accessToken,
-                ...convertFolderToToodledo(folder)
-            }
-        });
+export function editRemoteFolder(folder) {
+    console.debug('editRemoteFolder', folder);
 
-    checkResult(result);
+    return async (dispatch, getState) => {
+        const state = getState();
+        const settings = getSettings(state);
+
+        const result = await sendRequest(
+            settings,
+            {
+                method: 'POST',
+                url: 'https://api.toodledo.com/3/folders/edit.php',
+                params: {
+                    access_token: settings.toodledo.accessToken,
+                    ...convertFolderToToodledo(folder)
+                }
+            });
+
+        checkResult(result);
+    };
 }
 
-export async function deleteRemoteFolder(settings, folder) {
-    const result = await sendRequest(
-        settings,
-        {
-            method: 'POST',
-            url: 'https://api.toodledo.com/3/folders/delete.php',
-            data: {
-                access_token: settings.toodledo.accessToken,
-                id: folder.refIds.toodledo
-            }
-        });
+export function deleteRemoteFolder(folder) {
+    console.debug('deleteRemoteFolder', folder);
 
-    checkResult(result);
+    return async (dispatch, getState) => {
+        const state = getState();
+        const settings = getSettings(state);
+
+        const result = await sendRequest(
+            settings,
+            {
+                method: 'POST',
+                url: 'https://api.toodledo.com/3/folders/delete.php',
+                params: {
+                    access_token: settings.toodledo.accessToken,
+                    id: folder.refIds.toodledo
+                }
+            });
+
+        // checkResult(result);
+
+        await dispatch(deleteFolder(folder.id));
+    };
 }
 
 export function convertFolderToToodledo(folder) {

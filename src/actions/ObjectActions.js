@@ -63,7 +63,6 @@ export function deleteObject(property, objectId) {
             property,
             generateId: () => uuid(),
             updateDate: moment().toISOString(),
-            immediate: true,
             objectId
         });
     };
