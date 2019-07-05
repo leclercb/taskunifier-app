@@ -72,6 +72,8 @@ export function synchronizeFolders() {
 }
 
 export function getRemoteFolders() {
+    console.debug('getRemoteFolders');
+
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -151,7 +153,7 @@ export function deleteRemoteFolder(folder) {
         const state = getState();
         const settings = getSettings(state);
 
-        const result = await sendRequest(
+        await sendRequest(
             settings,
             {
                 method: 'POST',

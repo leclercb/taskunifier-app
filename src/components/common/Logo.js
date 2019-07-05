@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 
 function Logo(props) {
     return (
-        <img alt="Logo" src="/resources/images/logo.png" style={{ width: props.size, height: props.size }} />
+        <img
+            alt="Logo"
+            src="/resources/images/logo_alt.png"
+            style={{
+                width: props.size,
+                height: props.size
+            }} />
     );
 }
 

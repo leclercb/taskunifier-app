@@ -4,7 +4,10 @@ import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { refreshToken } from 'actions/toodledo/Authorization';
+import { synchronizeContexts } from 'actions/toodledo/Contexts';
 import { synchronizeFolders } from 'actions/toodledo/Folders';
+import { synchronizeGoals } from 'actions/toodledo/Goals';
+import { synchronizeLocations } from 'actions/toodledo/Locations';
 import { getAccountInfo } from 'actions/toodledo/AccountInfo';
 
 export function updateToodledoData(data) {
@@ -43,7 +46,10 @@ export function synchronize() {
 
             await dispatch(getAccountInfo());
 
+            await dispatch(synchronizeContexts());
             await dispatch(synchronizeFolders());
+            await dispatch(synchronizeGoals());
+            await dispatch(synchronizeLocations());
 
             await dispatch(updateSettings({
                 lastSynchronizationDate: moment().toISOString()
