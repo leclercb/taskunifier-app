@@ -174,7 +174,9 @@ function convertLocationToToodledo(location) {
     return {
         id: location.refIds.toodledo,
         name: location.title,
-        archived: location.archived ? 1 : 0
+        description: location.description,
+        lat: location.latitude, // TODO lat & lon should be numbers
+        lon: location.longitude
     };
 }
 
@@ -184,6 +186,8 @@ function convertLocationToTaskUnifier(location) {
             toodledo: location.id
         },
         title: location.name,
-        archived: location.archived === 1 ? true : false
+        description: location.description,
+        latitude: location.lat,
+        longitude: location.lon
     };
 }

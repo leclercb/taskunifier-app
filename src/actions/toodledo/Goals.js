@@ -90,7 +90,7 @@ export function getRemoteGoals() {
 
         checkResult(result);
 
-        return result.data.map(goal => convertGoalToTaskUnifier(goal));
+        return result.data.map(goal => convertGoalToTaskUnifier(goal, state));
     };
 }
 
@@ -171,19 +171,53 @@ export function deleteRemoteGoal(goal) {
 }
 
 function convertGoalToToodledo(goal) {
+    let level;
+
+    switch (goal.level) {
+        case 'shortTerm':
+            level = 2;
+            break;
+        case 'longTerm':
+            level = 1;
+            break;
+        case 'lifeTime':
+        default:
+            level = 0;
+            break;
+    }
+
     return {
         id: goal.refIds.toodledo,
         name: goal.title,
-        archived: goal.archived ? 1 : 0
+        level,
+        contributes: goal.contributesTo ? goal.contributesTo.refIds.toodledo || 0 : 0
     };
 }
 
-function convertGoalToTaskUnifier(goal) {
+function convertGoalToTaskUnifier(goal, state) {
+    const localGoals = getGoals(state);
+
+    let level;
+
+    switch (goal.level) {
+        case 2:
+            level = 'shortTerm';
+            break;
+        case 1:
+            level = 'longTerm';
+            break;
+        case 0:
+        default:
+            level = 'lifeTime';
+            break;
+    }
+
     return {
         refIds: {
             toodledo: goal.id
         },
         title: goal.name,
-        archived: goal.archived === 1 ? true : false
+        level,
+        contributesTo: localGoals.find(localGoal => localGoal.refIds.toodledo === goal.id)
     };
 }

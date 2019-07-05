@@ -173,8 +173,7 @@ export function deleteRemoteContext(context) {
 function convertContextToToodledo(context) {
     return {
         id: context.refIds.toodledo,
-        name: context.title,
-        archived: context.archived ? 1 : 0
+        name: context.title
     };
 }
 
@@ -183,7 +182,6 @@ function convertContextToTaskUnifier(context) {
         refIds: {
             toodledo: context.id
         },
-        title: context.name,
-        archived: context.archived === 1 ? true : false
+        title: context.name
     };
 }
