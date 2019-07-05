@@ -9,7 +9,7 @@ import {
 } from 'actions/ObjectActions';
 
 export function loadNotesFromFile(file) {
-    return dispatch => dispatch(loadObjectsFromFile('notes', file));
+    return loadObjectsFromFile('notes', file);
 }
 
 export function saveNotesToFile(file, data) {
@@ -17,21 +17,21 @@ export function saveNotesToFile(file, data) {
 }
 
 export function setNotes(notes) {
-    return dispatch => dispatch(setObjects('notes', notes));
+    return setObjects('notes', notes);
 }
 
-export function addNote(note) {
-    return dispatch => dispatch(addObject('notes', note));
+export function addNote(note, options = {}) {
+    return addObject('notes', note, options);
 }
 
-export function updateNote(note) {
-    return dispatch => dispatch(updateObject('notes', note));
+export function updateNote(note, options = {}) {
+    return updateObject('notes', note, options);
 }
 
 export function deleteNote(noteId) {
-    return dispatch => dispatch(deleteObject('notes', noteId));
+    return deleteObject('notes', noteId);
 }
 
 export function cleanNotes() {
-    return dispatch => dispatch(cleanObjects('notes'));
+    return cleanObjects('notes');
 }

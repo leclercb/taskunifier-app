@@ -20,12 +20,12 @@ export function setTaskFilters(taskFilters) {
     return setObjects('taskFilters', taskFilters);
 }
 
-export function addTaskFilter(taskFilter) {
-    return addObject('taskFilters', taskFilter);
+export function addTaskFilter(taskFilter, options = {}) {
+    return addObject('taskFilters', taskFilter, options);
 }
 
-export function updateTaskFilter(taskFilter) {
-    return updateObject('taskFilters', taskFilter);
+export function updateTaskFilter(taskFilter, options = {}) {
+    return updateObject('taskFilters', taskFilter, options);
 }
 
 export function deleteTaskFilter(taskFilterId) {

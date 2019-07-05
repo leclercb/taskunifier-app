@@ -9,7 +9,7 @@ import {
 } from 'actions/ObjectActions';
 
 export function loadTasksFromFile(file) {
-    return dispatch => dispatch(loadObjectsFromFile('tasks', file));
+    return loadObjectsFromFile('tasks', file);
 }
 
 export function saveTasksToFile(file, data) {
@@ -17,21 +17,21 @@ export function saveTasksToFile(file, data) {
 }
 
 export function setTasks(tasks) {
-    return dispatch => dispatch(setObjects('tasks', tasks));
+    return setObjects('tasks', tasks);
 }
 
-export function addTask(task) {
-    return dispatch => dispatch(addObject('tasks', task));
+export function addTask(task, options = {}) {
+    return addObject('tasks', task, options);
 }
 
-export function updateTask(task) {
-    return dispatch => dispatch(updateObject('tasks', task));
+export function updateTask(task, options = {}) {
+    return updateObject('tasks', task, options);
 }
 
 export function deleteTask(taskId) {
-    return dispatch => dispatch(deleteObject('tasks', taskId));
+    return deleteObject('tasks', taskId);
 }
 
 export function cleanTasks() {
-    return dispatch => dispatch(cleanObjects('tasks'));
+    return cleanObjects('tasks');
 }

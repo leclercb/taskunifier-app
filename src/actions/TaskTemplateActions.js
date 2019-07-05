@@ -20,12 +20,12 @@ export function setTaskTemplates(taskTemplates) {
     return setObjects('taskTemplates', taskTemplates);
 }
 
-export function addTaskTemplate(taskTemplate) {
-    return addObject('taskTemplates', taskTemplate);
+export function addTaskTemplate(taskTemplate, options = {}) {
+    return addObject('taskTemplates', taskTemplate, options);
 }
 
-export function updateTaskTemplate(taskTemplate) {
-    return updateObject('taskTemplates', taskTemplate);
+export function updateTaskTemplate(taskTemplate, options = {}) {
+    return updateObject('taskTemplates', taskTemplate, options);
 }
 
 export function deleteTaskTemplate(taskTemplateId) {

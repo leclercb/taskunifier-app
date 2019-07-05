@@ -20,12 +20,12 @@ export function setFolders(folders) {
     return setObjects('folders', folders);
 }
 
-export function addFolder(folder) {
-    return addObject('folders', folder);
+export function addFolder(folder, options = {}) {
+    return addObject('folders', folder, options);
 }
 
-export function updateFolder(folder) {
-    return updateObject('folders', folder);
+export function updateFolder(folder, options = {}) {
+    return updateObject('folders', folder, options);
 }
 
 export function deleteFolder(folderId) {

@@ -20,12 +20,12 @@ export function setNoteFields(noteFields) {
     return setObjects('noteFields', noteFields);
 }
 
-export function addNoteField(noteField) {
-    return addObject('noteFields', noteField);
+export function addNoteField(noteField, options = {}) {
+    return addObject('noteFields', noteField, options);
 }
 
-export function updateNoteField(noteField) {
-    return updateObject('noteFields', noteField);
+export function updateNoteField(noteField, options = {}) {
+    return updateObject('noteFields', noteField, options);
 }
 
 export function deleteNoteField(noteFieldId) {

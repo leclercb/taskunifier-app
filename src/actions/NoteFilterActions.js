@@ -20,12 +20,12 @@ export function setNoteFilters(noteFilters) {
     return setObjects('noteFilters', noteFilters);
 }
 
-export function addNoteFilter(noteFilter) {
-    return addObject('noteFilters', noteFilter);
+export function addNoteFilter(noteFilter, options = {}) {
+    return addObject('noteFilters', noteFilter, options);
 }
 
-export function updateNoteFilter(noteFilter) {
-    return updateObject('noteFilters', noteFilter);
+export function updateNoteFilter(noteFilter, options = {}) {
+    return updateObject('noteFilters', noteFilter, options);
 }
 
 export function deleteNoteFilter(noteFilterId) {

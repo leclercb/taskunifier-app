@@ -20,12 +20,12 @@ export function setContacts(contacts) {
     return setObjects('contacts', contacts);
 }
 
-export function addContact(contact) {
-    return addObject('contacts', contact);
+export function addContact(contact, options = {}) {
+    return addObject('contacts', contact, options);
 }
 
-export function updateContact(contact) {
-    return updateObject('contacts', contact);
+export function updateContact(contact, options = {}) {
+    return updateObject('contacts', contact, options);
 }
 
 export function deleteContact(contactId) {

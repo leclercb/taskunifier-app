@@ -20,12 +20,12 @@ export function setLocations(locations) {
     return setObjects('locations', locations);
 }
 
-export function addLocation(location) {
-    return addObject('locations', location);
+export function addLocation(location, options = {}) {
+    return addObject('locations', location, options);
 }
 
-export function updateLocation(location) {
-    return updateObject('locations', location);
+export function updateLocation(location, options = {}) {
+    return updateObject('locations', location, options);
 }
 
 export function deleteLocation(locationId) {

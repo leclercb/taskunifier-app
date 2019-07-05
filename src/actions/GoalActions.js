@@ -20,12 +20,12 @@ export function setGoals(goals) {
     return setObjects('goals', goals);
 }
 
-export function addGoal(goal) {
-    return addObject('goals', goal);
+export function addGoal(goal, options = {}) {
+    return addObject('goals', goal, options);
 }
 
-export function updateGoal(goal) {
-    return updateObject('goals', goal);
+export function updateGoal(goal, options = {}) {
+    return updateObject('goals', goal, options);
 }
 
 export function deleteGoal(goalId) {

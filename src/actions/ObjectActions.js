@@ -22,7 +22,7 @@ export function setObjects(property, objects) {
     };
 }
 
-export function addObject(property, object) {
+export function addObject(property, object, options = {}) {
     return async (dispatch, getState) => {
         const id = uuid();
 
@@ -35,21 +35,23 @@ export function addObject(property, object) {
                 color: Constants.defaultObjectColor,
                 ...object,
                 id
-            }
+            },
+            options
         });
 
         return getState()[property].find(item => item.id === id);
     };
 }
 
-export function updateObject(property, object) {
+export function updateObject(property, object, options = {}) {
     return async (dispatch, getState) => {
         dispatch({
             type: 'UPDATE_OBJECT',
             property,
             generateId: () => uuid(),
             updateDate: moment().toISOString(),
-            object
+            object,
+            options
         });
 
         return getState()[property].find(item => item.id === object.id);

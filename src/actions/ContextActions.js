@@ -20,12 +20,12 @@ export function setContexts(contexts) {
     return setObjects('contexts', contexts);
 }
 
-export function addContext(context) {
-    return addObject('contexts', context);
+export function addContext(context, options = {}) {
+    return addObject('contexts', context, options);
 }
 
-export function updateContext(context) {
-    return updateObject('contexts', context);
+export function updateContext(context, options = {}) {
+    return updateObject('contexts', context, options);
 }
 
 export function deleteContext(contextId) {

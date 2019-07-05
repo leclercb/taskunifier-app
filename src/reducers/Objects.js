@@ -84,11 +84,14 @@ const addObject = (state, action) => {
         title: 'Untitled',
         color: null,
         ...clone(action.object),
-        refIds: {},
         creationDate: action.creationDate,
         updateDate: action.creationDate,
         state: 'LOADED'
     };
+
+    if (action.options.keepRefIds !== true) {
+        newObject.refIds = {};
+    }
 
     removePrivateKeys(newObject);
 
@@ -120,7 +123,7 @@ const updateObject = (state, action, onUpdate) => {
         ...action.object,
         creationDate: oldObject.creationDate,
         updateDate: action.updateDate,
-        state: 'TO_UPDATE'
+        state: action.options.loaded === true ? 'LOADED' : 'TO_UPDATE'
     };
 
     removePrivateKeys(updatedObject);
