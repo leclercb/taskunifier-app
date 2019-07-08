@@ -4,7 +4,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoData } from 'selectors/SynchronizationSelectors';
+import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -39,10 +39,10 @@ export function synchronizeLocations() {
         locations = getLocations(getState());
 
         {
-            const lastEditLocation = moment(getToodledoData(getState()).lastedit_location);
+            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+            const lastEditLocation = moment.unix(getToodledoAccountInfo(getState()).lastedit_location);
 
-            if (!settings.lastSynchronizationDate ||
-                moment(lastEditLocation).diff(moment(settings.lastSynchronizationDate)) > 0) {
+            if (!lastSync || moment(lastEditLocation).diff(lastSync) > 0) {
                 const remoteLocations = await dispatch(getRemoteLocations());
 
                 for (let remoteLocation of remoteLocations) {
@@ -185,7 +185,7 @@ function convertLocationToTaskUnifier(location) {
         },
         title: location.name,
         description: location.description,
-        latitude: location.lat,
-        longitude: location.lon
+        latitude: `${location.lat}`,
+        longitude: `${location.lon}`
     };
 }

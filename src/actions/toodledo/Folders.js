@@ -4,7 +4,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoData } from 'selectors/SynchronizationSelectors';
+import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -39,10 +39,10 @@ export function synchronizeFolders() {
         folders = getFolders(getState());
 
         {
-            const lastEditFolder = moment(getToodledoData(getState()).lastedit_folder);
+            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+            const lastEditFolder = moment.unix(getToodledoAccountInfo(getState()).lastedit_folder);
 
-            if (!settings.lastSynchronizationDate ||
-                moment(lastEditFolder).diff(moment(settings.lastSynchronizationDate)) > 0) {
+            if (!lastSync || moment(lastEditFolder).diff(lastSync) > 0) {
                 const remoteFolders = await dispatch(getRemoteFolders());
 
                 for (let remoteFolder of remoteFolders) {

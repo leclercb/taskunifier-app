@@ -4,7 +4,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoData } from 'selectors/SynchronizationSelectors';
+import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -39,10 +39,10 @@ export function synchronizeContexts() {
         contexts = getContexts(getState());
 
         {
-            const lastEditContext = moment(getToodledoData(getState()).lastedit_context);
+            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+            const lastEditContext = moment.unix(getToodledoAccountInfo(getState()).lastedit_context);
 
-            if (!settings.lastSynchronizationDate ||
-                moment(lastEditContext).diff(moment(settings.lastSynchronizationDate)) > 0) {
+            if (!lastSync || moment(lastEditContext).diff(lastSync) > 0) {
                 const remoteContexts = await dispatch(getRemoteContexts());
 
                 for (let remoteContext of remoteContexts) {

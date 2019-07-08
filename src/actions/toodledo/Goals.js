@@ -4,7 +4,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getGoals } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoData } from 'selectors/SynchronizationSelectors';
+import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -39,10 +39,10 @@ export function synchronizeGoals() {
         goals = getGoals(getState());
 
         {
-            const lastEditGoal = moment(getToodledoData(getState()).lastedit_goal);
+            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+            const lastEditGoal = moment.unix(getToodledoAccountInfo(getState()).lastedit_goal);
 
-            if (!settings.lastSynchronizationDate ||
-                moment(lastEditGoal).diff(moment(settings.lastSynchronizationDate)) > 0) {
+            if (!lastSync || moment(lastEditGoal).diff(lastSync) > 0) {
                 const remoteGoals = await dispatch(getRemoteGoals());
 
                 for (let remoteGoal of remoteGoals) {

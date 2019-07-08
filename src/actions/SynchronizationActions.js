@@ -2,13 +2,14 @@ import moment from 'moment';
 import uuid from 'uuid';
 import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
-import { getSettings } from 'selectors/SettingSelectors';
+import { getAccountInfo } from 'actions/toodledo/AccountInfo';
 import { refreshToken } from 'actions/toodledo/Authorization';
 import { synchronizeContexts } from 'actions/toodledo/Contexts';
 import { synchronizeFolders } from 'actions/toodledo/Folders';
 import { synchronizeGoals } from 'actions/toodledo/Goals';
 import { synchronizeLocations } from 'actions/toodledo/Locations';
-import { getAccountInfo } from 'actions/toodledo/AccountInfo';
+import { synchronizeTasks } from 'actions/toodledo/Tasks';
+import { getSettings } from 'selectors/SettingSelectors';
 
 export function updateToodledoData(data) {
     return async dispatch => {
@@ -44,12 +45,23 @@ export function synchronize() {
                 throw new Error('You are not connected to Toodledo');
             }
 
-            await dispatch(getAccountInfo());
+            try {
+                await dispatch(getAccountInfo());
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.errorCode === 3) {
+                    await dispatch(refreshToken());
+                    await dispatch(getAccountInfo());
+                } else {
+                    throw error;
+                }
+            }
 
             await dispatch(synchronizeContexts());
             await dispatch(synchronizeFolders());
             await dispatch(synchronizeGoals());
             await dispatch(synchronizeLocations());
+
+            await dispatch(synchronizeTasks());
 
             await dispatch(updateSettings({
                 lastSynchronizationDate: moment().toISOString()

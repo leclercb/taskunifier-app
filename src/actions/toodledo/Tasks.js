@@ -8,7 +8,7 @@ import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { getTasks } from 'selectors/TaskSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoData } from 'selectors/SynchronizationSelectors';
+import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -22,10 +22,13 @@ export function synchronizeTasks() {
 
         {
             const tasksToAdd = filterByVisibleState(tasks).filter(task => !task.refIds.toodledo);
-            const result = await dispatch(addRemoteTasks(tasksToAdd))
 
-            for (let task of result) {
-                await dispatch(updateTask(task, { loaded: true }));
+            if (tasksToAdd.length > 0) {
+                const result = await dispatch(addRemoteTasks(tasksToAdd));
+
+                for (let task of result) {
+                    await dispatch(updateTask(task, { loaded: true }));
+                }
             }
         }
 
@@ -33,7 +36,10 @@ export function synchronizeTasks() {
 
         {
             const tasksToDelete = tasks.filter(task => !!task.refIds.toodledo && task.state === 'TO_DELETE');
-            await dispatch(deleteRemoteTasks(tasksToDelete));
+
+            if (tasksToDelete.length > 0) {
+                await dispatch(deleteRemoteTasks(tasksToDelete));
+            }
 
             for (let task of tasksToDelete) {
                 await dispatch(deleteTask(task));
@@ -43,11 +49,11 @@ export function synchronizeTasks() {
         tasks = getTasks(getState());
 
         {
-            const lastEditTask = moment(getToodledoData(getState()).lastedit_task);
+            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+            const lastEditTask = moment.unix(getToodledoAccountInfo(getState()).lastedit_task);
 
-            if (!settings.lastSynchronizationDate ||
-                moment(lastEditTask).diff(moment(settings.lastSynchronizationDate)) > 0) {
-                const remoteTasks = await dispatch(getRemoteTasks());
+            if (!lastSync || moment(lastEditTask).diff(lastSync) > 0) {
+                const remoteTasks = await dispatch(getRemoteTasks(lastSync));
 
                 for (let remoteTask of remoteTasks) {
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteTask.refIds.toodledo);
@@ -65,7 +71,10 @@ export function synchronizeTasks() {
 
         {
             const tasksToUpdate = tasks.filter(task => !!task.refIds.toodledo && task.state === 'TO_UPDATE');
-            await dispatch(editRemoteTasks(tasksToUpdate));
+
+            if (tasksToUpdate.length > 0) {
+                await dispatch(editRemoteTasks(tasksToUpdate));
+            }
 
             for (let task of tasksToUpdate) {
                 await dispatch(updateTask(task, { loaded: true }));
@@ -75,7 +84,7 @@ export function synchronizeTasks() {
 }
 
 export function getRemoteTasks(updatedAfter) {
-    console.debug('getRemoteTasks');
+    console.debug('getRemoteTasks', updatedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -88,18 +97,19 @@ export function getRemoteTasks(updatedAfter) {
                 url: 'https://api.toodledo.com/3/tasks/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    after: updatedAfter.unix()
+                    after: updatedAfter ? updatedAfter.unix() : 0
                 }
             });
 
+        console.debug(result);
         checkResult(result);
 
-        return result.data.map(task => convertTaskToTaskUnifier(task, state));
+        return result.data.slice(1).map(task => convertTaskToTaskUnifier(task, state));
     };
 }
 
 export function getRemoteDeletedTasks(deletedAfter) {
-    console.debug('getRemoteDeletedTasks');
+    console.debug('getRemoteDeletedTasks', deletedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -112,13 +122,14 @@ export function getRemoteDeletedTasks(deletedAfter) {
                 url: 'https://api.toodledo.com/3/tasks/deleted.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    after: deletedAfter.unix()
+                    after: deletedAfter ? deletedAfter.unix() : 0
                 }
             });
 
+        console.debug(result);
         checkResult(result);
 
-        return result.data.map(task => convertTaskToTaskUnifier(task, state));
+        return result.data.slice(1).map(task => convertTaskToTaskUnifier(task, state));
     };
 }
 
@@ -141,7 +152,7 @@ export function addRemoteTasks(tasks) {
                     url: 'https://api.toodledo.com/3/tasks/add.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        tasks: chunkTasks.map(task => convertTaskToToodledo(task, state))
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
                     }
                 });
 
@@ -179,7 +190,7 @@ export function editRemoteTasks(tasks) {
                     url: 'https://api.toodledo.com/3/tasks/edit.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        tasks: chunkTasks.map(task => convertTaskToToodledo(task, state))
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
                     }
                 });
 
@@ -205,7 +216,7 @@ export function deleteRemoteTasks(tasks) {
                     url: 'https://api.toodledo.com/3/tasks/delete.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        tasks: chunkTasks.map(task => task.refIds.toodledo)
+                        tasks: JSON.stringify(chunkTasks.map(task => task.refIds.toodledo))
                     }
                 });
 
