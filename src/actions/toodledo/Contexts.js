@@ -165,8 +165,6 @@ export function deleteRemoteContext(context) {
             });
 
         // checkResult(result);
-
-        await dispatch(deleteContext(context.id));
     };
 }
 

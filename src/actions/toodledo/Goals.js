@@ -165,8 +165,6 @@ export function deleteRemoteGoal(goal) {
             });
 
         // checkResult(result);
-
-        await dispatch(deleteGoal(goal.id));
     };
 }
 

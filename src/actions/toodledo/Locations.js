@@ -165,8 +165,6 @@ export function deleteRemoteLocation(location) {
             });
 
         // checkResult(result);
-
-        await dispatch(deleteLocation(location.id));
     };
 }
 

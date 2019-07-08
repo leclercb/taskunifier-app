@@ -165,8 +165,6 @@ export function deleteRemoteFolder(folder) {
             });
 
         // checkResult(result);
-
-        await dispatch(deleteFolder(folder.id));
     };
 }
 

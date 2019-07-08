@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, notification } from 'antd';
 import PropTypes from 'prop-types';
-import Spacer from 'components/common/Spacer';
 import withSettings from 'containers/WithSettings';
 import withSynchronization from 'containers/WithSynchronization';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
@@ -31,22 +30,11 @@ function SynchronizationManager(props) {
         }
     };
 
-    const onShowAccountInfo = async () => {
-        try {
-            await props.getAccountInfo();
-        } catch (error) {
-            notification.error({
-                message: 'An error occurred',
-                description: error.toString()
-            });
-        }
-    };
-
     const onSynchronize = async () => {
         try {
             await props.synchronize();
         } catch (error) {
-            
+
         }
     };
 
@@ -76,23 +64,8 @@ function SynchronizationManager(props) {
         );
     }
 
-    if (props.toodledo.accountInfo) {
-        return (
-            <React.Fragment>
-                Your account information:
-                <div>
-                    {JSON.stringify(props.toodledo)}
-                </div>
-            </React.Fragment>
-        );
-    }
-
     return (
         <React.Fragment>
-            <Button onClick={onShowAccountInfo}>
-                Show account info
-            </Button>
-            <Spacer />
             <Button onClick={onSynchronize}>
                 Synchronize
             </Button>
@@ -106,7 +79,6 @@ SynchronizationManager.propTypes = {
     updateSettings: PropTypes.func.isRequired,
     authorize: PropTypes.func.isRequired,
     createToken: PropTypes.func.isRequired,
-    getAccountInfo: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired
 };
 
