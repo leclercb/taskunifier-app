@@ -28,8 +28,8 @@ export function updateGoal(goal, options = {}) {
     return updateObject('goals', goal, options);
 }
 
-export function deleteGoal(goalId) {
-    return deleteObject('goals', goalId);
+export function deleteGoal(goalId, options = {}) {
+    return deleteObject('goals', goalId, options);
 }
 
 export function cleanGoals() {

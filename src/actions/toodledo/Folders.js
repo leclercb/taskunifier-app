@@ -54,6 +54,14 @@ export function synchronizeFolders() {
                         await dispatch(updateFolder(merge(localFolder, remoteFolder), { loaded: true }));
                     }
                 }
+
+                folders = getFolders(getState());
+
+                for (let localFolder of filterByVisibleState(folders)) {
+                    if (!remoteFolders.find(folder => folder.refIds.toodledo === localFolder.refIds.toodledo)) {
+                        await dispatch(deleteFolder(localFolder, { force: true }));
+                    }
+                }
             }
         }
 

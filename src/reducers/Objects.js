@@ -31,7 +31,7 @@ const Objects = (property, onUpdate = null) => (state = [], action) => {
                     if (objectIdsWithChildren.includes(object.id)) {
                         object = { ...object };
                         object.updateDate = action.updateDate;
-                        object.state = 'TO_DELETE';
+                        object.state = action.options.force === true ? 'DELETED' : 'TO_DELETE';
                     }
 
                     return object;

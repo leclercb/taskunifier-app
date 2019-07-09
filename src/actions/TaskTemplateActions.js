@@ -28,8 +28,8 @@ export function updateTaskTemplate(taskTemplate, options = {}) {
     return updateObject('taskTemplates', taskTemplate, options);
 }
 
-export function deleteTaskTemplate(taskTemplateId) {
-    return deleteObject('taskTemplates', taskTemplateId);
+export function deleteTaskTemplate(taskTemplateId, options = {}) {
+    return deleteObject('taskTemplates', taskTemplateId, options);
 }
 
 export function cleanTaskTemplates() {

@@ -28,8 +28,8 @@ export function updateFolder(folder, options = {}) {
     return updateObject('folders', folder, options);
 }
 
-export function deleteFolder(folderId) {
-    return deleteObject('folders', folderId);
+export function deleteFolder(folderId, options = {}) {
+    return deleteObject('folders', folderId, options);
 }
 
 export function cleanFolders() {

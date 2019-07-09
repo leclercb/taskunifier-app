@@ -54,6 +54,14 @@ export function synchronizeContexts() {
                         await dispatch(updateContext(merge(localContext, remoteContext), { loaded: true }));
                     }
                 }
+
+                contexts = getContexts(getState());
+
+                for (let localContext of filterByVisibleState(contexts)) {
+                    if (!remoteContexts.find(context => context.refIds.toodledo === localContext.refIds.toodledo)) {
+                        await dispatch(deleteContext(localContext, { force: true }));
+                    }
+                }
             }
         }
 

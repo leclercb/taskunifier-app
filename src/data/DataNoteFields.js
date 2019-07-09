@@ -50,6 +50,13 @@ export function getDefaultNoteFields() {
             title: 'Folder',
             type: 'folder',
             editable: true
+        },
+        {
+            static: true,
+            id: 'note',
+            title: 'Note',
+            type: 'textarea',
+            editable: true
         }
     ]);
 }

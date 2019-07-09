@@ -10,6 +10,8 @@ export function onTaskUpdate(task, oldTask, updateDate) {
     }
 
     if (oldTask && !oldTask.completed && task.completed) {
+        newTask.completionDate = updateDate;
+
         if (canRepeat(task)) {
             newTask.completed = false;
             newTask.progress = 0;

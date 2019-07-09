@@ -28,8 +28,8 @@ export function updateNote(note, options = {}) {
     return updateObject('notes', note, options);
 }
 
-export function deleteNote(noteId) {
-    return deleteObject('notes', noteId);
+export function deleteNote(noteId, options = {}) {
+    return deleteObject('notes', noteId, options);
 }
 
 export function cleanNotes() {

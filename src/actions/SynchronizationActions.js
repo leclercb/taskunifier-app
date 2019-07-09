@@ -8,6 +8,7 @@ import { synchronizeContexts } from 'actions/toodledo/Contexts';
 import { synchronizeFolders } from 'actions/toodledo/Folders';
 import { synchronizeGoals } from 'actions/toodledo/Goals';
 import { synchronizeLocations } from 'actions/toodledo/Locations';
+import { synchronizeNotes } from 'actions/toodledo/Notes';
 import { synchronizeTasks } from 'actions/toodledo/Tasks';
 import { getSettings } from 'selectors/SettingSelectors';
 
@@ -61,6 +62,7 @@ export function synchronize() {
             await dispatch(synchronizeGoals());
             await dispatch(synchronizeLocations());
 
+            await dispatch(synchronizeNotes());
             await dispatch(synchronizeTasks());
 
             await dispatch(updateSettings({

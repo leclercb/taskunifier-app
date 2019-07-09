@@ -25,6 +25,13 @@ export function getDefaultTaskFields(settings) {
         },
         {
             static: true,
+            id: 'completionDate',
+            title: 'Completion date',
+            type: 'dateTime',
+            editable: false
+        },
+        {
+            static: true,
             id: 'title',
             title: 'Title',
             type: 'text',

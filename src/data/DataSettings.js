@@ -450,6 +450,14 @@ export function getCategories() {
                     value: false,
                     editable: false,
                     visible: false
+                },
+                {
+                    id: 'noteColumnVisible_note',
+                    title: 'Show column "Note"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
                 }
             ],
             createSetting: field => ({
@@ -494,6 +502,14 @@ export function getCategories() {
                 {
                     id: 'taskColumnVisible_updateDate',
                     title: 'Show column "Update date"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskColumnVisible_completionDate',
+                    title: 'Show column "Completion date"',
                     type: 'boolean',
                     value: false,
                     editable: false,

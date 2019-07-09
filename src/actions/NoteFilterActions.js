@@ -28,8 +28,8 @@ export function updateNoteFilter(noteFilter, options = {}) {
     return updateObject('noteFilters', noteFilter, options);
 }
 
-export function deleteNoteFilter(noteFilterId) {
-    return deleteObject('noteFilters', noteFilterId);
+export function deleteNoteFilter(noteFilterId, options = {}) {
+    return deleteObject('noteFilters', noteFilterId, options);
 }
 
 export function cleanNoteFilters() {

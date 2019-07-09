@@ -28,8 +28,8 @@ export function updateTaskFilter(taskFilter, options = {}) {
     return updateObject('taskFilters', taskFilter, options);
 }
 
-export function deleteTaskFilter(taskFilterId) {
-    return deleteObject('taskFilters', taskFilterId);
+export function deleteTaskFilter(taskFilterId, options = {}) {
+    return deleteObject('taskFilters', taskFilterId, options);
 }
 
 export function cleanTaskFilters() {

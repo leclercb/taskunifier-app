@@ -2,7 +2,7 @@ import moment from 'moment';
 import { updateGoal, deleteGoal, addGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
-import { getGoals } from 'selectors/GoalSelectors';
+import { getGoals, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -52,6 +52,14 @@ export function synchronizeGoals() {
                         await dispatch(addGoal(remoteGoal, { keepRefIds: true }));
                     } else {
                         await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true }));
+                    }
+                }
+
+                goals = getGoals(getState());
+
+                for (let localGoal of filterByVisibleState(goals)) {
+                    if (!remoteGoals.find(goal => goal.refIds.toodledo === localGoal.refIds.toodledo)) {
+                        await dispatch(deleteGoal(localGoal, { force: true }));
                     }
                 }
             }
@@ -108,7 +116,7 @@ export function addRemoteGoal(goal) {
                 url: 'https://api.toodledo.com/3/goals/add.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToToodledo(goal)
+                    ...convertGoalToToodledo(goal, state)
                 }
             });
 
@@ -138,7 +146,7 @@ export function editRemoteGoal(goal) {
                 url: 'https://api.toodledo.com/3/goals/edit.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToToodledo(goal)
+                    ...convertGoalToToodledo(goal, state)
                 }
             });
 
@@ -168,7 +176,10 @@ export function deleteRemoteGoal(goal) {
     };
 }
 
-function convertGoalToToodledo(goal) {
+function convertGoalToToodledo(goal, state) {
+    const goals = getGoalsFilteredByVisibleState(state);
+    const contributesTo = goals.find(goal => goal.id === goal.contributesTo);
+
     let level;
 
     switch (goal.level) {
@@ -188,12 +199,13 @@ function convertGoalToToodledo(goal) {
         id: goal.refIds.toodledo,
         name: goal.title,
         level,
-        contributes: goal.contributesTo ? goal.contributesTo.refIds.toodledo || 0 : 0
+        contributes: contributesTo ? contributesTo.refIds.toodledo : 0
     };
 }
 
 function convertGoalToTaskUnifier(goal, state) {
-    const localGoals = getGoals(state);
+    const goals = getGoalsFilteredByVisibleState(state);
+    const contributesTo = goals.find(goal => goal.refIds.toodledo === goal.contributes);
 
     let level;
 
@@ -216,6 +228,6 @@ function convertGoalToTaskUnifier(goal, state) {
         },
         title: goal.name,
         level,
-        contributesTo: localGoals.find(localGoal => localGoal.refIds.toodledo === goal.id)
+        contributesTo: contributesTo ? contributesTo.id : null,
     };
 }

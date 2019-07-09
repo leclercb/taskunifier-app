@@ -61,7 +61,28 @@ export function synchronizeTasks() {
                     if (!localTask) {
                         await dispatch(addTask(remoteTask, { keepRefIds: true }));
                     } else {
-                        await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                        if (moment(remoteTask.modified).diff(moment(localTask.updateDate)) > 0) {
+                            await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                        }
+                    }
+                }
+            }
+        }
+
+        tasks = getTasks(getState());
+
+        {
+            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+            const lastDeleteTask = moment.unix(getToodledoAccountInfo(getState()).lastdelete_task);
+
+            if (!lastSync || moment(lastDeleteTask).diff(lastSync) > 0) {
+                const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
+
+                for (let remoteDeletedTask of remoteDeletedTasks) {
+                    const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask);
+
+                    if (localTask) {
+                        await dispatch(deleteTask(localTask, { force: true }));
                     }
                 }
             }
@@ -97,7 +118,8 @@ export function getRemoteTasks(updatedAfter) {
                 url: 'https://api.toodledo.com/3/tasks/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    after: updatedAfter ? updatedAfter.unix() : 0
+                    after: updatedAfter ? updatedAfter.unix() : 0,
+                    fields: 'context,folder,goal,location,tag,startdate,duedate,duedatemod,starttime,duetime,remind,repeat,status,star,priority,length,timer,timeron,added,note,parent,children,meta'
                 }
             });
 
@@ -209,18 +231,24 @@ export function deleteRemoteTasks(tasks) {
         for (let i = 0; i < tasks.length; i += CHUNK_SIZE) {
             const chunkTasks = tasks.slice(i, i + CHUNK_SIZE);
 
-            const result = await sendRequest(
-                settings,
-                {
-                    method: 'POST',
-                    url: 'https://api.toodledo.com/3/tasks/delete.php',
-                    params: {
-                        access_token: settings.toodledo.accessToken,
-                        tasks: JSON.stringify(chunkTasks.map(task => task.refIds.toodledo))
-                    }
-                });
+            try {
+                await sendRequest(
+                    settings,
+                    {
+                        method: 'POST',
+                        url: 'https://api.toodledo.com/3/tasks/delete.php',
+                        params: {
+                            access_token: settings.toodledo.accessToken,
+                            tasks: JSON.stringify(chunkTasks.map(task => task.refIds.toodledo))
+                        }
+                    });
 
-            checkResult(result);
+                // checkResult(result);
+            } catch (error) {
+                if (!error.response || !error.response.data || error.response.data.errorCode !== 605) {
+                    throw error;
+                }
+            }
         }
     };
 }
@@ -236,14 +264,63 @@ function convertTaskToToodledo(task, state) {
     const goal = goals.find(goal => goal.id === task.goal);
     const location = locations.find(location => location.id === task.location);
 
+    let status;
+
+    switch (task.status) {
+        case 'none':
+            status = 0;
+            break;
+        case 'nextAction':
+            status = 1;
+            break;
+        case 'active':
+            status = 2;
+            break;
+        case 'planning':
+            status = 3;
+            break;
+        case 'delegated':
+            status = 4;
+            break;
+        case 'waiting':
+            status = 5;
+            break;
+        case 'hold':
+            status = 6;
+            break;
+        case 'postponed':
+            status = 7;
+            break;
+        case 'someday':
+            status = 8;
+            break;
+        case 'cancelled':
+            status = 9;
+            break;
+        case 'reference':
+            status = 10;
+            break;
+        default:
+            status = 0;
+            break;
+    }
+
     return {
         id: task.refIds.toodledo,
         title: task.title,
-        tag: task.tags,
+        completed: task.completed ? moment(task.completionDate).unix() : 0,
+        tag: task.tags ? task.tags.join(',') : '',
         context: context ? context.refIds.toodledo : 0,
         folder: folder ? folder.refIds.toodledo : 0,
         goal: goal ? goal.refIds.toodledo : 0,
-        location: location ? location.refIds.toodledo : 0
+        location: location ? location.refIds.toodledo : 0,
+        duedate: task.dueDate ? moment(task.dueDate).unix() : 0,
+        startdate: task.startDate ? moment(task.startDate).unix() : 0,
+        duetime: task.dueDate ? moment(task.dueDate).unix() : 0,
+        starttime: task.startDate ? moment(task.startDate).unix() : 0,
+        status,
+        length: task.length,
+        star: task.star ? 1 : 0
     };
 }
 
@@ -258,15 +335,65 @@ function convertTaskToTaskUnifier(task, state) {
     const goal = goals.find(goal => goal.refIds.toodledo === task.goal);
     const location = locations.find(location => location.refIds.toodledo === task.location);
 
+    let status;
+
+    switch (task.status) {
+        case 0:
+            status = 'none';
+            break;
+        case 1:
+            status = 'nextAction';
+            break;
+        case 2:
+            status = 'active';
+            break;
+        case 3:
+            status = 'planning';
+            break;
+        case 4:
+            status = 'delegated';
+            break;
+        case 5:
+            status = 'waiting';
+            break;
+        case 6:
+            status = 'hold';
+            break;
+        case 7:
+            status = 'postponed';
+            break;
+        case 8:
+            status = 'someday';
+            break;
+        case 9:
+            status = 'cancelled';
+            break;
+        case 10:
+            status = 'reference';
+            break;
+        default:
+            status = 'none';
+            break;
+    }
+
     return {
         refIds: {
             toodledo: task.id
         },
         title: task.title,
-        tags: task.tag,
-        context: context ? context.refIds.toodledo : null,
-        folder: folder ? folder.refIds.toodledo : null,
-        goal: goal ? goal.refIds.toodledo : null,
-        location: location ? location.refIds.toodledo : null
+        completed: task.completed > 0,
+        completionDate: moment(task.completed).toISOString(),
+        tags: task.tag ? task.tag.split(',') : null,
+        context: context ? context.id : null,
+        folder: folder ? folder.id : null,
+        goal: goal ? goal.id : null,
+        location: location ? location.id : null,
+        //duedate: task.duedate ? moment(task.duedate).toISOString() : 0,
+        //startdate: task.startdate ? moment(task.startdate).toISOString() : 0,
+        dueDate: task.duetime ? moment(task.duetime).toISOString() : null,
+        startDate: task.starttime ? moment(task.starttime).toISOString() : null,
+        status,
+        length: task.length,
+        star: task.star === 1 ? true : false
     };
 }

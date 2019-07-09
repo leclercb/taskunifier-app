@@ -28,8 +28,8 @@ export function updateContext(context, options = {}) {
     return updateObject('contexts', context, options);
 }
 
-export function deleteContext(contextId) {
-    return deleteObject('contexts', contextId);
+export function deleteContext(contextId, options = {}) {
+    return deleteObject('contexts', contextId, options);
 }
 
 export function cleanContexts() {

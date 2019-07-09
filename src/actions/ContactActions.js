@@ -28,8 +28,8 @@ export function updateContact(contact, options = {}) {
     return updateObject('contacts', contact, options);
 }
 
-export function deleteContact(contactId) {
-    return deleteObject('contacts', contactId);
+export function deleteContact(contactId, options = {}) {
+    return deleteObject('contacts', contactId, options);
 }
 
 export function cleanContacts() {

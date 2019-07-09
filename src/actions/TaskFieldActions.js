@@ -28,8 +28,8 @@ export function updateTaskField(taskField, options = {}) {
     return updateObject('taskFields', taskField, options);
 }
 
-export function deleteTaskField(taskFieldId) {
-    return deleteObject('taskFields', taskFieldId);
+export function deleteTaskField(taskFieldId, options = {}) {
+    return deleteObject('taskFields', taskFieldId, options);
 }
 
 export function cleanTaskFields() {

@@ -28,8 +28,8 @@ export function updateLocation(location, options = {}) {
     return updateObject('locations', location, options);
 }
 
-export function deleteLocation(locationId) {
-    return deleteObject('locations', locationId);
+export function deleteLocation(locationId, options = {}) {
+    return deleteObject('locations', locationId, options);
 }
 
 export function cleanLocations() {

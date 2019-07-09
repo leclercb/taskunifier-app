@@ -54,6 +54,14 @@ export function synchronizeLocations() {
                         await dispatch(updateLocation(merge(localLocation, remoteLocation), { loaded: true }));
                     }
                 }
+
+                locations = getLocations(getState());
+
+                for (let localLocation of filterByVisibleState(locations)) {
+                    if (!remoteLocations.find(location => location.refIds.toodledo === localLocation.refIds.toodledo)) {
+                        await dispatch(deleteLocation(localLocation, { force: true }));
+                    }
+                }
             }
         }
 

@@ -58,14 +58,15 @@ export function updateObject(property, object, options = {}) {
     };
 }
 
-export function deleteObject(property, objectId) {
+export function deleteObject(property, objectId, options = {}) {
     return async dispatch => {
         dispatch({
             type: 'DELETE_OBJECT',
             property,
             generateId: () => uuid(),
             updateDate: moment().toISOString(),
-            objectId
+            objectId,
+            options
         });
     };
 }
