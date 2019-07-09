@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { updateTask, deleteTask, addTask } from 'actions/TaskActions';
+import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';

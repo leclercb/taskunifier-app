@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { updateGoal, deleteGoal, addGoal } from 'actions/GoalActions';
+import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getGoals, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
@@ -228,6 +228,6 @@ function convertGoalToTaskUnifier(goal, state) {
         },
         title: goal.name,
         level,
-        contributesTo: contributesTo ? contributesTo.id : null,
+        contributesTo: contributesTo ? contributesTo.id : null
     };
 }

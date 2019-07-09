@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { updateFolder, deleteFolder, addFolder } from 'actions/FolderActions';
+import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getFolders } from 'selectors/FolderSelectors';

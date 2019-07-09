@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { updateContext, deleteContext, addContext } from 'actions/ContextActions';
+import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getContexts } from 'selectors/ContextSelectors';

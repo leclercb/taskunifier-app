@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { updateLocation, deleteLocation, addLocation } from 'actions/LocationActions';
+import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
 import { getLocations } from 'selectors/LocationSelectors';
