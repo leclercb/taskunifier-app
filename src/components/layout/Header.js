@@ -159,7 +159,7 @@ function Header(props) {
         <LeftRight right={(
             <React.Fragment>
                 {props.pro ? (
-                    <img src="/resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
+                    <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                 ) : null}
                 <Logo size={40} />
             </React.Fragment>
