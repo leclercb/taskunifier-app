@@ -1,7 +1,7 @@
 import { sendRequest } from 'actions/RequestActions';
-import { updateToodledoData } from 'actions/SynchronizationActions';
-import { getSettings } from 'selectors/SettingSelectors';
 import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { updateToodledoData } from 'actions/toodledo/ToodledoSynchronizationActions';
+import { getSettings } from 'selectors/SettingSelectors';
 
 export function getAccountInfo() {
     return async (dispatch, getState) => {

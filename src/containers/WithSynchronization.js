@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { synchronize } from 'actions/SynchronizationActions';
-import { getAccountInfo } from 'actions/toodledo/AccountInfo';
+import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getToodledoData } from 'selectors/SynchronizationSelectors';
 
