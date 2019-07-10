@@ -49,7 +49,7 @@ export function synchronizeNotes() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditNote = moment.unix(getToodledoAccountInfo(getState()).lastedit_note);
 
-            if (!lastSync || moment(lastEditNote).diff(lastSync) > 0) {
+            if (!lastSync || lastEditNote.diff(lastSync) > 0) {
                 const remoteNotes = await dispatch(getRemoteNotes(lastSync));
 
                 for (let remoteNote of remoteNotes) {
@@ -58,7 +58,7 @@ export function synchronizeNotes() {
                     if (!localNote) {
                         await dispatch(addNote(remoteNote, { keepRefIds: true }));
                     } else {
-                        if (moment(remoteNote.modified).diff(moment(localNote.updateDate)) > 0) {
+                        if (moment(remoteNote.updateDate).diff(moment(localNote.updateDate)) > 0) {
                             await dispatch(updateNote(merge(localNote, remoteNote), { loaded: true }));
                         }
                     }
@@ -72,7 +72,7 @@ export function synchronizeNotes() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastDeleteNote = moment.unix(getToodledoAccountInfo(getState()).lastdelete_note);
 
-            if (!lastSync || moment(lastDeleteNote).diff(lastSync) > 0) {
+            if (!lastSync || lastDeleteNote.diff(lastSync) > 0) {
                 const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
 
                 for (let remoteDeletedNote of remoteDeletedNotes) {
@@ -266,6 +266,7 @@ function convertNoteToTaskUnifier(note, state) {
     const folder = folders.find(folder => folder.refIds.toodledo === note.folder);
 
     return {
+        updateDate: moment.unix(note.modified).toISOString(),
         refIds: {
             toodledo: note.id
         },

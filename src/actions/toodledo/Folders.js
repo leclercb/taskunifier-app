@@ -42,7 +42,7 @@ export function synchronizeFolders() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditFolder = moment.unix(getToodledoAccountInfo(getState()).lastedit_folder);
 
-            if (!lastSync || moment(lastEditFolder).diff(lastSync) > 0) {
+            if (!lastSync || lastEditFolder.diff(lastSync) > 0) {
                 const remoteFolders = await dispatch(getRemoteFolders());
 
                 for (let remoteFolder of remoteFolders) {

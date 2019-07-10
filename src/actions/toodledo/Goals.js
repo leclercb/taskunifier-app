@@ -42,7 +42,7 @@ export function synchronizeGoals() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditGoal = moment.unix(getToodledoAccountInfo(getState()).lastedit_goal);
 
-            if (!lastSync || moment(lastEditGoal).diff(lastSync) > 0) {
+            if (!lastSync || lastEditGoal.diff(lastSync) > 0) {
                 const remoteGoals = await dispatch(getRemoteGoals());
 
                 for (let remoteGoal of remoteGoals) {

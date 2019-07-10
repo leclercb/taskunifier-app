@@ -122,8 +122,39 @@ function App(props) {
         ]
     );
 
+    useEffect(
+        () => {
+            let interval = null;
+
+            interval = setInterval(() => {
+                const { automaticSynchronization, automaticSynchronizationInterval, lastAutomaticSynchronization } = props.settings;
+
+                if (automaticSynchronization &&
+                    Number.isInteger(automaticSynchronizationInterval) &&
+                    automaticSynchronizationInterval > 0 &&
+                    (!lastAutomaticSynchronization || moment().diff(moment(lastAutomaticSynchronization)) > automaticSynchronizationInterval * 60 * 1000)) {
+                    props.synchronize();
+                    props.updateSettings({
+                        lastAutomaticSynchronization: moment().toISOString()
+                    });
+                }
+            }, 30 * 1000);
+
+            return () => {
+                clearInterval(interval);
+            };
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            props.settings.automaticSynchronization,
+            props.settings.automaticSynchronizationInterval,
+            props.settings.lastAutomaticSynchronization
+        ]
+    );
+
     useInterval(() => {
         props.backupData();
+        props.synchronize();
     }, null);
 
     return (
@@ -140,12 +171,16 @@ App.propTypes = {
         automaticSaveInterval: PropTypes.number.isRequired,
         automaticBackup: PropTypes.bool.isRequired,
         automaticBackupInterval: PropTypes.number.isRequired,
-        lastAutomaticBackup: PropTypes.string.isRequired
+        lastAutomaticBackup: PropTypes.string.isRequired,
+        automaticSynchronization: PropTypes.bool.isRequired,
+        automaticSynchronizationInterval: PropTypes.number.isRequired,
+        lastAutomaticSynchronization: PropTypes.string.isRequired
     }).isRequired,
     updateSettings: PropTypes.func.isRequired,
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
-    backupData: PropTypes.func.isRequired
+    backupData: PropTypes.func.isRequired,
+    synchronize: PropTypes.func.isRequired
 };
 
 export default withApp(withSettings(withJoyride(App)));

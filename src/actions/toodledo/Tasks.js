@@ -52,7 +52,7 @@ export function synchronizeTasks() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditTask = moment.unix(getToodledoAccountInfo(getState()).lastedit_task);
 
-            if (!lastSync || moment(lastEditTask).diff(lastSync) > 0) {
+            if (!lastSync || lastEditTask.diff(lastSync) > 0) {
                 const remoteTasks = await dispatch(getRemoteTasks(lastSync));
 
                 for (let remoteTask of remoteTasks) {
@@ -61,7 +61,7 @@ export function synchronizeTasks() {
                     if (!localTask) {
                         await dispatch(addTask(remoteTask, { keepRefIds: true }));
                     } else {
-                        if (moment(remoteTask.modified).diff(moment(localTask.updateDate)) > 0) {
+                        if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                             await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
                         }
                     }
@@ -75,7 +75,7 @@ export function synchronizeTasks() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastDeleteTask = moment.unix(getToodledoAccountInfo(getState()).lastdelete_task);
 
-            if (!lastSync || moment(lastDeleteTask).diff(lastSync) > 0) {
+            if (!lastSync || lastDeleteTask.diff(lastSync) > 0) {
                 const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
 
                 for (let remoteDeletedTask of remoteDeletedTasks) {
@@ -264,46 +264,8 @@ function convertTaskToToodledo(task, state) {
     const goal = goals.find(goal => goal.id === task.goal);
     const location = locations.find(location => location.id === task.location);
 
-    let status;
-
-    switch (task.status) {
-        case 'none':
-            status = 0;
-            break;
-        case 'nextAction':
-            status = 1;
-            break;
-        case 'active':
-            status = 2;
-            break;
-        case 'planning':
-            status = 3;
-            break;
-        case 'delegated':
-            status = 4;
-            break;
-        case 'waiting':
-            status = 5;
-            break;
-        case 'hold':
-            status = 6;
-            break;
-        case 'postponed':
-            status = 7;
-            break;
-        case 'someday':
-            status = 8;
-            break;
-        case 'cancelled':
-            status = 9;
-            break;
-        case 'reference':
-            status = 10;
-            break;
-        default:
-            status = 0;
-            break;
-    }
+    const status = getStatuses().find(status => status.key === task.status);
+    const priority = getPriorities().find(priority => priority.key === task.priority);
 
     return {
         id: task.refIds.toodledo,
@@ -318,9 +280,12 @@ function convertTaskToToodledo(task, state) {
         startdate: task.startDate ? moment(task.startDate).unix() : 0,
         duetime: task.dueDate ? moment(task.dueDate).unix() : 0,
         starttime: task.startDate ? moment(task.startDate).unix() : 0,
-        status,
+        status: status ? status.value : 0,
         length: task.length,
-        star: task.star ? 1 : 0
+        priority: priority ? priority.value : -1,
+        star: task.star ? 1 : 0,
+        timer: task.timer ? task.timer.value : 0,
+        timeron: task.timer && task.timer.startDate ? moment(task.timer.startDate).unix() : 0
     };
 }
 
@@ -335,65 +300,57 @@ function convertTaskToTaskUnifier(task, state) {
     const goal = goals.find(goal => goal.refIds.toodledo === task.goal);
     const location = locations.find(location => location.refIds.toodledo === task.location);
 
-    let status;
-
-    switch (task.status) {
-        case 0:
-            status = 'none';
-            break;
-        case 1:
-            status = 'nextAction';
-            break;
-        case 2:
-            status = 'active';
-            break;
-        case 3:
-            status = 'planning';
-            break;
-        case 4:
-            status = 'delegated';
-            break;
-        case 5:
-            status = 'waiting';
-            break;
-        case 6:
-            status = 'hold';
-            break;
-        case 7:
-            status = 'postponed';
-            break;
-        case 8:
-            status = 'someday';
-            break;
-        case 9:
-            status = 'cancelled';
-            break;
-        case 10:
-            status = 'reference';
-            break;
-        default:
-            status = 'none';
-            break;
-    }
+    const status = getStatuses().find(status => status.value === task.status);
+    const priority = getPriorities().find(priority => priority.value === task.priority);
 
     return {
+        updateDate: moment.unix(task.modified).toISOString(),
         refIds: {
             toodledo: task.id
         },
         title: task.title,
         completed: task.completed > 0,
-        completionDate: moment(task.completed).toISOString(),
+        completionDate: moment.unix(task.completed).toISOString(),
         tags: task.tag ? task.tag.split(',') : null,
         context: context ? context.id : null,
         folder: folder ? folder.id : null,
         goal: goal ? goal.id : null,
         location: location ? location.id : null,
-        //duedate: task.duedate ? moment(task.duedate).toISOString() : 0,
-        //startdate: task.startdate ? moment(task.startdate).toISOString() : 0,
-        dueDate: task.duetime ? moment(task.duetime).toISOString() : null,
-        startDate: task.starttime ? moment(task.starttime).toISOString() : null,
-        status,
+        dueDate: (task.duetime, task.duedate) ? moment.unix(task.duetime || task.duedate).toISOString() : null,
+        startDate: (task.starttime || task.startdate) ? moment.unix(task.starttime || task.startdate).toISOString() : null,
+        status: status ? status.key : null,
         length: task.length,
-        star: task.star === 1 ? true : false
+        priority: priority ? priority.key : null,
+        star: task.star === 1 ? true : false,
+        timer: {
+            value: task.timer,
+            startDate: task.timeron ? moment.unix(task.timeron).toISOString() : null
+        }
     };
+}
+
+function getStatuses() {
+    return [
+        { key: 'none', value: 0 },
+        { key: 'nextAction', value: 1 },
+        { key: 'active', value: 2 },
+        { key: 'planning', value: 3 },
+        { key: 'delegated', value: 4 },
+        { key: 'waiting', value: 5 },
+        { key: 'hold', value: 6 },
+        { key: 'postponed', value: 7 },
+        { key: 'someday', value: 8 },
+        { key: 'cancelled', value: 9 },
+        { key: 'reference', value: 10 }
+    ];
+}
+
+function getPriorities() {
+    return [
+        { key: 'negative', value: -1 },
+        { key: 'low', value: 0 },
+        { key: 'medium', value: 1 },
+        { key: 'high', value: 2 },
+        { key: 'top', value: 3 }
+    ];
 }

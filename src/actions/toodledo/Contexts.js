@@ -42,7 +42,7 @@ export function synchronizeContexts() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditContext = moment.unix(getToodledoAccountInfo(getState()).lastedit_context);
 
-            if (!lastSync || moment(lastEditContext).diff(lastSync) > 0) {
+            if (!lastSync || lastEditContext.diff(lastSync) > 0) {
                 const remoteContexts = await dispatch(getRemoteContexts());
 
                 for (let remoteContext of remoteContexts) {

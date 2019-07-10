@@ -42,7 +42,7 @@ export function synchronizeLocations() {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditLocation = moment.unix(getToodledoAccountInfo(getState()).lastedit_location);
 
-            if (!lastSync || moment(lastEditLocation).diff(lastSync) > 0) {
+            if (!lastSync || lastEditLocation.diff(lastSync) > 0) {
                 const remoteLocations = await dispatch(getRemoteLocations());
 
                 for (let remoteLocation of remoteLocations) {

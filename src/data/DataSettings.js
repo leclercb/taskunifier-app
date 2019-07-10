@@ -408,6 +408,34 @@ export function getCategories() {
             ]
         },
         {
+            id: 'synchronization',
+            title: 'Synchronization',
+            icon: 'sync-alt',
+            settings: [
+                {
+                    id: 'automaticSynchronization',
+                    title: 'Enable automatic synchronization',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'automaticSynchronizationInterval',
+                    title: 'Synchronization interval in minutes',
+                    type: 'number',
+                    value: 60,
+                    editable: true
+                },
+                {
+                    id: 'lastAutomaticSynchronization',
+                    title: 'Last automatic synchronization',
+                    type: 'dateTime',
+                    value: moment().toISOString(),
+                    editable: false
+                }
+            ]
+        },
+        {
             id: 'taskTemplates',
             title: 'Task templates',
             icon: 'tasks',
