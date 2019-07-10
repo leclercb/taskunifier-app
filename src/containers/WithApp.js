@@ -8,7 +8,6 @@ import {
     setNoteFilterManagerOptions,
     setReminderManagerOptions,
     setSettingManagerOptions,
-    setSynchronizationManagerOptions,
     setTaskEditionManagerOptions,
     setTaskFieldManagerOptions,
     setTaskFilterManagerOptions,
@@ -19,6 +18,7 @@ import {
     cleanBackups
 } from 'actions/BackupActions';
 import { setSelectedView } from 'actions/SettingActions';
+import { synchronize } from 'actions/SynchronizationActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import {
     getBatchAddTasksManager,
@@ -27,7 +27,6 @@ import {
     getNoteFilterManager,
     getReminderManager,
     getSettingManager,
-    getSynchronizationManager,
     getTaskEditionManager,
     getTaskFieldManager,
     getTaskFilterManager,
@@ -49,8 +48,7 @@ function withApp(Component) {
         taskFilterManager: getTaskFilterManager(state),
         taskEditionManager: getTaskEditionManager(state),
         taskTemplateManager: getTaskTemplateManager(state),
-        settingManager: getSettingManager(state),
-        synchronizationManager: getSynchronizationManager(state)
+        settingManager: getSettingManager(state)
     });
 
     const mapDispatchToProps = dispatch => ({
@@ -58,6 +56,7 @@ function withApp(Component) {
         saveData: options => dispatch(saveData(options)),
         backupData: () => dispatch(backupData()),
         cleanBackups: () => dispatch(cleanBackups()),
+        synchronize: () => dispatch(synchronize()),
         setSelectedView: view => dispatch(setSelectedView(view)),
         setBatchAddTasksManagerOptions: options => dispatch(setBatchAddTasksManagerOptions(options)),
         setBatchEditTasksManagerOptions: options => dispatch(setBatchEditTasksManagerOptions(options)),
@@ -68,8 +67,7 @@ function withApp(Component) {
         setTaskFilterManagerOptions: options => dispatch(setTaskFilterManagerOptions(options)),
         setTaskEditionManagerOptions: options => dispatch(setTaskEditionManagerOptions(options)),
         setTaskTemplateManagerOptions: options => dispatch(setTaskTemplateManagerOptions(options)),
-        setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options)),
-        setSynchronizationManagerOptions: options => dispatch(setSynchronizationManagerOptions(options))
+        setSettingManagerOptions: options => dispatch(setSettingManagerOptions(options))
     });
 
     return connect(

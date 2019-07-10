@@ -39,7 +39,7 @@ export function synchronizeNotes() {
             }
 
             for (let note of notesToDelete) {
-                await dispatch(deleteNote(note));
+                await dispatch(deleteNote(note.id));
             }
         }
 
@@ -79,7 +79,7 @@ export function synchronizeNotes() {
                     const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote);
 
                     if (localNote) {
-                        await dispatch(deleteNote(localNote, { force: true }));
+                        await dispatch(deleteNote(localNote.id, { force: true }));
                     }
                 }
             }

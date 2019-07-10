@@ -358,12 +358,3 @@ export function setSettingManagerOptions(options) {
         });
     };
 }
-
-export function setSynchronizationManagerOptions(options) {
-    return async dispatch => {
-        dispatch({
-            type: 'SET_SYNCHRONIZATION_MANAGER_OPTIONS',
-            ...options
-        });
-    };
-}

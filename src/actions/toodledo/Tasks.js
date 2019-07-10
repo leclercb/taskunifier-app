@@ -42,7 +42,7 @@ export function synchronizeTasks() {
             }
 
             for (let task of tasksToDelete) {
-                await dispatch(deleteTask(task));
+                await dispatch(deleteTask(task.id));
             }
         }
 
@@ -82,7 +82,7 @@ export function synchronizeTasks() {
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask);
 
                     if (localTask) {
-                        await dispatch(deleteTask(localTask, { force: true }));
+                        await dispatch(deleteTask(localTask.id, { force: true }));
                     }
                 }
             }

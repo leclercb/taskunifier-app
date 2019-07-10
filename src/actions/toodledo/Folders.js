@@ -32,7 +32,7 @@ export function synchronizeFolders() {
             await Promise.all(foldersToDeletePromises);
 
             for (let folder of foldersToDelete) {
-                await dispatch(deleteFolder(folder));
+                await dispatch(deleteFolder(folder.id));
             }
         }
 
@@ -59,7 +59,7 @@ export function synchronizeFolders() {
 
                 for (let localFolder of filterByVisibleState(folders)) {
                     if (!remoteFolders.find(folder => folder.refIds.toodledo === localFolder.refIds.toodledo)) {
-                        await dispatch(deleteFolder(localFolder, { force: true }));
+                        await dispatch(deleteFolder(localFolder.id, { force: true }));
                     }
                 }
             }

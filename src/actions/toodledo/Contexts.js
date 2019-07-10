@@ -32,7 +32,7 @@ export function synchronizeContexts() {
             await Promise.all(contextsToDeletePromises);
 
             for (let context of contextsToDelete) {
-                await dispatch(deleteContext(context));
+                await dispatch(deleteContext(context.id));
             }
         }
 
@@ -59,7 +59,7 @@ export function synchronizeContexts() {
 
                 for (let localContext of filterByVisibleState(contexts)) {
                     if (!remoteContexts.find(context => context.refIds.toodledo === localContext.refIds.toodledo)) {
-                        await dispatch(deleteContext(localContext, { force: true }));
+                        await dispatch(deleteContext(localContext.id, { force: true }));
                     }
                 }
             }

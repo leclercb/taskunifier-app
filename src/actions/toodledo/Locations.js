@@ -32,7 +32,7 @@ export function synchronizeLocations() {
             await Promise.all(locationsToDeletePromises);
 
             for (let location of locationsToDelete) {
-                await dispatch(deleteLocation(location));
+                await dispatch(deleteLocation(location.id));
             }
         }
 
@@ -59,7 +59,7 @@ export function synchronizeLocations() {
 
                 for (let localLocation of filterByVisibleState(locations)) {
                     if (!remoteLocations.find(location => location.refIds.toodledo === localLocation.refIds.toodledo)) {
-                        await dispatch(deleteLocation(localLocation, { force: true }));
+                        await dispatch(deleteLocation(localLocation.id, { force: true }));
                     }
                 }
             }

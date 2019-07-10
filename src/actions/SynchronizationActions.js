@@ -1,9 +1,11 @@
+import React from 'react';
+import { Input, Modal, message } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid';
 import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getAccountInfo } from 'actions/toodledo/AccountInfo';
-import { refreshToken } from 'actions/toodledo/Authorization';
+import { refreshToken, authorize, createToken } from 'actions/toodledo/Authorization';
 import { synchronizeContexts } from 'actions/toodledo/Contexts';
 import { synchronizeFolders } from 'actions/toodledo/Folders';
 import { synchronizeGoals } from 'actions/toodledo/Goals';
@@ -21,11 +23,34 @@ export function updateToodledoData(data) {
     };
 }
 
+async function getAuthorizationCode() {
+    return new Promise((resolve, reject) => {
+        let code = null;
+
+        Modal.confirm({
+            title: 'Enter authorization code',
+            content: (
+                <Input onChange={event => code = event.target.value} />
+            ),
+            okText: 'Continue',
+            onOk: () => {
+                resolve(code);
+            },
+            onCancel: () => {
+                reject('The connection to Toodledo has been cancelled');
+            },
+            width: 500
+        });
+    });
+}
+
 export function synchronize() {
     return async (dispatch, getState) => {
         const processId = uuid();
 
         try {
+            let settings = getSettings(getState());
+
             dispatch(updateProcess({
                 id: processId,
                 state: 'RUNNING',
@@ -33,17 +58,21 @@ export function synchronize() {
                 notify: true
             }));
 
-            const settings = getSettings(getState());
+            if (!settings.toodledo || !settings.toodledo.accessToken || !settings.toodledo.refreshToken) {
+                message.info('Opening Toodledo\'s website... Please log into your account and enter the authorization code.', 10);
 
-            if (settings.toodledo && settings.toodledo.accessToken && settings.toodledo.refreshToken) {
-                const accessTokenCreationDate = moment(settings.toodledo.accessTokenCreationDate);
-                const expirationDate = accessTokenCreationDate.add(settings.toodledo.accessTokenExpiresIn, 'seconds');
+                await dispatch(authorize());
+                const code = await getAuthorizationCode();
+                await dispatch(createToken(code));
 
-                if (moment().diff(expirationDate, 'seconds') > -60) {
-                    await dispatch(refreshToken());
-                }
-            } else {
-                throw new Error('You are not connected to Toodledo');
+                settings = getSettings(getState());
+            }
+
+            const accessTokenCreationDate = moment(settings.toodledo.accessTokenCreationDate);
+            const expirationDate = accessTokenCreationDate.add(settings.toodledo.accessTokenExpiresIn, 'seconds');
+
+            if (moment().diff(expirationDate, 'seconds') > -60) {
+                await dispatch(refreshToken());
             }
 
             try {

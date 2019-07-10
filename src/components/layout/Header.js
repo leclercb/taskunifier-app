@@ -126,8 +126,8 @@ function Header(props) {
         props.setSettingManagerOptions({ visible: true });
     };
 
-    const onSetSynchronizationVisible = () => {
-        props.setSynchronizationManagerOptions({ visible: true });
+    const onSynchronize = () => {
+        props.synchronize();
     };
 
     const onShowTaskContent = () => {
@@ -231,7 +231,7 @@ function Header(props) {
             {createButton('save', 'Save', onSave)}
             {createButton('box-open', 'Backup', onBackup)}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
-            {createButton('sync-alt', 'Synchronization', onSetSynchronizationVisible)}
+            {createButton('sync-alt', 'Synchronization', onSynchronize)}
         </LeftRight>
     );
 }
@@ -254,6 +254,7 @@ Header.propTypes = {
     loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
+    synchronize: PropTypes.func.isRequired,
     setSelectedView: PropTypes.func.isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
@@ -266,8 +267,7 @@ Header.propTypes = {
     setTaskTemplateManagerOptions: PropTypes.func.isRequired,
     setBatchAddTasksManagerOptions: PropTypes.func.isRequired,
     setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
-    setSettingManagerOptions: PropTypes.func.isRequired,
-    setSynchronizationManagerOptions: PropTypes.func.isRequired
+    setSettingManagerOptions: PropTypes.func.isRequired
 };
 
 export default withApp(withNotes(withTasks(withTaskTemplates(withPrint(Header)))));

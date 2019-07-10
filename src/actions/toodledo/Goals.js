@@ -32,7 +32,7 @@ export function synchronizeGoals() {
             await Promise.all(goalsToDeletePromises);
 
             for (let goal of goalsToDelete) {
-                await dispatch(deleteGoal(goal));
+                await dispatch(deleteGoal(goal.id));
             }
         }
 
@@ -59,7 +59,7 @@ export function synchronizeGoals() {
 
                 for (let localGoal of filterByVisibleState(goals)) {
                     if (!remoteGoals.find(goal => goal.refIds.toodledo === localGoal.refIds.toodledo)) {
-                        await dispatch(deleteGoal(localGoal, { force: true }));
+                        await dispatch(deleteGoal(localGoal.id, { force: true }));
                     }
                 }
             }
