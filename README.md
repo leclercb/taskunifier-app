@@ -4,6 +4,10 @@ TaskUnifier a task management software based on the GTD methodology.
 
 It helps you manage your tasks and improve your productivity.
 
+# Status
+
+[![Build Status](https://travis-ci.com/leclercb/taskunifier-app.svg?branch=master)](https://travis-ci.com/leclercb/taskunifier-app)
+
 # Features
 
 * Note Table
