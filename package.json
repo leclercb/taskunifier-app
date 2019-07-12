@@ -99,6 +99,7 @@
                 "portable",
                 "nsis"
             ],
+            "sign": "./sign.js",
             "publish": {
                 "provider": "github"
             }
