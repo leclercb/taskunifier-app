@@ -5,7 +5,7 @@ import uuid from 'uuid';
 import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';
-import { refreshToken, authorize, createToken } from 'actions/toodledo/ToodledoAuthorizationActions';
+import { authorize, createToken, refreshToken } from 'actions/toodledo/ToodledoAuthorizationActions';
 import { synchronizeContexts } from 'actions/toodledo/ToodledoContextActions';
 import { synchronizeFolders } from 'actions/toodledo/ToodledoFolderActions';
 import { synchronizeGoals } from 'actions/toodledo/ToodledoGoalActions';
