@@ -1,7 +1,8 @@
 # Deploy
 
 * Change version in package.json
-* `export GH_TOKEN=__TOKEN__`
-* `export REACT_APP_TOODLEDO_USERNAME=`
-* `export REACT_APP_TOODLEDO_PASSWORD=`
+* `export GH_TOKEN=`
+* `export WINDOWS_SIGN_CERT_FILE=`
+* `export WINDOWS_SIGN_KEY_FILE=`
+* `export WINDOWS_SIGN_KEY_PASS=`
 * `yarn run dist`
