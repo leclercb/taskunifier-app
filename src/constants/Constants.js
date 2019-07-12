@@ -1,8 +1,8 @@
 export default {
     connectionTestUrl: 'http://www.google.com',
-    purchaseUrl: 'https://www.taskunifier.app/web/purchase',
-    downloadUrl: 'https://www.taskunifier.app/web/app',
-    versionUrl: 'https://www.taskunifier.app/api/versions/taskunifier-app/latest',
+    purchaseUrl: 'https://www.taskunifier.app/purchase',
+    downloadUrl: 'https://www.taskunifier.app/app',
+    versionUrl: 'https://api.taskunifier.app/v1/versions/taskunifier-app/latest',
     color: '#0e67c4',
     fadeColor: '#e3ebf2',
     lightColor: '#bed5e6',
