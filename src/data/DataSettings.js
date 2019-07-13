@@ -368,7 +368,7 @@ export function getCategories() {
                     id: 'automaticBackupInterval',
                     title: 'Backup interval in minutes',
                     type: 'number',
-                    value: 60,
+                    value: 120,
                     editable: true
                 },
                 {
@@ -416,7 +416,7 @@ export function getCategories() {
                     id: 'automaticSynchronization',
                     title: 'Enable automatic synchronization',
                     type: 'boolean',
-                    value: true,
+                    value: false,
                     editable: true
                 },
                 {

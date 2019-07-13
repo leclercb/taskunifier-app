@@ -9,7 +9,7 @@ import { cleanLocations, loadLocationsFromFile, saveLocationsToFile } from 'acti
 import { cleanNotes, loadNotesFromFile, saveNotesToFile } from 'actions/NoteActions';
 import { cleanNoteFields, loadNoteFieldsFromFile, saveNoteFieldsToFile } from 'actions/NoteFieldActions';
 import { cleanNoteFilters, loadNoteFiltersFromFile, saveNoteFiltersToFile } from 'actions/NoteFilterActions';
-import { updateProcess } from 'actions/ThreadActions';
+import { updateProcess, checkIsBusy } from 'actions/ThreadActions';
 import { loadSettingsFromFile, saveSettingsToFile } from 'actions/SettingActions';
 import { cleanTasks, loadTasksFromFile, saveTasksToFile } from 'actions/TaskActions';
 import { cleanTaskFields, loadTaskFieldsFromFile, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
@@ -37,6 +37,8 @@ export function _loadData(path, options) {
     }, options || {});
 
     return async (dispatch, getState) => {
+        await dispatch(checkIsBusy());
+
         const processId = uuid();
 
         dispatch(updateProcess({
@@ -103,6 +105,8 @@ export function _saveData(path, options) {
     }, options || {});
 
     return async (dispatch, getState) => {
+        await checkIsBusy();
+
         const processId = uuid();
         const state = getState();
 

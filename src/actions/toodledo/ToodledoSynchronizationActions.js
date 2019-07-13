@@ -3,7 +3,7 @@ import { Input, Modal, message } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid';
 import { updateSettings } from 'actions/SettingActions';
-import { updateProcess } from 'actions/ThreadActions';
+import { updateProcess, checkIsBusy } from 'actions/ThreadActions';
 import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';
 import { authorize, createToken, refreshToken } from 'actions/toodledo/ToodledoAuthorizationActions';
 import { synchronizeContexts } from 'actions/toodledo/ToodledoContextActions';
@@ -46,6 +46,8 @@ async function getAuthorizationCode() {
 
 export function synchronizeWithToodledo() {
     return async (dispatch, getState) => {
+        await dispatch(checkIsBusy());
+
         const processId = uuid();
 
         try {

@@ -1,4 +1,15 @@
 import uuid from 'uuid';
+import { isBusy } from 'selectors/ThreadSelectors';
+
+export function checkIsBusy() {
+    return async (dispatch, getState) => {
+        const state = getState();
+
+        if (isBusy(state)) {
+            throw Error('Another process is currently running');
+        }
+    };
+}
 
 export function setThreadManagerVisible(visible) {
     return async dispatch => {

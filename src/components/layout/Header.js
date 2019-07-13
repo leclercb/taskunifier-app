@@ -44,25 +44,6 @@ function Header(props) {
         props.setSelectedTaskIds([task.id]);
     };
 
-    const onCreateDummyTasks = () => {
-        const taskTemplate = props.taskTemplates.find(taskTemplate =>
-            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
-
-        for (let i = 0; i < 1000; i++) {
-            const task = {
-                title: 'Dummy Task ' + (i + 1),
-                completed: Math.random() >= 0.5,
-                star: Math.random() >= 0.5,
-                progress: Math.floor((Math.random() * 100) + 1),
-                importance: Math.floor((Math.random() * 12) + 1)
-            };
-
-            applyTaskTemplate(taskTemplate, task);
-
-            props.addTask(task);
-        }
-    };
-
     const onEditTask = () => {
         props.setTaskEditionManagerOptions({
             visible: true,
@@ -195,9 +176,6 @@ function Header(props) {
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('plus', 'Add Task', onAddTask)
-                : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                createButton('plus', 'Create Dummy Tasks', onCreateDummyTasks)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
