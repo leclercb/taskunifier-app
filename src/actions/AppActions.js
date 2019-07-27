@@ -9,7 +9,7 @@ import { cleanLocations, loadLocationsFromFile, saveLocationsToFile } from 'acti
 import { cleanNotes, loadNotesFromFile, saveNotesToFile } from 'actions/NoteActions';
 import { cleanNoteFields, loadNoteFieldsFromFile, saveNoteFieldsToFile } from 'actions/NoteFieldActions';
 import { cleanNoteFilters, loadNoteFiltersFromFile, saveNoteFiltersToFile } from 'actions/NoteFilterActions';
-import { updateProcess, checkIsBusy } from 'actions/ThreadActions';
+import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
 import { loadSettingsFromFile, saveSettingsToFile } from 'actions/SettingActions';
 import { cleanTasks, loadTasksFromFile, saveTasksToFile } from 'actions/TaskActions';
 import { cleanTaskFields, loadTaskFieldsFromFile, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
