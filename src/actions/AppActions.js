@@ -1,6 +1,6 @@
 import moment from 'moment';
 import uuid from 'uuid';
-import { createDirectory, getUserDataPath, join } from 'actions/ActionUtils';
+import { createDirectory, getUserDataPath } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, saveContactsToFile } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, saveContextsToFile } from 'actions/ContextActions';
 import { cleanFolders, loadFoldersFromFile, saveFoldersToFile } from 'actions/FolderActions';
@@ -28,6 +28,7 @@ import { getTasks } from 'selectors/TaskSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
+import { join } from 'utils/ElectronUtils';
 import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
 

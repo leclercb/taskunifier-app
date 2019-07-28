@@ -1,11 +1,15 @@
 import { Buffer } from 'buffer';
 
-const electron = window.require('electron');
-const crypto = electron.remote.require('crypto');
-
 const PUBLIC_KEY = process.env.REACT_APP_LICENSE_PUBLIC_KEY;
 
 export function verifyLicense(license) {
+    if (process.env.REACT_APP_MODE !== 'electron') {
+        return true;
+    }
+
+    const electron = window.require('electron');
+    const crypto = electron.remote.require('crypto');
+
     if (!license || license.length <= 512) {
         return null;
     }

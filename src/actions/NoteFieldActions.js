@@ -2,8 +2,10 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
-    loadObjectsFromFile, 
+    loadObjectsFromFile,
+    loadObjectsFromServer,
     saveObjectsToFile, 
+    saveObjectsToServer, 
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -14,6 +16,14 @@ export function loadNoteFieldsFromFile(file) {
 
 export function saveNoteFieldsToFile(file, data) {
     return saveObjectsToFile('noteFields', file, data);
+}
+
+export function loadNoteFieldsFromServer() {
+    return loadObjectsFromServer('noteFields');
+}
+
+export function saveNoteFieldsToServer(data) {
+    return saveObjectsToServer('noteFields', data);
 }
 
 export function setNoteFields(noteFields) {

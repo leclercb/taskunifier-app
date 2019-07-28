@@ -1,11 +1,13 @@
-import { 
-    addObject, 
-    cleanObjects, 
-    deleteObject, 
-    loadObjectsFromFile, 
-    saveObjectsToFile, 
-    setObjects, 
-    updateObject 
+import {
+    addObject,
+    cleanObjects,
+    deleteObject,
+    loadObjectsFromFile,
+    loadObjectsFromServer,
+    saveObjectsToFile,
+    saveObjectsToServer,
+    setObjects,
+    updateObject
 } from 'actions/ObjectActions';
 
 export function loadNoteFiltersFromFile(file) {
@@ -14,6 +16,14 @@ export function loadNoteFiltersFromFile(file) {
 
 export function saveNoteFiltersToFile(file, data) {
     return saveObjectsToFile('noteFilters', file, data);
+}
+
+export function loadNoteFiltersFromServer() {
+    return loadObjectsFromServer('noteFilters');
+}
+
+export function saveNoteFiltersToServer(data) {
+    return saveObjectsToServer('noteFilters', data);
 }
 
 export function setNoteFilters(noteFilters) {

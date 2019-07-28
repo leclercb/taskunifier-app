@@ -6,8 +6,6 @@ import { updateSettings } from 'actions/SettingActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getAppVersion } from 'utils/VersionUtils';
 
-const { ipcRenderer } = window.require('electron');
-
 export function authorize() {
     return async () => {
         const params = {
@@ -19,6 +17,7 @@ export function authorize() {
 
         const url = `https://api.toodledo.com/3/account/authorize.php?${qs.stringify(params)}`;
 
+        const { ipcRenderer } = window.require('electron');
         ipcRenderer.send('open-external', url);
     };
 }
@@ -27,6 +26,7 @@ export function createToken(code) {
     console.debug('createToken', code);
 
     return async (dispatch, getState) => {
+        const { ipcRenderer } = window.require('electron');
         const settings = getSettings(getState());
 
         const result = await sendRequest(
@@ -61,6 +61,7 @@ export function refreshToken() {
     console.debug('refreshToken');
 
     return async (dispatch, getState) => {
+        const { ipcRenderer } = window.require('electron');
         const settings = getSettings(getState());
 
         const result = await sendRequest(
