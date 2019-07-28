@@ -1,9 +1,10 @@
 import uuid from 'uuid';
 import moment from 'moment';
-import { deleteDirectory, getDirectories, getPathSeparator, join } from 'actions/ActionUtils';
+import { deleteDirectory, getDirectories, getPathSeparator } from 'actions/ActionUtils';
 import { _loadData, _saveData } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
+import { join } from 'utils/ElectronUtils';
 
 export function getBackupId(directory) {
     return directory.substr(directory.lastIndexOf(getPathSeparator()) + 1);

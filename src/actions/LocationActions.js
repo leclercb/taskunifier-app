@@ -2,8 +2,10 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
-    loadObjectsFromFile, 
+    loadObjectsFromFile,
+    loadObjectsFromServer,
     saveObjectsToFile, 
+    saveObjectsToServer, 
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -14,6 +16,14 @@ export function loadLocationsFromFile(file) {
 
 export function saveLocationsToFile(file, data) {
     return saveObjectsToFile('locations', file, data);
+}
+
+export function loadLocationsFromServer() {
+    return loadObjectsFromServer('locations');
+}
+
+export function saveLocationsToServer(data) {
+    return saveObjectsToServer('locations', data);
 }
 
 export function setLocations(locations) {

@@ -1,13 +1,12 @@
 import uuid from 'uuid';
-import { createDirectory, join, saveBufferToFile } from 'actions/ActionUtils';
+import { createDirectory, saveBufferToFile } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { delay } from 'utils/DelayUtils';
+import { join } from 'utils/ElectronUtils';
 import { printDocument, printTable } from 'utils/PrintUtils';
-
-const { ipcRenderer } = window.require('electron');
 
 export function printNotes(tasks) {
     return (dispatch, getState) => {
@@ -40,6 +39,7 @@ export function printTasks(tasks) {
 }
 
 async function printObjects(dispatch, state, fields, objects, fileName, documentTitle, processTitle) {
+    const { ipcRenderer } = window.require('electron');
     const processId = uuid();
     const path = join(getSettings(state).dataFolder, 'temp');
     const file = join(path, fileName);

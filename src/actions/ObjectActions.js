@@ -1,6 +1,11 @@
 import uuid from 'uuid';
 import moment from 'moment';
-import { loadFromFile, saveToFile } from 'actions/ActionUtils';
+import {
+    loadFromFile,
+    loadFromServer,
+    saveToFile,
+    saveToServer
+} from 'actions/ActionUtils';
 import Constants from 'constants/Constants';
 import { filterByStatic } from 'utils/CategoryUtils';
 
@@ -10,6 +15,14 @@ export function loadObjectsFromFile(property, file) {
 
 export function saveObjectsToFile(property, file, data) {
     return saveToFile(property, file, filterByStatic(data));
+}
+
+export function loadObjectsFromServer(property) {
+    return dispatch => dispatch(loadFromServer(property, data => dispatch(setObjects(property, data))));
+}
+
+export function saveObjectsToServer(property, data) {
+    return saveToServer(property, filterByStatic(data));
 }
 
 export function setObjects(property, objects) {

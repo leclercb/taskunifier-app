@@ -1,4 +1,9 @@
-import { loadFromFile, saveToFile } from 'actions/ActionUtils';
+import {
+    loadFromFile,
+    loadFromServer,
+    saveToFile,
+    saveToServer
+} from 'actions/ActionUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
     return dispatch => dispatch(loadFromFile('settings', file, data => dispatch(setSettings(data, core))));
@@ -6,6 +11,14 @@ export const loadSettingsFromFile = (file, core = false) => {
 
 export function saveSettingsToFile(file, data) {
     return saveToFile('settings', file, data);
+}
+
+export const loadSettingsFromServer = (core = false) => {
+    return dispatch => dispatch(loadFromServer('settings', data => dispatch(setSettings(data, core))));
+};
+
+export function saveSettingsToServer(data) {
+    return saveToServer('settings', data);
 }
 
 export const setSettings = (settings, core = false) => {
