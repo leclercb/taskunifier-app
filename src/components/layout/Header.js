@@ -5,6 +5,7 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
 import Spacer from 'components/common/Spacer';
+import UserMenu from 'components/layout/UserMenu';
 import withApp from 'containers/WithApp';
 import withNotes from 'containers/WithNotes';
 import withPrint from 'containers/WithPrint';
@@ -142,7 +143,7 @@ function Header(props) {
                 {props.pro ? (
                     <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                 ) : null}
-                <Logo size={40} />
+                {process.env.REACT_APP_MODE === 'electron' ? (<Logo size={40} />) : (<UserMenu />)}
             </React.Fragment>
         )}>
             <Button.Group style={{ marginRight: 50 }}>
@@ -215,6 +216,7 @@ function Header(props) {
 }
 
 Header.propTypes = {
+    session: PropTypes.object.isRequired,
     pro: PropTypes.bool.isRequired,
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,

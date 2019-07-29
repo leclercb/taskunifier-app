@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Logo(props) {
+function Avatar(props) {
     return (
         <img
             alt="Logo"
-            src="resources/images/logo_alt.png"
+            src="resources/images/avatar.png"
             style={{
                 ...props.style,
                 width: props.size,
@@ -14,9 +14,9 @@ function Logo(props) {
     );
 }
 
-Logo.propTypes = {
+Avatar.propTypes = {
     size: PropTypes.number,
     style: PropTypes.object
 };
 
-export default Logo;
+export default Avatar;
