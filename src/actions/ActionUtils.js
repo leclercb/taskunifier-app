@@ -2,6 +2,7 @@ import { Promise } from 'bluebird';
 import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
+import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
 import {
     exists,
@@ -77,7 +78,7 @@ export function loadFromServer(property, onData) {
                 settings,
                 {
                     method: 'GET',
-                    url: process.env.REACT_APP_API_URL + '/' + property
+                    url: `${getConfig().apiUrl}/${property}`
                 });
 
             dispatch(updateProcess({

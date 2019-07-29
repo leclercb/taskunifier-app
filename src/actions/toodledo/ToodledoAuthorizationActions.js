@@ -3,6 +3,7 @@ import qs from 'qs';
 import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
+import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getAppVersion } from 'utils/VersionUtils';
 
@@ -10,7 +11,7 @@ export function authorize() {
     return async () => {
         const params = {
             response_type: 'code',
-            client_id: process.env.REACT_APP_TOODLEDO_USERNAME,
+            client_id: getConfig().toodledo.username,
             state: uuid(),
             scope: 'basic tasks notes lists write'
         };
@@ -35,8 +36,8 @@ export function createToken(code) {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: process.env.REACT_APP_TOODLEDO_USERNAME,
-                    password: process.env.REACT_APP_TOODLEDO_PASSWORD
+                    username: getConfig().toodledo.username,
+                    password: getConfig().toodledo.password
                 },
                 data: {
                     grant_type: 'authorization_code',
@@ -70,8 +71,8 @@ export function refreshToken() {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: process.env.REACT_APP_TOODLEDO_USERNAME,
-                    password: process.env.REACT_APP_TOODLEDO_PASSWORD
+                    username: getConfig().toodledo.username,
+                    password: getConfig().toodledo.password
                 },
                 data: {
                     grant_type: 'refresh_token',

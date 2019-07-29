@@ -1,6 +1,7 @@
 import { Buffer } from 'buffer';
+import { getConfig } from 'config/Config';
 
-const PUBLIC_KEY = process.env.REACT_APP_LICENSE_PUBLIC_KEY;
+const PUBLIC_KEY = getConfig().license.publicKey;
 
 export function verifyLicense(license) {
     if (process.env.REACT_APP_MODE !== 'electron') {
