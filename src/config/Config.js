@@ -1,6 +1,6 @@
 const config = {
     local: {
-        apiUrl: 'http://localhost:3000',
+        apiUrl: 'http://localhost:2000',
         authUrl: 'http://localhost:2300',
         auth: {
             region: 'eu-west-1',

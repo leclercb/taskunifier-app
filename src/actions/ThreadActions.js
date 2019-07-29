@@ -6,7 +6,7 @@ export function checkIsBusy() {
         const state = getState();
 
         if (isBusy(state)) {
-            throw Error('Another process is currently running');
+            // TODO throw Error('Another process is currently running');
         }
     };
 }

@@ -74,11 +74,12 @@ export function loadFromServer(property, onData) {
         }));
 
         try {
-            const data = await sendRequest(
+            const result = await sendRequest(
                 settings,
                 {
+                    withCredentials: true,
                     method: 'GET',
-                    url: `${getConfig().apiUrl}/${property}`
+                    url: `${getConfig().apiUrl}/v1/${property}`
                 });
 
             dispatch(updateProcess({
@@ -86,7 +87,9 @@ export function loadFromServer(property, onData) {
                 state: 'COMPLETED'
             }));
 
-            await onData(data);
+            result.data.forEach(object => object.state = 'LOADED');
+
+            await onData(result.data);
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
