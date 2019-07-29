@@ -21,9 +21,7 @@ import 'components/common/table/VirtualizedTable.css';
 
 function App(props) {
     useEffect(() => {
-        if (process.env.REACT_APP_MODE === 'electron') {
-            props.loadData();
-        }
+        props.loadData();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {

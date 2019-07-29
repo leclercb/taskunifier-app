@@ -1,7 +1,7 @@
 import uuid from 'uuid';
 import moment from 'moment';
 import { deleteDirectory, getDirectories, getPathSeparator } from 'actions/ActionUtils';
-import { _loadData, _saveData } from 'actions/AppActions';
+import { _loadDataFromFile, _saveDataToFile } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { join } from 'utils/ElectronUtils';
@@ -20,14 +20,14 @@ export async function getBackups(settings) {
 export function restoreBackup(backupId) {
     return (dispatch, getState) => {
         const path = join(getState().settings.dataFolder, 'backups', backupId);
-        return dispatch(_loadData(path, { skipSettings: true }));
+        return dispatch(_loadDataFromFile(path, { skipSettings: true }));
     };
 }
 
 export function backupData() {
     return async (dispatch, getState) => {
         const path = join(getState().settings.dataFolder, 'backups', moment().toISOString());
-        await dispatch(_saveData(path, { clean: false, message: 'Backup database' }));
+        await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database' }));
         await dispatch(cleanBackups());
     };
 }

@@ -43,6 +43,10 @@ export function getSettings() {
 }
 
 export function getCategorySettings(category, options = {}) {
+    if (!category) {
+        return [];
+    }
+
     const settings = [...category.settings];
 
     const { noteFields, taskFields } = options;
@@ -64,6 +68,7 @@ export function getCategories() {
             id: 'general',
             title: 'General',
             icon: 'home',
+            mode: 'electron',
             settings: [
                 {
                     id: 'checkVersion',
@@ -89,7 +94,8 @@ export function getCategories() {
                             });
                         }
                     },
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'dataFolder',
@@ -97,7 +103,8 @@ export function getCategories() {
                     type: 'text',
                     value: getUserDataPath(),
                     editable: false,
-                    core: true
+                    core: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'changeDataFolder',
@@ -136,35 +143,40 @@ export function getCategories() {
                         });
                     },
                     editable: true,
-                    core: true
+                    core: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'automaticSave',
                     title: 'Enable automatic save',
                     type: 'boolean',
                     value: true,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'automaticSaveInterval',
                     title: 'Save interval in minutes',
                     type: 'number',
                     value: 15,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'lastAutomaticSave',
                     title: 'Last automatic save',
                     type: 'dateTime',
                     value: moment().toISOString(),
-                    editable: false
+                    editable: false,
+                    mode: 'electron'
                 },
                 {
                     id: 'confirmBeforeClosing',
                     title: 'Confirm before closing',
                     type: 'boolean',
                     value: false,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 }
             ]
         },
@@ -172,41 +184,47 @@ export function getCategories() {
             id: 'proxy',
             title: 'Proxy',
             icon: 'network-wired',
+            mode: 'electron',
             settings: [
                 {
                     id: 'proxyEnabled',
                     title: 'Proxy enabled',
                     type: 'boolean',
                     value: false,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'proxyHost',
                     title: 'Proxy host',
                     type: 'text',
                     value: '',
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'proxyPort',
                     title: 'Proxy port',
                     type: 'number',
                     value: 0,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'proxyUsername',
                     title: 'Proxy username',
                     type: 'text',
                     value: '',
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'proxyPassword',
                     title: 'Proxy password',
                     type: 'password',
                     value: '',
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'testConnection',
@@ -225,7 +243,8 @@ export function getCategories() {
                             });
                         }
                     },
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 }
             ]
         },
@@ -233,13 +252,15 @@ export function getCategories() {
             id: 'license',
             title: 'License',
             icon: 'key',
+            mode: 'electron',
             settings: [
                 {
                     id: 'license',
                     title: 'License',
                     type: 'textarea',
                     value: null,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'licenseIsValid',
@@ -254,7 +275,8 @@ export function getCategories() {
                             return (<ProLockedMessage />);
                         }
                     },
-                    editable: false
+                    editable: false,
+                    mode: 'electron'
                 }
             ]
         },
@@ -349,34 +371,39 @@ export function getCategories() {
             id: 'backup',
             title: 'Backup',
             icon: 'box-open',
+            mode: 'electron',
             settings: [
                 {
                     id: 'automaticBackup',
                     title: 'Enable automatic backup',
                     type: 'boolean',
                     value: true,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'maxBackups',
                     title: 'Maximum number of backups to keep',
                     type: 'number',
                     value: 100,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'automaticBackupInterval',
                     title: 'Backup interval in minutes',
                     type: 'number',
                     value: 120,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'lastAutomaticBackup',
                     title: 'Last automatic backup',
                     type: 'dateTime',
                     value: moment().toISOString(),
-                    editable: false
+                    editable: false,
+                    mode: 'electron'
                 },
                 {
                     id: 'restoreFromBackup',
@@ -403,7 +430,8 @@ export function getCategories() {
                             }
                         });
                     },
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 }
             ]
         },
@@ -411,27 +439,31 @@ export function getCategories() {
             id: 'synchronization',
             title: 'Synchronization',
             icon: 'sync-alt',
+            mode: 'electron',
             settings: [
                 {
                     id: 'automaticSynchronization',
                     title: 'Enable automatic synchronization',
                     type: 'boolean',
                     value: false,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'automaticSynchronizationInterval',
                     title: 'Synchronization interval in minutes',
                     type: 'number',
                     value: 60,
-                    editable: true
+                    editable: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'lastAutomaticSynchronization',
                     title: 'Last automatic synchronization',
                     type: 'dateTime',
                     value: moment().toISOString(),
-                    editable: false
+                    editable: false,
+                    mode: 'electron'
                 }
             ]
         },
@@ -932,7 +964,8 @@ export function getCategories() {
                     value: 1024,
                     editable: false,
                     visible: false,
-                    core: true
+                    core: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'windowSizeHeight',
@@ -941,7 +974,8 @@ export function getCategories() {
                     value: 768,
                     editable: false,
                     visible: false,
-                    core: true
+                    core: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'windowPositionX',
@@ -950,7 +984,8 @@ export function getCategories() {
                     value: null,
                     editable: false,
                     visible: false,
-                    core: true
+                    core: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'windowPositionY',
@@ -959,7 +994,8 @@ export function getCategories() {
                     value: null,
                     editable: false,
                     visible: false,
-                    core: true
+                    core: true,
+                    mode: 'electron'
                 },
                 {
                     id: 'noteViewSplitPaneSize',

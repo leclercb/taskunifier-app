@@ -15,14 +15,15 @@ import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/F
 function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
 
-    const categories = getCategories();
+    const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
     const category = categories.find(category => category.id === selectedCategoryId);
     const settings = getCategorySettings(
         category,
         {
             noteFields: props.noteFields,
             taskFields: props.taskFields
-        }).filter(setting => setting.visible !== false);
+        }).filter(setting =>
+            setting.visible !== false && (!setting.mode || setting.mode === process.env.REACT_APP_MODE));
 
     const getSettingValue = setting => {
         if (setting.id in props.settings) {
