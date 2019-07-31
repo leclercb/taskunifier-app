@@ -35,7 +35,7 @@ export function getDefaultTailFormItemLayout() {
 }
 
 export function onCommitForm(form, object, updateObject) {
-    return () => {
+    setTimeout(() => {
         form.validateFields((error, values) => {
             if (error) {
                 return;
@@ -43,7 +43,7 @@ export function onCommitForm(form, object, updateObject) {
 
             updateObject(merge({ ...object }, values));
         });
-    };
+    });
 }
 
 export function onFieldChangeForObjectUpdates(fields, object, updateObject, assign = false) {
