@@ -5,7 +5,6 @@ import {
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    saveObjectsToServer,
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveTaskFiltersToFile(file, data) {
 
 export function loadTaskFiltersFromServer() {
     return loadObjectsFromServer('taskFilters');
-}
-
-export function saveTaskFiltersToServer(data) {
-    return saveObjectsToServer('taskFilters', data);
 }
 
 export function setTaskFilters(taskFilters) {

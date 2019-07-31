@@ -5,7 +5,6 @@ import {
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    saveObjectsToServer,
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveNoteFiltersToFile(file, data) {
 
 export function loadNoteFiltersFromServer() {
     return loadObjectsFromServer('noteFilters');
-}
-
-export function saveNoteFiltersToServer(data) {
-    return saveObjectsToServer('noteFilters', data);
 }
 
 export function setNoteFilters(noteFilters) {

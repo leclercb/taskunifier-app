@@ -4,8 +4,7 @@ import {
     deleteObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
-    saveObjectsToFile, 
-    saveObjectsToServer, 
+    saveObjectsToFile,
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveNotesToFile(file, data) {
 
 export function loadNotesFromServer() {
     return loadObjectsFromServer('notes');
-}
-
-export function saveNotesToServer(data) {
-    return saveObjectsToServer('notes', data);
 }
 
 export function setNotes(notes) {

@@ -4,8 +4,7 @@ import {
     deleteObject, 
     loadObjectsFromFile,
     loadObjectsFromServer,
-    saveObjectsToFile, 
-    saveObjectsToServer, 
+    saveObjectsToFile,
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveFoldersToFile(file, data) {
 
 export function loadFoldersFromServer() {
     return loadObjectsFromServer('folders');
-}
-
-export function saveFoldersToServer(data) {
-    return saveObjectsToServer('folders', data);
 }
 
 export function setFolders(folders) {

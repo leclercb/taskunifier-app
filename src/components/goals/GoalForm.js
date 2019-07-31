@@ -5,7 +5,7 @@ import { getGoalFields } from 'data/DataGoalFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function GoalForm(props) {
     const fields = getGoalFields();
@@ -30,7 +30,13 @@ function GoalForm(props) {
                             valuePropName: getValuePropNameForType(field.type),
                             initialValue: props.goal[field.id]
                         })(
-                            getInputForType(field.type, field.options, fieldProps)
+                            getInputForType(
+                                field.type,
+                                field.options,
+                                {
+                                    ...fieldProps,
+                                    onCommit: () => onCommitForm(props.form, props.goal, props.updateGoal)
+                                })
                         )}
                     </Form.Item>
                 );
@@ -45,7 +51,4 @@ GoalForm.propTypes = {
     updateGoal: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'goal',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.goal, props.updateGoal)
-})(GoalForm);
+export default Form.create({ name: 'goal' })(GoalForm);

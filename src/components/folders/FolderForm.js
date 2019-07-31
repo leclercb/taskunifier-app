@@ -5,7 +5,7 @@ import { getFolderFields } from 'data/DataFolderFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function FolderForm(props) {
     const fields = getFolderFields();
@@ -22,7 +22,12 @@ function FolderForm(props) {
                         valuePropName: getValuePropNameForType(field.type),
                         initialValue: props.folder[field.id]
                     })(
-                        getInputForType(field.type, field.options)
+                        getInputForType(
+                            field.type,
+                            field.options,
+                            {
+                                onCommit: () => onCommitForm(props.form, props.folder, props.updateFolder)
+                            })
                     )}
                 </Form.Item>
             ))}
@@ -36,7 +41,4 @@ FolderForm.propTypes = {
     updateFolder: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'folder',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.folder, props.updateFolder)
-})(FolderForm);
+export default Form.create({ name: 'folder' })(FolderForm);

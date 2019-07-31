@@ -4,8 +4,7 @@ import {
     deleteObject, 
     loadObjectsFromFile,
     loadObjectsFromServer,
-    saveObjectsToFile, 
-    saveObjectsToServer, 
+    saveObjectsToFile,
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveGoalsToFile(file, data) {
 
 export function loadGoalsFromServer() {
     return loadObjectsFromServer('goals');
-}
-
-export function saveGoalsToServer(data) {
-    return saveObjectsToServer('goals', data);
 }
 
 export function setGoals(goals) {

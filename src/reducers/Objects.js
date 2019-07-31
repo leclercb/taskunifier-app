@@ -10,6 +10,9 @@ const Objects = (property, onUpdate = null) => (state = [], action) => {
         case 'SET_OBJECTS': {
             return [...(action.objects || [])];
         }
+        case 'CHANGE_ID': {
+            return changeId(state, action);
+        }
         case 'ADD_OBJECT': {
             return addObject(state, action);
         }
@@ -65,6 +68,31 @@ const Objects = (property, onUpdate = null) => (state = [], action) => {
         default:
             return state;
     }
+};
+
+const changeId = (state, action) => {
+    let newState = [...state];
+
+    const index = newState.findIndex(object => object.id === action.oldId);
+
+    if (index < 0) {
+        throw Error(`The object with id "${action.oldId}" doesn't exist`);
+    }
+
+    if (newState.findIndex(object => object.id === action.newId) >= 0) {
+        throw Error(`An object with id "${action.newId}" already exists`);
+    }
+
+    const oldObject = newState[index];
+
+    const updatedObject = {
+        ...oldObject,
+        id: action.newId
+    };
+
+    newState[index] = updatedObject;
+
+    return newState;
 };
 
 const addObject = (state, action) => {

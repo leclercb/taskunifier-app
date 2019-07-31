@@ -1,5 +1,8 @@
 ## Todo List
 
+* Remove onFieldChangeForObjectUpdates
+* Remove CORS OPTIONS requests
+
 * Sign binaries
 * Synchronize
 * Import/Export (+ from TaskUnifier Classic)
@@ -9,7 +12,6 @@
 
 ## Future Features
 
-* Use "mention" in notes
 * Sub-categories (children)
 * Group by
 * Rules

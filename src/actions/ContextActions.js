@@ -4,8 +4,7 @@ import {
     deleteObject, 
     loadObjectsFromFile,
     loadObjectsFromServer,
-    saveObjectsToFile, 
-    saveObjectsToServer, 
+    saveObjectsToFile,
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveContextsToFile(file, data) {
 
 export function loadContextsFromServer() {
     return loadObjectsFromServer('contexts');
-}
-
-export function saveContextsToServer(data) {
-    return saveObjectsToServer('contexts', data);
 }
 
 export function setContexts(contexts) {

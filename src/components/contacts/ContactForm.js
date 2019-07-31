@@ -5,7 +5,7 @@ import { getContactFields } from 'data/DataContactFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { ContactPropType } from 'proptypes/ContactPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function ContactForm(props) {
     const fields = getContactFields();
@@ -22,7 +22,12 @@ function ContactForm(props) {
                         valuePropName: getValuePropNameForType(field.type),
                         initialValue: props.contact[field.id]
                     })(
-                        getInputForType(field.type, field.options)
+                        getInputForType(
+                            field.type,
+                            field.options,
+                            {
+                                onCommit: () => onCommitForm(props.form, props.contact, props.updateContact)
+                            })
                     )}
                 </Form.Item>
             ))}
@@ -36,7 +41,4 @@ ContactForm.propTypes = {
     updateContact: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'contact',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.contact, props.updateContact)
-})(ContactForm);
+export default Form.create({ name: 'contact' })(ContactForm);

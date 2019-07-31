@@ -2,7 +2,7 @@ import { Form } from 'antd';
 import PropTypes from 'prop-types';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { getInputForType } from 'data/DataFieldComponents';
-import { getValuePropNameForType, isCommitOnChangeForType } from 'data/DataFieldTypes';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 
 function EditableCell(props) {
     const onChange = event => {
@@ -22,7 +22,7 @@ function EditableCell(props) {
     const inputProps = {
         ref: props.inputRef,
         fieldMode: 'table',
-        onCommit: onChange
+        onCommit: () => setTimeout(() => onChange())
     };
 
     if (props.editing) {
@@ -50,11 +50,4 @@ EditableCell.propTypes = {
     toggleEdit: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    onValuesChange: (props, changedValues, allValues) => {
-        if (isCommitOnChangeForType(props.field.type)) {
-            props.onChange(allValues);
-            props.toggleEdit();
-        }
-    }
-})(EditableCell);
+export default Form.create()(EditableCell);

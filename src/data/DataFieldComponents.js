@@ -98,6 +98,7 @@ export function getFieldComponents(type, options) {
                 render: value => <Checkbox checked={!!value} />,
                 input: props => (
                     <Checkbox
+                        onChange={props.onCommit}
                         data-prevent-default={true}
                         {...removeExtraProps(props)} />
                 )
@@ -110,7 +111,7 @@ export function getFieldComponents(type, options) {
                 render: value => <ColorPicker color={value} />,
                 input: props => (
                     <ColorPicker
-                        onBlur={props.onCommit}
+                        onClose={props.onCommit}
                         {...removeExtraProps(props)} />
                 )
             };
@@ -632,7 +633,9 @@ export function getFieldComponents(type, options) {
             configuration = {
                 render: value => <StarCheckbox checked={!!value} />,
                 input: props => (
-                    <StarCheckbox {...removeExtraProps(props)} />
+                    <StarCheckbox
+                        onChange={props.onCommit}
+                        {...removeExtraProps(props)} />
                 )
             };
 

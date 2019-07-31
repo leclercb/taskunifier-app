@@ -5,7 +5,7 @@ import { getContextFields } from 'data/DataContextFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { ContextPropType } from 'proptypes/ContextPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function ContextForm(props) {
     const fields = getContextFields();
@@ -22,7 +22,12 @@ function ContextForm(props) {
                         valuePropName: getValuePropNameForType(field.type),
                         initialValue: props.context[field.id]
                     })(
-                        getInputForType(field.type, field.options)
+                        getInputForType(
+                            field.type,
+                            field.options,
+                            {
+                                onCommit: () => onCommitForm(props.form, props.context, props.updateContext)
+                            })
                     )}
                 </Form.Item>
             ))}
@@ -36,7 +41,4 @@ ContextForm.propTypes = {
     updateContext: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'context',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.context, props.updateContext)
-})(ContextForm);
+export default Form.create({ name: 'context' })(ContextForm);

@@ -5,7 +5,6 @@ import {
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    saveObjectsToServer,
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
@@ -20,10 +19,6 @@ export function saveTaskFieldsToFile(file, data) {
 
 export function loadTaskFieldsFromServer() {
     return loadObjectsFromServer('taskFields');
-}
-
-export function saveTaskFieldsToServer(data) {
-    return saveObjectsToServer('taskFields', data);
 }
 
 export function setTaskFields(taskFields) {

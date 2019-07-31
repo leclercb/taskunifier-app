@@ -7,10 +7,14 @@ import {
     saveToServer
 } from 'actions/ActionUtils';
 import Constants from 'constants/Constants';
+import { getObjectById } from 'selectors/ObjectSelectors';
 import { filterByStatic } from 'utils/CategoryUtils';
 
 export function loadObjectsFromFile(property, file) {
-    return dispatch => dispatch(loadFromFile(property, file, data => dispatch(setObjects(property, data))));
+    return async dispatch => {
+        const data = await dispatch(loadFromFile(property, file));
+        await dispatch(setObjects(property, data));
+    };
 }
 
 export function saveObjectsToFile(property, file, data) {
@@ -18,19 +22,33 @@ export function saveObjectsToFile(property, file, data) {
 }
 
 export function loadObjectsFromServer(property) {
-    return dispatch => dispatch(loadFromServer(property, data => dispatch(setObjects(property, data))));
+    return async dispatch => {
+        const data = await dispatch(loadFromServer(property));
+        await dispatch(setObjects(property, data));
+    };
 }
 
-export function saveObjectsToServer(property, data) {
-    return saveToServer(property, filterByStatic(data));
+export function saveObjectToServer(property, oldObject, newObject) {
+    return saveToServer(property, oldObject, newObject);
 }
 
 export function setObjects(property, objects) {
     return async dispatch => {
-        dispatch({
+        await dispatch({
             type: 'SET_OBJECTS',
             property,
             objects
+        });
+    };
+}
+
+export function changeId(property, oldId, newId) {
+    return async dispatch => {
+        await dispatch({
+            type: 'CHANGE_ID',
+            property,
+            oldId,
+            newId
         });
     };
 }
@@ -39,7 +57,7 @@ export function addObject(property, object, options = {}) {
     return async (dispatch, getState) => {
         const id = uuid();
 
-        dispatch({
+        await dispatch({
             type: 'ADD_OBJECT',
             property,
             generateId: () => uuid(),
@@ -52,13 +70,19 @@ export function addObject(property, object, options = {}) {
             options
         });
 
-        return getState()[property].find(item => item.id === id);
+        const newObject = getObjectById(getState(), property, id);
+        const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
+        await dispatch(changeId(property, newObject.id, createdObject.id));
+
+        return newObject;
     };
 }
 
 export function updateObject(property, object, options = {}) {
     return async (dispatch, getState) => {
-        dispatch({
+        const oldObject = getObjectById(getState(), property, object.id);
+
+        await dispatch({
             type: 'UPDATE_OBJECT',
             property,
             generateId: () => uuid(),
@@ -67,13 +91,16 @@ export function updateObject(property, object, options = {}) {
             options
         });
 
-        return getState()[property].find(item => item.id === object.id);
+        const newObject = getObjectById(getState(), property, object.id);
+        await dispatch(saveObjectToServer(property, oldObject, newObject));
+
+        return newObject;
     };
 }
 
 export function deleteObject(property, objectId, options = {}) {
     return async dispatch => {
-        dispatch({
+        await dispatch({
             type: 'DELETE_OBJECT',
             property,
             generateId: () => uuid(),
@@ -86,7 +113,7 @@ export function deleteObject(property, objectId, options = {}) {
 
 export function cleanObjects(property) {
     return async dispatch => {
-        dispatch({
+        await dispatch({
             type: 'CLEAN_OBJECTS',
             property
         });

@@ -6,7 +6,10 @@ import {
 } from 'actions/ActionUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
-    return dispatch => dispatch(loadFromFile('settings', file, data => dispatch(setSettings(data, core))));
+    return async dispatch => {
+        const data = await dispatch(loadFromFile('settings', file));
+        await dispatch(setSettings(data, core));
+    };
 };
 
 export function saveSettingsToFile(file, data) {
@@ -14,11 +17,14 @@ export function saveSettingsToFile(file, data) {
 }
 
 export const loadSettingsFromServer = (core = false) => {
-    return dispatch => dispatch(loadFromServer('settings', data => dispatch(setSettings(data, core))));
+    return async dispatch => {
+        const data = await dispatch(loadFromServer('settings'));
+        await dispatch(setSettings(data, core));
+    };
 };
 
-export function saveSettingsToServer(data) {
-    return saveToServer('settings', data);
+export function saveSettingsToServer(oldObject, newObject) {
+    return saveToServer('settings', oldObject, newObject);
 }
 
 export const setSettings = (settings, core = false) => {

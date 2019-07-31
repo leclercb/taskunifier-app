@@ -17,7 +17,7 @@ import {
     writeFile
 } from 'utils/ElectronUtils';
 
-export function loadFromFile(property, file, onData) {
+export function loadFromFile(property, file) {
     return async dispatch => {
         const processId = uuid();
 
@@ -35,9 +35,7 @@ export function loadFromFile(property, file, onData) {
                 state: 'COMPLETED'
             }));
 
-            await onData(null);
-
-            return;
+            return null;
         }
 
         try {
@@ -48,7 +46,7 @@ export function loadFromFile(property, file, onData) {
                 state: 'COMPLETED'
             }));
 
-            await onData(JSON.parse(data));
+            return JSON.parse(data);
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
@@ -61,7 +59,7 @@ export function loadFromFile(property, file, onData) {
     };
 }
 
-export function loadFromServer(property, onData) {
+export function loadFromServer(property) {
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -79,7 +77,8 @@ export function loadFromServer(property, onData) {
                 {
                     withCredentials: true,
                     method: 'GET',
-                    url: `${getConfig().apiUrl}/v1/${property}`
+                    url: `${getConfig().apiUrl}/v1/${property}`,
+                    responseType: 'json'
                 });
 
             dispatch(updateProcess({
@@ -89,7 +88,7 @@ export function loadFromServer(property, onData) {
 
             result.data.forEach(object => object.state = 'LOADED');
 
-            await onData(result.data);
+            return result.data;
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
@@ -131,8 +130,45 @@ export function saveToFile(property, file, data) {
     };
 }
 
-export function saveToServer(property, data) {
-    throw new Error('Unsupported Operation');
+export function saveToServer(property, oldObject, newObject) {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const settings = getSettings(state);
+        const processId = uuid();
+
+        dispatch(updateProcess({
+            id: processId,
+            state: 'RUNNING',
+            title: `Save "${newObject.title} of type "${property}" to server`
+        }));
+
+        try {
+            const result = await sendRequest(
+                settings,
+                {
+                    withCredentials: true,
+                    method: oldObject ? 'PUT' : 'POST',
+                    url: `${getConfig().apiUrl}/v1/${property}` + (oldObject ? `/${oldObject.id}` : ''),
+                    data: newObject,
+                    responseType: 'json'
+                });
+
+            dispatch(updateProcess({
+                id: processId,
+                state: 'COMPLETED'
+            }));
+
+            return result.data;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                error: error.toString()
+            }));
+
+            throw error;
+        }
+    };
 }
 
 export async function saveBufferToFile(file, buffer) {
