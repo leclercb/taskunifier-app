@@ -18,6 +18,7 @@ export const TaskPropType = PropTypes.shape({
     status: PropTypes.string,
     startDate: PropTypes.string,
     dueDate: PropTypes.string,
+    completionDate: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string.isRequired),
     context: PropTypes.string,
     folder: PropTypes.string,

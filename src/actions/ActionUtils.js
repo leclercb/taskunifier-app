@@ -136,12 +136,6 @@ export function saveToServer(property, oldObject, newObject) {
         const settings = getSettings(state);
         const processId = uuid();
 
-        dispatch(updateProcess({
-            id: processId,
-            state: 'RUNNING',
-            title: `Save "${newObject.title} of type "${property}" to server`
-        }));
-
         try {
             const result = await sendRequest(
                 settings,
@@ -153,16 +147,12 @@ export function saveToServer(property, oldObject, newObject) {
                     responseType: 'json'
                 });
 
-            dispatch(updateProcess({
-                id: processId,
-                state: 'COMPLETED'
-            }));
-
             return result.data;
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
+                title: `Save "${newObject.title}" of type "${property}" to server`,
                 error: error.toString()
             }));
 
