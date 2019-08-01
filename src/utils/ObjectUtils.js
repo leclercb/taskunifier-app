@@ -1,8 +1,10 @@
+import { transform, isEqual, isObject } from 'lodash';
+
 export function equals(object1, object2) {
     return JSON.stringify(object1) === JSON.stringify(object2);
 }
 
-export function isObject(item) {
+export function isPureObject(item) {
     return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
@@ -22,14 +24,14 @@ export function clone(o) {
 }
 
 export function merge(target, source) {
-    if (!isObject(source) || !isObject(target)) {
+    if (!isPureObject(source) || !isPureObject(target)) {
         return source;
     }
 
     const output = Object.assign({}, target);
 
     Object.keys(source).forEach(key => {
-        if (isObject(source[key])) {
+        if (isPureObject(source[key])) {
             if (!(key in target)) {
                 Object.assign(output, { [key]: source[key] });
             } else {
@@ -92,6 +94,14 @@ export function setValue(object, path, value, safe = false) {
             throw e;
         }
     }
+}
+
+export function diff(object, base) {
+    return transform(object, (result, value, key) => {
+        if (!isEqual(value, base[key])) {
+            result[key] = isObject(value) && isObject(base[key]) ? diff(value, base[key]) : value;
+        }
+    });
 }
 
 export function removePrivateKeys(object) {

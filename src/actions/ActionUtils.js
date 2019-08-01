@@ -16,6 +16,7 @@ import {
     sep,
     writeFile
 } from 'utils/ElectronUtils';
+import { diff } from 'utils/ObjectUtils';
 
 export function loadFromFile(property, file) {
     return async dispatch => {
@@ -135,6 +136,26 @@ export function saveToServer(property, oldObject, newObject) {
         const state = getState();
         const settings = getSettings(state);
         const processId = uuid();
+
+        newObject = { ...newObject };
+
+        delete newObject.refIds;
+        delete newObject.state;
+        delete newObject.creationDate;
+        delete newObject.updateDate;
+
+        if (oldObject) {
+            oldObject = { ...oldObject };
+
+            delete oldObject.refIds;
+            delete oldObject.state;
+            delete oldObject.creationDate;
+            delete oldObject.updateDate;
+
+            newObject = diff(newObject, oldObject);
+        } else {
+            delete newObject.id;
+        }
 
         try {
             const result = await sendRequest(

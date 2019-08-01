@@ -207,10 +207,16 @@ function Header(props) {
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
             {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
             {createButton('folder-open', 'Load', onLoad)}
-            {createButton('save', 'Save', onSave)}
-            {createButton('box-open', 'Backup', onBackup)}
+            {process.env.REACT_APP_MODE === 'electron' ?
+                createButton('save', 'Save', onSave)
+                : null}
+            {process.env.REACT_APP_MODE === 'electron' ?
+                createButton('box-open', 'Backup', onBackup)
+                : null}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
-            {createButton('sync-alt', 'Synchronization', onSynchronize)}
+            {process.env.REACT_APP_MODE === 'electron' ?
+                createButton('sync-alt', 'Synchronization', onSynchronize)
+                : null}
         </LeftRight>
     );
 }
