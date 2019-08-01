@@ -37,7 +37,7 @@ export function login(checkOnly = false) {
             const isAuthenticated = !!session;
 
             if (!checkOnly && !isAuthenticated) {
-                window.location.href = getConfig().authUrl + '?returnTo=' + encodeURI(window.location.href);
+                window.location.href = getConfig().authUrl + '?returnTo=' + encodeURIComponent(window.location.href);
             }
 
             if (isAuthenticated) {
