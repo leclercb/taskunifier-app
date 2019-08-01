@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert, Button, Modal, Spin } from 'antd';
 import PropTypes from 'prop-types';
+import Logo from 'components/common/Logo';
 import withSession from 'containers/WithSession';
 
 function PrivateComponent({ session, login, logout, userRole, children }) {
@@ -16,7 +17,19 @@ function PrivateComponent({ session, login, logout, userRole, children }) {
 
     if (!session.authenticated) {
         return (
-            <Spin />
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                textAlign: 'center'
+            }}>
+                <Logo size={120} />
+                <br />
+                <br />
+                <br />
+                <Spin size="large" />
+            </div>
         );
     }
 

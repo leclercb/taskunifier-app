@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function Avatar(props) {
     return (
         <img
-            alt="Logo"
+            alt="Avatar"
             src="resources/images/avatar.png"
             style={{
                 ...props.style,

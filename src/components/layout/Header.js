@@ -143,7 +143,7 @@ function Header(props) {
                 {props.pro ? (
                     <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                 ) : null}
-                {process.env.REACT_APP_MODE === 'electron' ? (<Logo size={40} />) : (<UserMenu />)}
+                {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}
             </React.Fragment>
         )}>
             <Button.Group style={{ marginRight: 50 }}>
