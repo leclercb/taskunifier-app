@@ -1,6 +1,6 @@
 # TaskUnifier
 
-![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiTkg3ZVQvNW9wVGQvT3hteTFWNkYybjBnZEdnQ0t0N2QrRE5qQTlSaFB4SGUxazc0NkJpK0VNOGdKRVZxdTQ1bXdoby9hMUlwVS9jdTNXRWE3K3p6YUZnPSIsIml2UGFyYW1ldGVyU3BlYyI6ImkyMnBOOUhKMVNKRmJmWUsiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+[![Build Status](https://travis-ci.com/leclercb/taskunifier-app.svg?branch=master)](https://travis-ci.com/leclercb/taskunifier-app)
 
 TaskUnifier a task management software based on the GTD methodology.
 
