@@ -1,8 +1,6 @@
 ## Todo List
 
 * Remove onFieldChangeForObjectUpdates
-* Remove CORS OPTIONS requests
-
 * Sign binaries
 * Synchronize
 * Import/Export (+ from TaskUnifier Classic)
