@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10  
+    commands:
+      - echo Branch $CODEBUILD_WEBHOOK_TRIGGER
+      - echo Installing NPM dependencies...
+      - yarn
+  pre_build:
+    commands:
+      - echo Run unit tests...
+      - yarn run test
+  build:
+    commands:
+      - echo Building on `date`
+      - yarn run build
+  post_build:
+    commands:
+      - echo Build completed on `date`
