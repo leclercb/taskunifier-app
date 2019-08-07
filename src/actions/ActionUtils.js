@@ -60,7 +60,7 @@ export function loadFromFile(property, file) {
     };
 }
 
-export function loadFromServer(property) {
+export function loadFromServer(property, options = { skipSetLoaded: false }) {
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -87,7 +87,9 @@ export function loadFromServer(property) {
                 state: 'COMPLETED'
             }));
 
-            result.data.forEach(object => object.state = 'LOADED');
+            if (!options || options.skipSetLoaded !== true) {
+                result.data.forEach(object => object.state = 'LOADED');
+            }
 
             return result.data;
         } catch (error) {
