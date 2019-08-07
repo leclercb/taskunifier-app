@@ -222,7 +222,6 @@ function Header(props) {
 }
 
 Header.propTypes = {
-    session: PropTypes.object.isRequired,
     pro: PropTypes.bool.isRequired,
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,

@@ -24,7 +24,7 @@ export function exists(path) {
 }
 
 export function join() {
-    return path.join(arguments);
+    return path.join(...arguments);
 }
 
 export function lstat(path) {
