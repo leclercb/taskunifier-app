@@ -1,6 +1,7 @@
 import uuid from 'uuid';
 import moment from 'moment';
 import {
+    deleteFromServer,
     loadFromFile,
     loadFromServer,
     saveToFile,
@@ -30,6 +31,10 @@ export function loadObjectsFromServer(property) {
 
 export function saveObjectToServer(property, oldObject, newObject) {
     return saveToServer(property, oldObject, newObject);
+}
+
+export function deleteObjectFromServer(property, objectId) {
+    return deleteFromServer(property, objectId);
 }
 
 export function setObjects(property, objects) {
@@ -108,6 +113,8 @@ export function deleteObject(property, objectId, options = {}) {
             objectId,
             options
         });
+
+        await dispatch(deleteObjectFromServer(property, objectId));
     };
 }
 

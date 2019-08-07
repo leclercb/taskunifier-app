@@ -182,6 +182,35 @@ export function saveToServer(property, oldObject, newObject) {
     };
 }
 
+export function deleteFromServer(property, objectId) {
+    return async (dispatch, getState) => {
+        const state = getState();
+        const settings = getSettings(state);
+        const processId = uuid();
+
+        try {
+            await sendRequest(
+                settings,
+                {
+                    withCredentials: true,
+                    method: 'DELETE',
+                    url: `${getConfig().apiUrl}/v1/${property}/${objectId}`
+                });
+
+            return;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Delete object of type "${property}" from server`,
+                error: error.toString()
+            }));
+
+            throw error;
+        }
+    };
+}
+
 export async function saveBufferToFile(file, buffer) {
     await writeFile(file, buffer);
 }
