@@ -5,7 +5,7 @@ import { getLocationFields } from 'data/DataLocationFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function LocationForm(props) {
     const fields = getLocationFields();
@@ -22,7 +22,12 @@ function LocationForm(props) {
                         valuePropName: getValuePropNameForType(field.type),
                         initialValue: props.location[field.id]
                     })(
-                        getInputForType(field.type, field.options)
+                        getInputForType(
+                            field.type,
+                            field.options,
+                            {
+                                onCommit: () => onCommitForm(props.form, props.location, props.updateLocation)
+                            })
                     )}
                 </Form.Item>
             ))}
@@ -36,7 +41,4 @@ LocationForm.propTypes = {
     updateLocation: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'location',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.location, props.updateLocation)
-})(LocationForm);
+export default Form.create({ name: 'location' })(LocationForm);

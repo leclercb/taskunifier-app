@@ -1,20 +1,20 @@
 import moment from 'moment';
 import uuid from 'uuid';
-import { createDirectory, getUserDataPath, join } from 'actions/ActionUtils';
-import { cleanContacts, loadContactsFromFile, saveContactsToFile } from 'actions/ContactActions';
-import { cleanContexts, loadContextsFromFile, saveContextsToFile } from 'actions/ContextActions';
-import { cleanFolders, loadFoldersFromFile, saveFoldersToFile } from 'actions/FolderActions';
-import { cleanGoals, loadGoalsFromFile, saveGoalsToFile } from 'actions/GoalActions';
-import { cleanLocations, loadLocationsFromFile, saveLocationsToFile } from 'actions/LocationActions';
-import { cleanNotes, loadNotesFromFile, saveNotesToFile } from 'actions/NoteActions';
-import { cleanNoteFields, loadNoteFieldsFromFile, saveNoteFieldsToFile } from 'actions/NoteFieldActions';
-import { cleanNoteFilters, loadNoteFiltersFromFile, saveNoteFiltersToFile } from 'actions/NoteFilterActions';
+import { createDirectory, getUserDataPath } from 'actions/ActionUtils';
+import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile } from 'actions/ContactActions';
+import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile } from 'actions/ContextActions';
+import { cleanFolders, loadFoldersFromFile, loadFoldersFromServer, saveFoldersToFile } from 'actions/FolderActions';
+import { cleanGoals, loadGoalsFromFile, loadGoalsFromServer, saveGoalsToFile } from 'actions/GoalActions';
+import { cleanLocations, loadLocationsFromFile, loadLocationsFromServer, saveLocationsToFile } from 'actions/LocationActions';
+import { cleanNotes, loadNotesFromFile, loadNotesFromServer, saveNotesToFile } from 'actions/NoteActions';
+import { cleanNoteFields, loadNoteFieldsFromFile, loadNoteFieldsFromServer, saveNoteFieldsToFile } from 'actions/NoteFieldActions';
+import { cleanNoteFilters, loadNoteFiltersFromFile, loadNoteFiltersFromServer, saveNoteFiltersToFile } from 'actions/NoteFilterActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
-import { loadSettingsFromFile, saveSettingsToFile } from 'actions/SettingActions';
-import { cleanTasks, loadTasksFromFile, saveTasksToFile } from 'actions/TaskActions';
-import { cleanTaskFields, loadTaskFieldsFromFile, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
-import { cleanTaskFilters, loadTaskFiltersFromFile, saveTaskFiltersToFile } from 'actions/TaskFilterActions';
-import { cleanTaskTemplates, loadTaskTemplatesFromFile, saveTaskTemplatesToFile } from 'actions/TaskTemplateActions';
+import { loadSettingsFromFile, loadSettingsFromServer, saveSettingsToFile } from 'actions/SettingActions';
+import { cleanTasks, loadTasksFromFile, loadTasksFromServer, saveTasksToFile } from 'actions/TaskActions';
+import { cleanTaskFields, loadTaskFieldsFromFile, loadTaskFieldsFromServer, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
+import { cleanTaskFilters, loadTaskFiltersFromFile, loadTaskFiltersFromServer, saveTaskFiltersToFile } from 'actions/TaskFilterActions';
+import { cleanTaskTemplates, loadTaskTemplatesFromFile, loadTaskTemplatesFromServer, saveTaskTemplatesToFile } from 'actions/TaskTemplateActions';
 import { getContacts } from 'selectors/ContactSelectors';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getFolders } from 'selectors/FolderSelectors';
@@ -28,10 +28,23 @@ import { getTasks } from 'selectors/TaskSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
+import { join } from 'utils/ElectronUtils';
 import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
 
-export function _loadData(path, options) {
+export function loadData(options) {
+    if (process.env.REACT_APP_MODE === 'electron') {
+        return loadDataFromFile(options);
+    } else {
+        return loadDataFromServer(options);
+    }
+}
+
+export function loadDataFromFile(options) {
+    return _loadDataFromFile(null, options);
+}
+
+export function _loadDataFromFile(path, options) {
     options = merge({
         skipSettings: false
     }, options || {});
@@ -93,11 +106,79 @@ export function _loadData(path, options) {
     };
 }
 
-export function loadData(options) {
-    return _loadData(null, options);
+export function loadDataFromServer(options) {
+    return _loadDataFromServer(options);
 }
 
-export function _saveData(path, options) {
+export function _loadDataFromServer(options) {
+    options = merge({
+        skipSettings: false
+    }, options || {});
+
+    return async (dispatch, getState) => {
+        await dispatch(checkIsBusy());
+
+        const processId = uuid();
+
+        dispatch(updateProcess({
+            id: processId,
+            state: 'RUNNING',
+            title: 'Load database',
+            notify: true
+        }));
+
+        try {
+            const promises = [
+                dispatch(loadContactsFromServer()),
+                dispatch(loadContextsFromServer()),
+                dispatch(loadFoldersFromServer()),
+                dispatch(loadGoalsFromServer()),
+                dispatch(loadLocationsFromServer()),
+                dispatch(loadNotesFromServer()),
+                dispatch(loadNoteFieldsFromServer()),
+                dispatch(loadNoteFiltersFromServer()),
+                dispatch(loadTasksFromServer()),
+                dispatch(loadTaskFieldsFromServer()),
+                dispatch(loadTaskFiltersFromServer()),
+                dispatch(loadTaskTemplatesFromServer())
+            ];
+
+            if (!options.skipSettings) {
+                promises.unshift(dispatch(loadSettingsFromServer()));
+            }
+
+            await Promise.all(promises);
+
+            dispatch(updateProcess({
+                id: processId,
+                state: 'COMPLETED'
+            }));
+
+            return getState();
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR'
+            }));
+
+            throw error;
+        }
+    };
+}
+
+export function saveData(options) {
+    if (process.env.REACT_APP_MODE === 'electron') {
+        return saveDataToFile(options);
+    } else {
+        throw new Error('Unsupported Operation');
+    }
+}
+
+export function saveDataToFile(options) {
+    return _saveDataToFile(null, options);
+}
+
+export function _saveDataToFile(path, options) {
     options = merge({
         coreSettingsOnly: false,
         clean: false,
@@ -169,10 +250,6 @@ export function _saveData(path, options) {
             throw error;
         }
     };
-}
-
-export function saveData(options) {
-    return _saveData(null, options);
 }
 
 export function cleanData() {

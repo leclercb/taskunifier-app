@@ -3,6 +3,7 @@ import {
     cleanObjects,
     deleteObject,
     loadObjectsFromFile,
+    loadObjectsFromServer,
     saveObjectsToFile,
     setObjects,
     updateObject
@@ -14,6 +15,10 @@ export function loadTasksFromFile(file) {
 
 export function saveTasksToFile(file, data) {
     return saveObjectsToFile('tasks', file, data);
+}
+
+export function loadTasksFromServer() {
+    return loadObjectsFromServer('tasks');
 }
 
 export function setTasks(tasks) {

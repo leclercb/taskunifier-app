@@ -2,8 +2,9 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
-    loadObjectsFromFile, 
-    saveObjectsToFile, 
+    loadObjectsFromFile,
+    loadObjectsFromServer,
+    saveObjectsToFile,
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -14,6 +15,10 @@ export function loadFoldersFromFile(file) {
 
 export function saveFoldersToFile(file, data) {
     return saveObjectsToFile('folders', file, data);
+}
+
+export function loadFoldersFromServer() {
+    return loadObjectsFromServer('folders');
 }
 
 export function setFolders(folders) {

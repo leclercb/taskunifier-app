@@ -2,8 +2,9 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
-    loadObjectsFromFile, 
-    saveObjectsToFile, 
+    loadObjectsFromFile,
+    loadObjectsFromServer,
+    saveObjectsToFile,
     setObjects, 
     updateObject 
 } from 'actions/ObjectActions';
@@ -14,6 +15,10 @@ export function loadContactsFromFile(file) {
 
 export function saveContactsToFile(file, data) {
     return saveObjectsToFile('contacts', file, data);
+}
+
+export function loadContactsFromServer() {
+    return loadObjectsFromServer('contacts');
 }
 
 export function setContacts(contacts) {

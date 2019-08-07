@@ -19,71 +19,75 @@ import 'react-contexify/dist/ReactContexify.min.css';
 import 'react-virtualized/styles.css';
 import 'components/common/table/VirtualizedTable.css';
 
-const { ipcRenderer } = window.require('electron');
-
 function App(props) {
     useEffect(() => {
         props.loadData();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        const onClose = () => {
-            const size = ipcRenderer.sendSync('get-current-window-size');
-            const position = ipcRenderer.sendSync('get-current-window-position');
+        if (process.env.REACT_APP_MODE === 'electron') {
+            const { ipcRenderer } = window.require('electron');
 
-            props.updateSettings({
-                windowSizeWidth: size[0],
-                windowSizeHeight: size[1],
-                windowPositionX: position[0],
-                windowPositionY: position[1]
-            }).then(() => {
-                const close = () => {
-                    props.saveData({ clean: true }).finally(() => {
-                        ipcRenderer.send('closed');
-                    });
-                };
+            const onClose = () => {
+                const size = ipcRenderer.sendSync('get-current-window-size');
+                const position = ipcRenderer.sendSync('get-current-window-position');
 
-                if (props.settings.confirmBeforeClosing) {
-                    Modal.confirm({
-                        title: 'Do you want to close TaskUnifier ?',
-                        onOk: () => {
-                            close();
-                        }
-                    });
-                } else {
-                    close();
-                }
-            });
-        };
+                props.updateSettings({
+                    windowSizeWidth: size[0],
+                    windowSizeHeight: size[1],
+                    windowPositionX: position[0],
+                    windowPositionY: position[1]
+                }).then(() => {
+                    const close = () => {
+                        props.saveData({ clean: true }).finally(() => {
+                            ipcRenderer.send('closed');
+                        });
+                    };
 
-        ipcRenderer.on('app-close', onClose);
+                    if (props.settings.confirmBeforeClosing) {
+                        Modal.confirm({
+                            title: 'Do you want to close TaskUnifier ?',
+                            onOk: () => {
+                                close();
+                            }
+                        });
+                    } else {
+                        close();
+                    }
+                });
+            };
 
-        return () => {
-            ipcRenderer.removeListener('app-close', onClose);
-        };
+            ipcRenderer.on('app-close', onClose);
+
+            return () => {
+                ipcRenderer.removeListener('app-close', onClose);
+            };
+        }
     }, [props.settings]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(
         () => {
-            let interval = null;
+            if (process.env.REACT_APP_MODE === 'electron') {
+                let interval = null;
 
-            const { automaticSave, automaticSaveInterval } = props.settings;
+                const { automaticSave, automaticSaveInterval } = props.settings;
 
-            if (automaticSave &&
-                Number.isInteger(automaticSaveInterval) &&
-                automaticSaveInterval > 0) {
-                interval = setInterval(() => {
-                    props.saveData();
-                    props.updateSettings({
-                        lastAutomaticSave: moment().toISOString()
-                    });
-                }, automaticSaveInterval * 60 * 1000);
+                if (automaticSave &&
+                    Number.isInteger(automaticSaveInterval) &&
+                    automaticSaveInterval > 0) {
+                    interval = setInterval(() => {
+                        props.saveData();
+                        props.updateSettings({
+                            lastAutomaticSave: moment().toISOString()
+                        });
+                    }, automaticSaveInterval * 60 * 1000);
 
+                }
+
+                return () => {
+                    clearInterval(interval);
+                };
             }
-
-            return () => {
-                clearInterval(interval);
-            };
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
@@ -94,25 +98,27 @@ function App(props) {
 
     useEffect(
         () => {
-            let interval = null;
+            if (process.env.REACT_APP_MODE === 'electron') {
+                let interval = null;
 
-            interval = setInterval(() => {
-                const { automaticBackup, automaticBackupInterval, lastAutomaticBackup } = props.settings;
+                interval = setInterval(() => {
+                    const { automaticBackup, automaticBackupInterval, lastAutomaticBackup } = props.settings;
 
-                if (automaticBackup &&
-                    Number.isInteger(automaticBackupInterval) &&
-                    automaticBackupInterval > 0 &&
-                    (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
-                    props.backupData();
-                    props.updateSettings({
-                        lastAutomaticBackup: moment().toISOString()
-                    });
-                }
-            }, 30 * 1000);
+                    if (automaticBackup &&
+                        Number.isInteger(automaticBackupInterval) &&
+                        automaticBackupInterval > 0 &&
+                        (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
+                        props.backupData();
+                        props.updateSettings({
+                            lastAutomaticBackup: moment().toISOString()
+                        });
+                    }
+                }, 30 * 1000);
 
-            return () => {
-                clearInterval(interval);
-            };
+                return () => {
+                    clearInterval(interval);
+                };
+            }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
@@ -124,25 +130,27 @@ function App(props) {
 
     useEffect(
         () => {
-            let interval = null;
+            if (process.env.REACT_APP_MODE === 'electron') {
+                let interval = null;
 
-            interval = setInterval(() => {
-                const { automaticSynchronization, automaticSynchronizationInterval, lastAutomaticSynchronization } = props.settings;
+                interval = setInterval(() => {
+                    const { automaticSynchronization, automaticSynchronizationInterval, lastAutomaticSynchronization } = props.settings;
 
-                if (automaticSynchronization &&
-                    Number.isInteger(automaticSynchronizationInterval) &&
-                    automaticSynchronizationInterval > 0 &&
-                    (!lastAutomaticSynchronization || moment().diff(moment(lastAutomaticSynchronization)) > automaticSynchronizationInterval * 60 * 1000)) {
-                    props.synchronize();
-                    props.updateSettings({
-                        lastAutomaticSynchronization: moment().toISOString()
-                    });
-                }
-            }, 30 * 1000);
+                    if (automaticSynchronization &&
+                        Number.isInteger(automaticSynchronizationInterval) &&
+                        automaticSynchronizationInterval > 0 &&
+                        (!lastAutomaticSynchronization || moment().diff(moment(lastAutomaticSynchronization)) > automaticSynchronizationInterval * 60 * 1000)) {
+                        props.synchronize();
+                        props.updateSettings({
+                            lastAutomaticSynchronization: moment().toISOString()
+                        });
+                    }
+                }, 30 * 1000);
 
-            return () => {
-                clearInterval(interval);
-            };
+                return () => {
+                    clearInterval(interval);
+                };
+            }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
@@ -153,8 +161,10 @@ function App(props) {
     );
 
     useInterval(() => {
-        props.backupData();
-        props.synchronize();
+        if (process.env.REACT_APP_MODE === 'electron') {
+            props.backupData();
+            props.synchronize();
+        }
     }, null);
 
     return (

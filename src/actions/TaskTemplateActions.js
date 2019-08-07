@@ -1,11 +1,12 @@
-import { 
-    addObject, 
-    cleanObjects, 
-    deleteObject, 
-    loadObjectsFromFile, 
-    saveObjectsToFile, 
-    setObjects, 
-    updateObject 
+import {
+    addObject,
+    cleanObjects,
+    deleteObject,
+    loadObjectsFromFile,
+    loadObjectsFromServer,
+    saveObjectsToFile,
+    setObjects,
+    updateObject
 } from 'actions/ObjectActions';
 
 export function loadTaskTemplatesFromFile(file) {
@@ -14,6 +15,10 @@ export function loadTaskTemplatesFromFile(file) {
 
 export function saveTaskTemplatesToFile(file, data) {
     return saveObjectsToFile('taskTemplates', file, data);
+}
+
+export function loadTaskTemplatesFromServer() {
+    return loadObjectsFromServer('taskTemplates');
 }
 
 export function setTaskTemplates(taskTemplates) {

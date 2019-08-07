@@ -2,12 +2,11 @@ import React from 'react';
 import { Button, Empty } from 'antd';
 import Icon from 'components/common/Icon';
 import Constants from 'constants/Constants';
-
-const { ipcRenderer } = window.require('electron');
+import { openExternalLink } from 'utils/ElectronUtils';
 
 export function ProLockedMessage() {
     const onClick = () => {
-        ipcRenderer.send('open-external', Constants.purchaseUrl);
+        openExternalLink(Constants.purchaseUrl);
     };
 
     return (

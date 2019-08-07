@@ -5,6 +5,7 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
 import Spacer from 'components/common/Spacer';
+import UserMenu from 'components/layout/UserMenu';
 import withApp from 'containers/WithApp';
 import withNotes from 'containers/WithNotes';
 import withPrint from 'containers/WithPrint';
@@ -142,7 +143,7 @@ function Header(props) {
                 {props.pro ? (
                     <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                 ) : null}
-                <Logo size={40} />
+                {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}
             </React.Fragment>
         )}>
             <Button.Group style={{ marginRight: 50 }}>
@@ -206,10 +207,16 @@ function Header(props) {
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
             {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
             {createButton('folder-open', 'Load', onLoad)}
-            {createButton('save', 'Save', onSave)}
-            {createButton('box-open', 'Backup', onBackup)}
+            {process.env.REACT_APP_MODE === 'electron' ?
+                createButton('save', 'Save', onSave)
+                : null}
+            {process.env.REACT_APP_MODE === 'electron' ?
+                createButton('box-open', 'Backup', onBackup)
+                : null}
             {createButton('cog', 'Settings', onSetSettingsVisible)}
-            {createButton('sync-alt', 'Synchronization', onSynchronize)}
+            {process.env.REACT_APP_MODE === 'electron' ?
+                createButton('sync-alt', 'Synchronization', onSynchronize)
+                : null}
         </LeftRight>
     );
 }

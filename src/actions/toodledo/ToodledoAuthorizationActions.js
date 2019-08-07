@@ -3,22 +3,22 @@ import qs from 'qs';
 import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
+import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getAppVersion } from 'utils/VersionUtils';
-
-const { ipcRenderer } = window.require('electron');
 
 export function authorize() {
     return async () => {
         const params = {
             response_type: 'code',
-            client_id: process.env.REACT_APP_TOODLEDO_USERNAME,
+            client_id: getConfig().toodledo.username,
             state: uuid(),
             scope: 'basic tasks notes lists write'
         };
 
         const url = `https://api.toodledo.com/3/account/authorize.php?${qs.stringify(params)}`;
 
+        const { ipcRenderer } = window.require('electron');
         ipcRenderer.send('open-external', url);
     };
 }
@@ -27,6 +27,7 @@ export function createToken(code) {
     console.debug('createToken', code);
 
     return async (dispatch, getState) => {
+        const { ipcRenderer } = window.require('electron');
         const settings = getSettings(getState());
 
         const result = await sendRequest(
@@ -35,8 +36,8 @@ export function createToken(code) {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: process.env.REACT_APP_TOODLEDO_USERNAME,
-                    password: process.env.REACT_APP_TOODLEDO_PASSWORD
+                    username: getConfig().toodledo.username,
+                    password: getConfig().toodledo.password
                 },
                 data: {
                     grant_type: 'authorization_code',
@@ -61,6 +62,7 @@ export function refreshToken() {
     console.debug('refreshToken');
 
     return async (dispatch, getState) => {
+        const { ipcRenderer } = window.require('electron');
         const settings = getSettings(getState());
 
         const result = await sendRequest(
@@ -69,8 +71,8 @@ export function refreshToken() {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: process.env.REACT_APP_TOODLEDO_USERNAME,
-                    password: process.env.REACT_APP_TOODLEDO_PASSWORD
+                    username: getConfig().toodledo.username,
+                    password: getConfig().toodledo.password
                 },
                 data: {
                     grant_type: 'refresh_token',

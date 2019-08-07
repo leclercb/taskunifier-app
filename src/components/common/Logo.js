@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Logo(props) {
+function Logo({ alt, size, style }) {
     return (
         <img
             alt="Logo"
-            src="resources/images/logo_alt.png"
+            src={`resources/images/logo${alt ? '_alt' : ''}.png`}
             style={{
-                width: props.size,
-                height: props.size
+                ...style,
+                width: size,
+                height: size
             }} />
     );
 }
 
 Logo.propTypes = {
-    size: PropTypes.number
+    alt: PropTypes.bool,
+    size: PropTypes.number,
+    style: PropTypes.object
 };
 
 export default Logo;

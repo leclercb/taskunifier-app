@@ -3,8 +3,6 @@ import { Input } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 
-const { ipcRenderer } = window.require('electron');
-
 class FileField extends React.Component {
     constructor(props) {
         super(props);
@@ -37,12 +35,14 @@ class FileField extends React.Component {
     }
 
     onOpenFile() {
+        const { ipcRenderer } = window.require('electron');
         return ipcRenderer.send('open-file', this.state.value);
     }
 
     onSelectFile() {
         this.selectingFile = true;
 
+        const { ipcRenderer } = window.require('electron');
         const files = ipcRenderer.sendSync('show-open-dialog', {
             properties: [
                 'openFile'

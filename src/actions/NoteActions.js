@@ -3,6 +3,7 @@ import {
     cleanObjects,
     deleteObject,
     loadObjectsFromFile,
+    loadObjectsFromServer,
     saveObjectsToFile,
     setObjects,
     updateObject
@@ -14,6 +15,10 @@ export function loadNotesFromFile(file) {
 
 export function saveNotesToFile(file, data) {
     return saveObjectsToFile('notes', file, data);
+}
+
+export function loadNotesFromServer() {
+    return loadObjectsFromServer('notes');
 }
 
 export function setNotes(notes) {
