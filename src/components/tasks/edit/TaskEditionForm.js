@@ -33,7 +33,7 @@ function TaskEditionForm(props) {
                                 valuePropName: getValuePropNameForType(field.type),
                                 initialValue: props.task[field.id]
                             })(
-                                getInputForType(field.type, field.options)
+                                getInputForType(field.type, field.options, { disabled: !field.editable })
                             )}
                         </Form.Item>
                     </Col>

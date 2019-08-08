@@ -14,6 +14,8 @@ function TaskTemplateForm(props) {
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const fields = props.taskFields.filter(field => field.editable && props.settings['taskFieldVisible_' + field.id] !== false);
+
     return (
         <Form {...formItemLayout}>
             <Form.Item label="Title">
@@ -44,7 +46,7 @@ function TaskTemplateForm(props) {
                 )}
             </Form.Item>
             <Divider>Task Properties</Divider>
-            {props.taskFields.map(field => (
+            {fields.map(field => (
                 <Form.Item key={field.id} label={field.title}>
                     {getFieldDecorator('properties.' + field.id, {
                         valuePropName: getValuePropNameForType(field.type),
