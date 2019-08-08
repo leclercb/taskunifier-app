@@ -9,6 +9,7 @@ import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
+import Constants from 'constants/Constants';
 import { getWidthForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
@@ -89,7 +90,7 @@ function NoteTable(props) {
                             let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
 
                             if (props.selectedNoteIds.includes(note.id)) {
-                                backgroundColor = '#e3ebf2';
+                                backgroundColor = Constants.selectionColor;
                             }
 
                             return {

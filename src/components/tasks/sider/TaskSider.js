@@ -32,7 +32,7 @@ function TaskSider(props) {
             <LeftRight right={onAdd ? (
                 <Icon
                     icon="plus"
-                    color={Constants.fadeColor}
+                    color={Constants.fadeIconColor}
                     className="object-actions"
                     onClick={() => onAdd()} />
             ) : null}>
@@ -63,7 +63,7 @@ function TaskSider(props) {
             <React.Fragment>
                 <Icon
                     icon="edit"
-                    color={Constants.fadeColor}
+                    color={Constants.fadeIconColor}
                     className="object-actions"
                     onClick={() => onEdit()} />
                 <Spacer />
@@ -74,7 +74,7 @@ function TaskSider(props) {
                     cancelText="No">
                     <Icon
                         icon="trash-alt"
-                        color={Constants.fadeColor}
+                        color={Constants.fadeIconColor}
                         className="object-actions" />
                 </Popconfirm>
             </React.Fragment>

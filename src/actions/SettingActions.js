@@ -80,9 +80,13 @@ export function updateSettings(settings, options = { skipServerUpdate: false }) 
 
         const newSettings = getSettings(getState());
 
-        if (!options || options.skipServerUpdate !== true) {
-            await dispatch(saveSettingsToServer(oldSettings, newSettings));
+        if (process.env.REACT_APP_MODE !== 'electron') {
+            if (!options || options.skipServerUpdate !== true) {
+                await dispatch(saveSettingsToServer(oldSettings, newSettings));
+            }
         }
+
+        return newSettings;
     };
 }
 

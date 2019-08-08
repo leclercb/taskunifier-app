@@ -109,8 +109,6 @@ const addObject = (state, action) => {
     }
 
     const newObject = {
-        title: 'Untitled',
-        color: null,
         ...clone(action.object),
         creationDate: action.creationDate,
         updateDate: action.creationDate,

@@ -1,13 +1,14 @@
-import { 
-    addObject, 
-    cleanObjects, 
-    deleteObject, 
+import {
+    addObject,
+    cleanObjects,
+    deleteObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    setObjects, 
-    updateObject 
+    setObjects,
+    updateObject
 } from 'actions/ObjectActions';
+import Constants from 'constants/Constants';
 
 export function loadContactsFromFile(file) {
     return loadObjectsFromFile('contacts', file);
@@ -26,7 +27,11 @@ export function setContacts(contacts) {
 }
 
 export function addContact(contact, options = {}) {
-    return addObject('contacts', contact, options);
+    return addObject('contacts', contact, options, {
+        firstName: 'Unnamed',
+        lastName: 'Unnamed',
+        color: Constants.defaultObjectColor
+    });
 }
 
 export function updateContact(contact, options = {}) {

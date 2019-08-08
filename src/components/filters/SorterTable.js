@@ -8,6 +8,7 @@ import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
+import Constants from 'constants/Constants';
 import withSettings from 'containers/WithSettings';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -133,7 +134,7 @@ function SorterTable(props) {
                         let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
 
                         if (selectedSorterIds.includes(sorter.id)) {
-                            backgroundColor = '#e3ebf2';
+                            backgroundColor = Constants.selectionColor;
                         }
 
                         return {

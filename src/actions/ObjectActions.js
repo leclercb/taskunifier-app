@@ -58,7 +58,14 @@ export function changeId(property, oldId, newId) {
     };
 }
 
-export function addObject(property, object, options = {}) {
+export function addObject(
+    property,
+    object,
+    options = {},
+    defaultValues = {
+        title: 'Untitled',
+        color: Constants.defaultObjectColor
+    }) {
     return async (dispatch, getState) => {
         const id = uuid();
 
@@ -68,7 +75,7 @@ export function addObject(property, object, options = {}) {
             generateId: () => uuid(),
             creationDate: moment().toISOString(),
             object: {
-                color: Constants.defaultObjectColor,
+                ...defaultValues,
                 ...object,
                 id
             },
@@ -76,8 +83,11 @@ export function addObject(property, object, options = {}) {
         });
 
         const newObject = getObjectById(getState(), property, id);
-        const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
-        await dispatch(changeId(property, newObject.id, createdObject.id));
+
+        if (process.env.REACT_APP_MODE !== 'electron') {
+            const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
+            await dispatch(changeId(property, newObject.id, createdObject.id));
+        }
 
         return newObject;
     };
@@ -97,7 +107,10 @@ export function updateObject(property, object, options = {}) {
         });
 
         const newObject = getObjectById(getState(), property, object.id);
-        await dispatch(saveObjectToServer(property, oldObject, newObject));
+
+        if (process.env.REACT_APP_MODE !== 'electron') {
+            await dispatch(saveObjectToServer(property, oldObject, newObject));
+        }
 
         return newObject;
     };
@@ -114,7 +127,10 @@ export function deleteObject(property, objectId, options = {}) {
             options
         });
 
-        await dispatch(deleteObjectFromServer(property, objectId));
+
+        if (process.env.REACT_APP_MODE !== 'electron') {
+            await dispatch(deleteObjectFromServer(property, objectId));
+        }
     };
 }
 

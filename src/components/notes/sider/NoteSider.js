@@ -29,7 +29,7 @@ function NoteSider(props) {
             <LeftRight right={onAdd ? (
                 <Icon
                     icon="plus"
-                    color={Constants.fadeColor}
+                    color={Constants.fadeIconColor}
                     className="object-actions"
                     onClick={() => onAdd()} />
             ) : null}>
@@ -60,7 +60,7 @@ function NoteSider(props) {
             <React.Fragment>
                 <Icon
                     icon="edit"
-                    color={Constants.fadeColor}
+                    color={Constants.fadeIconColor}
                     className="object-actions"
                     onClick={() => onEdit()} />
                 <Spacer />
@@ -71,7 +71,7 @@ function NoteSider(props) {
                     cancelText="No">
                     <Icon
                         icon="trash-alt"
-                        color={Constants.fadeColor}
+                        color={Constants.fadeIconColor}
                         className="object-actions" />
                 </Popconfirm>
             </React.Fragment>
