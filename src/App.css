@@ -116,6 +116,16 @@ ant-input:focus {
     background-color: #e6f6ff !important;
 }
 
+/* React Virtualized */
+
+.ReactVirtualized__Table__Grid {
+    outline: 0;
+}
+
+.ReactVirtualized__Table__row {
+    outline: 0;
+}
+
 /* RC Color Picker */
 
 .rc-color-picker-trigger {

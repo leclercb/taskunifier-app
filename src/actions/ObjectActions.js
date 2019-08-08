@@ -129,7 +129,9 @@ export function deleteObject(property, objectId, options = {}) {
 
 
         if (process.env.REACT_APP_MODE !== 'electron') {
-            await dispatch(deleteObjectFromServer(property, objectId));
+            const objectIds = Array.isArray(objectId) ? objectId : [objectId];
+            const promises = objectIds.map(objectId => dispatch(deleteObjectFromServer(property, objectId)));
+            await Promise.all(promises);
         }
     };
 }
