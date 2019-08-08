@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
+import withSettings from 'containers/WithSettings';
 import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
@@ -66,7 +68,8 @@ TaskTemplateForm.propTypes = {
     form: PropTypes.object.isRequired,
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     taskTemplate: TaskTemplatePropType.isRequired,
-    updateTaskTemplate: PropTypes.func.isRequired
+    updateTaskTemplate: PropTypes.func.isRequired,
+    settings: SettingsPropType.isRequired
 };
 
-export default withTaskFields(Form.create({ name: 'taskTemplate' })(TaskTemplateForm));
+export default withSettings(withTaskFields(Form.create({ name: 'taskTemplate' })(TaskTemplateForm)));
