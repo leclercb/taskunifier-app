@@ -8,6 +8,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
+import { diff } from 'utils/ObjectUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
     return async dispatch => {
@@ -27,7 +28,7 @@ export const loadSettingsFromServer = (core = false) => {
     };
 };
 
-export function saveSettingsToServer(updatedSettings) {
+export function saveSettingsToServer(oldSettings, newSettings) {
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -40,7 +41,7 @@ export function saveSettingsToServer(updatedSettings) {
                     withCredentials: true,
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/settings`,
-                    data: updatedSettings,
+                    data: diff(newSettings, oldSettings),
                     responseType: 'json'
                 });
 
@@ -69,14 +70,18 @@ export const setSettings = (settings, core = false) => {
 };
 
 export function updateSettings(settings, options = { skipServerUpdate: false }) {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const oldSettings = getSettings(getState());
+
         await dispatch({
             type: 'UPDATE_SETTINGS',
             settings
         });
 
+        const newSettings = getSettings(getState());
+
         if (!options || options.skipServerUpdate !== true) {
-            await dispatch(saveSettingsToServer(settings));
+            await dispatch(saveSettingsToServer(oldSettings, newSettings));
         }
     };
 }
