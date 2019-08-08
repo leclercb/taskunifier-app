@@ -5,7 +5,7 @@ import ColorPicker from 'components/common/ColorPicker';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getFieldType, getFieldTypes, getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function TaskFieldForm(props) {
     const { getFieldDecorator } = props.form;
@@ -13,6 +13,8 @@ function TaskFieldForm(props) {
     const formItemLayout = getDefaultFormItemLayout();
 
     const config = getFieldType(props.taskField.type, props.taskField.options);
+
+    const onCommit = () => onCommitForm(props.form, props.taskField, props.updateTaskField);
 
     return (
         <Form {...formItemLayout}>
@@ -26,7 +28,7 @@ function TaskFieldForm(props) {
                         }
                     ]
                 })(
-                    <Input />
+                    <Input onBlur={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Color">
@@ -40,7 +42,7 @@ function TaskFieldForm(props) {
                         }
                     ]
                 })(
-                    <ColorPicker placement="bottomLeft" />
+                    <ColorPicker onClose={onCommit} placement="bottomLeft" />
                 )}
             </Form.Item>
             <Form.Item label="Type">
@@ -53,7 +55,7 @@ function TaskFieldForm(props) {
                         }
                     ]
                 })(
-                    <Select>
+                    <Select onBlur={onCommit}>
                         {getFieldTypes().filter(type => getFieldType(type).allowCreation).map(type => {
                             return (
                                 <Select.Option key={type} value={type}>
@@ -74,7 +76,7 @@ function TaskFieldForm(props) {
                         valuePropName: getValuePropNameForType(option.type),
                         initialValue: props.taskField.options ? props.taskField.options[option.id] : undefined
                     })(
-                        getInputForType(option.type, option.options)
+                        getInputForType(option.type, option.options, { onCommit })
                     )}
                 </Form.Item>
             ))}
@@ -88,7 +90,4 @@ TaskFieldForm.propTypes = {
     updateTaskField: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'taskField',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.taskField, props.updateTaskField)
-})(TaskFieldForm);
+export default Form.create({ name: 'taskField' })(TaskFieldForm);

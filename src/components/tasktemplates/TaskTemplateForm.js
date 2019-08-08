@@ -7,7 +7,7 @@ import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function TaskTemplateForm(props) {
     const { getFieldDecorator } = props.form;
@@ -15,6 +15,8 @@ function TaskTemplateForm(props) {
     const formItemLayout = getDefaultFormItemLayout();
 
     const fields = props.taskFields.filter(field => field.editable && props.settings['taskFieldVisible_' + field.id] !== false);
+
+    const onCommit = () => onCommitForm(props.form, props.taskTemplate, props.updateTaskTemplate);
 
     return (
         <Form {...formItemLayout}>
@@ -28,7 +30,7 @@ function TaskTemplateForm(props) {
                         }
                     ]
                 })(
-                    <Input />
+                    <Input onBlur={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Color">
@@ -42,7 +44,7 @@ function TaskTemplateForm(props) {
                         }
                     ]
                 })(
-                    <ColorPicker />
+                    <ColorPicker onClose={onCommit} />
                 )}
             </Form.Item>
             <Divider>Task Properties</Divider>
@@ -52,7 +54,7 @@ function TaskTemplateForm(props) {
                         valuePropName: getValuePropNameForType(field.type),
                         initialValue: props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : undefined
                     })(
-                        getInputForType(field.type, field.options)
+                        getInputForType(field.type, field.options, { onCommit })
                     )}
                 </Form.Item>
             ))}
@@ -67,7 +69,4 @@ TaskTemplateForm.propTypes = {
     updateTaskTemplate: PropTypes.func.isRequired
 };
 
-export default withTaskFields(Form.create({
-    name: 'taskTemplate',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.taskTemplate, props.updateTaskTemplate)
-})(TaskTemplateForm));
+export default withTaskFields(Form.create({ name: 'taskTemplate' })(TaskTemplateForm));

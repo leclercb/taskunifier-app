@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Radio } from 'antd';
-import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { onCommitForm } from 'utils/FormUtils';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
 function RepeatWithParentForm(props) {
@@ -13,12 +13,14 @@ function RepeatWithParentForm(props) {
         lineHeight: '50px'
     };
 
+    const onCommit = () => onCommitForm(props.form, props.repeat, props.updateRepeat, { force: true });
+
     return (
         <Form>
             {getFieldDecorator('type', {
                 initialValue: props.repeat ? props.repeat.type : undefined
             })(
-                <Radio.Group>
+                <Radio.Group onChange={onCommit}>
                     <Radio style={radioStyle} value='withParent'>
                         With Parent
                     </Radio>
@@ -34,7 +36,4 @@ RepeatWithParentForm.propTypes = {
     updateRepeat: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'repeat',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.updateRepeat)
-})(RepeatWithParentForm);
+export default Form.create({ name: 'repeat' })(RepeatWithParentForm);

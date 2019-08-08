@@ -78,8 +78,8 @@ export function getInputForType(type, options, props = {}) {
     return getFieldComponents(type, options).input(props);
 }
 
-export function getSelectForType(type) {
-    return getFieldComponents(type).select();
+export function getSelectForType(type, props = {}) {
+    return getFieldComponents(type).select(props);
 }
 
 export function getFieldComponents(type, options) {
@@ -767,10 +767,13 @@ export function getFieldComponents(type, options) {
         }
     }
 
-    configuration.select = () => (
+    configuration.select = props => (
         <Select dropdownMatchSelectWidth={false} placeholder="Condition">
             {getFieldType(type).conditions.map(condition => (
-                <Select.Option key={condition.type} value={condition.type}>
+                <Select.Option
+                    key={condition.type}
+                    value={condition.type}
+                    {...props}>
                     {condition.title}
                 </Select.Option>
             ))}

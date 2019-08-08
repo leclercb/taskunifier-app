@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Checkbox, Form, InputNumber, Radio } from 'antd';
-import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { onCommitForm } from 'utils/FormUtils';
 import { getDaysOfWeek } from 'utils/RepeatUtils';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
@@ -14,12 +14,14 @@ function RepeatWeeklyForm(props) {
         lineHeight: '50px'
     };
 
+    const onCommit = () => onCommitForm(props.form, props.repeat, props.updateRepeat, { force: true });
+
     return (
         <Form>
             {getFieldDecorator('type', {
                 initialValue: props.repeat ? props.repeat.type : undefined
             })(
-                <Radio.Group>
+                <Radio.Group onChange={onCommit}>
                     <Radio style={radioStyle} value='everyXWeeks'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbWeeks', {
@@ -31,7 +33,10 @@ function RepeatWeeklyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXWeeks'} />
+                            <InputNumber
+                                onChange={onCommit}
+                                min={1}
+                                disabled={props.repeat.type !== 'everyXWeeks'} />
                         )}
                         <span style={{ marginLeft: 10 }}>week(s)</span>
                     </Radio>
@@ -46,14 +51,20 @@ function RepeatWeeklyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} />
+                            <InputNumber
+                                onChange={onCommit}
+                                min={1}
+                                disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} />
                         )}
                         <span style={{ marginLeft: 10 }}>week(s) on</span>
                         <div style={{ marginLeft: 40 }}>
                             {getFieldDecorator('daysOfWeek', {
                                 initialValue: props.repeat ? props.repeat.daysOfWeek : undefined
                             })(
-                                <Checkbox.Group disabled={props.repeat.type !== 'everyXWeeksOnDaysY'} options={getDaysOfWeek()} />
+                                <Checkbox.Group
+                                    onChange={onCommit}
+                                    disabled={props.repeat.type !== 'everyXWeeksOnDaysY'}
+                                    options={getDaysOfWeek()} />
                             )}
                         </div>
                     </Radio>
@@ -69,7 +80,4 @@ RepeatWeeklyForm.propTypes = {
     updateRepeat: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'repeat',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.updateRepeat)
-})(RepeatWeeklyForm);
+export default Form.create({ name: 'repeat' })(RepeatWeeklyForm);

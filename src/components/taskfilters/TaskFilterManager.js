@@ -52,14 +52,14 @@ function TaskFilterManager(props) {
                             key={selectedTaskFilterId}
                             filter={selectedTaskFilter}
                             updateFilter={props.updateTaskFilter}
-                            extraFields={(props, getFieldDecorator) => {
+                            extraFields={(props, getFieldDecorator, onCommit) => {
                                 /* eslint-disable react/prop-types */
                                 return (
                                     <Form.Item label="Task Template">
                                         {getFieldDecorator('taskTemplate', {
                                             initialValue: props.filter.taskTemplate
                                         })(
-                                            <TaskTemplateSelect />
+                                            <TaskTemplateSelect onBlur={onCommit} />
                                         )}
                                     </Form.Item>
                                 );

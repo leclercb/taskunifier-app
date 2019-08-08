@@ -1,6 +1,5 @@
 ## Todo List
 
-* Remove onFieldChangeForObjectUpdates
 * Sign binaries
 * Synchronize
 * Import/Export (+ from TaskUnifier Classic)
