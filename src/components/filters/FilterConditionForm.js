@@ -29,15 +29,7 @@ function FilterConditionForm(props) {
         <Form {...formItemLayout}>
             <Row gutter={10}>
                 <Col span={6}>
-                    <Form.Item >
-                        {getFieldDecorator('title', {
-                            initialValue: field.title
-                        })(
-                            <Input
-                                onBlur={onCommit}
-                                disabled={true} />
-                        )}
-                    </Form.Item>
+                    <Input value={field.title} disabled={true} />
                 </Col>
                 <Col span={6}>
                     <Form.Item>
