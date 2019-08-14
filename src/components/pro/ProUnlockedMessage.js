@@ -7,7 +7,7 @@ import Constants from 'constants/Constants';
 export function ProUnlockedMessage({ license }) {
     return (
         <Empty
-            image={(<Icon color={Constants.fadeColor} icon="lock-open" size={64} />)}
+            image={(<Icon color={Constants.fadeIconColor} icon="lock-open" size={64} />)}
             description={(
                 <span>
                     TaskUnifier Pro has been successfully activated !<br />

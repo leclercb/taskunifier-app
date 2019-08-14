@@ -12,9 +12,9 @@ export function printDocument(title, orientation = 'p') {
 
     doc.setFont('helvetica');
 
-    // Green rectangle
+    // Blue rectangle
     doc.setDrawColor(0);
-    doc.setFillColor(0, 140, 75);
+    doc.setFillColor(14, 103, 196);
     doc.rect(0, 50, doc.internal.pageSize.getWidth(), 10, 'F');
 
     // TaskUnifier Logo
@@ -23,7 +23,7 @@ export function printDocument(title, orientation = 'p') {
     // TaskUnifier
     doc.setFontSize(14);
     doc.setFontType('bold');
-    doc.setTextColor(0, 140, 75);
+    doc.setTextColor(14, 103, 196);
     doc.text(50, 30, 'TaskUnifier');
 
     // Title
@@ -136,7 +136,7 @@ export function printTable(doc, title, fields, records, state, subLevel = 0, pri
         headStyles: {
             fontSize: subLevel === 0 ? 8 : 7,
             cellPadding: subLevel === 0 ? 3 : [1, 3, 1, 3],
-            fillColor: subLevel === 0 ? [0, 140, 75] : [170, 170, 170]
+            fillColor: subLevel === 0 ? [14, 103, 196] : [170, 170, 170]
         },
         bodyStyles: {
             fontSize: 7

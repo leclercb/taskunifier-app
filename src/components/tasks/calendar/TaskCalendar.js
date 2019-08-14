@@ -71,7 +71,6 @@ function TaskCalendar(props) {
     const onSelectSlot = async ({ start, end, action }) => {
         if (action === 'select' && ['week', 'work_week', 'day'].includes(props.selectedCalendarView)) {
             const task = await props.addTask({
-                title: 'Untitled',
                 startDate: moment(start).toISOString(),
                 dueDate: moment(end).toISOString(),
                 length: moment(end).diff(moment(start), 'minutes')

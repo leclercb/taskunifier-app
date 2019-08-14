@@ -8,6 +8,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
+import { diff } from 'utils/ObjectUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
     return async dispatch => {
@@ -27,7 +28,7 @@ export const loadSettingsFromServer = (core = false) => {
     };
 };
 
-export function saveSettingsToServer(updatedSettings) {
+export function saveSettingsToServer(oldSettings, newSettings) {
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -40,7 +41,7 @@ export function saveSettingsToServer(updatedSettings) {
                     withCredentials: true,
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/settings`,
-                    data: updatedSettings,
+                    data: diff(newSettings, oldSettings),
                     responseType: 'json'
                 });
 
@@ -49,7 +50,7 @@ export function saveSettingsToServer(updatedSettings) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                title: `Save settings to server`,
+                title: 'Save settings to server',
                 error: error.toString()
             }));
 
@@ -69,15 +70,23 @@ export const setSettings = (settings, core = false) => {
 };
 
 export function updateSettings(settings, options = { skipServerUpdate: false }) {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const oldSettings = getSettings(getState());
+
         await dispatch({
             type: 'UPDATE_SETTINGS',
             settings
         });
 
-        if (!options || options.skipServerUpdate !== true) {
-            await dispatch(saveSettingsToServer(settings));
+        const newSettings = getSettings(getState());
+
+        if (process.env.REACT_APP_MODE !== 'electron') {
+            if (!options || options.skipServerUpdate !== true) {
+                await dispatch(saveSettingsToServer(oldSettings, newSettings));
+            }
         }
+
+        return newSettings;
     };
 }
 

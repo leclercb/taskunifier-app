@@ -113,7 +113,17 @@ ant-input:focus {
 
 .react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
     color: black !important;
-    background-color: #e3ebf2 !important;
+    background-color: #e6f6ff !important;
+}
+
+/* React Virtualized */
+
+.ReactVirtualized__Table__Grid {
+    outline: 0;
+}
+
+.ReactVirtualized__Table__row {
+    outline: 0;
 }
 
 /* RC Color Picker */
@@ -129,7 +139,7 @@ ant-input:focus {
 /* TaskUnifier */
 
 .selected-list-item {
-    background-color: #e3ebf2;
+    background-color: #e6f6ff;
 }
 
 .object-actions:hover {

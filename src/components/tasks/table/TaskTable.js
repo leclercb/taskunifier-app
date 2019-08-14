@@ -9,6 +9,7 @@ import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
+import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
@@ -137,7 +138,7 @@ function TaskTable(props) {
                             let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
 
                             if (props.selectedTaskIds.includes(task.id)) {
-                                backgroundColor = '#e3ebf2';
+                                backgroundColor = Constants.selectionColor;
                             }
 
                             return {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputNumber, Radio, Select } from 'antd';
-import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { onCommitForm } from 'utils/FormUtils';
 import { getDaysOfWeek } from 'utils/RepeatUtils';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
@@ -14,12 +14,14 @@ function RepeatDailyForm(props) {
         lineHeight: '50px'
     };
 
+    const onCommit = () => onCommitForm(props.form, props.repeat, props.updateRepeat, { force: true });
+
     return (
         <Form>
             {getFieldDecorator('type', {
                 initialValue: props.repeat ? props.repeat.type : undefined
             })(
-                <Radio.Group>
+                <Radio.Group onChange={onCommit}>
                     <Radio style={radioStyle} value='everyDay'>
                         Every day
                     </Radio>
@@ -40,7 +42,10 @@ function RepeatDailyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXDays'} />
+                            <InputNumber
+                                onBlur={onCommit}
+                                min={1}
+                                disabled={props.repeat.type !== 'everyXDays'} />
                         )}
                         <span style={{ marginLeft: 10 }}>day(s)</span>
                     </Radio>
@@ -55,7 +60,10 @@ function RepeatDailyForm(props) {
                                 }
                             ]
                         })(
-                            <Select style={{ width: 100 }} disabled={props.repeat.type !== 'everySelectedDay'}>
+                            <Select
+                                onBlur={onCommit}
+                                style={{ width: 100 }}
+                                disabled={props.repeat.type !== 'everySelectedDay'}>
                                 {getDaysOfWeek().map(item => (
                                     <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
                                 ))}
@@ -74,7 +82,4 @@ RepeatDailyForm.propTypes = {
     updateRepeat: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'repeat',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.updateRepeat)
-})(RepeatDailyForm);
+export default Form.create({ name: 'repeat' })(RepeatDailyForm);

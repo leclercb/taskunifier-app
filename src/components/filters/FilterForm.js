@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
 import { FilterPropType } from 'proptypes/FilterPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function FilterForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
+
+    const onCommit = () => onCommitForm(props.form, props.filter, props.updateFilter);
 
     return (
         <Form {...formItemLayout}>
@@ -22,7 +24,7 @@ function FilterForm(props) {
                         }
                     ]
                 })(
-                    <Input />
+                    <Input onBlur={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Color">
@@ -36,10 +38,10 @@ function FilterForm(props) {
                         }
                     ]
                 })(
-                    <ColorPicker />
+                    <ColorPicker onClose={onCommit} />
                 )}
             </Form.Item>
-            {props.extraFields ? props.extraFields(props, getFieldDecorator) : null}
+            {props.extraFields ? props.extraFields(props, getFieldDecorator, onCommit) : null}
         </Form>
     );
 }
@@ -51,7 +53,4 @@ FilterForm.propTypes = {
     extraFields: PropTypes.func
 };
 
-export default Form.create({
-    name: 'filter',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.filter, props.updateFilter)
-})(FilterForm);
+export default Form.create({ name: 'filter' })(FilterForm);

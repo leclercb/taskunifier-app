@@ -19,7 +19,7 @@ import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function Header(props) {
     const onAddNote = async () => {
-        const note = await props.addNote({ title: 'Untitled' });
+        const note = await props.addNote();
         props.setSelectedNoteIds([note.id]);
     };
 
@@ -32,9 +32,7 @@ function Header(props) {
     };
 
     const onAddTask = async () => {
-        let task = {
-            title: 'Untitled'
-        };
+        let task = {};
 
         const taskTemplate = props.taskTemplates.find(taskTemplate =>
             taskTemplate.id === props.selectedTaskFilter.taskTemplate);

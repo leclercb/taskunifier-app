@@ -4,7 +4,7 @@ import { Col, Form, Input, Row } from 'antd';
 import { getInputForType, getSelectForType } from 'data/DataFieldComponents';
 import { getConditionsFieldTypeForType, getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { onCommitForm } from 'utils/FormUtils';
 
 function FilterConditionForm(props) {
     const { getFieldDecorator } = props.form;
@@ -23,17 +23,13 @@ function FilterConditionForm(props) {
     const field = props.context.fields.find(field => field.id === props.condition.field);
     const conditionFieldType = getConditionsFieldTypeForType(field.type);
 
+    const onCommit = () => onCommitForm(props.form, props.condition, props.onUpdate, { assign: true });
+
     return (
         <Form {...formItemLayout}>
             <Row gutter={10}>
                 <Col span={6}>
-                    <Form.Item >
-                        {getFieldDecorator('title', {
-                            initialValue: field.title
-                        })(
-                            <Input disabled={true} />
-                        )}
-                    </Form.Item>
+                    <Input value={field.title} disabled={true} />
                 </Col>
                 <Col span={6}>
                     <Form.Item>
@@ -41,12 +37,12 @@ function FilterConditionForm(props) {
                             initialValue: props.condition.type,
                             rules: [
                                 {
-                                    required: true, 
+                                    required: true,
                                     message: 'The condition is required'
                                 }
                             ]
                         })(
-                            getSelectForType(field.type)
+                            getSelectForType(field.type, { onBlur: onCommit })
                         )}
                     </Form.Item>
                 </Col>
@@ -56,10 +52,15 @@ function FilterConditionForm(props) {
                             valuePropName: getValuePropNameForType(conditionFieldType),
                             initialValue: props.condition.value
                         })(
-                            getInputForType(conditionFieldType, {
-                                ...(field.type === conditionFieldType ? field.options : {}),
-                                extended: true
-                            })
+                            getInputForType(
+                                conditionFieldType,
+                                {
+                                    ...(field.type === conditionFieldType ? field.options : {}),
+                                    extended: true
+                                },
+                                {
+                                    onCommit
+                                })
                         )}
                     </Form.Item>
                 </Col>
@@ -78,7 +79,4 @@ FilterConditionForm.propTypes = {
     onUpdate: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'condition',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.condition, props.onUpdate, true)
-})(FilterConditionForm);
+export default Form.create({ name: 'condition' })(FilterConditionForm);

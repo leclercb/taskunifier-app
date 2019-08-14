@@ -1,4 +1,4 @@
-import { merge, setValue } from 'utils/ObjectUtils';
+import { merge } from 'utils/ObjectUtils';
 
 export function getDefaultFormItemLayout() {
     return {
@@ -34,57 +34,19 @@ export function getDefaultTailFormItemLayout() {
     };
 }
 
-export function onCommitForm(form, object, updateObject) {
+export function onCommitForm(form, object, updateObject, options = { assign: false, force: false }) {
     setTimeout(() => {
         form.validateFields((error, values) => {
-            if (error) {
+            if (error && (!options || options.force !== true)) {
                 return;
             }
 
-            updateObject(merge({ ...object }, values));
+            if (options && options.assign === true) {
+                Object.assign(object, values);
+                updateObject(object);
+            } else {
+                updateObject(merge({ ...object }, values));
+            }
         });
     });
-}
-
-export function onFieldChangeForObjectUpdates(fields, object, updateObject, assign = false) {
-    const values = {};
-    const errors = [];
-    let validating = false;
-
-    flattenFields(null, fields).forEach(field => {
-        setValue(values, field.name, field.value);
-        errors.push(...(field.errors || []));
-
-        if (field.validating) {
-            validating = true;
-        }
-    });
-
-    if (errors.length === 0 && !validating) {
-        if (assign) {
-            Object.assign(object, values);
-            updateObject(object);
-        } else {
-            const updatedObject = merge({ ...object }, values);
-            updateObject(updatedObject);
-        }
-    }
-}
-
-function flattenFields(path, object) {
-    if (typeof object !== 'object') {
-        return [];
-    }
-
-    if ('name' in object && 'value' in object && object.name === path) {
-        return [object];
-    }
-
-    const array = [];
-
-    Object.keys(object).forEach(key => {
-        array.push(...flattenFields((path ? path + '.' : '') + key, object[key]));
-    });
-
-    return array;
 }

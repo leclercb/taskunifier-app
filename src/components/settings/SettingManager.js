@@ -10,7 +10,7 @@ import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { getCategories, getCategorySettings } from 'data/DataSettings';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { getDefaultFormItemLayout, onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function SettingManager(props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
@@ -82,7 +82,15 @@ function SettingManager(props) {
                                                 getFieldDecorator(item.id, {
                                                     valuePropName: getValuePropNameForType(item.type),
                                                     initialValue: getSettingValue(item)
-                                                })(getInputForType(item.type, item.options, { disabled: item.editable === false }))
+                                                })(
+                                                    getInputForType(
+                                                        item.type,
+                                                        item.options,
+                                                        {
+                                                            disabled: item.editable === false,
+                                                            onCommit: () => onCommitForm(props.form, {}, props.updateSettings)
+                                                        })
+                                                )
                                             ) : null}
                                         </Form.Item>
                                     )}
@@ -106,10 +114,7 @@ SettingManager.propTypes = {
 export default withNoteFields(
     withTaskFields(
         withSettings(
-            Form.create({
-                name: 'settings',
-                onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.settings, props.updateSettings)
-            })(SettingManager),
+            Form.create({ name: 'settings' })(SettingManager),
             {
                 includeDispatcher: true
             }

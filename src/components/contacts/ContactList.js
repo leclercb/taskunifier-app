@@ -18,7 +18,11 @@ function ContactList(props) {
                     <List.Item
                         onClick={() => props.onContactSelection(item)}
                         className={item.id === props.selectedContactId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addContact(item), () => props.deleteContact(item.id))}>
+                        <LeftRight right={createActions(
+                            item,
+                            () => props.addContact(item),
+                            () => props.deleteContact(item.id),
+                            item => getContactTitle(item))}>
                             <Icon icon="circle" color={item.color} text={getContactTitle(item)} />
                         </LeftRight>
                     </List.Item>

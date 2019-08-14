@@ -1,22 +1,27 @@
+import sortBy from 'lodash/sortBy';
 import uuid from 'uuid';
 import { createDirectory, saveBufferToFile } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { delay } from 'utils/DelayUtils';
 import { join } from 'utils/ElectronUtils';
 import { printDocument, printTable } from 'utils/PrintUtils';
 
-export function printNotes(tasks) {
+export function printNotes(notes) {
     return (dispatch, getState) => {
         const state = getState();
+        const settings = getSettings(state);
+
+        const fields = getNoteFieldsIncludingDefaults(state);
+        const sortedFields = sortBy(fields, field => settings['noteColumnOrder_' + field.id] || 0);
+        const sortedAndFilteredFields = sortedFields.filter(field => settings['noteColumnVisible_' + field.id] !== false);
 
         return printObjects(
             dispatch,
             state,
-            getNoteFieldsIncludingDefaults(state),
-            tasks,
+            sortedAndFilteredFields,
+            notes,
             'notes.pdf',
             'Notes',
             'Print notes');
@@ -26,11 +31,16 @@ export function printNotes(tasks) {
 export function printTasks(tasks) {
     return (dispatch, getState) => {
         const state = getState();
+        const settings = getSettings(state);
+
+        const fields = getTaskFieldsIncludingDefaults(state);
+        const sortedFields = sortBy(fields, field => settings['taskColumnOrder_' + field.id] || 0);
+        const sortedAndFilteredFields = sortedFields.filter(field => settings['taskColumnVisible_' + field.id] !== false);
 
         return printObjects(
             dispatch,
             state,
-            getTaskFieldsIncludingDefaults(state),
+            sortedAndFilteredFields,
             tasks,
             'tasks.pdf',
             'Tasks',
@@ -39,11 +49,7 @@ export function printTasks(tasks) {
 }
 
 async function printObjects(dispatch, state, fields, objects, fileName, documentTitle, processTitle) {
-    const { ipcRenderer } = window.require('electron');
     const processId = uuid();
-    const path = join(getSettings(state).dataFolder, 'temp');
-    const file = join(path, fileName);
-    const doc = printDocument(documentTitle, 'l');
 
     dispatch(updateProcess({
         id: processId,
@@ -52,15 +58,20 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
     }));
 
     try {
-        await (delay);
-
+        const doc = printDocument(documentTitle, 'l');
         printTable(doc, null, fields, objects, state);
 
-        await createDirectory(path);
+        if (process.env.REACT_APP_MODE === 'electron') {
+            const { ipcRenderer } = window.require('electron');
+            const path = join(getSettings(state).dataFolder, 'temp');
+            const file = join(path, fileName);
 
-        await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));
-
-        ipcRenderer.send('pdf-viewer', file);
+            await createDirectory(path);
+            await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));
+            ipcRenderer.send('pdf-viewer', file);
+        } else {
+            doc.save(fileName);
+        }
 
         dispatch(updateProcess({
             id: processId,

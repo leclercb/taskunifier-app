@@ -1,4 +1,4 @@
-import { transform, isEqual, isObject } from 'lodash';
+import { isEqual, transform } from 'lodash';
 
 export function equals(object1, object2) {
     return JSON.stringify(object1) === JSON.stringify(object2);
@@ -99,7 +99,7 @@ export function setValue(object, path, value, safe = false) {
 export function diff(object, base) {
     return transform(object, (result, value, key) => {
         if (!isEqual(value, base[key])) {
-            result[key] = isObject(value) && isObject(base[key]) ? diff(value, base[key]) : value;
+            result[key] = value;
         }
     });
 }

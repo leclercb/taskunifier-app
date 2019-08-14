@@ -9,13 +9,13 @@ export function createAction(icon, text, onClick, color) {
         <Tooltip title={(
             <Icon
                 icon={icon}
-                color={color ? color : Constants.lightColor}
+                color={color ? color : Constants.lightIconColor}
                 text={text} />
         )}>
             <span>
                 <Icon
                     icon={icon}
-                    color={color ? color : Constants.fadeColor}
+                    color={color ? color : Constants.fadeIconColor}
                     className={color ? '' : 'object-actions'}
                     onClick={onClick} />
             </span>
@@ -23,10 +23,10 @@ export function createAction(icon, text, onClick, color) {
     );
 }
 
-export function createActions(item, onDuplicate, onDelete) {
+export function createActions(item, onDuplicate, onDelete, getTitle = item => item.title) {
     return (
         <React.Fragment>
-            {onDuplicate ? createAction('copy', `Duplicate "${item.title}" ?`, onDuplicate) : null}
+            {onDuplicate ? createAction('copy', `Duplicate "${getTitle(item)}" ?`, onDuplicate) : null}
             <Spacer />
             {onDelete ? (
                 <Popconfirm
@@ -34,13 +34,13 @@ export function createActions(item, onDuplicate, onDelete) {
                         <Icon
                             icon="trash-alt"
                             color={Constants.color}
-                            text={`Do you really want to delete "${item.title}" ?`} />
+                            text={`Do you really want to delete "${getTitle(item)}" ?`} />
                     )}
                     placement="right"
                     onConfirm={() => onDelete(item.id)}
                     okText="Yes"
                     cancelText="No">
-                    {createAction('trash-alt', `Delete "${item.title}" ?`)}
+                    {createAction('trash-alt', `Delete "${getTitle(item)}" ?`)}
                 </Popconfirm>
             ) : null}
         </React.Fragment>

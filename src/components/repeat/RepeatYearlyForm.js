@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, InputNumber, Radio } from 'antd';
-import { onFieldChangeForObjectUpdates } from 'utils/FormUtils';
+import { onCommitForm } from 'utils/FormUtils';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
 function RepeatYearlyForm(props) {
@@ -13,12 +13,14 @@ function RepeatYearlyForm(props) {
         lineHeight: '50px'
     };
 
+    const onCommit = () => onCommitForm(props.form, props.repeat, props.updateRepeat, { force: true });
+
     return (
         <Form>
             {getFieldDecorator('type', {
                 initialValue: props.repeat ? props.repeat.type : undefined
             })(
-                <Radio.Group>
+                <Radio.Group onChange={onCommit}>
                     <Radio style={radioStyle} value='everyXYears'>
                         <span style={{ marginRight: 10 }}>Every</span>
                         {getFieldDecorator('nbYears', {
@@ -30,7 +32,10 @@ function RepeatYearlyForm(props) {
                                 }
                             ]
                         })(
-                            <InputNumber min={1} disabled={props.repeat.type !== 'everyXYears'} />
+                            <InputNumber
+                                onBlur={onCommit}
+                                min={1}
+                                disabled={props.repeat.type !== 'everyXYears'} />
                         )}
                         <span style={{ marginLeft: 10 }}>year(s)</span>
                     </Radio>
@@ -46,7 +51,4 @@ RepeatYearlyForm.propTypes = {
     updateRepeat: PropTypes.func.isRequired
 };
 
-export default Form.create({
-    name: 'repeat',
-    onFieldsChange: (props, fields) => onFieldChangeForObjectUpdates(fields, props.repeat, props.updateRepeat)
-})(RepeatYearlyForm);
+export default Form.create({ name: 'repeat' })(RepeatYearlyForm);
