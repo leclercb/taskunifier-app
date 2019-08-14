@@ -1,4 +1,4 @@
-import { transform, isEqual } from 'lodash';
+import { isEqual, transform } from 'lodash';
 
 export function equals(object1, object2) {
     return JSON.stringify(object1) === JSON.stringify(object2);

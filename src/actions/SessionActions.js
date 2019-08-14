@@ -77,20 +77,16 @@ export function login(checkOnly = false) {
 
 export function logout() {
     return async dispatch => {
-        try {
-            await Auth.signOut();
+        await Auth.signOut();
 
-            await dispatch({
-                type: 'SET_AUTHENTICATED',
-                authenticated: false
-            });
+        await dispatch({
+            type: 'SET_AUTHENTICATED',
+            authenticated: false
+        });
 
-            await dispatch({
-                type: 'SET_USER',
-                user: null
-            });
-        } catch (error) {
-            throw error;
-        }
+        await dispatch({
+            type: 'SET_USER',
+            user: null
+        });
     };
 }

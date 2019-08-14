@@ -50,7 +50,7 @@ export function saveSettingsToServer(oldSettings, newSettings) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                title: `Save settings to server`,
+                title: 'Save settings to server',
                 error: error.toString()
             }));
 
