@@ -17,6 +17,7 @@ import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { TaskMetaDataPropType, TaskPropType } from 'proptypes/TaskPropTypes';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
+import 'components/tasks/table/TaskTable.css';
 
 function TaskTable(props) {
     const onUpdateTask = task => {
@@ -143,9 +144,17 @@ function TaskTable(props) {
 
                             return {
                                 color: foregroundColor,
-                                backgroundColor,
-                                textDecoration: task.completed ? 'line-through' : 'none'
+                                backgroundColor
                             };
+                        }}
+                        rowClassName={({ index }) => {
+                            const task = props.tasks[index];
+
+                            if (!task) {
+                                return '';
+                            }
+
+                            return task.completed ? 'task-completed' : '';
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
