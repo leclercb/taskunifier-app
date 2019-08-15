@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { notification } from 'antd';
+import { configure } from 'Amplify';
 import App from 'App';
 import PrivateComponent from 'components/common/PrivateComponent';
 import { store } from 'store/Store';
-import 'Amplify';
 import 'index.css';
 
 window.addEventListener('error', function (e) {
@@ -22,6 +22,8 @@ let element = (
 );
 
 if (process.env.REACT_APP_MODE !== 'electron') {
+    configure();
+
     element = (
         <PrivateComponent>
             {element}
