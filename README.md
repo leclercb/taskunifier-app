@@ -38,6 +38,12 @@ Download one of our binaries available for Windows, Linux and Mac.
 
 Binaries for *Windows*, *OS X* and *Linux* are available.
 
+# Run in development mode
+
+Run these two commands in two different terminals:
+* `yarn run react:start`
+* `yarn run electron:start`
+
 # Build
 
 * `yarn install`

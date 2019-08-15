@@ -306,40 +306,76 @@ export function getCategories() {
                     options: {
                         values: [
                             {
-                                title: 'DD/MM/YYYY',
+                                title: 'DD/MM/YYYY (18/01/2019)',
                                 value: 'DD/MM/YYYY'
                             },
                             {
-                                title: 'DD-MM-YYYY',
+                                title: 'DD-MM-YYYY (18-01-2019)',
                                 value: 'DD-MM-YYYY'
                             },
                             {
-                                title: 'DD.MM.YYYY',
+                                title: 'DD.MM.YYYY (18.01.2019)',
                                 value: 'DD.MM.YYYY'
                             },
                             {
-                                title: 'MM/DD/YYYY',
+                                title: 'MM/DD/YYYY (01/18/2019)',
                                 value: 'MM/DD/YYYY'
                             },
                             {
-                                title: 'MM-DD-YYYY',
+                                title: 'MM-DD-YYYY (01-18-2019)',
                                 value: 'MM-DD-YYYY'
                             },
                             {
-                                title: 'MM.DD.YYYY',
+                                title: 'MM.DD.YYYY (01.18.2019)',
                                 value: 'MM.DD.YYYY'
                             },
                             {
-                                title: 'YYYY/MM/DD',
+                                title: 'YYYY/MM/DD (2019/01/18)',
                                 value: 'YYYY/MM/DD'
                             },
                             {
-                                title: 'YYYY-MM-DD',
+                                title: 'YYYY-MM-DD (2019-01-18)',
                                 value: 'YYYY-MM-DD'
                             },
                             {
-                                title: 'YYYY.MM.DD',
+                                title: 'YYYY.MM.DD (2019.01.18)',
                                 value: 'YYYY.MM.DD'
+                            },
+                            {
+                                title: 'ddd DD/MM/YYYY (Fri 18/01/2019)',
+                                value: 'ddd DD/MM/YYYY'
+                            },
+                            {
+                                title: 'ddd DD-MM-YYYY (Fri 18-01-2019)',
+                                value: 'ddd DD-MM-YYYY'
+                            },
+                            {
+                                title: 'ddd DD.MM.YYYY (Fri 18.01.2019)',
+                                value: 'ddd DD.MM.YYYY'
+                            },
+                            {
+                                title: 'ddd MM/DD/YYYY (Fri 01/18/2019)',
+                                value: 'ddd MM/DD/YYYY'
+                            },
+                            {
+                                title: 'ddd MM-DD-YYYY (Fri 01-18-2019)',
+                                value: 'ddd MM-DD-YYYY'
+                            },
+                            {
+                                title: 'ddd MM.DD.YYYY (Fri 01.18.2019)',
+                                value: 'ddd MM.DD.YYYY'
+                            },
+                            {
+                                title: 'ddd YYYY/MM/DD (Fri 2019/01/18)',
+                                value: 'ddd YYYY/MM/DD'
+                            },
+                            {
+                                title: 'ddd YYYY-MM-DD (Fri 2019-01-18)',
+                                value: 'ddd YYYY-MM-DD'
+                            },
+                            {
+                                title: 'ddd YYYY.MM.DD (Fri 2019.01.18)',
+                                value: 'ddd YYYY.MM.DD'
                             }
                         ]
                     },
