@@ -17,7 +17,7 @@ import { getFoldersFilteredByNonArchived, getFoldersFilteredByVisibleState } fro
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
 import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
-import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks } from 'selectors/SettingSelectors';
+import { getCalendarDateMode, getSelectedCalendarView, getSettings, isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { getTasksFilteredBySelectedFilter, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
@@ -47,6 +47,7 @@ function withObjects(Component, options) {
     }, options || {});
 
     const mapStateToProps = state => {
+        const settings = getSettings(state);
         const data = {};
 
         if (options.includeContexts === true) {
@@ -74,7 +75,7 @@ function withObjects(Component, options) {
         }
 
         if (options.includeTags === true) {
-            data.tags = getTagsFromObjects(getNotesFilteredByVisibleState(state).concat(getTasksFilteredByVisibleState(state)));
+            data.tags = getTagsFromObjects(getNotesFilteredByVisibleState(state).concat(getTasksFilteredByVisibleState(state)), settings);
         }
 
         if (options.includeTaskTemplates === true) {

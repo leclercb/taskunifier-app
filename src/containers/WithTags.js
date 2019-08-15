@@ -4,6 +4,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 import { merge } from 'utils/ObjectUtils';
 import { getTagsFromIds, getTagsFromObjects } from 'utils/TagUtils';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getSettings } from 'selectors/SettingSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 
 function withTags(Component, options) {
@@ -14,7 +15,8 @@ function withTags(Component, options) {
     }, options || {});
 
     const mapStateToProps = (state, ownProps) => {
-        let tags = getTagsFromObjects(getNotesFilteredByVisibleState(state).concat(getTasksFilteredByVisibleState(state)));
+        const settings = getSettings(state);
+        let tags = getTagsFromObjects(getNotesFilteredByVisibleState(state).concat(getTasksFilteredByVisibleState(state)), settings);
 
         if (options.getId) {
             tags = getTagsFromIds(tags, options.getId(ownProps));

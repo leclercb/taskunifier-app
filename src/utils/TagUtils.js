@@ -8,7 +8,7 @@ export function getTagsFromIds(tags, tagIds) {
     return tags.filter(tag => tagIds.includes(tag.id));
 }
 
-export function getTagsFromObjects(objects) {
+export function getTagsFromObjects(objects, settings = {}) {
     let tags = [];
 
     objects.forEach(object => {
@@ -19,11 +19,19 @@ export function getTagsFromObjects(objects) {
 
     tags = tags.filter((tag, index) => tags.indexOf(tag) === index).sort();
 
-    return tags.map((tag, index) => ({
-        id: tag,
-        title: tag,
-        color: getColorFromIndex(index)
-    }));
+    return tags.map((tag, index) => {
+        let color = getColorFromIndex(index);
+
+        if (`tagColor_${btoa(tag)}` in settings) {
+            color = settings[`tagColor_${btoa(tag)}`];
+        }
+
+        return {
+            id: tag,
+            title: tag,
+            color
+        };
+    });
 }
 
 export function updateTag(object, tagId, newTagId) {
