@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
+import ColorPicker from 'components/common/ColorPicker';
+import Icon from 'components/common/Icon';
+import withSettings from 'containers/WithSettings';
 import { TagPropType } from 'proptypes/TagPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import { merge } from 'utils/ObjectUtils';
-import Icon from 'components/common/Icon';
 
 function TagForm(props) {
     const updateTag = () => {
@@ -17,6 +19,18 @@ function TagForm(props) {
             props.updateTag(updatedObject);
         });
     };
+
+    const onCommit = () => {
+        props.form.validateFields((error, values) => {
+            if (error) {
+                return;
+            }
+
+            props.updateSettings({
+                [`tagColor_${btoa(props.tag.title)}`]: values.color
+            });
+        });
+    }
 
     const { getFieldDecorator } = props.form;
 
@@ -40,8 +54,16 @@ function TagForm(props) {
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
                 <Button onClick={() => updateTag()}>
-                    <Icon icon="tag" text="Update tag in every task" />
+                    <Icon icon="tag" text="Change tag title in every task" />
                 </Button>
+            </Form.Item>
+            <Form.Item label="Color">
+                {getFieldDecorator('color', {
+                    initialValue: props.tag.color,
+                    valuePropName: 'color'
+                })(
+                    <ColorPicker onClose={onCommit} />
+                )}
             </Form.Item>
         </Form>
     );
@@ -50,7 +72,8 @@ function TagForm(props) {
 TagForm.propTypes = {
     form: PropTypes.object.isRequired,
     tag: TagPropType.isRequired,
-    updateTag: PropTypes.func.isRequired
+    updateTag: PropTypes.func.isRequired,
+    updateSettings: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'tag' })(TagForm);
+export default withSettings(Form.create({ name: 'tag' })(TagForm));
