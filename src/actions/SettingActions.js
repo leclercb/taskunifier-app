@@ -1,3 +1,4 @@
+import { Auth } from 'aws-amplify';
 import uuid from 'uuid';
 import {
     loadFromFile,
@@ -38,7 +39,9 @@ export function saveSettingsToServer(oldSettings, newSettings) {
             const result = await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/settings`,
                     data: diff(newSettings, oldSettings),

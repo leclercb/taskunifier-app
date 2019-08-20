@@ -1,3 +1,4 @@
+import { Auth } from 'aws-amplify';
 import { Promise } from 'bluebird';
 import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
@@ -76,7 +77,9 @@ export function loadFromServer(property, options = { skipSetLoaded: false }) {
             const result = await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: 'GET',
                     url: `${getConfig().apiUrl}/v1/${property}`,
                     responseType: 'json'
@@ -163,7 +166,9 @@ export function saveToServer(property, oldObject, newObject) {
             const result = await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: oldObject ? 'PUT' : 'POST',
                     url: `${getConfig().apiUrl}/v1/${property}` + (oldObject ? `/${oldObject.id}` : ''),
                     data: newObject,
@@ -194,7 +199,9 @@ export function deleteFromServer(property, objectId) {
             await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: 'DELETE',
                     url: `${getConfig().apiUrl}/v1/${property}/${objectId}`
                 });
