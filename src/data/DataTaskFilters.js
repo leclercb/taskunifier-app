@@ -83,7 +83,7 @@ export function getGeneralTaskFilters() {
             condition: {
                 id: '1',
                 field: 'dueDate',
-                type: 'equal',
+                type: 'dateEqual',
                 value: 0
             }
         },
@@ -95,7 +95,7 @@ export function getGeneralTaskFilters() {
             condition: {
                 id: '1',
                 field: 'dueDate',
-                type: 'before',
+                type: 'dateTimeBefore',
                 value: 0
             }
         },
@@ -111,7 +111,7 @@ export function getGeneralTaskFilters() {
                     {
                         id: '2',
                         field: 'dueDate',
-                        type: 'beforeOrEqual',
+                        type: 'dateBeforeOrEqual',
                         value: 3
                     },
                     {
