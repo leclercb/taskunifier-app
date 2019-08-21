@@ -20,30 +20,40 @@ function NoteSider(props) {
         props.setSelectedNoteFilter(event.item.props.filter);
     };
 
-    const onOpenChange = keys => {
-        setOpenKeys(keys);
+    const onOpenChange = key => {
+        const newOpenKeys = [...openKeys];
+
+        if (newOpenKeys.includes(key)) {
+            newOpenKeys.splice(newOpenKeys.indexOf(key), 1);
+        } else {
+            newOpenKeys.push(key);
+        }
+
+        setOpenKeys(newOpenKeys);
     };
 
-    const createCategorySubMenu = (text, icon, onAdd) => {
+    const createCategorySubMenu = (text, icon, onManage, onOpenChange) => {
         return (
-            <LeftRight right={onAdd ? (
-                <Icon
-                    icon="plus"
-                    color={Constants.fadeIconColor}
-                    className="object-actions"
-                    onClick={() => onAdd()} />
-            ) : null}>
+            <LeftRight
+                onClickLeft={onOpenChange}
+                right={onManage ? (
+                    <Icon
+                        icon="cubes"
+                        color={Constants.fadeIconColor}
+                        className="object-actions"
+                        onClick={() => onManage()} />
+                ) : null}>
                 <Icon icon={icon} text={text} />
             </LeftRight>
         );
     };
 
-    const createObjectContextMenu = (object, onAdd, onEdit) => {
+    const createObjectContextMenu = (object, onManage, onEdit) => {
         return (
             <RCMenu id={'menu_' + object.id}>
-                {onAdd ? (
-                    <RCItem onClick={() => onAdd()}>
-                        <Icon icon="plus" text="Add" />
+                {onManage ? (
+                    <RCItem onClick={() => onManage()}>
+                        <Icon icon="cubes" text="Manage" />
                     </RCItem>
                 ) : null}
                 {onEdit ? (
@@ -78,7 +88,7 @@ function NoteSider(props) {
         );
     };
 
-    const createObjectMenuItem = (object, noteFilter, onAdd, onEdit, onDelete) => {
+    const createObjectMenuItem = (object, noteFilter, onManage, onEdit, onDelete) => {
         return (
             <Menu.Item key={object.id} filter={noteFilter}>
                 <RCMenuProvider id={'menu_' + object.id}>
@@ -93,12 +103,12 @@ function NoteSider(props) {
                         </LeftRight>
                     </div>
                 </RCMenuProvider>
-                {createObjectContextMenu(object, onAdd, onEdit)}
+                {createObjectContextMenu(object, onManage, onEdit)}
             </Menu.Item>
         );
     };
 
-    const addObject = category => {
+    const manageObjects = category => {
         props.setCategoryManagerOptions({
             visible: true,
             category
@@ -113,7 +123,7 @@ function NoteSider(props) {
         });
     };
 
-    const addNoteFilter = () => {
+    const manageNoteFilters = () => {
         props.setNoteFilterManagerOptions({
             visible: true
         });
@@ -171,7 +181,6 @@ function NoteSider(props) {
                 selectedKeys={[props.selectedNoteFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
-                onOpenChange={onOpenChange}
                 mode="inline"
                 style={{ height: '100%' }}>
                 <Menu.Item
@@ -190,7 +199,10 @@ function NoteSider(props) {
                             </Tooltip>
                         )} />
                 </Menu.Item>
-                <Menu.SubMenu key="general" title={<Icon icon="home" text="General" />}>
+                <Menu.SubMenu
+                    key="general"
+                    title={<Icon icon="home" text="General" />}
+                    onTitleClick={({ key }) => onOpenChange(key)}>
                     {getGeneralNoteFilters().map(noteFilter => (
                         <Menu.Item
                             key={noteFilter.id}
@@ -204,15 +216,19 @@ function NoteSider(props) {
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
-                <Menu.SubMenu key="folders" title={createCategorySubMenu('Folders', 'folder', () => addObject('folders'))}>
+                <Menu.SubMenu
+                    key="folders"
+                    title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
                     {props.folders.map(folder => createObjectMenuItem(
                         folder,
                         createNoteFilterForObject(folder, 'folder'),
-                        () => addObject('folders'),
+                        () => manageObjects('folders'),
                         () => editObject('folders', folder.id),
                         () => props.deleteFolder(folder.id)))}
                 </Menu.SubMenu>
-                <Menu.SubMenu key="tags" title={createCategorySubMenu('Tags', 'tag', null)}>
+                <Menu.SubMenu
+                    key="tags"
+                    title={createCategorySubMenu('Tags', 'tag', null, () => onOpenChange('tags'))}>
                     {props.tags.map(tag => createObjectMenuItem(
                         tag,
                         createNoteFilterForObject(tag, 'tags', {
@@ -225,11 +241,13 @@ function NoteSider(props) {
                         () => editObject('tags', tag.id),
                         () => props.deleteTag(tag.id)))}
                 </Menu.SubMenu>
-                <Menu.SubMenu key="noteFilters" title={createCategorySubMenu('Note Filters', 'filter', () => addNoteFilter())}>
+                <Menu.SubMenu
+                    key="noteFilters"
+                    title={createCategorySubMenu('Note Filters', 'filter', () => manageNoteFilters(), () => onOpenChange('noteFilters'))}>
                     {props.noteFilters.map(noteFilter => createObjectMenuItem(
                         noteFilter,
                         noteFilter,
-                        () => addNoteFilter(),
+                        () => manageNoteFilters(),
                         () => editNoteFilter(noteFilter.id),
                         () => props.deleteNoteFilter(noteFilter.id)))}
                 </Menu.SubMenu>

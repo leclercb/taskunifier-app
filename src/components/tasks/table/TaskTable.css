@@ -1,0 +1,3 @@
+.task-completed .cell-renderer-value-wrap {
+    text-decoration: line-through;
+}

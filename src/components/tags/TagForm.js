@@ -30,7 +30,7 @@ function TagForm(props) {
                 [`tagColor_${btoa(props.tag.title)}`]: values.color
             });
         });
-    }
+    };
 
     const { getFieldDecorator } = props.form;
 

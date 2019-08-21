@@ -20,6 +20,7 @@ export const TaskPropType = PropTypes.shape({
     dueDate: PropTypes.string,
     completionDate: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.string.isRequired),
+    parent: PropTypes.string,
     context: PropTypes.string,
     folder: PropTypes.string,
     goal: PropTypes.string,

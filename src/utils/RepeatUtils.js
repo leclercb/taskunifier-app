@@ -270,23 +270,23 @@ export function getWeekNumbers() {
     return [
         {
             label: 'first',
-            value: 'first'
+            value: '1'
         },
         {
             label: 'second',
-            value: 'second'
+            value: '2'
         },
         {
             label: 'third',
-            value: 'third'
+            value: '3'
         },
         {
             label: 'fourth',
-            value: 'fourth'
+            value: '4'
         },
         {
             label: 'last',
-            value: 'last'
+            value: '-1'
         }
     ];
 }

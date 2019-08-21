@@ -1,3 +1,4 @@
+import { Auth } from 'aws-amplify';
 import { Promise } from 'bluebird';
 import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
@@ -76,7 +77,9 @@ export function loadFromServer(property, options = { skipSetLoaded: false }) {
             const result = await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: 'GET',
                     url: `${getConfig().apiUrl}/v1/${property}`,
                     responseType: 'json'
@@ -139,34 +142,24 @@ export function saveToServer(property, oldObject, newObject) {
         const settings = getSettings(state);
         const processId = uuid();
 
-        newObject = { ...newObject };
+        const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
 
-        delete newObject.refIds;
-        delete newObject.state;
-        delete newObject.creationDate;
-        delete newObject.updateDate;
-
-        if (oldObject) {
-            oldObject = { ...oldObject };
-
-            delete oldObject.refIds;
-            delete oldObject.state;
-            delete oldObject.creationDate;
-            delete oldObject.updateDate;
-
-            newObject = diff(newObject, oldObject);
-        } else {
-            delete newObject.id;
-        }
+        delete diffObject.id;
+        delete diffObject.refIds;
+        delete diffObject.state;
+        delete diffObject.creationDate;
+        delete diffObject.updateDate;
 
         try {
             const result = await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: oldObject ? 'PUT' : 'POST',
                     url: `${getConfig().apiUrl}/v1/${property}` + (oldObject ? `/${oldObject.id}` : ''),
-                    data: newObject,
+                    data: diffObject,
                     responseType: 'json'
                 });
 
@@ -194,7 +187,9 @@ export function deleteFromServer(property, objectId) {
             await sendRequest(
                 settings,
                 {
-                    withCredentials: true,
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
                     method: 'DELETE',
                     url: `${getConfig().apiUrl}/v1/${property}/${objectId}`
                 });

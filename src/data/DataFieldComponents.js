@@ -164,6 +164,7 @@ export function getFieldComponents(type, options) {
                     if (extended) {
                         return (
                             <ExtendedDatePicker
+                                onBlur={props.onCommit}
                                 onOpenChange={status => {
                                     if (props.onCommit && !status) {
                                         props.onCommit();
@@ -206,6 +207,7 @@ export function getFieldComponents(type, options) {
                     if (extended) {
                         return (
                             <ExtendedDatePicker
+                                onBlur={props.onCommit}
                                 onOpenChange={status => {
                                     if (props.onCommit && !status) {
                                         props.onCommit();
@@ -768,12 +770,14 @@ export function getFieldComponents(type, options) {
     }
 
     configuration.select = props => (
-        <Select dropdownMatchSelectWidth={false} placeholder="Condition">
-            {getFieldType(type).conditions.map(condition => (
+        <Select
+            dropdownMatchSelectWidth={false}
+            placeholder="Condition"
+            {...props}>
+            {getFieldType(type).conditions.filter(condition => condition.visible !== false).map(condition => (
                 <Select.Option
                     key={condition.type}
-                    value={condition.type}
-                    {...props}>
+                    value={condition.type}>
                     {condition.title}
                 </Select.Option>
             ))}

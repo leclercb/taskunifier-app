@@ -29,7 +29,9 @@ function FilterConditionForm(props) {
         <Form {...formItemLayout}>
             <Row gutter={10}>
                 <Col span={6}>
-                    <Input value={field.title} disabled={true} />
+                    <Form.Item>
+                        <Input value={field.title} disabled={true} />
+                    </Form.Item>
                 </Col>
                 <Col span={6}>
                     <Form.Item>
