@@ -72,7 +72,7 @@ function LinkedObjectTable(props) {
                         label={data.label}
                         sortBy={data.sortBy}
                         sortDirection={data.sortDirection}
-                        onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
+                        onResize={data => onResize(data, field.id, width + data.deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
                 cellRenderer={({ cellData, rowData }) => (

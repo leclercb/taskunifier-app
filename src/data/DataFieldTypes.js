@@ -31,13 +31,12 @@ import {
     toStringBoolean,
     toStringContact,
     toStringDate,
+    toStringDuration,
     toStringGoalLevel,
-    toStringLength,
     toStringNumber,
     toStringObject,
     toStringPassword,
     toStringPriority,
-    toStringReminder,
     toStringRepeatFrom,
     toStringSortDirection,
     toStringStatus,
@@ -948,9 +947,9 @@ export function getFieldType(type, options) {
                 allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
-                valuePropName: 'length',
+                valuePropName: 'duration',
                 compare: (a, b) => compareNumbers(a, b),
-                toString: value => toStringLength(value),
+                toString: value => toStringDuration(value),
                 conditions: [
                     {
                         type: 'equal',
@@ -1607,9 +1606,9 @@ export function getFieldType(type, options) {
                 allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
-                valuePropName: 'value',
+                valuePropName: 'duration',
                 compare: (a, b) => compareNumbers(a, b),
-                toString: value => toStringReminder(value),
+                toString: value => toStringDuration(value),
                 conditions: [
                     {
                         type: 'equal',

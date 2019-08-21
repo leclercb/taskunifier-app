@@ -34,14 +34,22 @@ export function toStringDate(value, format) {
     return moment(value).format(format);
 }
 
-export function toStringLength(value) {
+export function toStringDuration(value) {
     if (typeof value === 'undefined' || value === null) {
         return '';
     }
 
-    const minutes = Math.floor(value / 60).toString().padStart(2, '0');
-    const seconds = (value % 60).toString().padStart(2, '0');
-    return `${minutes}:${seconds}`;
+    const days = Math.floor(value / 86400);
+    const hours = Math.floor((value % 86400) / 3600);
+    const minutes = Math.floor(((value % 86400) % 3600) / 60);
+
+    let str = '';
+
+    str += days.toString().padStart(2, '0') + 'd ';
+    str += hours.toString().padStart(2, '0') + 'h';
+    str += minutes.toString().padStart(2, '0') + 'm';
+
+    return str.trim();
 }
 
 export function toStringArray(value) {
@@ -84,28 +92,6 @@ export function toStringRepeatFrom(value) {
     }
 }
 
-export function toStringReminder(value) {
-    const days = Math.floor(value / 1440);
-    const hours = Math.floor((value % 1440) / 60);
-    const minutes = value % 60;
-
-    let str = '';
-
-    if (days > 0) {
-        str += ' ' + days + ' day' + (days > 1 ? 's' : '');
-    }
-
-    if (hours > 0) {
-        str += ' ' + hours + ' hour' + (hours > 1 ? 's' : '');
-    }
-
-    if (minutes > 0) {
-        str += ' ' + minutes + ' minute' + (minutes > 1 ? 's' : '');
-    }
-
-    return str.trim();
-}
-
 export function toStringStatus(value) {
     const status = getStatuses().find(status => status.id === value);
     return status ? status.title : '';
@@ -122,7 +108,7 @@ export function toStringTimer(timer) {
         value = value + moment().diff(moment(timer.startDate), 'seconds');
     }
 
-    return toStringLength(value);
+    return toStringDuration(value);
 }
 
 export function toStringGoalLevel(value) {

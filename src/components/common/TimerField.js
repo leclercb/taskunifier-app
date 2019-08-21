@@ -5,33 +5,45 @@ import Icon from 'components/common/Icon';
 import MaskTextField from 'components/common/MaskTextField';
 import Spacer from 'components/common/Spacer';
 import { TimerPropType } from 'proptypes/TimerPropTypes';
+import { toStringDuration } from 'utils/StringUtils';
 
 class TimerField extends React.Component {
     constructor(props) {
         super(props);
 
-        this.maskTextFieldRef = React.createRef();
+        this.inputRef = React.createRef();
 
         this.focus = this.focus.bind(this);
-        this.formatTime = this.formatTime.bind(this);
-        this.parseTime = this.parseTime.bind(this);
+        this.formatDuration = this.formatDuration.bind(this);
+        this.parseDuration = this.parseDuration.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
     focus() {
-        this.maskTextFieldRef.current.focus();
+        this.inputRef.current.focus();
     }
 
-    formatTime(value) {
-        const minutes = Math.floor(value / 60).toString().padStart(2, '0');
-        const seconds = (value % 60).toString().padStart(2, '0');
-        return `${minutes}:${seconds}`;
+    formatDuration(value) {
+        return toStringDuration(value);
     }
 
-    parseTime(value) {
-        const tokens = value.split(':');
-        return (Number(tokens[0]) * 60) + Number(tokens[1]);
+    parseDuration(match) {
+        let value = 0;
+
+        if (match[1]) {
+            value += Number(match[1]) * 86400;
+        }
+
+        if (match[2]) {
+            value += Number(match[2]) * 3600;
+        }
+
+        if (match[3]) {
+            value += Number(match[3]) * 60;
+        }
+
+        return value;
     }
 
     onClick() {
@@ -54,17 +66,17 @@ class TimerField extends React.Component {
     }
 
     onChange(value) {
-        if (!value.match(/^[0-9]{2}:[0-9]{2}$/)) {
+        const match = value.match(/^([0-9]{2})d ([0-9]{2})h([0-9]{2})m$/);
+
+        if (!match) {
             return;
         }
 
-        const timer = {
-            value: this.parseTime(value),
-            startDate: this.props.timer && this.props.timer.startDate ? moment().toISOString() : null
-        };
-
         if (this.props.onChange) {
-            this.props.onChange(timer);
+            this.props.onChange({
+                value: this.parseDuration(match),
+                startDate: this.props.timer && this.props.timer.startDate ? moment().toISOString() : null
+            });
         }
     }
 
@@ -73,6 +85,8 @@ class TimerField extends React.Component {
             value: 0,
             startDate: null
         };
+
+        const formattedDuration = this.formatDuration(timer.value);
 
         const restProps = { ...this.props };
         delete restProps.timer;
@@ -88,14 +102,14 @@ class TimerField extends React.Component {
                     icon={timer.startDate ? 'pause' : 'play'}
                     style={{ cursor: 'pointer' }}
                     onIconClick={this.onClick}
-                    text={readOnly ? this.formatTime(timer.value) : null} />
+                    text={readOnly ? formattedDuration : null} />
                 {!readOnly && (
                     <React.Fragment>
                         <Spacer />
                         <MaskTextField
-                            ref={this.maskTextFieldRef}
-                            mask="11:11"
-                            value={this.formatTime(timer.value)}
+                            ref={this.inputRef}
+                            mask="11d 11h11m"
+                            value={formattedDuration}
                             onChange={e => this.onChange(e.target.value)}
                             style={{ width: 100 }}
                             {...restProps} />
