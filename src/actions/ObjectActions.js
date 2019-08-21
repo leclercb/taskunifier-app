@@ -67,7 +67,7 @@ export function addObject(
         color: Constants.defaultObjectColor
     }) {
     return async (dispatch, getState) => {
-        const id = uuid();
+        let id = uuid();
 
         await dispatch({
             type: 'ADD_OBJECT',
@@ -82,11 +82,14 @@ export function addObject(
             options
         });
 
-        const newObject = getObjectById(getState(), property, id);
+        let newObject = getObjectById(getState(), property, id);
 
         if (process.env.REACT_APP_MODE !== 'electron') {
             const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
-            await dispatch(changeId(property, newObject.id, createdObject.id));
+            id = createdObject.id;
+            
+            await dispatch(changeId(property, newObject.id, id));
+            newObject = getObjectById(getState(), property, id);
         }
 
         return newObject;
