@@ -120,7 +120,7 @@ function SorterTable(props) {
                 <Table
                     width={tableWidth}
                     height={150}
-                    rowHeight={38}
+                    rowHeight={32}
                     headerHeight={20}
                     rowCount={props.sorters.length}
                     rowGetter={({ index }) => props.sorters[index]}

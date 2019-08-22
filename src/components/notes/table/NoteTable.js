@@ -76,7 +76,7 @@ function NoteTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={38}
+                        rowHeight={32}
                         headerHeight={20}
                         rowCount={props.notes.length}
                         rowGetter={({ index }) => props.notes[index]}

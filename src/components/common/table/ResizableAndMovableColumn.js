@@ -7,9 +7,14 @@ import DraggableElement from 'components/common/table/DraggableElement';
 import { move } from 'utils/ArrayUtils';
 
 export const resizeHandler = (prefix, updateSettings) => (data, fieldId, width) => {
-    updateSettings({
-        [prefix + fieldId]: width
-    }, { skipServerUpdate: !data.stop });
+    updateSettings(
+        {
+            [prefix + fieldId]: width
+        },
+        {
+            skipServerUpdate: !data.stop,
+            skipDiff: true
+        });
 };
 
 export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFieldId, dropFieldId) => {

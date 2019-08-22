@@ -95,7 +95,7 @@ function LinkedObjectTable(props) {
                         <Table
                             width={tableWidth}
                             height={height}
-                            rowHeight={38}
+                            rowHeight={32}
                             headerHeight={20}
                             rowCount={props.linkedObjects.length}
                             rowGetter={({ index }) => props.linkedObjects[index]}
