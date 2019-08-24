@@ -10,7 +10,7 @@ import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
+import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
 function BatchEditTasksManager(props) {
