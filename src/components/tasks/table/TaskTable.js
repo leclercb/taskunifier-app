@@ -124,7 +124,7 @@ function TaskTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={32}
+                        rowHeight={props.settings.taskTableRowHeight}
                         headerHeight={20}
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}

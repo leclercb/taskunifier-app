@@ -520,7 +520,7 @@ export function getCategories() {
         {
             id: 'noteTable',
             title: 'Note table',
-            icon: 'book',
+            icon: 'table',
             type: 'noteField',
             settings: [
                 {
@@ -567,7 +567,7 @@ export function getCategories() {
         {
             id: 'taskTable',
             title: 'Task table',
-            icon: 'tasks',
+            icon: 'table',
             type: 'taskField',
             settings: [
                 {
@@ -631,7 +631,7 @@ export function getCategories() {
         {
             id: 'taskFields',
             title: 'Task fields',
-            icon: 'tasks',
+            icon: 'columns',
             type: 'taskField',
             settings: [
                 {
@@ -666,6 +666,14 @@ export function getCategories() {
                     value: false,
                     editable: false,
                     visible: false
+                },
+                {
+                    id: 'taskFieldVisible_completionDate',
+                    title: 'Show field "Completion date"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
                 }
             ],
             createSetting: field => ({
@@ -677,10 +685,32 @@ export function getCategories() {
             })
         },
         {
-            id: 'colors',
-            title: 'Colors',
+            id: 'theme',
+            title: 'Theme & Colors',
             icon: 'paint-roller',
             settings: [
+                {
+                    id: 'noteTableRowHeight',
+                    title: 'Note Table - Row Height',
+                    type: 'number',
+                    value: 32,
+                    editable: true,
+                    options: {
+                        min: 28,
+                        max: 50
+                    }
+                },
+                {
+                    id: 'taskTableRowHeight',
+                    title: 'Task Table - Row Height',
+                    type: 'number',
+                    value: 32,
+                    editable: true,
+                    options: {
+                        min: 28,
+                        max: 50
+                    }
+                },
                 {
                     id: 'showImportanceColor',
                     title: 'Show importance color',

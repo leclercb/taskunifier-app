@@ -50,6 +50,7 @@ import {
     faSpinner,
     faStar,
     faSyncAlt,
+    faTable,
     faTag,
     faTasks,
     faThumbtack,
@@ -106,6 +107,7 @@ library.add(faSearch);
 library.add(faSpinner);
 library.add(faStar);
 library.add(faSyncAlt);
+library.add(faTable);
 library.add(faTag);
 library.add(faTasks);
 library.add(faThumbtack);
