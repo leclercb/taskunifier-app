@@ -183,7 +183,7 @@ function Header(props) {
                 createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length !== 1)
+                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length <= 1)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)

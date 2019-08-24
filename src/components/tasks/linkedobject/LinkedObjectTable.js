@@ -106,13 +106,16 @@ function LinkedObjectTable(props) {
                                     return {};
                                 }
 
+                                let foregroundColor = 'initial';
                                 let backgroundColor = getLinkedObjectBackgroundColor(linkedObject, index, props.settings);
 
                                 if (selectedLinkedObjectIds.includes(linkedObject.id)) {
-                                    backgroundColor = Constants.selectionColor;
+                                    foregroundColor = Constants.selectionForegroundColor;
+                                    backgroundColor = Constants.selectionBackgroundColor;
                                 }
 
                                 return {
+                                    color: foregroundColor,
                                     backgroundColor
                                 };
                             }}

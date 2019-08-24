@@ -114,7 +114,7 @@ function TaskTable(props) {
                 }} />
         );
     });
-
+    
     return (
         <div
             className="joyride-task-table"
@@ -139,7 +139,8 @@ function TaskTable(props) {
                             let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
 
                             if (props.selectedTaskIds.includes(task.id)) {
-                                backgroundColor = Constants.selectionColor;
+                                foregroundColor = Constants.selectionForegroundColor;
+                                backgroundColor = Constants.selectionBackgroundColor;
                             }
 
                             return {

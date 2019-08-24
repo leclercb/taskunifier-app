@@ -142,9 +142,10 @@ ant-input:focus {
 /* TaskUnifier */
 
 .selected-list-item {
-    background-color: #e6f6ff;
+    background-color: #0e67c4;
+    color: #ffffff;
 }
 
 .object-actions:hover {
-    color: #0e67c4 !important;
+    color: #e6f6ff !important;
 }

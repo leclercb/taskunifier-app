@@ -131,13 +131,16 @@ function SorterTable(props) {
                             return {};
                         }
 
+                        let foregroundColor = 'initial';
                         let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
 
                         if (selectedSorterIds.includes(sorter.id)) {
-                            backgroundColor = Constants.selectionColor;
+                            foregroundColor = Constants.selectionForegroundColor;
+                            backgroundColor = Constants.selectionBackgroundColor;
                         }
 
                         return {
+                            color: foregroundColor,
                             backgroundColor
                         };
                     }}

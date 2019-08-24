@@ -6,8 +6,8 @@ import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskEditionForm(props) {
     const { getFieldDecorator } = props.form;

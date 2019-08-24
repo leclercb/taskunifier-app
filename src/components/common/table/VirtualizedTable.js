@@ -15,7 +15,7 @@ export const multiSelectionHandler = (getId, selectedIds, setSelectedIds) => ({ 
     if (document &&
         document.activeElement &&
         document.activeElement !== document.body &&
-        document.activeElement.className !== 'ReactVirtualized__Table__row') {
+        (!document.activeElement.className || !document.activeElement.className.includes('ReactVirtualized__Table__row'))) {
         return;
     }
 

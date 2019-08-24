@@ -87,13 +87,16 @@ function NoteTable(props) {
                                 return {};
                             }
 
+                            let foregroundColor = 'initial';
                             let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
 
                             if (props.selectedNoteIds.includes(note.id)) {
-                                backgroundColor = Constants.selectionColor;
+                                foregroundColor = Constants.selectionForegroundColor;
+                                backgroundColor = Constants.selectionBackgroundColor;
                             }
 
                             return {
+                                color: foregroundColor,
                                 backgroundColor
                             };
                         }}
