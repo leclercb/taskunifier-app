@@ -1,15 +1,22 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import { AutoSizer, Column, Table } from 'react-virtualized';
-import withTaskFields from 'containers/WithTaskFields';
-import withTasks from 'containers/WithTasks';
-import withSettings from 'containers/WithSettings';
-import withSize from 'containers/WithSize';
+import {
+    Item as RCItem,
+    Menu as RCMenu,
+    MenuProvider as RCMenuProvider,
+    Separator as RCSeparator
+} from 'react-contexify';
+import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
+import Icon from 'components/common/Icon';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import Constants from 'constants/Constants';
+import withTaskFields from 'containers/WithTaskFields';
+import withTasks from 'containers/WithTasks';
+import withSettings from 'containers/WithSettings';
+import withSize from 'containers/WithSize';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
@@ -114,11 +121,23 @@ function TaskTable(props) {
                 }} />
         );
     });
-    
+
     return (
         <div
             className="joyride-task-table"
             style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
+            <RCMenu id="task_table_row_menu">
+                <RCItem onClick={({ props: rowData }) => console.log(rowData)}>
+                    <Icon icon="edit" text="Edit" />
+                </RCItem>
+                <RCItem onClick={({ props: rowData }) => console.log(rowData)}>
+                    <Icon icon="calendar-alt" text="Postpone" />
+                </RCItem>
+                <RCSeparator />
+                <RCItem onClick={({ props: rowData }) => console.log(rowData)}>
+                    <Icon icon="trash-alt" text="Remove" />
+                </RCItem>
+            </RCMenu>
             <AutoSizer>
                 {({ height }) => (
                     <Table
@@ -128,6 +147,11 @@ function TaskTable(props) {
                         headerHeight={20}
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}
+                        rowRenderer={props => (
+                            <RCMenuProvider id="task_table_row_menu" data={props.rowData}>
+                                {defaultTableRowRenderer(props)}
+                            </RCMenuProvider>
+                        )}
                         rowStyle={({ index }) => {
                             const task = props.tasks[index];
 

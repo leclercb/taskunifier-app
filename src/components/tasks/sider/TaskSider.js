@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Checkbox, Input, Menu, Popconfirm, Radio, Tooltip } from 'antd';
-import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
+import {
+    Item as RCItem,
+    Menu as RCMenu,
+    MenuProvider as RCMenuProvider
+} from 'react-contexify';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Spacer from 'components/common/Spacer';
