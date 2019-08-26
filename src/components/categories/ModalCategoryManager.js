@@ -22,6 +22,8 @@ function ModalCategoryManager(props) {
             visible={props.categoryManager.visible}
             width="80%"
             closable={false}
+            onOk={onCloseCategoryManager}
+            onCancel={onCloseCategoryManager}
             footer={(
                 <React.Fragment>
                     <HelpButton id="categoryManager" />

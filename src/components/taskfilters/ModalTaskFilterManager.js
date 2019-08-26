@@ -20,6 +20,8 @@ function ModalTaskFilterManager(props) {
             visible={props.taskFilterManager.visible}
             width="80%"
             closable={false}
+            onOk={onCloseTaskFilterManager}
+            onCancel={onCloseTaskFilterManager}
             footer={(
                 <Button onClick={onCloseTaskFilterManager}>
                     Close

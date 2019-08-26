@@ -20,6 +20,8 @@ function ModalNoteFilterManager(props) {
             visible={props.noteFilterManager.visible}
             width="80%"
             closable={false}
+            onOk={onCloseNoteFilterManager}
+            onCancel={onCloseNoteFilterManager}
             footer={(
                 <Button onClick={onCloseNoteFilterManager}>
                     Close

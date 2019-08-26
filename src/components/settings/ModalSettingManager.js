@@ -6,7 +6,7 @@ import Icon from 'components/common/Icon';
 import SettingManager from 'components/settings/SettingManager';
 
 function ModalSettingManager(props) {
-    const onOk = () => {
+    const onClose = () => {
         props.setSettingManagerOptions({ visible: false });
     };
 
@@ -16,9 +16,10 @@ function ModalSettingManager(props) {
             visible={props.settingManager.visible}
             width="80%"
             closable={false}
-            onOk={onOk}
+            onOk={onClose}
+            onCancel={onClose}
             footer={(
-                <Button onClick={onOk}>
+                <Button onClick={onClose}>
                     Close
                 </Button>
             )}>
