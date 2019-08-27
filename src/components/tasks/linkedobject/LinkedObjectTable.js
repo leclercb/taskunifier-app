@@ -25,8 +25,7 @@ function LinkedObjectTable(props) {
         props.updateLinkedObjects([
             ...props.linkedObjects,
             {
-                id: uuid(),
-                link: null
+                id: uuid()
             }
         ]);
     };

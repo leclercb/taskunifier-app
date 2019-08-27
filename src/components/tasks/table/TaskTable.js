@@ -1,18 +1,14 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
+import moment from 'moment';
 import PropTypes from 'prop-types';
-import {
-    Item as RCItem,
-    Menu as RCMenu,
-    MenuProvider as RCMenuProvider,
-    Separator as RCSeparator
-} from 'react-contexify';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
-import Icon from 'components/common/Icon';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
+import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
+import withApp from 'containers/WithApp';
 import withTaskFields from 'containers/WithTaskFields';
 import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
@@ -27,6 +23,61 @@ import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUti
 import 'components/tasks/table/TaskTable.css';
 
 function TaskTable(props) {
+    const onMenuAction = action => {
+        const tasks = props.tasks.filter(task => props.selectedTaskIds.includes(task.id));
+
+        switch (action.type) {
+            case 'batchEdit':
+                onBatchEditTask();
+                break;
+            case 'edit':
+                tasks.forEach(task => onEditTask(task));
+                break;
+            case 'remove':
+                tasks.forEach(task => onRemoveTask(task));
+                break;
+            case 'postponeStartDate':
+                tasks.forEach(task => onPostponeStartDate(task, action.amount, action.unit));
+                break;
+            case 'postponeDueDate':
+                tasks.forEach(task => onPostponeDueDate(task, action.amount, action.unit));
+                break;
+            default:
+                break;
+        };
+    };
+
+    const onBatchEditTask = task => {
+        props.setBatchEditTasksManagerOptions({
+            visible: true
+        });
+    };
+
+    const onEditTask = task => {
+        props.setTaskEditionManagerOptions({
+            visible: true,
+            taskId: task.id
+        });
+    };
+
+    const onRemoveTask = task => {
+        props.deleteTask(task.id);
+    };
+
+    const onPostponeStartDate = (task, amount, unit) => {
+        props.updateTask({
+            ...task,
+            startDate: moment(task.startDate ? task.startDate : undefined).add(amount, unit).toISOString()
+        })
+    };
+
+    const onPostponeDueDate = (task, amount, unit) => {
+        props.updateTask({
+            ...task,
+            dueDate: moment(task.dueDate ? task.dueDate : undefined).add(amount, unit).toISOString()
+        })
+    };
+
     const onUpdateTask = task => {
         props.updateTask(task);
     };
@@ -126,18 +177,6 @@ function TaskTable(props) {
         <div
             className="joyride-task-table"
             style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
-            <RCMenu id="task_table_row_menu">
-                <RCItem onClick={({ props: rowData }) => console.log(rowData)}>
-                    <Icon icon="edit" text="Edit" />
-                </RCItem>
-                <RCItem onClick={({ props: rowData }) => console.log(rowData)}>
-                    <Icon icon="calendar-alt" text="Postpone" />
-                </RCItem>
-                <RCSeparator />
-                <RCItem onClick={({ props: rowData }) => console.log(rowData)}>
-                    <Icon icon="trash-alt" text="Remove" />
-                </RCItem>
-            </RCMenu>
             <AutoSizer>
                 {({ height }) => (
                     <Table
@@ -147,10 +186,13 @@ function TaskTable(props) {
                         headerHeight={20}
                         rowCount={props.tasks.length}
                         rowGetter={({ index }) => props.tasks[index]}
-                        rowRenderer={props => (
-                            <RCMenuProvider id="task_table_row_menu" data={props.rowData}>
-                                {defaultTableRowRenderer(props)}
-                            </RCMenuProvider>
+                        rowRenderer={rendererProps => (
+                            <TaskMenu
+                                key={rendererProps.key}
+                                selectedTaskIds={props.selectedTaskIds}
+                                onAction={onMenuAction}>
+                                {defaultTableRowRenderer(rendererProps)}
+                            </TaskMenu>
                         )}
                         rowStyle={({ index }) => {
                             const task = props.tasks[index];
@@ -184,7 +226,13 @@ function TaskTable(props) {
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
                             props.selectedTaskIds,
-                            props.setSelectedTaskIds)} >
+                            props.setSelectedTaskIds,
+                            false)}
+                        onRowRightClick={multiSelectionHandler(
+                            rowData => rowData.id,
+                            props.selectedTaskIds,
+                            props.setSelectedTaskIds,
+                            true)} >
                         {columns}
                     </Table>
                 )}
@@ -203,11 +251,14 @@ TaskTable.propTypes = {
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
+    setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
+    setTaskEditionManagerOptions: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withTaskFields(withTasks(withSize(TaskTable), {
+export default withApp(withSettings(withTaskFields(withTasks(withSize(TaskTable), {
     includeMetaData: true,
     applySelectedTaskFilter: true
-})));
+}))));

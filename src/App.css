@@ -54,6 +54,10 @@ ant-input:focus {
     overflow: auto;
 }
 
+.ant-menu-item-active, .ant-dropdown-menu-item-active, .ant-dropdown-menu-submenu-active {
+    background-color: #e6f6ff !important;
+}
+
 /* React SplitPane */
 
 .Resizer {
@@ -106,13 +110,6 @@ ant-input:focus {
 
 .Resizer.disabled:hover {
     border-color: transparent;
-}
-
-/* React Contexify */
-
-.react-contexify__item:not(.react-contexify__item--disabled):hover>.react-contexify__item__content {
-    color: black !important;
-    background-color: #e6f6ff !important;
 }
 
 /* React Virtualized */
