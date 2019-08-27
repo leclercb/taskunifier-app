@@ -6,6 +6,7 @@ import { Checkbox, Input, InputNumber, Progress, Select, Tag } from 'antd';
 import { getFieldType } from 'data/DataFieldTypes';
 import ColorPicker from 'components/common/ColorPicker';
 import DatePicker from 'components/common/DatePicker';
+import DurationField from 'components/common/DurationField';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
 import FileField from 'components/common/FileField';
 import StarCheckbox from 'components/common/StarCheckbox';
@@ -19,7 +20,6 @@ import GoalLevelTitle from 'components/goals/GoalLevelTitle';
 import GoalLevelSelect from 'components/goals/GoalLevelSelect';
 import GoalTitle from 'components/goals/GoalTitle';
 import GoalSelect from 'components/goals/GoalSelect';
-import LengthField from 'components/common/LengthField';
 import {
     LinkedContactLinksSelect,
     LinkedFileLinksSelect,
@@ -36,7 +36,6 @@ import NoteFieldTitle from 'components/notefields/NoteFieldTitle';
 import NoteFieldSelect from 'components/notefields/NoteFieldSelect';
 import NoteTitle from 'components/notes/common/NoteTitle';
 import NoteSelect from 'components/notes/common/NoteSelect';
-import ReminderField from 'components/common/ReminderField';
 import RepeatFromField from 'components/common/RepeatFromField';
 import PriorityTitle from 'components/priorities/PriorityTitle';
 import PrioritySelect from 'components/priorities/PrioritySelect';
@@ -58,7 +57,6 @@ import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toStringNumber,
     toStringPassword,
-    toStringReminder,
     toStringRepeatFrom
 } from 'utils/StringUtils';
 
@@ -328,10 +326,10 @@ export function getFieldComponents(type, options) {
         case 'length': {
             configuration = {
                 render: value => (
-                    <LengthField length={value} readOnly={true} />
+                    <DurationField duration={value} readOnly={true} />
                 ),
                 input: props => (
-                    <LengthField
+                    <DurationField
                         onBlur={props.onCommit}
                         onPressEnter={props.onCommit}
                         {...removeExtraProps(props)} />
@@ -508,11 +506,12 @@ export function getFieldComponents(type, options) {
         case 'reminder': {
             configuration = {
                 render: value => (
-                    Number.isInteger(value) ? toStringReminder(value) : <span>&nbsp;</span>
+                    <DurationField duration={value} readOnly={true} />
                 ),
                 input: props => (
-                    <ReminderField
+                    <DurationField
                         onBlur={props.onCommit}
+                        onPressEnter={props.onCommit}
                         {...removeExtraProps(props)} />
                 )
             };

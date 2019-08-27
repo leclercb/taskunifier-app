@@ -22,6 +22,7 @@ function EditableCell(props) {
     const inputProps = {
         ref: props.inputRef,
         fieldMode: 'table',
+        size: 'small',
         onCommit: () => setTimeout(() => onChange())
     };
 

@@ -6,10 +6,15 @@ import { SortIndicator } from 'react-virtualized';
 import DraggableElement from 'components/common/table/DraggableElement';
 import { move } from 'utils/ArrayUtils';
 
-export const resizeHandler = (prefix, updateSettings) => (fieldId, width) => {
-    updateSettings({
-        [prefix + fieldId]: width
-    });
+export const resizeHandler = (prefix, updateSettings) => (data, fieldId, width) => {
+    updateSettings(
+        {
+            [prefix + fieldId]: width
+        },
+        {
+            skipServerUpdate: !data.stop,
+            skipDiff: true
+        });
 };
 
 export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFieldId, dropFieldId) => {
@@ -48,7 +53,8 @@ export function ResizableAndMovableColumn(props) {
                 axis="x"
                 defaultClassName="DragHandle"
                 defaultClassNameDragging="DragHandleActive"
-                onDrag={(event, data) => props.onResize(data)}
+                onDrag={(event, data) => props.onResize({ ...data, stop: false })}
+                onStop={(event, data) => props.onResize({ ...data, stop: true })}
                 position={{ x: 0 }}
                 zIndex={999}>
                 <span className="DragHandleIcon">⋮</span>

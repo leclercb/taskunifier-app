@@ -281,7 +281,7 @@ function convertTaskToToodledo(task, state) {
         duetime: task.dueDate ? moment(task.dueDate).unix() : 0,
         starttime: task.startDate ? moment(task.startDate).unix() : 0,
         status: status ? status.value : 0,
-        length: task.length,
+        length: task.length ? Math.round(task.length / 60) : 0,
         priority: priority ? priority.value : -1,
         star: task.star ? 1 : 0,
         timer: task.timer ? task.timer.value : 0,
@@ -319,7 +319,7 @@ function convertTaskToTaskUnifier(task, state) {
         dueDate: (task.duetime, task.duedate) ? moment.unix(task.duetime || task.duedate).toISOString() : null,
         startDate: (task.starttime || task.startdate) ? moment.unix(task.starttime || task.startdate).toISOString() : null,
         status: status ? status.key : null,
-        length: task.length,
+        length: task.length * 60,
         priority: priority ? priority.key : null,
         star: task.star === 1 ? true : false,
         timer: {

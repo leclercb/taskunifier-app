@@ -17,7 +17,7 @@ import {
     sep,
     writeFile
 } from 'utils/ElectronUtils';
-import { diff } from 'utils/ObjectUtils';
+import { diff, merge } from 'utils/ObjectUtils';
 
 export function loadFromFile(property, file) {
     return async dispatch => {
@@ -61,7 +61,11 @@ export function loadFromFile(property, file) {
     };
 }
 
-export function loadFromServer(property, options = { skipSetLoaded: false }) {
+export function loadFromServer(property, options) {
+    options = merge({
+        skipSetLoaded: false
+    }, options || {});
+
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -90,7 +94,7 @@ export function loadFromServer(property, options = { skipSetLoaded: false }) {
                 state: 'COMPLETED'
             }));
 
-            if (!options || options.skipSetLoaded !== true) {
+            if (options.skipSetLoaded !== true) {
                 result.data.forEach(object => object.state = 'LOADED');
             }
 

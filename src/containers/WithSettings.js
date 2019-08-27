@@ -15,7 +15,7 @@ function withSettings(Component, options) {
 
     const mapDispatchToProps = dispatch => {
         const data = {
-            updateSettings: task => dispatch(updateSettings(task))
+            updateSettings: (settings, options) => dispatch(updateSettings(settings, options))
         };
 
         if (options.includeDispatcher) {

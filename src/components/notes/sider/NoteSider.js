@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Input, Menu, Popconfirm, Tooltip } from 'antd';
-import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Spacer from 'components/common/Spacer';
+import NoteMenu from 'components/notes/sider/NoteMenu';
 import withApp from 'containers/WithApp';
 import withObjects from 'containers/WithObjects';
 import Constants from 'constants/Constants';
@@ -48,23 +48,6 @@ function NoteSider(props) {
         );
     };
 
-    const createObjectContextMenu = (object, onManage, onEdit) => {
-        return (
-            <RCMenu id={'menu_' + object.id}>
-                {onManage ? (
-                    <RCItem onClick={() => onManage()}>
-                        <Icon icon="cubes" text="Manage" />
-                    </RCItem>
-                ) : null}
-                {onEdit ? (
-                    <RCItem onClick={() => onEdit()}>
-                        <Icon icon="edit" text="Edit" />
-                    </RCItem>
-                ) : null}
-            </RCMenu>
-        );
-    };
-
     const createEditDeleteButtons = (object, onEdit, onDelete) => {
         return (
             <React.Fragment>
@@ -89,9 +72,22 @@ function NoteSider(props) {
     };
 
     const createObjectMenuItem = (object, noteFilter, onManage, onEdit, onDelete) => {
+        const onAction = action => {
+            switch (action.type) {
+                case 'edit':
+                    onEdit();
+                    break;
+                case 'manage':
+                    onManage();
+                    break;
+                default:
+                    break;
+            }
+        };
+
         return (
             <Menu.Item key={object.id} filter={noteFilter}>
-                <RCMenuProvider id={'menu_' + object.id}>
+                <NoteMenu onAction={onAction}>
                     <div>
                         <LeftRight right={(
                             <React.Fragment>
@@ -102,8 +98,7 @@ function NoteSider(props) {
                             <Icon icon="circle" color={object.color} text={object.title} />
                         </LeftRight>
                     </div>
-                </RCMenuProvider>
-                {createObjectContextMenu(object, onManage, onEdit)}
+                </NoteMenu>
             </Menu.Item>
         );
     };

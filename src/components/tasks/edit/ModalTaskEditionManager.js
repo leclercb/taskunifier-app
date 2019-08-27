@@ -26,6 +26,8 @@ function ModalTaskEditionManager(props) {
             visible={props.taskEditionManager.visible}
             width="80%"
             closable={false}
+            onOk={onCloseTaskEditionManager}
+            onCancel={onCloseTaskEditionManager}
             footer={(
                 <Button onClick={onCloseTaskEditionManager}>
                     Close

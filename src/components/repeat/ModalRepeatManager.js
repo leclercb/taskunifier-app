@@ -25,6 +25,8 @@ function ModalRepeatManager(props) {
             visible={props.visible}
             width="60%"
             closable={false}
+            onOk={onClose}
+            onCancel={onClose}
             footer={(
                 <React.Fragment>
                     <Button onClick={onDoNotRepeat}>Do Not Repeat</Button>

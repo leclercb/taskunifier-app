@@ -1,6 +1,6 @@
 let TIMEOUT = null;
 
-export const multiSelectionHandler = (getId, selectedIds, setSelectedIds) => ({ event, rowData }) => {
+export const multiSelectionHandler = (getId, selectedIds, setSelectedIds, rightClick = false) => ({ event, rowData }) => {
     const rowId = getId(rowData);
     const ctrlKey = event.ctrlKey || event.metaKey;
     let dataPreventDefault = false;
@@ -15,7 +15,7 @@ export const multiSelectionHandler = (getId, selectedIds, setSelectedIds) => ({ 
     if (document &&
         document.activeElement &&
         document.activeElement !== document.body &&
-        document.activeElement.className !== 'ReactVirtualized__Table__row') {
+        (!document.activeElement.className || !document.activeElement.className.includes('ReactVirtualized__Table__row'))) {
         return;
     }
 
@@ -32,6 +32,10 @@ export const multiSelectionHandler = (getId, selectedIds, setSelectedIds) => ({ 
             if (ctrlKey) {
                 selectedIds.splice(selectedIds.indexOf(rowId), 1);
             } else {
+                if (rightClick) {
+                    return;
+                }
+
                 selectedIds = selectedIds.length > 1 ? [rowId] : [];
             }
         } else {

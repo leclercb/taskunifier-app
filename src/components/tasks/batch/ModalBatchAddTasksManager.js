@@ -16,6 +16,8 @@ function ModalBatchAddTasksManager(props) {
             visible={props.batchAddTasksManager.visible}
             width="80%"
             closable={false}
+            onOk={onClose}
+            onCancel={onClose}
             footer={(
                 <Button onClick={onClose}>
                     Close

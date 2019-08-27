@@ -7,7 +7,7 @@ import Icon from 'components/common/Icon';
 import { ProcessPropType } from 'proptypes/ProcessPropTypes';
 
 function ModalThreadManager(props) {
-    const onOk = () => {
+    const onClose = () => {
         props.setThreadManagerVisible(false);
     };
 
@@ -16,8 +16,10 @@ function ModalThreadManager(props) {
             title={<Icon icon="cogs" text="Progress" />}
             visible={props.threadManagerVisible}
             closable={false}
+            onOk={onClose}
+            onCancel={onClose}
             footer={(
-                <Button onClick={onOk}>
+                <Button onClick={onClose}>
                     Close
                 </Button>
             )}>

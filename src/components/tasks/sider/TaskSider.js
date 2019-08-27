@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Badge, Checkbox, Input, Menu, Popconfirm, Radio, Tooltip } from 'antd';
-import { Item as RCItem, Menu as RCMenu, MenuProvider as RCMenuProvider } from 'react-contexify';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Spacer from 'components/common/Spacer';
+import TaskMenu from 'components/tasks/sider/TaskMenu';
 import Constants from 'constants/Constants';
 import withApp from 'containers/WithApp';
 import withObjects from 'containers/WithObjects';
@@ -51,23 +51,6 @@ function TaskSider(props) {
         );
     };
 
-    const createObjectContextMenu = (object, onManage, onEdit) => {
-        return (
-            <RCMenu id={'menu_' + object.id}>
-                {onManage ? (
-                    <RCItem onClick={() => onManage()}>
-                        <Icon icon="cubes" text="Manage" />
-                    </RCItem>
-                ) : null}
-                {onEdit ? (
-                    <RCItem onClick={() => onEdit()}>
-                        <Icon icon="edit" text="Edit" />
-                    </RCItem>
-                ) : null}
-            </RCMenu>
-        );
-    };
-
     const createEditDeleteButtons = (object, onEdit, onDelete) => {
         return (
             <React.Fragment>
@@ -92,9 +75,22 @@ function TaskSider(props) {
     };
 
     const createObjectMenuItem = (object, taskFilter, onManage, onEdit, onDelete) => {
+        const onAction = action => {
+            switch (action.type) {
+                case 'edit':
+                    onEdit();
+                    break;
+                case 'manage':
+                    onManage();
+                    break;
+                default:
+                    break;
+            }
+        };
+
         return (
             <Menu.Item key={object.id} filter={taskFilter}>
-                <RCMenuProvider id={'menu_' + object.id}>
+                <TaskMenu onAction={onAction}>
                     <div>
                         <LeftRight right={(
                             <React.Fragment>
@@ -105,8 +101,7 @@ function TaskSider(props) {
                             <Icon icon="circle" color={object.color} text={object.title} />
                         </LeftRight>
                     </div>
-                </RCMenuProvider>
-                {createObjectContextMenu(object, onManage, onEdit)}
+                </TaskMenu>
             </Menu.Item>
         );
     };

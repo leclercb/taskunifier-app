@@ -9,12 +9,19 @@ class ExtendedDatePicker extends React.Component {
     constructor(props) {
         super(props);
 
-        this.onChange = this.onChange.bind(this);
+        this.onSwitchChange = this.onSwitchChange.bind(this);
+        this.onNumberChange = this.onNumberChange.bind(this);
     }
 
-    onChange(checked) {
+    onSwitchChange(checked) {
         if (this.props.onChange) {
             this.props.onChange(checked ? 0 : moment().toISOString());
+        }
+    }
+
+    onNumberChange(value) {
+        if (this.props.onChange) {
+            this.props.onChange(Number.isInteger(value) ? value : 0);
         }
     }
 
@@ -23,14 +30,14 @@ class ExtendedDatePicker extends React.Component {
             <React.Fragment>
                 <Switch
                     checked={Number.isInteger(this.props.value)}
-                    onChange={this.onChange}
+                    onChange={this.onSwitchChange}
                     checkedChildren="Use number of days from now"
                     unCheckedChildren="Use fixed date"
                     style={{ marginRight: 10 }} />
                 {Number.isInteger(this.props.value) ?
                     (
                         <React.Fragment>
-                            <InputNumber {...this.props} />
+                            <InputNumber {...this.props} onChange={this.onNumberChange} />
                             <Spacer />
                             <span>({moment().add(this.props.value, 'days').format(this.props.format)})</span>
                         </React.Fragment>

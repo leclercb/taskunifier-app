@@ -28,7 +28,7 @@ function TaskCalendar(props) {
                     id: `${task.id}_startDate`,
                     title: task.title,
                     start: moment(task.startDate).toDate(),
-                    end: moment(task.startDate).add(task.length, 'minutes').toDate(),
+                    end: moment(task.startDate).add(task.length, 'seconds').toDate(),
                     task,
                     settings: props.settings,
                     mode: 'startDate',
@@ -40,7 +40,7 @@ function TaskCalendar(props) {
                 events.push({
                     id: `${task.id}_dueDate`,
                     title: task.title,
-                    start: moment(task.dueDate).subtract(task.length, 'minutes').toDate(),
+                    start: moment(task.dueDate).subtract(task.length, 'seconds').toDate(),
                     end: moment(task.dueDate).toDate(),
                     task,
                     settings: props.settings,
@@ -73,7 +73,7 @@ function TaskCalendar(props) {
             const task = await props.addTask({
                 startDate: moment(start).toISOString(),
                 dueDate: moment(end).toISOString(),
-                length: moment(end).diff(moment(start), 'minutes')
+                length: moment(end).diff(moment(start), 'seconds')
             });
 
             props.setTaskEditionManagerOptions({
@@ -88,13 +88,13 @@ function TaskCalendar(props) {
             props.updateTask({
                 ...event.task,
                 startDate: moment(start).toISOString(),
-                length: moment(end).diff(moment(start), 'minutes')
+                length: moment(end).diff(moment(start), 'seconds')
             });
         } else {
             props.updateTask({
                 ...event.task,
                 dueDate: moment(end).toISOString(),
-                length: moment(end).diff(moment(start), 'minutes')
+                length: moment(end).diff(moment(start), 'seconds')
             });
         }
     };

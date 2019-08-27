@@ -20,6 +20,8 @@ function ModalTaskFieldManager(props) {
             visible={props.taskFieldManager.visible}
             width="80%"
             closable={false}
+            onOk={onCloseTaskFieldManager}
+            onCancel={onCloseTaskFieldManager}
             footer={(
                 <Button onClick={onCloseTaskFieldManager}>
                     Close

@@ -78,7 +78,7 @@ function SorterTable(props) {
                         label={data.label}
                         sortBy={data.sortBy}
                         sortDirection={data.sortDirection}
-                        onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
+                        onResize={data => onResize(data, field.id, width + data.deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
                 cellRenderer={({ cellData, rowData, rowIndex }) => {
@@ -120,7 +120,7 @@ function SorterTable(props) {
                 <Table
                     width={tableWidth}
                     height={150}
-                    rowHeight={38}
+                    rowHeight={32}
                     headerHeight={20}
                     rowCount={props.sorters.length}
                     rowGetter={({ index }) => props.sorters[index]}
@@ -131,13 +131,16 @@ function SorterTable(props) {
                             return {};
                         }
 
+                        let foregroundColor = 'initial';
                         let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
 
                         if (selectedSorterIds.includes(sorter.id)) {
-                            backgroundColor = Constants.selectionColor;
+                            foregroundColor = Constants.selectionForegroundColor;
+                            backgroundColor = Constants.selectionBackgroundColor;
                         }
 
                         return {
+                            color: foregroundColor,
                             backgroundColor
                         };
                     }}

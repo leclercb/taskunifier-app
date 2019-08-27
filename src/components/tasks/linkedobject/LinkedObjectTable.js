@@ -25,8 +25,7 @@ function LinkedObjectTable(props) {
         props.updateLinkedObjects([
             ...props.linkedObjects,
             {
-                id: uuid(),
-                link: null
+                id: uuid()
             }
         ]);
     };
@@ -72,7 +71,7 @@ function LinkedObjectTable(props) {
                         label={data.label}
                         sortBy={data.sortBy}
                         sortDirection={data.sortDirection}
-                        onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
+                        onResize={data => onResize(data, field.id, width + data.deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
                 cellRenderer={({ cellData, rowData }) => (
@@ -95,7 +94,7 @@ function LinkedObjectTable(props) {
                         <Table
                             width={tableWidth}
                             height={height}
-                            rowHeight={38}
+                            rowHeight={32}
                             headerHeight={20}
                             rowCount={props.linkedObjects.length}
                             rowGetter={({ index }) => props.linkedObjects[index]}
@@ -106,13 +105,16 @@ function LinkedObjectTable(props) {
                                     return {};
                                 }
 
+                                let foregroundColor = 'initial';
                                 let backgroundColor = getLinkedObjectBackgroundColor(linkedObject, index, props.settings);
 
                                 if (selectedLinkedObjectIds.includes(linkedObject.id)) {
-                                    backgroundColor = Constants.selectionColor;
+                                    foregroundColor = Constants.selectionForegroundColor;
+                                    backgroundColor = Constants.selectionBackgroundColor;
                                 }
 
                                 return {
+                                    color: foregroundColor,
                                     backgroundColor
                                 };
                             }}

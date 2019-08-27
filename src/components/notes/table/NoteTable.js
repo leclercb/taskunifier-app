@@ -1,7 +1,7 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import { AutoSizer, Column, Table } from 'react-virtualized';
+import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
 import withNoteFields from 'containers/WithNoteFields';
 import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
@@ -9,6 +9,7 @@ import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
+import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -18,6 +19,22 @@ import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
 function NoteTable(props) {
+    const onMenuAction = action => {
+        const notes = props.notes.filter(note => props.selectedNoteIds.includes(note.id));
+
+        switch (action.type) {
+            case 'remove':
+                notes.forEach(note => onRemoveNote(note));
+                break;
+            default:
+                break;
+        }
+    };
+
+    const onRemoveNote = note => {
+        props.deleteNote(note.id);
+    };
+
     const onUpdateNote = note => {
         props.updateNote(note);
     };
@@ -54,7 +71,7 @@ function NoteTable(props) {
                         label={data.label}
                         sortBy={data.sortBy}
                         sortDirection={data.sortDirection}
-                        onResize={({ deltaX }) => onResize(field.id, width + deltaX)}
+                        onResize={data => onResize(data, field.id, width + data.deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
                 cellRenderer={({ cellData, rowData }) => (
@@ -76,10 +93,18 @@ function NoteTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={38}
+                        rowHeight={props.settings.noteTableRowHeight}
                         headerHeight={20}
                         rowCount={props.notes.length}
                         rowGetter={({ index }) => props.notes[index]}
+                        rowRenderer={rendererProps => (
+                            <NoteMenu
+                                key={rendererProps.key}
+                                selectedNoteIds={props.selectedNoteIds}
+                                onAction={onMenuAction}>
+                                {defaultTableRowRenderer(rendererProps)}
+                            </NoteMenu>
+                        )}
                         rowStyle={({ index }) => {
                             const note = props.notes[index];
 
@@ -87,20 +112,29 @@ function NoteTable(props) {
                                 return {};
                             }
 
+                            let foregroundColor = 'initial';
                             let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
 
                             if (props.selectedNoteIds.includes(note.id)) {
-                                backgroundColor = Constants.selectionColor;
+                                foregroundColor = Constants.selectionForegroundColor;
+                                backgroundColor = Constants.selectionBackgroundColor;
                             }
 
                             return {
+                                color: foregroundColor,
                                 backgroundColor
                             };
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
                             props.selectedNoteIds,
-                            props.setSelectedNoteIds)} >
+                            props.setSelectedNoteIds,
+                            false)}
+                        onRowRightClick={multiSelectionHandler(
+                            rowData => rowData.id,
+                            props.selectedNoteIds,
+                            props.setSelectedNoteIds,
+                            true)} >
                         {columns}
                     </Table>
                 )}
@@ -117,6 +151,7 @@ NoteTable.propTypes = {
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired,
     updateNote: PropTypes.func.isRequired,
+    deleteNote: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };

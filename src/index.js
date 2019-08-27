@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { notification } from 'antd';
 import { configure } from 'Amplify';
 import App from 'App';
+import LoadingIndicator from 'components/common/LoadingIndicator';
 import PrivateComponent from 'components/common/PrivateComponent';
 import { store } from 'store/Store';
 import 'index.css';
@@ -18,7 +19,9 @@ window.addEventListener('error', function (e) {
 });
 
 let element = (
-    <App />
+    <React.Suspense fallback={(<LoadingIndicator />)}>
+        <App />
+    </React.Suspense>
 );
 
 if (process.env.REACT_APP_MODE !== 'electron') {

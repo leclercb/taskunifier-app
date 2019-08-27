@@ -31,6 +31,8 @@ function ModalReminderManager(props) {
                 visible={props.reminderManager.visible}
                 width="60%"
                 closable={false}
+                onOk={onCloseReminderManager}
+                onCancel={onCloseReminderManager}
                 footer={(
                     <Button onClick={onCloseReminderManager}>
                         Close

@@ -22,14 +22,14 @@ function NoteView(props) {
             split="vertical"
             minSize={200}
             defaultSize={props.settings.noteViewSplitPaneSize}
-            onChange={size => onNoteViewSplitPaneSizeChange(size)}
+            onDragFinished={size => onNoteViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <NoteSider />
             <SplitPane
                 split={props.settings.noteViewSubSplitPaneMode}
                 minSize={200}
                 defaultSize={props.settings.noteViewSubSplitPaneSize}
-                onChange={size => onNoteViewSubSplitPaneSizeChange(size)}
+                onDragFinished={size => onNoteViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>

@@ -23,14 +23,14 @@ function TaskView(props) {
             split="vertical"
             minSize={200}
             defaultSize={props.settings.taskViewSplitPaneSize}
-            onChange={size => onTaskViewSplitPaneSizeChange(size)}
+            onDragFinished={size => onTaskViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <TaskSider mode="table" />
             <SplitPane
                 split={props.settings.taskViewSubSplitPaneMode}
                 minSize={200}
                 defaultSize={props.settings.taskViewSubSplitPaneSize}
-                onChange={size => onTaskViewSubSplitPaneSizeChange(size)}
+                onDragFinished={size => onTaskViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
