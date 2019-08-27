@@ -127,11 +127,13 @@ function NoteTable(props) {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
+                            props.notes,
                             props.selectedNoteIds,
                             props.setSelectedNoteIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
+                            props.notes,
                             props.selectedNoteIds,
                             props.setSelectedNoteIds,
                             true)} >

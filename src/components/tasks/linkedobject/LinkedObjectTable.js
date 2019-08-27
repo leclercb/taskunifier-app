@@ -120,6 +120,7 @@ function LinkedObjectTable(props) {
                             }}
                             onRowClick={multiSelectionHandler(
                                 rowData => rowData.id,
+                                props.linkedObjects,
                                 selectedLinkedObjectIds,
                                 setSelectedLinkedObjectIds)} >
                             {columns}

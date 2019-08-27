@@ -225,11 +225,13 @@ function TaskTable(props) {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
+                            props.tasks,
                             props.selectedTaskIds,
                             props.setSelectedTaskIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
+                            props.tasks,
                             props.selectedTaskIds,
                             props.setSelectedTaskIds,
                             true)} >

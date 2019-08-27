@@ -1,8 +1,10 @@
 let TIMEOUT = null;
 
-export const multiSelectionHandler = (getId, selectedIds, setSelectedIds, rightClick = false) => ({ event, rowData }) => {
+export const multiSelectionHandler = (getId, items, selectedIds, setSelectedIds, rightClick = false) => ({ event, rowData }) => {
     const rowId = getId(rowData);
     const ctrlKey = event.ctrlKey || event.metaKey;
+    const shiftKey = event.shiftKey;
+
     let dataPreventDefault = false;
 
     if (event.target.attributes.getNamedItem('data-prevent-default') &&
@@ -23,26 +25,43 @@ export const multiSelectionHandler = (getId, selectedIds, setSelectedIds, rightC
         return;
     }
 
-    const fn = ctrlKey => {
+    const fn = (ctrlKey, shiftKey) => {
         TIMEOUT = null;
 
         selectedIds = [...selectedIds];
 
-        if (selectedIds.includes(rowId)) {
-            if (ctrlKey) {
-                selectedIds.splice(selectedIds.indexOf(rowId), 1);
+        if (shiftKey) {
+            if (selectedIds.length === 0) {
+                selectedIds = [rowId];
             } else {
-                if (rightClick) {
-                    return;
-                }
+                const fromIndex = items.findIndex(item => getId(item) === selectedIds[selectedIds.length - 1]);
+                const toIndex = items.findIndex(item => getId(item) === rowId);
 
-                selectedIds = selectedIds.length > 1 ? [rowId] : [];
+                selectedIds = items.filter((item, index) => {
+                    if (fromIndex <= toIndex) {
+                        return fromIndex <= index && index <= toIndex;
+                    } else {
+                        return toIndex <= index && index <= fromIndex;
+                    }
+                }).map(item => getId(item));
             }
         } else {
-            if (ctrlKey) {
-                selectedIds.push(rowId);
+            if (selectedIds.includes(rowId)) {
+                if (ctrlKey) {
+                    selectedIds.splice(selectedIds.indexOf(rowId), 1);
+                } else {
+                    if (rightClick) {
+                        return;
+                    }
+
+                    selectedIds = selectedIds.length > 1 ? [rowId] : [];
+                }
             } else {
-                selectedIds = [rowId];
+                if (ctrlKey) {
+                    selectedIds.push(rowId);
+                } else {
+                    selectedIds = [rowId];
+                }
             }
         }
 
@@ -53,7 +72,7 @@ export const multiSelectionHandler = (getId, selectedIds, setSelectedIds, rightC
         clearTimeout(TIMEOUT);
         TIMEOUT = null;
     } else {
-        TIMEOUT = setTimeout(() => fn(ctrlKey), 200);
+        TIMEOUT = setTimeout(() => fn(ctrlKey, shiftKey), 200);
         return;
     }
 };

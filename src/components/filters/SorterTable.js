@@ -146,6 +146,7 @@ function SorterTable(props) {
                     }}
                     onRowClick={multiSelectionHandler(
                         rowData => rowData.id,
+                        props.sorters,
                         selectedSorterIds,
                         setSelectedSorterIds)} >
                     {columns}
