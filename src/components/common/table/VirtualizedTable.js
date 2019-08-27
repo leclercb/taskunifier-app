@@ -3,7 +3,7 @@ let TIMEOUT = null;
 export const multiSelectionHandler = (getId, items, selectedIds, setSelectedIds, rightClick = false) => ({ event, rowData }) => {
     const rowId = getId(rowData);
     const ctrlKey = event.ctrlKey || event.metaKey;
-    const shiftKey = event.shiftKey;
+    const { shiftKey } = event;
 
     let dataPreventDefault = false;
 

@@ -14,14 +14,14 @@
         "lint": "eslint src",
         "test": "craco test",
         "pack": "electron-builder --dir",
-        "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
+        "dist": "electron-builder --x64 --mac --win --linux --c.extraMetadata.main=build/electron.js -p never"
     },
     "dependencies": {
         "@craco/craco": "^5.3.0",
         "@fortawesome/fontawesome-svg-core": "^1.2.22",
         "@fortawesome/free-solid-svg-icons": "^5.10.2",
         "@fortawesome/react-fontawesome": "^0.1.4",
-        "antd": "^3.22.0",
+        "antd": "^3.22.2",
         "aws-amplify": "^1.1.36",
         "axios": "^0.19.0",
         "bluebird": "^3.5.5",
@@ -44,7 +44,7 @@
         "react-dom": "^16.9.0",
         "react-draggable": "^3.3.2",
         "react-joyride": "^2.1.1",
-        "react-redux": "^7.1.0",
+        "react-redux": "^7.1.1",
         "react-scripts": "3.0.1",
         "react-split-pane": "^0.1.87",
         "react-virtualized": "^9.21.1",
@@ -56,10 +56,10 @@
         "uuid": "^3.3.3"
     },
     "devDependencies": {
-        "babel-eslint": "^10.0.2",
+        "babel-eslint": "^10.0.3",
         "babel-jest": "^24.9.0",
-        "electron": "^5.0.8",
-        "electron-builder": "^20.44.4",
+        "electron": "^6.0.4",
+        "electron-builder": "^21.2.0",
         "electron-devtools-installer": "^2.2.4",
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.14.0",
