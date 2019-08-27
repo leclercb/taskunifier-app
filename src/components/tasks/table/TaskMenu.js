@@ -12,7 +12,7 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
         }
 
         setVisible(false);
-    }
+    };
 
     const createPostponeMenu = (key, title) => (
         <Menu.SubMenu
@@ -72,8 +72,8 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
                     </Menu.Item>
                 )
             }
-            {createPostponeMenu("postponeStartDate", `Postpone start date of ${suffix}`)}
-            {createPostponeMenu("postponeDueDate", `Postpone due date of ${suffix}`)}
+            {createPostponeMenu('postponeStartDate', `Postpone start date of ${suffix}`)}
+            {createPostponeMenu('postponeDueDate', `Postpone due date of ${suffix}`)}
             <Menu.Item key="remove" action={{ type: 'remove' }}>
                 <Icon icon="trash-alt" text={`Remove ${suffix}`} />
             </Menu.Item>

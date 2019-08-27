@@ -83,7 +83,7 @@ function NoteSider(props) {
                 default:
                     break;
             }
-        }
+        };
 
         return (
             <Menu.Item key={object.id} filter={noteFilter}>

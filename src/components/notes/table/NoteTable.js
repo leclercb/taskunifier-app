@@ -28,7 +28,7 @@ function NoteTable(props) {
                 break;
             default:
                 break;
-        };
+        }
     };
 
     const onRemoveNote = note => {

@@ -12,7 +12,7 @@ function NoteMenu({ onAction, children }) {
         }
 
         setVisible(false);
-    }
+    };
 
     const menu = (
         <Menu

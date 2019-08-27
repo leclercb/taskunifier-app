@@ -12,7 +12,7 @@ function TaskMenu({ onAction, children }) {
         }
 
         setVisible(false);
-    }
+    };
 
     const menu = (
         <Menu

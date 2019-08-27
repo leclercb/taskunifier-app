@@ -44,10 +44,10 @@ function TaskTable(props) {
                 break;
             default:
                 break;
-        };
+        }
     };
 
-    const onBatchEditTask = task => {
+    const onBatchEditTask = () => {
         props.setBatchEditTasksManagerOptions({
             visible: true
         });
@@ -68,14 +68,14 @@ function TaskTable(props) {
         props.updateTask({
             ...task,
             startDate: moment(task.startDate ? task.startDate : undefined).add(amount, unit).toISOString()
-        })
+        });
     };
 
     const onPostponeDueDate = (task, amount, unit) => {
         props.updateTask({
             ...task,
             dueDate: moment(task.dueDate ? task.dueDate : undefined).add(amount, unit).toISOString()
-        })
+        });
     };
 
     const onUpdateTask = task => {

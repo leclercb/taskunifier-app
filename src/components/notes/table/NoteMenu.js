@@ -12,7 +12,7 @@ function NoteMenu({ selectedNoteIds, onAction, children }) {
         }
 
         setVisible(false);
-    }
+    };
 
     const suffix = `${selectedNoteIds.length} note${selectedNoteIds.length > 1 ? 's' : ''}`;
 
