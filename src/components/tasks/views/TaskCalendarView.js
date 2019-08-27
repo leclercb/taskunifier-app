@@ -23,14 +23,14 @@ function TaskCalendarView(props) {
             split="vertical"
             minSize={200}
             defaultSize={props.settings.taskCalendarViewSplitPaneSize}
-            onChange={size => onTaskCalendarViewSplitPaneSizeChange(size)}
+            onDragFinished={size => onTaskCalendarViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <TaskSider mode="calendar" />
             <SplitPane
                 split={props.settings.taskCalendarViewSubSplitPaneMode}
                 minSize={200}
                 defaultSize={props.settings.taskCalendarViewSubSplitPaneSize}
-                onChange={size => onTaskCalendarViewSubSplitPaneSizeChange(size)}
+                onDragFinished={size => onTaskCalendarViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
