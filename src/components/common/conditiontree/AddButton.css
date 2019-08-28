@@ -1,0 +1,4 @@
+.condition-tree-add-menu .ant-popover-inner-content {
+    overflow: auto;
+    max-height: 400px;
+}

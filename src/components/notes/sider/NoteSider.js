@@ -230,7 +230,7 @@ function NoteSider(props) {
                             id: '1',
                             field: 'tags',
                             type: 'contain',
-                            value: tag.id
+                            value: [tag.id]
                         }),
                         null,
                         () => editObject('tags', tag.id),

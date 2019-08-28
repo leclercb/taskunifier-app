@@ -6,6 +6,15 @@ import LeftRight from 'components/common/LeftRight';
 import { createActions } from 'utils/CategoryListUtils';
 
 function FilterList(props) {
+    const createNewFilter = () => {
+        return {
+            condition: {
+                operator: 'AND',
+                conditions: []
+            }
+        };
+    };
+
     return (
         <React.Fragment>
             <List
@@ -23,7 +32,7 @@ function FilterList(props) {
                     </List.Item>
                 )}
             />
-            <Button onClick={() => props.addFilter()} style={{ marginTop: 5 }}>
+            <Button onClick={() => props.addFilter(createNewFilter())} style={{ marginTop: 5 }}>
                 <Icon icon="plus" text="Add" />
             </Button>
         </React.Fragment>

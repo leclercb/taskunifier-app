@@ -24,7 +24,7 @@ function FilterConditionTree(props) {
             id: uuid(),
             field: field.id,
             type: null,
-            value: null
+            value: undefined
         };
     };
 

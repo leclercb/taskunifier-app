@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, Button, Select } from 'antd';
+import { Alert, Button, Empty, Select } from 'antd';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from 'components/common/conditiontree/ItemTypes';
 import AddButton from 'components/common/conditiontree/AddButton';
@@ -47,7 +47,9 @@ function ConditionGroup(props) {
                     </div>
                     {props.disabled ? null : (
                         <div className='condition-group-operator-actions'>
-                            <AddButton onClick={(key) => props.onAdd(condition, key)}>
+                            <AddButton
+                                disabled={condition.operator === 'NOT' && condition.conditions.length >= 1}
+                                onClick={(key) => props.onAdd(condition, key)}>
                                 {props.addMenuItems}
                             </AddButton>
                             <br />
@@ -61,6 +63,28 @@ function ConditionGroup(props) {
                 </div>
             ))}
             <div className='condition-group-content'>
+                {condition.conditions.length === 0 ? (
+                    <div className='condition-container'>
+                        <Alert
+                            message="Info"
+                            description={(<Empty description='No condition in this condition group, click on the "+" icon to add one !' />)}
+                            type="info"
+                            showIcon
+                        />
+                    </div>
+                ) : null}
+
+                {condition.operator === 'NOT' && condition.conditions.length > 1 ? (
+                    <div className='condition-container'>
+                        <Alert
+                            message="Warning"
+                            description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
+                            type="warning"
+                            showIcon
+                        />
+                    </div>
+                ) : null}
+
                 {condition.conditions.map(cond => {
                     return (
                         <Condition
@@ -77,24 +101,6 @@ function ConditionGroup(props) {
                             getLeafComponent={props.getLeafComponent} />
                     );
                 })}
-
-                {(condition.operator === 'AND' || condition.operator === 'OR') && condition.conditions.length < 2 ? (
-                    <Alert
-                        message="Warning"
-                        description={'A condition group with operator \'' + condition.operator + '\' must contain at least two sub-conditions.'}
-                        type="warning"
-                        showIcon
-                    />
-                ) : null}
-
-                {condition.operator === 'NOT' && condition.conditions.length !== 1 ? (
-                    <Alert
-                        message="Warning"
-                        description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
-                        type="warning"
-                        showIcon
-                    />
-                ) : null}
             </div>
         </div>
     );
