@@ -2,8 +2,9 @@ const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-
 const isDevelopment = require('electron-is-dev');
+
+require('./electronMenu.js');
 
 let mainWindow = null;
 

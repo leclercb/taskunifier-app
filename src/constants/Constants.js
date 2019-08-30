@@ -1,6 +1,7 @@
 export default {
+    itemSku: 'tu-cloud-pro-1y',
     connectionTestUrl: 'http://www.google.com',
-    purchaseUrl: 'https://www.taskunifier.app/purchase',
+    purchaseUrl: 'https://www.taskunifier.app/app',
     downloadUrl: 'https://www.taskunifier.app/app',
     versionUrl: 'https://api.taskunifier.app/v1/versions/taskunifier-app/latest',
     color: '#0e67c4',

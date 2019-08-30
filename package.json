@@ -2,7 +2,7 @@
     "name": "taskunifier-app",
     "description": "TaskUnifier - Manage your tasks and improve your productivity",
     "author": "BL-IT",
-    "version": "0.2.0-alpha",
+    "version": "0.3.0-beta",
     "private": true,
     "main": "public/electron.js",
     "homepage": "./",
@@ -14,18 +14,18 @@
         "lint": "eslint src",
         "test": "craco test",
         "pack": "electron-builder --dir",
-        "dist": "npx build --x64 --macos --win --linux --c.extraMetadata.main=build/electron.js -p always"
+        "dist": "electron-builder --x64 --mac --win --linux --c.extraMetadata.main=build/electron.js -p never"
     },
     "dependencies": {
-        "@craco/craco": "^5.3.0",
+        "@craco/craco": "^5.4.0",
         "@fortawesome/fontawesome-svg-core": "^1.2.22",
         "@fortawesome/free-solid-svg-icons": "^5.10.2",
         "@fortawesome/react-fontawesome": "^0.1.4",
-        "antd": "^3.22.0",
+        "antd": "^3.22.2",
         "aws-amplify": "^1.1.36",
         "axios": "^0.19.0",
         "bluebird": "^3.5.5",
-        "craco-antd": "^1.11.0",
+        "craco-antd": "^1.12.0",
         "electron-is-dev": "^1.1.0",
         "https-proxy-agent": "^2.2.2",
         "inputmask-core": "^2.2.0",
@@ -34,6 +34,7 @@
         "lodash": "^4.17.15",
         "mkdirp": "^0.5.1",
         "moment": "^2.24.0",
+        "mousetrap": "^1.6.3",
         "qs": "^6.8.0",
         "rc-color-picker": "^1.2.6",
         "react": "^16.9.0",
@@ -43,7 +44,7 @@
         "react-dom": "^16.9.0",
         "react-draggable": "^3.3.2",
         "react-joyride": "^2.1.1",
-        "react-redux": "^7.1.0",
+        "react-redux": "^7.1.1",
         "react-scripts": "3.0.1",
         "react-split-pane": "^0.1.87",
         "react-virtualized": "^9.21.1",
@@ -55,10 +56,10 @@
         "uuid": "^3.3.3"
     },
     "devDependencies": {
-        "babel-eslint": "^10.0.2",
+        "babel-eslint": "^10.0.3",
         "babel-jest": "^24.9.0",
-        "electron": "^5.0.8",
-        "electron-builder": "^20.44.4",
+        "electron": "^6.0.6",
+        "electron-builder": "^21.2.0",
         "electron-devtools-installer": "^2.2.4",
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.14.0",
@@ -66,7 +67,7 @@
         "eslint": "^6.2.2",
         "eslint-plugin-react": "^7.14.3",
         "react-test-renderer": "^16.9.0",
-        "typescript": "^3.5.3"
+        "typescript": "^3.6.2"
     },
     "build": {
         "appId": "com.bl-it.taskunifier",

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Menu, Popover } from 'antd';
+import 'components/common/conditiontree/AddButton.css';
 
 function AddButton(props) {
     const [menuVisible, setMenuVisible] = useState(false);
@@ -17,7 +18,11 @@ function AddButton(props) {
     return (
         <Popover
             content={(
-                <Menu onClick={onMenuClick} style={{ width: 240 }} mode="vertical" theme="light">
+                <Menu
+                    onClick={onMenuClick}
+                    style={{ width: 240 }}
+                    mode="vertical"
+                    theme="light">
                     <Menu.SubMenu key="conditionGroup" title='Condition Group'>
                         <Menu.Item key="conditionGroupAnd">AND</Menu.Item>
                         <Menu.Item key="conditionGroupOr">OR</Menu.Item>
@@ -29,8 +34,10 @@ function AddButton(props) {
             title="Add Condition"
             trigger="click"
             visible={menuVisible}
-            onVisibleChange={onMenuVisibleChange}>
+            onVisibleChange={onMenuVisibleChange}
+            overlayClassName="condition-tree-add-menu">
             <Button
+                disabled={props.disabled === true}
                 shape="circle"
                 icon="plus"
                 size="small" />
@@ -40,6 +47,7 @@ function AddButton(props) {
 
 AddButton.propTypes = {
     children: PropTypes.node.isRequired,
+    disabled: PropTypes.bool,
     onClick: PropTypes.func.isRequired
 };
 

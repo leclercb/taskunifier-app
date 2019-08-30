@@ -112,7 +112,6 @@ export function getRemoteTasks(updatedAfter) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/tasks/get.php',
@@ -121,7 +120,8 @@ export function getRemoteTasks(updatedAfter) {
                     after: updatedAfter ? updatedAfter.unix() : 0,
                     fields: 'context,folder,goal,location,tag,startdate,duedate,duedatemod,starttime,duetime,remind,repeat,status,star,priority,length,timer,timeron,added,note,parent,children,meta'
                 }
-            });
+            },
+            settings);
 
         console.debug(result);
         checkResult(result);
@@ -138,7 +138,6 @@ export function getRemoteDeletedTasks(deletedAfter) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/tasks/deleted.php',
@@ -146,7 +145,8 @@ export function getRemoteDeletedTasks(deletedAfter) {
                     access_token: settings.toodledo.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
                 }
-            });
+            },
+            settings);
 
         console.debug(result);
         checkResult(result);
@@ -168,7 +168,6 @@ export function addRemoteTasks(tasks) {
             const chunkTasks = tasks.slice(i, i + CHUNK_SIZE);
 
             const result = await sendRequest(
-                settings,
                 {
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/add.php',
@@ -176,7 +175,8 @@ export function addRemoteTasks(tasks) {
                         access_token: settings.toodledo.accessToken,
                         tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
                     }
-                });
+                },
+                settings);
 
             checkResult(result);
 
@@ -206,7 +206,6 @@ export function editRemoteTasks(tasks) {
             const chunkTasks = tasks.slice(i, i + CHUNK_SIZE);
 
             const result = await sendRequest(
-                settings,
                 {
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/edit.php',
@@ -214,7 +213,8 @@ export function editRemoteTasks(tasks) {
                         access_token: settings.toodledo.accessToken,
                         tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
                     }
-                });
+                },
+                settings);
 
             checkResult(result);
         }
@@ -233,7 +233,6 @@ export function deleteRemoteTasks(tasks) {
 
             try {
                 await sendRequest(
-                    settings,
                     {
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/tasks/delete.php',
@@ -241,7 +240,8 @@ export function deleteRemoteTasks(tasks) {
                             access_token: settings.toodledo.accessToken,
                             tasks: JSON.stringify(chunkTasks.map(task => task.refIds.toodledo))
                         }
-                    });
+                    },
+                    settings);
 
                 // checkResult(result);
             } catch (error) {

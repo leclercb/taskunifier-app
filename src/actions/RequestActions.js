@@ -1,7 +1,7 @@
 import Constants from 'constants/Constants';
 import axios from 'axios';
 
-export function sendRequest(settings, config) {
+export function sendRequest(config, settings = {}) {
     if (process.env.REACT_APP_MODE !== 'electron' ||
         !settings.proxyEnabled ||
         !settings.proxyHost ||
@@ -39,22 +39,22 @@ export function sendRequest(settings, config) {
 
 export function testConnection(settings) {
     return sendRequest(
-        settings,
         {
             method: 'GET',
             url: Constants.connectionTestUrl,
             responseType: 'text'
-        });
+        },
+        settings);
 }
 
 export async function getLatestVersion(settings) {
     const result = await sendRequest(
-        settings,
         {
             method: 'GET',
             url: Constants.versionUrl,
             responseType: 'text'
-        });
+        },
+        settings);
 
     return result.data.number;
 }

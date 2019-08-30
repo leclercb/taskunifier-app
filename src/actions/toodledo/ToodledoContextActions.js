@@ -87,14 +87,14 @@ export function getRemoteContexts() {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/contexts/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -110,7 +110,6 @@ export function addRemoteContext(context) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/add.php',
@@ -118,7 +117,8 @@ export function addRemoteContext(context) {
                     access_token: settings.toodledo.accessToken,
                     ...convertContextToToodledo(context)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -140,7 +140,6 @@ export function editRemoteContext(context) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/edit.php',
@@ -148,7 +147,8 @@ export function editRemoteContext(context) {
                     access_token: settings.toodledo.accessToken,
                     ...convertContextToToodledo(context)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
     };
@@ -162,7 +162,6 @@ export function deleteRemoteContext(context) {
         const settings = getSettings(state);
 
         await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/delete.php',
@@ -170,7 +169,8 @@ export function deleteRemoteContext(context) {
                     access_token: settings.toodledo.accessToken,
                     id: context.refIds.toodledo
                 }
-            });
+            },
+            settings);
 
         // checkResult(result);
     };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Modal, message } from 'antd';
 import moment from 'moment';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
 import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';

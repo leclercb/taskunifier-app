@@ -109,7 +109,6 @@ export function getRemoteNotes(updatedAfter) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/notes/get.php',
@@ -117,7 +116,8 @@ export function getRemoteNotes(updatedAfter) {
                     access_token: settings.toodledo.accessToken,
                     after: updatedAfter ? updatedAfter.unix() : 0
                 }
-            });
+            },
+            settings);
 
         console.debug(result);
         checkResult(result);
@@ -134,7 +134,6 @@ export function getRemoteDeletedNotes(deletedAfter) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/notes/deleted.php',
@@ -142,7 +141,8 @@ export function getRemoteDeletedNotes(deletedAfter) {
                     access_token: settings.toodledo.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
                 }
-            });
+            },
+            settings);
 
         console.debug(result);
         checkResult(result);
@@ -164,7 +164,6 @@ export function addRemoteNotes(notes) {
             const chunkNotes = notes.slice(i, i + CHUNK_SIZE);
 
             const result = await sendRequest(
-                settings,
                 {
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/add.php',
@@ -172,7 +171,8 @@ export function addRemoteNotes(notes) {
                         access_token: settings.toodledo.accessToken,
                         notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
                     }
-                });
+                },
+                settings);
 
             checkResult(result);
 
@@ -202,7 +202,6 @@ export function editRemoteNotes(notes) {
             const chunkNotes = notes.slice(i, i + CHUNK_SIZE);
 
             const result = await sendRequest(
-                settings,
                 {
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/edit.php',
@@ -210,7 +209,8 @@ export function editRemoteNotes(notes) {
                         access_token: settings.toodledo.accessToken,
                         notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
                     }
-                });
+                },
+                settings);
 
             checkResult(result);
         }
@@ -229,7 +229,6 @@ export function deleteRemoteNotes(notes) {
 
             try {
                 await sendRequest(
-                    settings,
                     {
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/notes/delete.php',
@@ -237,7 +236,8 @@ export function deleteRemoteNotes(notes) {
                             access_token: settings.toodledo.accessToken,
                             notes: JSON.stringify(chunkNotes.map(note => note.refIds.toodledo))
                         }
-                    });
+                    },
+                    settings);
 
                 // checkResult(result);
             } catch (error) {

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import qs from 'qs';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
@@ -31,7 +31,6 @@ export function createToken(code) {
         const settings = getSettings(getState());
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
@@ -45,7 +44,8 @@ export function createToken(code) {
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
                 }
-            });
+            },
+            settings);
 
         await dispatch(updateSettings({
             toodledo: {
@@ -66,7 +66,6 @@ export function refreshToken() {
         const settings = getSettings(getState());
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
@@ -80,7 +79,8 @@ export function refreshToken() {
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
                 }
-            });
+            },
+            settings);
 
         await dispatch(updateSettings({
             toodledo: {

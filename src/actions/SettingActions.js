@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import {
     loadFromFile,
     loadFromServer,
@@ -30,14 +30,11 @@ export const loadSettingsFromServer = (core = false) => {
 };
 
 export function saveSettingsToServer(oldSettings, newSettings) {
-    return async (dispatch, getState) => {
-        const state = getState();
-        const settings = getSettings(state);
+    return async dispatch => {
         const processId = uuid();
 
         try {
             const result = await sendRequest(
-                settings,
                 {
                     headers: {
                         Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`

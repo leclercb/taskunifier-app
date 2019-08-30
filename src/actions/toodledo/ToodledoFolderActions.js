@@ -87,14 +87,14 @@ export function getRemoteFolders() {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/folders/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -110,7 +110,6 @@ export function addRemoteFolder(folder) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/add.php',
@@ -118,7 +117,8 @@ export function addRemoteFolder(folder) {
                     access_token: settings.toodledo.accessToken,
                     ...convertFolderToToodledo(folder)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -140,7 +140,6 @@ export function editRemoteFolder(folder) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/edit.php',
@@ -148,7 +147,8 @@ export function editRemoteFolder(folder) {
                     access_token: settings.toodledo.accessToken,
                     ...convertFolderToToodledo(folder)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
     };
@@ -162,7 +162,6 @@ export function deleteRemoteFolder(folder) {
         const settings = getSettings(state);
 
         await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/delete.php',
@@ -170,7 +169,8 @@ export function deleteRemoteFolder(folder) {
                     access_token: settings.toodledo.accessToken,
                     id: folder.refIds.toodledo
                 }
-            });
+            },
+            settings);
 
         // checkResult(result);
     };

@@ -8,14 +8,14 @@ export function getAccountInfo() {
         const settings = getSettings(getState());
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 

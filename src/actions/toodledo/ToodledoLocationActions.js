@@ -87,14 +87,14 @@ export function getRemoteLocations() {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/locations/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -110,7 +110,6 @@ export function addRemoteLocation(location) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/add.php',
@@ -118,7 +117,8 @@ export function addRemoteLocation(location) {
                     access_token: settings.toodledo.accessToken,
                     ...convertLocationToToodledo(location)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -140,7 +140,6 @@ export function editRemoteLocation(location) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/edit.php',
@@ -148,7 +147,8 @@ export function editRemoteLocation(location) {
                     access_token: settings.toodledo.accessToken,
                     ...convertLocationToToodledo(location)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
     };
@@ -162,7 +162,6 @@ export function deleteRemoteLocation(location) {
         const settings = getSettings(state);
 
         await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/delete.php',
@@ -170,7 +169,8 @@ export function deleteRemoteLocation(location) {
                     access_token: settings.toodledo.accessToken,
                     id: location.refIds.toodledo
                 }
-            });
+            },
+            settings);
 
         // checkResult(result);
     };

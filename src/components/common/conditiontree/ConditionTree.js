@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { Empty } from 'antd';
 import AddButton from 'components/common/conditiontree/AddButton';
 import Condition from 'components/common/conditiontree/Condition';
