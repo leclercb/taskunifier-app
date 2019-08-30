@@ -4,7 +4,6 @@ import uuid from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
-import { getSettings } from 'selectors/SettingSelectors';
 import {
     exists,
     getPath,
@@ -66,9 +65,7 @@ export function loadFromServer(property, options) {
         skipSetLoaded: false
     }, options || {});
 
-    return async (dispatch, getState) => {
-        const state = getState();
-        const settings = getSettings(state);
+    return async dispatch => {
         const processId = uuid();
 
         dispatch(updateProcess({
@@ -79,7 +76,6 @@ export function loadFromServer(property, options) {
 
         try {
             const result = await sendRequest(
-                settings,
                 {
                     headers: {
                         Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
@@ -141,9 +137,7 @@ export function saveToFile(property, file, data) {
 }
 
 export function saveToServer(property, oldObject, newObject) {
-    return async (dispatch, getState) => {
-        const state = getState();
-        const settings = getSettings(state);
+    return async dispatch => {
         const processId = uuid();
 
         const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
@@ -156,13 +150,12 @@ export function saveToServer(property, oldObject, newObject) {
 
         try {
             const result = await sendRequest(
-                settings,
                 {
                     headers: {
                         Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
                     },
                     method: oldObject ? 'PUT' : 'POST',
-                    url: `${getConfig().apiUrl}/v1/${property}` + (oldObject ? `/${oldObject.id}` : ''),
+                    url: `${getConfig().apiUrl}/v1/${property}/${oldObject ? oldObject.id : ''}`,
                     data: diffObject,
                     responseType: 'json'
                 });
@@ -182,14 +175,11 @@ export function saveToServer(property, oldObject, newObject) {
 }
 
 export function deleteFromServer(property, objectId) {
-    return async (dispatch, getState) => {
-        const state = getState();
-        const settings = getSettings(state);
+    return async dispatch => {
         const processId = uuid();
 
         try {
             await sendRequest(
-                settings,
                 {
                     headers: {
                         Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`

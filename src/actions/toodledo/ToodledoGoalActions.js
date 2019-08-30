@@ -87,14 +87,14 @@ export function getRemoteGoals() {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'GET',
                 url: 'https://api.toodledo.com/3/goals/get.php',
                 params: {
                     access_token: settings.toodledo.accessToken
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -110,7 +110,6 @@ export function addRemoteGoal(goal) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/add.php',
@@ -118,7 +117,8 @@ export function addRemoteGoal(goal) {
                     access_token: settings.toodledo.accessToken,
                     ...convertGoalToToodledo(goal, state)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
 
@@ -140,7 +140,6 @@ export function editRemoteGoal(goal) {
         const settings = getSettings(state);
 
         const result = await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/edit.php',
@@ -148,7 +147,8 @@ export function editRemoteGoal(goal) {
                     access_token: settings.toodledo.accessToken,
                     ...convertGoalToToodledo(goal, state)
                 }
-            });
+            },
+            settings);
 
         checkResult(result);
     };
@@ -162,7 +162,6 @@ export function deleteRemoteGoal(goal) {
         const settings = getSettings(state);
 
         await sendRequest(
-            settings,
             {
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/delete.php',
@@ -170,7 +169,8 @@ export function deleteRemoteGoal(goal) {
                     access_token: settings.toodledo.accessToken,
                     id: goal.refIds.toodledo
                 }
-            });
+            },
+            settings);
 
         // checkResult(result);
     };

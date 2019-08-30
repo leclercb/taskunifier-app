@@ -1,8 +1,23 @@
 import { Auth } from 'aws-amplify';
 import uuid from 'uuid';
+import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getSession } from 'selectors/SessionSelectors';
+
+async function getCurrentUser(token) {
+    const result = await sendRequest(
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            method: 'GET',
+            url: `${getConfig().apiUrl}/v1/users/current`,
+            responseType: 'json'
+        });
+
+    return result.data;
+}
 
 export function check() {
     return login(true);
@@ -41,7 +56,7 @@ export function login(checkOnly = false) {
             }
 
             if (isAuthenticated) {
-                const user = await Auth.currentAuthenticatedUser();
+                const user = await getCurrentUser(session.getAccessToken().getJwtToken());
                 user.groups = session.getAccessToken().payload['cognito:groups'];
 
                 await dispatch({
