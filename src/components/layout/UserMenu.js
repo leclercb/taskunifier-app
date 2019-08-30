@@ -1,10 +1,16 @@
 import React from 'react';
-import { Button, Descriptions, Popover } from 'antd';
+import { Button, Descriptions, Popover, message } from 'antd';
 import PropTypes from 'prop-types';
 import Avatar from 'components/common/Avatar';
+import Constants from 'constants/Constants';
 import withSession from 'containers/WithSession';
 
-function UserMenu({ session, logout }) {
+function UserMenu({ session, logout, buyItem }) {
+    const onBuyItem = async () => {
+        message.info('Redirecting to Paypal...', 5);
+        await buyItem(Constants.itemSku, session.user.id, session.user.email);
+    };
+
     const content = (
         <React.Fragment>
             {session.user ? (
@@ -16,6 +22,7 @@ function UserMenu({ session, logout }) {
             ) : null}
             <div style={{ marginTop: 20 }}>
                 <Button type="primary" onClick={logout}>Logout</Button>
+                <Button type="dashed" onClick={onBuyItem}>Extend your "pro" subscription</Button>
             </div>
         </React.Fragment>
     );
@@ -36,7 +43,8 @@ function UserMenu({ session, logout }) {
 
 UserMenu.propTypes = {
     session: PropTypes.object.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    buyItem: PropTypes.func.isRequired
 };
 
 export default withSession(UserMenu);
