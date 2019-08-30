@@ -22,7 +22,7 @@ function UserMenu({ session, logout, buyItem }) {
             ) : null}
             <div style={{ marginTop: 20 }}>
                 <Button type="primary" onClick={logout}>Logout</Button>
-                <Button type="dashed" onClick={onBuyItem}>Extend your "pro" subscription</Button>
+                <Button type="dashed" onClick={onBuyItem} style={{ marginLeft: 10 }}>Extend your "pro" subscription</Button>
             </div>
         </React.Fragment>
     );
@@ -32,7 +32,7 @@ function UserMenu({ session, logout, buyItem }) {
             placement="bottomRight"
             content={content}
             overlayStyle={{
-                width: 400
+                width: 500
             }}>
             <span>
                 <Avatar size={40} />
