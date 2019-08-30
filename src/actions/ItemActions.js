@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
@@ -10,7 +10,7 @@ export function buyItem(itemSku, user, email) {
         dispatch(updateProcess({
             id: processId,
             state: 'RUNNING',
-            title: `Redirecting to Paypal`
+            title: 'Redirecting to Paypal'
         }));
 
         try {

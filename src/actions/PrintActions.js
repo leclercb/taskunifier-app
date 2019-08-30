@@ -1,5 +1,5 @@
 import sortBy from 'lodash/sortBy';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { createDirectory, saveBufferToFile } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';

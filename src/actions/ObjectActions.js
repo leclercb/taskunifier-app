@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import moment from 'moment';
 import {
     deleteFromServer,

@@ -1,5 +1,5 @@
 import moment from 'moment';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { createDirectory, getUserDataPath } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile } from 'actions/ContextActions';

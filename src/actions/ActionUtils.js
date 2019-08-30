@@ -1,6 +1,6 @@
 import { Auth } from 'aws-amplify';
 import { Promise } from 'bluebird';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';

@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';

@@ -1,4 +1,5 @@
 import React from 'react';
+import uuid from 'uuid/v4';
 import PropTypes from 'prop-types';
 import { Button, List } from 'antd';
 import Icon from 'components/common/Icon';
@@ -9,6 +10,7 @@ function FilterList(props) {
     const createNewFilter = () => {
         return {
             condition: {
+                id: uuid(),
                 operator: 'AND',
                 conditions: []
             }

@@ -1,4 +1,4 @@
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { clone } from 'utils/ObjectUtils';
 
 export function createSearchTaskFilter(searchValue) {

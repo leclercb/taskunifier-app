@@ -22,7 +22,7 @@ function UserMenu({ session, logout, buyItem }) {
             ) : null}
             <div style={{ marginTop: 20 }}>
                 <Button type="primary" onClick={logout}>Logout</Button>
-                <Button type="dashed" onClick={onBuyItem} style={{ marginLeft: 10 }}>Extend your "pro" subscription</Button>
+                <Button type="dashed" onClick={onBuyItem} style={{ marginLeft: 10 }}>Extend your &quot;pro&quot; subscription</Button>
             </div>
         </React.Fragment>
     );

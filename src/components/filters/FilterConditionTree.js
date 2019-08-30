@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import uuid from 'uuid';
+import uuid from 'uuid/v4';
 import { Empty, Menu } from 'antd';
 import ConditionTree from 'components/common/conditiontree/ConditionTree';
 import FilterConditionForm from 'components/filters/FilterConditionForm';
