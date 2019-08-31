@@ -43,36 +43,45 @@ class FileField extends React.Component {
         this.selectingFile = true;
 
         const { ipcRenderer } = window.require('electron');
-        const files = ipcRenderer.sendSync('show-open-dialog', {
+
+        ipcRenderer.once('file-paths-selected', (event, message) => {
+            const files = message.filePaths;
+
+            if (files && files.length === 1) {
+                this.onChange(files[0]);
+
+                if (this.props.onPressEnter) {
+                    this.props.onPressEnter();
+                }
+            }
+
+            setTimeout(() => {
+                this.selectingFile = false;
+            }, 200);
+        });
+
+        ipcRenderer.send('show-open-dialog', {
             properties: [
                 'openFile'
             ]
         });
-
-        if (files && files.length === 1) {
-            this.onChange(files[0]);
-
-            if (this.props.onPressEnter) {
-                this.props.onPressEnter();
-            }
-        }
-
-        setTimeout(() => {
-            this.selectingFile = false;
-        }, 200);
     }
 
     render() {
         const { readOnly } = this.props;
 
         if (readOnly) {
-            return (
-                <Icon
-                    icon={'folder-open'}
-                    style={{ cursor: 'pointer' }}
-                    onIconClick={this.onOpenFile}
-                    text={this.state.value} />
-            );
+            if (process.env.REACT_APP_MODE === 'electron' && this.state.value) {
+                return (
+                    <Icon
+                        icon={'folder-open'}
+                        style={{ cursor: 'pointer' }}
+                        onIconClick={this.onOpenFile}
+                        text={this.state.value} />
+                );
+            } else {
+                return this.state.value;
+            }
         }
 
         return (
@@ -89,12 +98,12 @@ class FileField extends React.Component {
                         }, 100);
                     }
                 }}
-                suffix={(
+                suffix={process.env.REACT_APP_MODE === 'electron' ? (
                     <Icon
                         icon={'folder-open'}
                         style={{ cursor: 'pointer' }}
                         onIconClick={this.onSelectFile} />
-                )} />
+                ) : null} />
         );
     }
 }

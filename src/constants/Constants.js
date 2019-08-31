@@ -1,9 +1,4 @@
 export default {
-    itemSku: 'tu-cloud-pro-1y',
-    connectionTestUrl: 'http://www.google.com',
-    purchaseUrl: 'https://www.taskunifier.app/app',
-    downloadUrl: 'https://www.taskunifier.app/app',
-    versionUrl: 'https://api.taskunifier.app/v1/versions/taskunifier-app/latest',
     color: '#0e67c4',
     selectionForegroundColor: '#ffffff',
     selectionBackgroundColor: '#0e67c4',
@@ -23,6 +18,6 @@ export default {
     archivedColor: '#5e666d',
     defaultTaskTemplateColor: '#ffd632',
     badgeColor: '#0e67c4',
-    calendarDateMode_startDate: '#32cd32',
-    calendarDateMode_dueDate: '#1e90ff'
+    calendarDateModeColor_startDate: '#32cd32',
+    calendarDateModeColor_dueDate: '#1e90ff'
 };

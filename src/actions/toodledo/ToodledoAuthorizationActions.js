@@ -5,6 +5,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
+import { openExternalLink } from 'utils/ElectronUtils';
 import { getAppVersion } from 'utils/VersionUtils';
 
 export function authorize() {
@@ -18,8 +19,7 @@ export function authorize() {
 
         const url = `https://api.toodledo.com/3/account/authorize.php?${qs.stringify(params)}`;
 
-        const { ipcRenderer } = window.require('electron');
-        ipcRenderer.send('open-external', url);
+        openExternalLink(url);
     };
 }
 

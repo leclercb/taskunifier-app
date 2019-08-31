@@ -200,10 +200,10 @@ function TaskSider(props) {
                         <Radio
                             value="both"
                             style={{
-                                borderTop: `1px solid ${Constants.calendarDateMode_startDate}`,
-                                borderLeft: `1px solid ${Constants.calendarDateMode_startDate}`,
-                                borderBottom: `1px solid ${Constants.calendarDateMode_dueDate}`,
-                                borderRight: `1px solid ${Constants.calendarDateMode_dueDate}`,
+                                borderTop: `1px solid ${Constants.calendarDateModeColor_startDate}`,
+                                borderLeft: `1px solid ${Constants.calendarDateModeColor_startDate}`,
+                                borderBottom: `1px solid ${Constants.calendarDateModeColor_dueDate}`,
+                                borderRight: `1px solid ${Constants.calendarDateModeColor_dueDate}`,
                                 borderRadius: 10,
                                 padding: 3
                             }}>
@@ -212,7 +212,7 @@ function TaskSider(props) {
                         <Radio
                             value="startDate"
                             style={{
-                                border: `1px solid ${Constants.calendarDateMode_startDate}`,
+                                border: `1px solid ${Constants.calendarDateModeColor_startDate}`,
                                 borderRadius: 10,
                                 padding: 3
                             }}>
@@ -221,7 +221,7 @@ function TaskSider(props) {
                         <Radio
                             value="dueDate"
                             style={{
-                                border: `1px solid ${Constants.calendarDateMode_dueDate}`,
+                                border: `1px solid ${Constants.calendarDateModeColor_dueDate}`,
                                 borderRadius: 10,
                                 padding: 3
                             }}>

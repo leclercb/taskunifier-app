@@ -1,18 +1,17 @@
 import React from 'react';
-import { Button, Checkbox, Modal, Select, notification } from 'antd';
+import { Checkbox, Modal, Select, notification } from 'antd';
 import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
+import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
-import { getLatestVersion, testConnection } from 'actions/RequestActions';
+import { testConnection } from 'actions/RequestActions';
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
-import { compareVersions } from 'utils/CompareUtils';
-import { downloadVersion, getAppVersion } from 'utils/VersionUtils';
-import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { verifyLicense } from 'utils/LicenseUtils';
+import { checkLatestVersion } from 'utils/VersionUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -75,24 +74,7 @@ export function getCategories() {
                     title: 'Check version',
                     type: 'button',
                     value: async settings => {
-                        const version = await getLatestVersion(settings);
-                        const latestVersion = version;
-                        const appVersion = getAppVersion();
-
-                        if (compareVersions(appVersion, latestVersion) > 0) {
-                            notification.info({
-                                message: `A new version is available: ${latestVersion}`,
-                                description: (
-                                    <Button onClick={() => downloadVersion()}>
-                                        Click here to download it !
-                                        </Button>
-                                )
-                            });
-                        } else {
-                            notification.success({
-                                message: 'You already have the latest version'
-                            });
-                        }
+                        await checkLatestVersion(settings, false);
                     },
                     editable: true,
                     mode: 'electron'

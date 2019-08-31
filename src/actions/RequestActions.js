@@ -1,5 +1,5 @@
-import Constants from 'constants/Constants';
 import axios from 'axios';
+import { getConfig } from 'config/Config';
 
 export function sendRequest(config, settings = {}) {
     if (process.env.REACT_APP_MODE !== 'electron' ||
@@ -37,24 +37,12 @@ export function sendRequest(config, settings = {}) {
     })(config);
 }
 
-export function testConnection(settings) {
-    return sendRequest(
+export async function testConnection(settings) {
+    await sendRequest(
         {
             method: 'GET',
-            url: Constants.connectionTestUrl,
+            url: getConfig().connectionTestUrl,
             responseType: 'text'
         },
         settings);
-}
-
-export async function getLatestVersion(settings) {
-    const result = await sendRequest(
-        {
-            method: 'GET',
-            url: Constants.versionUrl,
-            responseType: 'text'
-        },
-        settings);
-
-    return result.data.number;
 }

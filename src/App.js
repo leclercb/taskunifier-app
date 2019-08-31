@@ -9,6 +9,7 @@ import AppLayout from 'components/layout/AppLayout';
 import withApp from 'containers/WithApp';
 import withJoyride from 'containers/WithJoyride';
 import withSettings from 'containers/WithSettings';
+import { checkLatestVersion } from 'utils/VersionUtils';
 
 import 'App.css';
 import 'font-awesome.js';
@@ -21,6 +22,24 @@ import 'components/common/table/VirtualizedTable.css';
 function App(props) {
     useEffect(() => {
         props.loadData();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (process.env.REACT_APP_MODE === 'electron') {
+            const timeout = setTimeout(async () => {
+                const result = await checkLatestVersion(props.settings, true);
+
+                if (result) {
+                    props.updateSettings({
+                        checkLatestVersion: result
+                    });
+                }
+            }, 5000);
+
+            return () => {
+                clearTimeout(timeout);
+            };
+        }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {

@@ -2,13 +2,13 @@ import React from 'react';
 import { Button, Descriptions, Popover, message } from 'antd';
 import PropTypes from 'prop-types';
 import Avatar from 'components/common/Avatar';
-import Constants from 'constants/Constants';
+import { getConfig } from 'config/Config';
 import withSession from 'containers/WithSession';
 
 function UserMenu({ session, logout, buyItem }) {
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);
-        await buyItem(Constants.itemSku, session.user.id, session.user.email);
+        await buyItem(getConfig().itemSku, session.user.id, session.user.email);
     };
 
     const content = (

@@ -1,7 +1,14 @@
 const config = {
+    common: {
+        itemSku: 'tu-cloud-pro-1y',
+        connectionTestUrl: 'http://www.google.com',
+        latestReleaseUrl: 'https://api.github.com/repos/leclercb/taskunifier-app/releases/latest'
+    },
     local: {
         apiUrl: 'http://localhost:2000',
         authUrl: 'http://localhost:2300',
+        purchaseUrl: 'http://localhost:2100/app',
+        downloadUrl: 'http://localhost:2100/app',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
@@ -22,6 +29,8 @@ const config = {
     dev: {
         apiUrl: 'https://api-dev.taskunifier.app',
         authUrl: 'https://auth-dev.taskunifier.app',
+        purchaseUrl: 'https://www-dev.taskunifier.app/app',
+        downloadUrl: 'https://www-dev.taskunifier.app/app',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
@@ -42,6 +51,8 @@ const config = {
     prod: {
         apiUrl: 'https://api.taskunifier.app',
         authUrl: 'https://auth.taskunifier.app',
+        purchaseUrl: 'https://www.taskunifier.app/app',
+        downloadUrl: 'https://www.taskunifier.app/app',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
@@ -62,5 +73,8 @@ const config = {
 };
 
 export function getConfig() {
-    return config[process.env.REACT_APP_STAGE];
+    return {
+        ...config.common,
+        ...config[process.env.REACT_APP_STAGE]
+    };
 }
