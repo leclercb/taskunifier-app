@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Empty } from 'antd';
 import Icon from 'components/common/Icon';
-import Constants from 'constants/Constants';
+import { getConfig } from 'config/Config';
 import { openExternalLink } from 'utils/ElectronUtils';
 
 export function ProMessage() {
     const onClick = () => {
-        openExternalLink(Constants.purchaseUrl);
+        openExternalLink(getConfig().purchaseUrl);
     };
 
     return (

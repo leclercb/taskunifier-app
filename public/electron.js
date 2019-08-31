@@ -110,8 +110,9 @@ ipcMain.on('get-version', event => {
     event.returnValue = app.getVersion();
 });
 
-ipcMain.on('show-open-dialog', (event, options) => {
-    event.returnValue = dialog.showOpenDialog(options);
+ipcMain.on('show-open-dialog', async (event, options) => {
+    const filePaths = await dialog.showOpenDialog(options);
+    mainWindow.webContents.send('file-paths-selected', filePaths);
 });
 
 ipcMain.on('open-file', (event, file) => {
