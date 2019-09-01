@@ -86,6 +86,10 @@ function Header(props) {
         props.setReminderManagerOptions({ visible: true });
     };
 
+    const onSetNoteFieldManagerVisible = () => {
+        props.setNoteFieldManagerOptions({ visible: true });
+    };
+
     const onSetNoteFilterManagerVisible = () => {
         props.setNoteFilterManagerOptions({ visible: true });
     };
@@ -173,6 +177,9 @@ function Header(props) {
             {props.selectedView === 'note' ?
                 createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
                 : null}
+            {props.selectedView === 'note' ?
+                createButton('columns', 'Note Field Manager', onSetNoteFieldManagerVisible)
+                : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('plus', 'Add Task', onAddTask)
                 : null}
@@ -243,6 +250,7 @@ Header.propTypes = {
     setSelectedTaskIds: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setReminderManagerOptions: PropTypes.func.isRequired,
+    setNoteFieldManagerOptions: PropTypes.func.isRequired,
     setNoteFilterManagerOptions: PropTypes.func.isRequired,
     setTaskFieldManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,

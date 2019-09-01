@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Empty, Tabs } from 'antd';
 import LinkedObjectTable from 'components/tasks/linkedobject/LinkedObjectTable';
-import TaskNoteForm from 'components/tasks/note/TaskNoteForm';
+import TaskTextForm from 'components/tasks/text/TaskTextForm';
 import withSelectedTasks from 'containers/WithSelectedTasks';
 import { getLinkedContactFields } from 'data/DataLinkedContactFields';
 import { getLinkedFileFields } from 'data/DataLinkedFileFields';
@@ -40,8 +40,8 @@ function TaskTabs(props) {
 
     return (
         <Tabs animated={false} className="ant-tabs-full-height">
-            <Tabs.TabPane tab="Note" key="note">
-                <TaskNoteForm
+            <Tabs.TabPane tab="Text" key="text">
+                <TaskTextForm
                     task={props.selectedTasks[0]}
                     updateTask={props.updateTask} />
             </Tabs.TabPane>

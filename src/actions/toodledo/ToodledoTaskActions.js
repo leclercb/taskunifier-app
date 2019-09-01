@@ -285,7 +285,8 @@ function convertTaskToToodledo(task, state) {
         priority: priority ? priority.value : -1,
         star: task.star ? 1 : 0,
         timer: task.timer ? task.timer.value : 0,
-        timeron: task.timer && task.timer.startDate ? moment(task.timer.startDate).unix() : 0
+        timeron: task.timer && task.timer.startDate ? moment(task.timer.startDate).unix() : 0,
+        note: task.text
     };
 }
 
@@ -325,7 +326,8 @@ function convertTaskToTaskUnifier(task, state) {
         timer: {
             value: task.timer,
             startDate: task.timeron ? moment.unix(task.timeron).toISOString() : null
-        }
+        },
+        text: task.note
     };
 }
 

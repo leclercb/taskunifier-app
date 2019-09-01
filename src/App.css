@@ -112,6 +112,13 @@ ant-input:focus {
     border-color: transparent;
 }
 
+/* React RTE */
+
+.rte-editor {
+    overflow: auto;
+    max-height: 200px;
+}
+
 /* React Virtualized */
 
 .ReactVirtualized__Table__Grid {

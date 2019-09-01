@@ -53,8 +53,8 @@ export function getDefaultNoteFields() {
         },
         {
             static: true,
-            id: 'note',
-            title: 'Note',
+            id: 'text',
+            title: 'Text',
             type: 'textarea',
             editable: true
         }

@@ -7,20 +7,22 @@ import { getFieldType, getFieldTypes, getValuePropNameForType } from 'data/DataF
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function TaskFieldForm(props) {
+function FieldForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
-    const config = getFieldType(props.taskField.type, props.taskField.options);
+    const config = getFieldType(props.field.type, props.field.options);
 
-    const onCommit = () => onCommitForm(props.form, props.taskField, props.updateTaskField);
+    const onCommit = () => onCommitForm(props.form, props.field, props.updateField);
+
+    const isTypeDisabled = !!props.objects.find(object => props.field.id in object);
 
     return (
         <Form {...formItemLayout}>
             <Form.Item label="Title">
                 {getFieldDecorator('title', {
-                    initialValue: props.taskField.title,
+                    initialValue: props.field.title,
                     rules: [
                         {
                             required: true,
@@ -33,7 +35,7 @@ function TaskFieldForm(props) {
             </Form.Item>
             <Form.Item label="Color">
                 {getFieldDecorator('color', {
-                    initialValue: props.taskField.color,
+                    initialValue: props.field.color,
                     valuePropName: 'color',
                     rules: [
                         {
@@ -47,7 +49,7 @@ function TaskFieldForm(props) {
             </Form.Item>
             <Form.Item label="Type">
                 {getFieldDecorator('type', {
-                    initialValue: props.taskField.type,
+                    initialValue: props.field.type,
                     rules: [
                         {
                             required: true,
@@ -55,7 +57,7 @@ function TaskFieldForm(props) {
                         }
                     ]
                 })(
-                    <Select onBlur={onCommit}>
+                    <Select onBlur={onCommit} disabled={isTypeDisabled}>
                         {getFieldTypes().filter(type => getFieldType(type).allowCreation).map(type => {
                             return (
                                 <Select.Option key={type} value={type}>
@@ -66,7 +68,7 @@ function TaskFieldForm(props) {
                     </Select>
                 )}
             </Form.Item>
-            <Divider>Task Field Options</Divider>
+            <Divider>Field Options</Divider>
             {config.options.length === 0 && (
                 <Empty description="There is no option for this field type" />
             )}
@@ -74,7 +76,7 @@ function TaskFieldForm(props) {
                 <Form.Item key={option.id} label={option.title}>
                     {getFieldDecorator('options.' + option.id, {
                         valuePropName: getValuePropNameForType(option.type),
-                        initialValue: props.taskField.options ? props.taskField.options[option.id] : undefined
+                        initialValue: props.field.options ? props.field.options[option.id] : undefined
                     })(
                         getInputForType(option.type, option.options, { onCommit })
                     )}
@@ -84,10 +86,11 @@ function TaskFieldForm(props) {
     );
 }
 
-TaskFieldForm.propTypes = {
+FieldForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskField: FieldPropType.isRequired,
-    updateTaskField: PropTypes.func.isRequired
+    objects: PropTypes.array.isRequired,
+    field: FieldPropType.isRequired,
+    updateField: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'taskField' })(TaskFieldForm);
+export default Form.create({ name: 'field' })(FieldForm);

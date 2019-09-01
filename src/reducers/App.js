@@ -27,6 +27,10 @@ const App = () => (state = {
     reminderManager: {
         visible: false
     },
+    noteFieldManager: {
+        visible: false,
+        noteFieldId: null
+    },
     noteFilterManager: {
         visible: false,
         noteFilterId: null
@@ -110,6 +114,14 @@ const App = () => (state = {
                 ...state,
                 reminderManager: {
                     visible: 'visible' in action ? action.visible : state.reminderManager.visible
+                }
+            };
+        case 'SET_NOTE_FIELD_MANAGER_OPTIONS':
+            return {
+                ...state,
+                noteFieldManager: {
+                    visible: 'visible' in action ? action.visible : state.noteFieldManager.visible,
+                    noteFieldId: 'noteFieldId' in action ? action.noteFieldId : state.noteFieldManager.noteFieldId
                 }
             };
         case 'SET_NOTE_FILTER_MANAGER_OPTIONS':
