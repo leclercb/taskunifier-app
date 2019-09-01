@@ -1244,7 +1244,7 @@ export function getFieldType(type, options) {
         case 'note': {
             configuration = {
                 title: 'Note',
-                allowCreation: false,
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 valuePropName: 'value',
@@ -1999,7 +1999,7 @@ export function getFieldType(type, options) {
         case 'textarea': {
             configuration = {
                 title: 'Text Area',
-                allowCreation: true,
+                allowCreation: false,
                 width: 250,
                 alwaysInEdition: false,
                 valuePropName: 'value',
