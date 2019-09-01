@@ -6,24 +6,34 @@ import { NotePropType } from 'proptypes/NotePropTypes';
 function NoteTextForm(props) {
     const [value, setValue] = React.useState(RichTextEditor.createValueFromString(props.note.text || '', 'markdown'));
 
+    const editorRef = React.createRef();
+
     useEffect(() => {
         setValue(RichTextEditor.createValueFromString(props.note.text || '', 'markdown'));
     }, [props.note.text]);
 
     const onSave = () => {
-        props.updateNote({
-            ...props.note,
-            text: value.toString('markdown')
+        const element = editorRef.current;
+
+        setTimeout(() => {
+            if (!element || !element.contains(document.activeElement)) {
+                props.updateNote({
+                    ...props.note,
+                    text: value.toString('markdown')
+                });
+            }
         });
     };
 
     return (
-        <RichTextEditor
-            value={value}
-            onChange={setValue}
-            onBlur={onSave}
-            editorClassName="rte-editor"
-        />
+        <div ref={editorRef} style={{ height: '100%' }}>
+            <RichTextEditor
+                value={value}
+                onChange={setValue}
+                onBlur={onSave}
+                rootStyle={{ height: '100%' }}
+                editorClassName="rte-editor" />
+        </div>
     );
 }
 

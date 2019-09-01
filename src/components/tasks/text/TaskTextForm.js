@@ -6,24 +6,34 @@ import { TaskPropType } from 'proptypes/TaskPropTypes';
 function TaskTextForm(props) {
     const [value, setValue] = React.useState(RichTextEditor.createValueFromString(props.task.text || '', 'markdown'));
 
+    const editorRef = React.createRef();
+
     useEffect(() => {
         setValue(RichTextEditor.createValueFromString(props.task.text || '', 'markdown'));
     }, [props.task.text]);
 
     const onSave = () => {
-        props.updateTask({
-            ...props.task,
-            text: value.toString('markdown')
+        const element = editorRef.current;
+
+        setTimeout(() => {
+            if (!element || !element.contains(document.activeElement)) {
+                props.updateTask({
+                    ...props.task,
+                    text: value.toString('markdown')
+                });
+            }
         });
     };
 
     return (
-        <RichTextEditor
-            value={value}
-            onChange={setValue}
-            onBlur={onSave}
-            editorClassName="rte-editor"
-        />
+        <div ref={editorRef} style={{ height: '100%' }}>
+            <RichTextEditor
+                value={value}
+                onChange={setValue}
+                onBlur={onSave}
+                rootStyle={{ height: '100%' }}
+                editorClassName="rte-editor" />
+        </div>
     );
 }
 

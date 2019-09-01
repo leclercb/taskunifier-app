@@ -33,6 +33,12 @@ export function saveSettingsToServer(oldSettings, newSettings) {
     return async dispatch => {
         const processId = uuid();
 
+        const diffSettings = oldSettings ? diff(newSettings, oldSettings) : newSettings;
+
+        if (Object.keys(diffSettings).length === 0) {
+            return newSettings;
+        }
+
         try {
             const result = await sendRequest(
                 {
@@ -41,7 +47,7 @@ export function saveSettingsToServer(oldSettings, newSettings) {
                     },
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/settings`,
-                    data: oldSettings ? diff(newSettings, oldSettings) : newSettings,
+                    data: diffSettings,
                     responseType: 'json'
                 });
 

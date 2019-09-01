@@ -148,6 +148,10 @@ export function saveToServer(property, oldObject, newObject) {
         delete diffObject.creationDate;
         delete diffObject.updateDate;
 
+        if (oldObject && Object.keys(diffObject).length === 0) {
+            return newObject;
+        }
+
         try {
             const result = await sendRequest(
                 {
