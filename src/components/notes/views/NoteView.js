@@ -35,7 +35,7 @@ function NoteView(props) {
                 <div style={{ height: '100%' }}>
                     <NoteTable />
                 </div>
-                <div style={{ padding: 10, width: '100%' }}>
+                <div style={{ padding: 10, width: '100%', height: '100%' }}>
                     <NoteTabs />
                 </div>
             </SplitPane>

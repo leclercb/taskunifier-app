@@ -530,8 +530,8 @@ export function getCategories() {
                     visible: false
                 },
                 {
-                    id: 'noteColumnVisible_note',
-                    title: 'Show column "Note"',
+                    id: 'noteColumnVisible_text',
+                    title: 'Show column "Text"',
                     type: 'boolean',
                     value: false,
                     editable: false,
@@ -594,8 +594,8 @@ export function getCategories() {
                     visible: false
                 },
                 {
-                    id: 'taskColumnVisible_note',
-                    title: 'Show column "Note"',
+                    id: 'taskColumnVisible_text',
+                    title: 'Show column "Text"',
                     type: 'boolean',
                     value: false,
                     editable: false,

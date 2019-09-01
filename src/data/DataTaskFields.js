@@ -180,8 +180,8 @@ export function getDefaultTaskFields(settings) {
         },
         {
             static: true,
-            id: 'note',
-            title: 'Note',
+            id: 'text',
+            title: 'Text',
             type: 'textarea',
             editable: true
         }

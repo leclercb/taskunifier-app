@@ -257,7 +257,7 @@ function convertNoteToToodledo(note, state) {
         id: note.refIds.toodledo,
         title: note.title,
         folder: folder ? folder.refIds.toodledo : 0,
-        text: note.note
+        text: note.text
     };
 }
 
@@ -272,6 +272,6 @@ function convertNoteToTaskUnifier(note, state) {
         },
         title: note.title,
         folder: folder ? folder.refIds.toodledo : null,
-        note: note.text
+        text: note.text
     };
 }

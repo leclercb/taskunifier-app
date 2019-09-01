@@ -1,8 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Empty, Tabs } from 'antd';
+import PropTypes from 'prop-types';
+import NoteTextForm from 'components/notes/text/NoteTextForm';
 import withSelectedNotes from 'containers/WithSelectedNotes';
-import NoteNoteForm from 'components/notes/note/NoteNoteForm';
+import 'components/notes/tabs/NoteTabs.css';
 
 function NoteTabs(props) {
     if (props.selectedNotes.length !== 1) {
@@ -12,9 +13,9 @@ function NoteTabs(props) {
     }
 
     return (
-        <Tabs animated={false} style={{ height: '100%' }}>
-            <Tabs.TabPane tab="Note" key="note" style={{ height: '100%' }}>
-                <NoteNoteForm note={props.selectedNotes[0]} updateNote={props.updateNote} />
+        <Tabs animated={false} className="ant-tabs-full-height">
+            <Tabs.TabPane tab="Text" key="text">
+                <NoteTextForm note={props.selectedNotes[0]} updateNote={props.updateNote} />
             </Tabs.TabPane>
         </Tabs>
     );

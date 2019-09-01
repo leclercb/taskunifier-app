@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
 import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import Header from 'components/layout/Header';
+import ModalNoteFieldManager from 'components/notefields/ModalNoteFieldManager';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
 import NoteView from 'components/notes/views/NoteView';
 import ModalReminderManager from 'components/reminders/ModalReminderManager';
@@ -42,6 +43,7 @@ function AppLayout(props) {
             <ModalBatchEditTasksManager />
             <ModalCategoryManager />
             <ModalReminderManager />
+            <ModalNoteFieldManager />
             <ModalNoteFilterManager />
             <ModalTaskFieldManager />
             <ModalTaskFilterManager />

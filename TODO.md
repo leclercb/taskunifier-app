@@ -1,11 +1,11 @@
-## Todo List
+# Todo List
 
 * Handle server errors (max number of objects)
 * Synchronize with Toodledo and TaskUnifier Cloud
 * Normalizer for every field type
 * Improve joyride
 
-## Future Features
+# Future Features
 
 * Import/Export (+ from TaskUnifier Classic)
 * Print config (columns, size)

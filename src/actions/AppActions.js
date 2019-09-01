@@ -377,6 +377,24 @@ export function setReminderManagerOptions(options) {
     };
 }
 
+export function setNoteFieldManagerOptions(options) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_NOTE_FIELD_MANAGER_OPTIONS',
+            ...options
+        });
+    };
+}
+
+export function setNoteFilterManagerOptions(options) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_NOTE_FILTER_MANAGER_OPTIONS',
+            ...options
+        });
+    };
+}
+
 export function setTaskFieldManagerOptions(options) {
     return async dispatch => {
         dispatch({
@@ -408,24 +426,6 @@ export function setTaskTemplateManagerOptions(options) {
     return async dispatch => {
         dispatch({
             type: 'SET_TASK_TEMPLATE_MANAGER_OPTIONS',
-            ...options
-        });
-    };
-}
-
-export function setNoteFilterManagerOptions(options) {
-    return async dispatch => {
-        dispatch({
-            type: 'SET_NOTE_FILTER_MANAGER_OPTIONS',
-            ...options
-        });
-    };
-}
-
-export function setNoteTemplateManagerOptions(options) {
-    return async dispatch => {
-        dispatch({
-            type: 'SET_NOTE_TEMPLATE_MANAGER_OPTIONS',
             ...options
         });
     };

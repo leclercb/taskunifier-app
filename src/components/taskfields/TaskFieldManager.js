@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
+import withTasks from 'containers/WithTasks';
 import withTaskFields from 'containers/WithTaskFields';
 import withProCheck from 'containers/WithProCheck';
-import TaskFieldList from 'components/taskfields/TaskFieldList';
-import TaskFieldForm from 'components/taskfields/TaskFieldForm';
+import FieldList from 'components/fields/FieldList';
+import FieldForm from 'components/fields/FieldForm';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskFieldManager(props) {
     const selectedTaskFieldId = props.taskFieldId;
@@ -24,17 +26,21 @@ function TaskFieldManager(props) {
     return (
         <Row>
             <Col span={6}>
-                <TaskFieldList
-                    taskFields={props.taskFields}
-                    selectedTaskFieldId={selectedTaskFieldId}
-                    addTaskField={onAddTaskField}
-                    deleteTaskField={props.deleteTaskField}
-                    onTaskFieldSelection={onTaskFieldSelection} />
+                <FieldList
+                    fields={props.taskFields}
+                    selectedFieldId={selectedTaskFieldId}
+                    addField={onAddTaskField}
+                    deleteField={props.deleteTaskField}
+                    onFieldSelection={onTaskFieldSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedTaskField ? (
-                    <TaskFieldForm key={selectedTaskFieldId} taskField={selectedTaskField} updateTaskField={props.updateTaskField} />
+                    <FieldForm
+                        key={selectedTaskFieldId}
+                        objects={props.tasks}
+                        field={selectedTaskField}
+                        updateField={props.updateTaskField} />
                 ) : <Empty description="Please select a task field" />}
             </Col>
         </Row>
@@ -42,6 +48,7 @@ function TaskFieldManager(props) {
 }
 
 TaskFieldManager.propTypes = {
+    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     taskFieldId: PropTypes.string,
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onTaskFieldSelection: PropTypes.func.isRequired,
@@ -50,4 +57,4 @@ TaskFieldManager.propTypes = {
     deleteTaskField: PropTypes.func.isRequired
 };
 
-export default withProCheck(withTaskFields(TaskFieldManager));
+export default withProCheck(withTaskFields(withTasks(TaskFieldManager)));
