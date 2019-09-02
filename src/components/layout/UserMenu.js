@@ -8,7 +8,7 @@ import withSession from 'containers/WithSession';
 function UserMenu({ session, logout, buyItem }) {
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);
-        await buyItem(getConfig().itemSku, session.user.id, session.user.email);
+        await buyItem(getConfig().cloudItemSku, session.user.id, session.user.email);
     };
 
     const content = (
