@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
-import { synchronize } from 'actions/SynchronizationActions';
-import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';
+import { getAccountInfo, synchronize } from 'actions/SynchronizationActions';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { getToodledoData } from 'selectors/SynchronizationSelectors';
+import { getSynchronization } from 'selectors/SynchronizationSelectors';
 
 function withSynchronization(Component) {
     const mapStateToProps = state => ({
-        toodledo: getToodledoData(state)
+        synchronization: getSynchronization(state)
     });
 
     const mapDispatchToProps = dispatch => ({

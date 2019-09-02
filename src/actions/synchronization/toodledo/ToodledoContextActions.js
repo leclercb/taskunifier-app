@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';

@@ -1,13 +1,22 @@
 const Synchronization = () => (state = {
-    toodledo: {}
+    synchronizing: false,
+    data: {
+        toodledo: {}
+    }
 }, action) => {
     switch (action.type) {
-        case 'UPDATE_TOODLEDO_DATA': {
+        case 'SET_SYNCHRONIZING': {
             return {
                 ...state,
-                toodledo: {
-                    ...state.toodledo,
-                    ...action.data
+                synchronizing: action.synchronizing
+            };
+        }
+        case 'SET_SYNCHRONIZATION_DATA': {
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    [action.application]: action.data
                 }
             };
         }

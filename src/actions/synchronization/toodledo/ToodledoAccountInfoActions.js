@@ -1,9 +1,9 @@
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
-import { updateToodledoData } from 'actions/toodledo/ToodledoSynchronizationActions';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
+import { setSynchronizationData } from 'actions/SynchronizationActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
-export function getAccountInfo() {
+export function getToodledoAccountInfo() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
@@ -19,7 +19,7 @@ export function getAccountInfo() {
 
         checkResult(result);
 
-        await dispatch(updateToodledoData({
+        await dispatch(setSynchronizationData('toodledo', {
             accountInfo: result.data
         }));
     };

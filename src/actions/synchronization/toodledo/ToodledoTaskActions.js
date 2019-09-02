@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';

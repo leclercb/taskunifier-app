@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
