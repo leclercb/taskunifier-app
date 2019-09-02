@@ -1,8 +1,11 @@
+import React from 'react';
+import { Modal } from 'antd';
 import { Auth } from 'aws-amplify';
 import { Promise } from 'bluebird';
 import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
+import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import { getConfig } from 'config/Config';
 import {
     exists,
@@ -16,7 +19,7 @@ import {
     sep,
     writeFile
 } from 'utils/ElectronUtils';
-import { diff, merge } from 'utils/ObjectUtils';
+import { diff, getValue, merge } from 'utils/ObjectUtils';
 
 export function loadFromFile(property, file) {
     return async dispatch => {
@@ -166,12 +169,23 @@ export function saveToServer(property, oldObject, newObject) {
 
             return result.data;
         } catch (error) {
-            dispatch(updateProcess({
-                id: processId,
-                state: 'ERROR',
-                title: `Save "${newObject.title}" of type "${property}" to server`,
-                error: error.toString()
-            }));
+            if (error.response &&
+                error.response.status === 403 &&
+                error.response.data &&
+                error.response.data.code === 'max_objects_reached' &&
+                error.response.data.subscriptionType === 'free') {
+                Modal.info({
+                    icon: null,
+                    content: (<CloudMaxObjectsReachedMessage />)
+                });
+            } else {
+                dispatch(updateProcess({
+                    id: processId,
+                    state: 'ERROR',
+                    title: `Save "${newObject.title}" of type "${property}" to server`,
+                    error: getValue('error', 'response.data.message', true) || error.toString()
+                }));
+            }
 
             throw error;
         }

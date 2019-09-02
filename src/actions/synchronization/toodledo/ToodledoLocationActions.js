@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';

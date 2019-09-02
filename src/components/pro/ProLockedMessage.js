@@ -11,7 +11,7 @@ export function ProLockedMessage() {
 
     return (
         <Empty
-            image={(<Icon color="ffecb3" icon="lock" size={64} />)}
+            image={(<Icon color="#ffecb3" icon="lock" size={64} />)}
             description="TaskUnifier Pro has not been activated !">
             <Button onClick={onClick}>Click here to get more information</Button>
         </Empty>

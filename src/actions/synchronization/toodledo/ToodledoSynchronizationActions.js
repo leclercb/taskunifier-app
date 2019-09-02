@@ -4,24 +4,15 @@ import moment from 'moment';
 import uuid from 'uuid/v4';
 import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
-import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';
-import { authorize, createToken, refreshToken } from 'actions/toodledo/ToodledoAuthorizationActions';
-import { synchronizeContexts } from 'actions/toodledo/ToodledoContextActions';
-import { synchronizeFolders } from 'actions/toodledo/ToodledoFolderActions';
-import { synchronizeGoals } from 'actions/toodledo/ToodledoGoalActions';
-import { synchronizeLocations } from 'actions/toodledo/ToodledoLocationActions';
-import { synchronizeNotes } from 'actions/toodledo/ToodledoNoteActions';
-import { synchronizeTasks } from 'actions/toodledo/ToodledoTaskActions';
+import { getToodledoAccountInfo } from 'actions/synchronization/toodledo/ToodledoAccountInfoActions';
+import { authorize, createToken, refreshToken } from 'actions/synchronization/toodledo/ToodledoAuthorizationActions';
+import { synchronizeContexts } from 'actions/synchronization/toodledo/ToodledoContextActions';
+import { synchronizeFolders } from 'actions/synchronization/toodledo/ToodledoFolderActions';
+import { synchronizeGoals } from 'actions/synchronization/toodledo/ToodledoGoalActions';
+import { synchronizeLocations } from 'actions/synchronization/toodledo/ToodledoLocationActions';
+import { synchronizeNotes } from 'actions/synchronization/toodledo/ToodledoNoteActions';
+import { synchronizeTasks } from 'actions/synchronization/toodledo/ToodledoTaskActions';
 import { getSettings } from 'selectors/SettingSelectors';
-
-export function updateToodledoData(data) {
-    return async dispatch => {
-        dispatch({
-            type: 'UPDATE_TOODLEDO_DATA',
-            data
-        });
-    };
-}
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -78,11 +69,11 @@ export function synchronizeWithToodledo() {
             }
 
             try {
-                await dispatch(getAccountInfo());
+                await dispatch(getToodledoAccountInfo());
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.errorCode === 3) {
                     await dispatch(refreshToken());
-                    await dispatch(getAccountInfo());
+                    await dispatch(getToodledoAccountInfo());
                 } else {
                     throw error;
                 }
@@ -107,6 +98,12 @@ export function synchronizeWithToodledo() {
         } catch (error) {
             if (error.response && error.response.data) {
                 console.error(error.response.data);
+            }
+
+            if (error.response && error.response.data && error.response.data.errorCode === 102) {
+                await dispatch(updateSettings({
+                    toodledo: null
+                }));
             }
 
             dispatch(updateProcess({

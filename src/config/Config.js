@@ -1,6 +1,7 @@
 const config = {
     common: {
-        itemSku: 'tu-cloud-pro-1y',
+        appItemSku: 'tu-app-pro-1',
+        cloudItemSku: 'tu-cloud-pro-1y',
         connectionTestUrl: 'http://www.google.com',
         latestReleaseUrl: 'https://api.github.com/repos/leclercb/taskunifier-app/releases/latest'
     },

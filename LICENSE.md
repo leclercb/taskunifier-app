@@ -3,7 +3,8 @@
 There are two license types: **MIT** and **Commercial**.
 
 The following folders are **Commercial** licensed:
-* src/actions/toodledo
+* src/actions/synchronization
+* src/components/notefields
 * src/components/notefilters
 * src/components/taskfields
 * src/components/taskfilters
