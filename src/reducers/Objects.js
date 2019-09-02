@@ -178,7 +178,8 @@ const updateObject = (state, action, onUpdate) => {
                 newState,
                 {
                     object: addedObject,
-                    creationDate: action.updateDate
+                    creationDate: action.updateDate,
+                    options: {}
                 });
         });
     }
