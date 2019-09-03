@@ -115,7 +115,7 @@ export function getRemoteTasks(updatedAfter) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/tasks/get.php',
@@ -144,7 +144,7 @@ export function getRemoteDeletedTasks(deletedAfter) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/tasks/deleted.php',
@@ -177,7 +177,7 @@ export function addRemoteTasks(tasks) {
             const result = await sendRequest(
                 {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/add.php',
@@ -218,7 +218,7 @@ export function editRemoteTasks(tasks) {
             const result = await sendRequest(
                 {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/edit.php',
@@ -248,7 +248,7 @@ export function deleteRemoteTasks(tasks) {
                 await sendRequest(
                     {
                         headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
+                            'Content-Type': 'application/x-www-form-urlencoded'
                         },
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/tasks/delete.php',

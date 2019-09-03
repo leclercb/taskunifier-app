@@ -112,7 +112,7 @@ export function getRemoteNotes(updatedAfter) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/notes/get.php',
@@ -140,7 +140,7 @@ export function getRemoteDeletedNotes(deletedAfter) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/notes/deleted.php',
@@ -173,7 +173,7 @@ export function addRemoteNotes(notes) {
             const result = await sendRequest(
                 {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/add.php',
@@ -214,7 +214,7 @@ export function editRemoteNotes(notes) {
             const result = await sendRequest(
                 {
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/edit.php',
@@ -244,7 +244,7 @@ export function deleteRemoteNotes(notes) {
                 await sendRequest(
                     {
                         headers: {
-                            "Content-Type": "application/x-www-form-urlencoded"
+                            'Content-Type': 'application/x-www-form-urlencoded'
                         },
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/notes/delete.php',

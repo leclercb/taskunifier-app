@@ -90,7 +90,7 @@ export function getRemoteFolders() {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/get.php',
@@ -116,7 +116,7 @@ export function addRemoteFolder(folder) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/add.php',
@@ -149,7 +149,7 @@ export function editRemoteFolder(folder) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/edit.php',
@@ -174,7 +174,7 @@ export function deleteRemoteFolder(folder) {
         await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/delete.php',

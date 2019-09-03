@@ -33,7 +33,7 @@ export function createToken(code) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
@@ -71,7 +71,7 @@ export function refreshToken() {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',

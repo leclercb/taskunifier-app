@@ -90,7 +90,7 @@ export function getRemoteLocations() {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/get.php',
@@ -116,7 +116,7 @@ export function addRemoteLocation(location) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/add.php',
@@ -149,7 +149,7 @@ export function editRemoteLocation(location) {
         const result = await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/edit.php',
@@ -174,7 +174,7 @@ export function deleteRemoteLocation(location) {
         await sendRequest(
             {
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/delete.php',
