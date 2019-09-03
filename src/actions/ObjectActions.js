@@ -7,6 +7,7 @@ import {
     saveToFile,
     saveToServer
 } from 'actions/ActionUtils';
+import { updateProcess } from 'actions/ThreadActions';
 import Constants from 'constants/Constants';
 import { getObjectById } from 'selectors/ObjectSelectors';
 import { filterByStatic } from 'utils/CategoryUtils';
@@ -67,74 +68,107 @@ export function addObject(
         color: Constants.defaultObjectColor
     }) {
     return async (dispatch, getState) => {
-        let id = uuid();
+        const processId = uuid();
 
-        await dispatch({
-            type: 'ADD_OBJECT',
-            property,
-            generateId: () => uuid(),
-            creationDate: moment().toISOString(),
-            object: {
-                ...defaultValues,
-                ...object,
-                id
-            },
-            options
-        });
+        try {
+            let id = uuid();
 
-        let newObject = getObjectById(getState(), property, id);
+            await dispatch({
+                type: 'ADD_OBJECT',
+                property,
+                generateId: () => uuid(),
+                creationDate: moment().toISOString(),
+                object: {
+                    ...defaultValues,
+                    ...object,
+                    id
+                },
+                options
+            });
 
-        if (process.env.REACT_APP_MODE !== 'electron') {
-            const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
-            id = createdObject.id;
-            
-            await dispatch(changeId(property, newObject.id, id));
-            newObject = getObjectById(getState(), property, id);
+            let newObject = getObjectById(getState(), property, id);
+
+            if (process.env.REACT_APP_MODE !== 'electron') {
+                const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
+                id = createdObject.id;
+
+                await dispatch(changeId(property, newObject.id, id));
+                newObject = getObjectById(getState(), property, id);
+            }
+
+            return newObject;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Add "${object.title}" of type "${property}"`,
+                error: error.toString()
+            }));
         }
-
-        return newObject;
     };
 }
 
 export function updateObject(property, object, options = {}) {
     return async (dispatch, getState) => {
-        const oldObject = getObjectById(getState(), property, object.id);
+        const processId = uuid();
 
-        await dispatch({
-            type: 'UPDATE_OBJECT',
-            property,
-            generateId: () => uuid(),
-            updateDate: moment().toISOString(),
-            object,
-            options
-        });
+        try {
+            const oldObject = getObjectById(getState(), property, object.id);
 
-        const newObject = getObjectById(getState(), property, object.id);
+            await dispatch({
+                type: 'UPDATE_OBJECT',
+                property,
+                generateId: () => uuid(),
+                updateDate: moment().toISOString(),
+                object,
+                options
+            });
 
-        if (process.env.REACT_APP_MODE !== 'electron') {
-            await dispatch(saveObjectToServer(property, oldObject, newObject));
+            const newObject = getObjectById(getState(), property, object.id);
+
+            if (process.env.REACT_APP_MODE !== 'electron') {
+                await dispatch(saveObjectToServer(property, oldObject, newObject));
+            }
+
+            return newObject;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Update "${object.title}" of type "${property}"`,
+                error: error.toString()
+            }));
         }
-
-        return newObject;
     };
 }
 
 export function deleteObject(property, objectId, options = {}) {
     return async dispatch => {
-        await dispatch({
-            type: 'DELETE_OBJECT',
-            property,
-            generateId: () => uuid(),
-            updateDate: moment().toISOString(),
-            objectId,
-            options
-        });
+        const processId = uuid();
+
+        try {
+            await dispatch({
+                type: 'DELETE_OBJECT',
+                property,
+                generateId: () => uuid(),
+                updateDate: moment().toISOString(),
+                objectId,
+                options
+            });
 
 
-        if (process.env.REACT_APP_MODE !== 'electron') {
-            const objectIds = Array.isArray(objectId) ? objectId : [objectId];
-            const promises = objectIds.map(objectId => dispatch(deleteObjectFromServer(property, objectId)));
-            await Promise.all(promises);
+            if (process.env.REACT_APP_MODE !== 'electron') {
+                const objectIds = Array.isArray(objectId) ? objectId : [objectId];
+                const promises = objectIds.map(objectId => dispatch(deleteObjectFromServer(property, objectId)));
+                await Promise.all(promises);
+            }
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Remove object(s) of type "${property}"`,
+                error: error.toString()
+            }));
         }
     };
 }

@@ -3,6 +3,7 @@
 * Add setting to skip fetching completed tasks older than x
 * Handle server errors (max number of objects)
 * Synchronize with Toodledo and TaskUnifier Cloud
+
 * Normalizer for every field type
 * Improve joyride
 
