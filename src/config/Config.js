@@ -22,9 +22,17 @@ const config = {
         license: {
             publicKey: '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvN3lkMNEgwaTS6yz6y1\n6coi6Jfakg01rYNeOb6x2kv21OEm0Mhq5Q5/Lw+Os2kD30j50IYGvrAB0L7U3kYW\nItVjPnsWqfz81WqzfGRpmLWjnCTdoKyS8uph3F0jaSsrhi0+VsLgFz8p61G5USP7\nE5FDiVgCih5gPPfUTVNk6uIMryLiQpVKsaHvVr/bC7DX0UuKT2PCut88mkARxn51\nCTrEr5aHXxv3e2PwOmdzDTaThjmjjhpwkR8LKuFb71B4e+cJukYOoyJsTa2xqiqf\nzpOv9IGF0By1PJySxY+KZtq/elnhDcct2S28sIh5+3l2fEDz6e8DFLNnHdJ9ofWT\nGQIDAQAB\n-----END PUBLIC KEY-----'
         },
-        toodledo: {
-            username: process.env.REACT_APP_TOODLEDO_USERNAME,
-            password: process.env.REACT_APP_TOODLEDO_PASSWORD
+        synchronization: {
+            taskunifier: {
+                clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
+                clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
+                loginUri: 'https://hosted-auth-dev.taskunifier.app',
+                redirectUri: 'https://www-dev.taskunifier.app/code'
+            },
+            toodledo: {
+                clientId: process.env.REACT_APP_TOODLEDO_CLIENT_ID,
+                clientSecret: process.env.REACT_APP_TOODLEDO_CLIENT_SECRET
+            }
         }
     },
     dev: {
@@ -44,9 +52,17 @@ const config = {
         license: {
             publicKey: '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvN3lkMNEgwaTS6yz6y1\n6coi6Jfakg01rYNeOb6x2kv21OEm0Mhq5Q5/Lw+Os2kD30j50IYGvrAB0L7U3kYW\nItVjPnsWqfz81WqzfGRpmLWjnCTdoKyS8uph3F0jaSsrhi0+VsLgFz8p61G5USP7\nE5FDiVgCih5gPPfUTVNk6uIMryLiQpVKsaHvVr/bC7DX0UuKT2PCut88mkARxn51\nCTrEr5aHXxv3e2PwOmdzDTaThjmjjhpwkR8LKuFb71B4e+cJukYOoyJsTa2xqiqf\nzpOv9IGF0By1PJySxY+KZtq/elnhDcct2S28sIh5+3l2fEDz6e8DFLNnHdJ9ofWT\nGQIDAQAB\n-----END PUBLIC KEY-----'
         },
-        toodledo: {
-            username: process.env.REACT_APP_TOODLEDO_USERNAME,
-            password: process.env.REACT_APP_TOODLEDO_PASSWORD
+        synchronization: {
+            taskunifier: {
+                clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
+                clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
+                loginUri: 'https://hosted-auth-dev.taskunifier.app',
+                redirectUri: 'https://www-dev.taskunifier.app/code'
+            },
+            toodledo: {
+                clientId: process.env.REACT_APP_TOODLEDO_CLIENT_ID,
+                clientSecret: process.env.REACT_APP_TOODLEDO_CLIENT_SECRET
+            }
         }
     },
     prod: {
@@ -66,9 +82,17 @@ const config = {
         license: {
             publicKey: '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArvN3lkMNEgwaTS6yz6y1\n6coi6Jfakg01rYNeOb6x2kv21OEm0Mhq5Q5/Lw+Os2kD30j50IYGvrAB0L7U3kYW\nItVjPnsWqfz81WqzfGRpmLWjnCTdoKyS8uph3F0jaSsrhi0+VsLgFz8p61G5USP7\nE5FDiVgCih5gPPfUTVNk6uIMryLiQpVKsaHvVr/bC7DX0UuKT2PCut88mkARxn51\nCTrEr5aHXxv3e2PwOmdzDTaThjmjjhpwkR8LKuFb71B4e+cJukYOoyJsTa2xqiqf\nzpOv9IGF0By1PJySxY+KZtq/elnhDcct2S28sIh5+3l2fEDz6e8DFLNnHdJ9ofWT\nGQIDAQAB\n-----END PUBLIC KEY-----'
         },
-        toodledo: {
-            username: process.env.REACT_APP_TOODLEDO_USERNAME,
-            password: process.env.REACT_APP_TOODLEDO_PASSWORD
+        synchronization: {
+            taskunifier: {
+                clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
+                clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
+                loginUri: 'https://hosted-auth.taskunifier.app',
+                redirectUri: 'https://www.taskunifier.app/code'
+            },
+            toodledo: {
+                clientId: process.env.REACT_APP_TOODLEDO_CLIENT_ID,
+                clientSecret: process.env.REACT_APP_TOODLEDO_CLIENT_SECRET
+            }
         }
     }
 };

@@ -1,6 +1,7 @@
 const Synchronization = () => (state = {
     synchronizing: false,
     data: {
+        taskunifier: {},
         toodledo: {}
     }
 }, action) => {
