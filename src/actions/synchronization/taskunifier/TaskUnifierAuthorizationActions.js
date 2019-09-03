@@ -28,17 +28,20 @@ export function createToken(code) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: `${getConfig().synchronization.taskunifier.loginUri}/oauth2/token`,
                 auth: {
                     username: getConfig().synchronization.taskunifier.clientId,
                     password: getConfig().synchronization.taskunifier.clientSecret
                 },
-                data: {
+                data: qs.stringify({
                     grant_type: 'authorization_code',
                     redirect_uri: getConfig().synchronization.taskunifier.redirectUri,
                     code
-                }
+                })
             },
             settings);
 
@@ -61,16 +64,19 @@ export function refreshToken() {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: `${getConfig().synchronization.taskunifier.loginUri}/oauth2/token`,
                 auth: {
                     username: getConfig().synchronization.taskunifier.clientId,
                     password: getConfig().synchronization.taskunifier.clientSecret
                 },
-                data: {
+                data: qs.stringify({
                     grant_type: 'refresh_token',
                     refresh_token: settings.taskunifier.refreshToken
-                }
+                })
             },
             settings);
 

@@ -13,7 +13,7 @@ export function getTaskUnifierAccountInfo() {
                 headers: {
                     Authorization: `Bearer ${settings.taskunifier.accessToken}`
                 },
-                method: 'POST',
+                method: 'GET',
                 url: `${getConfig().apiUrl}/v1/users/current`
             },
             settings);
