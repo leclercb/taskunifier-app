@@ -18,6 +18,8 @@ export function getTaskUnifierAccountInfo() {
             },
             settings);
 
+        console.debug('getTaskUnifierAccountInfo', result);
+
         checkResult(result);
 
         await dispatch(setSynchronizationData('taskunifier', {

@@ -126,7 +126,7 @@ export function getRemoteTasks(updatedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(task => convertTaskToTaskUnifier(task, state));
+        return result.data.slice(1).map(task => convertTaskToLocal(task, state));
     };
 }
 
@@ -151,7 +151,7 @@ export function getRemoteDeletedTasks(deletedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(task => convertTaskToTaskUnifier(task, state));
+        return result.data.slice(1).map(task => convertTaskToLocal(task, state));
     };
 }
 
@@ -173,7 +173,7 @@ export function addRemoteTasks(tasks) {
                     url: 'https://api.toodledo.com/3/tasks/add.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
                     }
                 },
                 settings);
@@ -211,7 +211,7 @@ export function editRemoteTasks(tasks) {
                     url: 'https://api.toodledo.com/3/tasks/edit.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
                     }
                 },
                 settings);
@@ -253,7 +253,7 @@ export function deleteRemoteTasks(tasks) {
     };
 }
 
-function convertTaskToToodledo(task, state) {
+function convertTaskToRemote(task, state) {
     const contexts = getContextsFilteredByVisibleState(state);
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
@@ -290,7 +290,7 @@ function convertTaskToToodledo(task, state) {
     };
 }
 
-function convertTaskToTaskUnifier(task, state) {
+function convertTaskToLocal(task, state) {
     const contexts = getContextsFilteredByVisibleState(state);
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);

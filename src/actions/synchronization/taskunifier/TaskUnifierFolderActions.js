@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
+import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -15,7 +15,7 @@ export function synchronizeFolders() {
         let folders = getFolders(getState());
 
         {
-            const foldersToAdd = filterByVisibleState(folders).filter(folder => !folder.refIds.toodledo);
+            const foldersToAdd = filterByVisibleState(folders).filter(folder => !folder.refIds.taskunifier);
             const foldersToAddPromises = foldersToAdd.map(folder => dispatch(addRemoteFolder(folder)));
             const result = await Promise.all(foldersToAddPromises);
 
@@ -27,7 +27,7 @@ export function synchronizeFolders() {
         folders = getFolders(getState());
 
         {
-            const foldersToDelete = folders.filter(folder => !!folder.refIds.toodledo && folder.state === 'TO_DELETE');
+            const foldersToDelete = folders.filter(folder => !!folder.refIds.taskunifier && folder.state === 'TO_DELETE');
             const foldersToDeletePromises = foldersToDelete.map(folder => dispatch(deleteRemoteFolder(folder)));
             await Promise.all(foldersToDeletePromises);
 
@@ -40,13 +40,13 @@ export function synchronizeFolders() {
 
         {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditFolder = moment.unix(getToodledoAccountInfo(getState()).lastedit_folder);
+            const lastEditFolder = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_folder);
 
             if (!lastSync || lastEditFolder.diff(lastSync) > 0) {
                 const remoteFolders = await dispatch(getRemoteFolders());
 
                 for (let remoteFolder of remoteFolders) {
-                    const localFolder = folders.find(folder => folder.refIds.toodledo === remoteFolder.refIds.toodledo);
+                    const localFolder = folders.find(folder => folder.refIds.taskunifier === remoteFolder.refIds.taskunifier);
 
                     if (!localFolder) {
                         await dispatch(addFolder(remoteFolder, { keepRefIds: true }));
@@ -58,7 +58,7 @@ export function synchronizeFolders() {
                 folders = getFolders(getState());
 
                 for (let localFolder of filterByVisibleState(folders)) {
-                    if (!remoteFolders.find(folder => folder.refIds.toodledo === localFolder.refIds.toodledo)) {
+                    if (!remoteFolders.find(folder => folder.refIds.taskunifier === localFolder.refIds.taskunifier)) {
                         await dispatch(deleteFolder(localFolder.id, { force: true }));
                     }
                 }
@@ -68,7 +68,7 @@ export function synchronizeFolders() {
         folders = getFolders(getState());
 
         {
-            const foldersToUpdate = folders.filter(folder => !!folder.refIds.toodledo && folder.state === 'TO_UPDATE');
+            const foldersToUpdate = folders.filter(folder => !!folder.refIds.taskunifier && folder.state === 'TO_UPDATE');
             const foldersToUpdatePromises = foldersToUpdate.map(folder => dispatch(editRemoteFolder(folder)));
             await Promise.all(foldersToUpdatePromises);
 
@@ -89,16 +89,16 @@ export function getRemoteFolders() {
         const result = await sendRequest(
             {
                 method: 'GET',
-                url: 'https://api.toodledo.com/3/folders/get.php',
+                url: 'https://api.taskunifier.com/3/folders/get.php',
                 params: {
-                    access_token: settings.toodledo.accessToken
+                    access_token: settings.taskunifier.accessToken
                 }
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(folder => convertFolderToTaskUnifier(folder));
+        return result.data.map(folder => convertFolderToLocal(folder));
     };
 }
 
@@ -112,10 +112,10 @@ export function addRemoteFolder(folder) {
         const result = await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/folders/add.php',
+                url: 'https://api.taskunifier.com/3/folders/add.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    ...convertFolderToToodledo(folder)
+                    access_token: settings.taskunifier.accessToken,
+                    ...convertFolderToRemote(folder)
                 }
             },
             settings);
@@ -126,7 +126,7 @@ export function addRemoteFolder(folder) {
             ...folder,
             refIds: {
                 ...folder.refIds,
-                toodledo: result.data[0].id
+                taskunifier: result.data[0].id
             }
         };
     };
@@ -142,10 +142,10 @@ export function editRemoteFolder(folder) {
         const result = await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/folders/edit.php',
+                url: 'https://api.taskunifier.com/3/folders/edit.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    ...convertFolderToToodledo(folder)
+                    access_token: settings.taskunifier.accessToken,
+                    ...convertFolderToRemote(folder)
                 }
             },
             settings);
@@ -164,10 +164,10 @@ export function deleteRemoteFolder(folder) {
         await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/folders/delete.php',
+                url: 'https://api.taskunifier.com/3/folders/delete.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    id: folder.refIds.toodledo
+                    access_token: settings.taskunifier.accessToken,
+                    id: folder.refIds.taskunifier
                 }
             },
             settings);
@@ -176,18 +176,18 @@ export function deleteRemoteFolder(folder) {
     };
 }
 
-function convertFolderToToodledo(folder) {
+function convertFolderToRemote(folder) {
     return {
-        id: folder.refIds.toodledo,
+        id: folder.refIds.taskunifier,
         name: folder.title,
         archived: folder.archived ? 1 : 0
     };
 }
 
-function convertFolderToTaskUnifier(folder) {
+function convertFolderToLocal(folder) {
     return {
         refIds: {
-            toodledo: folder.id
+            taskunifier: folder.id
         },
         title: folder.name,
         archived: folder.archived === 1 ? true : false

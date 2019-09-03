@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
+import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -18,7 +18,7 @@ export function synchronizeNotes() {
         let notes = getNotes(getState());
 
         {
-            const notesToAdd = filterByVisibleState(notes).filter(note => !note.refIds.toodledo);
+            const notesToAdd = filterByVisibleState(notes).filter(note => !note.refIds.taskunifier);
 
             if (notesToAdd.length > 0) {
                 const result = await dispatch(addRemoteNotes(notesToAdd));
@@ -32,7 +32,7 @@ export function synchronizeNotes() {
         notes = getNotes(getState());
 
         {
-            const notesToDelete = notes.filter(note => !!note.refIds.toodledo && note.state === 'TO_DELETE');
+            const notesToDelete = notes.filter(note => !!note.refIds.taskunifier && note.state === 'TO_DELETE');
 
             if (notesToDelete.length > 0) {
                 await dispatch(deleteRemoteNotes(notesToDelete));
@@ -47,13 +47,13 @@ export function synchronizeNotes() {
 
         {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditNote = moment.unix(getToodledoAccountInfo(getState()).lastedit_note);
+            const lastEditNote = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_note);
 
             if (!lastSync || lastEditNote.diff(lastSync) > 0) {
                 const remoteNotes = await dispatch(getRemoteNotes(lastSync));
 
                 for (let remoteNote of remoteNotes) {
-                    const localNote = notes.find(note => note.refIds.toodledo === remoteNote.refIds.toodledo);
+                    const localNote = notes.find(note => note.refIds.taskunifier === remoteNote.refIds.taskunifier);
 
                     if (!localNote) {
                         await dispatch(addNote(remoteNote, { keepRefIds: true }));
@@ -70,13 +70,13 @@ export function synchronizeNotes() {
 
         {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastDeleteNote = moment.unix(getToodledoAccountInfo(getState()).lastdelete_note);
+            const lastDeleteNote = moment.unix(getTaskUnifierAccountInfo(getState()).lastdelete_note);
 
             if (!lastSync || lastDeleteNote.diff(lastSync) > 0) {
                 const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
 
                 for (let remoteDeletedNote of remoteDeletedNotes) {
-                    const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote);
+                    const localNote = notes.find(note => note.refIds.taskunifier === remoteDeletedNote);
 
                     if (localNote) {
                         await dispatch(deleteNote(localNote.id, { force: true }));
@@ -88,7 +88,7 @@ export function synchronizeNotes() {
         notes = getNotes(getState());
 
         {
-            const notesToUpdate = notes.filter(note => !!note.refIds.toodledo && note.state === 'TO_UPDATE');
+            const notesToUpdate = notes.filter(note => !!note.refIds.taskunifier && note.state === 'TO_UPDATE');
 
             if (notesToUpdate.length > 0) {
                 await dispatch(editRemoteNotes(notesToUpdate));
@@ -111,9 +111,9 @@ export function getRemoteNotes(updatedAfter) {
         const result = await sendRequest(
             {
                 method: 'GET',
-                url: 'https://api.toodledo.com/3/notes/get.php',
+                url: 'https://api.taskunifier.com/3/notes/get.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
+                    access_token: settings.taskunifier.accessToken,
                     after: updatedAfter ? updatedAfter.unix() : 0
                 }
             },
@@ -122,7 +122,7 @@ export function getRemoteNotes(updatedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToTaskUnifier(note, state));
+        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
     };
 }
 
@@ -136,9 +136,9 @@ export function getRemoteDeletedNotes(deletedAfter) {
         const result = await sendRequest(
             {
                 method: 'GET',
-                url: 'https://api.toodledo.com/3/notes/deleted.php',
+                url: 'https://api.taskunifier.com/3/notes/deleted.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
+                    access_token: settings.taskunifier.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
                 }
             },
@@ -147,7 +147,7 @@ export function getRemoteDeletedNotes(deletedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToTaskUnifier(note, state));
+        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
     };
 }
 
@@ -166,10 +166,10 @@ export function addRemoteNotes(notes) {
             const result = await sendRequest(
                 {
                     method: 'POST',
-                    url: 'https://api.toodledo.com/3/notes/add.php',
+                    url: 'https://api.taskunifier.com/3/notes/add.php',
                     params: {
-                        access_token: settings.toodledo.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
+                        access_token: settings.taskunifier.accessToken,
+                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
                     }
                 },
                 settings);
@@ -181,7 +181,7 @@ export function addRemoteNotes(notes) {
                     ...chunkNotes[j],
                     refIds: {
                         ...chunkNotes[j].refIds,
-                        toodledo: result.data[j].id
+                        taskunifier: result.data[j].id
                     }
                 });
             }
@@ -204,10 +204,10 @@ export function editRemoteNotes(notes) {
             const result = await sendRequest(
                 {
                     method: 'POST',
-                    url: 'https://api.toodledo.com/3/notes/edit.php',
+                    url: 'https://api.taskunifier.com/3/notes/edit.php',
                     params: {
-                        access_token: settings.toodledo.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
+                        access_token: settings.taskunifier.accessToken,
+                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
                     }
                 },
                 settings);
@@ -231,10 +231,10 @@ export function deleteRemoteNotes(notes) {
                 await sendRequest(
                     {
                         method: 'POST',
-                        url: 'https://api.toodledo.com/3/notes/delete.php',
+                        url: 'https://api.taskunifier.com/3/notes/delete.php',
                         params: {
-                            access_token: settings.toodledo.accessToken,
-                            notes: JSON.stringify(chunkNotes.map(note => note.refIds.toodledo))
+                            access_token: settings.taskunifier.accessToken,
+                            notes: JSON.stringify(chunkNotes.map(note => note.refIds.taskunifier))
                         }
                     },
                     settings);
@@ -249,29 +249,29 @@ export function deleteRemoteNotes(notes) {
     };
 }
 
-function convertNoteToToodledo(note, state) {
+function convertNoteToRemote(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.id === note.folder);
 
     return {
-        id: note.refIds.toodledo,
+        id: note.refIds.taskunifier,
         title: note.title,
-        folder: folder ? folder.refIds.toodledo : 0,
+        folder: folder ? folder.refIds.taskunifier : 0,
         text: note.text
     };
 }
 
-function convertNoteToTaskUnifier(note, state) {
+function convertNoteToLocal(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
-    const folder = folders.find(folder => folder.refIds.toodledo === note.folder);
+    const folder = folders.find(folder => folder.refIds.taskunifier === note.folder);
 
     return {
         updateDate: moment.unix(note.modified).toISOString(),
         refIds: {
-            toodledo: note.id
+            taskunifier: note.id
         },
         title: note.title,
-        folder: folder ? folder.refIds.toodledo : null,
+        folder: folder ? folder.refIds.taskunifier : null,
         text: note.text
     };
 }

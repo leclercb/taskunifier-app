@@ -98,7 +98,7 @@ export function getRemoteLocations() {
 
         checkResult(result);
 
-        return result.data.map(location => convertLocationToTaskUnifier(location));
+        return result.data.map(location => convertLocationToLocal(location));
     };
 }
 
@@ -115,7 +115,7 @@ export function addRemoteLocation(location) {
                 url: 'https://api.toodledo.com/3/locations/add.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertLocationToToodledo(location)
+                    ...convertLocationToRemote(location)
                 }
             },
             settings);
@@ -145,7 +145,7 @@ export function editRemoteLocation(location) {
                 url: 'https://api.toodledo.com/3/locations/edit.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertLocationToToodledo(location)
+                    ...convertLocationToRemote(location)
                 }
             },
             settings);
@@ -176,7 +176,7 @@ export function deleteRemoteLocation(location) {
     };
 }
 
-function convertLocationToToodledo(location) {
+function convertLocationToRemote(location) {
     return {
         id: location.refIds.toodledo,
         name: location.title,
@@ -186,7 +186,7 @@ function convertLocationToToodledo(location) {
     };
 }
 
-function convertLocationToTaskUnifier(location) {
+function convertLocationToLocal(location) {
     return {
         refIds: {
             toodledo: location.id

@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
+import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -15,7 +15,7 @@ export function synchronizeContexts() {
         let contexts = getContexts(getState());
 
         {
-            const contextsToAdd = filterByVisibleState(contexts).filter(context => !context.refIds.toodledo);
+            const contextsToAdd = filterByVisibleState(contexts).filter(context => !context.refIds.taskunifier);
             const contextsToAddPromises = contextsToAdd.map(context => dispatch(addRemoteContext(context)));
             const result = await Promise.all(contextsToAddPromises);
 
@@ -27,7 +27,7 @@ export function synchronizeContexts() {
         contexts = getContexts(getState());
 
         {
-            const contextsToDelete = contexts.filter(context => !!context.refIds.toodledo && context.state === 'TO_DELETE');
+            const contextsToDelete = contexts.filter(context => !!context.refIds.taskunifier && context.state === 'TO_DELETE');
             const contextsToDeletePromises = contextsToDelete.map(context => dispatch(deleteRemoteContext(context)));
             await Promise.all(contextsToDeletePromises);
 
@@ -40,13 +40,13 @@ export function synchronizeContexts() {
 
         {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditContext = moment.unix(getToodledoAccountInfo(getState()).lastedit_context);
+            const lastEditContext = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_context);
 
             if (!lastSync || lastEditContext.diff(lastSync) > 0) {
                 const remoteContexts = await dispatch(getRemoteContexts());
 
                 for (let remoteContext of remoteContexts) {
-                    const localContext = contexts.find(context => context.refIds.toodledo === remoteContext.refIds.toodledo);
+                    const localContext = contexts.find(context => context.refIds.taskunifier === remoteContext.refIds.taskunifier);
 
                     if (!localContext) {
                         await dispatch(addContext(remoteContext, { keepRefIds: true }));
@@ -58,7 +58,7 @@ export function synchronizeContexts() {
                 contexts = getContexts(getState());
 
                 for (let localContext of filterByVisibleState(contexts)) {
-                    if (!remoteContexts.find(context => context.refIds.toodledo === localContext.refIds.toodledo)) {
+                    if (!remoteContexts.find(context => context.refIds.taskunifier === localContext.refIds.taskunifier)) {
                         await dispatch(deleteContext(localContext.id, { force: true }));
                     }
                 }
@@ -68,7 +68,7 @@ export function synchronizeContexts() {
         contexts = getContexts(getState());
 
         {
-            const contextsToUpdate = contexts.filter(context => !!context.refIds.toodledo && context.state === 'TO_UPDATE');
+            const contextsToUpdate = contexts.filter(context => !!context.refIds.taskunifier && context.state === 'TO_UPDATE');
             const contextsToUpdatePromises = contextsToUpdate.map(context => dispatch(editRemoteContext(context)));
             await Promise.all(contextsToUpdatePromises);
 
@@ -89,16 +89,16 @@ export function getRemoteContexts() {
         const result = await sendRequest(
             {
                 method: 'GET',
-                url: 'https://api.toodledo.com/3/contexts/get.php',
+                url: 'https://api.taskunifier.com/3/contexts/get.php',
                 params: {
-                    access_token: settings.toodledo.accessToken
+                    access_token: settings.taskunifier.accessToken
                 }
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(context => convertContextToTaskUnifier(context));
+        return result.data.map(context => convertContextToLocal(context));
     };
 }
 
@@ -112,10 +112,10 @@ export function addRemoteContext(context) {
         const result = await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/contexts/add.php',
+                url: 'https://api.taskunifier.com/3/contexts/add.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    ...convertContextToToodledo(context)
+                    access_token: settings.taskunifier.accessToken,
+                    ...convertContextToRemote(context)
                 }
             },
             settings);
@@ -126,7 +126,7 @@ export function addRemoteContext(context) {
             ...context,
             refIds: {
                 ...context.refIds,
-                toodledo: result.data[0].id
+                taskunifier: result.data[0].id
             }
         };
     };
@@ -142,10 +142,10 @@ export function editRemoteContext(context) {
         const result = await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/contexts/edit.php',
+                url: 'https://api.taskunifier.com/3/contexts/edit.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    ...convertContextToToodledo(context)
+                    access_token: settings.taskunifier.accessToken,
+                    ...convertContextToRemote(context)
                 }
             },
             settings);
@@ -164,10 +164,10 @@ export function deleteRemoteContext(context) {
         await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/contexts/delete.php',
+                url: 'https://api.taskunifier.com/3/contexts/delete.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    id: context.refIds.toodledo
+                    access_token: settings.taskunifier.accessToken,
+                    id: context.refIds.taskunifier
                 }
             },
             settings);
@@ -176,17 +176,17 @@ export function deleteRemoteContext(context) {
     };
 }
 
-function convertContextToToodledo(context) {
+function convertContextToRemote(context) {
     return {
-        id: context.refIds.toodledo,
+        id: context.refIds.taskunifier,
         name: context.title
     };
 }
 
-function convertContextToTaskUnifier(context) {
+function convertContextToLocal(context) {
     return {
         refIds: {
-            toodledo: context.id
+            taskunifier: context.id
         },
         title: context.name
     };

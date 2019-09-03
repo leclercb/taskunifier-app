@@ -17,6 +17,8 @@ export function getToodledoAccountInfo() {
             },
             settings);
 
+        console.debug('getToodledoAccountInfo', result);
+
         checkResult(result);
 
         await dispatch(setSynchronizationData('toodledo', {

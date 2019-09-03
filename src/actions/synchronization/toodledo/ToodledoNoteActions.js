@@ -122,7 +122,7 @@ export function getRemoteNotes(updatedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToTaskUnifier(note, state));
+        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
     };
 }
 
@@ -147,7 +147,7 @@ export function getRemoteDeletedNotes(deletedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToTaskUnifier(note, state));
+        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
     };
 }
 
@@ -169,7 +169,7 @@ export function addRemoteNotes(notes) {
                     url: 'https://api.toodledo.com/3/notes/add.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
+                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
                     }
                 },
                 settings);
@@ -207,7 +207,7 @@ export function editRemoteNotes(notes) {
                     url: 'https://api.toodledo.com/3/notes/edit.php',
                     params: {
                         access_token: settings.toodledo.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
+                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
                     }
                 },
                 settings);
@@ -249,7 +249,7 @@ export function deleteRemoteNotes(notes) {
     };
 }
 
-function convertNoteToToodledo(note, state) {
+function convertNoteToRemote(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.id === note.folder);
 
@@ -261,7 +261,7 @@ function convertNoteToToodledo(note, state) {
     };
 }
 
-function convertNoteToTaskUnifier(note, state) {
+function convertNoteToLocal(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.refIds.toodledo === note.folder);
 

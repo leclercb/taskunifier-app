@@ -98,7 +98,7 @@ export function getRemoteFolders() {
 
         checkResult(result);
 
-        return result.data.map(folder => convertFolderToTaskUnifier(folder));
+        return result.data.map(folder => convertFolderToLocal(folder));
     };
 }
 
@@ -115,7 +115,7 @@ export function addRemoteFolder(folder) {
                 url: 'https://api.toodledo.com/3/folders/add.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertFolderToToodledo(folder)
+                    ...convertFolderToRemote(folder)
                 }
             },
             settings);
@@ -145,7 +145,7 @@ export function editRemoteFolder(folder) {
                 url: 'https://api.toodledo.com/3/folders/edit.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertFolderToToodledo(folder)
+                    ...convertFolderToRemote(folder)
                 }
             },
             settings);
@@ -176,7 +176,7 @@ export function deleteRemoteFolder(folder) {
     };
 }
 
-function convertFolderToToodledo(folder) {
+function convertFolderToRemote(folder) {
     return {
         id: folder.refIds.toodledo,
         name: folder.title,
@@ -184,7 +184,7 @@ function convertFolderToToodledo(folder) {
     };
 }
 
-function convertFolderToTaskUnifier(folder) {
+function convertFolderToLocal(folder) {
     return {
         refIds: {
             toodledo: folder.id

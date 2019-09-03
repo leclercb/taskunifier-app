@@ -1,10 +1,10 @@
 import moment from 'moment';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
+import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -15,7 +15,7 @@ export function synchronizeLocations() {
         let locations = getLocations(getState());
 
         {
-            const locationsToAdd = filterByVisibleState(locations).filter(location => !location.refIds.toodledo);
+            const locationsToAdd = filterByVisibleState(locations).filter(location => !location.refIds.taskunifier);
             const locationsToAddPromises = locationsToAdd.map(location => dispatch(addRemoteLocation(location)));
             const result = await Promise.all(locationsToAddPromises);
 
@@ -27,7 +27,7 @@ export function synchronizeLocations() {
         locations = getLocations(getState());
 
         {
-            const locationsToDelete = locations.filter(location => !!location.refIds.toodledo && location.state === 'TO_DELETE');
+            const locationsToDelete = locations.filter(location => !!location.refIds.taskunifier && location.state === 'TO_DELETE');
             const locationsToDeletePromises = locationsToDelete.map(location => dispatch(deleteRemoteLocation(location)));
             await Promise.all(locationsToDeletePromises);
 
@@ -40,13 +40,13 @@ export function synchronizeLocations() {
 
         {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditLocation = moment.unix(getToodledoAccountInfo(getState()).lastedit_location);
+            const lastEditLocation = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_location);
 
             if (!lastSync || lastEditLocation.diff(lastSync) > 0) {
                 const remoteLocations = await dispatch(getRemoteLocations());
 
                 for (let remoteLocation of remoteLocations) {
-                    const localLocation = locations.find(location => location.refIds.toodledo === remoteLocation.refIds.toodledo);
+                    const localLocation = locations.find(location => location.refIds.taskunifier === remoteLocation.refIds.taskunifier);
 
                     if (!localLocation) {
                         await dispatch(addLocation(remoteLocation, { keepRefIds: true }));
@@ -58,7 +58,7 @@ export function synchronizeLocations() {
                 locations = getLocations(getState());
 
                 for (let localLocation of filterByVisibleState(locations)) {
-                    if (!remoteLocations.find(location => location.refIds.toodledo === localLocation.refIds.toodledo)) {
+                    if (!remoteLocations.find(location => location.refIds.taskunifier === localLocation.refIds.taskunifier)) {
                         await dispatch(deleteLocation(localLocation.id, { force: true }));
                     }
                 }
@@ -68,7 +68,7 @@ export function synchronizeLocations() {
         locations = getLocations(getState());
 
         {
-            const locationsToUpdate = locations.filter(location => !!location.refIds.toodledo && location.state === 'TO_UPDATE');
+            const locationsToUpdate = locations.filter(location => !!location.refIds.taskunifier && location.state === 'TO_UPDATE');
             const locationsToUpdatePromises = locationsToUpdate.map(location => dispatch(editRemoteLocation(location)));
             await Promise.all(locationsToUpdatePromises);
 
@@ -89,16 +89,16 @@ export function getRemoteLocations() {
         const result = await sendRequest(
             {
                 method: 'GET',
-                url: 'https://api.toodledo.com/3/locations/get.php',
+                url: 'https://api.taskunifier.com/3/locations/get.php',
                 params: {
-                    access_token: settings.toodledo.accessToken
+                    access_token: settings.taskunifier.accessToken
                 }
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(location => convertLocationToTaskUnifier(location));
+        return result.data.map(location => convertLocationToLocal(location));
     };
 }
 
@@ -112,10 +112,10 @@ export function addRemoteLocation(location) {
         const result = await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/locations/add.php',
+                url: 'https://api.taskunifier.com/3/locations/add.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    ...convertLocationToToodledo(location)
+                    access_token: settings.taskunifier.accessToken,
+                    ...convertLocationToRemote(location)
                 }
             },
             settings);
@@ -126,7 +126,7 @@ export function addRemoteLocation(location) {
             ...location,
             refIds: {
                 ...location.refIds,
-                toodledo: result.data[0].id
+                taskunifier: result.data[0].id
             }
         };
     };
@@ -142,10 +142,10 @@ export function editRemoteLocation(location) {
         const result = await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/locations/edit.php',
+                url: 'https://api.taskunifier.com/3/locations/edit.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    ...convertLocationToToodledo(location)
+                    access_token: settings.taskunifier.accessToken,
+                    ...convertLocationToRemote(location)
                 }
             },
             settings);
@@ -164,10 +164,10 @@ export function deleteRemoteLocation(location) {
         await sendRequest(
             {
                 method: 'POST',
-                url: 'https://api.toodledo.com/3/locations/delete.php',
+                url: 'https://api.taskunifier.com/3/locations/delete.php',
                 params: {
-                    access_token: settings.toodledo.accessToken,
-                    id: location.refIds.toodledo
+                    access_token: settings.taskunifier.accessToken,
+                    id: location.refIds.taskunifier
                 }
             },
             settings);
@@ -176,9 +176,9 @@ export function deleteRemoteLocation(location) {
     };
 }
 
-function convertLocationToToodledo(location) {
+function convertLocationToRemote(location) {
     return {
-        id: location.refIds.toodledo,
+        id: location.refIds.taskunifier,
         name: location.title,
         description: location.description,
         lat: location.latitude, // TODO lat & lon should be numbers
@@ -186,10 +186,10 @@ function convertLocationToToodledo(location) {
     };
 }
 
-function convertLocationToTaskUnifier(location) {
+function convertLocationToLocal(location) {
     return {
         refIds: {
-            toodledo: location.id
+            taskunifier: location.id
         },
         title: location.name,
         description: location.description,

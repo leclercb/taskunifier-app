@@ -4,14 +4,14 @@ import moment from 'moment';
 import uuid from 'uuid/v4';
 import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
-import { getToodledoAccountInfo } from 'actions/synchronization/toodledo/ToodledoAccountInfoActions';
-import { authorize, createToken, refreshToken } from 'actions/synchronization/toodledo/ToodledoAuthorizationActions';
-import { synchronizeContexts } from 'actions/synchronization/toodledo/ToodledoContextActions';
-import { synchronizeFolders } from 'actions/synchronization/toodledo/ToodledoFolderActions';
-import { synchronizeGoals } from 'actions/synchronization/toodledo/ToodledoGoalActions';
-import { synchronizeLocations } from 'actions/synchronization/toodledo/ToodledoLocationActions';
-import { synchronizeNotes } from 'actions/synchronization/toodledo/ToodledoNoteActions';
-import { synchronizeTasks } from 'actions/synchronization/toodledo/ToodledoTaskActions';
+import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
+import { authorize, createToken, refreshToken } from 'actions/synchronization/taskunifier/TaskUnifierAuthorizationActions';
+import { synchronizeContexts } from 'actions/synchronization/taskunifier/TaskUnifierContextActions';
+import { synchronizeFolders } from 'actions/synchronization/taskunifier/TaskUnifierFolderActions';
+import { synchronizeGoals } from 'actions/synchronization/taskunifier/TaskUnifierGoalActions';
+import { synchronizeLocations } from 'actions/synchronization/taskunifier/TaskUnifierLocationActions';
+import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
+import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
 async function getAuthorizationCode() {
@@ -28,14 +28,14 @@ async function getAuthorizationCode() {
                 resolve(code);
             },
             onCancel: () => {
-                reject('The connection to Toodledo has been cancelled');
+                reject('The connection to TaskUnifier has been cancelled');
             },
             width: 500
         });
     });
 }
 
-export function synchronizeWithToodledo() {
+export function synchronizeWithTaskUnifier() {
     return async (dispatch, getState) => {
         await dispatch(checkIsBusy());
 
@@ -47,12 +47,12 @@ export function synchronizeWithToodledo() {
             dispatch(updateProcess({
                 id: processId,
                 state: 'RUNNING',
-                title: 'Synchronize with Toodledo',
+                title: 'Synchronize with TaskUnifier',
                 notify: true
             }));
 
-            if (!settings.toodledo || !settings.toodledo.accessToken || !settings.toodledo.refreshToken) {
-                message.info('Opening Toodledo\'s website... Please log into your account and enter the authorization code.', 10);
+            if (!settings.taskunifier || !settings.taskunifier.accessToken || !settings.taskunifier.refreshToken) {
+                message.info('Opening TaskUnifier\'s website... Please log into your account and enter the authorization code.', 10);
 
                 await dispatch(authorize());
                 const code = await getAuthorizationCode();
@@ -61,31 +61,31 @@ export function synchronizeWithToodledo() {
                 settings = getSettings(getState());
             }
 
-            const accessTokenCreationDate = moment(settings.toodledo.accessTokenCreationDate);
-            const expirationDate = accessTokenCreationDate.add(settings.toodledo.accessTokenExpiresIn, 'seconds');
+            const accessTokenCreationDate = moment(settings.taskunifier.accessTokenCreationDate);
+            const expirationDate = accessTokenCreationDate.add(settings.taskunifier.accessTokenExpiresIn, 'seconds');
 
             if (moment().diff(expirationDate, 'seconds') > -60) {
                 await dispatch(refreshToken());
             }
 
             try {
-                await dispatch(getToodledoAccountInfo());
+                await dispatch(getTaskUnifierAccountInfo());
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.errorCode === 3) {
                     await dispatch(refreshToken());
-                    await dispatch(getToodledoAccountInfo());
+                    await dispatch(getTaskUnifierAccountInfo());
                 } else {
                     throw error;
                 }
             }
 
-            await dispatch(synchronizeContexts());
-            await dispatch(synchronizeFolders());
-            await dispatch(synchronizeGoals());
-            await dispatch(synchronizeLocations());
+            //await dispatch(synchronizeContexts());
+            //await dispatch(synchronizeFolders());
+            //await dispatch(synchronizeGoals());
+            //await dispatch(synchronizeLocations());
 
-            await dispatch(synchronizeNotes());
-            await dispatch(synchronizeTasks());
+            //await dispatch(synchronizeNotes());
+            //await dispatch(synchronizeTasks());
 
             await dispatch(updateSettings({
                 lastSynchronizationDate: moment().toISOString()
@@ -102,7 +102,7 @@ export function synchronizeWithToodledo() {
 
             if (error.response && error.response.data && error.response.data.errorCode === 102) {
                 await dispatch(updateSettings({
-                    toodledo: null
+                    taskunifier: null
                 }));
             }
 

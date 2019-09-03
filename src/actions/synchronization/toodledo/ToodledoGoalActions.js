@@ -98,7 +98,7 @@ export function getRemoteGoals() {
 
         checkResult(result);
 
-        return result.data.map(goal => convertGoalToTaskUnifier(goal, state));
+        return result.data.map(goal => convertGoalToLocal(goal, state));
     };
 }
 
@@ -115,7 +115,7 @@ export function addRemoteGoal(goal) {
                 url: 'https://api.toodledo.com/3/goals/add.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToToodledo(goal, state)
+                    ...convertGoalToRemote(goal, state)
                 }
             },
             settings);
@@ -145,7 +145,7 @@ export function editRemoteGoal(goal) {
                 url: 'https://api.toodledo.com/3/goals/edit.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToToodledo(goal, state)
+                    ...convertGoalToRemote(goal, state)
                 }
             },
             settings);
@@ -176,7 +176,7 @@ export function deleteRemoteGoal(goal) {
     };
 }
 
-function convertGoalToToodledo(goal, state) {
+function convertGoalToRemote(goal, state) {
     const goals = getGoalsFilteredByVisibleState(state);
     const contributesTo = goals.find(goal => goal.id === goal.contributesTo);
 
@@ -203,7 +203,7 @@ function convertGoalToToodledo(goal, state) {
     };
 }
 
-function convertGoalToTaskUnifier(goal, state) {
+function convertGoalToLocal(goal, state) {
     const goals = getGoalsFilteredByVisibleState(state);
     const contributesTo = goals.find(goal => goal.refIds.toodledo === goal.contributes);
 

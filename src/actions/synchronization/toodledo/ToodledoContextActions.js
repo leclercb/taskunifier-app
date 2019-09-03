@@ -98,7 +98,7 @@ export function getRemoteContexts() {
 
         checkResult(result);
 
-        return result.data.map(context => convertContextToTaskUnifier(context));
+        return result.data.map(context => convertContextToLocal(context));
     };
 }
 
@@ -115,7 +115,7 @@ export function addRemoteContext(context) {
                 url: 'https://api.toodledo.com/3/contexts/add.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertContextToToodledo(context)
+                    ...convertContextToRemote(context)
                 }
             },
             settings);
@@ -145,7 +145,7 @@ export function editRemoteContext(context) {
                 url: 'https://api.toodledo.com/3/contexts/edit.php',
                 params: {
                     access_token: settings.toodledo.accessToken,
-                    ...convertContextToToodledo(context)
+                    ...convertContextToRemote(context)
                 }
             },
             settings);
@@ -176,14 +176,14 @@ export function deleteRemoteContext(context) {
     };
 }
 
-function convertContextToToodledo(context) {
+function convertContextToRemote(context) {
     return {
         id: context.refIds.toodledo,
         name: context.title
     };
 }
 
-function convertContextToTaskUnifier(context) {
+function convertContextToLocal(context) {
     return {
         refIds: {
             toodledo: context.id
