@@ -1,4 +1,5 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -110,12 +111,15 @@ export function getRemoteNotes(updatedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/notes/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: updatedAfter ? updatedAfter.unix() : 0
-                }
+                })
             },
             settings);
 
@@ -135,12 +139,15 @@ export function getRemoteDeletedNotes(deletedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/notes/deleted.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
-                }
+                })
             },
             settings);
 
@@ -165,12 +172,15 @@ export function addRemoteNotes(notes) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/add.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
                         notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
-                    }
+                    })
                 },
                 settings);
 
@@ -203,12 +213,15 @@ export function editRemoteNotes(notes) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/edit.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
                         notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
-                    }
+                    })
                 },
                 settings);
 
@@ -230,12 +243,15 @@ export function deleteRemoteNotes(notes) {
             try {
                 await sendRequest(
                     {
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/notes/delete.php',
-                        params: {
+                        data: qs.stringify({
                             access_token: settings.toodledo.accessToken,
                             notes: JSON.stringify(chunkNotes.map(note => note.refIds.toodledo))
-                        }
+                        })
                     },
                     settings);
 

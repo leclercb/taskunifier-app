@@ -1,4 +1,5 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -113,13 +114,16 @@ export function getRemoteTasks(updatedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/tasks/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: updatedAfter ? updatedAfter.unix() : 0,
                     fields: 'context,folder,goal,location,tag,startdate,duedate,duedatemod,starttime,duetime,remind,repeat,status,star,priority,length,timer,timeron,added,note,parent,children,meta'
-                }
+                })
             },
             settings);
 
@@ -139,12 +143,15 @@ export function getRemoteDeletedTasks(deletedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/tasks/deleted.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
-                }
+                })
             },
             settings);
 
@@ -169,12 +176,15 @@ export function addRemoteTasks(tasks) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/add.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
                         tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
-                    }
+                    })
                 },
                 settings);
 
@@ -207,12 +217,15 @@ export function editRemoteTasks(tasks) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/edit.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
                         tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
-                    }
+                    })
                 },
                 settings);
 
@@ -234,12 +247,15 @@ export function deleteRemoteTasks(tasks) {
             try {
                 await sendRequest(
                     {
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/tasks/delete.php',
-                        params: {
+                        data: qs.stringify({
                             access_token: settings.toodledo.accessToken,
                             tasks: JSON.stringify(chunkTasks.map(task => task.refIds.toodledo))
-                        }
+                        })
                     },
                     settings);
 

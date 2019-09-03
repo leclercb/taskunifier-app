@@ -1,3 +1,4 @@
+import qs from 'qs';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { setSynchronizationData } from 'actions/SynchronizationActions';
@@ -9,11 +10,14 @@ export function getToodledoAccountInfo() {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 

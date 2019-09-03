@@ -1,4 +1,5 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -88,11 +89,14 @@ export function getRemoteLocations() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
@@ -111,12 +115,15 @@ export function addRemoteLocation(location) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertLocationToRemote(location)
-                }
+                })
             },
             settings);
 
@@ -141,12 +148,15 @@ export function editRemoteLocation(location) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertLocationToRemote(location)
-                }
+                })
             },
             settings);
 
@@ -163,12 +173,15 @@ export function deleteRemoteLocation(location) {
 
         await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: location.refIds.toodledo
-                }
+                })
             },
             settings);
 

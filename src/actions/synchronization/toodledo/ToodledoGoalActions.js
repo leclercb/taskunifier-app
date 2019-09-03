@@ -1,4 +1,5 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -88,11 +89,14 @@ export function getRemoteGoals() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
@@ -111,12 +115,15 @@ export function addRemoteGoal(goal) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertGoalToRemote(goal, state)
-                }
+                })
             },
             settings);
 
@@ -141,12 +148,15 @@ export function editRemoteGoal(goal) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertGoalToRemote(goal, state)
-                }
+                })
             },
             settings);
 
@@ -163,12 +173,15 @@ export function deleteRemoteGoal(goal) {
 
         await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: goal.refIds.toodledo
-                }
+                })
             },
             settings);
 

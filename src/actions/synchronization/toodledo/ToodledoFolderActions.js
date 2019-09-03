@@ -1,4 +1,5 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -88,11 +89,14 @@ export function getRemoteFolders() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
@@ -111,12 +115,15 @@ export function addRemoteFolder(folder) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertFolderToRemote(folder)
-                }
+                })
             },
             settings);
 
@@ -141,12 +148,15 @@ export function editRemoteFolder(folder) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertFolderToRemote(folder)
-                }
+                })
             },
             settings);
 
@@ -163,12 +173,15 @@ export function deleteRemoteFolder(folder) {
 
         await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: folder.refIds.toodledo
-                }
+                })
             },
             settings);
 

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -88,11 +89,14 @@ export function getRemoteContexts() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
@@ -111,12 +115,15 @@ export function addRemoteContext(context) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertContextToRemote(context)
-                }
+                })
             },
             settings);
 
@@ -141,12 +148,15 @@ export function editRemoteContext(context) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     ...convertContextToRemote(context)
-                }
+                })
             },
             settings);
 
@@ -163,12 +173,15 @@ export function deleteRemoteContext(context) {
 
         await sendRequest(
             {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: context.refIds.toodledo
-                }
+                })
             },
             settings);
 
