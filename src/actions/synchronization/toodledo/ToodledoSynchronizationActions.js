@@ -62,22 +62,13 @@ export function synchronizeWithToodledo() {
             }
 
             const accessTokenCreationDate = moment(settings.toodledo.accessTokenCreationDate);
-            const expirationDate = accessTokenCreationDate.add(settings.toodledo.accessTokenExpiresIn, 'seconds');
+            const expirationDate = moment(accessTokenCreationDate).add(settings.toodledo.accessTokenExpiresIn, 'seconds');
 
             if (moment().diff(expirationDate, 'seconds') > -60) {
                 await dispatch(refreshToken());
             }
 
-            try {
-                await dispatch(getToodledoAccountInfo());
-            } catch (error) {
-                if (error.response && error.response.data && error.response.data.errorCode === 3) {
-                    await dispatch(refreshToken());
-                    await dispatch(getToodledoAccountInfo());
-                } else {
-                    throw error;
-                }
-            }
+            await dispatch(getToodledoAccountInfo());
 
             await dispatch(synchronizeContexts());
             await dispatch(synchronizeFolders());
@@ -96,8 +87,10 @@ export function synchronizeWithToodledo() {
                 state: 'COMPLETED'
             }));
         } catch (error) {
-            if (error.response && error.response.data) {
-                console.error(error.response.data);
+            console.error(error);
+
+            if (error.response) {
+                console.error(error.response);
             }
 
             if (error.response && error.response.data && error.response.data.errorCode === 102) {

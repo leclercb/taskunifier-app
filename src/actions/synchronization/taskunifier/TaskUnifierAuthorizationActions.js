@@ -85,7 +85,7 @@ export function refreshToken() {
                 accessToken: result.data.access_token,
                 accessTokenCreationDate: moment().toISOString(),
                 accessTokenExpiresIn: result.data.expires_in,
-                refreshToken: result.data.refresh_token
+                refreshToken: settings.taskunifier.refreshToken
             }
         }));
     };

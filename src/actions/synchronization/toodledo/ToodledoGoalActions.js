@@ -191,7 +191,7 @@ export function deleteRemoteGoal(goal) {
 
 function convertGoalToRemote(goal, state) {
     const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(goal => goal.id === goal.contributesTo);
+    const contributesTo = goals.find(g => g.id === goal.contributesTo);
 
     let level;
 
@@ -218,7 +218,7 @@ function convertGoalToRemote(goal, state) {
 
 function convertGoalToLocal(goal, state) {
     const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(goal => goal.refIds.toodledo === goal.contributes);
+    const contributesTo = goals.find(g => g.refIds.toodledo === goal.contributes);
 
     let level;
 

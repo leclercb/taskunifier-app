@@ -1,12 +1,11 @@
 import moment from 'moment';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
+import { getConfig } from 'config/Config';
 
 export function synchronizeContexts() {
     return async (dispatch, getState) => {
@@ -38,30 +37,26 @@ export function synchronizeContexts() {
 
         contexts = getContexts(getState());
 
-        {
-            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditContext = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_context);
+        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+        const remoteContexts = await dispatch(getRemoteContexts(lastSync));
 
-            if (!lastSync || lastEditContext.diff(lastSync) > 0) {
-                const remoteContexts = await dispatch(getRemoteContexts());
+        for (let remoteContext of remoteContexts) {
+            const localContext = contexts.find(context => context.refIds.taskunifier === remoteContext.refIds.taskunifier);
 
-                for (let remoteContext of remoteContexts) {
-                    const localContext = contexts.find(context => context.refIds.taskunifier === remoteContext.refIds.taskunifier);
-
-                    if (!localContext) {
-                        await dispatch(addContext(remoteContext, { keepRefIds: true }));
-                    } else {
-                        await dispatch(updateContext(merge(localContext, remoteContext), { loaded: true }));
-                    }
+            if (!localContext) {
+                await dispatch(addContext(remoteContext, { keepRefIds: true }));
+            } else {
+                if (moment(remoteContext.updateDate).diff(moment(localContext.updateDate)) > 0) {
+                    await dispatch(updateContext(merge(localContext, remoteContext), { loaded: true }));
                 }
+            }
+        }
 
-                contexts = getContexts(getState());
+        contexts = getContexts(getState());
 
-                for (let localContext of filterByVisibleState(contexts)) {
-                    if (!remoteContexts.find(context => context.refIds.taskunifier === localContext.refIds.taskunifier)) {
-                        await dispatch(deleteContext(localContext.id, { force: true }));
-                    }
-                }
+        for (let localContext of filterByVisibleState(contexts)) {
+            if (!remoteContexts.find(context => context.refIds.taskunifier === localContext.refIds.taskunifier)) {
+                await dispatch(deleteContext(localContext.id, { force: true }));
             }
         }
 
@@ -79,7 +74,7 @@ export function synchronizeContexts() {
     };
 }
 
-export function getRemoteContexts() {
+export function getRemoteContexts(updatedAfter) {
     console.debug('getRemoteContexts');
 
     return async (dispatch, getState) => {
@@ -88,15 +83,16 @@ export function getRemoteContexts() {
 
         const result = await sendRequest(
             {
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
                 method: 'GET',
-                url: 'https://api.taskunifier.com/3/contexts/get.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken
+                url: `${getConfig().apiUrl}/v1/contexts`,
+                query: {
+                    updatedAfter: updatedAfter ? updatedAfter.toISOString() : null
                 }
             },
             settings);
-
-        checkResult(result);
 
         return result.data.map(context => convertContextToLocal(context));
     };
@@ -111,22 +107,20 @@ export function addRemoteContext(context) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
                 method: 'POST',
-                url: 'https://api.taskunifier.com/3/contexts/add.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    ...convertContextToRemote(context)
-                }
+                url: `${getConfig().apiUrl}/v1/contexts`,
+                data: convertContextToRemote(context)
             },
             settings);
-
-        checkResult(result);
 
         return {
             ...context,
             refIds: {
                 ...context.refIds,
-                taskunifier: result.data[0].id
+                taskunifier: result.data.id
             }
         };
     };
@@ -139,18 +133,16 @@ export function editRemoteContext(context) {
         const state = getState();
         const settings = getSettings(state);
 
-        const result = await sendRequest(
+        await sendRequest(
             {
-                method: 'POST',
-                url: 'https://api.taskunifier.com/3/contexts/edit.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    ...convertContextToRemote(context)
-                }
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
+                method: 'PUT',
+                url: `${getConfig().apiUrl}/v1/contexts/${context.refIds.taskunifier}`,
+                data: convertContextToRemote(context)
             },
             settings);
-
-        checkResult(result);
     };
 }
 
@@ -161,33 +153,47 @@ export function deleteRemoteContext(context) {
         const state = getState();
         const settings = getSettings(state);
 
-        await sendRequest(
-            {
-                method: 'POST',
-                url: 'https://api.taskunifier.com/3/contexts/delete.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    id: context.refIds.taskunifier
-                }
-            },
-            settings);
-
-        // checkResult(result);
+        try {
+            await sendRequest(
+                {
+                    headers: {
+                        Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                    },
+                    method: 'DELETE',
+                    url: `${getConfig().apiUrl}/v1/contexts/${context.refIds.taskunifier}`
+                },
+                settings);
+        } catch (error) {
+            // No throw exception if delete fails
+            console.debug(error);
+        }
     };
 }
 
 function convertContextToRemote(context) {
-    return {
-        id: context.refIds.taskunifier,
-        name: context.title
-    };
+    const remoteContext = { ...context };
+
+    delete remoteContext.id;
+    delete remoteContext.refIds;
+    delete remoteContext.state;
+    delete remoteContext.creationDate;
+    delete remoteContext.updateDate;
+
+    return remoteContext;
 }
 
 function convertContextToLocal(context) {
+    const localContext = { ...context };
+
+    delete localContext.id;
+    delete localContext.owner;
+    delete localContext.creationDate;
+    delete localContext.updateDate;
+
     return {
+        ...context,
         refIds: {
             taskunifier: context.id
-        },
-        title: context.name
+        }
     };
 }

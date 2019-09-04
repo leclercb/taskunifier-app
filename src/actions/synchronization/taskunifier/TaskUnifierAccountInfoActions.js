@@ -1,5 +1,4 @@
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { setSynchronizationData } from 'actions/SynchronizationActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getConfig } from 'config/Config';
@@ -19,8 +18,6 @@ export function getTaskUnifierAccountInfo() {
             settings);
 
         console.debug('getTaskUnifierAccountInfo', result);
-
-        checkResult(result);
 
         await dispatch(setSynchronizationData('taskunifier', {
             accountInfo: result.data

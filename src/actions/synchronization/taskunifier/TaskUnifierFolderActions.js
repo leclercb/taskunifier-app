@@ -1,12 +1,11 @@
 import moment from 'moment';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
+import { getConfig } from 'config/Config';
 
 export function synchronizeFolders() {
     return async (dispatch, getState) => {
@@ -38,30 +37,26 @@ export function synchronizeFolders() {
 
         folders = getFolders(getState());
 
-        {
-            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditFolder = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_folder);
+        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+        const remoteFolders = await dispatch(getRemoteFolders(lastSync));
 
-            if (!lastSync || lastEditFolder.diff(lastSync) > 0) {
-                const remoteFolders = await dispatch(getRemoteFolders());
+        for (let remoteFolder of remoteFolders) {
+            const localFolder = folders.find(folder => folder.refIds.taskunifier === remoteFolder.refIds.taskunifier);
 
-                for (let remoteFolder of remoteFolders) {
-                    const localFolder = folders.find(folder => folder.refIds.taskunifier === remoteFolder.refIds.taskunifier);
-
-                    if (!localFolder) {
-                        await dispatch(addFolder(remoteFolder, { keepRefIds: true }));
-                    } else {
-                        await dispatch(updateFolder(merge(localFolder, remoteFolder), { loaded: true }));
-                    }
+            if (!localFolder) {
+                await dispatch(addFolder(remoteFolder, { keepRefIds: true }));
+            } else {
+                if (moment(remoteFolder.updateDate).diff(moment(localFolder.updateDate)) > 0) {
+                    await dispatch(updateFolder(merge(localFolder, remoteFolder), { loaded: true }));
                 }
+            }
+        }
 
-                folders = getFolders(getState());
+        folders = getFolders(getState());
 
-                for (let localFolder of filterByVisibleState(folders)) {
-                    if (!remoteFolders.find(folder => folder.refIds.taskunifier === localFolder.refIds.taskunifier)) {
-                        await dispatch(deleteFolder(localFolder.id, { force: true }));
-                    }
-                }
+        for (let localFolder of filterByVisibleState(folders)) {
+            if (!remoteFolders.find(folder => folder.refIds.taskunifier === localFolder.refIds.taskunifier)) {
+                await dispatch(deleteFolder(localFolder.id, { force: true }));
             }
         }
 
@@ -79,7 +74,7 @@ export function synchronizeFolders() {
     };
 }
 
-export function getRemoteFolders() {
+export function getRemoteFolders(updatedAfter) {
     console.debug('getRemoteFolders');
 
     return async (dispatch, getState) => {
@@ -88,15 +83,16 @@ export function getRemoteFolders() {
 
         const result = await sendRequest(
             {
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
                 method: 'GET',
-                url: 'https://api.taskunifier.com/3/folders/get.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken
+                url: `${getConfig().apiUrl}/v1/folders`,
+                query: {
+                    updatedAfter: updatedAfter ? updatedAfter.toISOString() : null
                 }
             },
             settings);
-
-        checkResult(result);
 
         return result.data.map(folder => convertFolderToLocal(folder));
     };
@@ -111,22 +107,20 @@ export function addRemoteFolder(folder) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
                 method: 'POST',
-                url: 'https://api.taskunifier.com/3/folders/add.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    ...convertFolderToRemote(folder)
-                }
+                url: `${getConfig().apiUrl}/v1/folders`,
+                data: convertFolderToRemote(folder)
             },
             settings);
-
-        checkResult(result);
 
         return {
             ...folder,
             refIds: {
                 ...folder.refIds,
-                taskunifier: result.data[0].id
+                taskunifier: result.data.id
             }
         };
     };
@@ -139,18 +133,16 @@ export function editRemoteFolder(folder) {
         const state = getState();
         const settings = getSettings(state);
 
-        const result = await sendRequest(
+        await sendRequest(
             {
-                method: 'POST',
-                url: 'https://api.taskunifier.com/3/folders/edit.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    ...convertFolderToRemote(folder)
-                }
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
+                method: 'PUT',
+                url: `${getConfig().apiUrl}/v1/folders/${folder.refIds.taskunifier}`,
+                data: convertFolderToRemote(folder)
             },
             settings);
-
-        checkResult(result);
     };
 }
 
@@ -161,35 +153,47 @@ export function deleteRemoteFolder(folder) {
         const state = getState();
         const settings = getSettings(state);
 
-        await sendRequest(
-            {
-                method: 'POST',
-                url: 'https://api.taskunifier.com/3/folders/delete.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    id: folder.refIds.taskunifier
-                }
-            },
-            settings);
-
-        // checkResult(result);
+        try {
+            await sendRequest(
+                {
+                    headers: {
+                        Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                    },
+                    method: 'DELETE',
+                    url: `${getConfig().apiUrl}/v1/folders/${folder.refIds.taskunifier}`
+                },
+                settings);
+        } catch (error) {
+            // No throw exception if delete fails
+            console.debug(error);
+        }
     };
 }
 
 function convertFolderToRemote(folder) {
-    return {
-        id: folder.refIds.taskunifier,
-        name: folder.title,
-        archived: folder.archived ? 1 : 0
-    };
+    const remoteFolder = { ...folder };
+
+    delete remoteFolder.id;
+    delete remoteFolder.refIds;
+    delete remoteFolder.state;
+    delete remoteFolder.creationDate;
+    delete remoteFolder.updateDate;
+
+    return remoteFolder;
 }
 
 function convertFolderToLocal(folder) {
+    const localFolder = { ...folder };
+
+    delete localFolder.id;
+    delete localFolder.owner;
+    delete localFolder.creationDate;
+    delete localFolder.updateDate;
+
     return {
+        ...folder,
         refIds: {
             taskunifier: folder.id
-        },
-        title: folder.name,
-        archived: folder.archived === 1 ? true : false
+        }
     };
 }

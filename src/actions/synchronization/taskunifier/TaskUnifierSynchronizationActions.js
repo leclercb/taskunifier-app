@@ -10,8 +10,8 @@ import { synchronizeContexts } from 'actions/synchronization/taskunifier/TaskUni
 import { synchronizeFolders } from 'actions/synchronization/taskunifier/TaskUnifierFolderActions';
 import { synchronizeGoals } from 'actions/synchronization/taskunifier/TaskUnifierGoalActions';
 import { synchronizeLocations } from 'actions/synchronization/taskunifier/TaskUnifierLocationActions';
-import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
-import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
+//import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
+//import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
 async function getAuthorizationCode() {
@@ -62,27 +62,18 @@ export function synchronizeWithTaskUnifier() {
             }
 
             const accessTokenCreationDate = moment(settings.taskunifier.accessTokenCreationDate);
-            const expirationDate = accessTokenCreationDate.add(settings.taskunifier.accessTokenExpiresIn, 'seconds');
+            const expirationDate = moment(accessTokenCreationDate).add(settings.taskunifier.accessTokenExpiresIn, 'seconds');
 
             if (moment().diff(expirationDate, 'seconds') > -60) {
                 await dispatch(refreshToken());
             }
 
-            try {
-                await dispatch(getTaskUnifierAccountInfo());
-            } catch (error) {
-                if (error.response && error.response.data && error.response.data.errorCode === 3) {
-                    await dispatch(refreshToken());
-                    await dispatch(getTaskUnifierAccountInfo());
-                } else {
-                    throw error;
-                }
-            }
+            await dispatch(getTaskUnifierAccountInfo());
 
-            //await dispatch(synchronizeContexts());
-            //await dispatch(synchronizeFolders());
-            //await dispatch(synchronizeGoals());
-            //await dispatch(synchronizeLocations());
+            await dispatch(synchronizeContexts());
+            await dispatch(synchronizeFolders());
+            await dispatch(synchronizeGoals());
+            await dispatch(synchronizeLocations());
 
             //await dispatch(synchronizeNotes());
             //await dispatch(synchronizeTasks());
@@ -96,14 +87,10 @@ export function synchronizeWithTaskUnifier() {
                 state: 'COMPLETED'
             }));
         } catch (error) {
-            if (error.response && error.response.data) {
-                console.error(error.response.data);
-            }
+            console.error(error);
 
-            if (error.response && error.response.data && error.response.data.errorCode === 102) {
-                await dispatch(updateSettings({
-                    taskunifier: null
-                }));
+            if (error.response) {
+                console.error(error.response);
             }
 
             dispatch(updateProcess({
