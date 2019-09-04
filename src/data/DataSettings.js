@@ -5,7 +5,7 @@ import { getUserDataPath } from 'actions/ActionUtils';
 import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
-import { resetDataForSynchronization, synchronize, selectSynchronizationApp } from 'actions/SynchronizationActions';
+import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';

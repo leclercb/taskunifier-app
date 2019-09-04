@@ -99,7 +99,7 @@ export function synchronize() {
 
             await dispatch(setSynchronizing(true));
 
-            let synchronizationApp = settings.synchronizationApp;
+            let { synchronizationApp } = settings;
 
             if (!synchronizationApp) {
                 synchronizationApp = await selectSynchronizationApp();
@@ -134,7 +134,7 @@ export function resetDataForSynchronization() {
         const state = getState();
         const settings = getSettings(state);
 
-        let synchronizationApp = settings.synchronizationApp;
+        let { synchronizationApp } = settings;
 
         if (!synchronizationApp) {
             synchronizationApp = await selectSynchronizationApp();
