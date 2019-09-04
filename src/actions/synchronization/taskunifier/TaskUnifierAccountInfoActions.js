@@ -1,7 +1,7 @@
 import { sendRequest } from 'actions/RequestActions';
 import { setSynchronizationData } from 'actions/SynchronizationActions';
-import { getSettings } from 'selectors/SettingSelectors';
 import { getConfig } from 'config/Config';
+import { getSettings } from 'selectors/SettingSelectors';
 
 export function getTaskUnifierAccountInfo() {
     return async (dispatch, getState) => {

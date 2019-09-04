@@ -5,6 +5,7 @@ import { getUserDataPath } from 'actions/ActionUtils';
 import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
+import { resetDataForSynchronization, synchronize, selectSynchronizationApp } from 'actions/SynchronizationActions';
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
@@ -481,6 +482,48 @@ export function getCategories() {
                     type: 'dateTime',
                     value: moment().toISOString(),
                     editable: false,
+                    mode: 'electron'
+                },
+                {
+                    id: 'selectSynchronizationApp',
+                    title: 'Synchronize with another service',
+                    type: 'button',
+                    buttonType: 'primary',
+                    value: async (settings, updateSettings, dispatcher) => {
+                        const synchronizationApp = await selectSynchronizationApp();
+
+                        if (synchronizationApp) {
+                            await updateSettings({
+                                synchronizationApp,
+                                lastSynchronizationDate: null
+                            });
+
+                            await dispatcher(synchronize());
+                        }
+                    },
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'resetData',
+                    title: 'Delete the local data and synchronize',
+                    type: 'button',
+                    buttonType: 'danger',
+                    value: async (settings, updateSettings, dispatcher) => {
+                        Modal.confirm({
+                            content: (
+                                <span>This will delete the local data from TaskUnifier App and reload the data from the server.<br />This cannot be undone !</span>
+                            ),
+                            onOk: async () => {
+                                await dispatcher(resetDataForSynchronization());
+                                await updateSettings({
+                                    lastSynchronizationDate: null
+                                });
+                                await dispatcher(synchronize());
+                            }
+                        });
+                    },
+                    editable: true,
                     mode: 'electron'
                 }
             ]

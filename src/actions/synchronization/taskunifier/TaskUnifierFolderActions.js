@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
+import { getConfig } from 'config/Config';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
-import { getConfig } from 'config/Config';
 
 export function synchronizeFolders() {
     return async (dispatch, getState) => {

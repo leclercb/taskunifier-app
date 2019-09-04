@@ -2,6 +2,7 @@ import React from 'react';
 import { Input, Modal, message } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid/v4';
+import { resetData } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
 import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
@@ -102,4 +103,10 @@ export function synchronizeWithTaskUnifier() {
             throw error;
         }
     };
+}
+
+export function resetDataForTaskUnifierSynchronization() {
+    return resetData({
+        resetAll: true
+    });
 }

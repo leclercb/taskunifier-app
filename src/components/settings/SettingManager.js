@@ -74,7 +74,9 @@ function SettingManager(props) {
                                     ) : (
                                         <Form.Item label={item.title} style={{ width: '100%' }}>
                                             {item.type === 'button' ? (
-                                                <Button onClick={() => item.value(props.settings, props.updateSettings, props.dispatcher)}>
+                                                <Button
+                                                    type={item.buttonType}
+                                                    onClick={() => item.value(props.settings, props.updateSettings, props.dispatcher)}>
                                                     {item.title}
                                                 </Button>
                                             ) : null}

@@ -1,18 +1,18 @@
 import moment from 'moment';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
+import { getConfig } from 'config/Config';
 import { getGoals, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
-import { merge, clone } from 'utils/ObjectUtils';
-import { getConfig } from 'config/Config';
+import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeGoals() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
         let goals = getGoals(getState());
-        let createdGoalsWithContributesTo = [];
+        const createdGoalsWithContributesTo = [];
 
         {
             const goalsToAdd = filterByVisibleState(goals).filter(goal => !goal.refIds.taskunifier);

@@ -14,14 +14,19 @@ export function synchronizeGoals() {
         const settings = getSettings(getState());
 
         let goals = getGoals(getState());
+        const createdGoalsWithContributesTo = [];
 
         {
             const goalsToAdd = filterByVisibleState(goals).filter(goal => !goal.refIds.toodledo);
-            const goalsToAddPromises = goalsToAdd.map(goal => dispatch(addRemoteGoal(goal)));
+            const goalsToAddPromises = goalsToAdd.map(goal => dispatch(addRemoteGoal(goal, { skipContributesTo: true })));
             const result = await Promise.all(goalsToAddPromises);
 
             for (let goal of result) {
                 await dispatch(updateGoal(goal, { loaded: true }));
+
+                if (goal.contributesTo) {
+                    createdGoalsWithContributesTo.push(goal);
+                }
             }
         }
 
@@ -52,7 +57,9 @@ export function synchronizeGoals() {
                     if (!localGoal) {
                         await dispatch(addGoal(remoteGoal, { keepRefIds: true }));
                     } else {
-                        await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true }));
+                        if (!createdGoalsWithContributesTo.find(goal => goal.id === localGoal.id)) {
+                            await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true }));
+                        }
                     }
                 }
 
@@ -70,6 +77,13 @@ export function synchronizeGoals() {
 
         {
             const goalsToUpdate = goals.filter(goal => !!goal.refIds.toodledo && goal.state === 'TO_UPDATE');
+
+            for (let createdGoal of createdGoalsWithContributesTo) {
+                if (createdGoal.contributesTo && !!goals.find(goal => !!goal.refIds.toodledo && goal.id === createdGoal.contributesTo)) {
+                    goalsToUpdate.push(createdGoal);
+                }
+            }
+
             const goalsToUpdatePromises = goalsToUpdate.map(goal => dispatch(editRemoteGoal(goal)));
             await Promise.all(goalsToUpdatePromises);
 
@@ -106,8 +120,8 @@ export function getRemoteGoals() {
     };
 }
 
-export function addRemoteGoal(goal) {
-    console.debug('addRemoteGoal', goal);
+export function addRemoteGoal(goal, options) {
+    console.debug('addRemoteGoal', goal, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -122,7 +136,7 @@ export function addRemoteGoal(goal) {
                 url: 'https://api.toodledo.com/3/goals/add.php',
                 data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToRemote(goal, state)
+                    ...convertGoalToRemote(goal, state, options)
                 })
             },
             settings);
@@ -189,7 +203,11 @@ export function deleteRemoteGoal(goal) {
     };
 }
 
-function convertGoalToRemote(goal, state) {
+function convertGoalToRemote(goal, state, options) {
+    options = merge({
+        skipContributesTo: false
+    }, options || {});
+
     const goals = getGoalsFilteredByVisibleState(state);
     const contributesTo = goals.find(g => g.id === goal.contributesTo);
 
@@ -212,7 +230,7 @@ function convertGoalToRemote(goal, state) {
         id: goal.refIds.toodledo,
         name: goal.title,
         level,
-        contributes: contributesTo ? contributesTo.refIds.toodledo : 0
+        contributes: !options.skipContributesTo && contributesTo ? contributesTo.refIds.toodledo : 0
     };
 }
 

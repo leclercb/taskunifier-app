@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { sendRequest } from 'actions/RequestActions';
+import { getConfig } from 'config/Config';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
-import { getConfig } from 'config/Config';
 
 export function synchronizeLocations() {
     return async (dispatch, getState) => {

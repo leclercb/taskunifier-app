@@ -2,6 +2,7 @@ import React from 'react';
 import { Input, Modal, message } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid/v4';
+import { resetData } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
 import { getToodledoAccountInfo } from 'actions/synchronization/toodledo/ToodledoAccountInfoActions';
@@ -108,4 +109,15 @@ export function synchronizeWithToodledo() {
             throw error;
         }
     };
+}
+
+export function resetDataForToodledoSynchronization() {
+    return resetData({
+        resetContexts: true,
+        resetFolders: true,
+        resetGoals: true,
+        resetLocations: true,
+        resetNotes: true,
+        resetTasks: true
+    });
 }

@@ -1,20 +1,20 @@
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import { createDirectory, getUserDataPath } from 'actions/ActionUtils';
-import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile } from 'actions/ContactActions';
-import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile } from 'actions/ContextActions';
-import { cleanFolders, loadFoldersFromFile, loadFoldersFromServer, saveFoldersToFile } from 'actions/FolderActions';
-import { cleanGoals, loadGoalsFromFile, loadGoalsFromServer, saveGoalsToFile } from 'actions/GoalActions';
-import { cleanLocations, loadLocationsFromFile, loadLocationsFromServer, saveLocationsToFile } from 'actions/LocationActions';
-import { cleanNotes, loadNotesFromFile, loadNotesFromServer, saveNotesToFile } from 'actions/NoteActions';
-import { cleanNoteFields, loadNoteFieldsFromFile, loadNoteFieldsFromServer, saveNoteFieldsToFile } from 'actions/NoteFieldActions';
-import { cleanNoteFilters, loadNoteFiltersFromFile, loadNoteFiltersFromServer, saveNoteFiltersToFile } from 'actions/NoteFilterActions';
+import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
+import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile, setContexts } from 'actions/ContextActions';
+import { cleanFolders, loadFoldersFromFile, loadFoldersFromServer, saveFoldersToFile, setFolders } from 'actions/FolderActions';
+import { cleanGoals, loadGoalsFromFile, loadGoalsFromServer, saveGoalsToFile, setGoals } from 'actions/GoalActions';
+import { cleanLocations, loadLocationsFromFile, loadLocationsFromServer, saveLocationsToFile, setLocations } from 'actions/LocationActions';
+import { cleanNotes, loadNotesFromFile, loadNotesFromServer, saveNotesToFile, setNotes } from 'actions/NoteActions';
+import { cleanNoteFields, loadNoteFieldsFromFile, loadNoteFieldsFromServer, saveNoteFieldsToFile, setNoteFields } from 'actions/NoteFieldActions';
+import { cleanNoteFilters, loadNoteFiltersFromFile, loadNoteFiltersFromServer, saveNoteFiltersToFile, setNoteFilters } from 'actions/NoteFilterActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
 import { loadSettingsFromFile, loadSettingsFromServer, saveSettingsToFile } from 'actions/SettingActions';
-import { cleanTasks, loadTasksFromFile, loadTasksFromServer, saveTasksToFile } from 'actions/TaskActions';
-import { cleanTaskFields, loadTaskFieldsFromFile, loadTaskFieldsFromServer, saveTaskFieldsToFile } from 'actions/TaskFieldActions';
-import { cleanTaskFilters, loadTaskFiltersFromFile, loadTaskFiltersFromServer, saveTaskFiltersToFile } from 'actions/TaskFilterActions';
-import { cleanTaskTemplates, loadTaskTemplatesFromFile, loadTaskTemplatesFromServer, saveTaskTemplatesToFile } from 'actions/TaskTemplateActions';
+import { cleanTasks, loadTasksFromFile, loadTasksFromServer, saveTasksToFile, setTasks } from 'actions/TaskActions';
+import { cleanTaskFields, loadTaskFieldsFromFile, loadTaskFieldsFromServer, saveTaskFieldsToFile, setTaskFields } from 'actions/TaskFieldActions';
+import { cleanTaskFilters, loadTaskFiltersFromFile, loadTaskFiltersFromServer, saveTaskFiltersToFile, setTaskFilters } from 'actions/TaskFilterActions';
+import { cleanTaskTemplates, loadTaskTemplatesFromFile, loadTaskTemplatesFromServer, saveTaskTemplatesToFile, setTaskTemplates } from 'actions/TaskTemplateActions';
 import { getContacts } from 'selectors/ContactSelectors';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getFolders } from 'selectors/FolderSelectors';
@@ -278,6 +278,101 @@ export function cleanData() {
                 dispatch(cleanTaskFilters()),
                 dispatch(cleanTaskTemplates())
             ]);
+
+            dispatch(updateProcess({
+                id: processId,
+                state: 'COMPLETED'
+            }));
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR'
+            }));
+
+            throw error;
+        }
+    };
+}
+
+export function resetData(options) {
+    options = merge({
+        resetAll: false,
+        resetContacts: false,
+        resetContexts: false,
+        resetFolders: false,
+        resetGoals: false,
+        resetLocations: false,
+        resetNotes: false,
+        resetNoteFields: false,
+        resetNoteFilters: false,
+        resetTasks: false,
+        resetTaskFields: false,
+        resetTaskFilters: false,
+        resetTaskTemplates: false
+    }, options || {});
+
+    return async dispatch => {
+        const processId = uuid();
+
+        dispatch(updateProcess({
+            id: processId,
+            state: 'RUNNING',
+            title: 'Reset database',
+            notify: true
+        }));
+
+        try {
+            const promises = [];
+
+            if (options.resetAll || options.resetContacts) {
+                promises.push(dispatch(setContacts()));
+            }
+
+            if (options.resetAll || options.resetContexts) {
+                promises.push(dispatch(setContexts()));
+            }
+
+            if (options.resetAll || options.resetFolders) {
+                promises.push(dispatch(setFolders()));
+            }
+
+            if (options.resetAll || options.resetGoals) {
+                promises.push(dispatch(setGoals()));
+            }
+
+            if (options.resetAll || options.resetLocations) {
+                promises.push(dispatch(setLocations()));
+            }
+
+            if (options.resetAll || options.resetNotes) {
+                promises.push(dispatch(setNotes()));
+            }
+
+            if (options.resetAll || options.resetNoteFields) {
+                promises.push(dispatch(setNoteFields()));
+            }
+
+            if (options.resetAll || options.resetNoteFilters) {
+                promises.push(dispatch(setNoteFilters()));
+            }
+
+            if (options.resetAll || options.resetTasks) {
+                promises.push(dispatch(setTasks()));
+            }
+
+            if (options.resetAll || options.resetTaskFields) {
+                promises.push(dispatch(setTaskFields()));
+            }
+
+            if (options.resetAll || options.resetTaskFilters) {
+                promises.push(dispatch(setTaskFilters()));
+            }
+
+            if (options.resetAll || options.resetTaskTemplates) {
+                promises.push(dispatch(setTaskTemplates()));
+            }
+
+            await Promise.all(promises);
 
             dispatch(updateProcess({
                 id: processId,

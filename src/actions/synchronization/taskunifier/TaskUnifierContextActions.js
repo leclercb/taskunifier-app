@@ -1,11 +1,11 @@
 import moment from 'moment';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
+import { getConfig } from 'config/Config';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
-import { getConfig } from 'config/Config';
 
 export function synchronizeContexts() {
     return async (dispatch, getState) => {
