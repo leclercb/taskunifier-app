@@ -14,7 +14,7 @@ export function authorize() {
             redirect_uri: getConfig().synchronization.taskunifier.redirectUri
         };
 
-        const url = `${getConfig().synchronization.taskunifier.loginUri}/login?${qs.stringify(params)}`;
+        const url = `${getConfig().synchronization.taskunifier.oauthUri}/login?${qs.stringify(params)}`;
 
         openExternalLink(url);
     };
@@ -32,7 +32,7 @@ export function createToken(code) {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
-                url: `${getConfig().synchronization.taskunifier.loginUri}/oauth2/token`,
+                url: `${getConfig().synchronization.taskunifier.oauthUri}/oauth2/token`,
                 auth: {
                     username: getConfig().synchronization.taskunifier.clientId,
                     password: getConfig().synchronization.taskunifier.clientSecret
@@ -40,7 +40,8 @@ export function createToken(code) {
                 data: qs.stringify({
                     grant_type: 'authorization_code',
                     redirect_uri: getConfig().synchronization.taskunifier.redirectUri,
-                    code
+                    code,
+                    scope: 'https://api.taskunifier.app/api.write'
                 })
             },
             settings);
@@ -68,7 +69,7 @@ export function refreshToken() {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 method: 'POST',
-                url: `${getConfig().synchronization.taskunifier.loginUri}/oauth2/token`,
+                url: `${getConfig().synchronization.taskunifier.oauthUri}/oauth2/token`,
                 auth: {
                     username: getConfig().synchronization.taskunifier.clientId,
                     password: getConfig().synchronization.taskunifier.clientSecret

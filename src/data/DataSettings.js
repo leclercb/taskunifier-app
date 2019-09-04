@@ -505,6 +505,25 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
+                    id: 'resetConnection',
+                    title: 'Reset the synchronization connection',
+                    type: 'button',
+                    buttonType: 'danger',
+                    value: async (settings, updateSettings) => {
+                        if (settings.synchronizationApp) {
+                            await updateSettings({
+                                [settings.synchronizationApp]: null
+                            });
+                        }
+
+                        Modal.success({
+                            content: 'The synchronization connection has been successfully reset'
+                        });
+                    },
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
                     id: 'resetData',
                     title: 'Delete the local data and synchronize',
                     type: 'button',

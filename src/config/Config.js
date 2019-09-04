@@ -26,7 +26,7 @@ const config = {
             taskunifier: {
                 clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
                 clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
-                loginUri: 'https://hosted-auth-dev.taskunifier.app',
+                oauthUri: 'https://hosted-auth-dev.taskunifier.app',
                 redirectUri: 'https://www-dev.taskunifier.app/code'
             },
             toodledo: {
@@ -56,7 +56,7 @@ const config = {
             taskunifier: {
                 clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
                 clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
-                loginUri: 'https://hosted-auth-dev.taskunifier.app',
+                oauthUri: 'https://hosted-auth-dev.taskunifier.app',
                 redirectUri: 'https://www-dev.taskunifier.app/code'
             },
             toodledo: {
@@ -86,7 +86,7 @@ const config = {
             taskunifier: {
                 clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
                 clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
-                loginUri: 'https://hosted-auth.taskunifier.app',
+                oauthUri: 'https://hosted-auth.taskunifier.app',
                 redirectUri: 'https://www.taskunifier.app/code'
             },
             toodledo: {
