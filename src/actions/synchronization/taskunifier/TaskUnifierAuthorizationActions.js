@@ -11,7 +11,8 @@ export function authorize() {
         const params = {
             response_type: 'code',
             client_id: getConfig().synchronization.taskunifier.clientId,
-            redirect_uri: getConfig().synchronization.taskunifier.redirectUri
+            redirect_uri: getConfig().synchronization.taskunifier.redirectUri,
+            scope: 'openid https://api.taskunifier.app/api.write'
         };
 
         const url = `${getConfig().synchronization.taskunifier.oauthUri}/login?${qs.stringify(params)}`;
@@ -40,8 +41,7 @@ export function createToken(code) {
                 data: qs.stringify({
                     grant_type: 'authorization_code',
                     redirect_uri: getConfig().synchronization.taskunifier.redirectUri,
-                    code,
-                    scope: 'https://api.taskunifier.app/api.write'
+                    code
                 })
             },
             settings);
