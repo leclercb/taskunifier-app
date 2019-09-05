@@ -19,15 +19,20 @@ export function synchronizeTasks() {
         const settings = getSettings(getState());
 
         let tasks = getTasks(getState());
+        const createdTasksWithParent = [];
 
         {
             const tasksToAdd = filterByVisibleState(tasks).filter(task => !task.refIds.taskunifier);
 
             if (tasksToAdd.length > 0) {
-                const result = await dispatch(addRemoteTasks(tasksToAdd));
+                const result = await dispatch(addRemoteTasks(tasksToAdd, { skipParent: true }));
 
                 for (let task of result) {
                     await dispatch(updateTask(task, { loaded: true }));
+
+                    if (task.parent) {
+                        createdTasksWithParent.push(task);
+                    }
                 }
             }
         }
@@ -58,7 +63,9 @@ export function synchronizeTasks() {
                 await dispatch(addTask(remoteTask, { keepRefIds: true }));
             } else {
                 if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
-                    await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                    if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
+                        await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                    }
                 }
             }
         }
@@ -81,6 +88,12 @@ export function synchronizeTasks() {
 
         {
             const tasksToUpdate = tasks.filter(task => !!task.refIds.taskunifier && task.state === 'TO_UPDATE');
+
+            for (let createdTask of createdTasksWithParent) {
+                if (createdTask.parent && !!tasks.find(task => !!task.refIds.taskunifier && task.id === createdTask.parent)) {
+                    tasksToUpdate.push(createdTask);
+                }
+            }
 
             if (tasksToUpdate.length > 0) {
                 await dispatch(editRemoteTasks(tasksToUpdate));
@@ -145,8 +158,8 @@ export function getRemoteDeletedTasks(deletedAfter) {
     };
 }
 
-export function addRemoteTasks(tasks) {
-    console.debug('addRemoteTasks', tasks);
+export function addRemoteTasks(tasks, options) {
+    console.debug('addRemoteTasks', tasks, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -164,7 +177,7 @@ export function addRemoteTasks(tasks) {
                     },
                     method: 'POST',
                     url: `${getConfig().apiUrl}/v1/tasks/batch`,
-                    data: chunkTasks.map(task => convertTaskToRemote(task, state))
+                    data: chunkTasks.map(task => convertTaskToRemote(task, state, options))
                 },
                 settings);
 

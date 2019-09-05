@@ -9,8 +9,6 @@ import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeLocations() {
     return async (dispatch, getState) => {
-        const settings = getSettings(getState());
-
         let locations = getLocations(getState());
 
         {

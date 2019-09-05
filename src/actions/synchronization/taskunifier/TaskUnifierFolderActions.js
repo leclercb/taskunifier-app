@@ -9,8 +9,6 @@ import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeFolders() {
     return async (dispatch, getState) => {
-        const settings = getSettings(getState());
-
         let folders = getFolders(getState());
 
         {

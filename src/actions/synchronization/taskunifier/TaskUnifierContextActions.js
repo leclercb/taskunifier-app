@@ -9,8 +9,6 @@ import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeContexts() {
     return async (dispatch, getState) => {
-        const settings = getSettings(getState());
-
         let contexts = getContexts(getState());
 
         {
