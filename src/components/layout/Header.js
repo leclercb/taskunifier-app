@@ -58,10 +58,6 @@ function Header(props) {
         props.printTasks(props.tasks);
     };
 
-    const onLoad = () => {
-        props.loadData();
-    };
-
     const onSave = () => {
         props.saveData();
     };
@@ -211,7 +207,6 @@ function Header(props) {
             <Spacer />
             {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
             {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
-            {createButton('folder-open', 'Load', onLoad)}
             {process.env.REACT_APP_MODE === 'electron' ?
                 createButton('save', 'Save', onSave)
                 : null}
@@ -241,7 +236,6 @@ Header.propTypes = {
     addTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     printTasks: PropTypes.func.isRequired,
-    loadData: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,

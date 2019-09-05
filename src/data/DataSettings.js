@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, Modal, Select, notification } from 'antd';
 import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
-import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
+import { loadData, saveData, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
@@ -566,6 +566,15 @@ export function getCategories() {
             type: 'noteField',
             settings: [
                 {
+                    id: 'editCustomNoteFields',
+                    title: 'Edit custom note fields',
+                    type: 'button',
+                    value: (settings, updateSettings, dispatcher) => {
+                        dispatcher(setNoteFieldManagerOptions({ visible: true }));
+                    },
+                    editable: true
+                },
+                {
                     id: 'noteColumnVisible_id',
                     title: 'Show column "ID"',
                     type: 'boolean',
@@ -672,7 +681,7 @@ export function getCategories() {
         },
         {
             id: 'taskFields',
-            title: 'Task fields',
+            title: 'Task edition form',
             icon: 'columns',
             type: 'taskField',
             settings: [
