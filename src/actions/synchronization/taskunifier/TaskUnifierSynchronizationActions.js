@@ -7,12 +7,15 @@ import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
 import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
 import { authorize, createToken, refreshToken } from 'actions/synchronization/taskunifier/TaskUnifierAuthorizationActions';
+import { synchronizeContacts } from 'actions/synchronization/taskunifier/TaskUnifierContactActions';
 import { synchronizeContexts } from 'actions/synchronization/taskunifier/TaskUnifierContextActions';
 import { synchronizeFolders } from 'actions/synchronization/taskunifier/TaskUnifierFolderActions';
 import { synchronizeGoals } from 'actions/synchronization/taskunifier/TaskUnifierGoalActions';
 import { synchronizeLocations } from 'actions/synchronization/taskunifier/TaskUnifierLocationActions';
 import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
+import { synchronizeNoteFields } from 'actions/synchronization/taskunifier/TaskUnifierNoteFieldActions';
 import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
+import { synchronizeTaskFields } from 'actions/synchronization/taskunifier/TaskUnifierTaskFieldActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
 async function getAuthorizationCode() {
@@ -71,10 +74,13 @@ export function synchronizeWithTaskUnifier() {
 
             await dispatch(getTaskUnifierAccountInfo());
 
+            await dispatch(synchronizeContacts());
             await dispatch(synchronizeContexts());
             await dispatch(synchronizeFolders());
             await dispatch(synchronizeGoals());
             await dispatch(synchronizeLocations());
+            await dispatch(synchronizeNoteFields());
+            await dispatch(synchronizeTaskFields());
 
             await dispatch(synchronizeNotes());
             await dispatch(synchronizeTasks());
