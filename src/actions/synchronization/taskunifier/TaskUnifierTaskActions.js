@@ -121,6 +121,7 @@ export function getRemoteTasks(updatedAfter) {
                 method: 'GET',
                 url: `${getConfig().apiUrl}/v1/tasks`,
                 query: {
+                    includeText: true,
                     updatedAfter: updatedAfter ? updatedAfter.toISOString() : null
                 }
             },
