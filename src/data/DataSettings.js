@@ -489,7 +489,7 @@ export function getCategories() {
                     title: 'Synchronize with another service',
                     type: 'button',
                     buttonType: 'primary',
-                    value: async (settings, updateSettings, dispatcher) => {
+                    value: async (settings, updateSettings) => {
                         const synchronizationApp = await selectSynchronizationApp();
 
                         if (synchronizationApp) {
@@ -497,8 +497,6 @@ export function getCategories() {
                                 synchronizationApp,
                                 lastSynchronizationDate: null
                             });
-
-                            await dispatcher(synchronize());
                         }
                     },
                     editable: true,

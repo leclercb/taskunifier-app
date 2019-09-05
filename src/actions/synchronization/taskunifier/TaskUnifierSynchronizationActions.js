@@ -11,8 +11,8 @@ import { synchronizeContexts } from 'actions/synchronization/taskunifier/TaskUni
 import { synchronizeFolders } from 'actions/synchronization/taskunifier/TaskUnifierFolderActions';
 import { synchronizeGoals } from 'actions/synchronization/taskunifier/TaskUnifierGoalActions';
 import { synchronizeLocations } from 'actions/synchronization/taskunifier/TaskUnifierLocationActions';
-//import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
-//import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
+import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
+import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
 async function getAuthorizationCode() {
@@ -76,8 +76,8 @@ export function synchronizeWithTaskUnifier() {
             await dispatch(synchronizeGoals());
             await dispatch(synchronizeLocations());
 
-            //await dispatch(synchronizeNotes());
-            //await dispatch(synchronizeTasks());
+            await dispatch(synchronizeNotes());
+            await dispatch(synchronizeTasks());
 
             await dispatch(updateSettings({
                 lastSynchronizationDate: moment().toISOString()

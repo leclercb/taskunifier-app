@@ -219,8 +219,6 @@ function convertGoalToLocal(goal, state) {
 
     delete localGoal.id;
     delete localGoal.owner;
-    delete localGoal.creationDate;
-    delete localGoal.updateDate;
 
     return localGoal;
 }

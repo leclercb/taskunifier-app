@@ -6,11 +6,11 @@ import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
 import { getTasks } from 'selectors/TaskSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
-import { merge } from 'utils/ObjectUtils';
-import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
+import { diff, merge } from 'utils/ObjectUtils';
 
 const CHUNK_SIZE = 50;
 
@@ -96,7 +96,7 @@ export function synchronizeTasks() {
             }
 
             if (tasksToUpdate.length > 0) {
-                await dispatch(editRemoteTasks(tasksToUpdate));
+                await dispatch(editRemoteTasks(tasksToUpdate, remoteTasks));
             }
 
             for (let task of tasksToUpdate) {
@@ -196,7 +196,7 @@ export function addRemoteTasks(tasks, options) {
     };
 }
 
-export function editRemoteTasks(tasks) {
+export function editRemoteTasks(tasks, remoteTasks) {
     console.debug('editRemoteTasks', tasks);
 
     return async (dispatch, getState) => {
@@ -213,7 +213,19 @@ export function editRemoteTasks(tasks) {
                     },
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/tasks/batch`,
-                    data: chunkTasks.map(task => convertTaskToRemote(task, state))
+                    data: chunkTasks.map(task => {
+                        const remoteTask = remoteTasks.find(remoteTask => remoteTask.refIds.taskunifier === task.refIds.taskunifier);
+                        let convertedTask = convertTaskToRemote(task, state);
+
+                        if (remoteTask) {
+                            convertedTask = diff(convertedTask, convertTaskToRemote(remoteTask, state));
+                        }
+
+                        return {
+                            ...convertedTask,
+                            id: task.refIds.taskunifier
+                        };
+                    }).filter(task => Object.keys(task).length > 0)
                 },
                 settings);
         }
@@ -238,12 +250,14 @@ export function deleteRemoteTasks(tasks) {
                         },
                         method: 'DELETE',
                         url: `${getConfig().apiUrl}/v1/tasks/batch`,
-                        data: chunkTasks.map(task => task.refIds.taskunifier)
+                        params: {
+                            id: chunkTasks.map(task => task.refIds.taskunifier)
+                        }
                     },
                     settings);
             } catch (error) {
                 // No throw exception if delete fails
-                console.debug(error);
+                console.debug(error, error.response);
             }
         }
     };
@@ -316,8 +330,6 @@ function convertTaskToLocal(task, state) {
 
     delete localTask.id;
     delete localTask.owner;
-    delete localTask.creationDate;
-    delete localTask.updateDate;
 
     return localTask;
 }

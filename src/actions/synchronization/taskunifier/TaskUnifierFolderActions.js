@@ -189,8 +189,6 @@ function convertFolderToLocal(folder) {
 
     delete localFolder.id;
     delete localFolder.owner;
-    delete localFolder.creationDate;
-    delete localFolder.updateDate;
 
     return localFolder;
 }

@@ -6,7 +6,7 @@ import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
-import { merge } from 'utils/ObjectUtils';
+import { diff, merge } from 'utils/ObjectUtils';
 
 const CHUNK_SIZE = 50;
 
@@ -79,7 +79,7 @@ export function synchronizeNotes() {
             const notesToUpdate = notes.filter(note => !!note.refIds.taskunifier && note.state === 'TO_UPDATE');
 
             if (notesToUpdate.length > 0) {
-                await dispatch(editRemoteNotes(notesToUpdate));
+                await dispatch(editRemoteNotes(notesToUpdate, remoteNotes));
             }
 
             for (let note of notesToUpdate) {
@@ -179,7 +179,7 @@ export function addRemoteNotes(notes) {
     };
 }
 
-export function editRemoteNotes(notes) {
+export function editRemoteNotes(notes, remoteNotes) {
     console.debug('editRemoteNotes', notes);
 
     return async (dispatch, getState) => {
@@ -196,7 +196,19 @@ export function editRemoteNotes(notes) {
                     },
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/notes/batch`,
-                    data: chunkNotes.map(note => convertNoteToRemote(note, state))
+                    data: chunkNotes.map(note => {
+                        const remoteNote = remoteNotes.find(remoteNote => remoteNote.refIds.taskunifier === note.refIds.taskunifier);
+                        let convertedNote = convertNoteToRemote(note, state);
+
+                        if (remoteNote) {
+                            convertedNote = diff(convertedNote, convertNoteToRemote(remoteNote, state));
+                        }
+
+                        return {
+                            ...convertedNote,
+                            id: note.refIds.taskunifier
+                        };
+                    }).filter(note => Object.keys(note).length > 0)
                 },
                 settings);
         }
@@ -221,12 +233,14 @@ export function deleteRemoteNotes(notes) {
                         },
                         method: 'DELETE',
                         url: `${getConfig().apiUrl}/v1/notes/batch`,
-                        data: chunkNotes.map(note => note.refIds.taskunifier)
+                        params: {
+                            id: chunkNotes.map(note => note.refIds.taskunifier)
+                        }
                     },
                     settings);
             } catch (error) {
                 // No throw exception if delete fails
-                console.debug(error);
+                console.debug(error, error.response);
             }
         }
     };
@@ -264,8 +278,6 @@ function convertNoteToLocal(note, state) {
 
     delete localNote.id;
     delete localNote.owner;
-    delete localNote.creationDate;
-    delete localNote.updateDate;
 
     return localNote;
 }

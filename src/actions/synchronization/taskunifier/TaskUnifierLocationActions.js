@@ -189,8 +189,6 @@ function convertLocationToLocal(location) {
 
     delete localLocation.id;
     delete localLocation.owner;
-    delete localLocation.creationDate;
-    delete localLocation.updateDate;
 
     return localLocation;
 }

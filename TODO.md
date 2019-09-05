@@ -12,6 +12,5 @@
 * Import/Export (+ from TaskUnifier Classic)
 * Print config (columns, size)
 * Electron auto update
-* Sub-categories (children)
 * Group by
 * Rules

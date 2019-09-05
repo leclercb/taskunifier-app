@@ -189,8 +189,6 @@ function convertContextToLocal(context) {
 
     delete localContext.id;
     delete localContext.owner;
-    delete localContext.creationDate;
-    delete localContext.updateDate;
 
     return localContext;
 }
