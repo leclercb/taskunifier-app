@@ -37,8 +37,7 @@ export function synchronizeLocations() {
 
         locations = getLocations(getState());
 
-        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const remoteLocations = await dispatch(getRemoteLocations(lastSync));
+        const remoteLocations = await dispatch(getRemoteLocations());
 
         for (let remoteLocation of remoteLocations) {
             const localLocation = locations.find(location => location.refIds.taskunifier === remoteLocation.refIds.taskunifier);
@@ -183,17 +182,17 @@ function convertLocationToRemote(location) {
 }
 
 function convertLocationToLocal(location) {
-    const localLocation = { ...location };
+    const localLocation = {
+        ...location,
+        refIds: {
+            taskunifier: location.id
+        }
+    };
 
     delete localLocation.id;
     delete localLocation.owner;
     delete localLocation.creationDate;
     delete localLocation.updateDate;
 
-    return {
-        ...location,
-        refIds: {
-            taskunifier: location.id
-        }
-    };
+    return localLocation;
 }

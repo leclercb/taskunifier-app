@@ -1,11 +1,10 @@
 import moment from 'moment';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/synchronization/taskunifier/ExceptionHandler';
+import { getConfig } from 'config/Config';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getTaskUnifierAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -45,23 +44,17 @@ export function synchronizeNotes() {
 
         notes = getNotes(getState());
 
-        {
-            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastEditNote = moment.unix(getTaskUnifierAccountInfo(getState()).lastedit_note);
+        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
+        const remoteNotes = await dispatch(getRemoteNotes(lastSync));
 
-            if (!lastSync || lastEditNote.diff(lastSync) > 0) {
-                const remoteNotes = await dispatch(getRemoteNotes(lastSync));
+        for (let remoteNote of remoteNotes) {
+            const localNote = notes.find(note => note.refIds.taskunifier === remoteNote.refIds.taskunifier);
 
-                for (let remoteNote of remoteNotes) {
-                    const localNote = notes.find(note => note.refIds.taskunifier === remoteNote.refIds.taskunifier);
-
-                    if (!localNote) {
-                        await dispatch(addNote(remoteNote, { keepRefIds: true }));
-                    } else {
-                        if (moment(remoteNote.updateDate).diff(moment(localNote.updateDate)) > 0) {
-                            await dispatch(updateNote(merge(localNote, remoteNote), { loaded: true }));
-                        }
-                    }
+            if (!localNote) {
+                await dispatch(addNote(remoteNote, { keepRefIds: true }));
+            } else {
+                if (moment(remoteNote.updateDate).diff(moment(localNote.updateDate)) > 0) {
+                    await dispatch(updateNote(merge(localNote, remoteNote), { loaded: true }));
                 }
             }
         }
@@ -69,18 +62,13 @@ export function synchronizeNotes() {
         notes = getNotes(getState());
 
         {
-            const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-            const lastDeleteNote = moment.unix(getTaskUnifierAccountInfo(getState()).lastdelete_note);
+            const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
 
-            if (!lastSync || lastDeleteNote.diff(lastSync) > 0) {
-                const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
+            for (let remoteDeletedNote of remoteDeletedNotes) {
+                const localNote = notes.find(note => note.refIds.taskunifier === remoteDeletedNote.id);
 
-                for (let remoteDeletedNote of remoteDeletedNotes) {
-                    const localNote = notes.find(note => note.refIds.taskunifier === remoteDeletedNote);
-
-                    if (localNote) {
-                        await dispatch(deleteNote(localNote.id, { force: true }));
-                    }
+                if (localNote) {
+                    await dispatch(deleteNote(localNote.id, { force: true }));
                 }
             }
         }
@@ -110,19 +98,20 @@ export function getRemoteNotes(updatedAfter) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
                 method: 'GET',
-                url: 'https://api.taskunifier.com/3/notes/get.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    after: updatedAfter ? updatedAfter.unix() : 0
+                url: `${getConfig().apiUrl}/v1/notes`,
+                query: {
+                    updatedAfter: updatedAfter ? updatedAfter.toISOString() : null
                 }
             },
             settings);
 
         console.debug(result);
-        checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
+        return result.data.map(note => convertNoteToLocal(note, state));
     };
 }
 
@@ -135,19 +124,20 @@ export function getRemoteDeletedNotes(deletedAfter) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                },
                 method: 'GET',
-                url: 'https://api.taskunifier.com/3/notes/deleted.php',
-                params: {
-                    access_token: settings.taskunifier.accessToken,
-                    after: deletedAfter ? deletedAfter.unix() : 0
+                url: `${getConfig().apiUrl}/v1/deletedNotes`,
+                query: {
+                    deletedAfter: deletedAfter ? deletedAfter.toISOString() : null
                 }
             },
             settings);
 
         console.debug(result);
-        checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
+        return result.data.map(note => ({ id: note.id }));
     };
 }
 
@@ -165,16 +155,14 @@ export function addRemoteNotes(notes) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                    },
                     method: 'POST',
-                    url: 'https://api.taskunifier.com/3/notes/add.php',
-                    params: {
-                        access_token: settings.taskunifier.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
-                    }
+                    url: `${getConfig().apiUrl}/v1/notes/batch`,
+                    data: chunkNotes.map(note => convertNoteToRemote(note, state))
                 },
                 settings);
-
-            checkResult(result);
 
             for (let j = 0; j < chunkNotes.length; j++) {
                 updatedNotes.push({
@@ -201,18 +189,16 @@ export function editRemoteNotes(notes) {
         for (let i = 0; i < notes.length; i += CHUNK_SIZE) {
             const chunkNotes = notes.slice(i, i + CHUNK_SIZE);
 
-            const result = await sendRequest(
+            await sendRequest(
                 {
-                    method: 'POST',
-                    url: 'https://api.taskunifier.com/3/notes/edit.php',
-                    params: {
-                        access_token: settings.taskunifier.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
-                    }
+                    headers: {
+                        Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                    },
+                    method: 'PUT',
+                    url: `${getConfig().apiUrl}/v1/notes/batch`,
+                    data: chunkNotes.map(note => convertNoteToRemote(note, state))
                 },
                 settings);
-
-            checkResult(result);
         }
     };
 }
@@ -230,20 +216,17 @@ export function deleteRemoteNotes(notes) {
             try {
                 await sendRequest(
                     {
-                        method: 'POST',
-                        url: 'https://api.taskunifier.com/3/notes/delete.php',
-                        params: {
-                            access_token: settings.taskunifier.accessToken,
-                            notes: JSON.stringify(chunkNotes.map(note => note.refIds.taskunifier))
-                        }
+                        headers: {
+                            Authorization: `Bearer ${settings.taskunifier.accessToken}`
+                        },
+                        method: 'DELETE',
+                        url: `${getConfig().apiUrl}/v1/notes/batch`,
+                        data: chunkNotes.map(note => note.refIds.taskunifier)
                     },
                     settings);
-
-                // checkResult(result);
             } catch (error) {
-                if (!error.response || !error.response.data || error.response.data.errorCode !== 605) {
-                    throw error;
-                }
+                // No throw exception if delete fails
+                console.debug(error);
             }
         }
     };
@@ -253,25 +236,36 @@ function convertNoteToRemote(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.id === note.folder);
 
-    return {
-        id: note.refIds.taskunifier,
-        title: note.title,
-        folder: folder ? folder.refIds.taskunifier : 0,
-        text: note.text
+    const remoteNote = {
+        ...note,
+        folder: folder ? folder.refIds.taskunifier : null
     };
+
+    delete remoteNote.id;
+    delete remoteNote.refIds;
+    delete remoteNote.state;
+    delete remoteNote.creationDate;
+    delete remoteNote.updateDate;
+
+    return remoteNote;
 }
 
 function convertNoteToLocal(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.refIds.taskunifier === note.folder);
 
-    return {
-        updateDate: moment.unix(note.modified).toISOString(),
+    const localNote = {
+        ...note,
         refIds: {
             taskunifier: note.id
         },
-        title: note.title,
-        folder: folder ? folder.refIds.taskunifier : null,
-        text: note.text
+        folder: folder ? folder.id : null
     };
+
+    delete localNote.id;
+    delete localNote.owner;
+    delete localNote.creationDate;
+    delete localNote.updateDate;
+
+    return localNote;
 }

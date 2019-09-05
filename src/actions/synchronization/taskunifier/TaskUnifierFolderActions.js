@@ -37,8 +37,7 @@ export function synchronizeFolders() {
 
         folders = getFolders(getState());
 
-        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const remoteFolders = await dispatch(getRemoteFolders(lastSync));
+        const remoteFolders = await dispatch(getRemoteFolders());
 
         for (let remoteFolder of remoteFolders) {
             const localFolder = folders.find(folder => folder.refIds.taskunifier === remoteFolder.refIds.taskunifier);
@@ -183,17 +182,17 @@ function convertFolderToRemote(folder) {
 }
 
 function convertFolderToLocal(folder) {
-    const localFolder = { ...folder };
+    const localFolder = {
+        ...folder,
+        refIds: {
+            taskunifier: folder.id
+        }
+    };
 
     delete localFolder.id;
     delete localFolder.owner;
     delete localFolder.creationDate;
     delete localFolder.updateDate;
 
-    return {
-        ...folder,
-        refIds: {
-            taskunifier: folder.id
-        }
-    };
+    return localFolder;
 }

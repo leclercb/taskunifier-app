@@ -80,7 +80,7 @@ export function synchronizeTasks() {
                 const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
 
                 for (let remoteDeletedTask of remoteDeletedTasks) {
-                    const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask);
+                    const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask.id);
 
                     if (localTask) {
                         await dispatch(deleteTask(localTask.id, { force: true }));
@@ -158,7 +158,7 @@ export function getRemoteDeletedTasks(deletedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(task => convertTaskToLocal(task, state));
+        return result.data.slice(1).map(task => ({ id: task.id }));
     };
 }
 

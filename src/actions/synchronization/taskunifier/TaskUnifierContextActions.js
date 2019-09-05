@@ -37,8 +37,7 @@ export function synchronizeContexts() {
 
         contexts = getContexts(getState());
 
-        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const remoteContexts = await dispatch(getRemoteContexts(lastSync));
+        const remoteContexts = await dispatch(getRemoteContexts());
 
         for (let remoteContext of remoteContexts) {
             const localContext = contexts.find(context => context.refIds.taskunifier === remoteContext.refIds.taskunifier);
@@ -183,17 +182,17 @@ function convertContextToRemote(context) {
 }
 
 function convertContextToLocal(context) {
-    const localContext = { ...context };
+    const localContext = {
+        ...context,
+        refIds: {
+            taskunifier: context.id
+        }
+    };
 
     delete localContext.id;
     delete localContext.owner;
     delete localContext.creationDate;
     delete localContext.updateDate;
 
-    return {
-        ...context,
-        refIds: {
-            taskunifier: context.id
-        }
-    };
+    return localContext;
 }

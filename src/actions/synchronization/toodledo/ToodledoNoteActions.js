@@ -77,7 +77,7 @@ export function synchronizeNotes() {
                 const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
 
                 for (let remoteDeletedNote of remoteDeletedNotes) {
-                    const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote);
+                    const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote.id);
 
                     if (localNote) {
                         await dispatch(deleteNote(localNote.id, { force: true }));
@@ -154,7 +154,7 @@ export function getRemoteDeletedNotes(deletedAfter) {
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
+        return result.data.slice(1).map(note => ({ id: note.id }));
     };
 }
 

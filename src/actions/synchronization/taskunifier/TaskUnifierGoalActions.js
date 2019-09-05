@@ -42,8 +42,7 @@ export function synchronizeGoals() {
 
         goals = getGoals(getState());
 
-        const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const remoteGoals = await dispatch(getRemoteGoals(lastSync));
+        const remoteGoals = await dispatch(getRemoteGoals());
 
         for (let remoteGoal of remoteGoals) {
             const localGoal = goals.find(goal => goal.refIds.taskunifier === remoteGoal.refIds.taskunifier);
@@ -209,21 +208,21 @@ function convertGoalToRemote(goal, state, options) {
 }
 
 function convertGoalToLocal(goal, state) {
-    const localGoal = { ...goal };
-
-    delete localGoal.id;
-    delete localGoal.owner;
-    delete localGoal.creationDate;
-    delete localGoal.updateDate;
-
     const goals = getGoalsFilteredByVisibleState(state);
     const contributesTo = goals.find(g => g.refIds.taskunifier === goal.contributesTo);
 
-    return {
+    const localGoal = {
         ...goal,
         refIds: {
             taskunifier: goal.id
         },
         contributesTo: contributesTo ? contributesTo.id : null
     };
+
+    delete localGoal.id;
+    delete localGoal.owner;
+    delete localGoal.creationDate;
+    delete localGoal.updateDate;
+
+    return localGoal;
 }
