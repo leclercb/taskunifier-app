@@ -63,6 +63,42 @@ function pushObjectToServer(property, oldObject, newObject) {
     };
 }
 
+function pushSettingsToServer(oldSettings, newSettings) {
+    return async dispatch => {
+        const processId = uuid();
+
+        const diffSettings = oldSettings ? diff(newSettings, oldSettings) : newSettings;
+
+        if (Object.keys(diffSettings).length === 0) {
+            return newSettings;
+        }
+
+        try {
+            const result = await sendRequest(
+                {
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
+                    method: 'PUT',
+                    url: `${getConfig().apiUrl}/v1/settings`,
+                    data: diffSettings,
+                    responseType: 'json'
+                });
+
+            return result.data;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: 'Save settings to server',
+                error: error.toString()
+            }));
+
+            throw error;
+        }
+    };
+}
+
 function deleteObjectFromServer(property, objectId) {
     return async dispatch => {
         const processId = uuid();
@@ -102,6 +138,16 @@ export const pushToServer = store => next => async action => {
         await store.dispatch(pushObjectToServer(action.property, action.oldObject, action.newObject));
     }
 
+    if (action.type === 'POST_UPDATE_SETTINGS') {
+        if (action.options.skipServerUpdate !== true) {
+            if (action.options.skipDiff === true) {
+                await store.dispatch(pushSettingsToServer(null, action.settings));
+            } else {
+                await store.dispatch(pushSettingsToServer(action.oldSettings, action.newSettings));
+            }
+        }
+    }
+
     if (action.type === 'POST_DELETE_OBJECT') {
         const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
         const promises = objectIds.map(objectId => store.dispatch(deleteObjectFromServer(action.property, objectId)));
@@ -109,4 +155,4 @@ export const pushToServer = store => next => async action => {
     }
 
     return next(action);
-}
+};

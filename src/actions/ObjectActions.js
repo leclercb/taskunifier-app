@@ -81,7 +81,8 @@ export function addObject(
             const transformedAddedObject = await dispatch({
                 type: 'POST_ADD_OBJECT',
                 property,
-                object: newObject
+                object: newObject,
+                options
             });
 
             return transformedAddedObject || newObject;
@@ -118,7 +119,8 @@ export function updateObject(property, object, options = {}) {
                 type: 'POST_UPDATE_OBJECT',
                 property,
                 oldObject,
-                newObject
+                newObject,
+                options
             });
 
             return newObject;
@@ -150,7 +152,8 @@ export function deleteObject(property, objectId, options = {}) {
             await dispatch({
                 type: 'POST_DELETE_OBJECT',
                 property,
-                objectId
+                objectId,
+                options
             });
         } catch (error) {
             dispatch(updateProcess({

@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { objectTextLoader } from 'middlewares/cloud/ObjectTextLoader';
 import { pushToServer } from 'middlewares/cloud/PushToServer';
-import { taskTextLoader } from 'middlewares/cloud/TaskTextLoader';
 import Reducers from 'reducers/Reducers';
 
 // @ts-ignore
@@ -12,8 +12,8 @@ const middlewares = [thunk];
 if (process.env.REACT_APP_MODE === 'electron') {
     // No middleware
 } else {
+    middlewares.push(objectTextLoader);
     middlewares.push(pushToServer);
-    middlewares.push(taskTextLoader);
 }
 
 export const store = createStore(

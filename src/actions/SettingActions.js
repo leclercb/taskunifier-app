@@ -1,15 +1,10 @@
-import { Auth } from 'aws-amplify';
-import uuid from 'uuid/v4';
 import {
     loadFromFile,
     loadFromServer,
     saveToFile
 } from 'actions/ActionUtils';
-import { sendRequest } from 'actions/RequestActions';
-import { updateProcess } from 'actions/ThreadActions';
-import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
-import { diff, merge } from 'utils/ObjectUtils';
+import { merge } from 'utils/ObjectUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
     return async dispatch => {
@@ -28,42 +23,6 @@ export const loadSettingsFromServer = (core = false) => {
         await dispatch(setSettings(data.settings, core));
     };
 };
-
-export function saveSettingsToServer(oldSettings, newSettings) {
-    return async dispatch => {
-        const processId = uuid();
-
-        const diffSettings = oldSettings ? diff(newSettings, oldSettings) : newSettings;
-
-        if (Object.keys(diffSettings).length === 0) {
-            return newSettings;
-        }
-
-        try {
-            const result = await sendRequest(
-                {
-                    headers: {
-                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-                    },
-                    method: 'PUT',
-                    url: `${getConfig().apiUrl}/v1/settings`,
-                    data: diffSettings,
-                    responseType: 'json'
-                });
-
-            return result.data;
-        } catch (error) {
-            dispatch(updateProcess({
-                id: processId,
-                state: 'ERROR',
-                title: 'Save settings to server',
-                error: error.toString()
-            }));
-
-            throw error;
-        }
-    };
-}
 
 export const setSettings = (settings, core = false) => {
     return async dispatch => {
@@ -91,15 +50,13 @@ export function updateSettings(settings, options) {
 
         const newSettings = getSettings(getState());
 
-        if (process.env.REACT_APP_MODE !== 'electron') {
-            if (options.skipServerUpdate !== true) {
-                if (options.skipDiff === true) {
-                    await dispatch(saveSettingsToServer(null, settings));
-                } else {
-                    await dispatch(saveSettingsToServer(oldSettings, newSettings));
-                }
-            }
-        }
+        await dispatch({
+            type: 'POST_UPDATE_SETTINGS',
+            settings,
+            oldSettings,
+            newSettings,
+            options
+        });
 
         return newSettings;
     };
