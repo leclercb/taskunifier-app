@@ -51,6 +51,7 @@ export function synchronizeNoteFields() {
 
         noteFields = getNoteFields(getState());
 
+        // eslint-disable-next-line require-atomic-updates
         for (let localNoteField of filterByVisibleState(noteFields)) {
             if (!remoteNoteFields.find(noteField => noteField.refIds.taskunifier === localNoteField.refIds.taskunifier)) {
                 await dispatch(deleteNoteField(localNoteField.id, { force: true }));

@@ -51,6 +51,7 @@ export function synchronizeContacts() {
 
         contacts = getContacts(getState());
 
+        // eslint-disable-next-line require-atomic-updates
         for (let localContact of filterByVisibleState(contacts)) {
             if (!remoteContacts.find(contact => contact.refIds.taskunifier === localContact.refIds.taskunifier)) {
                 await dispatch(deleteContact(localContact.id, { force: true }));

@@ -51,6 +51,7 @@ export function synchronizeTaskFields() {
 
         taskFields = getTaskFields(getState());
 
+        // eslint-disable-next-line require-atomic-updates
         for (let localTaskField of filterByVisibleState(taskFields)) {
             if (!remoteTaskFields.find(taskField => taskField.refIds.taskunifier === localTaskField.refIds.taskunifier)) {
                 await dispatch(deleteTaskField(localTaskField.id, { force: true }));

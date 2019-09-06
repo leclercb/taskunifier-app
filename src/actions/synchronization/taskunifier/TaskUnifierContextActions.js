@@ -51,6 +51,7 @@ export function synchronizeContexts() {
 
         contexts = getContexts(getState());
 
+        // eslint-disable-next-line require-atomic-updates
         for (let localContext of filterByVisibleState(contexts)) {
             if (!remoteContexts.find(context => context.refIds.taskunifier === localContext.refIds.taskunifier)) {
                 await dispatch(deleteContext(localContext.id, { force: true }));

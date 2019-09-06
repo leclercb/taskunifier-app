@@ -21,6 +21,8 @@ export const TaskFieldSelect = React.forwardRef(function TaskFieldSelect(props, 
     );
 });
 
+TaskFieldSelect.displayName = 'ForwardRefTaskFieldSelect';
+
 TaskFieldSelect.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
 };

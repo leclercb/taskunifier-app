@@ -32,6 +32,8 @@ export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
     );
 });
 
+TaskSelect.displayName = 'ForwardRefTaskSelect';
+
 TaskSelect.propTypes = {
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired

@@ -51,6 +51,7 @@ export function synchronizeFolders() {
 
         folders = getFolders(getState());
 
+        // eslint-disable-next-line require-atomic-updates
         for (let localFolder of filterByVisibleState(folders)) {
             if (!remoteFolders.find(folder => folder.refIds.taskunifier === localFolder.refIds.taskunifier)) {
                 await dispatch(deleteFolder(localFolder.id, { force: true }));

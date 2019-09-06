@@ -21,6 +21,8 @@ export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
     );
 });
 
+GoalSelect.displayName = 'ForwardRefGoalSelect';
+
 GoalSelect.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired
 };

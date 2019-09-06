@@ -8,7 +8,7 @@ import { PriorityPropType } from 'proptypes/PriorityPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getPriorityColor } from 'utils/SettingUtils';
 
-const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
+export const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
     const { priorities, ...restProps } = props;
 
     return (
@@ -21,6 +21,8 @@ const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
         </Select>
     );
 });
+
+PrioritySelect.displayName = 'ForwardRefPrioritySelect';
 
 PrioritySelect.propTypes = {
     priorities: PropTypes.arrayOf(PriorityPropType.isRequired).isRequired,

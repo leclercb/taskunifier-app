@@ -15,4 +15,6 @@ export const GoalLevelSelect = React.forwardRef(function GoalLevelSelect(props, 
     );
 });
 
+GoalLevelSelect.displayName = 'ForwardRefGoalLevelSelect';
+
 export default GoalLevelSelect;

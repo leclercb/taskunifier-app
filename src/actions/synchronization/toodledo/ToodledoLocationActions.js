@@ -58,6 +58,7 @@ export function synchronizeLocations() {
 
                 locations = getLocations(getState());
 
+                // eslint-disable-next-line require-atomic-updates
                 for (let localLocation of filterByVisibleState(locations)) {
                     if (!remoteLocations.find(location => location.refIds.toodledo === localLocation.refIds.toodledo)) {
                         await dispatch(deleteLocation(localLocation.id, { force: true }));

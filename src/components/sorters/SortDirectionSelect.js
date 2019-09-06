@@ -5,7 +5,7 @@ import { SortDirectionPropType } from 'proptypes/SortDirectionPropTypes';
 import withSortDirections from 'containers/WithSortDirections';
 import Icon from 'components/common/Icon';
 
-const SortDirectionSelect = React.forwardRef(function SortDirectionSelect(props, ref) {
+export const SortDirectionSelect = React.forwardRef(function SortDirectionSelect(props, ref) {
     const { sortDirections, ...restProps } = props;
 
     return (
@@ -18,6 +18,8 @@ const SortDirectionSelect = React.forwardRef(function SortDirectionSelect(props,
         </Select>
     );
 });
+
+SortDirectionSelect.displayName = 'ForwardRefSortDirectionSelect';
 
 SortDirectionSelect.propTypes = {
     sortDirections: PropTypes.arrayOf(SortDirectionPropType.isRequired).isRequired

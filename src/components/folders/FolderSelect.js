@@ -21,6 +21,8 @@ export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
     );
 });
 
+FolderSelect.displayName = 'ForwardRefFolderSelect';
+
 FolderSelect.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired
 };

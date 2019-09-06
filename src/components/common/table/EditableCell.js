@@ -20,7 +20,6 @@ function EditableCell(props) {
     };
 
     const inputProps = {
-        ref: props.inputRef,
         fieldMode: 'table',
         size: 'small',
         onCommit: () => setTimeout(() => onChange())
@@ -43,7 +42,6 @@ function EditableCell(props) {
 
 EditableCell.propTypes = {
     form: PropTypes.object.isRequired,
-    inputRef: PropTypes.any.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func.isRequired,

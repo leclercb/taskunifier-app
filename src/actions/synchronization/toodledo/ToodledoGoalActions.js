@@ -65,6 +65,7 @@ export function synchronizeGoals() {
 
                 goals = getGoals(getState());
 
+                // eslint-disable-next-line require-atomic-updates
                 for (let localGoal of filterByVisibleState(goals)) {
                     if (!remoteGoals.find(goal => goal.refIds.toodledo === localGoal.refIds.toodledo)) {
                         await dispatch(deleteGoal(localGoal.id, { force: true }));

@@ -21,6 +21,8 @@ export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(p
     );
 });
 
+TaskTemplateSelect.displayName = 'ForwardRefTaskTemplateSelect';
+
 TaskTemplateSelect.propTypes = {
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired
 };
