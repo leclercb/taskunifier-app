@@ -1,11 +1,9 @@
 import uuid from 'uuid/v4';
 import moment from 'moment';
 import {
-    deleteFromServer,
     loadFromFile,
     loadFromServer,
-    saveToFile,
-    saveToServer
+    saveToFile
 } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import Constants from 'constants/Constants';
@@ -28,14 +26,6 @@ export function loadObjectsFromServer(property) {
         const data = await dispatch(loadFromServer(property));
         await dispatch(setObjects(property, data));
     };
-}
-
-export function saveObjectToServer(property, oldObject, newObject) {
-    return saveToServer(property, oldObject, newObject);
-}
-
-export function deleteObjectFromServer(property, objectId) {
-    return deleteFromServer(property, objectId);
 }
 
 export function setObjects(property, objects) {
@@ -86,17 +76,15 @@ export function addObject(
                 options
             });
 
-            let newObject = getObjectById(getState(), property, id);
+            const newObject = getObjectById(getState(), property, id);
 
-            if (process.env.REACT_APP_MODE !== 'electron') {
-                const createdObject = await dispatch(saveObjectToServer(property, null, newObject));
-                id = createdObject.id;
+            const transformedAddedObject = await dispatch({
+                type: 'POST_ADD_OBJECT',
+                property,
+                object: newObject
+            });
 
-                await dispatch(changeId(property, newObject.id, id));
-                newObject = getObjectById(getState(), property, id);
-            }
-
-            return newObject;
+            return transformedAddedObject || newObject;
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
@@ -126,9 +114,12 @@ export function updateObject(property, object, options = {}) {
 
             const newObject = getObjectById(getState(), property, object.id);
 
-            if (process.env.REACT_APP_MODE !== 'electron') {
-                await dispatch(saveObjectToServer(property, oldObject, newObject));
-            }
+            await dispatch({
+                type: 'POST_UPDATE_OBJECT',
+                property,
+                oldObject,
+                newObject
+            });
 
             return newObject;
         } catch (error) {
@@ -156,12 +147,11 @@ export function deleteObject(property, objectId, options = {}) {
                 options
             });
 
-
-            if (process.env.REACT_APP_MODE !== 'electron') {
-                const objectIds = Array.isArray(objectId) ? objectId : [objectId];
-                const promises = objectIds.map(objectId => dispatch(deleteObjectFromServer(property, objectId)));
-                await Promise.all(promises);
-            }
+            await dispatch({
+                type: 'POST_DELETE_OBJECT',
+                property,
+                objectId
+            });
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,

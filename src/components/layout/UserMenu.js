@@ -14,6 +14,9 @@ function UserMenu({ session, logout, buyItem }) {
 
     const content = (
         <React.Fragment>
+            <div style={{ width: '100%', textAlign: 'right', fontSize: 10 }}>
+                Version: <strong>{process.env.REACT_APP_VERSION}</strong>
+            </div>
             {session.user ? (
                 <Descriptions title="User Info" column={1} size="small" bordered={true} style={{ marginBottom: 20 }}>
                     <Descriptions.Item label="Email">{session.user.email}</Descriptions.Item>
