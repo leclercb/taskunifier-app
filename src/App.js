@@ -22,7 +22,7 @@ import 'components/common/table/VirtualizedTable.css';
 function App(props) {
     useEffect(() => {
         props.loadData();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
@@ -40,7 +40,7 @@ function App(props) {
                 clearTimeout(timeout);
             };
         }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
@@ -81,7 +81,7 @@ function App(props) {
                 ipcRenderer.removeListener('app-close', onClose);
             };
         }
-    }, [props.settings]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [props.settings]);
 
     useEffect(
         () => {
@@ -107,7 +107,6 @@ function App(props) {
                 };
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             props.settings.automaticSave,
             props.settings.automaticSaveInterval
@@ -138,7 +137,6 @@ function App(props) {
                 };
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             props.settings.automaticBackup,
             props.settings.automaticBackupInterval,
@@ -170,7 +168,6 @@ function App(props) {
                 };
             }
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             props.settings.automaticSynchronization,
             props.settings.automaticSynchronizationInterval,
