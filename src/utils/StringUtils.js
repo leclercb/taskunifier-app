@@ -1,4 +1,5 @@
 import moment from 'moment';
+import RRule from 'rrule';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getGoalLevel } from 'data/DataGoalLevels';
 import { getPriority } from 'data/DataPriorities';
@@ -80,6 +81,18 @@ export function toStringPassword(value) {
 export function toStringPriority(value) {
     const priority = getPriority(value);
     return priority ? priority.title : '';
+}
+
+export function toStringRepeat(value) {
+    if (!value || typeof value !== 'string') {
+        return '';
+    }
+
+    try {
+        return RRule.fromString(value).toText();
+    } catch (error) {
+        return '';
+    }
 }
 
 export function toStringRepeatFrom(value) {

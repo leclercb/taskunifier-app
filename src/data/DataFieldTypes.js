@@ -24,7 +24,6 @@ import {
     compareStrings
 } from 'utils/CompareUtils';
 import { equals } from 'utils/ObjectUtils';
-import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toString,
     toStringArray,
@@ -37,6 +36,7 @@ import {
     toStringObject,
     toStringPassword,
     toStringPriority,
+    toStringRepeat,
     toStringRepeatFrom,
     toStringSortDirection,
     toStringStatus,
@@ -1639,7 +1639,7 @@ export function getFieldType(type, options) {
                 alwaysInEdition: false,
                 valuePropName: 'repeat',
                 compare: (a, b) => compareRepeats(a, b),
-                toString: value => formatRepeat(value),
+                toString: value => toStringRepeat(value),
                 conditions: [
                     {
                         type: 'equal',

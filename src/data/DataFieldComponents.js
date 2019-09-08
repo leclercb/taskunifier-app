@@ -53,10 +53,10 @@ import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toStringNumber,
     toStringPassword,
+    toStringRepeat,
     toStringRepeatFrom
 } from 'utils/StringUtils';
 
@@ -521,7 +521,7 @@ export function getFieldComponents(type, options) {
         case 'repeat': {
             configuration = {
                 render: value => {
-                    const result = formatRepeat(value);
+                    const result = toStringRepeat(value);
                     return result ? result : <span>&nbsp;</span>;
                 },
                 input: props => (
