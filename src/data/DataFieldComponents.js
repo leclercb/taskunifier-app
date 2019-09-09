@@ -36,7 +36,6 @@ import NoteFieldTitle from 'components/notefields/NoteFieldTitle';
 import NoteFieldSelect from 'components/notefields/NoteFieldSelect';
 import NoteTitle from 'components/notes/common/NoteTitle';
 import NoteSelect from 'components/notes/common/NoteSelect';
-import RepeatFromField from 'components/common/RepeatFromField';
 import PriorityTitle from 'components/priorities/PriorityTitle';
 import PrioritySelect from 'components/priorities/PrioritySelect';
 import RepeatField from 'components/repeat/RepeatField';
@@ -53,11 +52,10 @@ import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toStringNumber,
     toStringPassword,
-    toStringRepeatFrom
+    toStringRepeat
 } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {
@@ -180,6 +178,11 @@ export function getFieldComponents(type, options) {
                                     props.onCommit();
                                 }
                             }}
+                            onChange={value => {
+                                if (props.onCommit && value === null) {
+                                    props.onCommit();
+                                }
+                            }}
                             format={dateFormat}
                             {...removeExtraProps(props)} />
                     );
@@ -221,6 +224,11 @@ export function getFieldComponents(type, options) {
                         <DatePicker
                             onOpenChange={status => {
                                 if (props.onCommit && !status) {
+                                    props.onCommit();
+                                }
+                            }}
+                            onChange={value => {
+                                if (props.onCommit && value === null) {
                                     props.onCommit();
                                 }
                             }}
@@ -521,7 +529,7 @@ export function getFieldComponents(type, options) {
         case 'repeat': {
             configuration = {
                 render: value => {
-                    const result = formatRepeat(value);
+                    const result = toStringRepeat(value);
                     return result ? result : <span>&nbsp;</span>;
                 },
                 input: props => (
@@ -532,18 +540,6 @@ export function getFieldComponents(type, options) {
                                 props.onCommit();
                             }
                         }}
-                        {...removeExtraProps(props)} />
-                )
-            };
-
-            break;
-        }
-        case 'repeatFrom': {
-            configuration = {
-                render: value => toStringRepeatFrom(value),
-                input: props => (
-                    <RepeatFromField
-                        onBlur={props.onCommit}
                         {...removeExtraProps(props)} />
                 )
             };

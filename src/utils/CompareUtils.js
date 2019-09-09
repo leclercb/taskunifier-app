@@ -5,7 +5,7 @@ import { getPriorityIndex } from 'data/DataPriorities';
 import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
-import { formatRepeat } from 'utils/RepeatUtils';
+import { toStringRepeat } from 'utils/StringUtils';
 
 export function compareBooleans(a, b) {
     const boolA = a ? true : false;
@@ -116,7 +116,7 @@ export function comparePriorities(a, b) {
 }
 
 export function compareRepeats(a, b) {
-    return compareStrings(formatRepeat(a), formatRepeat(b));
+    return compareStrings(toStringRepeat(a), toStringRepeat(b));
 }
 
 export function compareStatuses(a, b) {

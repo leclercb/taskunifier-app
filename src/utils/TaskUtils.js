@@ -16,15 +16,15 @@ export function onTaskUpdate(task, oldTask, updateDate) {
             newTask.completed = false;
             newTask.progress = 0;
 
-            const diff = moment(newTask.dueDate).diff(newTask.startDate, 'seconds');
-
-            if (newTask.repeatFrom === 'dueDate') {
-                newTask.dueDate = getNextDate(task.repeat, task.dueDate);
+            if (newTask.startDate && newTask.dueDate) {
+                const diff = moment(newTask.dueDate).diff(moment(newTask.startDate), 'seconds');
+                newTask.dueDate = getNextDate(task.repeat, task.dueDate, updateDate);
+                newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toISOString();
+            } else if (newTask.startDate) {
+                newTask.startDate = getNextDate(task.repeat, task.startDate, updateDate);
             } else {
-                newTask.dueDate = getNextDate(task.repeat, updateDate);
+                newTask.dueDate = getNextDate(task.repeat, task.dueDate, updateDate);
             }
-
-            newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toISOString();
 
             return [newTask];
         }

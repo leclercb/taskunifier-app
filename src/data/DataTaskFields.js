@@ -159,13 +159,6 @@ export function getDefaultTaskFields(settings) {
         },
         {
             static: true,
-            id: 'repeatFrom',
-            title: 'Repeat From',
-            type: 'repeatFrom',
-            editable: true
-        },
-        {
-            static: true,
             id: 'startDateReminder',
             title: 'Start date reminder',
             type: 'reminder',

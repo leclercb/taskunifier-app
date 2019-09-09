@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Form } from 'antd';
 import PropTypes from 'prop-types';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
@@ -5,6 +6,10 @@ import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 
 function EditableCell(props) {
+    useEffect(() => {
+        props.form.resetFields();
+    }, [props.record.id]);
+
     const onChange = event => {
         props.form.validateFields((error, values) => {
             if (error && error[event.currentTarget.id]) {
@@ -42,6 +47,7 @@ function EditableCell(props) {
 
 EditableCell.propTypes = {
     form: PropTypes.object.isRequired,
+    record: PropTypes.object.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func.isRequired,

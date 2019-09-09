@@ -24,6 +24,7 @@ function CellRenderer(props) {
     if (editing || isAlwaysInEditionForType(props.field.type)) {
         return (
             <EditableCell
+                record={props.record}
                 field={props.field}
                 value={props.value}
                 onChange={props.onChange}
@@ -76,6 +77,7 @@ function CellRenderer(props) {
 }
 
 CellRenderer.propTypes = {
+    record: PropTypes.object.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func.isRequired,

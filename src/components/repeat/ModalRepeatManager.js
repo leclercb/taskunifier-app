@@ -3,15 +3,12 @@ import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
-import RepeatManager from 'components/repeat/RepeatManager';
+import RepeatForm from 'components/repeat/RepeatForm';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 
 function ModalRepeatManager(props) {
     const onDoNotRepeat = () => {
-        props.updateRepeat({
-            type: 'none'
-        });
-
+        props.updateRepeat(null);
         props.onClose();
     };
 
@@ -34,7 +31,7 @@ function ModalRepeatManager(props) {
                     <Button onClick={onClose}>Close</Button>
                 </React.Fragment>
             )}>
-            <RepeatManager repeat={props.repeat} updateRepeat={props.updateRepeat} />
+            <RepeatForm repeat={props.repeat} updateRepeat={props.updateRepeat} />
         </Modal>
     );
 }
