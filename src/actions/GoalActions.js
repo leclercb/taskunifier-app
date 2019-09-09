@@ -8,7 +8,6 @@ import {
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
-import { onGoalUpdate } from 'utils/GoalUtils';
 
 export function loadGoalsFromFile(file) {
     return loadObjectsFromFile('goals', file);
@@ -31,10 +30,7 @@ export function addGoal(goal, options = {}) {
 }
 
 export function updateGoal(goal, options = {}) {
-    return updateObject('goals', goal, {
-        ...options,
-        onUpdate: onGoalUpdate
-    });
+    return updateObject('goals', goal, options);
 }
 
 export function deleteGoal(goalId, options = {}) {

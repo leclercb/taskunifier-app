@@ -8,7 +8,6 @@ import {
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
-import { onTaskUpdate } from 'utils/TaskUtils';
 
 export function loadTasksFromFile(file) {
     return loadObjectsFromFile('tasks', file);
@@ -31,10 +30,7 @@ export function addTask(task, options = {}) {
 }
 
 export function updateTask(task, options = {}) {
-    return updateObject('tasks', task, {
-        ...options,
-        onUpdate: onTaskUpdate
-    });
+    return updateObject('tasks', task, options);
 }
 
 export function deleteTask(taskId, options = {}) {
