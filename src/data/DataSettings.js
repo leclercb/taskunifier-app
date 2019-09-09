@@ -2,9 +2,10 @@ import React from 'react';
 import { Checkbox, Modal, Select, notification } from 'antd';
 import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
-import { loadData, saveData, setTaskFieldManagerOptions } from 'actions/AppActions';
+import { loadData, saveData, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
+import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
@@ -482,6 +483,65 @@ export function getCategories() {
                     value: moment().toISOString(),
                     editable: false,
                     mode: 'electron'
+                },
+                {
+                    id: 'selectSynchronizationApp',
+                    title: 'Synchronize with another service',
+                    type: 'button',
+                    buttonType: 'primary',
+                    value: async (settings, updateSettings) => {
+                        const synchronizationApp = await selectSynchronizationApp();
+
+                        if (synchronizationApp) {
+                            await updateSettings({
+                                synchronizationApp,
+                                lastSynchronizationDate: null
+                            });
+                        }
+                    },
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'resetConnection',
+                    title: 'Reset the synchronization connection',
+                    type: 'button',
+                    buttonType: 'danger',
+                    value: async (settings, updateSettings) => {
+                        if (settings.synchronizationApp) {
+                            await updateSettings({
+                                [settings.synchronizationApp]: null
+                            });
+                        }
+
+                        Modal.success({
+                            content: 'The synchronization connection has been successfully reset'
+                        });
+                    },
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'resetData',
+                    title: 'Delete the local data and synchronize',
+                    type: 'button',
+                    buttonType: 'danger',
+                    value: async (settings, updateSettings, dispatcher) => {
+                        Modal.confirm({
+                            content: (
+                                <span>This will delete the local data from TaskUnifier App and reload the data from the server.<br />This cannot be undone !</span>
+                            ),
+                            onOk: async () => {
+                                await dispatcher(resetDataForSynchronization());
+                                await updateSettings({
+                                    lastSynchronizationDate: null
+                                });
+                                await dispatcher(synchronize());
+                            }
+                        });
+                    },
+                    editable: true,
+                    mode: 'electron'
                 }
             ]
         },
@@ -505,6 +565,15 @@ export function getCategories() {
             icon: 'table',
             type: 'noteField',
             settings: [
+                {
+                    id: 'editCustomNoteFields',
+                    title: 'Edit custom note fields',
+                    type: 'button',
+                    value: (settings, updateSettings, dispatcher) => {
+                        dispatcher(setNoteFieldManagerOptions({ visible: true }));
+                    },
+                    editable: true
+                },
                 {
                     id: 'noteColumnVisible_id',
                     title: 'Show column "ID"',
@@ -612,7 +681,7 @@ export function getCategories() {
         },
         {
             id: 'taskFields',
-            title: 'Task fields',
+            title: 'Task edition form',
             icon: 'columns',
             type: 'taskField',
             settings: [

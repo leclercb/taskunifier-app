@@ -1,3 +1,12 @@
+# 0.6.0-beta
+
+## New Features
+
+* Improve synchronization with Toodledo
+* Synchronization with TaskUnifier Cloud
+* Add synchronization options in settings
+* New repeat field
+
 # 0.5.0-beta
 
 ## New Features

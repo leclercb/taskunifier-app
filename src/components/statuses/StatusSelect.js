@@ -22,6 +22,8 @@ export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
     );
 });
 
+StatusSelect.displayName = 'ForwardRefStatusSelect';
+
 StatusSelect.propTypes = {
     statuses: PropTypes.arrayOf(StatusPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired

@@ -21,6 +21,8 @@ export const ContextSelect = React.forwardRef(function ContextSelect(props, ref)
     );
 });
 
+ContextSelect.displayName = 'ForwardRefContextSelect';
+
 ContextSelect.propTypes = {
     contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired
 };

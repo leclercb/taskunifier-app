@@ -2,26 +2,18 @@ import React from 'react';
 import { Input, Modal, message } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid/v4';
+import { resetData } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
-import { getAccountInfo } from 'actions/toodledo/ToodledoAccountInfoActions';
-import { authorize, createToken, refreshToken } from 'actions/toodledo/ToodledoAuthorizationActions';
-import { synchronizeContexts } from 'actions/toodledo/ToodledoContextActions';
-import { synchronizeFolders } from 'actions/toodledo/ToodledoFolderActions';
-import { synchronizeGoals } from 'actions/toodledo/ToodledoGoalActions';
-import { synchronizeLocations } from 'actions/toodledo/ToodledoLocationActions';
-import { synchronizeNotes } from 'actions/toodledo/ToodledoNoteActions';
-import { synchronizeTasks } from 'actions/toodledo/ToodledoTaskActions';
+import { getToodledoAccountInfo } from 'actions/synchronization/toodledo/ToodledoAccountInfoActions';
+import { authorize, createToken, refreshToken } from 'actions/synchronization/toodledo/ToodledoAuthorizationActions';
+import { synchronizeContexts } from 'actions/synchronization/toodledo/ToodledoContextActions';
+import { synchronizeFolders } from 'actions/synchronization/toodledo/ToodledoFolderActions';
+import { synchronizeGoals } from 'actions/synchronization/toodledo/ToodledoGoalActions';
+import { synchronizeLocations } from 'actions/synchronization/toodledo/ToodledoLocationActions';
+import { synchronizeNotes } from 'actions/synchronization/toodledo/ToodledoNoteActions';
+import { synchronizeTasks } from 'actions/synchronization/toodledo/ToodledoTaskActions';
 import { getSettings } from 'selectors/SettingSelectors';
-
-export function updateToodledoData(data) {
-    return async dispatch => {
-        dispatch({
-            type: 'UPDATE_TOODLEDO_DATA',
-            data
-        });
-    };
-}
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -71,22 +63,13 @@ export function synchronizeWithToodledo() {
             }
 
             const accessTokenCreationDate = moment(settings.toodledo.accessTokenCreationDate);
-            const expirationDate = accessTokenCreationDate.add(settings.toodledo.accessTokenExpiresIn, 'seconds');
+            const expirationDate = moment(accessTokenCreationDate).add(settings.toodledo.accessTokenExpiresIn, 'seconds');
 
             if (moment().diff(expirationDate, 'seconds') > -60) {
                 await dispatch(refreshToken());
             }
 
-            try {
-                await dispatch(getAccountInfo());
-            } catch (error) {
-                if (error.response && error.response.data && error.response.data.errorCode === 3) {
-                    await dispatch(refreshToken());
-                    await dispatch(getAccountInfo());
-                } else {
-                    throw error;
-                }
-            }
+            await dispatch(getToodledoAccountInfo());
 
             await dispatch(synchronizeContexts());
             await dispatch(synchronizeFolders());
@@ -105,8 +88,16 @@ export function synchronizeWithToodledo() {
                 state: 'COMPLETED'
             }));
         } catch (error) {
-            if (error.response && error.response.data) {
-                console.error(error.response.data);
+            console.error(error);
+
+            if (error.response) {
+                console.error(error.response);
+            }
+
+            if (error.response && error.response.data && error.response.data.errorCode === 102) {
+                await dispatch(updateSettings({
+                    toodledo: null
+                }));
             }
 
             dispatch(updateProcess({
@@ -118,4 +109,15 @@ export function synchronizeWithToodledo() {
             throw error;
         }
     };
+}
+
+export function resetDataForToodledoSynchronization() {
+    return resetData({
+        resetContexts: true,
+        resetFolders: true,
+        resetGoals: true,
+        resetLocations: true,
+        resetNotes: true,
+        resetTasks: true
+    });
 }

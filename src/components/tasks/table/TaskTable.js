@@ -155,6 +155,7 @@ function TaskTable(props) {
 
                     return (
                         <CellRenderer
+                            record={rowData}
                             field={field}
                             value={cellData}
                             onChange={allValues => onUpdateTask({
@@ -221,7 +222,17 @@ function TaskTable(props) {
                                 return '';
                             }
 
-                            return task.completed ? 'task-completed' : '';
+                            const classNames = [];
+
+                            if (props.selectedTaskIds.includes(task.id)) {
+                                classNames.push('task-selected');
+                            }
+
+                            if (task.completed) {
+                                classNames.push('task-completed');
+                            }
+
+                            return classNames.join(' ');
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,

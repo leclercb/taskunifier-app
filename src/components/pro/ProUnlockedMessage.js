@@ -11,7 +11,8 @@ export function ProUnlockedMessage({ license }) {
             description={(
                 <span>
                     TaskUnifier Pro has been successfully activated !<br />
-                    <strong>Owner: </strong>{license.firstname} {license.lastname}<br />
+                    <strong>Item: </strong>{license.itemName}<br />
+                    <strong>Owner: </strong>{license.firstName} {license.lastName}<br />
                     <strong>Email: </strong>{license.email}
                 </span>
             )} />

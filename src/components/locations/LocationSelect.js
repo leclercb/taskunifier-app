@@ -21,6 +21,8 @@ export const LocationSelect = React.forwardRef(function LocationSelect(props, re
     );
 });
 
+LocationSelect.displayName = 'ForwardRefLocationSelect';
+
 LocationSelect.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired
 };

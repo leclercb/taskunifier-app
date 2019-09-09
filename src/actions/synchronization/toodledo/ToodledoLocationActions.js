@@ -1,7 +1,8 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
@@ -57,6 +58,7 @@ export function synchronizeLocations() {
 
                 locations = getLocations(getState());
 
+                // eslint-disable-next-line require-atomic-updates
                 for (let localLocation of filterByVisibleState(locations)) {
                     if (!remoteLocations.find(location => location.refIds.toodledo === localLocation.refIds.toodledo)) {
                         await dispatch(deleteLocation(localLocation.id, { force: true }));
@@ -88,17 +90,20 @@ export function getRemoteLocations() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(location => convertLocationToTaskUnifier(location));
+        return result.data.map(location => convertLocationToLocal(location));
     };
 }
 
@@ -111,12 +116,15 @@ export function addRemoteLocation(location) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertLocationToToodledo(location)
-                }
+                    ...convertLocationToRemote(location)
+                })
             },
             settings);
 
@@ -141,12 +149,15 @@ export function editRemoteLocation(location) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertLocationToToodledo(location)
-                }
+                    ...convertLocationToRemote(location)
+                })
             },
             settings);
 
@@ -163,12 +174,15 @@ export function deleteRemoteLocation(location) {
 
         await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/locations/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: location.refIds.toodledo
-                }
+                })
             },
             settings);
 
@@ -176,7 +190,7 @@ export function deleteRemoteLocation(location) {
     };
 }
 
-function convertLocationToToodledo(location) {
+function convertLocationToRemote(location) {
     return {
         id: location.refIds.toodledo,
         name: location.title,
@@ -186,7 +200,7 @@ function convertLocationToToodledo(location) {
     };
 }
 
-function convertLocationToTaskUnifier(location) {
+function convertLocationToLocal(location) {
     return {
         refIds: {
             toodledo: location.id

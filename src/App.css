@@ -58,6 +58,11 @@ ant-input:focus {
     background-color: #e6f6ff !important;
 }
 
+.ant-tag {
+    font-weight: bold;
+    text-shadow: -1px 0 #444444, 0 1px #444444, 1px 0 #444444, 0 -1px #444444;
+}
+
 /* React SplitPane */
 
 .Resizer {

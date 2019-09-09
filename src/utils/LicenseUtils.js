@@ -22,10 +22,16 @@ export function verifyLicense(license) {
     verifier.update(message);
 
     if (verifier.verify(PUBLIC_KEY, signature, 'hex')) {
-        const content = Buffer.from(message, 'hex').toString();
+        const jsonContent = Buffer.from(message, 'hex').toString();
 
         try {
-            return JSON.parse(content);
+            const content = JSON.parse(jsonContent);
+
+            if (content.itemSku !== getConfig().appItemSku) {
+                return null;
+            }
+
+            return content;
         } catch (e) {
             return null;
         }

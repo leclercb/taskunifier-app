@@ -2,28 +2,35 @@ import React from 'react';
 import { Button, Descriptions, Popover, message } from 'antd';
 import PropTypes from 'prop-types';
 import Avatar from 'components/common/Avatar';
+import LeftRight from 'components/common/LeftRight';
 import { getConfig } from 'config/Config';
 import withSession from 'containers/WithSession';
 
 function UserMenu({ session, logout, buyItem }) {
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);
-        await buyItem(getConfig().itemSku, session.user.id, session.user.email);
+        await buyItem(getConfig().cloudItemSku, session.user.id, session.user.email);
     };
 
     const content = (
         <React.Fragment>
+            <div style={{ width: '100%', textAlign: 'right', fontSize: 10 }}>
+                Version: <strong>{process.env.REACT_APP_VERSION}</strong>
+            </div>
             {session.user ? (
-                <Descriptions title="User Info" column={1} size="small" bordered={true}>
+                <Descriptions title="User Info" column={1} size="small" bordered={true} style={{ marginBottom: 20 }}>
                     <Descriptions.Item label="Email">{session.user.email}</Descriptions.Item>
                     <Descriptions.Item label="Subscription Type">{session.user.metaData.computedSubscriptionType}</Descriptions.Item>
                     <Descriptions.Item label="Subscription Expiration">{session.user.metaData.subscriptionExpiration}</Descriptions.Item>
                 </Descriptions>
             ) : null}
-            <div style={{ marginTop: 20 }}>
-                <Button type="primary" onClick={logout}>Logout</Button>
-                <Button type="dashed" onClick={onBuyItem} style={{ marginLeft: 10 }}>Extend your &quot;pro&quot; subscription</Button>
-            </div>
+            <LeftRight
+                left={(
+                    <Button type="dashed" onClick={onBuyItem}>Extend your &quot;pro&quot; subscription</Button>
+                )}
+                right={(
+                    <Button type="primary" onClick={logout}>Logout</Button>
+                )} />
         </React.Fragment>
     );
 

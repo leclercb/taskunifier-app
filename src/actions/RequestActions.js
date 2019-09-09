@@ -2,17 +2,20 @@ import axios from 'axios';
 import { getConfig } from 'config/Config';
 
 export function sendRequest(config, settings = {}) {
-    if (process.env.REACT_APP_MODE !== 'electron' ||
-        !settings.proxyEnabled ||
-        !settings.proxyHost ||
-        !settings.proxyPort) {
+    if (process.env.REACT_APP_MODE !== 'electron') {
         return axios(config);
     }
 
     const electron = window.require('electron');
     const electronAxios = electron.remote.require('axios');
-    const httpsProxyAgent = electron.remote.require('https-proxy-agent');
 
+    if (!settings.proxyEnabled ||
+        !settings.proxyHost ||
+        !settings.proxyPort) {
+        return electronAxios(config);
+    }
+
+    const httpsProxyAgent = electron.remote.require('https-proxy-agent');
     const { protocol } = new URL(config.url);
 
     if (protocol === 'https:') {

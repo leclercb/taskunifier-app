@@ -1,4 +1,5 @@
 import moment from 'moment';
+import RRule from 'rrule';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getGoalLevel } from 'data/DataGoalLevels';
 import { getPriority } from 'data/DataPriorities';
@@ -82,13 +83,33 @@ export function toStringPriority(value) {
     return priority ? priority.title : '';
 }
 
-export function toStringRepeatFrom(value) {
-    switch (value) {
-        case 'dueDate':
-            return 'Due date';
-        case 'completionDate':
-        default:
-            return 'Completion date';
+export function toStringRepeat(value, extended = false) {
+    if (!value || typeof value !== 'string') {
+        return '';
+    }
+
+    if (value === 'PARENT') {
+        return 'with parent';
+    }
+
+    let str = '';
+
+    if (value.includes(';FROMCOMP')) {
+        value = value.replace(';FROMCOMP', '');
+        str += ' from completion date';
+    } else {
+        str += ' from due date';
+    }
+
+    if (value.includes(';FASTFORWARD')) {
+        value = value.replace(';FASTFORWARD', '');
+        str += ' (fast forward)';
+    }
+
+    try {
+        return RRule.fromString(value).toText() + (extended ? str : '');
+    } catch (error) {
+        return '';
     }
 }
 

@@ -24,7 +24,6 @@ import {
     compareStrings
 } from 'utils/CompareUtils';
 import { equals } from 'utils/ObjectUtils';
-import { formatRepeat } from 'utils/RepeatUtils';
 import {
     toString,
     toStringArray,
@@ -37,7 +36,7 @@ import {
     toStringObject,
     toStringPassword,
     toStringPriority,
-    toStringRepeatFrom,
+    toStringRepeat,
     toStringSortDirection,
     toStringStatus,
     toStringTimer
@@ -71,7 +70,6 @@ export function getFieldTypes() {
         'progress',
         'reminder',
         'repeat',
-        'repeatFrom',
         'select',
         'selectTags',
         'sortDirection',
@@ -1244,7 +1242,7 @@ export function getFieldType(type, options) {
         case 'note': {
             configuration = {
                 title: 'Note',
-                allowCreation: false,
+                allowCreation: true,
                 width: 200,
                 alwaysInEdition: false,
                 valuePropName: 'value',
@@ -1639,7 +1637,7 @@ export function getFieldType(type, options) {
                 alwaysInEdition: false,
                 valuePropName: 'repeat',
                 compare: (a, b) => compareRepeats(a, b),
-                toString: value => formatRepeat(value),
+                toString: value => toStringRepeat(value),
                 conditions: [
                     {
                         type: 'equal',
@@ -1657,37 +1655,6 @@ export function getFieldType(type, options) {
                     }
                 ],
                 conditionsFieldType: 'repeat',
-                options: []
-            };
-
-            break;
-        }
-        case 'repeatFrom': {
-            configuration = {
-                title: 'Repeat From',
-                allowCreation: false,
-                width: 200,
-                alwaysInEdition: false,
-                valuePropName: 'value',
-                compare: (a, b) => compareStrings(a, b),
-                toString: value => toStringRepeatFrom(value),
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
-                        }
-                    }
-                ],
-                conditionsFieldType: 'repeatFrom',
                 options: []
             };
 
@@ -1999,7 +1966,7 @@ export function getFieldType(type, options) {
         case 'textarea': {
             configuration = {
                 title: 'Text Area',
-                allowCreation: true,
+                allowCreation: false,
                 width: 250,
                 alwaysInEdition: false,
                 valuePropName: 'value',

@@ -12,7 +12,7 @@ export function authorize() {
     return async () => {
         const params = {
             response_type: 'code',
-            client_id: getConfig().toodledo.username,
+            client_id: getConfig().synchronization.toodledo.clientId,
             state: uuid(),
             scope: 'basic tasks notes lists write'
         };
@@ -32,18 +32,21 @@ export function createToken(code) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: getConfig().toodledo.username,
-                    password: getConfig().toodledo.password
+                    username: getConfig().synchronization.toodledo.clientId,
+                    password: getConfig().synchronization.toodledo.clientSecret
                 },
-                data: {
+                data: qs.stringify({
                     grant_type: 'authorization_code',
                     code,
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
-                }
+                })
             },
             settings);
 
@@ -67,18 +70,21 @@ export function refreshToken() {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/account/token.php',
                 auth: {
-                    username: getConfig().toodledo.username,
-                    password: getConfig().toodledo.password
+                    username: getConfig().synchronization.toodledo.clientId,
+                    password: getConfig().synchronization.toodledo.clientSecret
                 },
-                data: {
+                data: qs.stringify({
                     grant_type: 'refresh_token',
                     refresh_token: settings.toodledo.refreshToken,
                     vers: getAppVersion(),
                     device: ipcRenderer.sendSync('get-os-platform')
-                }
+                })
             },
             settings);
 

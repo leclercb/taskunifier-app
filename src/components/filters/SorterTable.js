@@ -99,6 +99,7 @@ function SorterTable(props) {
 
                     return (
                         <CellRenderer
+                            record={rowData}
                             field={field}
                             value={cellData}
                             onChange={allValues => onUpdateSorter({

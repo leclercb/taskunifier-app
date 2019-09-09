@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'antd';
 import ModalRepeatManager from 'components/repeat/ModalRepeatManager';
-import { formatRepeat, getKeysForType } from 'utils/RepeatUtils';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
+import { toStringRepeat } from 'utils/StringUtils';
 
 class RepeatField extends React.Component {
     constructor(props) {
@@ -45,22 +45,12 @@ class RepeatField extends React.Component {
                             onOpenChange(false);
                         }
                     }}
-                    repeat={repeat || { type: 'none' }}
-                    updateRepeat={repeat => {
-                        const keys = getKeysForType(repeat.type);
-
-                        Object.keys(repeat).forEach(key => {
-                            if (key !== 'type' && !keys.includes(key)) {
-                                delete repeat[key];
-                            }
-                        });
-
-                        onChange(repeat);
-                    }} />
+                    repeat={repeat}
+                    updateRepeat={repeat => onChange(repeat)} />
                 <Input
                     {...wrappedProps}
                     readOnly={true}
-                    value={formatRepeat(repeat)}
+                    value={toStringRepeat(repeat)}
                     onClick={() => {
                         this.setOpened(true);
 

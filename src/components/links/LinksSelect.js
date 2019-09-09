@@ -20,6 +20,8 @@ export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
     );
 });
 
+LinksSelect.displayName = 'ForwardRefLinksSelect';
+
 LinksSelect.propTypes = {
     links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
 };

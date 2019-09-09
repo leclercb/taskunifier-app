@@ -16,7 +16,7 @@ import {
     sep,
     writeFile
 } from 'utils/ElectronUtils';
-import { diff, merge } from 'utils/ObjectUtils';
+import { merge } from 'utils/ObjectUtils';
 
 export function loadFromFile(property, file) {
     return async dispatch => {
@@ -128,76 +128,6 @@ export function saveToFile(property, file, data) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                error: error.toString()
-            }));
-
-            throw error;
-        }
-    };
-}
-
-export function saveToServer(property, oldObject, newObject) {
-    return async dispatch => {
-        const processId = uuid();
-
-        const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
-
-        delete diffObject.id;
-        delete diffObject.refIds;
-        delete diffObject.state;
-        delete diffObject.creationDate;
-        delete diffObject.updateDate;
-
-        if (oldObject && Object.keys(diffObject).length === 0) {
-            return newObject;
-        }
-
-        try {
-            const result = await sendRequest(
-                {
-                    headers: {
-                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-                    },
-                    method: oldObject ? 'PUT' : 'POST',
-                    url: `${getConfig().apiUrl}/v1/${property}/${oldObject ? oldObject.id : ''}`,
-                    data: diffObject,
-                    responseType: 'json'
-                });
-
-            return result.data;
-        } catch (error) {
-            dispatch(updateProcess({
-                id: processId,
-                state: 'ERROR',
-                title: `Save "${newObject.title}" of type "${property}" to server`,
-                error: error.toString()
-            }));
-
-            throw error;
-        }
-    };
-}
-
-export function deleteFromServer(property, objectId) {
-    return async dispatch => {
-        const processId = uuid();
-
-        try {
-            await sendRequest(
-                {
-                    headers: {
-                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-                    },
-                    method: 'DELETE',
-                    url: `${getConfig().apiUrl}/v1/${property}/${objectId}`
-                });
-
-            return;
-        } catch (error) {
-            dispatch(updateProcess({
-                id: processId,
-                state: 'ERROR',
-                title: `Delete object of type "${property}" from server`,
                 error: error.toString()
             }));
 

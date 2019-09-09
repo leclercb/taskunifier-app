@@ -1,7 +1,8 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
@@ -79,7 +80,7 @@ export function synchronizeTasks() {
                 const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
 
                 for (let remoteDeletedTask of remoteDeletedTasks) {
-                    const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask);
+                    const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask.id);
 
                     if (localTask) {
                         await dispatch(deleteTask(localTask.id, { force: true }));
@@ -113,20 +114,23 @@ export function getRemoteTasks(updatedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/tasks/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: updatedAfter ? updatedAfter.unix() : 0,
                     fields: 'context,folder,goal,location,tag,startdate,duedate,duedatemod,starttime,duetime,remind,repeat,status,star,priority,length,timer,timeron,added,note,parent,children,meta'
-                }
+                })
             },
             settings);
 
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(task => convertTaskToTaskUnifier(task, state));
+        return result.data.slice(1).map(task => convertTaskToLocal(task, state));
     };
 }
 
@@ -139,19 +143,22 @@ export function getRemoteDeletedTasks(deletedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/tasks/deleted.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
-                }
+                })
             },
             settings);
 
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(task => convertTaskToTaskUnifier(task, state));
+        return result.data.slice(1).map(task => ({ id: task.id }));
     };
 }
 
@@ -169,12 +176,15 @@ export function addRemoteTasks(tasks) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/add.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
-                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
-                    }
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
+                    })
                 },
                 settings);
 
@@ -207,12 +217,15 @@ export function editRemoteTasks(tasks) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/tasks/edit.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
-                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToToodledo(task, state)))
-                    }
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
+                    })
                 },
                 settings);
 
@@ -234,12 +247,15 @@ export function deleteRemoteTasks(tasks) {
             try {
                 await sendRequest(
                     {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/tasks/delete.php',
-                        params: {
+                        data: qs.stringify({
                             access_token: settings.toodledo.accessToken,
                             tasks: JSON.stringify(chunkTasks.map(task => task.refIds.toodledo))
-                        }
+                        })
                     },
                     settings);
 
@@ -253,7 +269,7 @@ export function deleteRemoteTasks(tasks) {
     };
 }
 
-function convertTaskToToodledo(task, state) {
+function convertTaskToRemote(task, state) {
     const contexts = getContextsFilteredByVisibleState(state);
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
@@ -280,6 +296,8 @@ function convertTaskToToodledo(task, state) {
         startdate: task.startDate ? moment(task.startDate).unix() : 0,
         duetime: task.dueDate ? moment(task.dueDate).unix() : 0,
         starttime: task.startDate ? moment(task.startDate).unix() : 0,
+        remind: Math.round(task.startDateReminder / 60) || Math.round(task.dueDateReminder / 60) || 0,
+        repeat: task.repeat ? task.repeat : '',
         status: status ? status.value : 0,
         length: task.length ? Math.round(task.length / 60) : 0,
         priority: priority ? priority.value : -1,
@@ -290,7 +308,7 @@ function convertTaskToToodledo(task, state) {
     };
 }
 
-function convertTaskToTaskUnifier(task, state) {
+function convertTaskToLocal(task, state) {
     const contexts = getContextsFilteredByVisibleState(state);
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
@@ -319,6 +337,9 @@ function convertTaskToTaskUnifier(task, state) {
         location: location ? location.id : null,
         dueDate: (task.duetime, task.duedate) ? moment.unix(task.duetime || task.duedate).toISOString() : null,
         startDate: (task.starttime || task.startdate) ? moment.unix(task.starttime || task.startdate).toISOString() : null,
+        startDateReminder: task.remind ? task.remind * 60 : null,
+        dueDateReminder: task.remind ? task.remind * 60 : null,
+        repeat: task.repeat ? task.repeat : null,
         status: status ? status.key : null,
         length: task.length * 60,
         priority: priority ? priority.key : null,

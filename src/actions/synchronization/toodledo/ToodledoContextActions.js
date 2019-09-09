@@ -1,7 +1,8 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
@@ -57,6 +58,7 @@ export function synchronizeContexts() {
 
                 contexts = getContexts(getState());
 
+                // eslint-disable-next-line require-atomic-updates
                 for (let localContext of filterByVisibleState(contexts)) {
                     if (!remoteContexts.find(context => context.refIds.toodledo === localContext.refIds.toodledo)) {
                         await dispatch(deleteContext(localContext.id, { force: true }));
@@ -88,17 +90,20 @@ export function getRemoteContexts() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(context => convertContextToTaskUnifier(context));
+        return result.data.map(context => convertContextToLocal(context));
     };
 }
 
@@ -111,12 +116,15 @@ export function addRemoteContext(context) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertContextToToodledo(context)
-                }
+                    ...convertContextToRemote(context)
+                })
             },
             settings);
 
@@ -141,12 +149,15 @@ export function editRemoteContext(context) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertContextToToodledo(context)
-                }
+                    ...convertContextToRemote(context)
+                })
             },
             settings);
 
@@ -163,12 +174,15 @@ export function deleteRemoteContext(context) {
 
         await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/contexts/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: context.refIds.toodledo
-                }
+                })
             },
             settings);
 
@@ -176,14 +190,14 @@ export function deleteRemoteContext(context) {
     };
 }
 
-function convertContextToToodledo(context) {
+function convertContextToRemote(context) {
     return {
         id: context.refIds.toodledo,
         name: context.title
     };
 }
 
-function convertContextToTaskUnifier(context) {
+function convertContextToLocal(context) {
     return {
         refIds: {
             toodledo: context.id

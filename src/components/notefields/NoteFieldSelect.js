@@ -21,6 +21,8 @@ export const NoteFieldSelect = React.forwardRef(function NoteFieldSelect(props, 
     );
 });
 
+NoteFieldSelect.displayName = 'ForwardRefNoteFieldSelect';
+
 NoteFieldSelect.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
 };

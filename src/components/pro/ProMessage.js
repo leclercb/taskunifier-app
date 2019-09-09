@@ -11,7 +11,7 @@ export function ProMessage() {
 
     return (
         <Empty
-            image={(<Icon color="ffecb3" icon="lock" size={64} />)}
+            image={(<Icon color="#ffecb3" icon="lock" size={64} />)}
             description="This feature is available in TaskUnifier Pro only !">
             <Button onClick={onClick}>Click here to get more information</Button>
         </Empty>

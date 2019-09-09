@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Spacer from 'components/common/Spacer';
 import DraggableElement from 'components/common/table/DraggableElement';
@@ -11,7 +11,6 @@ import 'components/common/table/CellRenderer.css';
 
 function CellRenderer(props) {
     const [editing, setEditing] = useState(false);
-    const inputRef = useRef();
 
     const toggleEdit = () => {
         if (!props.field.editable) {
@@ -20,22 +19,12 @@ function CellRenderer(props) {
 
         const newEditing = !editing;
         setEditing(newEditing);
-
-        setTimeout(() => {
-            if (newEditing && inputRef.current) {
-                try {
-                    inputRef.current.focus();
-                } catch (err) {
-                    // Don't do anything
-                }
-            }
-        });
     };
 
     if (editing || isAlwaysInEditionForType(props.field.type)) {
         return (
             <EditableCell
-                inputRef={inputRef}
+                record={props.record}
                 field={props.field}
                 value={props.value}
                 onChange={props.onChange}
@@ -88,6 +77,7 @@ function CellRenderer(props) {
 }
 
 CellRenderer.propTypes = {
+    record: PropTypes.object.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
     onChange: PropTypes.func.isRequired,

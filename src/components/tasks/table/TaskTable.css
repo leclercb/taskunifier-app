@@ -1,3 +1,7 @@
 .task-completed .cell-renderer-value-wrap {
     text-decoration: line-through;
 }
+
+.task-selected .ant-progress-text {
+    color: #ffffff;
+}

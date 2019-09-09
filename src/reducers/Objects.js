@@ -121,6 +121,18 @@ const addObject = (state, action) => {
 
     removePrivateKeys(newObject);
 
+    const parents = findParents(newObject, newState);
+
+    if (newObject.id === newObject.parent || parents.find(parent => parent.id === newObject.id)) {
+        throw Error('The parent cannot become a child of himself');
+    }
+
+    for (let i = 0; i < parents.length; i++) {
+        if (parents[i].state !== 'LOADED' && parents[i].state !== 'TO_UPDATE') {
+            throw Error('The parent object cannot be used as it is not in a valid state');
+        }
+    }
+
     newState.push(newObject);
 
     return newState;
@@ -156,7 +168,7 @@ const updateObject = (state, action, onUpdate) => {
 
     const parents = findParents(updatedObject, newState);
 
-    if (parents.find(parent => parent.id === updatedObject.id)) {
+    if (updatedObject.id === updatedObject.parent || parents.find(parent => parent.id === updatedObject.id)) {
         throw Error('The parent cannot become a child of himself');
     }
 
@@ -178,7 +190,8 @@ const updateObject = (state, action, onUpdate) => {
                 newState,
                 {
                     object: addedObject,
-                    creationDate: action.updateDate
+                    creationDate: action.updateDate,
+                    options: {}
                 });
         });
     }

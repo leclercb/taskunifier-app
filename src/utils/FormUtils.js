@@ -10,7 +10,7 @@ export function getDefaultFormItemLayout() {
         wrapperCol: {
             xs: { span: 24 },
             sm: { span: 14 },
-            xl: { span: 10 }
+            xl: { span: 12 }
         }
     };
 }

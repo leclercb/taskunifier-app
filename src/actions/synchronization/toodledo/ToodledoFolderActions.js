@@ -1,7 +1,8 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
@@ -57,6 +58,7 @@ export function synchronizeFolders() {
 
                 folders = getFolders(getState());
 
+                // eslint-disable-next-line require-atomic-updates
                 for (let localFolder of filterByVisibleState(folders)) {
                     if (!remoteFolders.find(folder => folder.refIds.toodledo === localFolder.refIds.toodledo)) {
                         await dispatch(deleteFolder(localFolder.id, { force: true }));
@@ -88,17 +90,20 @@ export function getRemoteFolders() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(folder => convertFolderToTaskUnifier(folder));
+        return result.data.map(folder => convertFolderToLocal(folder));
     };
 }
 
@@ -111,12 +116,15 @@ export function addRemoteFolder(folder) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertFolderToToodledo(folder)
-                }
+                    ...convertFolderToRemote(folder)
+                })
             },
             settings);
 
@@ -141,12 +149,15 @@ export function editRemoteFolder(folder) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertFolderToToodledo(folder)
-                }
+                    ...convertFolderToRemote(folder)
+                })
             },
             settings);
 
@@ -163,12 +174,15 @@ export function deleteRemoteFolder(folder) {
 
         await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/folders/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: folder.refIds.toodledo
-                }
+                })
             },
             settings);
 
@@ -176,7 +190,7 @@ export function deleteRemoteFolder(folder) {
     };
 }
 
-function convertFolderToToodledo(folder) {
+function convertFolderToRemote(folder) {
     return {
         id: folder.refIds.toodledo,
         name: folder.title,
@@ -184,7 +198,7 @@ function convertFolderToToodledo(folder) {
     };
 }
 
-function convertFolderToTaskUnifier(folder) {
+function convertFolderToLocal(folder) {
     return {
         refIds: {
             toodledo: folder.id

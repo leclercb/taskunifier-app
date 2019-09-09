@@ -76,6 +76,7 @@ function LinkedObjectTable(props) {
                 )}
                 cellRenderer={({ cellData, rowData }) => (
                     <CellRenderer
+                        record={rowData}
                         field={field}
                         value={cellData}
                         onChange={allValues => onUpdateLinkedObject({

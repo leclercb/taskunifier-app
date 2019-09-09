@@ -1,7 +1,8 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
@@ -76,7 +77,7 @@ export function synchronizeNotes() {
                 const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
 
                 for (let remoteDeletedNote of remoteDeletedNotes) {
-                    const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote);
+                    const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote.id);
 
                     if (localNote) {
                         await dispatch(deleteNote(localNote.id, { force: true }));
@@ -110,19 +111,22 @@ export function getRemoteNotes(updatedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/notes/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: updatedAfter ? updatedAfter.unix() : 0
-                }
+                })
             },
             settings);
 
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToTaskUnifier(note, state));
+        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
     };
 }
 
@@ -135,19 +139,22 @@ export function getRemoteDeletedNotes(deletedAfter) {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/notes/deleted.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     after: deletedAfter ? deletedAfter.unix() : 0
-                }
+                })
             },
             settings);
 
         console.debug(result);
         checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToTaskUnifier(note, state));
+        return result.data.slice(1).map(note => ({ id: note.id }));
     };
 }
 
@@ -165,12 +172,15 @@ export function addRemoteNotes(notes) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/add.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
-                    }
+                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
+                    })
                 },
                 settings);
 
@@ -203,12 +213,15 @@ export function editRemoteNotes(notes) {
 
             const result = await sendRequest(
                 {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
                     method: 'POST',
                     url: 'https://api.toodledo.com/3/notes/edit.php',
-                    params: {
+                    data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
-                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToToodledo(note, state)))
-                    }
+                        notes: JSON.stringify(chunkNotes.map(note => convertNoteToRemote(note, state)))
+                    })
                 },
                 settings);
 
@@ -230,12 +243,15 @@ export function deleteRemoteNotes(notes) {
             try {
                 await sendRequest(
                     {
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
                         method: 'POST',
                         url: 'https://api.toodledo.com/3/notes/delete.php',
-                        params: {
+                        data: qs.stringify({
                             access_token: settings.toodledo.accessToken,
                             notes: JSON.stringify(chunkNotes.map(note => note.refIds.toodledo))
-                        }
+                        })
                     },
                     settings);
 
@@ -249,7 +265,7 @@ export function deleteRemoteNotes(notes) {
     };
 }
 
-function convertNoteToToodledo(note, state) {
+function convertNoteToRemote(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.id === note.folder);
 
@@ -261,7 +277,7 @@ function convertNoteToToodledo(note, state) {
     };
 }
 
-function convertNoteToTaskUnifier(note, state) {
+function convertNoteToLocal(note, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const folder = folders.find(folder => folder.refIds.toodledo === note.folder);
 

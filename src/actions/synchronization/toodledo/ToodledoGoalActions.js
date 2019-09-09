@@ -1,7 +1,8 @@
 import moment from 'moment';
+import qs from 'qs';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
-import { checkResult } from 'actions/toodledo/ExceptionHandler';
+import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { getGoals, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
@@ -13,14 +14,19 @@ export function synchronizeGoals() {
         const settings = getSettings(getState());
 
         let goals = getGoals(getState());
+        const createdGoalsWithContributesTo = [];
 
         {
             const goalsToAdd = filterByVisibleState(goals).filter(goal => !goal.refIds.toodledo);
-            const goalsToAddPromises = goalsToAdd.map(goal => dispatch(addRemoteGoal(goal)));
+            const goalsToAddPromises = goalsToAdd.map(goal => dispatch(addRemoteGoal(goal, { skipContributesTo: true })));
             const result = await Promise.all(goalsToAddPromises);
 
             for (let goal of result) {
                 await dispatch(updateGoal(goal, { loaded: true }));
+
+                if (goal.contributesTo) {
+                    createdGoalsWithContributesTo.push(goal);
+                }
             }
         }
 
@@ -51,12 +57,15 @@ export function synchronizeGoals() {
                     if (!localGoal) {
                         await dispatch(addGoal(remoteGoal, { keepRefIds: true }));
                     } else {
-                        await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true }));
+                        if (!createdGoalsWithContributesTo.find(goal => goal.id === localGoal.id)) {
+                            await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true }));
+                        }
                     }
                 }
 
                 goals = getGoals(getState());
 
+                // eslint-disable-next-line require-atomic-updates
                 for (let localGoal of filterByVisibleState(goals)) {
                     if (!remoteGoals.find(goal => goal.refIds.toodledo === localGoal.refIds.toodledo)) {
                         await dispatch(deleteGoal(localGoal.id, { force: true }));
@@ -69,6 +78,13 @@ export function synchronizeGoals() {
 
         {
             const goalsToUpdate = goals.filter(goal => !!goal.refIds.toodledo && goal.state === 'TO_UPDATE');
+
+            for (let createdGoal of createdGoalsWithContributesTo) {
+                if (createdGoal.contributesTo && !!goals.find(goal => !!goal.refIds.toodledo && goal.id === createdGoal.contributesTo)) {
+                    goalsToUpdate.push(createdGoal);
+                }
+            }
+
             const goalsToUpdatePromises = goalsToUpdate.map(goal => dispatch(editRemoteGoal(goal)));
             await Promise.all(goalsToUpdatePromises);
 
@@ -88,22 +104,25 @@ export function getRemoteGoals() {
 
         const result = await sendRequest(
             {
-                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/get.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken
-                }
+                })
             },
             settings);
 
         checkResult(result);
 
-        return result.data.map(goal => convertGoalToTaskUnifier(goal, state));
+        return result.data.map(goal => convertGoalToLocal(goal, state));
     };
 }
 
-export function addRemoteGoal(goal) {
-    console.debug('addRemoteGoal', goal);
+export function addRemoteGoal(goal, options) {
+    console.debug('addRemoteGoal', goal, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -111,12 +130,15 @@ export function addRemoteGoal(goal) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/add.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToToodledo(goal, state)
-                }
+                    ...convertGoalToRemote(goal, state, options)
+                })
             },
             settings);
 
@@ -141,12 +163,15 @@ export function editRemoteGoal(goal) {
 
         const result = await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/edit.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
-                    ...convertGoalToToodledo(goal, state)
-                }
+                    ...convertGoalToRemote(goal, state)
+                })
             },
             settings);
 
@@ -163,12 +188,15 @@ export function deleteRemoteGoal(goal) {
 
         await sendRequest(
             {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 method: 'POST',
                 url: 'https://api.toodledo.com/3/goals/delete.php',
-                params: {
+                data: qs.stringify({
                     access_token: settings.toodledo.accessToken,
                     id: goal.refIds.toodledo
-                }
+                })
             },
             settings);
 
@@ -176,9 +204,13 @@ export function deleteRemoteGoal(goal) {
     };
 }
 
-function convertGoalToToodledo(goal, state) {
+function convertGoalToRemote(goal, state, options) {
+    options = merge({
+        skipContributesTo: false
+    }, options || {});
+
     const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(goal => goal.id === goal.contributesTo);
+    const contributesTo = goals.find(g => g.id === goal.contributesTo);
 
     let level;
 
@@ -199,13 +231,13 @@ function convertGoalToToodledo(goal, state) {
         id: goal.refIds.toodledo,
         name: goal.title,
         level,
-        contributes: contributesTo ? contributesTo.refIds.toodledo : 0
+        contributes: !options.skipContributesTo && contributesTo ? contributesTo.refIds.toodledo : 0
     };
 }
 
-function convertGoalToTaskUnifier(goal, state) {
+function convertGoalToLocal(goal, state) {
     const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(goal => goal.refIds.toodledo === goal.contributes);
+    const contributesTo = goals.find(g => g.refIds.toodledo === goal.contributes);
 
     let level;
 
