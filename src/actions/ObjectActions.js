@@ -97,18 +97,29 @@ export function addObject(
     };
 }
 
-export function updateObject(property, object, options = {}) {
+export function updateObject(property, object, options = { onUpdate: null }) {
     return async (dispatch, getState) => {
         const processId = uuid();
 
         try {
+            const updateDate = moment().toISOString();
             const oldObject = getObjectById(getState(), property, object.id);
+
+            if (options && options.onUpdate) {
+                const newObjects = options.onUpdate(object, oldObject, updateDate);
+
+                if (newObjects) {
+                    for (let newObject of newObjects) {
+                        await dispatch(addObject(property, newObject));
+                    }
+                }
+            }
 
             await dispatch({
                 type: 'UPDATE_OBJECT',
                 property,
                 generateId: () => uuid(),
-                updateDate: moment().toISOString(),
+                updateDate,
                 object,
                 options
             });

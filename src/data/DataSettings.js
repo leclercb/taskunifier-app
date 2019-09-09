@@ -255,7 +255,7 @@ export function getCategories() {
                         if (license) {
                             return (<ProUnlockedMessage license={license} />);
                         } else {
-                            return (<ProLockedMessage />);
+                            return (<ProLockedMessage info={true} />);
                         }
                     },
                     editable: false,

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { isValidLicense } from 'selectors/AppSelectors';
+import { isPro } from 'selectors/AppSelectors';
 
 function withPro(Component) {
     const mapStateToProps = state => ({
-        pro: isValidLicense(state)
+        pro: isPro(state)
     });
 
     return connect(

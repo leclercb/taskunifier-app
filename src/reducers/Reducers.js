@@ -8,15 +8,13 @@ import Settings from 'reducers/Settings';
 import Synchronization from 'reducers/Synchronization';
 import Tasks from 'reducers/Tasks';
 import Thread from 'reducers/Thread';
-import { onGoalUpdate } from 'utils/GoalUtils';
-import { onTaskUpdate } from 'utils/TaskUtils';
 
 export default combineReducers({
     app: App(),
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),
     folders: Objects('folders'),
-    goals: Objects('goals', onGoalUpdate),
+    goals: Objects('goals'),
     locations: Objects('locations'),
     notes: reduceReducers([], Objects('notes'), Notes()),
     noteFields: Objects('noteFields'),
@@ -24,7 +22,7 @@ export default combineReducers({
     session: Session(),
     settings: Settings(),
     synchronization: Synchronization(),
-    tasks: reduceReducers([], Objects('tasks', onTaskUpdate), Tasks()),
+    tasks: reduceReducers([], Objects('tasks'), Tasks()),
     taskFields: Objects('taskFields'),
     taskFilters: Objects('taskFilters'),
     taskTemplates: Objects('taskTemplates'),

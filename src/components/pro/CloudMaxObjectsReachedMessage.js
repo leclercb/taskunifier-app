@@ -4,8 +4,13 @@ import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getConfig } from 'config/Config';
 import withSession from 'containers/WithSession';
+import { openExternalLink } from 'utils/ElectronUtils';
 
 export function CloudMaxObjectsReachedMessage({ session, buyItem }) {
+    const onClick = () => {
+        openExternalLink(getConfig().cloudUrl);
+    };
+
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);
         await buyItem(getConfig().cloudItemSku, session.user.id, session.user.email);
@@ -15,7 +20,8 @@ export function CloudMaxObjectsReachedMessage({ session, buyItem }) {
         <Empty
             image={(<Icon color="#ffecb3" icon="lock" size={64} />)}
             description="You have reached the maximum number of objects !">
-            <Button type="dashed" onClick={onBuyItem}>Start your &quot;pro&quot; subscription</Button>
+            <Button onClick={onClick} style={{ marginRight: 10 }}>Click here to get more information</Button>
+            <Button type="primary" onClick={onBuyItem}>Subscribe to TaskUnifier Cloud Pro</Button>
         </Empty>
     );
 }

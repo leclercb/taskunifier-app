@@ -1,13 +1,14 @@
-import { 
-    addObject, 
-    cleanObjects, 
-    deleteObject, 
+import {
+    addObject,
+    cleanObjects,
+    deleteObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    setObjects, 
-    updateObject 
+    setObjects,
+    updateObject
 } from 'actions/ObjectActions';
+import { onGoalUpdate } from 'utils/GoalUtils';
 
 export function loadGoalsFromFile(file) {
     return loadObjectsFromFile('goals', file);
@@ -30,7 +31,10 @@ export function addGoal(goal, options = {}) {
 }
 
 export function updateGoal(goal, options = {}) {
-    return updateObject('goals', goal, options);
+    return updateObject('goals', goal, {
+        ...options,
+        onUpdate: onGoalUpdate
+    });
 }
 
 export function deleteGoal(goalId, options = {}) {

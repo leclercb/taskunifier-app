@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import ProMessage from 'components/pro/ProMessage';
+import ProLockedMessage from 'components/pro/ProLockedMessage';
 import withBusyCheck from 'containers/WithBusyCheck';
-import { isValidLicense } from 'selectors/AppSelectors';
+import { isPro } from 'selectors/AppSelectors';
 
 function withProCheck(Component) {
     class WithProCheck extends React.Component {
@@ -12,7 +12,7 @@ function withProCheck(Component) {
 
             if (!pro) {
                 return (
-                    <ProMessage />
+                    <ProLockedMessage />
                 );
             }
 
@@ -27,7 +27,7 @@ function withProCheck(Component) {
     };
 
     const mapStateToProps = state => ({
-        pro: isValidLicense(state)
+        pro: isPro(state)
     });
 
     return connect(

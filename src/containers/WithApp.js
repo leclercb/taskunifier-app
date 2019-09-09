@@ -33,13 +33,13 @@ import {
     getTaskFieldManager,
     getTaskFilterManager,
     getTaskTemplateManager,
-    isValidLicense
+    isPro
 } from 'selectors/AppSelectors';
 import { getSelectedView } from 'selectors/SettingSelectors';
 
 function withApp(Component) {
     const mapStateToProps = state => ({
-        pro: isValidLicense(state),
+        pro: isPro(state),
         selectedView: getSelectedView(state),
         batchAddTasksManager: getBatchAddTasksManager(state),
         batchEditTasksManager: getBatchEditTasksManager(state),

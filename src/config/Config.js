@@ -8,7 +8,8 @@ const config = {
     local: {
         apiUrl: 'http://localhost:2000',
         authUrl: 'http://localhost:2300',
-        purchaseUrl: 'http://localhost:2100/app',
+        cloudUrl: 'http://localhost:2100/cloud',
+        appUrl: 'http://localhost:2100/app',
         downloadUrl: 'http://localhost:2100/app',
         auth: {
             region: 'eu-west-1',
@@ -38,7 +39,8 @@ const config = {
     dev: {
         apiUrl: 'https://api-dev.taskunifier.app',
         authUrl: 'https://auth-dev.taskunifier.app',
-        purchaseUrl: 'https://www-dev.taskunifier.app/app',
+        cloudUrl: 'https://www-dev.taskunifier.app/cloud',
+        appUrl: 'https://www-dev.taskunifier.app/app',
         downloadUrl: 'https://www-dev.taskunifier.app/app',
         auth: {
             region: 'eu-west-1',
@@ -68,7 +70,8 @@ const config = {
     prod: {
         apiUrl: 'https://api.taskunifier.app',
         authUrl: 'https://auth.taskunifier.app',
-        purchaseUrl: 'https://www.taskunifier.app/app',
+        cloudUrl: 'https://www.taskunifier.app/cloud',
+        appUrl: 'https://www.taskunifier.app/app',
         downloadUrl: 'https://www.taskunifier.app/app',
         auth: {
             region: 'eu-west-1',
