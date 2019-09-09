@@ -1,4 +1,4 @@
-export const updateGoal = store => next => async action => {
+export const updateGoal = () => next => async action => {
     if (action.type === 'UPDATE_OBJECT' && action.property === 'goals') {
         const goal = action.object;
 

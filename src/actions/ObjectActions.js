@@ -78,14 +78,14 @@ export function addObject(
 
             const newObject = getObjectById(getState(), property, id);
 
-            const transformedAddedObject = await dispatch({
+            const action = await dispatch({
                 type: 'POST_ADD_OBJECT',
                 property,
                 object: newObject,
                 options
             });
 
-            return transformedAddedObject || newObject;
+            return action.addedObject || newObject;
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
