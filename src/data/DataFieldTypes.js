@@ -37,7 +37,6 @@ import {
     toStringPassword,
     toStringPriority,
     toStringRepeat,
-    toStringRepeatFrom,
     toStringSortDirection,
     toStringStatus,
     toStringTimer
@@ -71,7 +70,6 @@ export function getFieldTypes() {
         'progress',
         'reminder',
         'repeat',
-        'repeatFrom',
         'select',
         'selectTags',
         'sortDirection',
@@ -1657,37 +1655,6 @@ export function getFieldType(type, options) {
                     }
                 ],
                 conditionsFieldType: 'repeat',
-                options: []
-            };
-
-            break;
-        }
-        case 'repeatFrom': {
-            configuration = {
-                title: 'Repeat From',
-                allowCreation: false,
-                width: 200,
-                alwaysInEdition: false,
-                valuePropName: 'value',
-                compare: (a, b) => compareStrings(a, b),
-                toString: value => toStringRepeatFrom(value),
-                conditions: [
-                    {
-                        type: 'equal',
-                        title: 'Equals',
-                        apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
-                        }
-                    },
-                    {
-                        type: 'notEqual',
-                        title: 'Does not equal',
-                        apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
-                        }
-                    }
-                ],
-                conditionsFieldType: 'repeatFrom',
                 options: []
             };
 

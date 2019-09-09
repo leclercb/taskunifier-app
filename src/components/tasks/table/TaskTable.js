@@ -155,6 +155,7 @@ function TaskTable(props) {
 
                     return (
                         <CellRenderer
+                            record={rowData}
                             field={field}
                             value={cellData}
                             onChange={allValues => onUpdateTask({

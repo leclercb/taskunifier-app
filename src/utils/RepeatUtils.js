@@ -13,26 +13,59 @@ export function canRepeat(task) {
     return true;
 }
 
-export function getNextDate(repeat, date) {
-    if (!repeat || !date) {
+export function getNextDate(repeat, start, now) {
+    if (!repeat || !start) {
         return null;
     }
 
-    // TODO debug + repeat with parent
-
     try {
+        if (repeat === 'PARENT') {
+            // TODO repeat with parent
+            return null;
+        }
+
+        if (repeat.includes(';FROMCOMP')) {
+            repeat = repeat.replace(';FROMCOMP', '');
+            start = now;
+        }
+
+        let stop = false;
+
+        let createIterator = (afterNow = false) => date => {
+            if (stop) {
+                return false;
+            }
+
+            if (afterNow && moment(start).isBefore(now)) {
+                if (moment(date).isSameOrAfter(moment(now)) && !moment(date).isSame(moment(now), 'day')) {
+                    stop = true;
+                }
+            } else {
+                if (!moment(date).isSame(moment(start), 'day')) {
+                    stop = true;
+                }
+            }
+
+            return true;
+        };
+
+        let iterator = createIterator(false);
+
+        if (repeat.includes(';FASTFORWARD')) {
+            repeat = repeat.replace(';FASTFORWARD', '');
+            iterator = createIterator(true);
+        }
+
         const rule = RRule.fromString(repeat);
-        console.log(rule);
 
-        if (!rule.options.dtstart || moment(rule.options.dtstart).isBefore(moment(date))) {
-            rule.options.dtstart = moment(date).toDate();
-            rule.options.count = 5;
+        if (!rule.options.dtstart || moment(rule.options.dtstart).isBefore(moment(start))) {
+            rule.options.dtstart = moment(start).toDate();
+            rule.options.count = 999;
 
-            const dates = rule.all();
-            console.log(dates);
+            const dates = rule.all(iterator);
 
             if (dates.length > 0) {
-                return moment(dates[0]).toISOString();
+                return moment(dates[dates.length - 1]).toISOString();
             }
         }
     } catch (error) {
