@@ -2,7 +2,7 @@
     "name": "taskunifier-app",
     "description": "TaskUnifier - Manage your tasks and improve your productivity",
     "author": "BL-IT",
-    "version": "0.5.0-beta",
+    "version": "0.6.0-beta",
     "private": true,
     "main": "public/electron.js",
     "homepage": "./",
