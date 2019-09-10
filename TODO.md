@@ -1,5 +1,6 @@
 # Todo List
 
+* Use redux hooks
 * Add setting to skip fetching completed tasks older than x
 * Handle server errors (max number of objects)
 * Synchronize with Toodledo and TaskUnifier Cloud

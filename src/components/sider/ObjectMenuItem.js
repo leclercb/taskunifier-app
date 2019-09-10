@@ -14,6 +14,7 @@ function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, o
         accept: dropType || [],
         drop: item => onDrop ? onDrop(item.data.object, object) : null,
         collect: monitor => ({
+            highlighted: monitor.canDrop(),
             hovered: monitor.isOver()
         })
     });
@@ -54,6 +55,8 @@ function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, o
         }
     };
 
+    const className = collectedDropProps.hovered ? 'menu-item-hovered' : collectedDropProps.highlighted ? 'menu-item-highlighted' : '';
+
     return (
         <ObjectMenu onAction={onAction}>
             <div ref={drop}>
@@ -64,7 +67,7 @@ function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, o
                             {badge}
                         </React.Fragment>
                     )}
-                    className={collectedDropProps.hovered ? 'hover-menu-item' : ''}>
+                    className={className}>
                     <Icon icon="circle" color={object.color} text={object.title} />
                 </LeftRight>
             </div>
