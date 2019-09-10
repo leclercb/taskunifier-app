@@ -1,5 +1,6 @@
 .hover-menu-item {
-    color: #ffffff;
-    background-color: #0e67c4;
+    border: 1px dashed #0e67c4 !important;
+    border-radius: 5px;
+    height: 30px;
     padding: 0px 5px;
 }
