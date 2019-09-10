@@ -154,6 +154,7 @@ function TaskTable(props) {
                             dragType: 'task',
                             dropType: 'task',
                             dndData: {
+                                object: rowData,
                                 rowData
                             },
                             onDrop: onDropTask

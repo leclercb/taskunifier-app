@@ -3,7 +3,7 @@ import { Dropdown, Menu } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 
-function NoteMenu({ onAction, children }) {
+function ObjectMenu({ onAction, children }) {
     const [visible, setVisible] = useState(false);
 
     const onClick = ({ item }) => {
@@ -39,9 +39,9 @@ function NoteMenu({ onAction, children }) {
     );
 }
 
-NoteMenu.propTypes = {
+ObjectMenu.propTypes = {
     onAction: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 };
 
-export default NoteMenu;
+export default ObjectMenu;

@@ -11,7 +11,7 @@ import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'component
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
-import { getWidthForType } from 'data/DataFieldTypes';
+import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
 import { NotePropType } from 'proptypes/NotePropTypes';
@@ -81,16 +81,33 @@ function NoteTable(props) {
                         onResize={data => onResize(data, field.id, width + data.deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
-                cellRenderer={({ cellData, rowData }) => (
-                    <CellRenderer
-                        record={rowData}
-                        field={field}
-                        value={cellData}
-                        onChange={allValues => onUpdateNote({
-                            ...rowData,
-                            ...allValues
-                        })} />
-                )} />
+                cellRenderer={({ cellData, rowData }) => {
+                    let dndProps = {};
+
+                    if (!isAlwaysInEditionForType(field.type)) {
+                        dndProps = {
+                            dndEnabled: true,
+                            dragType: 'note',
+                            dropType: [],
+                            dndData: {
+                                object: rowData,
+                                rowData
+                            }
+                        };
+                    }
+
+                    return (
+                        <CellRenderer
+                            record={rowData}
+                            field={field}
+                            value={cellData}
+                            onChange={allValues => onUpdateNote({
+                                ...rowData,
+                                ...allValues
+                            })}
+                            {...dndProps} />
+                    );
+                }} />
         );
     });
 

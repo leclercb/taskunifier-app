@@ -85,8 +85,11 @@ CellRenderer.propTypes = {
     expandMode: PropTypes.oneOf(['expanded', 'collapsed', 'hidden']),
     onSetExpanded: PropTypes.func,
     dndEnabled: PropTypes.bool,
-    dropType: PropTypes.string,
     dragType: PropTypes.string,
+    dropType: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string.isRequired)
+    ]),
     dndData: PropTypes.object,
     onDrop: PropTypes.func
 };

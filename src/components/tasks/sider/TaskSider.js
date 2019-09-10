@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { Badge, Checkbox, Input, Menu, Radio, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
-import { Badge, Checkbox, Input, Menu, Popconfirm, Radio, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
-import Spacer from 'components/common/Spacer';
-import TaskMenu from 'components/tasks/sider/TaskMenu';
+import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
 import withApp from 'containers/WithApp';
 import withObjects from 'containers/WithObjects';
@@ -51,61 +50,6 @@ function TaskSider(props) {
         );
     };
 
-    const createEditDeleteButtons = (object, onEdit, onDelete) => {
-        return (
-            <React.Fragment>
-                <Icon
-                    icon="edit"
-                    color={Constants.fadeIconColor}
-                    className="object-actions"
-                    onClick={() => onEdit()} />
-                <Spacer />
-                <Popconfirm
-                    title={`Do you really want to delete "${object.title}" ?`}
-                    onConfirm={() => onDelete()}
-                    okText="Yes"
-                    cancelText="No">
-                    <Icon
-                        icon="trash-alt"
-                        color={Constants.fadeIconColor}
-                        className="object-actions" />
-                </Popconfirm>
-            </React.Fragment>
-        );
-    };
-
-    const createObjectMenuItem = (object, taskFilter, onManage, onEdit, onDelete) => {
-        const onAction = action => {
-            switch (action.type) {
-                case 'edit':
-                    onEdit();
-                    break;
-                case 'manage':
-                    onManage();
-                    break;
-                default:
-                    break;
-            }
-        };
-
-        return (
-            <Menu.Item key={object.id} filter={taskFilter}>
-                <TaskMenu onAction={onAction}>
-                    <div>
-                        <LeftRight right={(
-                            <React.Fragment>
-                                {createEditDeleteButtons(object, onEdit, onDelete)}
-                                {createBadge(taskFilter)}
-                            </React.Fragment>
-                        )}>
-                            <Icon icon="circle" color={object.color} text={object.title} />
-                        </LeftRight>
-                    </div>
-                </TaskMenu>
-            </Menu.Item>
-        );
-    };
-
     const manageObjects = category => {
         props.setCategoryManagerOptions({
             visible: true,
@@ -118,6 +62,14 @@ function TaskSider(props) {
             visible: true,
             category,
             objectId
+        });
+    };
+
+    const dropObject = (task, object, property) => {
+        console.log(task, object);
+        props.updateTask({
+            ...task,
+            [property]: object.id
         });
     };
 
@@ -271,67 +223,119 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="folders"
                     title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                    {props.folders.map(folder => createObjectMenuItem(
-                        folder,
-                        createTaskFilterForObject(folder, 'folder'),
-                        () => manageObjects('folders'),
-                        () => editObject('folders', folder.id),
-                        () => props.deleteFolder(folder.id)))}
+                    {props.folders.map(folder => {
+                        const filter = createTaskFilterForObject(folder, 'folder');
+
+                        return (
+                            <Menu.Item key={folder.id} filter={filter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(filter)}
+                                    object={folder}
+                                    onManage={() => manageObjects('folders')}
+                                    onEdit={() => editObject('folders', folder.id)}
+                                    onDelete={() => props.deleteFolder(folder.id)}
+                                    dropType="task"
+                                    onDrop={(task, folder) => dropObject(task, folder, 'folder')} />
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu.SubMenu>
                 <Menu.SubMenu
                     key="contexts"
                     title={createCategorySubMenu('Contexts', 'thumbtack', () => manageObjects('contexts'), () => onOpenChange('contexts'))}>
-                    {props.contexts.map(context => createObjectMenuItem(
-                        context,
-                        createTaskFilterForObject(context, 'context'),
-                        () => manageObjects('contexts'),
-                        () => editObject('contexts', context.id),
-                        () => props.deleteContext(context.id)))}
+                    {props.contexts.map(context => {
+                        const filter = createTaskFilterForObject(context, 'context');
+
+                        return (
+                            <Menu.Item key={context.id} filter={filter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(filter)}
+                                    object={context}
+                                    onManage={() => manageObjects('contexts')}
+                                    onEdit={() => editObject('contexts', context.id)}
+                                    onDelete={() => props.deleteContext(context.id)}
+                                    dropType="task"
+                                    onDrop={(task, context) => dropObject(task, context, 'context')} />
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu.SubMenu>
                 <Menu.SubMenu
                     key="goals"
                     title={createCategorySubMenu('Goals', 'bullseye', () => manageObjects('goals'), () => onOpenChange('goals'))}>
-                    {props.goals.map(goal => createObjectMenuItem(
-                        goal,
-                        createTaskFilterForObject(goal, 'goal'),
-                        () => manageObjects('goals'),
-                        () => editObject('goals', goal.id),
-                        () => props.deleteGoal(goal.id)))}
+                    {props.goals.map(goal => {
+                        const filter = createTaskFilterForObject(goal, 'goal');
+
+                        return (
+                            <Menu.Item key={goal.id} filter={filter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(filter)}
+                                    object={goal}
+                                    onManage={() => manageObjects('goals')}
+                                    onEdit={() => editObject('goals', goal.id)}
+                                    onDelete={() => props.deleteGoal(goal.id)}
+                                    dropType="task"
+                                    onDrop={(task, goal) => dropObject(task, goal, 'goal')} />
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu.SubMenu>
                 <Menu.SubMenu
                     key="locations"
                     title={createCategorySubMenu('Locations', 'compass', () => manageObjects('locations'), () => onOpenChange('locations'))}>
-                    {props.locations.map(location => createObjectMenuItem(
-                        location,
-                        createTaskFilterForObject(location, 'location'),
-                        () => manageObjects('locations'),
-                        () => editObject('locations', location.id),
-                        () => props.deleteLocation(location.id)))}
+                    {props.locations.map(location => {
+                        const filter = createTaskFilterForObject(location, 'location');
+
+                        return (
+                            <Menu.Item key={location.id} filter={filter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(filter)}
+                                    object={location}
+                                    onManage={() => manageObjects('locations')}
+                                    onEdit={() => editObject('locations', location.id)}
+                                    onDelete={() => props.deleteLocation(location.id)}
+                                    dropType="task"
+                                    onDrop={(task, location) => dropObject(task, location, 'location')} />
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu.SubMenu>
                 <Menu.SubMenu
                     key="tags"
-                    title={createCategorySubMenu('Tags', 'tag', null, () => onOpenChange('tags'))}>
-                    {props.tags.map(tag => createObjectMenuItem(
-                        tag,
-                        createTaskFilterForObject(tag, 'tags', {
+                    title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
+                    {props.tags.map(tag => {
+                        const filter = createTaskFilterForObject(tag, 'tags', {
                             id: '1',
                             field: 'tags',
                             type: 'contain',
                             value: [tag.id]
-                        }),
-                        null,
-                        () => editObject('tags', tag.id),
-                        () => props.deleteTag(tag.id)))}
+                        });
+
+                        return (
+                            <Menu.Item key={tag.id} filter={filter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(filter)}
+                                    object={tag}
+                                    onManage={() => manageObjects('tags')}
+                                    onEdit={() => editObject('tags', tag.id)}
+                                    onDelete={() => props.deleteTag(tag.id)} />
+                            </Menu.Item>
+                        );
+                    })}
                 </Menu.SubMenu>
                 <Menu.SubMenu
                     key="taskFilters"
                     title={createCategorySubMenu('Task Filters', 'filter', () => manageTaskFilters(), () => onOpenChange('taskFilters'))}>
-                    {props.taskFilters.map(taskFilter => createObjectMenuItem(
-                        taskFilter,
-                        taskFilter,
-                        () => manageTaskFilters(),
-                        () => editTaskFilter(taskFilter.id),
-                        () => props.deleteTaskFilter(taskFilter.id)))}
+                    {props.taskFilters.map(taskFilter => (
+                        <Menu.Item key={taskFilter.id} filter={taskFilter}>
+                            <ObjectMenuItem
+                                badge={createBadge(taskFilter)}
+                                object={taskFilter}
+                                onManage={() => manageTaskFilters()}
+                                onEdit={() => editTaskFilter(taskFilter.id)}
+                                onDelete={() => props.deleteTaskFilter(taskFilter.id)} />
+                        </Menu.Item>
+                    ))}
                 </Menu.SubMenu>
             </Menu >
         </div>
@@ -355,6 +359,7 @@ TaskSider.propTypes = {
     setSelectedTaskFilter: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setTaskFilterManagerOptions: PropTypes.func.isRequired,
+    updateTask: PropTypes.func.isRequired,
     deleteContext: PropTypes.func.isRequired,
     deleteFolder: PropTypes.func.isRequired,
     deleteGoal: PropTypes.func.isRequired,

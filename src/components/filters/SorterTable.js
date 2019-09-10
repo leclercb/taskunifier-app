@@ -90,6 +90,7 @@ function SorterTable(props) {
                             dragType: 'sorter',
                             dropType: 'sorter',
                             dndData: {
+                                object: rowData,
                                 rowData,
                                 rowIndex
                             },
