@@ -20,6 +20,11 @@ function NoteFilterManager(props) {
         props.onNoteFilterSelection(noteFilter.id);
     };
 
+    const onDuplicateNoteFilter = async noteFilter => {
+        noteFilter = await props.duplicateNoteFilter(noteFilter);
+        props.onNoteFilterSelection(noteFilter.id);
+    };
+
     const onNoteFilterSelection = noteFilter => {
         props.onNoteFilterSelection(noteFilter.id);
     };
@@ -40,6 +45,7 @@ function NoteFilterManager(props) {
                     filters={props.noteFilters}
                     selectedFilterId={selectedNoteFilterId}
                     addFilter={onAddNoteFilter}
+                    duplicateNoteFilter={onDuplicateNoteFilter}
                     deleteFilter={props.deleteNoteFilter}
                     onFilterSelection={onNoteFilterSelection} />
             </Col>
@@ -80,6 +86,7 @@ NoteFilterManager.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onNoteFilterSelection: PropTypes.func.isRequired,
     addNoteFilter: PropTypes.func.isRequired,
+    duplicateNoteFilter: PropTypes.func.isRequired,
     updateNoteFilter: PropTypes.func.isRequired,
     deleteNoteFilter: PropTypes.func.isRequired
 };

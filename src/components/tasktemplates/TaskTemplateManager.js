@@ -17,6 +17,11 @@ function TaskTemplateManager(props) {
         props.onTaskTemplateSelection(taskTemplate.id);
     };
 
+    const onDuplicateTaskTemplate = async taskTemplate => {
+        taskTemplate = await props.duplicateTaskTemplate(taskTemplate);
+        props.onTaskTemplateSelection(taskTemplate.id);
+    };
+
     const onTaskTemplateSelection = taskTemplate => {
         props.onTaskTemplateSelection(taskTemplate.id);
     };
@@ -30,6 +35,7 @@ function TaskTemplateManager(props) {
                     taskTemplates={props.taskTemplates}
                     selectedTaskTemplateId={selectedTaskTemplateId}
                     addTaskTemplate={onAddTaskTemplate}
+                    duplicateTaskTemplate={onDuplicateTaskTemplate}
                     deleteTaskTemplate={props.deleteTaskTemplate}
                     onTaskTemplateSelection={onTaskTemplateSelection}
                     settings={props.settings}
@@ -51,6 +57,7 @@ TaskTemplateManager.propTypes = {
     settings: SettingsPropType.isRequired,
     onTaskTemplateSelection: PropTypes.func.isRequired,
     addTaskTemplate: PropTypes.func.isRequired,
+    duplicateTaskTemplate: PropTypes.func.isRequired,
     updateTaskTemplate: PropTypes.func.isRequired,
     deleteTaskTemplate: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired

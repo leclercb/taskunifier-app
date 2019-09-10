@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addContext, deleteContext, updateContext } from 'actions/ContextActions';
+import { addContext, deleteContext, duplicateContext, updateContext } from 'actions/ContextActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -16,6 +16,7 @@ function withContexts(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addContext: context => dispatch(addContext(context)),
+        duplicateContext: context => dispatch(duplicateContext(context)),
         updateContext: context => dispatch(updateContext(context)),
         deleteContext: contextId => dispatch(deleteContext(contextId))
     });

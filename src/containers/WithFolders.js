@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addFolder, deleteFolder, updateFolder } from 'actions/FolderActions';
+import { addFolder, deleteFolder, duplicateFolder, updateFolder } from 'actions/FolderActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getFoldersFilteredByNonArchived, getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -25,6 +25,7 @@ function withFolders(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addFolder: folder => dispatch(addFolder(folder)),
+        duplicateFolder: folder => dispatch(duplicateFolder(folder)),
         updateFolder: folder => dispatch(updateFolder(folder)),
         deleteFolder: folderId => dispatch(deleteFolder(folderId))
     });

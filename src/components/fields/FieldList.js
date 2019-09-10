@@ -27,7 +27,7 @@ function FieldList(props) {
                     <List.Item
                         onClick={() => props.onFieldSelection(item)}
                         className={item.id === props.selectedFieldId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addField(item), () => props.deleteField(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateField(item), () => props.deleteField(item.id))}>
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>
@@ -44,6 +44,7 @@ FieldList.propTypes = {
     fields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     selectedFieldId: PropTypes.string,
     addField: PropTypes.func.isRequired,
+    duplicateField: PropTypes.func.isRequired,
     deleteField: PropTypes.func.isRequired,
     onFieldSelection: PropTypes.func.isRequired
 };

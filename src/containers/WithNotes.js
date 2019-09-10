@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import {
     addNote,
     deleteNote,
+    duplicateNote,
     updateNote
 } from 'actions/NoteActions';
 import withBusyCheck from 'containers/WithBusyCheck';
@@ -39,6 +40,7 @@ function withNotes(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addNote: note => dispatch(addNote(note)),
+        duplicateNote: note => dispatch(duplicateNote(note)),
         updateNote: note => dispatch(updateNote(note)),
         deleteNote: noteId => dispatch(deleteNote(noteId)),
         setSelectedNoteIds: noteIds => dispatch(setSelectedNoteIds(noteIds)),

@@ -33,6 +33,9 @@ function TaskTable(props) {
             case 'edit':
                 tasks.forEach(task => onEditTask(task));
                 break;
+            case 'duplicate':
+                tasks.forEach(task => onDuplicateTask(task));
+                break;
             case 'remove':
                 tasks.forEach(task => onRemoveTask(task));
                 break;
@@ -58,6 +61,10 @@ function TaskTable(props) {
             visible: true,
             taskId: task.id
         });
+    };
+
+    const onDuplicateTask = task => {
+        props.duplicateTask(task);
     };
 
     const onRemoveTask = task => {
@@ -263,6 +270,7 @@ TaskTable.propTypes = {
     selectedTaskFilter: TaskFilterPropType,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedTaskIds: PropTypes.func.isRequired,
+    duplicateTask: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,

@@ -2,6 +2,7 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setFolders(folders) {
 
 export function addFolder(folder, options = {}) {
     return addObject('folders', folder, options);
+}
+
+export function duplicateFolder(folder, options = {}) {
+    return duplicateObject('folders', folder, options);
 }
 
 export function updateFolder(folder, options = {}) {

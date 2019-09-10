@@ -14,6 +14,11 @@ function ContextManager(props) {
         props.onContextSelection(context.id);
     };
 
+    const onDuplicateContext = async context => {
+        context = await props.duplicateContext(context);
+        props.onContextSelection(context.id);
+    };
+
     const onContextSelection = context => {
         props.onContextSelection(context.id);
     };
@@ -27,6 +32,7 @@ function ContextManager(props) {
                     contexts={props.contexts}
                     selectedContextId={selectedContextId}
                     addContext={onAddContext}
+                    duplicateContext={onDuplicateContext}
                     deleteContext={props.deleteContext}
                     onContextSelection={onContextSelection} />
             </Col>
@@ -45,6 +51,7 @@ ContextManager.propTypes = {
     contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
     onContextSelection: PropTypes.func.isRequired,
     addContext: PropTypes.func.isRequired,
+    duplicateContext: PropTypes.func.isRequired,
     updateContext: PropTypes.func.isRequired,
     deleteContext: PropTypes.func.isRequired
 };

@@ -23,12 +23,19 @@ function NoteTable(props) {
         const notes = props.notes.filter(note => props.selectedNoteIds.includes(note.id));
 
         switch (action.type) {
+            case 'duplicate':
+                notes.forEach(note => onDuplicateNote(note));
+                break;
             case 'remove':
                 notes.forEach(note => onRemoveNote(note));
                 break;
             default:
                 break;
         }
+    };
+
+    const onDuplicateNote = note => {
+        props.duplicateNote(note);
     };
 
     const onRemoveNote = note => {
@@ -153,6 +160,7 @@ NoteTable.propTypes = {
     selectedNoteFilter: NoteFilterPropType,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     setSelectedNoteIds: PropTypes.func.isRequired,
+    duplicateNote: PropTypes.func.isRequired,
     updateNote: PropTypes.func.isRequired,
     deleteNote: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,

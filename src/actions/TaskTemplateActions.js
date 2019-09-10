@@ -2,6 +2,7 @@ import {
     addObject,
     cleanObjects,
     deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setTaskTemplates(taskTemplates) {
 
 export function addTaskTemplate(taskTemplate, options = {}) {
     return addObject('taskTemplates', taskTemplate, options);
+}
+
+export function duplicateTaskTemplate(taskTemplate, options = {}) {
+    return duplicateObject('taskTemplates', taskTemplate, options);
 }
 
 export function updateTaskTemplate(taskTemplate, options = {}) {

@@ -14,6 +14,11 @@ function ContactManager(props) {
         props.onContactSelection(contact.id);
     };
 
+    const onDuplicateContact = async contact => {
+        contact = await props.duplicateContact(contact);
+        props.onContactSelection(contact.id);
+    };
+
     const onContactSelection = contact => {
         props.onContactSelection(contact.id);
     };
@@ -27,6 +32,7 @@ function ContactManager(props) {
                     contacts={props.contacts}
                     selectedContactId={selectedContactId}
                     addContact={onAddContact}
+                    duplicateContact={onDuplicateContact}
                     deleteContact={props.deleteContact}
                     onContactSelection={onContactSelection} />
             </Col>
@@ -45,6 +51,7 @@ ContactManager.propTypes = {
     contacts: PropTypes.arrayOf(ContactPropType.isRequired).isRequired,
     onContactSelection: PropTypes.func.isRequired,
     addContact: PropTypes.func.isRequired,
+    duplicateContact: PropTypes.func.isRequired,
     updateContact: PropTypes.func.isRequired,
     deleteContact: PropTypes.func.isRequired
 };

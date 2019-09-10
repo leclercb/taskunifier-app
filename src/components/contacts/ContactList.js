@@ -20,7 +20,7 @@ function ContactList(props) {
                         className={item.id === props.selectedContactId ? 'selected-list-item' : null}>
                         <LeftRight right={createActions(
                             item,
-                            () => props.addContact(item),
+                            () => props.duplicateContact(item),
                             () => props.deleteContact(item.id),
                             item => getContactTitle(item))}>
                             <Icon icon="circle" color={item.color} text={getContactTitle(item)} />
@@ -39,6 +39,7 @@ ContactList.propTypes = {
     contacts: PropTypes.array.isRequired,
     selectedContactId: PropTypes.string,
     addContact: PropTypes.func.isRequired,
+    duplicateContact: PropTypes.func.isRequired,
     deleteContact: PropTypes.func.isRequired,
     onContactSelection: PropTypes.func.isRequired
 };

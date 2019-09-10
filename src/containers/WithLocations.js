@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addLocation, deleteLocation, updateLocation } from 'actions/LocationActions';
+import { addLocation, deleteLocation, duplicateLocation, updateLocation } from 'actions/LocationActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -16,6 +16,7 @@ function withLocations(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addLocation: location => dispatch(addLocation(location)),
+        duplicateLocation: location => dispatch(duplicateLocation(location)),
         updateLocation: location => dispatch(updateLocation(location)),
         deleteLocation: locationId => dispatch(deleteLocation(locationId))
     });

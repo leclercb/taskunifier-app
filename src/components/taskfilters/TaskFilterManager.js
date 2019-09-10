@@ -21,6 +21,11 @@ function TaskFilterManager(props) {
         props.onTaskFilterSelection(taskFilter.id);
     };
 
+    const onDuplicateTaskFilter = async taskFilter => {
+        taskFilter = await props.duplicateTaskFilter(taskFilter);
+        props.onTaskFilterSelection(taskFilter.id);
+    };
+
     const onTaskFilterSelection = taskFilter => {
         props.onTaskFilterSelection(taskFilter.id);
     };
@@ -41,6 +46,7 @@ function TaskFilterManager(props) {
                     filters={props.taskFilters}
                     selectedFilterId={selectedTaskFilterId}
                     addFilter={onAddTaskFilter}
+                    duplicateTaskFilter={onDuplicateTaskFilter}
                     deleteFilter={props.deleteTaskFilter}
                     onFilterSelection={onTaskFilterSelection} />
             </Col>
@@ -94,6 +100,7 @@ TaskFilterManager.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onTaskFilterSelection: PropTypes.func.isRequired,
     addTaskFilter: PropTypes.func.isRequired,
+    duplicateTaskFilter: PropTypes.func.isRequired,
     updateTaskFilter: PropTypes.func.isRequired,
     deleteTaskFilter: PropTypes.func.isRequired
 };

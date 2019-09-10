@@ -14,6 +14,11 @@ function LocationManager(props) {
         props.onLocationSelection(location.id);
     };
 
+    const onDuplicateLocation = async location => {
+        location = await props.duplicateLocation(location);
+        props.onLocationSelection(location.id);
+    };
+
     const onLocationSelection = location => {
         props.onLocationSelection(location.id);
     };
@@ -27,6 +32,7 @@ function LocationManager(props) {
                     locations={props.locations}
                     selectedLocationId={selectedLocationId}
                     addLocation={onAddLocation}
+                    duplicateLocation={onDuplicateLocation}
                     deleteLocation={props.deleteLocation}
                     onLocationSelection={onLocationSelection} />
             </Col>
@@ -45,6 +51,7 @@ LocationManager.propTypes = {
     locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
     onLocationSelection: PropTypes.func.isRequired,
     addLocation: PropTypes.func.isRequired,
+    duplicateLocation: PropTypes.func.isRequired,
     updateLocation: PropTypes.func.isRequired,
     deleteLocation: PropTypes.func.isRequired
 };

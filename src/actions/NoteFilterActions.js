@@ -2,6 +2,7 @@ import {
     addObject,
     cleanObjects,
     deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setNoteFilters(noteFilters) {
 
 export function addNoteFilter(noteFilter, options = {}) {
     return addObject('noteFilters', noteFilter, options);
+}
+
+export function duplicateNoteFilter(noteFilter, options = {}) {
+    return duplicateObject('noteFilters', noteFilter, options);
 }
 
 export function updateNoteFilter(noteFilter, options = {}) {

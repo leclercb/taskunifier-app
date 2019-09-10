@@ -2,6 +2,7 @@ import {
     addObject,
     cleanObjects,
     deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setTasks(tasks) {
 
 export function addTask(task, options = {}) {
     return addObject('tasks', task, options);
+}
+
+export function duplicateTask(task, options = {}) {
+    return duplicateObject('tasks', task, options);
 }
 
 export function updateTask(task, options = {}) {

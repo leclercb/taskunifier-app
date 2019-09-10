@@ -14,6 +14,11 @@ function GoalManager(props) {
         props.onGoalSelection(goal.id);
     };
 
+    const onDuplicateGoal = async goal => {
+        goal = await props.duplicateGoal(goal);
+        props.onGoalSelection(goal.id);
+    };
+
     const onGoalSelection = goal => {
         props.onGoalSelection(goal.id);
     };
@@ -27,6 +32,7 @@ function GoalManager(props) {
                     goals={props.goals}
                     selectedGoalId={selectedGoalId}
                     addGoal={onAddGoal}
+                    duplicateGoal={onDuplicateGoal}
                     deleteGoal={props.deleteGoal}
                     onGoalSelection={onGoalSelection} />
             </Col>
@@ -45,6 +51,7 @@ GoalManager.propTypes = {
     goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
     onGoalSelection: PropTypes.func.isRequired,
     addGoal: PropTypes.func.isRequired,
+    duplicateGoal: PropTypes.func.isRequired,
     updateGoal: PropTypes.func.isRequired,
     deleteGoal: PropTypes.func.isRequired
 };

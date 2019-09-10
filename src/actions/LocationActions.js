@@ -2,6 +2,7 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setLocations(locations) {
 
 export function addLocation(location, options = {}) {
     return addObject('locations', location, options);
+}
+
+export function duplicateLocation(location, options = {}) {
+    return duplicateObject('locations', location, options);
 }
 
 export function updateLocation(location, options = {}) {

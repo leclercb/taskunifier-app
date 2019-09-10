@@ -17,6 +17,11 @@ function TaskFieldManager(props) {
         props.onTaskFieldSelection(taskField.id);
     };
 
+    const onDuplicateTaskField = async taskField => {
+        taskField = await props.duplicateTaskField(taskField);
+        props.onTaskFieldSelection(taskField.id);
+    };
+
     const onTaskFieldSelection = taskField => {
         props.onTaskFieldSelection(taskField.id);
     };
@@ -30,6 +35,7 @@ function TaskFieldManager(props) {
                     fields={props.taskFields}
                     selectedFieldId={selectedTaskFieldId}
                     addField={onAddTaskField}
+                    duplicateTaskField={onDuplicateTaskField}
                     deleteField={props.deleteTaskField}
                     onFieldSelection={onTaskFieldSelection} />
             </Col>
@@ -53,6 +59,7 @@ TaskFieldManager.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onTaskFieldSelection: PropTypes.func.isRequired,
     addTaskField: PropTypes.func.isRequired,
+    duplicateTaskField: PropTypes.func.isRequired,
     updateTaskField: PropTypes.func.isRequired,
     deleteTaskField: PropTypes.func.isRequired
 };

@@ -17,6 +17,11 @@ function NoteFieldManager(props) {
         props.onNoteFieldSelection(noteField.id);
     };
 
+    const onDuplicateNoteField = async noteField => {
+        noteField = await props.duplicateNoteField(noteField);
+        props.onNoteFieldSelection(noteField.id);
+    };
+
     const onNoteFieldSelection = noteField => {
         props.onNoteFieldSelection(noteField.id);
     };
@@ -30,6 +35,7 @@ function NoteFieldManager(props) {
                     fields={props.noteFields}
                     selectedFieldId={selectedNoteFieldId}
                     addField={onAddNoteField}
+                    duplicateNoteField={onDuplicateNoteField}
                     deleteField={props.deleteNoteField}
                     onFieldSelection={onNoteFieldSelection} />
             </Col>
@@ -53,6 +59,7 @@ NoteFieldManager.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onNoteFieldSelection: PropTypes.func.isRequired,
     addNoteField: PropTypes.func.isRequired,
+    duplicateNoteField: PropTypes.func.isRequired,
     updateNoteField: PropTypes.func.isRequired,
     deleteNoteField: PropTypes.func.isRequired
 };

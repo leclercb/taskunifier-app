@@ -17,7 +17,7 @@ function LocationList(props) {
                     <List.Item
                         onClick={() => props.onLocationSelection(item)}
                         className={item.id === props.selectedLocationId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addLocation(item), () => props.deleteLocation(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateLocation(item), () => props.deleteLocation(item.id))}>
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>
@@ -34,6 +34,7 @@ LocationList.propTypes = {
     locations: PropTypes.array.isRequired,
     selectedLocationId: PropTypes.string,
     addLocation: PropTypes.func.isRequired,
+    duplicateLocation: PropTypes.func.isRequired,
     deleteLocation: PropTypes.func.isRequired,
     onLocationSelection: PropTypes.func.isRequired
 };

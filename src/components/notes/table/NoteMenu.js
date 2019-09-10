@@ -20,6 +20,9 @@ function NoteMenu({ selectedNoteIds, onAction, children }) {
         <Menu
             onClick={onClick}
             style={{ width: 300 }}>
+            <Menu.Item key="duplicate" action={{ type: 'duplicate' }}>
+                <Icon icon="copy" text={`Duplicate ${suffix}`} />
+            </Menu.Item>
             <Menu.Item key="remove" action={{ type: 'remove' }}>
                 <Icon icon="trash-alt" text={`Remove ${suffix}`} />
             </Menu.Item>

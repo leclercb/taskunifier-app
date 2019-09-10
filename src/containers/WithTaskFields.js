@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addTaskField, deleteTaskField, updateTaskField } from 'actions/TaskFieldActions';
+import { addTaskField, deleteTaskField, duplicateTaskField, updateTaskField } from 'actions/TaskFieldActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -16,6 +16,7 @@ function withTaskFields(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addTaskField: field => dispatch(addTaskField(field)),
+        duplicateTaskField: field => dispatch(duplicateTaskField(field)),
         updateTaskField: field => dispatch(updateTaskField(field)),
         deleteTaskField: fieldId => dispatch(deleteTaskField(fieldId))
     });

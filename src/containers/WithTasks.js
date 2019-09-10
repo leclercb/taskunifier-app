@@ -4,6 +4,7 @@ import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks } f
 import {
     addTask,
     deleteTask,
+    duplicateTask,
     updateTask
 } from 'actions/TaskActions';
 import withBusyCheck from 'containers/WithBusyCheck';
@@ -53,6 +54,7 @@ function withTasks(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addTask: task => dispatch(addTask(task)),
+        duplicateTask: task => dispatch(duplicateTask(task)),
         updateTask: task => dispatch(updateTask(task)),
         deleteTask: taskId => dispatch(deleteTask(taskId)),
         setSelectedCalendarView: show => dispatch(setSelectedCalendarView(show)),

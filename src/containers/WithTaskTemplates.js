@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
+import { addTaskTemplate, deleteTaskTemplate, duplicateTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -16,6 +16,7 @@ function withTaskTemplates(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addTaskTemplate: taskTemplate => dispatch(addTaskTemplate(taskTemplate)),
+        duplicateTaskTemplate: taskTemplate => dispatch(duplicateTaskTemplate(taskTemplate)),
         updateTaskTemplate: taskTemplate => dispatch(updateTaskTemplate(taskTemplate)),
         deleteTaskTemplate: taskTemplateId => dispatch(deleteTaskTemplate(taskTemplateId))
     });

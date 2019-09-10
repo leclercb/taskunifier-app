@@ -14,6 +14,11 @@ function FolderManager(props) {
         props.onFolderSelection(folder.id);
     };
 
+    const onDuplicateFolder = async folder => {
+        folder = await props.duplicateFolder(folder);
+        props.onFolderSelection(folder.id);
+    };
+
     const onFolderSelection = folder => {
         props.onFolderSelection(folder.id);
     };
@@ -27,6 +32,7 @@ function FolderManager(props) {
                     folders={props.folders}
                     selectedFolderId={selectedFolderId}
                     addFolder={onAddFolder}
+                    duplicateFolder={onDuplicateFolder}
                     deleteFolder={props.deleteFolder}
                     onFolderSelection={onFolderSelection} />
             </Col>
@@ -45,6 +51,7 @@ FolderManager.propTypes = {
     folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
     onFolderSelection: PropTypes.func.isRequired,
     addFolder: PropTypes.func.isRequired,
+    duplicateFolder: PropTypes.func.isRequired,
     updateFolder: PropTypes.func.isRequired,
     deleteFolder: PropTypes.func.isRequired
 };

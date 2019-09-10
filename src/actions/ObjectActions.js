@@ -97,6 +97,34 @@ export function addObject(
     };
 }
 
+export function duplicateObject(property, object, options = {}) {
+    return async dispatch => {
+        const processId = uuid();
+
+        try {
+            const objects = Array.isArray(object) ? object : [object];
+            const addedObjects = [];
+
+            for (let o of objects) {
+                addedObjects.push(await dispatch(addObject(property, o, options)));
+            }
+
+            if (Array.isArray(object)) {
+                return addedObjects;
+            } else {
+                return addedObjects[0];
+            }
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Duplicate object(s) of type "${property}"`,
+                error: error.toString()
+            }));
+        }
+    };
+}
+
 export function updateObject(property, object, options = {}) {
     return async (dispatch, getState) => {
         const processId = uuid();

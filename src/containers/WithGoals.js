@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
+import { addGoal, deleteGoal, duplicateGoal, updateGoal } from 'actions/GoalActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getGoalsFilteredByNonArchived, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -29,6 +29,7 @@ function withGoals(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addGoal: goal => dispatch(addGoal(goal)),
+        duplicateGoal: goal => dispatch(duplicateGoal(goal)),
         updateGoal: goal => dispatch(updateGoal(goal)),
         deleteGoal: goalId => dispatch(deleteGoal(goalId))
     });

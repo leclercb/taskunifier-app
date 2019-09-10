@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { addContact, deleteContact, updateContact } from 'actions/ContactActions';
+import { addContact, deleteContact, duplicateContact, updateContact } from 'actions/ContactActions';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 import { merge } from 'utils/ObjectUtils';
@@ -16,6 +16,7 @@ function withContacts(Component, options) {
 
     const mapDispatchToProps = dispatch => ({
         addContact: contact => dispatch(addContact(contact)),
+        duplicateContact: contact => dispatch(duplicateContact(contact)),
         updateContact: contact => dispatch(updateContact(contact)),
         deleteContact: contactId => dispatch(deleteContact(contactId))
     });
