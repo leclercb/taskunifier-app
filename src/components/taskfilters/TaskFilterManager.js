@@ -5,7 +5,6 @@ import FilterConditionTree from 'components/filters/FilterConditionTree';
 import FilterList from 'components/filters/FilterList';
 import FilterForm from 'components/filters/FilterForm';
 import SorterTable from 'components/filters/SorterTable';
-import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import withProCheck from 'containers/WithProCheck';
 import withTaskFields from 'containers/WithTaskFields';
 import withTaskFilters from 'containers/WithTaskFilters';
@@ -57,20 +56,7 @@ function TaskFilterManager(props) {
                         <FilterForm
                             key={selectedTaskFilterId}
                             filter={selectedTaskFilter}
-                            updateFilter={props.updateTaskFilter}
-                            extraFields={(props, getFieldDecorator, onCommit) => {
-                                /* eslint-disable react/prop-types */
-                                return (
-                                    <Form.Item label="Task Template">
-                                        {getFieldDecorator('taskTemplate', {
-                                            initialValue: props.filter.taskTemplate
-                                        })(
-                                            <TaskTemplateSelect onBlur={onCommit} />
-                                        )}
-                                    </Form.Item>
-                                );
-                                /* eslint-enable react/prop-types */
-                            }} />
+                            updateFilter={props.updateTaskFilter} />
                         <Divider>Filters</Divider>
                         <FilterConditionTree
                             key={'conditionTree_' + selectedTaskFilterId}

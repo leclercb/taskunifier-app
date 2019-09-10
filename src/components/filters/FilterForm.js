@@ -41,7 +41,6 @@ function FilterForm(props) {
                     <ColorPicker onClose={onCommit} />
                 )}
             </Form.Item>
-            {props.extraFields ? props.extraFields(props, getFieldDecorator, onCommit) : null}
         </Form>
     );
 }
@@ -49,8 +48,7 @@ function FilterForm(props) {
 FilterForm.propTypes = {
     form: PropTypes.object.isRequired,
     filter: FilterPropType.isRequired,
-    updateFilter: PropTypes.func.isRequired,
-    extraFields: PropTypes.func
+    updateFilter: PropTypes.func.isRequired
 };
 
 export default Form.create({ name: 'filter' })(FilterForm);
