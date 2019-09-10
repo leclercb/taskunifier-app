@@ -1,45 +1,56 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
 import { Col, Empty, Row } from 'antd';
-import withContacts from 'containers/WithContacts';
+import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, duplicateContact, updateContact, deleteContact } from 'actions/ContactActions';
 import ContactList from 'components/contacts/ContactList';
 import ContactForm from 'components/contacts/ContactForm';
-import { ContactPropType } from 'proptypes/ContactPropTypes';
+import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 
 function ContactManager(props) {
+    const dispatch = useDispatch();
+    const contacts = useSelector(getContactsFilteredByVisibleState);
     const selectedContactId = props.contactId;
 
-    const onAddContact = async contact => {
-        contact = await props.addContact(contact);
+    const onAddContact = useCallback(async contact => {
+        contact = await dispatch(addContact(contact));
         props.onContactSelection(contact.id);
-    };
+    }, [dispatch]);
 
-    const onDuplicateContact = async contact => {
-        contact = await props.duplicateContact(contact);
+    const onUpdateContact = useCallback(contact => {
+        dispatch(updateContact(contact));
+    }, [dispatch]);
+
+    const onDeleteContact = useCallback(contactId => {
+        dispatch(deleteContact(contactId));
+    }, [dispatch]);
+
+    const onDuplicateContact = useCallback(async contact => {
+        contact = await dispatch(duplicateContact(contact));
         props.onContactSelection(contact.id);
-    };
+    }, [dispatch]);
 
-    const onContactSelection = contact => {
+    const onContactSelection = useCallback(contact => {
         props.onContactSelection(contact.id);
-    };
+    }, [dispatch]);
 
-    const selectedContact = props.contacts.find(contact => contact.id === selectedContactId);
+    const selectedContact = contacts.find(contact => contact.id === selectedContactId);
 
     return (
         <Row>
             <Col span={6}>
                 <ContactList
-                    contacts={props.contacts}
+                    contacts={contacts}
                     selectedContactId={selectedContactId}
                     addContact={onAddContact}
                     duplicateContact={onDuplicateContact}
-                    deleteContact={props.deleteContact}
+                    deleteContact={onDeleteContact}
                     onContactSelection={onContactSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedContact ? (
-                    <ContactForm key={selectedContactId} contact={selectedContact} updateContact={props.updateContact} />
+                    <ContactForm key={selectedContactId} contact={selectedContact} updateContact={onUpdateContact} />
                 ) : <Empty description="Please select a contact" />}
             </Col>
         </Row>
@@ -48,12 +59,7 @@ function ContactManager(props) {
 
 ContactManager.propTypes = {
     contactId: PropTypes.string,
-    contacts: PropTypes.arrayOf(ContactPropType.isRequired).isRequired,
-    onContactSelection: PropTypes.func.isRequired,
-    addContact: PropTypes.func.isRequired,
-    duplicateContact: PropTypes.func.isRequired,
-    updateContact: PropTypes.func.isRequired,
-    deleteContact: PropTypes.func.isRequired
+    onContactSelection: PropTypes.func.isRequired
 };
 
-export default withContacts(ContactManager);
+export default ContactManager;
