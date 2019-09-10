@@ -4,6 +4,7 @@ import { getSelectedNoteFilter, getSelectedNoteFilterDate } from 'selectors/AppS
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import { compareStrings } from 'utils/CompareUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { sortObjects } from 'utils/SorterUtils';
 
@@ -12,7 +13,7 @@ export const getNotes = state => state.notes;
 export const getNotesFilteredByVisibleState = createSelector(
     getNotes,
     (notes) => {
-        return filterByVisibleState(notes);
+        return filterByVisibleState(notes).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
 

@@ -10,13 +10,14 @@ import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { showReminder } from 'utils/ReminderUtils';
 import { sortObjects } from 'utils/SorterUtils';
+import { compareStrings } from 'utils/CompareUtils';
 
 export const getTasks = state => state.tasks;
 
 export const getTasksFilteredByVisibleState = createSelector(
     getTasks,
     (tasks) => {
-        return filterByVisibleState(tasks);
+        return filterByVisibleState(tasks).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
 
