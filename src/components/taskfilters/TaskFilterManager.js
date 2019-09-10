@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Divider, Empty, Form, Row } from 'antd';
+import { Col, Divider, Empty, Row } from 'antd';
 import PropTypes from 'prop-types';
 import FilterConditionTree from 'components/filters/FilterConditionTree';
 import FilterList from 'components/filters/FilterList';

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDrag, useDrop } from 'react-dnd';
 
 function DraggableElement(props) {
+    // eslint-disable-next-line no-unused-vars
     const [collectedDragProps, drag] = useDrag({
         item: {
             type: props.dragType,
@@ -49,6 +50,7 @@ function DraggableElement(props) {
 }
 
 DraggableElement.propTypes = {
+    children: PropTypes.node.isRequired,
     dragType: PropTypes.string.isRequired,
     dropType: PropTypes.oneOfType([
         PropTypes.string.isRequired,
