@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, duplicateContact, updateContact, deleteContact } from 'actions/ContactActions';
+import { addContact, deleteContact, duplicateContact, updateContact } from 'actions/ContactActions';
 import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 
 export function useContacts() {

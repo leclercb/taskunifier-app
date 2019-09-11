@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTaskTemplate, duplicateTaskTemplate, updateTaskTemplate, deleteTaskTemplate } from 'actions/TaskTemplateActions';
+import { addTaskTemplate, deleteTaskTemplate, duplicateTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 
 export function useTaskTemplates() {

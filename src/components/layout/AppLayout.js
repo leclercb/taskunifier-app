@@ -23,7 +23,7 @@ import { isBusy } from 'selectors/ThreadSelectors';
 
 function AppLayout() {
     const busy = useSelector(isBusy);
-    const selectedView = useSelector(getSelectedView)
+    const selectedView = useSelector(getSelectedView);
 
     const getView = () => {
         switch (selectedView) {

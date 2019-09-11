@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addGoal, duplicateGoal, updateGoal, deleteGoal } from 'actions/GoalActions';
+import { addGoal, deleteGoal, duplicateGoal, updateGoal } from 'actions/GoalActions';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 
 export function useGoals() {

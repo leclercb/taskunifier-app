@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addFolder, duplicateFolder, updateFolder, deleteFolder } from 'actions/FolderActions';
+import { addFolder, deleteFolder, duplicateFolder, updateFolder } from 'actions/FolderActions';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 
 export function useFolders() {

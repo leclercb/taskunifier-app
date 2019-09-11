@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addLocation, duplicateLocation, updateLocation, deleteLocation } from 'actions/LocationActions';
+import { addLocation, deleteLocation, duplicateLocation, updateLocation } from 'actions/LocationActions';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 
 export function useLocations() {
