@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Col, Form, Row } from 'antd';
 import Icon from 'components/common/Icon';
-import withSettings from 'containers/WithSettings';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { useTaskFields } from 'hooks/UseTaskFields';
+import { useSettings } from 'hooks/UseSettings';
 import { useTasks } from 'hooks/UseTasks';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
 function BatchEditTasksManager(props) {
+    const settingsApi = useSettings();
     const taskApi = useTasks();
     const taskFieldApi = useTaskFields();
 
@@ -35,7 +35,7 @@ function BatchEditTasksManager(props) {
         });
     };
 
-    const fields = taskFieldApi.taskFields.filter(field => props.settings['taskFieldVisible_' + field.id] !== false);
+    const fields = taskFieldApi.taskFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
     const { getFieldDecorator } = props.form;
 
@@ -74,8 +74,7 @@ function BatchEditTasksManager(props) {
 }
 
 BatchEditTasksManager.propTypes = {
-    form: PropTypes.object.isRequired,
-    settings: SettingsPropType.isRequired
+    form: PropTypes.object.isRequired
 };
 
-export default withSettings(Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager));
+export default Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager);

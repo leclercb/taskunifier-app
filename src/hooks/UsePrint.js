@@ -6,12 +6,12 @@ export function usePrint() {
     const dispatch = useDispatch();
 
     const printNotesCallback = useCallback(
-        contact => dispatch(printNotes(contact)),
+        notes => dispatch(printNotes(notes)),
         [dispatch]
     );
 
     const printTasksCallback = useCallback(
-        contact => dispatch(printTasks(contact)),
+        tasks => dispatch(printTasks(tasks)),
         [dispatch]
     );
 

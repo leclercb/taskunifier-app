@@ -1,19 +1,19 @@
 import React from 'react';
 import { Select } from 'antd';
-import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { useStatuses } from 'hooks/UseStatuses';
 import { getStatusColor } from 'utils/SettingUtils';
 
 export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
+    const settingsApi = useSettings();
     const statusApi = useStatuses();
 
     return (
         <Select ref={ref} allowClear={true} {...props}>
             {statusApi.statuses.map(status => (
                 <Select.Option key={status.id} value={status.id}>
-                    <Icon icon="circle" color={getStatusColor(status.id, props.settings)} text={status.title} />
+                    <Icon icon="circle" color={getStatusColor(status.id, settingsApi.settings)} text={status.title} />
                 </Select.Option>
             ))}
         </Select>
@@ -22,8 +22,4 @@ export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
 
 StatusSelect.displayName = 'ForwardRefStatusSelect';
 
-StatusSelect.propTypes = {
-    settings: SettingsPropType.isRequired
-};
-
-export default withSettings(StatusSelect);
+export default StatusSelect;

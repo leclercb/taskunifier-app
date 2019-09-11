@@ -9,17 +9,17 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
 import withApp from 'containers/WithApp';
-import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { useTaskFields } from 'hooks/UseTaskFields';
 import { useTasks } from 'hooks/UseTasks';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
 
 function TaskTable(props) {
+    const settingsApi = useSettings();
     const taskApi = useTasks();
     const taskFieldApi = useTaskFields();
 
@@ -98,15 +98,15 @@ function TaskTable(props) {
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler('taskColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('taskColumnOrder_', taskFieldApi.taskFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler('taskColumnWidth_', settingsApi.updateSettings);
+    const onMove = moveHandler('taskColumnOrder_', taskFieldApi.taskFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const sortedFields = sortBy(taskFieldApi.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0);
-    const sortedAndFilteredFields = sortedFields.filter(field => props.settings['taskColumnVisible_' + field.id] !== false);
+    const sortedFields = sortBy(taskFieldApi.taskFields, field => settingsApi.settings['taskColumnOrder_' + field.id] || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
-        let width = Number(props.settings[settingKey]);
+        let width = Number(settingsApi.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -191,7 +191,7 @@ function TaskTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={props.settings.taskTableRowHeight}
+                        rowHeight={settingsApi.settings.taskTableRowHeight}
                         headerHeight={20}
                         rowCount={taskApi.filteredExpandedTasks.length}
                         rowGetter={({ index }) => taskApi.filteredExpandedTasks[index]}
@@ -210,8 +210,8 @@ function TaskTable(props) {
                                 return {};
                             }
 
-                            let foregroundColor = getTaskForegroundColor(task, index, props.settings);
-                            let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
+                            let foregroundColor = getTaskForegroundColor(task, index, settingsApi.settings);
+                            let backgroundColor = getTaskBackgroundColor(task, index, settingsApi.settings);
 
                             if (taskApi.selectedTaskIds.includes(task.id)) {
                                 foregroundColor = Constants.selectionForegroundColor;
@@ -263,11 +263,9 @@ function TaskTable(props) {
 }
 
 TaskTable.propTypes = {
-    settings: SettingsPropType.isRequired,
-    updateSettings: PropTypes.func.isRequired,
     setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
 
-export default withApp(withSettings(withSize(TaskTable)));
+export default withApp(withSize(TaskTable));

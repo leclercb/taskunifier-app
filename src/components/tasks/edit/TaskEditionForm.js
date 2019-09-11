@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'antd';
-import withSettings from 'containers/WithSettings';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { useTaskFields } from 'hooks/UseTaskFields';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskEditionForm(props) {
+    const settingsApi = useSettings();
     const taskFieldApi = useTaskFields();
 
     const { getFieldDecorator } = props.form;
@@ -22,7 +22,7 @@ function TaskEditionForm(props) {
         }
     };
 
-    const fields = taskFieldApi.taskFields.filter(field => props.settings['taskFieldVisible_' + field.id] !== false);
+    const fields = taskFieldApi.taskFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
     return (
         <Row gutter={20}>
@@ -46,8 +46,7 @@ function TaskEditionForm(props) {
 
 TaskEditionForm.propTypes = {
     form: PropTypes.object.isRequired,
-    task: TaskPropType.isRequired,
-    settings: SettingsPropType.isRequired
+    task: TaskPropType.isRequired
 };
 
-export default withSettings(TaskEditionForm, { includeDispatch: false });
+export default TaskEditionForm;

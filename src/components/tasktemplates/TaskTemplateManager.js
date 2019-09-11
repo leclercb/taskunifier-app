@@ -4,11 +4,11 @@ import { Col, Empty, Row } from 'antd';
 import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
 import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
 import withProCheck from 'containers/WithProCheck';
-import withSettings from 'containers/WithSettings';
+import { useSettings } from 'hooks/UseSettings';
 import { useTaskTemplates } from 'hooks/UseTaskTemplates';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 
 function TaskTemplateManager(props) {
+    const settingsApi = useSettings();
     const taskTemplatesApi = useTaskTemplates();
     const selectedTaskTemplateId = props.taskTemplateId;
 
@@ -38,8 +38,8 @@ function TaskTemplateManager(props) {
                     duplicateTaskTemplate={onDuplicateTaskTemplate}
                     deleteTaskTemplate={taskTemplatesApi.deleteTaskTemplate}
                     onTaskTemplateSelection={onTaskTemplateSelection}
-                    settings={props.settings}
-                    updateSettings={props.updateSettings} />
+                    settings={settingsApi.settings}
+                    updateSettings={settingsApi.updateSettings} />
             </Col>
             <Col span={2} />
             <Col span={16}>
@@ -53,9 +53,7 @@ function TaskTemplateManager(props) {
 
 TaskTemplateManager.propTypes = {
     taskTemplateId: PropTypes.string,
-    settings: SettingsPropType.isRequired,
-    onTaskTemplateSelection: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    onTaskTemplateSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(withSettings(TaskTemplateManager));
+export default withProCheck(TaskTemplateManager);

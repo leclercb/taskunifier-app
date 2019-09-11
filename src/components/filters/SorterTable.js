@@ -9,15 +9,15 @@ import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import Constants from 'constants/Constants';
-import withSettings from 'containers/WithSettings';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
 import { move } from 'utils/ArrayUtils';
 import { getSorterBackgroundColor } from 'utils/SettingUtils';
 
 function SorterTable(props) {
+    const settingsApi = useSettings();
     const [selectedSorterIds, setSelectedSorterIds] = useState([]);
 
     const onAddSorter = () => {
@@ -51,12 +51,12 @@ function SorterTable(props) {
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler(props.widthSettingPrefix, props.updateSettings);
-    const onMove = moveHandler(props.orderSettingPrefix, props.sorterFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler(props.widthSettingPrefix, settingsApi.updateSettings);
+    const onMove = moveHandler(props.orderSettingPrefix, props.sorterFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const columns = sortBy(props.sorterFields, field => props.settings[props.orderSettingPrefix + field.id] || 0).map(field => {
+    const columns = sortBy(props.sorterFields, field => settingsApi.settings[props.orderSettingPrefix + field.id] || 0).map(field => {
         const settingKey = props.widthSettingPrefix + field.id;
-        let width = Number(props.settings[settingKey]);
+        let width = Number(settingsApi.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -134,7 +134,7 @@ function SorterTable(props) {
                         }
 
                         let foregroundColor = 'initial';
-                        let backgroundColor = getSorterBackgroundColor(sorter, index, props.settings);
+                        let backgroundColor = getSorterBackgroundColor(sorter, index, settingsApi.settings);
 
                         if (selectedSorterIds.includes(sorter.id)) {
                             foregroundColor = Constants.selectionForegroundColor;
@@ -171,10 +171,8 @@ SorterTable.propTypes = {
     sorters: PropTypes.arrayOf(SorterPropType.isRequired).isRequired,
     sorterFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     updateSorters: PropTypes.func.isRequired,
-    settings: SettingsPropType.isRequired,
-    updateSettings: PropTypes.func.isRequired,
     orderSettingPrefix: PropTypes.string.isRequired,
     widthSettingPrefix: PropTypes.string.isRequired
 };
 
-export default withSettings(SorterTable);
+export default SorterTable;

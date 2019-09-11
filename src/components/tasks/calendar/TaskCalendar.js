@@ -6,15 +6,15 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
 import withApp from 'containers/WithApp';
-import withSettings from 'containers/WithSettings';
+import { useSettings } from 'hooks/UseSettings';
 import { useTasks } from 'hooks/UseTasks';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import 'components/tasks/calendar/TaskCalendar.css';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 function TaskCalendar(props) {
+    const settingsApi = useSettings();
     const taskApi = useTasks();
 
     const getEvents = () => {
@@ -31,7 +31,7 @@ function TaskCalendar(props) {
                     start: moment(task.startDate).toDate(),
                     end: moment(task.startDate).add(task.length, 'seconds').toDate(),
                     task,
-                    settings: props.settings,
+                    settings: settingsApi.settings,
                     mode: 'startDate',
                     selected: taskApi.selectedTaskIds.includes(task.id)
                 });
@@ -44,7 +44,7 @@ function TaskCalendar(props) {
                     start: moment(task.dueDate).subtract(task.length, 'seconds').toDate(),
                     end: moment(task.dueDate).toDate(),
                     task,
-                    settings: props.settings,
+                    settings: settingsApi.settings,
                     mode: 'dueDate',
                     selected: taskApi.selectedTaskIds.includes(task.id)
                 });
@@ -129,8 +129,7 @@ function TaskCalendar(props) {
 }
 
 TaskCalendar.propTypes = {
-    settings: SettingsPropType.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withSettings(TaskCalendar));
+export default withApp(TaskCalendar);

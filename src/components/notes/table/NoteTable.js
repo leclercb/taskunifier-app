@@ -2,7 +2,6 @@ import React from 'react';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
-import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
@@ -12,12 +11,13 @@ import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { useNoteFields } from 'hooks/UseNoteFields';
 import { useNotes } from 'hooks/UseNotes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
-function NoteTable(props) {
+function NoteTable() {
     const noteApi = useNotes();
     const noteFieldApi = useNoteFields();
+    const settingsApi = useSettings();
 
     const onMenuAction = action => {
         const notes = noteApi.selectedNotes;
@@ -48,15 +48,15 @@ function NoteTable(props) {
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler('noteColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('noteColumnOrder_', noteFieldApi.noteFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler('noteColumnWidth_', settingsApi.updateSettings);
+    const onMove = moveHandler('noteColumnOrder_', noteFieldApi.noteFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const sortedFields = sortBy(noteFieldApi.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0);
-    const sortedAndFilteredFields = sortedFields.filter(field => props.settings['noteColumnVisible_' + field.id] !== false);
+    const sortedFields = sortBy(noteFieldApi.noteFields, field => settingsApi.settings['noteColumnOrder_' + field.id] || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['noteColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
         const settingKey = 'noteColumnWidth_' + field.id;
-        let width = Number(props.settings[settingKey]);
+        let width = Number(settingsApi.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -118,7 +118,7 @@ function NoteTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={props.settings.noteTableRowHeight}
+                        rowHeight={settingsApi.settings.noteTableRowHeight}
                         headerHeight={20}
                         rowCount={noteApi.filteredNotes.length}
                         rowGetter={({ index }) => noteApi.filteredNotes[index]}
@@ -138,7 +138,7 @@ function NoteTable(props) {
                             }
 
                             let foregroundColor = 'initial';
-                            let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
+                            let backgroundColor = getNoteBackgroundColor(note, index, settingsApi.settings);
 
                             if (noteApi.selectedNoteIds.includes(note.id)) {
                                 foregroundColor = Constants.selectionForegroundColor;
@@ -171,9 +171,7 @@ function NoteTable(props) {
 }
 
 NoteTable.propTypes = {
-    settings: SettingsPropType.isRequired,
-    updateSettings: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withSize(NoteTable));
+export default withSize(NoteTable);

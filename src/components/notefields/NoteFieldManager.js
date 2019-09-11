@@ -35,7 +35,7 @@ function NoteFieldManager(props) {
                     fields={noteFieldApi.noteFields}
                     selectedFieldId={selectedNoteFieldId}
                     addField={onAddNoteField}
-                    duplicateNoteField={onDuplicateNoteField}
+                    duplicateField={onDuplicateNoteField}
                     deleteField={noteFieldApi.deleteNoteField}
                     onFieldSelection={onNoteFieldSelection} />
             </Col>

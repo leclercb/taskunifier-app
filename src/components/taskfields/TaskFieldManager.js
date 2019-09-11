@@ -35,7 +35,7 @@ function TaskFieldManager(props) {
                     fields={taskFieldApi.taskFields}
                     selectedFieldId={selectedTaskFieldId}
                     addField={onAddTaskField}
-                    duplicateTaskField={onDuplicateTaskField}
+                    duplicateField={onDuplicateTaskField}
                     deleteField={taskFieldApi.deleteTaskField}
                     onFieldSelection={onTaskFieldSelection} />
             </Col>

@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import TaskTitle from 'components/tasks/common/TaskTitle';
-import withSettings from 'containers/WithSettings';
 import { useTaskReminders } from 'hooks/UseTaskReminders';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { showReminder } from 'utils/ReminderUtils';
 import { formatDate } from 'utils/SettingUtils';
 
 function ReminderList(props) {
+    const settingsApi = useSettings();
     const taskReminderApi = useTaskReminders(props.date);
     const [selectedTaskId, setSelectedTaskId] = useState([]);
 
@@ -53,8 +53,8 @@ function ReminderList(props) {
                 dataSource={taskReminderApi.tasks}
                 style={{ minHeight: 300, maxHeight: 300, overflowY: 'auto' }}
                 renderItem={task => {
-                    const startDate = task.startDate ? formatDate(task.startDate, props.settings, props.settings.showStartTime) : 'none';
-                    const dueDate = task.dueDate ? formatDate(task.dueDate, props.settings, props.settings.showDueTime) : 'none';
+                    const startDate = task.startDate ? formatDate(task.startDate, settingsApi.settings, settingsApi.settings.showStartTime) : 'none';
+                    const dueDate = task.dueDate ? formatDate(task.dueDate, settingsApi.settings, settingsApi.settings.showDueTime) : 'none';
 
                     let showStartDateReminder = showReminder(task.startDate, task.startDateReminder);
                     let showDueDateReminder = showReminder(task.dueDate, task.dueDateReminder);
@@ -100,8 +100,7 @@ function ReminderList(props) {
 }
 
 ReminderList.propTypes = {
-    date: PropTypes.string.isRequired,
-    settings: SettingsPropType.isRequired
+    date: PropTypes.string.isRequired
 };
 
-export default withSettings(ReminderList);
+export default ReminderList;

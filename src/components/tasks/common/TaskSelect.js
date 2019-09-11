@@ -2,13 +2,13 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useSettings } from 'hooks/UseSettings';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
 export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
+    const settingsApi = useSettings();
     const tasks = useSelector(getTasksFilteredByVisibleState);
     const value = tasks.find(task => task.id === props.value) ? props.value : null;
 
@@ -18,10 +18,10 @@ export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
                 <Select.Option key={task.id} value={task.id}>
                     <Icon
                         icon="circle"
-                        color={getPriorityColor(task.priority, props.settings)}
+                        color={getPriorityColor(task.priority, settingsApi.settings)}
                         text={task.title}
                         globalStyle={{
-                            backgroundColor: getImportanceColor(task.importance, props.settings),
+                            backgroundColor: getImportanceColor(task.importance, settingsApi.settings),
                             borderRadius: 4,
                             padding: '2px 8px'
                         }} />
@@ -34,8 +34,7 @@ export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
 TaskSelect.displayName = 'ForwardRefTaskSelect';
 
 TaskSelect.propTypes = {
-    value: PropTypes.string,
-    settings: SettingsPropType.isRequired
+    value: PropTypes.string
 };
 
-export default withSettings(TaskSelect);
+export default TaskSelect;

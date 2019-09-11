@@ -1,20 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from 'components/tasks/sider/TaskSider';
 import TaskTable from 'components/tasks/table/TaskTable';
-import withSettings from 'containers/WithSettings';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
+import { useSettings } from 'hooks/UseSettings';
 
-function TaskView(props) {
+function TaskView() {
+    const settingsApi = useSettings();
+
     const onTaskViewSplitPaneSizeChange = size => {
-        props.updateSettings({ taskViewSplitPaneSize: size });
+        settingsApi.updateSettings({ taskViewSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
     const onTaskViewSubSplitPaneSizeChange = size => {
-        props.updateSettings({ taskViewSubSplitPaneSize: size });
+        settingsApi.updateSettings({ taskViewSubSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
@@ -22,14 +23,14 @@ function TaskView(props) {
         <SplitPane
             split="vertical"
             minSize={200}
-            defaultSize={props.settings.taskViewSplitPaneSize}
+            defaultSize={settingsApi.settings.taskViewSplitPaneSize}
             onDragFinished={size => onTaskViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <TaskSider mode="table" />
             <SplitPane
-                split={props.settings.taskViewSubSplitPaneMode}
+                split={settingsApi.settings.taskViewSubSplitPaneMode}
                 minSize={200}
-                defaultSize={props.settings.taskViewSubSplitPaneSize}
+                defaultSize={settingsApi.settings.taskViewSubSplitPaneSize}
                 onDragFinished={size => onTaskViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
@@ -45,13 +46,4 @@ function TaskView(props) {
     );
 }
 
-TaskView.propTypes = {
-    settings: PropTypes.shape({
-        taskViewSplitPaneSize: PropTypes.number.isRequired,
-        taskViewSubSplitPaneMode: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-        taskViewSubSplitPaneSize: PropTypes.number.isRequired
-    }).isRequired,
-    updateSettings: PropTypes.func.isRequired
-};
-
-export default withSettings(TaskView);
+export default TaskView;
