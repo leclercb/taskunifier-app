@@ -1,16 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withTags from 'containers/WithTags';
+import PropTypes from 'prop-types';
 import TagList from 'components/tags/TagList';
 import TagForm from 'components/tags/TagForm';
-import { TagPropType } from 'proptypes/TagPropTypes';
+import { useTags } from 'hooks/UseTags';
 
 function TagManager(props) {
+    const tagApi = useTags();
     const selectedTagId = props.tagId;
 
     const updateTag = async tag => {
-        await props.updateTag(tag);
+        await tagApi.updateTag(tag);
         props.onTagSelection(tag.title);
     };
 
@@ -18,15 +18,15 @@ function TagManager(props) {
         props.onTagSelection(tag.id);
     };
 
-    const selectedTag = props.tags.find(tag => tag.id === selectedTagId);
+    const selectedTag = tagApi.tags.find(tag => tag.id === selectedTagId);
 
     return (
         <Row>
             <Col span={6}>
                 <TagList
-                    tags={props.tags}
+                    tags={tagApi.tags}
                     selectedTagId={selectedTagId}
-                    deleteTag={props.deleteTag}
+                    deleteTag={tagApi.deleteTag}
                     onTagSelection={onTagSelection} />
             </Col>
             <Col span={2} />
@@ -41,10 +41,7 @@ function TagManager(props) {
 
 TagManager.propTypes = {
     tagId: PropTypes.string,
-    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
-    onTagSelection: PropTypes.func.isRequired,
-    updateTag: PropTypes.func.isRequired,
-    deleteTag: PropTypes.func.isRequired
+    onTagSelection: PropTypes.func.isRequired
 };
 
-export default withTags(TagManager, { getId: null });
+export default TagManager;

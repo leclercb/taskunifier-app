@@ -1,14 +1,12 @@
 import React from 'react';
 import { Tag } from 'antd';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
-import { getLinksFromIds, getLinksFromObjects } from 'utils/LinkUtils';
+import { useLinks } from 'hooks/UseLinks';
+import { getLinksFromIds } from 'utils/LinkUtils';
 
 function LinksTitle(props) {
-    const tasks = useSelector(getTasksFilteredByVisibleState);
-    let links = getLinksFromObjects(tasks, props.property);
-    links = getLinksFromIds(links, props.linkIds);
+    const linkApi = useLinks(props.property);
+    const links = getLinksFromIds(linkApi.links, props.linkIds);
 
     return links && links.length > 0 ? (
         <React.Fragment>

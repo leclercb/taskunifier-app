@@ -1,17 +1,16 @@
 import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
-import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
+import { useFolders } from 'hooks/UseFolders';
 
 export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
-    const folders = useSelector(getFoldersFilteredByVisibleState);
-    const value = folders.find(folder => folder.id === props.value) ? props.value : null;
+    const folderApi = useFolders();
+    const value = folderApi.folders.find(folder => folder.id === props.value) ? props.value : null;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>
-            {folders.map(folder => (
+            {folderApi.folders.map(folder => (
                 <Select.Option key={folder.id} value={folder.id}>
                     <Icon icon="circle" color={folder.color} text={folder.title} />
                 </Select.Option>

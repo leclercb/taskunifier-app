@@ -1,17 +1,16 @@
 import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
-import { getNoteFieldsFilteredByVisibleState } from 'selectors/NoteFieldSelectors';
+import { useNoteFields } from 'hooks/UseNoteFields';
 
 export const NoteFieldSelect = React.forwardRef(function NoteFieldSelect(props, ref) {
-    const noteFields = useSelector(getNoteFieldsFilteredByVisibleState);
-    const value = noteFields.find(noteField => noteField.id === props.value) ? props.value : null;
+    const noteFieldApi = useNoteFields();
+    const value = noteFieldApi.noteFields.find(noteField => noteField.id === props.value) ? props.value : null;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>
-            {noteFields.map(noteField => (
+            {noteFieldApi.noteFields.map(noteField => (
                 <Select.Option key={noteField.id} value={noteField.id}>
                     <Icon icon="circle" color={noteField.color} text={noteField.title} />
                 </Select.Option>

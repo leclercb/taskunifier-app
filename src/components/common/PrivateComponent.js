@@ -2,30 +2,32 @@ import React, { useEffect } from 'react';
 import { Alert, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import LoadingIndicator from 'components/common/LoadingIndicator';
-import withSession from 'containers/WithSession';
+import { useSession } from 'hooks/UseSession';
 
-function PrivateComponent({ session, login, logout, userRole, children }) {
+function PrivateComponent({ userRole, children }) {
+    const sessionApi = useSession();
+
     useEffect(() => {
         const fn = async () => {
-            if (!session.authenticated) {
-                await login();
+            if (!sessionApi.session.authenticated) {
+                await sessionApi.login();
             }
         };
 
         fn();
-    }, [session.authenticated, login]);
+    }, [sessionApi.session.authenticated, sessionApi.login]);
 
-    if (!session.authenticated) {
+    if (!sessionApi.session.authenticated) {
         return (<LoadingIndicator />);
     }
 
-    if (userRole && (!Array.isArray(session.user.groups) || !session.user.groups.includes(userRole))) {
+    if (userRole && (!Array.isArray(sessionApi.session.user.groups) || !sessionApi.session.user.groups.includes(userRole))) {
         return (
             <Modal
                 visible={true}
                 closable={false}
                 footer={(
-                    <Button onClick={logout}>
+                    <Button onClick={sessionApi.logout}>
                         Logout
                     </Button>
                 )}>
@@ -43,10 +45,7 @@ function PrivateComponent({ session, login, logout, userRole, children }) {
 }
 
 PrivateComponent.propTypes = {
-    userRole: PropTypes.string,
-    session: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    logout: PropTypes.func.isRequired
+    userRole: PropTypes.string
 };
 
-export default withSession(PrivateComponent);
+export default PrivateComponent;

@@ -1,39 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
-import withBusyCheck from 'containers/WithBusyCheck';
 import { isPro } from 'selectors/AppSelectors';
 
 function withProCheck(Component) {
-    class WithProCheck extends React.Component {
-        render() {
-            const { pro, ...restProps } = this.props;
+    function WithProCheck(props) {
+        const pro = useSelector(isPro);
 
-            if (!pro) {
-                return (
-                    <ProLockedMessage />
-                );
-            }
-
+        if (!pro) {
             return (
-                <Component {...restProps} />
+                <ProLockedMessage />
             );
         }
+
+        return (
+            <Component {...props} />
+        );
     }
 
-    WithProCheck.propTypes = {
-        pro: PropTypes.bool.isRequired
-    };
-
-    const mapStateToProps = state => ({
-        pro: isPro(state)
-    });
-
-    return connect(
-        mapStateToProps,
-        null
-    )(withBusyCheck(WithProCheck));
+    return WithProCheck;
 }
 
 export default withProCheck;

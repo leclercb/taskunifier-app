@@ -1,17 +1,14 @@
 import React from 'react';
 import { Select, Tag } from 'antd';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
-import { getLinksFromObjects } from 'utils/LinkUtils';
+import { useLinks } from 'hooks/UseLinks';
 
 const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
-    const tasks = useSelector(getTasksFilteredByVisibleState);
-    let links = getLinksFromObjects(tasks, props.property);
+    const linkApi = useLinks(props.property);
 
     return (
         <Select ref={ref} mode="tags" allowClear={true} {...props}>
-            {links.map(link => (
+            {linkApi.links.map(link => (
                 <Select.Option key={link.id} value={link.id}>
                     <Tag color={link.color}>{link.title}</Tag>
                 </Select.Option>
