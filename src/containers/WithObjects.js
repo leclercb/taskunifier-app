@@ -14,7 +14,6 @@ import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { addTaskField, deleteTaskField, updateTaskField } from 'actions/TaskFieldActions';
 import { addTaskFilter, deleteTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
 import { addTaskTemplate, deleteTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
-import withBusyCheck from 'containers/WithBusyCheck';
 import { getSelectedNoteFilter, getSelectedTaskFilter } from 'selectors/AppSelectors';
 import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
@@ -205,7 +204,7 @@ function withObjects(Component, options) {
     return connect(
         mapStateToProps,
         options.includeDispatch === true ? mapDispatchToProps : null
-    )(withBusyCheck(Component));
+    )(Component);
 }
 
 export default withObjects;

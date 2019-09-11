@@ -20,7 +20,6 @@ import {
 } from 'actions/BackupActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
-import withBusyCheck from 'containers/WithBusyCheck';
 import {
     getBatchAddTasksManager,
     getBatchEditTasksManager,
@@ -77,7 +76,7 @@ function withApp(Component) {
     return connect(
         mapStateToProps,
         mapDispatchToProps
-    )(withBusyCheck(Component));
+    )(Component);
 }
 
 export default withApp;
