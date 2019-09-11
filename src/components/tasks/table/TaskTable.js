@@ -10,21 +10,21 @@ import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
 import withApp from 'containers/WithApp';
 import withTaskFields from 'containers/WithTaskFields';
-import withTasks from 'containers/WithTasks';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useTasks } from 'hooks/UseTasks';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskMetaDataPropType, TaskPropType } from 'proptypes/TaskPropTypes';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
 
 function TaskTable(props) {
+    const taskApi = useTasks();
+
     const onMenuAction = action => {
-        const tasks = props.tasks.filter(task => props.selectedTaskIds.includes(task.id));
+        const tasks = taskApi.filteredExpandedTasks.filter(task => taskApi.selectedTaskIds.includes(task.id));
 
         switch (action.type) {
             case 'batchEdit':
@@ -64,33 +64,33 @@ function TaskTable(props) {
     };
 
     const onDuplicateTask = task => {
-        props.duplicateTask(task);
+        taskApi.duplicateTask(task);
     };
 
     const onRemoveTask = task => {
-        props.deleteTask(task.id);
+        taskApi.deleteTask(task.id);
     };
 
     const onPostponeStartDate = (task, amount, unit) => {
-        props.updateTask({
+        taskApi.updateTask({
             ...task,
             startDate: moment(task.startDate ? task.startDate : undefined).add(amount, unit).toISOString()
         });
     };
 
     const onPostponeDueDate = (task, amount, unit) => {
-        props.updateTask({
+        taskApi.updateTask({
             ...task,
             dueDate: moment(task.dueDate ? task.dueDate : undefined).add(amount, unit).toISOString()
         });
     };
 
     const onUpdateTask = task => {
-        props.updateTask(task);
+        taskApi.updateTask(task);
     };
 
     const onDropTask = (dragData, dropData) => {
-        props.updateTask({
+        taskApi.updateTask({
             ...dragData.rowData,
             parent: dropData.rowData.id
         });
@@ -118,7 +118,7 @@ function TaskTable(props) {
             let expanded = null;
 
             if (field.id === 'title') {
-                if (hasChildren(task, props.tasksExpandedAndCollapsed)) {
+                if (hasChildren(task, taskApi.filteredTasks)) {
                     expanded = task.expanded !== false ? 'expanded' : 'collapsed';
                 } else {
                     expanded = 'hidden';
@@ -170,7 +170,7 @@ function TaskTable(props) {
                                 ...rowData,
                                 ...allValues
                             })}
-                            subLevel={field.id === 'title' ? getSubLevel(rowData, props.tasksMetaData) : 0}
+                            subLevel={field.id === 'title' ? getSubLevel(rowData, taskApi.tasksMetaData) : 0}
                             expandMode={getExpandMode(rowData)}
                             onSetExpanded={expanded => onUpdateTask({
                                 ...rowData,
@@ -193,18 +193,18 @@ function TaskTable(props) {
                         height={height}
                         rowHeight={props.settings.taskTableRowHeight}
                         headerHeight={20}
-                        rowCount={props.tasks.length}
-                        rowGetter={({ index }) => props.tasks[index]}
+                        rowCount={taskApi.filteredExpandedTasks.length}
+                        rowGetter={({ index }) => taskApi.filteredExpandedTasks[index]}
                         rowRenderer={rendererProps => (
                             <TaskMenu
                                 key={rendererProps.key}
-                                selectedTaskIds={props.selectedTaskIds}
+                                selectedTaskIds={taskApi.selectedTaskIds}
                                 onAction={onMenuAction}>
                                 {defaultTableRowRenderer(rendererProps)}
                             </TaskMenu>
                         )}
                         rowStyle={({ index }) => {
-                            const task = props.tasks[index];
+                            const task = taskApi.filteredExpandedTasks[index];
 
                             if (!task) {
                                 return {};
@@ -213,7 +213,7 @@ function TaskTable(props) {
                             let foregroundColor = getTaskForegroundColor(task, index, props.settings);
                             let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
 
-                            if (props.selectedTaskIds.includes(task.id)) {
+                            if (taskApi.selectedTaskIds.includes(task.id)) {
                                 foregroundColor = Constants.selectionForegroundColor;
                                 backgroundColor = Constants.selectionBackgroundColor;
                             }
@@ -224,7 +224,7 @@ function TaskTable(props) {
                             };
                         }}
                         rowClassName={({ index }) => {
-                            const task = props.tasks[index];
+                            const task = taskApi.filteredExpandedTasks[index];
 
                             if (!task) {
                                 return '';
@@ -232,7 +232,7 @@ function TaskTable(props) {
 
                             const classNames = [];
 
-                            if (props.selectedTaskIds.includes(task.id)) {
+                            if (taskApi.selectedTaskIds.includes(task.id)) {
                                 classNames.push('task-selected');
                             }
 
@@ -244,15 +244,15 @@ function TaskTable(props) {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.tasks,
-                            props.selectedTaskIds,
-                            props.setSelectedTaskIds,
+                            taskApi.filteredExpandedTasks,
+                            taskApi.selectedTaskIds,
+                            taskApi.setSelectedTaskIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.tasks,
-                            props.selectedTaskIds,
-                            props.setSelectedTaskIds,
+                            taskApi.filteredExpandedTasks,
+                            taskApi.selectedTaskIds,
+                            taskApi.setSelectedTaskIds,
                             true)} >
                         {columns}
                     </Table>
@@ -264,23 +264,11 @@ function TaskTable(props) {
 
 TaskTable.propTypes = {
     taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    tasksExpandedAndCollapsed: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    tasksMetaData: PropTypes.arrayOf(TaskMetaDataPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired,
-    selectedTaskFilter: TaskFilterPropType,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired,
-    duplicateTask: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
     setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
 
-export default withApp(withSettings(withTaskFields(withTasks(withSize(TaskTable), {
-    includeMetaData: true,
-    applySelectedTaskFilter: true
-}))));
+export default withApp(withSettings(withTaskFields(withSize(TaskTable))));

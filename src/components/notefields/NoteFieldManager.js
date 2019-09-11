@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withNotes from 'containers/WithNotes';
 import withNoteFields from 'containers/WithNoteFields';
 import withProCheck from 'containers/WithProCheck';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
+import { useNotes } from 'hooks/UseNotes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { NotePropType } from 'proptypes/NotePropTypes';
 
 function NoteFieldManager(props) {
+    const noteApi = useNotes();
     const selectedNoteFieldId = props.noteFieldId;
 
     const onAddNoteField = async noteField => {
@@ -44,7 +44,7 @@ function NoteFieldManager(props) {
                 {selectedNoteField ? (
                     <FieldForm
                         key={selectedNoteFieldId}
-                        objects={props.notes}
+                        objects={noteApi.notes}
                         field={selectedNoteField}
                         updateField={props.updateNoteField} />
                 ) : <Empty description="Please select a note field" />}
@@ -54,7 +54,6 @@ function NoteFieldManager(props) {
 }
 
 NoteFieldManager.propTypes = {
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     noteFieldId: PropTypes.string,
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     onNoteFieldSelection: PropTypes.func.isRequired,
@@ -64,4 +63,4 @@ NoteFieldManager.propTypes = {
     deleteNoteField: PropTypes.func.isRequired
 };
 
-export default withProCheck(withNoteFields(withNotes(NoteFieldManager)));
+export default withProCheck(withNoteFields(NoteFieldManager));

@@ -7,57 +7,56 @@ import Logo from 'components/common/Logo';
 import Spacer from 'components/common/Spacer';
 import UserMenu from 'components/layout/UserMenu';
 import withApp from 'containers/WithApp';
-import withNotes from 'containers/WithNotes';
-import withTasks from 'containers/WithTasks';
+import { useNotes } from 'hooks/UseNotes';
 import { usePrint } from 'hooks/UsePrint';
+import { useTasks } from 'hooks/UseTasks';
 import { useTaskTemplates } from 'hooks/UseTaskTemplates';
-import { NotePropType } from 'proptypes/NotePropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function Header(props) {
+    const noteApi = useNotes();
+    const taskApi = useTasks();
     const printApi = usePrint();
     const taskTemplatesApi = useTaskTemplates();
 
     const onAddNote = async () => {
-        const note = await props.addNote();
-        props.setSelectedNoteIds([note.id]);
+        const note = await noteApi.addNote();
+        noteApi.setSelectedNoteIds([note.id]);
     };
 
     const onRemoveNotes = () => {
-        props.deleteNote(props.selectedNoteIds);
+        noteApi.deleteNote(noteApi.selectedNoteIds);
     };
 
     const onPrintNotes = () => {
-        printApi.printNotes(props.notes);
+        printApi.printNotes(noteApi.notes);
     };
 
     const onAddTask = async () => {
         let task = {};
 
         const taskTemplate = taskTemplatesApi.taskTemplates.find(taskTemplate =>
-            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
+            taskTemplate.id === taskApi.selectedTaskFilter.taskTemplate);
 
         applyTaskTemplate(taskTemplate, task);
 
-        task = await props.addTask(task);
-        props.setSelectedTaskIds([task.id]);
+        task = await taskApi.addTask(task);
+        taskApi.setSelectedTaskIds([task.id]);
     };
 
     const onEditTask = () => {
         props.setTaskEditionManagerOptions({
             visible: true,
-            taskId: props.selectedTaskIds[0]
+            taskId: taskApi.selectedTaskIds[0]
         });
     };
 
     const onRemoveTasks = () => {
-        props.deleteTask(props.selectedTaskIds);
+        taskApi.deleteTask(taskApi.selectedTaskIds);
     };
 
     const onPrintTasks = () => {
-        printApi.printTasks(props.tasks);
+        printApi.printTasks(taskApi.tasks);
     };
 
     const onSave = () => {
@@ -185,10 +184,10 @@ function Header(props) {
                 createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
                 : null}
             {(props.selectedView === 'task' || props.selectedView === 'taskCalendar') ?
-                createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
+                createButton('edit', 'Edit Task', onEditTask, taskApi.selectedTaskIds.length !== 1)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length <= 1 || props.selectedTaskIds.length > 50)
+                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, taskApi.selectedTaskIds.length <= 1 || taskApi.selectedTaskIds.length > 50)
                 : null}
             {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
@@ -225,22 +224,11 @@ function Header(props) {
 
 Header.propTypes = {
     pro: PropTypes.bool.isRequired,
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     selectedView: PropTypes.oneOf(['note', 'task', 'taskCalendar']).isRequired,
-    selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    selectedTaskFilter: TaskFilterPropType.isRequired,
-    addNote: PropTypes.func.isRequired,
-    deleteNote: PropTypes.func.isRequired,
-    addTask: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
     setSelectedView: PropTypes.func.isRequired,
-    setSelectedNoteIds: PropTypes.func.isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired,
     setCategoryManagerOptions: PropTypes.func.isRequired,
     setReminderManagerOptions: PropTypes.func.isRequired,
     setNoteFieldManagerOptions: PropTypes.func.isRequired,
@@ -254,4 +242,4 @@ Header.propTypes = {
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withNotes(withTasks(Header)));
+export default withApp(Header);

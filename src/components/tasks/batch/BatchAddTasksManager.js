@@ -4,11 +4,12 @@ import { Button, Form, Input } from 'antd';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import Icon from 'components/common/Icon';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
-import withTasks from 'containers/WithTasks';
 import { useTaskTemplates } from 'hooks/UseTaskTemplates';
+import { useTasks } from 'hooks/UseTasks';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function BatchAddTasksManager(props) {
+    const taskApi = useTasks();
     const taskTemplatesApi = useTaskTemplates();
 
     const addTasks = () => {
@@ -33,7 +34,7 @@ function BatchAddTasksManager(props) {
                         const task = {};
                         applyTaskTemplate(taskTemplate, task);
                         task.title = match[2]; // eslint-disable-line prefer-destructuring
-                        promises.push(props.addTask(task));
+                        promises.push(taskApi.addTask(task));
 
                         let subLevel = match[1].length;
 
@@ -64,7 +65,7 @@ function BatchAddTasksManager(props) {
                         return;
                     }
 
-                    props.updateTask({
+                    taskApi.updateTask({
                         ...task,
                         parent: parents[taskSubLevels[index] - 1]
                     });
@@ -111,9 +112,7 @@ function BatchAddTasksManager(props) {
 
 BatchAddTasksManager.propTypes = {
     form: PropTypes.object.isRequired,
-    addTask: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired
 };
 
-export default withTasks(Form.create({ name: 'batchAddTasks' })(BatchAddTasksManager), { includeState: false });
+export default Form.create({ name: 'batchAddTasks' })(BatchAddTasksManager);

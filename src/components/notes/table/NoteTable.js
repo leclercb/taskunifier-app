@@ -3,7 +3,6 @@ import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
 import withNoteFields from 'containers/WithNoteFields';
-import withNotes from 'containers/WithNotes';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
@@ -12,15 +11,16 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useNotes } from 'hooks/UseNotes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
-import { NotePropType } from 'proptypes/NotePropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
 function NoteTable(props) {
+    const noteApi = useNotes();
+
     const onMenuAction = action => {
-        const notes = props.notes.filter(note => props.selectedNoteIds.includes(note.id));
+        const notes = noteApi.selectedNotes;
 
         switch (action.type) {
             case 'duplicate':
@@ -35,15 +35,15 @@ function NoteTable(props) {
     };
 
     const onDuplicateNote = note => {
-        props.duplicateNote(note);
+        noteApi.duplicateNote(note);
     };
 
     const onRemoveNote = note => {
-        props.deleteNote(note.id);
+        noteApi.deleteNote(note.id);
     };
 
     const onUpdateNote = note => {
-        props.updateNote(note);
+        noteApi.updateNote(note);
     };
 
     let tableWidth = 0;
@@ -120,18 +120,18 @@ function NoteTable(props) {
                         height={height}
                         rowHeight={props.settings.noteTableRowHeight}
                         headerHeight={20}
-                        rowCount={props.notes.length}
-                        rowGetter={({ index }) => props.notes[index]}
+                        rowCount={noteApi.filteredNotes.length}
+                        rowGetter={({ index }) => noteApi.filteredNotes[index]}
                         rowRenderer={rendererProps => (
                             <NoteMenu
                                 key={rendererProps.key}
-                                selectedNoteIds={props.selectedNoteIds}
+                                selectedNoteIds={noteApi.selectedNoteIds}
                                 onAction={onMenuAction}>
                                 {defaultTableRowRenderer(rendererProps)}
                             </NoteMenu>
                         )}
                         rowStyle={({ index }) => {
-                            const note = props.notes[index];
+                            const note = noteApi.filteredNotes[index];
 
                             if (!note) {
                                 return {};
@@ -140,7 +140,7 @@ function NoteTable(props) {
                             let foregroundColor = 'initial';
                             let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
 
-                            if (props.selectedNoteIds.includes(note.id)) {
+                            if (noteApi.selectedNoteIds.includes(note.id)) {
                                 foregroundColor = Constants.selectionForegroundColor;
                                 backgroundColor = Constants.selectionBackgroundColor;
                             }
@@ -152,15 +152,15 @@ function NoteTable(props) {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.notes,
-                            props.selectedNoteIds,
-                            props.setSelectedNoteIds,
+                            noteApi.filteredNotes,
+                            noteApi.selectedNoteIds,
+                            noteApi.setSelectedNoteIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.notes,
-                            props.selectedNoteIds,
-                            props.setSelectedNoteIds,
+                            noteApi.filteredNotes,
+                            noteApi.selectedNoteIds,
+                            noteApi.setSelectedNoteIds,
                             true)} >
                         {columns}
                     </Table>
@@ -172,16 +172,9 @@ function NoteTable(props) {
 
 NoteTable.propTypes = {
     noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired,
-    selectedNoteFilter: NoteFilterPropType,
-    selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    setSelectedNoteIds: PropTypes.func.isRequired,
-    duplicateNote: PropTypes.func.isRequired,
-    updateNote: PropTypes.func.isRequired,
-    deleteNote: PropTypes.func.isRequired,
     updateSettings: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withNoteFields(withNotes(withSize(NoteTable), { applySelectedNoteFilter: true })));
+export default withSettings(withNoteFields(withSize(NoteTable)));

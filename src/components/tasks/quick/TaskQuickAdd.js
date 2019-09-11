@@ -1,23 +1,27 @@
 import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import withTasks from 'containers/WithTasks';
-import withObjects from 'containers/WithObjects';
 import Icon from 'components/common/Icon';
 import { ContextTitle } from 'components/contexts/ContextTitle';
 import { FolderTitle } from 'components/folders/FolderTitle';
 import { GoalTitle } from 'components/goals/GoalTitle';
 import { LocationTitle } from 'components/locations/LocationTitle';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { ContextPropType } from 'proptypes/ContextPropTypes';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
-import { GoalPropType } from 'proptypes/GoalPropTypes';
-import { LocationPropType } from 'proptypes/LocationPropTypes';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
+import { useContexts } from 'hooks/UseContexts';
+import { useFolders } from 'hooks/UseFolders';
+import { useGoals } from 'hooks/UseGoals';
+import { useLocations } from 'hooks/UseLocations';
+import { useTaskTemplates } from 'hooks/UseTaskTemplates';
+import { useTasks } from 'hooks/UseTasks';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
-function TaskQuickAdd(props) {
+function TaskQuickAdd() {
+    const contextApi = useContexts();
+    const folderApi = useFolders();
+    const goalApi = useGoals();
+    const locationApi = useLocations();
+    const taskApi = useTasks();
+    const taskTemplateApi = useTaskTemplates();
+
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);
     const selectRef = useRef(null);
@@ -49,8 +53,8 @@ function TaskQuickAdd(props) {
             title: values[0]
         };
 
-        const taskTemplate = props.taskTemplates.find(taskTemplate =>
-            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
+        const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate =>
+            taskTemplate.id === taskApi.selectedTaskFilter.taskTemplate);
 
         applyTaskTemplate(taskTemplate, newTask);
 
@@ -62,14 +66,14 @@ function TaskQuickAdd(props) {
             const object = JSON.parse(value.substr(value.lastIndexOf('__') + 2));
 
             if (object.field === 'taskTemplate') {
-                const taskTemplate = props.taskTemplates.find(taskTemplate => taskTemplate.id === object.value);
+                const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === object.value);
                 applyTaskTemplate(taskTemplate, newTask);
             } else {
                 newTask[object.field] = object.value;
             }
         });
 
-        props.addTask(newTask);
+        taskApi.addTask(newTask);
 
         setValues([]);
         setTimeout(() => setOpen(false));
@@ -92,35 +96,35 @@ function TaskQuickAdd(props) {
                     <Icon icon="plus" text="Create task" />
                 </Select.Option>,
                 <Select.OptGroup key='contexts' label="Contexts">
-                    {props.contexts.map(context => (
+                    {contextApi.contexts.map(context => (
                         <Select.Option key={context.id} value={context.title + '__' + JSON.stringify({ field: 'context', value: context.id })}>
                             <ContextTitle contextId={context.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='folders' label="Folders">
-                    {props.folders.map(folder => (
+                    {folderApi.folders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
                             <FolderTitle folderId={folder.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='goals' label="Goals">
-                    {props.goals.map(goal => (
+                    {goalApi.goals.map(goal => (
                         <Select.Option key={goal.id} value={goal.title + '__' + JSON.stringify({ field: 'goal', value: goal.id })}>
                             <GoalTitle goalId={goal.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='locations' label="Locations">
-                    {props.locations.map(location => (
+                    {locationApi.locations.map(location => (
                         <Select.Option key={location.id} value={location.title + '__' + JSON.stringify({ field: 'location', value: location.id })}>
                             <LocationTitle locationId={location.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='taskTemplates' label="Task Templates">
-                    {props.taskTemplates.map(taskTemplate => (
+                    {taskTemplateApi.taskTemplates.map(taskTemplate => (
                         <Select.Option key={taskTemplate.id} value={taskTemplate.title + '__' + JSON.stringify({ field: 'taskTemplate', value: taskTemplate.id })}>
                             <TaskTemplateTitle taskTemplateId={taskTemplate.id} />
                         </Select.Option>
@@ -131,21 +135,4 @@ function TaskQuickAdd(props) {
     );
 }
 
-TaskQuickAdd.propTypes = {
-    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
-    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
-    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
-    locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
-    selectedTaskFilter: TaskFilterPropType.isRequired,
-    addTask: PropTypes.func.isRequired
-};
-
-export default withTasks(withObjects(TaskQuickAdd, {
-    includeContexts: true,
-    includeFolders: true,
-    includeGoals: true,
-    includeLocations: true,
-    includeTaskTemplates: true,
-    includeSelectedTaskFilter: true
-}), { includeState: false });
+export default TaskQuickAdd;
