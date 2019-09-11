@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { getSelectedNoteFilter, getSelectedNoteFilterDate } from 'selectors/AppSelectors';
+import { getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -35,10 +35,18 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     }
 );
 
-export const getVisibleNote = createSelector(
+export const getVisibleNoteSelector = () => createSelector(
     getNotesFilteredByVisibleState,
     (state, id) => id,
     (notes, id) => {
         return notes.find(note => note.id === id);
+    }
+);
+
+export const getSelectedNotes = createSelector(
+    getNotes,
+    getSelectedNoteIds,
+    (notes, selectedNoteIds) => {
+        return notes.filter(note => selectedNoteIds.includes(note.id));
     }
 );

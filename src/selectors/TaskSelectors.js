@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { getSelectedTaskFilter, getSelectedTaskFilterDate } from 'selectors/AppSelectors';
+import { getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { store } from 'store/Store';
@@ -86,7 +86,7 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
     }
 );
 
-export const getTaskReminders = createSelector(
+export const getTaskRemindersSelector = () => createSelector(
     getTasksFilteredBySelectedFilter,
     (state, date) => date,
     (tasks, date) => {
@@ -104,10 +104,18 @@ export const getTaskReminders = createSelector(
     }
 );
 
-export const getVisibleTask = createSelector(
+export const getVisibleTaskSelector = () => createSelector(
     getTasksFilteredByVisibleState,
     (state, id) => id,
     (tasks, id) => {
         return tasks.find(task => task.id === id);
+    }
+);
+
+export const getSelectedTasks = createSelector(
+    getTasks,
+    getSelectedTaskIds,
+    (tasks, selectedTaskIds) => {
+        return tasks.filter(task => selectedTaskIds.includes(task.id));
     }
 );

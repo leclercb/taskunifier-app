@@ -19,7 +19,7 @@ export const getNoteFieldsIncludingDefaults = createSelector(
     }
 );
 
-export const getVisibleNoteField = createSelector(
+export const getVisibleNoteFieldSelector = () => createSelector(
     getNoteFieldsFilteredByVisibleState,
     (state, id) => id,
     (noteFields, id) => {

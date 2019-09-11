@@ -1,16 +1,15 @@
 import React from 'react';
 import { Button, Form, Modal } from 'antd';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
 import withApp from 'containers/WithApp';
+import { useTask } from 'hooks/UseTask';
 import { useTasks } from 'hooks/UseTasks';
-import { getVisibleTask } from 'selectors/TaskSelectors';
 
 function ModalTaskEditionManager(props) {
     const taskApi = useTasks();
-    const task = useSelector(state => getVisibleTask(state, props.taskEditionManager.taskId));
+    const task = useTask(props.taskEditionManager.taskId);
 
     const onCloseTaskEditionManager = () => {
         props.form.validateFields((error, values) => {

@@ -11,7 +11,7 @@ export const getContextsFilteredByVisibleState = createSelector(
     }
 );
 
-export const getVisibleContext = createSelector(
+export const getVisibleContextSelector = () => createSelector(
     getContextsFilteredByVisibleState,
     (state, id) => id,
     (contexts, id) => {

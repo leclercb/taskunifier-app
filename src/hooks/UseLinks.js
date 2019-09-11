@@ -1,10 +1,10 @@
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
-import { getLinksFromObjects } from 'utils/LinkUtils';
+import { getLinksSelector } from 'selectors/LinkSelectors';
 
 export function useLinks(property) {
-    const tasks = useSelector(getTasksFilteredByVisibleState);
-    const links = getLinksFromObjects(tasks, property);
+    const getLinks = useMemo(getLinksSelector, []);
+    const links = useSelector(state => getLinks(state, property));
 
     return {
         links

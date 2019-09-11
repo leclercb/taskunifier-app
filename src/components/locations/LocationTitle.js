@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
-import { getVisibleLocation } from 'selectors/LocationSelectors';
+import { useLocation } from 'hooks/UseLocation';
 
 export function LocationTitle(props) {
-    const location = useSelector(state => getVisibleLocation(state, props.locationId));
+    const location = useLocation(props.locationId);
     return location ? <Icon icon="circle" color={location.color} text={location.title} /> : <span>&nbsp;</span>;
 }
 

@@ -11,7 +11,7 @@ export const getTaskTemplatesFilteredByVisibleState = createSelector(
     }
 );
 
-export const getVisibleTaskTemplate = createSelector(
+export const getVisibleTaskTemplateSelector = () => createSelector(
     getTaskTemplatesFilteredByVisibleState,
     (state, id) => id,
     (taskTemplates, id) => {

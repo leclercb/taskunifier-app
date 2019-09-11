@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
 import { useSettings } from 'hooks/UseSettings';
-import { getVisibleTask } from 'selectors/TaskSelectors';
+import { useTask } from 'hooks/UseTask';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
 export function TaskTitle(props) {
     const settingsApi = useSettings();
-    const task = useSelector(state => getVisibleTask(state, props.taskId));
+    const task = useTask(props.taskId);
 
     return task ? (
         <Icon

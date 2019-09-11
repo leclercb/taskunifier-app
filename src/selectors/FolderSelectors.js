@@ -18,7 +18,7 @@ export const getFoldersFilteredByNonArchived = createSelector(
     }
 );
 
-export const getVisibleFolder = createSelector(
+export const getVisibleFolderSelector = () => createSelector(
     getFoldersFilteredByVisibleState,
     (state, id) => id,
     (folders, id) => {

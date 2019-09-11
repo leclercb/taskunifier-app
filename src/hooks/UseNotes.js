@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/AppActions';
 import { addNote, deleteNote, duplicateNote, updateNote } from 'actions/NoteActions';
 import { getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
-import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState, getSelectedNotes } from 'selectors/NoteSelectors';
 
 export function useNotes() {
     const dispatch = useDispatch();
@@ -12,7 +12,7 @@ export function useNotes() {
     const filteredNotes = useSelector(getNotesFilteredBySelectedFilter);
 
     const selectedNoteIds = useSelector(getSelectedNoteIds);
-    const selectedNotes = notes.filter(note => selectedNoteIds.includes(note.id));
+    const selectedNotes = useSelector(getSelectedNotes);
     const selectedNoteFilter = useSelector(getSelectedNoteFilter);
 
     const addNoteCallback = useCallback(

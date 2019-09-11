@@ -6,6 +6,7 @@ import { addTask, deleteTask, duplicateTask, updateTask } from 'actions/TaskActi
 import { getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks } from 'selectors/SettingSelectors';
 import {
+    getSelectedTasks,
     getTasksFilteredBySelectedFilter,
     getTasksFilteredBySelectedFilterAndExpanded,
     getTasksFilteredByVisibleState,
@@ -21,7 +22,7 @@ export function useTasks() {
     const filteredExpandedTasks = useSelector(getTasksFilteredBySelectedFilterAndExpanded);
 
     const selectedTaskIds = useSelector(getSelectedTaskIds);
-    const selectedTasks = tasks.filter(task => selectedTaskIds.includes(task.id));
+    const selectedTasks = useSelector(getSelectedTasks);
     const selectedTaskFilter = useSelector(getSelectedTaskFilter);
 
     const selectedCalendarView = useSelector(getSelectedCalendarView);

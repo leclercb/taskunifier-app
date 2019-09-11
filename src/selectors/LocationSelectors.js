@@ -11,7 +11,7 @@ export const getLocationsFilteredByVisibleState = createSelector(
     }
 );
 
-export const getVisibleLocation = createSelector(
+export const getVisibleLocationSelector = () => createSelector(
     getLocationsFilteredByVisibleState,
     (state, id) => id,
     (locations, id) => {

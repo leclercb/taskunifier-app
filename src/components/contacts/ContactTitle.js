@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
-import { getVisibleContact } from 'selectors/ContactSelectors';
+import { useContact } from 'hooks/UseContact';
 import { getContactTitle } from 'utils/ContactUtils';
 
 export function ContactTitle(props) {
-    const contact = useSelector(state => getVisibleContact(state, props.contactId));
+    const contact = useContact(props.contactId);
     return contact ? <Icon icon="circle" color={contact.color} text={getContactTitle(contact)} /> : <span>&nbsp;</span>;
 }
 

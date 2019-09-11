@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
-import { getVisibleNoteField } from 'selectors/NoteFieldSelectors';
+import { useNoteField } from 'hooks/UseNoteField';
 
 export function NoteFieldTitle(props) {
-    const noteField = useSelector(state => getVisibleNoteField(state, props.noteFieldId));
+    const noteField = useNoteField(props.noteFieldId);
     return noteField ? <Icon icon="circle" color={noteField.color} text={noteField.title} /> : <span>&nbsp;</span>;
 }
 
