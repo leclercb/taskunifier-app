@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
-import withTaskTemplates from 'containers/WithTaskTemplates';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 
 export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(props, ref) {
-    const { taskTemplates, ...restProps } = props;
-
-    restProps.value = taskTemplates.find(taskTemplate => taskTemplate.id === restProps.value) ? restProps.value : null;
+    const taskTemplates = useSelector(getTaskTemplatesFilteredByVisibleState);
+    const value = taskTemplates.find(taskTemplate => taskTemplate.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...props} value={value}>
             {taskTemplates.map(taskTemplate => (
                 <Select.Option key={taskTemplate.id} value={taskTemplate.id}>
                     <Icon icon="circle" color={taskTemplate.color} text={taskTemplate.title} />
@@ -24,7 +23,7 @@ export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(p
 TaskTemplateSelect.displayName = 'ForwardRefTaskTemplateSelect';
 
 TaskTemplateSelect.propTypes = {
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withTaskTemplates(TaskTemplateSelect);
+export default TaskTemplateSelect;

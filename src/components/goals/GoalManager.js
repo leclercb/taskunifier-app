@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withGoals from 'containers/WithGoals';
 import GoalList from 'components/goals/GoalList';
 import GoalForm from 'components/goals/GoalForm';
-import { GoalPropType } from 'proptypes/GoalPropTypes';
+import { useGoals } from 'hooks/UseGoals';
 
 function GoalManager(props) {
+    const goalApi = useGoals();
     const selectedGoalId = props.goalId;
 
     const onAddGoal = async goal => {
-        goal = await props.addGoal(goal);
+        goal = await goalApi.addGoal(goal);
         props.onGoalSelection(goal.id);
     };
 
     const onDuplicateGoal = async goal => {
-        goal = await props.duplicateGoal(goal);
+        goal = await goalApi.duplicateGoal(goal);
         props.onGoalSelection(goal.id);
     };
 
@@ -23,23 +23,23 @@ function GoalManager(props) {
         props.onGoalSelection(goal.id);
     };
 
-    const selectedGoal = props.goals.find(goal => goal.id === selectedGoalId);
+    const selectedGoal = goalApi.goals.find(goal => goal.id === selectedGoalId);
 
     return (
         <Row>
             <Col span={6}>
                 <GoalList
-                    goals={props.goals}
+                    goals={goalApi.goals}
                     selectedGoalId={selectedGoalId}
                     addGoal={onAddGoal}
                     duplicateGoal={onDuplicateGoal}
-                    deleteGoal={props.deleteGoal}
+                    deleteGoal={goalApi.deleteGoal}
                     onGoalSelection={onGoalSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedGoal ? (
-                    <GoalForm key={selectedGoalId} goal={selectedGoal} updateGoal={props.updateGoal} />
+                    <GoalForm key={selectedGoalId} goal={selectedGoal} updateGoal={goalApi.updateGoal} />
                 ) : <Empty description="Please select a goal" />}
             </Col>
         </Row>
@@ -48,12 +48,7 @@ function GoalManager(props) {
 
 GoalManager.propTypes = {
     goalId: PropTypes.string,
-    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
-    onGoalSelection: PropTypes.func.isRequired,
-    addGoal: PropTypes.func.isRequired,
-    duplicateGoal: PropTypes.func.isRequired,
-    updateGoal: PropTypes.func.isRequired,
-    deleteGoal: PropTypes.func.isRequired
+    onGoalSelection: PropTypes.func.isRequired
 };
 
-export default withGoals(GoalManager);
+export default GoalManager;

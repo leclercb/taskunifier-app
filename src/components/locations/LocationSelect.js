@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
-import withLocations from 'containers/WithLocations';
-import { LocationPropType } from 'proptypes/LocationPropTypes';
+import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 
 export const LocationSelect = React.forwardRef(function LocationSelect(props, ref) {
-    const { locations, ...restProps } = props;
-
-    restProps.value = locations.find(location => location.id === restProps.value) ? restProps.value : null;
+    const locations = useSelector(getLocationsFilteredByVisibleState);
+    const value = locations.find(location => location.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...props} value={value}>
             {locations.map(location => (
                 <Select.Option key={location.id} value={location.id}>
                     <Icon icon="circle" color={location.color} text={location.title} />
@@ -24,7 +23,7 @@ export const LocationSelect = React.forwardRef(function LocationSelect(props, re
 LocationSelect.displayName = 'ForwardRefLocationSelect';
 
 LocationSelect.propTypes = {
-    locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withLocations(LocationSelect);
+export default LocationSelect;

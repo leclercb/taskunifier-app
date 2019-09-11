@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
-import withFolder from 'containers/WithFolder';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
+import { getVisibleFolder } from 'selectors/FolderSelectors';
 
 export function FolderTitle(props) {
-    const { folder } = props;
+    const folder = useSelector(getVisibleFolder(props.folderId));
     return folder ? <Icon icon="circle" color={folder.color} text={folder.title} /> : <span>&nbsp;</span>;
 }
 
 FolderTitle.propTypes = {
-    folderId: PropTypes.string,
-    folder: FolderPropType
+    folderId: PropTypes.string
 };
 
-export default withFolder(FolderTitle);
+export default FolderTitle;

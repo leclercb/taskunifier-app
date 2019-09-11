@@ -94,35 +94,35 @@ function TaskQuickAdd(props) {
                 <Select.OptGroup key='contexts' label="Contexts">
                     {props.contexts.map(context => (
                         <Select.Option key={context.id} value={context.title + '__' + JSON.stringify({ field: 'context', value: context.id })}>
-                            <ContextTitle context={context} />
+                            <ContextTitle contextId={context.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='folders' label="Folders">
                     {props.folders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
-                            <FolderTitle folder={folder} />
+                            <FolderTitle folderId={folder.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='goals' label="Goals">
                     {props.goals.map(goal => (
                         <Select.Option key={goal.id} value={goal.title + '__' + JSON.stringify({ field: 'goal', value: goal.id })}>
-                            <GoalTitle goal={goal} />
+                            <GoalTitle goalId={goal.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='locations' label="Locations">
                     {props.locations.map(location => (
                         <Select.Option key={location.id} value={location.title + '__' + JSON.stringify({ field: 'location', value: location.id })}>
-                            <LocationTitle location={location} />
+                            <LocationTitle locationId={location.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='taskTemplates' label="Task Templates">
                     {props.taskTemplates.map(taskTemplate => (
                         <Select.Option key={taskTemplate.id} value={taskTemplate.title + '__' + JSON.stringify({ field: 'taskTemplate', value: taskTemplate.id })}>
-                            <TaskTemplateTitle taskTemplate={taskTemplate} />
+                            <TaskTemplateTitle taskTemplateId={taskTemplate.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>

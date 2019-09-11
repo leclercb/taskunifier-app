@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { ContextPropType } from 'proptypes/ContextPropTypes';
-import withContexts from 'containers/WithContexts';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
+import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 
 export const ContextSelect = React.forwardRef(function ContextSelect(props, ref) {
-    const { contexts, ...restProps } = props;
-
-    restProps.value = contexts.find(context => context.id === restProps.value) ? restProps.value : null;
+    const contexts = useSelector(getContextsFilteredByVisibleState);
+    const value = contexts.find(context => context.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...props} value={value}>
             {contexts.map(context => (
                 <Select.Option key={context.id} value={context.id}>
                     <Icon icon="circle" color={context.color} text={context.title} />
@@ -24,7 +23,7 @@ export const ContextSelect = React.forwardRef(function ContextSelect(props, ref)
 ContextSelect.displayName = 'ForwardRefContextSelect';
 
 ContextSelect.propTypes = {
-    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withContexts(ContextSelect);
+export default ContextSelect;

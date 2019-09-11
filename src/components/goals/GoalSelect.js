@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { GoalPropType } from 'proptypes/GoalPropTypes';
-import withGoals from 'containers/WithGoals';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
+import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 
 export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
-    const { goals, ...restProps } = props;
-
-    restProps.value = goals.find(goal => goal.id === restProps.value) ? restProps.value : null;
+    const goals = useSelector(getGoalsFilteredByVisibleState);
+    const value = goals.find(goal => goal.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
+        <Select ref={ref} allowClear={true} {...props} value={value}>
             {goals.map(goal => (
                 <Select.Option key={goal.id} value={goal.id}>
                     <Icon icon="circle" color={goal.color} text={goal.title} />
@@ -24,7 +23,7 @@ export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
 GoalSelect.displayName = 'ForwardRefGoalSelect';
 
 GoalSelect.propTypes = {
-    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withGoals(GoalSelect, { filteredByNonArchived: true });
+export default GoalSelect;

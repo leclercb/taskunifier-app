@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withContexts from 'containers/WithContexts';
 import ContextList from 'components/contexts/ContextList';
 import ContextForm from 'components/contexts/ContextForm';
-import { ContextPropType } from 'proptypes/ContextPropTypes';
+import { useContexts } from 'hooks/UseContexts';
 
 function ContextManager(props) {
+    const contextApi = useContexts();
     const selectedContextId = props.contextId;
 
     const onAddContext = async context => {
-        context = await props.addContext(context);
+        context = await contextApi.addContext(context);
         props.onContextSelection(context.id);
     };
 
     const onDuplicateContext = async context => {
-        context = await props.duplicateContext(context);
+        context = await contextApi.duplicateContext(context);
         props.onContextSelection(context.id);
     };
 
@@ -23,23 +23,23 @@ function ContextManager(props) {
         props.onContextSelection(context.id);
     };
 
-    const selectedContext = props.contexts.find(context => context.id === selectedContextId);
+    const selectedContext = contextApi.contexts.find(context => context.id === selectedContextId);
 
     return (
         <Row>
             <Col span={6}>
                 <ContextList
-                    contexts={props.contexts}
+                    contexts={contextApi.contexts}
                     selectedContextId={selectedContextId}
                     addContext={onAddContext}
                     duplicateContext={onDuplicateContext}
-                    deleteContext={props.deleteContext}
+                    deleteContext={contextApi.deleteContext}
                     onContextSelection={onContextSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedContext ? (
-                    <ContextForm key={selectedContextId} context={selectedContext} updateContext={props.updateContext} />
+                    <ContextForm key={selectedContextId} context={selectedContext} updateContext={contextApi.updateContext} />
                 ) : <Empty description="Please select a context" />}
             </Col>
         </Row>
@@ -48,12 +48,7 @@ function ContextManager(props) {
 
 ContextManager.propTypes = {
     contextId: PropTypes.string,
-    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
-    onContextSelection: PropTypes.func.isRequired,
-    addContext: PropTypes.func.isRequired,
-    duplicateContext: PropTypes.func.isRequired,
-    updateContext: PropTypes.func.isRequired,
-    deleteContext: PropTypes.func.isRequired
+    onContextSelection: PropTypes.func.isRequired
 };
 
-export default withContexts(ContextManager);
+export default ContextManager;

@@ -10,3 +10,10 @@ export const getContextsFilteredByVisibleState = createSelector(
         return filterByVisibleState(contexts).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
+
+export const getVisibleContext = id => createSelector(
+    getContextsFilteredByVisibleState,
+    (contexts) => {
+        return contexts.find(context => context.id === id);
+    }
+);

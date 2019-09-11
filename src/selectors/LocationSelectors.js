@@ -10,3 +10,10 @@ export const getLocationsFilteredByVisibleState = createSelector(
         return filterByVisibleState(locations).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
+
+export const getVisibleLocation = id => createSelector(
+    getLocationsFilteredByVisibleState,
+    (locations) => {
+        return locations.find(location => location.id === id);
+    }
+);

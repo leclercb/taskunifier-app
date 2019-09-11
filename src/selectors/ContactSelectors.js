@@ -11,3 +11,10 @@ export const getContactsFilteredByVisibleState = createSelector(
         return filterByVisibleState(contacts).sort((a, b) => compareStrings(getContactTitle(a), getContactTitle(b)));
     }
 );
+
+export const getVisibleContact = id => createSelector(
+    getContactsFilteredByVisibleState,
+    (contacts) => {
+        return contacts.find(contact => contact.id === id);
+    }
+);

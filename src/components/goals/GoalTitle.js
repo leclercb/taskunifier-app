@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { GoalPropType } from 'proptypes/GoalPropTypes';
-import withGoal from 'containers/WithGoal';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
+import { getVisibleGoal } from 'selectors/GoalSelectors';
 
 export function GoalTitle(props) {
-    const { goal } = props;
+    const goal = useSelector(getVisibleGoal(props.goalId));
     return goal ? <Icon icon="circle" color={goal.color} text={goal.title} /> : <span>&nbsp;</span>;
 }
 
 GoalTitle.propTypes = {
-    goalId: PropTypes.string,
-    goal: GoalPropType
+    goalId: PropTypes.string
 };
 
-export default withGoal(GoalTitle);
+export default GoalTitle;

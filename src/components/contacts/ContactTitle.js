@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ContactPropType } from 'proptypes/ContactPropTypes';
-import withContact from 'containers/WithContact';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
+import { getVisibleContact } from 'selectors/ContactSelectors';
 import { getContactTitle } from 'utils/ContactUtils';
 
 export function ContactTitle(props) {
-    const { contact } = props;
+    const contact = useSelector(getVisibleContact(props.contactId));
     return contact ? <Icon icon="circle" color={contact.color} text={getContactTitle(contact)} /> : <span>&nbsp;</span>;
 }
 
 ContactTitle.propTypes = {
-    contactId: PropTypes.string,
-    contact: ContactPropType
+    contactId: PropTypes.string
 };
 
-export default withContact(ContactTitle);
+export default ContactTitle;

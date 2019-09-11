@@ -8,16 +8,18 @@ import Spacer from 'components/common/Spacer';
 import UserMenu from 'components/layout/UserMenu';
 import withApp from 'containers/WithApp';
 import withNotes from 'containers/WithNotes';
-import withPrint from 'containers/WithPrint';
 import withTasks from 'containers/WithTasks';
-import withTaskTemplates from 'containers/WithTaskTemplates';
+import { usePrint } from 'hooks/UsePrint';
+import { useTaskTemplates } from 'hooks/UseTaskTemplates';
 import { NotePropType } from 'proptypes/NotePropTypes';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function Header(props) {
+    const printApi = usePrint();
+    const taskTemplatesApi = useTaskTemplates();
+
     const onAddNote = async () => {
         const note = await props.addNote();
         props.setSelectedNoteIds([note.id]);
@@ -28,13 +30,13 @@ function Header(props) {
     };
 
     const onPrintNotes = () => {
-        props.printNotes(props.notes);
+        printApi.printNotes(props.notes);
     };
 
     const onAddTask = async () => {
         let task = {};
 
-        const taskTemplate = props.taskTemplates.find(taskTemplate =>
+        const taskTemplate = taskTemplatesApi.taskTemplates.find(taskTemplate =>
             taskTemplate.id === props.selectedTaskFilter.taskTemplate);
 
         applyTaskTemplate(taskTemplate, task);
@@ -55,7 +57,7 @@ function Header(props) {
     };
 
     const onPrintTasks = () => {
-        props.printTasks(props.tasks);
+        printApi.printTasks(props.tasks);
     };
 
     const onSave = () => {
@@ -225,17 +227,14 @@ Header.propTypes = {
     pro: PropTypes.bool.isRequired,
     notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     selectedView: PropTypes.oneOf(['note', 'task', 'taskCalendar']).isRequired,
     selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     selectedTaskFilter: TaskFilterPropType.isRequired,
     addNote: PropTypes.func.isRequired,
     deleteNote: PropTypes.func.isRequired,
-    printNotes: PropTypes.func.isRequired,
     addTask: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
-    printTasks: PropTypes.func.isRequired,
     saveData: PropTypes.func.isRequired,
     backupData: PropTypes.func.isRequired,
     synchronize: PropTypes.func.isRequired,
@@ -255,4 +254,4 @@ Header.propTypes = {
     setSettingManagerOptions: PropTypes.func.isRequired
 };
 
-export default withApp(withNotes(withTasks(withTaskTemplates(withPrint(Header)))));
+export default withApp(withNotes(withTasks(Header)));
