@@ -12,9 +12,10 @@ export const getContactsFilteredByVisibleState = createSelector(
     }
 );
 
-export const getVisibleContact = id => createSelector(
+export const getVisibleContact = createSelector(
     getContactsFilteredByVisibleState,
-    (contacts) => {
+    (state, id) => id,
+    (contacts, id) => {
         return contacts.find(contact => contact.id === id);
     }
 );

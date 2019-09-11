@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withStatus from 'containers/WithStatus';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { StatusPropType } from 'proptypes/StatusPropTypes';
 import { getStatusColor } from 'utils/SettingUtils';
+import { useStatuses } from 'hooks/UseStatuses';
 
 export function StatusTitle(props) {
-    const { status } = props;
+    const statusApi = useStatuses();
+    const status = statusApi.statuses.find(status => status.id === props.statusId);
+
     return status ? (
         <Icon icon="circle" color={getStatusColor(status.id, props.settings)} text={status.title} />
     ) : (<span>&nbsp;</span>);
@@ -16,8 +17,7 @@ export function StatusTitle(props) {
 
 StatusTitle.propTypes = {
     statusId: PropTypes.string,
-    status: StatusPropType,
     settings: SettingsPropType.isRequired
 };
 
-export default withStatus(withSettings(StatusTitle));
+export default withSettings(StatusTitle);

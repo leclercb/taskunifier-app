@@ -88,7 +88,7 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
 
 export const getTaskReminders = createSelector(
     getTasksFilteredBySelectedFilter,
-    (state, props) => props.date,
+    (state, date) => date,
     (tasks, date) => {
         return tasks.filter(task => {
             if (showReminder(task.startDate, task.startDateReminder, date)) {
@@ -101,5 +101,13 @@ export const getTaskReminders = createSelector(
 
             return false;
         });
+    }
+);
+
+export const getVisibleTask = createSelector(
+    getTasksFilteredByVisibleState,
+    (state, id) => id,
+    (tasks, id) => {
+        return tasks.find(task => task.id === id);
     }
 );

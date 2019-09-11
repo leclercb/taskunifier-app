@@ -11,9 +11,10 @@ export const getLocationsFilteredByVisibleState = createSelector(
     }
 );
 
-export const getVisibleLocation = id => createSelector(
+export const getVisibleLocation = createSelector(
     getLocationsFilteredByVisibleState,
-    (locations) => {
+    (state, id) => id,
+    (locations, id) => {
         return locations.find(location => location.id === id);
     }
 );

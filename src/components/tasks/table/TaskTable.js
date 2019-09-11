@@ -9,12 +9,11 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
 import withApp from 'containers/WithApp';
-import withTaskFields from 'containers/WithTaskFields';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useTaskFields } from 'hooks/UseTaskFields';
 import { useTasks } from 'hooks/UseTasks';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
@@ -22,6 +21,7 @@ import 'components/tasks/table/TaskTable.css';
 
 function TaskTable(props) {
     const taskApi = useTasks();
+    const taskFieldApi = useTaskFields();
 
     const onMenuAction = action => {
         const tasks = taskApi.filteredExpandedTasks.filter(task => taskApi.selectedTaskIds.includes(task.id));
@@ -99,9 +99,9 @@ function TaskTable(props) {
     let tableWidth = 0;
 
     const onResize = resizeHandler('taskColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('taskColumnOrder_', props.taskFields, props.settings, props.updateSettings);
+    const onMove = moveHandler('taskColumnOrder_', taskFieldApi.taskFields, props.settings, props.updateSettings);
 
-    const sortedFields = sortBy(props.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0);
+    const sortedFields = sortBy(taskFieldApi.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => props.settings['taskColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
@@ -263,7 +263,6 @@ function TaskTable(props) {
 }
 
 TaskTable.propTypes = {
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired,
     updateSettings: PropTypes.func.isRequired,
     setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
@@ -271,4 +270,4 @@ TaskTable.propTypes = {
     size: PropTypes.object.isRequired
 };
 
-export default withApp(withSettings(withTaskFields(withSize(TaskTable))));
+export default withApp(withSettings(withSize(TaskTable)));

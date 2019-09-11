@@ -1,20 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
 import withApp from 'containers/WithApp';
-import withTask from 'containers/WithTask';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { useTasks } from 'hooks/UseTasks';
+import { getVisibleTask } from 'selectors/TaskSelectors';
 
 function ModalTaskEditionManager(props) {
+    const taskApi = useTasks();
+    const task = useSelector(state => getVisibleTask(state, props.taskEditionManager.taskId));
+
     const onCloseTaskEditionManager = () => {
         props.form.validateFields((error, values) => {
             if (error) {
                 return;
             }
 
-            props.updateTask({ ...props.task, ...values });
+            taskApi.updateTask({ ...task, ...values });
             props.form.resetFields();
             props.setTaskEditionManagerOptions({ visible: false });
         });
@@ -33,19 +37,15 @@ function ModalTaskEditionManager(props) {
                     Close
                 </Button>
             )}>
-            {props.task && <TaskEditionManager form={props.form} task={props.task} />}
+            {!!task && (<TaskEditionManager form={props.form} task={task} />)}
         </Modal>
     );
 }
 
 ModalTaskEditionManager.propTypes = {
     form: PropTypes.object.isRequired,
-    task: TaskPropType,
-    updateTask: PropTypes.func.isRequired,
     taskEditionManager: PropTypes.object.isRequired,
     setTaskEditionManagerOptions: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'task' })(withApp(withTask(
-    ModalTaskEditionManager,
-    ownProps => ownProps.taskEditionManager.taskId)));
+export default Form.create({ name: 'task' })(withApp(ModalTaskEditionManager));

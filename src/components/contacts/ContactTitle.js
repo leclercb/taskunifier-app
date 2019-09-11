@@ -6,7 +6,7 @@ import { getVisibleContact } from 'selectors/ContactSelectors';
 import { getContactTitle } from 'utils/ContactUtils';
 
 export function ContactTitle(props) {
-    const contact = useSelector(getVisibleContact(props.contactId));
+    const contact = useSelector(state => getVisibleContact(state, props.contactId));
     return contact ? <Icon icon="circle" color={contact.color} text={getContactTitle(contact)} /> : <span>&nbsp;</span>;
 }
 

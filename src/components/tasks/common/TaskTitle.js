@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withTask from 'containers/WithTask';
+import { useSelector } from 'react-redux';
 import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { getVisibleTask } from 'selectors/TaskSelectors';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
 export function TaskTitle(props) {
-    const { task } = props;
+    const task = useSelector(state => getVisibleTask(state, props.taskId));
 
     return task ? (
         <Icon
@@ -26,9 +26,8 @@ export function TaskTitle(props) {
 
 TaskTitle.propTypes = {
     taskId: PropTypes.string,
-    task: TaskPropType,
     settings: SettingsPropType.isRequired,
     style: PropTypes.object
 };
 
-export default withSettings(withTask(TaskTitle));
+export default withSettings(TaskTitle);

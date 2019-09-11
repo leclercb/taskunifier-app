@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Col, Form, Row } from 'antd';
 import Icon from 'components/common/Icon';
 import withSettings from 'containers/WithSettings';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useTaskFields } from 'hooks/UseTaskFields';
 import { useTasks } from 'hooks/UseTasks';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
 function BatchEditTasksManager(props) {
     const taskApi = useTasks();
+    const taskFieldApi = useTaskFields();
 
     const updateTasks = () => {
         props.form.validateFields((error, values) => {
@@ -23,7 +23,7 @@ function BatchEditTasksManager(props) {
 
             const tasks = taskApi.selectedTasks.map(task => ({ ...task }));
 
-            props.taskFields.forEach(field => {
+            taskFieldApi.taskFields.forEach(field => {
                 if (values.checked[field.id]) {
                     tasks.forEach(task => {
                         task[field.id] = clone(values.value[field.id]);
@@ -35,7 +35,7 @@ function BatchEditTasksManager(props) {
         });
     };
 
-    const fields = props.taskFields.filter(field => props.settings['taskFieldVisible_' + field.id] !== false);
+    const fields = taskFieldApi.taskFields.filter(field => props.settings['taskFieldVisible_' + field.id] !== false);
 
     const { getFieldDecorator } = props.form;
 
@@ -75,8 +75,7 @@ function BatchEditTasksManager(props) {
 
 BatchEditTasksManager.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired
 };
 
-export default withSettings(withTaskFields(Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager)));
+export default withSettings(Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager));

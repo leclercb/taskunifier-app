@@ -5,7 +5,7 @@ import Icon from 'components/common/Icon';
 import { getVisibleLocation } from 'selectors/LocationSelectors';
 
 export function LocationTitle(props) {
-    const location = useSelector(getVisibleLocation(props.locationId));
+    const location = useSelector(state => getVisibleLocation(state, props.locationId));
     return location ? <Icon icon="circle" color={location.color} text={location.title} /> : <span>&nbsp;</span>;
 }
 

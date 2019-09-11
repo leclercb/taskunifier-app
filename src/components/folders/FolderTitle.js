@@ -5,7 +5,7 @@ import Icon from 'components/common/Icon';
 import { getVisibleFolder } from 'selectors/FolderSelectors';
 
 export function FolderTitle(props) {
-    const folder = useSelector(getVisibleFolder(props.folderId));
+    const folder = useSelector(state => getVisibleFolder(state, props.folderId));
     return folder ? <Icon icon="circle" color={folder.color} text={folder.title} /> : <span>&nbsp;</span>;
 }
 

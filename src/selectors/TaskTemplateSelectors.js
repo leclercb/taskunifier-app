@@ -10,3 +10,11 @@ export const getTaskTemplatesFilteredByVisibleState = createSelector(
         return filterByVisibleState(taskTemplates).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
+
+export const getVisibleTaskTemplate = createSelector(
+    getTaskTemplatesFilteredByVisibleState,
+    (state, id) => id,
+    (taskTemplates, id) => {
+        return taskTemplates.find(taskTemplate => taskTemplate.id === id);
+    }
+);

@@ -5,7 +5,7 @@ import Icon from 'components/common/Icon';
 import { getVisibleContext } from 'selectors/ContextSelectors';
 
 export function ContextTitle(props) {
-    const context = useSelector(getVisibleContext(props.contextId));
+    const context = useSelector(state => getVisibleContext(state, props.contextId));
     return context ? <Icon icon="circle" color={context.color} text={context.title} /> : <span>&nbsp;</span>;
 }
 

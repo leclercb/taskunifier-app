@@ -2,7 +2,6 @@ import React from 'react';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
-import withNoteFields from 'containers/WithNoteFields';
 import withSettings from 'containers/WithSettings';
 import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
@@ -11,13 +10,14 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useNoteFields } from 'hooks/UseNoteFields';
 import { useNotes } from 'hooks/UseNotes';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
 function NoteTable(props) {
     const noteApi = useNotes();
+    const noteFieldApi = useNoteFields();
 
     const onMenuAction = action => {
         const notes = noteApi.selectedNotes;
@@ -49,9 +49,9 @@ function NoteTable(props) {
     let tableWidth = 0;
 
     const onResize = resizeHandler('noteColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('noteColumnOrder_', props.noteFields, props.settings, props.updateSettings);
+    const onMove = moveHandler('noteColumnOrder_', noteFieldApi.noteFields, props.settings, props.updateSettings);
 
-    const sortedFields = sortBy(props.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0);
+    const sortedFields = sortBy(noteFieldApi.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => props.settings['noteColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
@@ -171,10 +171,9 @@ function NoteTable(props) {
 }
 
 NoteTable.propTypes = {
-    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     settings: SettingsPropType.isRequired,
     updateSettings: PropTypes.func.isRequired,
     size: PropTypes.object.isRequired
 };
 
-export default withSettings(withNoteFields(withSize(NoteTable)));
+export default withSettings(withSize(NoteTable));

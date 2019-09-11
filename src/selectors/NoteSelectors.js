@@ -18,9 +18,9 @@ export const getNotesFilteredByVisibleState = createSelector(
 );
 
 export const getNotesFilteredBySelectedFilter = createSelector(
-    getNotesFilteredByVisibleState, 
-    getSelectedNoteFilter, 
-    getSelectedNoteFilterDate, 
+    getNotesFilteredByVisibleState,
+    getSelectedNoteFilter,
+    getSelectedNoteFilterDate,
     getNoteFieldsIncludingDefaults,
     (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields) => {
         const filteredNotes = notes.filter(note => {
@@ -32,5 +32,13 @@ export const getNotesFilteredBySelectedFilter = createSelector(
         });
 
         return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
+    }
+);
+
+export const getVisibleNote = createSelector(
+    getNotesFilteredByVisibleState,
+    (state, id) => id,
+    (notes, id) => {
+        return notes.find(note => note.id === id);
     }
 );

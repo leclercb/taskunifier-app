@@ -11,9 +11,10 @@ export const getContextsFilteredByVisibleState = createSelector(
     }
 );
 
-export const getVisibleContext = id => createSelector(
+export const getVisibleContext = createSelector(
     getContextsFilteredByVisibleState,
-    (contexts) => {
+    (state, id) => id,
+    (contexts, id) => {
         return contexts.find(context => context.id === id);
     }
 );

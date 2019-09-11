@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, List, Row } from 'antd';
 import Icon from 'components/common/Icon';
-import withNoteFields from 'containers/WithNoteFields';
 import withSettings from 'containers/WithSettings';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { getCategories, getCategorySettings } from 'data/DataSettings';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { useNoteFields } from 'hooks/UseNoteFields';
+import { useTaskFields } from 'hooks/UseTaskFields';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function SettingManager(props) {
+    const noteFieldApi = useNoteFields();
+    const taskFieldApi = useTaskFields();
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
 
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
@@ -20,8 +21,8 @@ function SettingManager(props) {
     const settings = getCategorySettings(
         category,
         {
-            noteFields: props.noteFields,
-            taskFields: props.taskFields
+            noteFields: noteFieldApi.noteFields,
+            taskFields: taskFieldApi.taskFields
         }).filter(setting =>
             setting.visible !== false && (!setting.mode || setting.mode === process.env.REACT_APP_MODE));
 
@@ -106,20 +107,9 @@ function SettingManager(props) {
 
 SettingManager.propTypes = {
     form: PropTypes.object.isRequired,
-    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     settings: SettingsPropType,
     updateSettings: PropTypes.func.isRequired,
     dispatcher: PropTypes.func.isRequired
 };
 
-export default withNoteFields(
-    withTaskFields(
-        withSettings(
-            Form.create({ name: 'settings' })(SettingManager),
-            {
-                includeDispatcher: true
-            }
-        )
-    )
-);
+export default withSettings(Form.create({ name: 'settings' })(SettingManager), { includeDispatcher: true });

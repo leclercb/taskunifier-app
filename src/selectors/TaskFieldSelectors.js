@@ -14,9 +14,17 @@ export const getTaskFieldsFilteredByVisibleState = createSelector(
 );
 
 export const getTaskFieldsIncludingDefaults = createSelector(
-    getTaskFields, 
+    getTaskFields,
     getSettings,
     (taskFields, settings) => {
         return getDefaultTaskFields(settings).concat(filterByVisibleState(taskFields)).sort((a, b) => compareStrings(a.title, b.title));
+    }
+);
+
+export const getVisibleTaskField = createSelector(
+    getTaskFieldsFilteredByVisibleState,
+    (state, id) => id,
+    (taskFields, id) => {
+        return taskFields.find(taskField => taskField.id === id);
     }
 );
