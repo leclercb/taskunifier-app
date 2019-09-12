@@ -37,7 +37,7 @@ function TaskTable(props) {
                 tasks.forEach(task => onDuplicateTask(task));
                 break;
             case 'remove':
-                tasks.forEach(task => onRemoveTask(task));
+                onRemoveTasks(tasks.map(task => task.id));
                 break;
             case 'postponeStartDate':
                 tasks.forEach(task => onPostponeStartDate(task, action.amount, action.unit));
@@ -67,8 +67,8 @@ function TaskTable(props) {
         taskApi.duplicateTask(task);
     };
 
-    const onRemoveTask = task => {
-        taskApi.deleteTask(task.id);
+    const onRemoveTasks = taskIds => {
+        taskApi.deleteTask(taskIds);
     };
 
     const onPostponeStartDate = (task, amount, unit) => {

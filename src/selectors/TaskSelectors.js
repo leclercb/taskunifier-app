@@ -1,16 +1,17 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
+import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
 import { getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
-import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
+import { compareStrings } from 'utils/CompareUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { showReminder } from 'utils/ReminderUtils';
 import { sortObjects } from 'utils/SorterUtils';
-import { compareStrings } from 'utils/CompareUtils';
 
 export const getTasks = state => state.tasks;
 
@@ -32,6 +33,9 @@ export const getTasksMetaDataFilteredByVisibleState = createSelector(
     }
 );
 
+/**
+ * WARNING: This selector returns an empty array as long as the busy flag is set to true.
+ */
 export const getTasksFilteredBySelectedFilter = createSelector(
     getTasksFilteredByVisibleState,
     getTasksMetaDataFilteredByVisibleState,
@@ -39,7 +43,12 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getSelectedTaskFilter,
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
-    (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields) => {
+    isBusy,
+    (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
+        if (busy) {
+            return [];
+        }
+
         if (!showCompletedTasks && !hasCompletedTaskConditionOnly(selectedTaskFilter)) {
             selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);
         }

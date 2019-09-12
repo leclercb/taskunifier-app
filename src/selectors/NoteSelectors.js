@@ -2,6 +2,7 @@ import moment from 'moment';
 import { createSelector } from 'reselect';
 import { getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { compareStrings } from 'utils/CompareUtils';
@@ -17,12 +18,20 @@ export const getNotesFilteredByVisibleState = createSelector(
     }
 );
 
+/**
+ * WARNING: This selector returns an empty array as long as the busy flag is set to true.
+ */
 export const getNotesFilteredBySelectedFilter = createSelector(
     getNotesFilteredByVisibleState,
     getSelectedNoteFilter,
     getSelectedNoteFilterDate,
     getNoteFieldsIncludingDefaults,
-    (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields) => {
+    isBusy,
+    (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields, busy) => {
+        if (busy) {
+            return [];
+        }
+
         const filteredNotes = notes.filter(note => {
             if (moment(note.creationDate).isAfter(moment(selectedNoteFilterDate))) {
                 return true;

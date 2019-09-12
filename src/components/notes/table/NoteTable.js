@@ -27,7 +27,7 @@ function NoteTable() {
                 notes.forEach(note => onDuplicateNote(note));
                 break;
             case 'remove':
-                notes.forEach(note => onRemoveNote(note));
+                onRemoveNotes(notes.map(note => note.id));
                 break;
             default:
                 break;
@@ -38,8 +38,8 @@ function NoteTable() {
         noteApi.duplicateNote(note);
     };
 
-    const onRemoveNote = note => {
-        noteApi.deleteNote(note.id);
+    const onRemoveNotes = noteIds => {
+        noteApi.deleteNote(noteIds);
     };
 
     const onUpdateNote = note => {
