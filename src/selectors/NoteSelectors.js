@@ -19,8 +19,9 @@ export const getNotesFilteredByVisibleState = createSelector(
 );
 
 /**
- * WARNING: This selector returns an empty array as long as the busy flag is set to true.
+ * WARNING: This selector value is not updated as long as the busy flag is set to true.
  */
+let getNotesFilteredBySelectedFilterResult = [];
 export const getNotesFilteredBySelectedFilter = createSelector(
     getNotesFilteredByVisibleState,
     getSelectedNoteFilter,
@@ -29,7 +30,7 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     isBusy,
     (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields, busy) => {
         if (busy) {
-            return [];
+            return getNotesFilteredBySelectedFilterResult;
         }
 
         const filteredNotes = notes.filter(note => {
@@ -40,7 +41,10 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedNoteFilter, note, noteFields);
         });
 
-        return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
+        const result = sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
+        getNotesFilteredBySelectedFilterResult = result;
+
+        return result;
     }
 );
 

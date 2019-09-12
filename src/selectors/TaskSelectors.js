@@ -34,8 +34,9 @@ export const getTasksMetaDataFilteredByVisibleState = createSelector(
 );
 
 /**
- * WARNING: This selector returns an empty array as long as the busy flag is set to true.
+ * WARNING: This selector value is not updated as long as the busy flag is set to true.
  */
+let getTasksFilteredBySelectedFilterResult = [];
 export const getTasksFilteredBySelectedFilter = createSelector(
     getTasksFilteredByVisibleState,
     getTasksMetaDataFilteredByVisibleState,
@@ -46,7 +47,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     isBusy,
     (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
         if (busy) {
-            return [];
+            return getTasksFilteredBySelectedFilterResult;
         }
 
         if (!showCompletedTasks && !hasCompletedTaskConditionOnly(selectedTaskFilter)) {
@@ -73,7 +74,10 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             return true;
         });
 
-        return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, true);
+        const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, true);
+        getTasksFilteredBySelectedFilterResult = result;
+        
+        return result;
     }
 );
 
