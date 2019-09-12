@@ -12,6 +12,7 @@ import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { verifyLicense } from 'utils/LicenseUtils';
+import { getSynchronizationApp } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
 export function isCoreSetting(settingId) {
@@ -32,6 +33,10 @@ export function getSettings() {
             }
 
             if (setting.type === 'button') {
+                return;
+            }
+
+            if (setting.type === 'label') {
                 return;
             }
 
@@ -461,6 +466,30 @@ export function getCategories() {
             mode: 'electron',
             settings: [
                 {
+                    id: 'currentSynchronizationApp',
+                    title: 'Current synchronization service',
+                    type: 'label',
+                    value: settings => {
+                        if (!settings.synchronizationApp) {
+                            return null;
+                        }
+
+                        const app = getSynchronizationApp(settings.synchronizationApp);
+
+                        return (
+                            <div>
+                                <img
+                                    alt={app.label}
+                                    src={app.img}
+                                    style={{ width: 16, height: 16, marginRight: 10 }} />
+                                {app.label}
+                            </div>
+                        );
+                    },
+                    editable: false,
+                    mode: 'electron'
+                },
+                {
                     id: 'automaticSynchronization',
                     title: 'Enable automatic synchronization',
                     type: 'boolean',
@@ -533,9 +562,17 @@ export function getCategories() {
                             ),
                             onOk: async () => {
                                 await dispatch(resetDataForSynchronization());
+
+                                if (settings.synchronizationApp) {
+                                    await updateSettings({
+                                        [settings.synchronizationApp]: null
+                                    });
+                                }
+
                                 await updateSettings({
                                     lastSynchronizationDate: null
                                 });
+
                                 await dispatch(synchronize());
                             }
                         });

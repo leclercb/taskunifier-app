@@ -81,7 +81,8 @@ function SettingManager(props) {
                                                     {item.title}
                                                 </Button>
                                             ) : null}
-                                            {item.type !== 'button' && item.type !== 'component' ? (
+                                            {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
+                                            {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (
                                                 getFieldDecorator(item.id, {
                                                     valuePropName: getValuePropNameForType(item.type),
                                                     initialValue: getSettingValue(item)

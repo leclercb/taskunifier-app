@@ -1,12 +1,9 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
-import { resetDataForTaskUnifierSynchronization, synchronizeWithTaskUnifier } from 'actions/synchronization/taskunifier/TaskUnifierSynchronizationActions';
-import { getToodledoAccountInfo } from 'actions/synchronization/toodledo/ToodledoAccountInfoActions';
-import { resetDataForToodledoSynchronization, synchronizeWithToodledo } from 'actions/synchronization/toodledo/ToodledoSynchronizationActions';
 import { updateSettings } from 'actions/SettingActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { isSynchronizing } from 'selectors/SynchronizationSelectors';
+import { getSynchronizationApp, getSynchronizationApps } from 'utils/SynchronizationUtils';
 
 export function setSynchronizing(synchronizing) {
     return async dispatch => {
@@ -32,16 +29,13 @@ export function getAccountInfo() {
         const state = getState();
         const settings = getSettings(state);
 
-        switch (settings.synchronizationApp) {
-            case 'taskunifier':
-                await dispatch(getTaskUnifierAccountInfo());
-                break;
-            case 'toodledo':
-                await dispatch(getToodledoAccountInfo());
-                break;
-            default:
-                throw new Error('No synchronization application defined');
+        const app = getSynchronizationApp(settings.synchronizationApp);
+
+        if (!app) {
+            throw new Error('No synchronization application defined');
         }
+
+        await dispatch(app.getAccountInfo());
     };
 }
 
@@ -53,26 +47,18 @@ export async function selectSynchronizationApp() {
             title: 'Select a synchronization service',
             content: (
                 <React.Fragment>
-                    <Button
-                        onClick={() => synchronizationApp = 'taskunifier'}
-                        style={{ width: 200, height: 200 }}>
-                        <img
-                            alt='taskunifier'
-                            src='resources/images/synchronization/taskunifier.png'
-                            style={{ width: 100, height: 100, marginBottom: 25 }} />
-                        <br />
-                        TaskUnifier
-                    </Button>
-                    <Button
-                        onClick={() => synchronizationApp = 'toodledo'}
-                        style={{ width: 200, height: 200, marginLeft: 25 }}>
-                        <img
-                            alt='toodledo'
-                            src='resources/images/synchronization/toodledo.png'
-                            style={{ width: 100, height: 100, marginBottom: 25 }} />
-                        <br />
-                        Toodledo
-                    </Button>
+                    {getSynchronizationApps().map(app => (
+                        <Button
+                            onClick={() => synchronizationApp = app.id}
+                            style={{ width: 200, height: 200, margin: '0px 10px' }}>
+                            <img
+                                alt={app.label}
+                                src={app.img}
+                                style={{ width: 100, height: 100, marginBottom: 25 }} />
+                            <br />
+                            {app.label}
+                        </Button>
+                    ))}
                 </React.Fragment>
             ),
             okText: 'Select',
@@ -113,16 +99,13 @@ export function synchronize() {
                 }));
             }
 
-            switch (synchronizationApp) {
-                case 'taskunifier':
-                    await dispatch(synchronizeWithTaskUnifier());
-                    break;
-                case 'toodledo':
-                    await dispatch(synchronizeWithToodledo());
-                    break;
-                default:
-                    throw new Error('No synchronization application defined');
+            const app = getSynchronizationApp(synchronizationApp);
+
+            if (!app) {
+                throw new Error('No synchronization application defined');
             }
+
+            await dispatch(app.synchronize());
         } finally {
             await dispatch(setSynchronizing(false));
         }
@@ -148,15 +131,12 @@ export function resetDataForSynchronization() {
             }));
         }
 
-        switch (synchronizationApp) {
-            case 'taskunifier':
-                await dispatch(resetDataForTaskUnifierSynchronization());
-                break;
-            case 'toodledo':
-                await dispatch(resetDataForToodledoSynchronization());
-                break;
-            default:
-                throw new Error('No synchronization application defined');
+        const app = getSynchronizationApp(synchronizationApp);
+
+        if (!app) {
+            throw new Error('No synchronization application defined');
         }
+
+        await dispatch(app.resetData());
     };
 }
