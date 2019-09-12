@@ -3,13 +3,14 @@ import { Button, Form, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
-import withApp from 'containers/WithApp';
+import { useApp } from 'hooks/UseApp';
 import { useTask } from 'hooks/UseTask';
 import { useTasks } from 'hooks/UseTasks';
 
 function ModalTaskEditionManager(props) {
+    const appApi = useApp();
     const taskApi = useTasks();
-    const task = useTask(props.taskEditionManager.taskId);
+    const task = useTask(appApi.taskEditionManager.taskId);
 
     const onCloseTaskEditionManager = () => {
         props.form.validateFields((error, values) => {
@@ -19,14 +20,14 @@ function ModalTaskEditionManager(props) {
 
             taskApi.updateTask({ ...task, ...values });
             props.form.resetFields();
-            props.setTaskEditionManagerOptions({ visible: false });
+            appApi.setTaskEditionManagerOptions({ visible: false });
         });
     };
 
     return (
         <Modal
             title={<Icon icon="tasks" text="Task Edition Manager" />}
-            visible={props.taskEditionManager.visible}
+            visible={appApi.taskEditionManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseTaskEditionManager}
@@ -42,9 +43,7 @@ function ModalTaskEditionManager(props) {
 }
 
 ModalTaskEditionManager.propTypes = {
-    form: PropTypes.object.isRequired,
-    taskEditionManager: PropTypes.object.isRequired,
-    setTaskEditionManagerOptions: PropTypes.func.isRequired
+    form: PropTypes.object.isRequired
 };
 
-export default Form.create({ name: 'task' })(withApp(ModalTaskEditionManager));
+export default Form.create({ name: 'task' })(ModalTaskEditionManager);

@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withApp from 'containers/WithApp';
 import Icon from 'components/common/Icon';
 import NoteFieldManager from 'components/notefields/NoteFieldManager';
+import { useApp } from 'hooks/UseApp';
 
-function ModalNoteFieldManager(props) {
+function ModalNoteFieldManager() {
+    const appApi = useApp();
+
     const onCloseNoteFieldManager = () => {
-        props.setNoteFieldManagerOptions({ visible: false });
+        appApi.setNoteFieldManagerOptions({ visible: false });
     };
 
     const onNoteFieldSelection = noteFieldId => {
-        props.setNoteFieldManagerOptions({ noteFieldId });
+        appApi.setNoteFieldManagerOptions({ noteFieldId });
     };
 
     return (
         <Modal
             title={<Icon icon="columns" text="Note Field Manager" />}
-            visible={props.noteFieldManager.visible}
+            visible={appApi.noteFieldManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseNoteFieldManager}
@@ -28,15 +29,10 @@ function ModalNoteFieldManager(props) {
                 </Button>
             )}>
             <NoteFieldManager
-                noteFieldId={props.noteFieldManager.noteFieldId}
+                noteFieldId={appApi.noteFieldManager.noteFieldId}
                 onNoteFieldSelection={onNoteFieldSelection} />
         </Modal>
     );
 }
 
-ModalNoteFieldManager.propTypes = {
-    noteFieldManager: PropTypes.object.isRequired,
-    setNoteFieldManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(ModalNoteFieldManager);
+export default ModalNoteFieldManager;

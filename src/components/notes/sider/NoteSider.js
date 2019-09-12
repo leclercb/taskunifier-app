@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Badge, Input, Menu, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
-import withApp from 'containers/WithApp';
-import withObjects from 'containers/WithObjects';
 import Constants from 'constants/Constants';
 import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
-import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
-import { TagPropType } from 'proptypes/TagPropTypes';
+import { useApp } from 'hooks/UseApp';
+import { useFolders } from 'hooks/UseFolders';
+import { useNoteFilters } from 'hooks/UseNoteFilters';
+import { useNotes } from 'hooks/UseNotes';
+import { useTags } from 'hooks/UseTags';
 
-function NoteSider(props) {
+function NoteSider() {
+    const appApi = useApp();
+    const folderApi = useFolders();
+    const noteApi = useNotes();
+    const noteFilterApi = useNoteFilters();
+    const tagApi = useTags();
+
     const [openKeys, setOpenKeys] = useState(['general']);
 
     const onSelect = event => {
-        props.setSelectedNoteFilter(event.item.props.filter);
+        noteApi.setSelectedNoteFilter(event.item.props.filter);
     };
 
     const onOpenChange = key => {
@@ -48,14 +53,14 @@ function NoteSider(props) {
     };
 
     const manageObjects = category => {
-        props.setCategoryManagerOptions({
+        appApi.setCategoryManagerOptions({
             visible: true,
             category
         });
     };
 
     const editObject = (category, objectId) => {
-        props.setCategoryManagerOptions({
+        appApi.setCategoryManagerOptions({
             visible: true,
             category,
             objectId
@@ -63,20 +68,20 @@ function NoteSider(props) {
     };
 
     const dropObject = (note, object, property) => {
-        props.updateNote({
+        noteApi.updateNote({
             ...note,
             [property]: object.id
         });
     };
 
     const manageNoteFilters = () => {
-        props.setNoteFilterManagerOptions({
+        appApi.setNoteFilterManagerOptions({
             visible: true
         });
     };
 
     const editNoteFilter = noteFilterId => {
-        props.setNoteFilterManagerOptions({
+        appApi.setNoteFilterManagerOptions({
             visible: true,
             noteFilterId
         });
@@ -97,19 +102,19 @@ function NoteSider(props) {
     };
 
     const onSearch = value => {
-        props.setSelectedNoteFilter(createSearchNoteFilter(value));
+        noteApi.setSelectedNoteFilter(createSearchNoteFilter(value));
     };
 
     const searchNoteFilter = createSearchNoteFilter();
 
     const createBadge = noteFilter => {
-        if (noteFilter.id !== props.selectedNoteFilter.id) {
+        if (noteFilter.id !== noteApi.selectedNoteFilter.id) {
             return null;
         }
 
         return (
             <Badge
-                count={props.noteNumber}
+                count={noteApi.filteredNotes.length}
                 showZero={true}
                 overflowCount={9999}
                 style={{
@@ -124,7 +129,7 @@ function NoteSider(props) {
     return (
         <React.Fragment>
             <Menu
-                selectedKeys={[props.selectedNoteFilter.id]}
+                selectedKeys={[noteApi.selectedNoteFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
                 mode="inline"
@@ -165,7 +170,7 @@ function NoteSider(props) {
                 <Menu.SubMenu
                     key="folders"
                     title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                    {props.folders.map(folder => {
+                    {folderApi.folders.map(folder => {
                         const filter = createNoteFilterForObject(folder, 'folder');
 
                         return (
@@ -175,7 +180,7 @@ function NoteSider(props) {
                                     object={folder}
                                     onManage={() => manageObjects('folders')}
                                     onEdit={() => editObject('folders', folder.id)}
-                                    onDelete={() => props.deleteFolder(folder.id)}
+                                    onDelete={() => folderApi.deleteFolder(folder.id)}
                                     dropType="note"
                                     onDrop={(note, folder) => dropObject(note, folder, 'folder')} />
                             </Menu.Item>
@@ -185,7 +190,7 @@ function NoteSider(props) {
                 <Menu.SubMenu
                     key="tags"
                     title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
-                    {props.tags.map(tag => {
+                    {tagApi.tags.map(tag => {
                         const filter = createNoteFilterForObject(tag, 'tags', {
                             id: '1',
                             field: 'tags',
@@ -200,7 +205,7 @@ function NoteSider(props) {
                                     object={tag}
                                     onManage={() => manageObjects('tags')}
                                     onEdit={() => editObject('tags', tag.id)}
-                                    onDelete={() => props.deleteTag(tag.id)} />
+                                    onDelete={() => tagApi.deleteTag(tag.id)} />
                             </Menu.Item>
                         );
                     })}
@@ -208,14 +213,14 @@ function NoteSider(props) {
                 <Menu.SubMenu
                     key="noteFilters"
                     title={createCategorySubMenu('Note Filters', 'filter', () => manageNoteFilters(), () => onOpenChange('noteFilters'))}>
-                    {props.noteFilters.map(noteFilter => (
+                    {noteFilterApi.noteFilters.map(noteFilter => (
                         <Menu.Item key={noteFilter.id} filter={noteFilter}>
                             <ObjectMenuItem
                                 badge={createBadge(noteFilter)}
                                 object={noteFilter}
                                 onManage={() => manageNoteFilters()}
                                 onEdit={() => editNoteFilter(noteFilter.id)}
-                                onDelete={() => props.deleteNoteFilter(noteFilter.id)} />
+                                onDelete={() => noteFilterApi.deleteNoteFilter(noteFilter.id)} />
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
@@ -224,27 +229,4 @@ function NoteSider(props) {
     );
 }
 
-NoteSider.propTypes = {
-    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
-    noteFilters: PropTypes.arrayOf(NoteFilterPropType.isRequired).isRequired,
-    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
-    noteNumber: PropTypes.number.isRequired,
-    selectedNoteFilter: NoteFilterPropType.isRequired,
-    setSelectedNoteFilter: PropTypes.func.isRequired,
-    setCategoryManagerOptions: PropTypes.func.isRequired,
-    setNoteFilterManagerOptions: PropTypes.func.isRequired,
-    updateNote: PropTypes.func.isRequired,
-    deleteFolder: PropTypes.func.isRequired,
-    deleteNoteFilter: PropTypes.func.isRequired,
-    deleteTag: PropTypes.func.isRequired
-};
-
-export default withApp(withObjects(NoteSider, {
-    includeDispatch: true,
-    includeFolders: true,
-    includeNoteFilters: true,
-    includeTags: true,
-    includeSelectedNoteFilter: true,
-    includeNoteNumber: true,
-    filteredByNonArchivedFolders: true
-}));
+export default NoteSider;

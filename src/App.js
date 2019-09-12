@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { Modal } from 'antd';
-import PropTypes from 'prop-types';
 import moment from 'moment';
 import { DndProvider } from 'react-dnd';
 import { useInterval } from 'hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from 'components/layout/AppLayout';
-import withApp from 'containers/WithApp';
 import withJoyride from 'containers/WithJoyride';
+import { useApp } from 'hooks/UseApp';
 import { useSettings } from 'hooks/UseSettings';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
@@ -19,11 +18,12 @@ import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import 'react-virtualized/styles.css';
 import 'components/common/table/VirtualizedTable.css';
 
-function App(props) {
+function App() {
+    const appApi = useApp();
     const settingsApi = useSettings();
 
     useEffect(() => {
-        props.loadData();
+        appApi.loadData();
     }, []);
 
     useEffect(() => {
@@ -59,7 +59,7 @@ function App(props) {
                     windowPositionY: position[1]
                 }).then(() => {
                     const close = () => {
-                        props.saveData({ clean: true }).finally(() => {
+                        appApi.saveData({ clean: true }).finally(() => {
                             ipcRenderer.send('closed');
                         });
                     };
@@ -96,7 +96,7 @@ function App(props) {
                     Number.isInteger(automaticSaveInterval) &&
                     automaticSaveInterval > 0) {
                     interval = setInterval(() => {
-                        props.saveData();
+                        appApi.saveData();
                         settingsApi.updateSettings({
                             lastAutomaticSave: moment().toISOString()
                         });
@@ -127,7 +127,7 @@ function App(props) {
                         Number.isInteger(automaticBackupInterval) &&
                         automaticBackupInterval > 0 &&
                         (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
-                        props.backupData();
+                        appApi.backupData();
                         settingsApi.updateSettings({
                             lastAutomaticBackup: moment().toISOString()
                         });
@@ -158,7 +158,7 @@ function App(props) {
                         Number.isInteger(automaticSynchronizationInterval) &&
                         automaticSynchronizationInterval > 0 &&
                         (!lastAutomaticSynchronization || moment().diff(moment(lastAutomaticSynchronization)) > automaticSynchronizationInterval * 60 * 1000)) {
-                        props.synchronize();
+                        appApi.synchronize();
                         settingsApi.updateSettings({
                             lastAutomaticSynchronization: moment().toISOString()
                         });
@@ -179,8 +179,8 @@ function App(props) {
 
     useInterval(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-            props.backupData();
-            props.synchronize();
+            appApi.backupData();
+            appApi.synchronize();
         }
     }, null);
 
@@ -191,11 +191,4 @@ function App(props) {
     );
 }
 
-App.propTypes = {
-    loadData: PropTypes.func.isRequired,
-    saveData: PropTypes.func.isRequired,
-    backupData: PropTypes.func.isRequired,
-    synchronize: PropTypes.func.isRequired
-};
-
-export default withApp(withJoyride(App));
+export default withJoyride(App);

@@ -1,8 +1,6 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
-import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
-import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
@@ -170,8 +168,4 @@ function NoteTable() {
     );
 }
 
-NoteTable.propTypes = {
-    size: PropTypes.object.isRequired
-};
-
-export default withSize(NoteTable);
+export default NoteTable;

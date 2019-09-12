@@ -1,16 +1,14 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
-import withApp from 'containers/WithApp';
-import withSize from 'containers/WithSize';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useApp } from 'hooks/UseApp';
 import { useSettings } from 'hooks/UseSettings';
 import { useTaskFields } from 'hooks/UseTaskFields';
 import { useTasks } from 'hooks/UseTasks';
@@ -18,7 +16,8 @@ import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
 
-function TaskTable(props) {
+function TaskTable() {
+    const appApi = useApp();
     const settingsApi = useSettings();
     const taskApi = useTasks();
     const taskFieldApi = useTaskFields();
@@ -51,13 +50,13 @@ function TaskTable(props) {
     };
 
     const onBatchEditTask = () => {
-        props.setBatchEditTasksManagerOptions({
+        appApi.setBatchEditTasksManagerOptions({
             visible: true
         });
     };
 
     const onEditTask = task => {
-        props.setTaskEditionManagerOptions({
+        appApi.setTaskEditionManagerOptions({
             visible: true,
             taskId: task.id
         });
@@ -262,10 +261,4 @@ function TaskTable(props) {
     );
 }
 
-TaskTable.propTypes = {
-    setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
-    setTaskEditionManagerOptions: PropTypes.func.isRequired,
-    size: PropTypes.object.isRequired
-};
-
-export default withApp(withSize(TaskTable));
+export default TaskTable;

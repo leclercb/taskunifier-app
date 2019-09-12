@@ -469,7 +469,7 @@ export function getCategories() {
                     id: 'currentSynchronizationApp',
                     title: 'Current synchronization service',
                     type: 'label',
-                    value: settings => {
+                    value: settings => { // eslint-disable-line react/display-name
                         if (!settings.synchronizationApp) {
                             return null;
                         }

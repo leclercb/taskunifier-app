@@ -49,6 +49,7 @@ export async function selectSynchronizationApp() {
                 <React.Fragment>
                     {getSynchronizationApps().map(app => (
                         <Button
+                            key={app.id}
                             onClick={() => synchronizationApp = app.id}
                             style={{ width: 200, height: 200, margin: '0px 10px' }}>
                             <img

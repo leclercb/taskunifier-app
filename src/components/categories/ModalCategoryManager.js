@@ -1,25 +1,26 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
-import PropTypes from 'prop-types';
 import HelpButton from 'components/common/HelpButton';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CategoryManager from 'components/categories/CategoryManager';
-import withApp from 'containers/WithApp';
+import { useApp } from 'hooks/UseApp';
 
-function ModalCategoryManager(props) {
+function ModalCategoryManager() {
+    const appApi = useApp();
+
     const onCloseCategoryManager = () => {
-        props.setCategoryManagerOptions({ visible: false });
+        appApi.setCategoryManagerOptions({ visible: false });
     };
 
     const onObjectSelection = objectId => {
-        props.setCategoryManagerOptions({ objectId });
+        appApi.setCategoryManagerOptions({ objectId });
     };
 
     return (
         <Modal
             title={<Icon icon="cubes" text="Category Manager" />}
-            visible={props.categoryManager.visible}
+            visible={appApi.categoryManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseCategoryManager}
@@ -34,17 +35,12 @@ function ModalCategoryManager(props) {
                 </React.Fragment>
             )}>
             <CategoryManager
-                category={props.categoryManager.category}
-                objectId={props.categoryManager.objectId}
-                onCategorySelection={category => props.setCategoryManagerOptions({ category })}
+                category={appApi.categoryManager.category}
+                objectId={appApi.categoryManager.objectId}
+                onCategorySelection={category => appApi.setCategoryManagerOptions({ category })}
                 onObjectSelection={onObjectSelection} />
         </Modal>
     );
 }
 
-ModalCategoryManager.propTypes = {
-    categoryManager: PropTypes.object.isRequired,
-    setCategoryManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(ModalCategoryManager);
+export default ModalCategoryManager;

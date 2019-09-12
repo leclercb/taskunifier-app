@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withApp from 'containers/WithApp';
 import Icon from 'components/common/Icon';
 import NoteFilterManager from 'components/notefilters/NoteFilterManager';
+import { useApp } from 'hooks/UseApp';
 
-function ModalNoteFilterManager(props) {
+function ModalNoteFilterManager() {
+    const appApi = useApp();
+
     const onCloseNoteFilterManager = () => {
-        props.setNoteFilterManagerOptions({ visible: false });
+        appApi.setNoteFilterManagerOptions({ visible: false });
     };
 
     const onNoteFilterSelection = noteFilterId => {
-        props.setNoteFilterManagerOptions({ noteFilterId });
+        appApi.setNoteFilterManagerOptions({ noteFilterId });
     };
 
     return (
         <Modal
             title={<Icon icon="filter" text="Note Filter Manager" />}
-            visible={props.noteFilterManager.visible}
+            visible={appApi.noteFilterManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseNoteFilterManager}
@@ -28,15 +29,10 @@ function ModalNoteFilterManager(props) {
                 </Button>
             )}>
             <NoteFilterManager
-                noteFilterId={props.noteFilterManager.noteFilterId}
+                noteFilterId={appApi.noteFilterManager.noteFilterId}
                 onNoteFilterSelection={onNoteFilterSelection} />
         </Modal>
     );
 }
 
-ModalNoteFilterManager.propTypes = {
-    noteFilterManager: PropTypes.object.isRequired,
-    setNoteFilterManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(ModalNoteFilterManager);
+export default ModalNoteFilterManager;

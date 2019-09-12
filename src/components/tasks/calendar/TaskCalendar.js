@@ -1,11 +1,10 @@
 import React from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
-import withApp from 'containers/WithApp';
+import { useApp } from 'hooks/UseApp';
 import { useSettings } from 'hooks/UseSettings';
 import { useTasks } from 'hooks/UseTasks';
 import 'components/tasks/calendar/TaskCalendar.css';
@@ -13,7 +12,8 @@ import 'components/tasks/calendar/TaskCalendar.css';
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
-function TaskCalendar(props) {
+function TaskCalendar() {
+    const appApi = useApp();
     const settingsApi = useSettings();
     const taskApi = useTasks();
 
@@ -63,7 +63,7 @@ function TaskCalendar(props) {
     };
 
     const onDoubleClickEvent = event => {
-        props.setTaskEditionManagerOptions({
+        appApi.setTaskEditionManagerOptions({
             visible: true,
             taskId: event.task.id
         });
@@ -77,7 +77,7 @@ function TaskCalendar(props) {
                 length: moment(end).diff(moment(start), 'seconds')
             });
 
-            props.setTaskEditionManagerOptions({
+            appApi.setTaskEditionManagerOptions({
                 visible: true,
                 taskId: task.id
             });
@@ -128,8 +128,4 @@ function TaskCalendar(props) {
     );
 }
 
-TaskCalendar.propTypes = {
-    setTaskEditionManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(TaskCalendar);
+export default TaskCalendar;
