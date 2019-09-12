@@ -1,7 +1,8 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { getSelectedNoteFilter, getSelectedNoteFilterDate } from 'selectors/AppSelectors';
+import { getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { compareStrings } from 'utils/CompareUtils';
@@ -17,12 +18,21 @@ export const getNotesFilteredByVisibleState = createSelector(
     }
 );
 
+/**
+ * WARNING: This selector value is not updated as long as the busy flag is set to true.
+ */
+let getNotesFilteredBySelectedFilterResult = [];
 export const getNotesFilteredBySelectedFilter = createSelector(
-    getNotesFilteredByVisibleState, 
-    getSelectedNoteFilter, 
-    getSelectedNoteFilterDate, 
+    getNotesFilteredByVisibleState,
+    getSelectedNoteFilter,
+    getSelectedNoteFilterDate,
     getNoteFieldsIncludingDefaults,
-    (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields) => {
+    isBusy,
+    (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields, busy) => {
+        if (busy) {
+            return getNotesFilteredBySelectedFilterResult;
+        }
+
         const filteredNotes = notes.filter(note => {
             if (moment(note.creationDate).isAfter(moment(selectedNoteFilterDate))) {
                 return true;
@@ -31,6 +41,25 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedNoteFilter, note, noteFields);
         });
 
-        return sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
+        const result = sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
+        getNotesFilteredBySelectedFilterResult = result;
+
+        return result;
+    }
+);
+
+export const getVisibleNoteSelector = () => createSelector(
+    getNotesFilteredByVisibleState,
+    (state, id) => id,
+    (notes, id) => {
+        return notes.find(note => note.id === id);
+    }
+);
+
+export const getSelectedNotes = createSelector(
+    getNotes,
+    getSelectedNoteIds,
+    (notes, selectedNoteIds) => {
+        return notes.filter(note => selectedNoteIds.includes(note.id));
     }
 );

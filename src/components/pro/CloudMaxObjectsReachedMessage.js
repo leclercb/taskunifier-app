@@ -1,19 +1,20 @@
 import React from 'react';
 import { Button, Empty, message } from 'antd';
-import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getConfig } from 'config/Config';
-import withSession from 'containers/WithSession';
+import { useSession } from 'hooks/UseSession';
 import { openExternalLink } from 'utils/ElectronUtils';
 
-export function CloudMaxObjectsReachedMessage({ session, buyItem }) {
+export function CloudMaxObjectsReachedMessage() {
+    const sessionApi = useSession();
+
     const onClick = () => {
         openExternalLink(getConfig().cloudUrl);
     };
 
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);
-        await buyItem(getConfig().cloudItemSku, session.user.id, session.user.email);
+        await sessionApi.buyItem(getConfig().cloudItemSku, sessionApi.session.user.id, sessionApi.session.user.email);
     };
 
     return (
@@ -26,9 +27,4 @@ export function CloudMaxObjectsReachedMessage({ session, buyItem }) {
     );
 }
 
-CloudMaxObjectsReachedMessage.propTypes = {
-    session: PropTypes.object.isRequired,
-    buyItem: PropTypes.func.isRequired
-};
-
-export default withSession(CloudMaxObjectsReachedMessage);
+export default CloudMaxObjectsReachedMessage;

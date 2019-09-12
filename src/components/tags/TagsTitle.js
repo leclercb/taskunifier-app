@@ -1,11 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Tag } from 'antd';
-import { TagPropType } from 'proptypes/TagPropTypes';
-import withTags from 'containers/WithTags';
+import PropTypes from 'prop-types';
+import { useTags } from 'hooks/UseTags';
+import { getTagsFromIds } from 'utils/TagUtils';
 
 export function TagsTitle(props) {
-    const { tags } = props;
+    const tagApi = useTags();
+    const tags = getTagsFromIds(tagApi.tags, props.tagIds);
+
     return tags ? (
         <React.Fragment>
             {tags.map(tag => (
@@ -16,8 +18,7 @@ export function TagsTitle(props) {
 }
 
 TagsTitle.propTypes = {
-    tagIds: PropTypes.array,
-    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired
+    tagIds: PropTypes.array
 };
 
-export default withTags(TagsTitle);
+export default TagsTitle;

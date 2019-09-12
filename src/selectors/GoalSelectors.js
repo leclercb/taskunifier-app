@@ -17,3 +17,11 @@ export const getGoalsFilteredByNonArchived = createSelector(
         return filterByNonArchived(goals);
     }
 );
+
+export const getVisibleGoalSelector = () => createSelector(
+    getGoalsFilteredByVisibleState,
+    (state, id) => id,
+    (goals, id) => {
+        return goals.find(goal => goal.id === id);
+    }
+);

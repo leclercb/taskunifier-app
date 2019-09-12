@@ -12,6 +12,7 @@ import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { verifyLicense } from 'utils/LicenseUtils';
+import { getSynchronizationApp } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
 export function isCoreSetting(settingId) {
@@ -32,6 +33,10 @@ export function getSettings() {
             }
 
             if (setting.type === 'button') {
+                return;
+            }
+
+            if (setting.type === 'label') {
                 return;
             }
 
@@ -93,7 +98,7 @@ export function getCategories() {
                     id: 'changeDataFolder',
                     title: 'Change data folder location',
                     type: 'button',
-                    value: (settings, updateSettings, dispatcher) => {
+                    value: (settings, updateSettings, dispatch) => {
                         let dataFolder = null;
                         let copy = false;
 
@@ -117,10 +122,10 @@ export function getCategories() {
                             ),
                             okText: 'Change',
                             onOk: async () => {
-                                await dispatcher(saveData());
+                                await dispatch(saveData());
                                 await updateSettings({ dataFolder });
-                                await dispatcher(saveData({ coreSettingsOnly: !copy }));
-                                await dispatcher(loadData());
+                                await dispatch(saveData({ coreSettingsOnly: !copy }));
+                                await dispatch(loadData());
                             },
                             width: 500
                         });
@@ -428,7 +433,7 @@ export function getCategories() {
                     id: 'restoreFromBackup',
                     title: 'Restore from backup',
                     type: 'button',
-                    value: async (settings, updateSettings, dispatcher) => {
+                    value: async (settings, updateSettings, dispatch) => {
                         const backups = await getBackups(settings);
                         let selectedBackup = null;
 
@@ -445,7 +450,7 @@ export function getCategories() {
                             ),
                             okText: 'Restore',
                             onOk: () => {
-                                dispatcher(restoreBackup(selectedBackup.toString()));
+                                dispatch(restoreBackup(selectedBackup.toString()));
                             }
                         });
                     },
@@ -460,6 +465,30 @@ export function getCategories() {
             icon: 'sync-alt',
             mode: 'electron',
             settings: [
+                {
+                    id: 'currentSynchronizationApp',
+                    title: 'Current synchronization service',
+                    type: 'label',
+                    value: settings => { // eslint-disable-line react/display-name
+                        if (!settings.synchronizationApp) {
+                            return null;
+                        }
+
+                        const app = getSynchronizationApp(settings.synchronizationApp);
+
+                        return (
+                            <div>
+                                <img
+                                    alt={app.label}
+                                    src={app.img}
+                                    style={{ width: 16, height: 16, marginRight: 10 }} />
+                                {app.label}
+                            </div>
+                        );
+                    },
+                    editable: false,
+                    mode: 'electron'
+                },
                 {
                     id: 'automaticSynchronization',
                     title: 'Enable automatic synchronization',
@@ -526,17 +555,25 @@ export function getCategories() {
                     title: 'Delete the local data and synchronize',
                     type: 'button',
                     buttonType: 'danger',
-                    value: async (settings, updateSettings, dispatcher) => {
+                    value: async (settings, updateSettings, dispatch) => {
                         Modal.confirm({
                             content: (
                                 <span>This will delete the local data from TaskUnifier App and reload the data from the server.<br />This cannot be undone !</span>
                             ),
                             onOk: async () => {
-                                await dispatcher(resetDataForSynchronization());
+                                await dispatch(resetDataForSynchronization());
+
+                                if (settings.synchronizationApp) {
+                                    await updateSettings({
+                                        [settings.synchronizationApp]: null
+                                    });
+                                }
+
                                 await updateSettings({
                                     lastSynchronizationDate: null
                                 });
-                                await dispatcher(synchronize());
+
+                                await dispatch(synchronize());
                             }
                         });
                     },
@@ -569,8 +606,8 @@ export function getCategories() {
                     id: 'editCustomNoteFields',
                     title: 'Edit custom note fields',
                     type: 'button',
-                    value: (settings, updateSettings, dispatcher) => {
-                        dispatcher(setNoteFieldManagerOptions({ visible: true }));
+                    value: (settings, updateSettings, dispatch) => {
+                        dispatch(setNoteFieldManagerOptions({ visible: true }));
                     },
                     editable: true
                 },
@@ -625,8 +662,8 @@ export function getCategories() {
                     id: 'editCustomTaskFields',
                     title: 'Edit custom task fields',
                     type: 'button',
-                    value: (settings, updateSettings, dispatcher) => {
-                        dispatcher(setTaskFieldManagerOptions({ visible: true }));
+                    value: (settings, updateSettings, dispatch) => {
+                        dispatch(setTaskFieldManagerOptions({ visible: true }));
                     },
                     editable: true
                 },
@@ -689,8 +726,8 @@ export function getCategories() {
                     id: 'editCustomTaskFields',
                     title: 'Edit custom task fields',
                     type: 'button',
-                    value: (settings, updateSettings, dispatcher) => {
-                        dispatcher(setTaskFieldManagerOptions({ visible: true }));
+                    value: (settings, updateSettings, dispatch) => {
+                        dispatch(setTaskFieldManagerOptions({ visible: true }));
                     },
                     editable: true
                 },

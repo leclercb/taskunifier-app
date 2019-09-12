@@ -3,10 +3,12 @@ import { Button, Empty, message } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getConfig } from 'config/Config';
-import withSession from 'containers/WithSession';
+import { useSession } from 'hooks/UseSession';
 import { openExternalLink } from 'utils/ElectronUtils';
 
-export function ProLockedMessage({ info, session, buyItem }) {
+export function ProLockedMessage({ info }) {
+    const sessionApi = useSession();
+
     if (process.env.REACT_APP_MODE === 'electron') {
         const onClick = () => {
             openExternalLink(getConfig().appUrl);
@@ -32,7 +34,7 @@ export function ProLockedMessage({ info, session, buyItem }) {
 
         const onBuyItem = async () => {
             message.info('Redirecting to Paypal...', 5);
-            await buyItem(getConfig().cloudItemSku, session.user.id, session.user.email);
+            await sessionApi.buyItem(getConfig().cloudItemSku, sessionApi.session.user.id, sessionApi.session.user.email);
         };
 
         let description = 'This feature requires a TaskUnifier Cloud Pro subscription !';
@@ -53,9 +55,7 @@ export function ProLockedMessage({ info, session, buyItem }) {
 }
 
 ProLockedMessage.propTypes = {
-    info: PropTypes.bool,
-    session: PropTypes.object.isRequired,
-    buyItem: PropTypes.func.isRequired
+    info: PropTypes.bool
 };
 
-export default withSession(ProLockedMessage);
+export default ProLockedMessage;

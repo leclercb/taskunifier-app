@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
-import withFolder from 'containers/WithFolder';
 import Icon from 'components/common/Icon';
+import { useFolder } from 'hooks/UseFolder';
 
 export function FolderTitle(props) {
-    const { folder } = props;
+    const folder = useFolder(props.folderId);
     return folder ? <Icon icon="circle" color={folder.color} text={folder.title} /> : <span>&nbsp;</span>;
 }
 
 FolderTitle.propTypes = {
-    folderId: PropTypes.string,
-    folder: FolderPropType
+    folderId: PropTypes.string
 };
 
-export default withFolder(FolderTitle);
+export default FolderTitle;

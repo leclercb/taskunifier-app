@@ -1,13 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Tag } from 'antd';
-import { LinkPropType } from 'proptypes/LinkPropTypes';
-import withLinkedContactLinks from 'containers/WithLinkedContactLinks';
-import withLinkedFileLinks from 'containers/WithLinkedFileLinks';
-import withLinkedTaskLinks from 'containers/WithLinkedTaskLinks';
+import PropTypes from 'prop-types';
+import { useLinks } from 'hooks/UseLinks';
+import { getLinksFromIds } from 'utils/LinkUtils';
 
-export function LinksTitle(props) {
-    const { links } = props;
+function LinksTitle(props) {
+    const linkApi = useLinks(props.property);
+    const links = getLinksFromIds(linkApi.links, props.linkIds);
 
     return links && links.length > 0 ? (
         <React.Fragment>
@@ -20,9 +19,17 @@ export function LinksTitle(props) {
 
 LinksTitle.propTypes = {
     linkIds: PropTypes.array,
-    links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
+    property: PropTypes.string.isRequired
 };
 
-export const LinkedContactLinksTitle = withLinkedContactLinks(LinksTitle);
-export const LinkedFileLinksTitle = withLinkedFileLinks(LinksTitle);
-export const LinkedTaskLinksTitle = withLinkedTaskLinks(LinksTitle);
+export function LinkedContactLinksTitle(props) {
+    return (<LinksTitle {...props} property='linkedContacts' />);
+}
+
+export function LinkedFileLinksTitle(props) {
+    return (<LinksTitle {...props} property='linkedFiles' />);
+}
+
+export function LinkedTaskLinksTitle(props) {
+    return (<LinksTitle {...props} property='linkedTasks' />);
+}

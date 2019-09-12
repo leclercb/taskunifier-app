@@ -65,6 +65,18 @@ export class MaskTextField extends Component {
     constructor(props) {
         super(props);
 
+        const options = {
+            pattern: props.mask,
+            value: props.value,
+            formatCharacters: props.formatCharacters
+        };
+
+        if (props.placeholderChar) {
+            options.placeholderChar = props.placeholderChar;
+        }
+
+        this.mask = new InputMask(options);
+
         this._updatePattern = this._updatePattern.bind(this);
         this._updateMaskSelection = this._updateMaskSelection.bind(this);
         this._updateInputSelection = this._updateInputSelection.bind(this);
@@ -80,58 +92,28 @@ export class MaskTextField extends Component {
         this.getInputProps = this.getInputProps.bind(this);
     }
 
-    componentWillMount() {
-        if (!this.props.mask) {
-            return null;
-        }
-
-        let options = {
-            pattern: this.props.mask,
-            value: this.props.value,
-            formatCharacters: this.props.formatCharacters
-        };
-
-        if (this.props.placeholderChar) {
-            options.placeholderChar = this.props.placeholderChar;
-        }
-
-        this.mask = new InputMask(options);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.mask) {
-            return null;
-        }
-
-        if (this.props.mask !== nextProps.mask && this.props.value !== nextProps.mask) {
-            if (this.mask.getValue() === this.mask.emptyValue) {
-                this.mask.setPattern(nextProps.mask, { value: nextProps.value });
-            } else {
-                this.mask.setPattern(nextProps.mask, { value: this.mask.getRawValue() });
-            }
-        } else if (this.props.mask !== nextProps.mask) {
-            this.mask.setPattern(nextProps.mask, { value: this.mask.getRawValue() });
-        } else if (this.props.value !== nextProps.value) {
-            this.mask.setValue(nextProps.value);
-        }
-    }
-
-    componentWillUpdate(nextProps) {
-        if (!this.props.mask) {
-            return null;
-        }
-
-        if (nextProps.mask !== this.props.mask) {
-            this._updatePattern(nextProps);
-        }
-    }
-
     componentDidUpdate(prevProps) {
         if (!this.props.mask) {
             return null;
         }
 
-        if (prevProps.mask !== this.props.mask && this.mask.selection.start) {
+        if (this.props.mask !== prevProps.mask) {
+            this._updatePattern(this.props);
+        }
+
+        if (this.props.mask !== prevProps.mask && this.props.value !== prevProps.mask) {
+            if (this.mask.getValue() === this.mask.emptyValue) {
+                this.mask.setPattern(this.props.mask, { value: this.props.value });
+            } else {
+                this.mask.setPattern(this.props.mask, { value: this.mask.getRawValue() });
+            }
+        } else if (this.props.mask !== prevProps.mask) {
+            this.mask.setPattern(this.props.mask, { value: this.mask.getRawValue() });
+        } else if (this.props.value !== prevProps.value) {
+            this.mask.setValue(this.props.value);
+        }
+
+        if (this.props.mask !== prevProps.mask && this.mask.selection.start) {
             this._updateInputSelection();
         }
     }
@@ -283,7 +265,7 @@ export class MaskTextField extends Component {
         const props = { ...cleanedProps, ...eventHandlers, ref, maxLength, placeholder, defaultValue };
         delete props.placeholderChar;
         delete props.formatCharacters;
-        
+
         return props;
     }
 
@@ -296,7 +278,7 @@ export class MaskTextField extends Component {
 
 MaskTextField.propTypes = {
     value: PropTypes.string,
-    mask: PropTypes.string,
+    mask: PropTypes.string.isRequired,
     formatCharacters: PropTypes.object,
     placeholderChar: PropTypes.string,
     placeholder: PropTypes.string,

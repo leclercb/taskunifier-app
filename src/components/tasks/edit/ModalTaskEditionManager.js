@@ -1,29 +1,33 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
-import withApp from 'containers/WithApp';
-import withTask from 'containers/WithTask';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { useApp } from 'hooks/UseApp';
+import { useTask } from 'hooks/UseTask';
+import { useTasks } from 'hooks/UseTasks';
 
 function ModalTaskEditionManager(props) {
+    const appApi = useApp();
+    const taskApi = useTasks();
+    const task = useTask(appApi.taskEditionManager.taskId);
+
     const onCloseTaskEditionManager = () => {
         props.form.validateFields((error, values) => {
             if (error) {
                 return;
             }
 
-            props.updateTask({ ...props.task, ...values });
+            taskApi.updateTask({ ...task, ...values });
             props.form.resetFields();
-            props.setTaskEditionManagerOptions({ visible: false });
+            appApi.setTaskEditionManagerOptions({ visible: false });
         });
     };
 
     return (
         <Modal
             title={<Icon icon="tasks" text="Task Edition Manager" />}
-            visible={props.taskEditionManager.visible}
+            visible={appApi.taskEditionManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseTaskEditionManager}
@@ -33,19 +37,13 @@ function ModalTaskEditionManager(props) {
                     Close
                 </Button>
             )}>
-            {props.task && <TaskEditionManager form={props.form} task={props.task} />}
+            {!!task && (<TaskEditionManager form={props.form} task={task} />)}
         </Modal>
     );
 }
 
 ModalTaskEditionManager.propTypes = {
-    form: PropTypes.object.isRequired,
-    task: TaskPropType,
-    updateTask: PropTypes.func.isRequired,
-    taskEditionManager: PropTypes.object.isRequired,
-    setTaskEditionManagerOptions: PropTypes.func.isRequired
+    form: PropTypes.object.isRequired
 };
 
-export default Form.create({ name: 'task' })(withApp(withTask(
-    ModalTaskEditionManager,
-    ownProps => ownProps.taskEditionManager.taskId)));
+export default Form.create({ name: 'task' })(ModalTaskEditionManager);

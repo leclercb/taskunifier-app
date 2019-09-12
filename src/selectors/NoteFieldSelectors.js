@@ -18,3 +18,11 @@ export const getNoteFieldsIncludingDefaults = createSelector(
         return getDefaultNoteFields().concat(filterByVisibleState(noteFields)).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
+
+export const getVisibleNoteFieldSelector = () => createSelector(
+    getNoteFieldsFilteredByVisibleState,
+    (state, id) => id,
+    (noteFields, id) => {
+        return noteFields.find(noteField => noteField.id === id);
+    }
+);

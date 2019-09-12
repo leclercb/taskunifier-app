@@ -5,21 +5,30 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
-import withApp from 'containers/WithApp';
-import withObjects from 'containers/WithObjects';
 import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
-import { ContextPropType } from 'proptypes/ContextPropTypes';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
-import { GoalPropType } from 'proptypes/GoalPropTypes';
-import { LocationPropType } from 'proptypes/LocationPropTypes';
-import { TagPropType } from 'proptypes/TagPropTypes';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
+import { useApp } from 'hooks/UseApp';
+import { useContexts } from 'hooks/UseContexts';
+import { useFolders } from 'hooks/UseFolders';
+import { useGoals } from 'hooks/UseGoals';
+import { useLocations } from 'hooks/UseLocations';
+import { useTags } from 'hooks/UseTags';
+import { useTaskFilters } from 'hooks/UseTaskFilters';
+import { useTasks } from 'hooks/UseTasks';
 
 function TaskSider(props) {
+    const appApi = useApp();
+    const contextApi = useContexts();
+    const folderApi = useFolders();
+    const goalApi = useGoals();
+    const locationApi = useLocations();
+    const tagApi = useTags();
+    const taskApi = useTasks();
+    const taskFilterApi = useTaskFilters();
+
     const [openKeys, setOpenKeys] = useState(['general']);
 
     const onSelect = event => {
-        props.setSelectedTaskFilter(event.item.props.filter);
+        taskApi.setSelectedTaskFilter(event.item.props.filter);
     };
 
     const onOpenChange = key => {
@@ -51,14 +60,14 @@ function TaskSider(props) {
     };
 
     const manageObjects = category => {
-        props.setCategoryManagerOptions({
+        appApi.setCategoryManagerOptions({
             visible: true,
             category
         });
     };
 
     const editObject = (category, objectId) => {
-        props.setCategoryManagerOptions({
+        appApi.setCategoryManagerOptions({
             visible: true,
             category,
             objectId
@@ -66,21 +75,20 @@ function TaskSider(props) {
     };
 
     const dropObject = (task, object, property) => {
-        console.log(task, object);
-        props.updateTask({
+        taskApi.updateTask({
             ...task,
             [property]: object.id
         });
     };
 
     const manageTaskFilters = () => {
-        props.setTaskFilterManagerOptions({
+        appApi.setTaskFilterManagerOptions({
             visible: true
         });
     };
 
     const editTaskFilter = taskFilterId => {
-        props.setTaskFilterManagerOptions({
+        appApi.setTaskFilterManagerOptions({
             visible: true,
             taskFilterId
         });
@@ -101,19 +109,19 @@ function TaskSider(props) {
     };
 
     const onSearch = value => {
-        props.setSelectedTaskFilter(createSearchTaskFilter(value));
+        taskApi.setSelectedTaskFilter(createSearchTaskFilter(value));
     };
 
     const searchTaskFilter = createSearchTaskFilter();
 
     const createBadge = taskFilter => {
-        if (taskFilter.id !== props.selectedTaskFilter.id) {
+        if (taskFilter.id !== taskApi.selectedTaskFilter.id) {
             return null;
         }
 
         return (
             <Badge
-                count={props.taskNumber}
+                count={taskApi.filteredTasks.length}
                 showZero={true}
                 overflowCount={9999}
                 style={{
@@ -131,8 +139,8 @@ function TaskSider(props) {
             style={{ backgroundColor: '#ffffff', height: '100%' }}>
             {props.mode === 'table' ? (
                 <Checkbox
-                    checked={props.showCompletedTasks}
-                    onChange={() => props.setShowCompletedTasks(!props.showCompletedTasks)}
+                    checked={taskApi.showCompletedTasks}
+                    onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}
                     style={{
                         padding: 10,
                         paddingBottom: 20
@@ -147,8 +155,8 @@ function TaskSider(props) {
                 }}>
                     <div style={{ marginBottom: 10 }}>Show tasks by:</div>
                     <Radio.Group
-                        value={props.calendarDateMode}
-                        onChange={event => props.setCalendarDateMode(event.target.value)}>
+                        value={taskApi.calendarDateMode}
+                        onChange={event => taskApi.setCalendarDateMode(event.target.value)}>
                         <Radio
                             value="both"
                             style={{
@@ -183,7 +191,7 @@ function TaskSider(props) {
                 </div>
             ) : null}
             <Menu
-                selectedKeys={[props.selectedTaskFilter.id]}
+                selectedKeys={[taskApi.selectedTaskFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
                 mode="inline">
@@ -223,7 +231,7 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="folders"
                     title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                    {props.folders.map(folder => {
+                    {folderApi.folders.map(folder => {
                         const filter = createTaskFilterForObject(folder, 'folder');
 
                         return (
@@ -233,7 +241,7 @@ function TaskSider(props) {
                                     object={folder}
                                     onManage={() => manageObjects('folders')}
                                     onEdit={() => editObject('folders', folder.id)}
-                                    onDelete={() => props.deleteFolder(folder.id)}
+                                    onDelete={() => folderApi.deleteFolder(folder.id)}
                                     dropType="task"
                                     onDrop={(task, folder) => dropObject(task, folder, 'folder')} />
                             </Menu.Item>
@@ -243,7 +251,7 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="contexts"
                     title={createCategorySubMenu('Contexts', 'thumbtack', () => manageObjects('contexts'), () => onOpenChange('contexts'))}>
-                    {props.contexts.map(context => {
+                    {contextApi.contexts.map(context => {
                         const filter = createTaskFilterForObject(context, 'context');
 
                         return (
@@ -253,7 +261,7 @@ function TaskSider(props) {
                                     object={context}
                                     onManage={() => manageObjects('contexts')}
                                     onEdit={() => editObject('contexts', context.id)}
-                                    onDelete={() => props.deleteContext(context.id)}
+                                    onDelete={() => contextApi.deleteContext(context.id)}
                                     dropType="task"
                                     onDrop={(task, context) => dropObject(task, context, 'context')} />
                             </Menu.Item>
@@ -263,7 +271,7 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="goals"
                     title={createCategorySubMenu('Goals', 'bullseye', () => manageObjects('goals'), () => onOpenChange('goals'))}>
-                    {props.goals.map(goal => {
+                    {goalApi.goals.map(goal => {
                         const filter = createTaskFilterForObject(goal, 'goal');
 
                         return (
@@ -273,7 +281,7 @@ function TaskSider(props) {
                                     object={goal}
                                     onManage={() => manageObjects('goals')}
                                     onEdit={() => editObject('goals', goal.id)}
-                                    onDelete={() => props.deleteGoal(goal.id)}
+                                    onDelete={() => goalApi.deleteGoal(goal.id)}
                                     dropType="task"
                                     onDrop={(task, goal) => dropObject(task, goal, 'goal')} />
                             </Menu.Item>
@@ -283,7 +291,7 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="locations"
                     title={createCategorySubMenu('Locations', 'compass', () => manageObjects('locations'), () => onOpenChange('locations'))}>
-                    {props.locations.map(location => {
+                    {locationApi.locations.map(location => {
                         const filter = createTaskFilterForObject(location, 'location');
 
                         return (
@@ -293,7 +301,7 @@ function TaskSider(props) {
                                     object={location}
                                     onManage={() => manageObjects('locations')}
                                     onEdit={() => editObject('locations', location.id)}
-                                    onDelete={() => props.deleteLocation(location.id)}
+                                    onDelete={() => locationApi.deleteLocation(location.id)}
                                     dropType="task"
                                     onDrop={(task, location) => dropObject(task, location, 'location')} />
                             </Menu.Item>
@@ -303,7 +311,7 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="tags"
                     title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
-                    {props.tags.map(tag => {
+                    {tagApi.tags.map(tag => {
                         const filter = createTaskFilterForObject(tag, 'tags', {
                             id: '1',
                             field: 'tags',
@@ -318,7 +326,7 @@ function TaskSider(props) {
                                     object={tag}
                                     onManage={() => manageObjects('tags')}
                                     onEdit={() => editObject('tags', tag.id)}
-                                    onDelete={() => props.deleteTag(tag.id)} />
+                                    onDelete={() => tagApi.deleteTag(tag.id)} />
                             </Menu.Item>
                         );
                     })}
@@ -326,14 +334,14 @@ function TaskSider(props) {
                 <Menu.SubMenu
                     key="taskFilters"
                     title={createCategorySubMenu('Task Filters', 'filter', () => manageTaskFilters(), () => onOpenChange('taskFilters'))}>
-                    {props.taskFilters.map(taskFilter => (
+                    {taskFilterApi.taskFilters.map(taskFilter => (
                         <Menu.Item key={taskFilter.id} filter={taskFilter}>
                             <ObjectMenuItem
                                 badge={createBadge(taskFilter)}
                                 object={taskFilter}
                                 onManage={() => manageTaskFilters()}
                                 onEdit={() => editTaskFilter(taskFilter.id)}
-                                onDelete={() => props.deleteTaskFilter(taskFilter.id)} />
+                                onDelete={() => taskFilterApi.deleteTaskFilter(taskFilter.id)} />
                         </Menu.Item>
                     ))}
                 </Menu.SubMenu>
@@ -343,43 +351,7 @@ function TaskSider(props) {
 }
 
 TaskSider.propTypes = {
-    mode: PropTypes.oneOf(['table', 'calendar']).isRequired,
-    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired,
-    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
-    goals: PropTypes.arrayOf(GoalPropType.isRequired).isRequired,
-    locations: PropTypes.arrayOf(LocationPropType.isRequired).isRequired,
-    tags: PropTypes.arrayOf(TagPropType.isRequired).isRequired,
-    taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
-    taskNumber: PropTypes.number.isRequired,
-    showCompletedTasks: PropTypes.bool.isRequired,
-    calendarDateMode: PropTypes.oneOf(['both', 'startDate', 'dueDate']).isRequired,
-    selectedTaskFilter: TaskFilterPropType.isRequired,
-    setShowCompletedTasks: PropTypes.func.isRequired,
-    setCalendarDateMode: PropTypes.func.isRequired,
-    setSelectedTaskFilter: PropTypes.func.isRequired,
-    setCategoryManagerOptions: PropTypes.func.isRequired,
-    setTaskFilterManagerOptions: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    deleteContext: PropTypes.func.isRequired,
-    deleteFolder: PropTypes.func.isRequired,
-    deleteGoal: PropTypes.func.isRequired,
-    deleteLocation: PropTypes.func.isRequired,
-    deleteTag: PropTypes.func.isRequired,
-    deleteTaskFilter: PropTypes.func.isRequired
+    mode: PropTypes.oneOf(['table', 'calendar']).isRequired
 };
 
-export default withApp(withObjects(TaskSider, {
-    includeDispatch: true,
-    includeContexts: true,
-    includeFolders: true,
-    includeGoals: true,
-    includeLocations: true,
-    includeTags: true,
-    includeTaskFilters: true,
-    includeShowCompletedTasks: true,
-    includeCalendarDateMode: true,
-    includeSelectedTaskFilter: true,
-    includeTaskNumber: true,
-    filteredByNonArchivedFolders: true,
-    filteredByNonArchivedGoals: true
-}));
+export default TaskSider;

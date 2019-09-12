@@ -2,19 +2,17 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import withTaskFields from 'containers/WithTaskFields';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { useTaskFields } from 'hooks/UseTaskFields';
 
 export const TaskFieldSelect = React.forwardRef(function TaskFieldSelect(props, ref) {
-    const { taskFields, ...restProps } = props;
-
-    restProps.value = taskFields.find(taskField => taskField.id === restProps.value) ? restProps.value : null;
+    const taskFieldApi = useTaskFields();
+    const value = taskFieldApi.taskFields.find(taskField => taskField.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
-            {taskFields.map(field => (
-                <Select.Option key={field.id} value={field.id}>
-                    <Icon icon="circle" color={field.color} text={field.title} />
+        <Select ref={ref} allowClear={true} {...props} value={value}>
+            {taskFieldApi.taskFields.map(taskField => (
+                <Select.Option key={taskField.id} value={taskField.id}>
+                    <Icon icon="circle" color={taskField.color} text={taskField.title} />
                 </Select.Option>
             ))}
         </Select>
@@ -24,7 +22,7 @@ export const TaskFieldSelect = React.forwardRef(function TaskFieldSelect(props, 
 TaskFieldSelect.displayName = 'ForwardRefTaskFieldSelect';
 
 TaskFieldSelect.propTypes = {
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withTaskFields(TaskFieldSelect);
+export default TaskFieldSelect;

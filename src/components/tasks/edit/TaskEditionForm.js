@@ -1,15 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'antd';
-import withSettings from 'containers/WithSettings';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useSettings } from 'hooks/UseSettings';
+import { useTaskFields } from 'hooks/UseTaskFields';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskEditionForm(props) {
+    const settingsApi = useSettings();
+    const taskFieldApi = useTaskFields();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = {
@@ -21,7 +22,7 @@ function TaskEditionForm(props) {
         }
     };
 
-    const fields = props.taskFields.filter(field => props.settings['taskFieldVisible_' + field.id] !== false);
+    const fields = taskFieldApi.taskFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
     return (
         <Row gutter={20}>
@@ -45,9 +46,7 @@ function TaskEditionForm(props) {
 
 TaskEditionForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    task: TaskPropType.isRequired,
-    settings: SettingsPropType.isRequired
+    task: TaskPropType.isRequired
 };
 
-export default withSettings(withTaskFields(TaskEditionForm, { includeDispatch: false }));
+export default TaskEditionForm;

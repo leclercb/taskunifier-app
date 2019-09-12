@@ -1,21 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import withPriorities from 'containers/WithPriorities';
-import withSettings from 'containers/WithSettings';
 import Icon from 'components/common/Icon';
-import { PriorityPropType } from 'proptypes/PriorityPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { usePriorities } from 'hooks/UsePriorities';
+import { useSettings } from 'hooks/UseSettings';
 import { getPriorityColor } from 'utils/SettingUtils';
 
 export const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
-    const { priorities, ...restProps } = props;
+    const priorityApi = usePriorities();
+    const settingsApi = useSettings();
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
-            {priorities.map(priority => (
+        <Select ref={ref} allowClear={true} {...props}>
+            {priorityApi.priorities.map(priority => (
                 <Select.Option key={priority.id} value={priority.id}>
-                    <Icon icon="circle" color={getPriorityColor(priority.id, props.settings)} text={priority.title} />
+                    <Icon icon="circle" color={getPriorityColor(priority.id, settingsApi.settings)} text={priority.title} />
                 </Select.Option>
             ))}
         </Select>
@@ -24,9 +22,4 @@ export const PrioritySelect = React.forwardRef(function PrioritySelect(props, re
 
 PrioritySelect.displayName = 'ForwardRefPrioritySelect';
 
-PrioritySelect.propTypes = {
-    priorities: PropTypes.arrayOf(PriorityPropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired
-};
-
-export default withPriorities(withSettings(PrioritySelect));
+export default PrioritySelect;

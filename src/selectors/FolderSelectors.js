@@ -17,3 +17,11 @@ export const getFoldersFilteredByNonArchived = createSelector(
         return filterByNonArchived(folders);
     }
 );
+
+export const getVisibleFolderSelector = () => createSelector(
+    getFoldersFilteredByVisibleState,
+    (state, id) => id,
+    (folders, id) => {
+        return folders.find(folder => folder.id === id);
+    }
+);

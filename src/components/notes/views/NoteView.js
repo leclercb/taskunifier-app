@@ -1,19 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import NoteSider from 'components/notes/sider/NoteSider';
 import NoteTable from 'components/notes/table/NoteTable';
-import withSettings from 'containers/WithSettings';
 import NoteTabs from 'components/notes/tabs/NoteTabs';
+import { useSettings } from 'hooks/UseSettings';
 
-function NoteView(props) {
+function NoteView() {
+    const settingsApi = useSettings();
+
     const onNoteViewSplitPaneSizeChange = size => {
-        props.updateSettings({ noteViewSplitPaneSize: size });
+        settingsApi.updateSettings({ noteViewSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
     const onNoteViewSubSplitPaneSizeChange = size => {
-        props.updateSettings({ noteViewSubSplitPaneSize: size });
+        settingsApi.updateSettings({ noteViewSubSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
@@ -21,14 +22,14 @@ function NoteView(props) {
         <SplitPane
             split="vertical"
             minSize={200}
-            defaultSize={props.settings.noteViewSplitPaneSize}
+            defaultSize={settingsApi.settings.noteViewSplitPaneSize}
             onDragFinished={size => onNoteViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <NoteSider />
             <SplitPane
-                split={props.settings.noteViewSubSplitPaneMode}
+                split={settingsApi.settings.noteViewSubSplitPaneMode}
                 minSize={200}
-                defaultSize={props.settings.noteViewSubSplitPaneSize}
+                defaultSize={settingsApi.settings.noteViewSubSplitPaneSize}
                 onDragFinished={size => onNoteViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
@@ -43,13 +44,4 @@ function NoteView(props) {
     );
 }
 
-NoteView.propTypes = {
-    settings: PropTypes.shape({
-        noteViewSplitPaneSize: PropTypes.number.isRequired,
-        noteViewSubSplitPaneMode: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-        noteViewSubSplitPaneSize: PropTypes.number.isRequired
-    }).isRequired,
-    updateSettings: PropTypes.func.isRequired
-};
-
-export default withSettings(NoteView);
+export default NoteView;

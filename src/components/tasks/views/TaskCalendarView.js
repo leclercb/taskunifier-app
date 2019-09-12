@@ -1,20 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from 'components/tasks/sider/TaskSider';
 import TaskCalendar from 'components/tasks/calendar/TaskCalendar';
-import withSettings from 'containers/WithSettings';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
+import { useSettings } from 'hooks/UseSettings';
 
-function TaskCalendarView(props) {
+function TaskCalendarView() {
+    const settingsApi = useSettings();
+
     const onTaskCalendarViewSplitPaneSizeChange = size => {
-        props.updateSettings({ taskCalendarViewSplitPaneSize: size });
+        settingsApi.updateSettings({ taskCalendarViewSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
     const onTaskCalendarViewSubSplitPaneSizeChange = size => {
-        props.updateSettings({ taskCalendarViewSubSplitPaneSize: size });
+        settingsApi.updateSettings({ taskCalendarViewSubSplitPaneSize: size });
         window.dispatchEvent(new Event('app-resize'));
     };
 
@@ -22,14 +23,14 @@ function TaskCalendarView(props) {
         <SplitPane
             split="vertical"
             minSize={200}
-            defaultSize={props.settings.taskCalendarViewSplitPaneSize}
+            defaultSize={settingsApi.settings.taskCalendarViewSplitPaneSize}
             onDragFinished={size => onTaskCalendarViewSplitPaneSizeChange(size)}
             paneStyle={{ overflowY: 'auto' }}>
             <TaskSider mode="calendar" />
             <SplitPane
-                split={props.settings.taskCalendarViewSubSplitPaneMode}
+                split={settingsApi.settings.taskCalendarViewSubSplitPaneMode}
                 minSize={200}
-                defaultSize={props.settings.taskCalendarViewSubSplitPaneSize}
+                defaultSize={settingsApi.settings.taskCalendarViewSubSplitPaneSize}
                 onDragFinished={size => onTaskCalendarViewSubSplitPaneSizeChange(size)}
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
@@ -45,13 +46,4 @@ function TaskCalendarView(props) {
     );
 }
 
-TaskCalendarView.propTypes = {
-    settings: PropTypes.shape({
-        taskCalendarViewSplitPaneSize: PropTypes.number.isRequired,
-        taskCalendarViewSubSplitPaneMode: PropTypes.oneOf(['horizontal', 'vertical']).isRequired,
-        taskCalendarViewSubSplitPaneSize: PropTypes.number.isRequired
-    }).isRequired,
-    updateSettings: PropTypes.func.isRequired
-};
-
-export default withSettings(TaskCalendarView);
+export default TaskCalendarView;

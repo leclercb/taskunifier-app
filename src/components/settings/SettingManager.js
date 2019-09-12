@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, List, Row } from 'antd';
 import Icon from 'components/common/Icon';
-import withNoteFields from 'containers/WithNoteFields';
-import withSettings from 'containers/WithSettings';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { getCategories, getCategorySettings } from 'data/DataSettings';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useNoteFields } from 'hooks/UseNoteFields';
+import { useSettings } from 'hooks/UseSettings';
+import { useTaskFields } from 'hooks/UseTaskFields';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function SettingManager(props) {
+    const noteFieldApi = useNoteFields();
+    const taskFieldApi = useTaskFields();
+    const settingsApi = useSettings();
     const [selectedCategoryId, setSelectedCategoryId] = useState('general');
 
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
@@ -20,14 +21,14 @@ function SettingManager(props) {
     const settings = getCategorySettings(
         category,
         {
-            noteFields: props.noteFields,
-            taskFields: props.taskFields
+            noteFields: noteFieldApi.noteFields,
+            taskFields: taskFieldApi.taskFields
         }).filter(setting =>
             setting.visible !== false && (!setting.mode || setting.mode === process.env.REACT_APP_MODE));
 
     const getSettingValue = setting => {
-        if (setting.id in props.settings) {
-            return props.settings[setting.id];
+        if (setting.id in settingsApi.settings) {
+            return settingsApi.settings[setting.id];
         } else {
             return setting.value;
         }
@@ -69,18 +70,19 @@ function SettingManager(props) {
                                 {item.type === 'component' ?
                                     (
                                         <div style={{ width: '100%', margin: '20px 0px' }}>
-                                            {item.value(props.settings, props.updateSettings, props.dispatcher)}
+                                            {item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}
                                         </div>
                                     ) : (
                                         <Form.Item label={item.title} style={{ width: '100%' }}>
                                             {item.type === 'button' ? (
                                                 <Button
                                                     type={item.buttonType}
-                                                    onClick={() => item.value(props.settings, props.updateSettings, props.dispatcher)}>
+                                                    onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
                                                     {item.title}
                                                 </Button>
                                             ) : null}
-                                            {item.type !== 'button' && item.type !== 'component' ? (
+                                            {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
+                                            {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (
                                                 getFieldDecorator(item.id, {
                                                     valuePropName: getValuePropNameForType(item.type),
                                                     initialValue: getSettingValue(item)
@@ -90,7 +92,7 @@ function SettingManager(props) {
                                                         item.options,
                                                         {
                                                             disabled: item.editable === false,
-                                                            onCommit: () => onCommitForm(props.form, {}, props.updateSettings)
+                                                            onCommit: () => onCommitForm(props.form, {}, settingsApi.updateSettings)
                                                         })
                                                 )
                                             ) : null}
@@ -105,21 +107,7 @@ function SettingManager(props) {
 }
 
 SettingManager.propTypes = {
-    form: PropTypes.object.isRequired,
-    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    settings: SettingsPropType,
-    updateSettings: PropTypes.func.isRequired,
-    dispatcher: PropTypes.func.isRequired
+    form: PropTypes.object.isRequired
 };
 
-export default withNoteFields(
-    withTaskFields(
-        withSettings(
-            Form.create({ name: 'settings' })(SettingManager),
-            {
-                includeDispatcher: true
-            }
-        )
-    )
-);
+export default Form.create({ name: 'settings' })(SettingManager);
