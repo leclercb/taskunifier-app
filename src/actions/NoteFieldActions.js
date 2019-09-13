@@ -2,6 +2,7 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setNoteFields(noteFields) {
 
 export function addNoteField(noteField, options = {}) {
     return addObject('noteFields', noteField, options);
+}
+
+export function duplicateNoteField(noteField, options = {}) {
+    return duplicateObject('noteFields', noteField, options);
 }
 
 export function updateNoteField(noteField, options = {}) {

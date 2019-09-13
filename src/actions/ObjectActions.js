@@ -54,7 +54,7 @@ export function addObject(
     object,
     options = {},
     defaultValues = {
-        title: 'Untitled',
+        title: '',
         color: Constants.defaultObjectColor
     }) {
     return async (dispatch, getState) => {
@@ -78,19 +78,47 @@ export function addObject(
 
             const newObject = getObjectById(getState(), property, id);
 
-            const transformedAddedObject = await dispatch({
+            const action = await dispatch({
                 type: 'POST_ADD_OBJECT',
                 property,
                 object: newObject,
                 options
             });
 
-            return transformedAddedObject || newObject;
+            return action.addedObject || newObject;
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
                 title: `Add "${object.title}" of type "${property}"`,
+                error: error.toString()
+            }));
+        }
+    };
+}
+
+export function duplicateObject(property, object, options = {}) {
+    return async dispatch => {
+        const processId = uuid();
+
+        try {
+            const objects = Array.isArray(object) ? object : [object];
+            const addedObjects = [];
+
+            for (let o of objects) {
+                addedObjects.push(await dispatch(addObject(property, o, options)));
+            }
+
+            if (Array.isArray(object)) {
+                return addedObjects;
+            } else {
+                return addedObjects[0];
+            }
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Duplicate object(s) of type "${property}"`,
                 error: error.toString()
             }));
         }

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { message } from 'antd';
-import withThread from 'containers/WithThread';
-import { NotificationPropType } from 'proptypes/NotificationPropTypes';
+import { useThreadApi } from 'hooks/UseThreadApi';
 
-function NotificationManager(props) {
+function NotificationManager() {
+    const threadApi = useThreadApi();
+
     const getLevelFromState = state => {
         switch (state) {
             case 'RUNNING':
@@ -18,21 +18,16 @@ function NotificationManager(props) {
     };
 
     useEffect(() => {
-        if (props.notifications.length > 0) {
-            props.notifications.forEach(notification => {
+        if (threadApi.notifications.length > 0) {
+            threadApi.notifications.forEach(notification => {
                 message[getLevelFromState(notification.process.state)](notification.process.title);
             });
 
-            props.deleteNotification(props.notifications.map(notification => notification.id));
+            threadApi.deleteNotification(threadApi.notifications.map(notification => notification.id));
         }
     });
 
     return null;
 }
 
-NotificationManager.propTypes = {
-    notifications: PropTypes.arrayOf(NotificationPropType.isRequired).isRequired,
-    deleteNotification: PropTypes.func.isRequired
-};
-
-export default withThread(NotificationManager);
+export default NotificationManager;

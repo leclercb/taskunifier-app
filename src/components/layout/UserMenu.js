@@ -1,15 +1,16 @@
 import React from 'react';
 import { Button, Descriptions, Popover, message } from 'antd';
-import PropTypes from 'prop-types';
 import Avatar from 'components/common/Avatar';
 import LeftRight from 'components/common/LeftRight';
 import { getConfig } from 'config/Config';
-import withSession from 'containers/WithSession';
+import { useSessionApi } from 'hooks/UseSessionApi';
 
-function UserMenu({ session, logout, buyItem }) {
+function UserMenu() {
+    const sessionApi = useSessionApi();
+
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);
-        await buyItem(getConfig().cloudItemSku, session.user.id, session.user.email);
+        await sessionApi.buyItem(getConfig().cloudItemSku, sessionApi.session.user.id, sessionApi.session.user.email);
     };
 
     const content = (
@@ -17,11 +18,22 @@ function UserMenu({ session, logout, buyItem }) {
             <div style={{ width: '100%', textAlign: 'right', fontSize: 10 }}>
                 Version: <strong>{process.env.REACT_APP_VERSION}</strong>
             </div>
-            {session.user ? (
-                <Descriptions title="User Info" column={1} size="small" bordered={true} style={{ marginBottom: 20 }}>
-                    <Descriptions.Item label="Email">{session.user.email}</Descriptions.Item>
-                    <Descriptions.Item label="Subscription Type">{session.user.metaData.computedSubscriptionType}</Descriptions.Item>
-                    <Descriptions.Item label="Subscription Expiration">{session.user.metaData.subscriptionExpiration}</Descriptions.Item>
+            {sessionApi.session.user ? (
+                <Descriptions
+                    title="User Info"
+                    column={1}
+                    size="small"
+                    bordered={true}
+                    style={{ marginBottom: 20 }}>
+                    <Descriptions.Item label="Email">
+                        {sessionApi.session.user.email}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Subscription Type">
+                        {sessionApi.session.user.metaData.computedSubscriptionType}
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Subscription Expiration">
+                        {sessionApi.session.user.metaData.subscriptionExpiration}
+                    </Descriptions.Item>
                 </Descriptions>
             ) : null}
             <LeftRight
@@ -29,7 +41,7 @@ function UserMenu({ session, logout, buyItem }) {
                     <Button type="dashed" onClick={onBuyItem}>Extend your &quot;pro&quot; subscription</Button>
                 )}
                 right={(
-                    <Button type="primary" onClick={logout}>Logout</Button>
+                    <Button type="primary" onClick={sessionApi.logout}>Logout</Button>
                 )} />
         </React.Fragment>
     );
@@ -48,10 +60,4 @@ function UserMenu({ session, logout, buyItem }) {
     );
 }
 
-UserMenu.propTypes = {
-    session: PropTypes.object.isRequired,
-    logout: PropTypes.func.isRequired,
-    buyItem: PropTypes.func.isRequired
-};
-
-export default withSession(UserMenu);
+export default UserMenu;

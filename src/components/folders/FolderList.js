@@ -19,7 +19,7 @@ function FolderList(props) {
                     <List.Item
                         onClick={() => props.onFolderSelection(item)}
                         className={item.id === props.selectedFolderId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addFolder(item), () => props.deleteFolder(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateFolder(item), () => props.deleteFolder(item.id))}>
                             {item.archived ? createAction(
                                 'archive',
                                 `"${item.title}" is archived`,
@@ -43,6 +43,7 @@ FolderList.propTypes = {
     folders: PropTypes.array.isRequired,
     selectedFolderId: PropTypes.string,
     addFolder: PropTypes.func.isRequired,
+    duplicateFolder: PropTypes.func.isRequired,
     deleteFolder: PropTypes.func.isRequired,
     onFolderSelection: PropTypes.func.isRequired
 };

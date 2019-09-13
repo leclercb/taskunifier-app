@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Spacer from 'components/common/Spacer';
 import DraggableElement from 'components/common/table/DraggableElement';
@@ -6,11 +6,15 @@ import ExpandCollapse from 'components/common/table/ExpandCollapse';
 import EditableCell from 'components/common/table/EditableCell';
 import { getDefaultGetValueFromEvent, getRenderForType } from 'data/DataFieldComponents';
 import { isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useEditingCellApi } from 'hooks/UseEditingCellApi';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import 'components/common/table/CellRenderer.css';
 
 function CellRenderer(props) {
-    const [editing, setEditing] = useState(false);
+    const editingCellApi = useEditingCellApi();
+
+    const editing = !!editingCellApi.editingCell && editingCellApi.editingCell.objectId === props.record.id && editingCellApi.editingCell.fieldId === props.field.id;
+    const setEditing = editing => editingCellApi.setEditingCell(editing ? props.record.id : null, editing ? props.field.id : null);
 
     const toggleEdit = () => {
         if (!props.field.editable) {
@@ -85,8 +89,11 @@ CellRenderer.propTypes = {
     expandMode: PropTypes.oneOf(['expanded', 'collapsed', 'hidden']),
     onSetExpanded: PropTypes.func,
     dndEnabled: PropTypes.bool,
-    dropType: PropTypes.string,
     dragType: PropTypes.string,
+    dropType: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string.isRequired)
+    ]),
     dndData: PropTypes.object,
     onDrop: PropTypes.func
 };

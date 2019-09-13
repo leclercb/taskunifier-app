@@ -16,6 +16,7 @@ function pushObjectToServer(property, oldObject, newObject) {
 
         const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
 
+        delete diffObject.owner;
         delete diffObject.id;
         delete diffObject.refIds;
         delete diffObject.state;
@@ -130,8 +131,7 @@ export const pushToServer = store => next => async action => {
         const remoteObject = await store.dispatch(pushObjectToServer(action.property, null, action.object));
         await store.dispatch(changeId(action.property, action.object.id, remoteObject.id));
         const addedObject = getObjectById(store.getState(), action.property, remoteObject.id);
-        next(action);
-        return addedObject;
+        action.addedObject = addedObject; // eslint-disable-line require-atomic-updates
     }
 
     if (action.type === 'POST_UPDATE_OBJECT') {

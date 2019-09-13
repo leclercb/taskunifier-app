@@ -1,55 +1,60 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
-import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
-import withNoteFields from 'containers/WithNoteFields';
-import withNotes from 'containers/WithNotes';
-import withSettings from 'containers/WithSettings';
-import withSize from 'containers/WithSize';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
-import { getWidthForType } from 'data/DataFieldTypes';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { NoteFilterPropType } from 'proptypes/NoteFilterPropTypes';
-import { NotePropType } from 'proptypes/NotePropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
-function NoteTable(props) {
+function NoteTable() {
+    const noteApi = useNoteApi();
+    const noteFieldApi = useNoteFieldApi();
+    const settingsApi = useSettingsApi();
+
     const onMenuAction = action => {
-        const notes = props.notes.filter(note => props.selectedNoteIds.includes(note.id));
+        const notes = noteApi.selectedNotes;
 
         switch (action.type) {
+            case 'duplicate':
+                notes.forEach(note => onDuplicateNote(note));
+                break;
             case 'remove':
-                notes.forEach(note => onRemoveNote(note));
+                onRemoveNotes(notes.map(note => note.id));
                 break;
             default:
                 break;
         }
     };
 
-    const onRemoveNote = note => {
-        props.deleteNote(note.id);
+    const onDuplicateNote = note => {
+        noteApi.duplicateNote(note);
+    };
+
+    const onRemoveNotes = noteIds => {
+        noteApi.deleteNote(noteIds);
     };
 
     const onUpdateNote = note => {
-        props.updateNote(note);
+        noteApi.updateNote(note);
     };
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler('noteColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('noteColumnOrder_', props.noteFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler('noteColumnWidth_', settingsApi.updateSettings);
+    const onMove = moveHandler('noteColumnOrder_', noteFieldApi.noteFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const sortedFields = sortBy(props.noteFields, field => props.settings['noteColumnOrder_' + field.id] || 0);
-    const sortedAndFilteredFields = sortedFields.filter(field => props.settings['noteColumnVisible_' + field.id] !== false);
+    const sortedFields = sortBy(noteFieldApi.noteFields, field => settingsApi.settings['noteColumnOrder_' + field.id] || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['noteColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
         const settingKey = 'noteColumnWidth_' + field.id;
-        let width = Number(props.settings[settingKey]);
+        let width = Number(settingsApi.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -74,16 +79,33 @@ function NoteTable(props) {
                         onResize={data => onResize(data, field.id, width + data.deltaX)}
                         onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
                 )}
-                cellRenderer={({ cellData, rowData }) => (
-                    <CellRenderer
-                        record={rowData}
-                        field={field}
-                        value={cellData}
-                        onChange={allValues => onUpdateNote({
-                            ...rowData,
-                            ...allValues
-                        })} />
-                )} />
+                cellRenderer={({ cellData, rowData }) => {
+                    let dndProps = {};
+
+                    if (!isAlwaysInEditionForType(field.type)) {
+                        dndProps = {
+                            dndEnabled: true,
+                            dragType: 'note',
+                            dropType: [],
+                            dndData: {
+                                object: rowData,
+                                rowData
+                            }
+                        };
+                    }
+
+                    return (
+                        <CellRenderer
+                            record={rowData}
+                            field={field}
+                            value={cellData}
+                            onChange={allValues => onUpdateNote({
+                                ...rowData,
+                                ...allValues
+                            })}
+                            {...dndProps} />
+                    );
+                }} />
         );
     });
 
@@ -94,29 +116,29 @@ function NoteTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={props.settings.noteTableRowHeight}
+                        rowHeight={settingsApi.settings.noteTableRowHeight}
                         headerHeight={20}
-                        rowCount={props.notes.length}
-                        rowGetter={({ index }) => props.notes[index]}
+                        rowCount={noteApi.filteredNotes.length}
+                        rowGetter={({ index }) => noteApi.filteredNotes[index]}
                         rowRenderer={rendererProps => (
                             <NoteMenu
                                 key={rendererProps.key}
-                                selectedNoteIds={props.selectedNoteIds}
+                                selectedNoteIds={noteApi.selectedNoteIds}
                                 onAction={onMenuAction}>
                                 {defaultTableRowRenderer(rendererProps)}
                             </NoteMenu>
                         )}
                         rowStyle={({ index }) => {
-                            const note = props.notes[index];
+                            const note = noteApi.filteredNotes[index];
 
                             if (!note) {
                                 return {};
                             }
 
                             let foregroundColor = 'initial';
-                            let backgroundColor = getNoteBackgroundColor(note, index, props.settings);
+                            let backgroundColor = getNoteBackgroundColor(note, index, settingsApi.settings);
 
-                            if (props.selectedNoteIds.includes(note.id)) {
+                            if (noteApi.selectedNoteIds.includes(note.id)) {
                                 foregroundColor = Constants.selectionForegroundColor;
                                 backgroundColor = Constants.selectionBackgroundColor;
                             }
@@ -128,15 +150,15 @@ function NoteTable(props) {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.notes,
-                            props.selectedNoteIds,
-                            props.setSelectedNoteIds,
+                            noteApi.filteredNotes,
+                            noteApi.selectedNoteIds,
+                            noteApi.setSelectedNoteIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.notes,
-                            props.selectedNoteIds,
-                            props.setSelectedNoteIds,
+                            noteApi.filteredNotes,
+                            noteApi.selectedNoteIds,
+                            noteApi.setSelectedNoteIds,
                             true)} >
                         {columns}
                     </Table>
@@ -146,17 +168,4 @@ function NoteTable(props) {
     );
 }
 
-NoteTable.propTypes = {
-    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired,
-    selectedNoteFilter: NoteFilterPropType,
-    selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    setSelectedNoteIds: PropTypes.func.isRequired,
-    updateNote: PropTypes.func.isRequired,
-    deleteNote: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired,
-    size: PropTypes.object.isRequired
-};
-
-export default withSettings(withNoteFields(withNotes(withSize(NoteTable), { applySelectedNoteFilter: true })));
+export default NoteTable;

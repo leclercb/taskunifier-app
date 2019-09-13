@@ -6,7 +6,10 @@ import Constants from 'constants/Constants';
 function Icon(props) {
     return (
         <React.Fragment>
-            <span onClick={props.onClick} style={props.globalStyle}>
+            <span
+                onClick={props.onClick}
+                className={props.globalClassName}
+                style={props.globalStyle}>
                 <FontAwesomeIcon
                     icon={props.icon}
                     onClick={props.onIconClick}
@@ -28,8 +31,9 @@ Icon.propTypes = {
     size: PropTypes.number,
     color: PropTypes.string,
     text: PropTypes.node,
-    style: PropTypes.object,
     globalStyle: PropTypes.object,
+    globalClassName: PropTypes.string,
+    style: PropTypes.object,
     className: PropTypes.string,
     onClick: PropTypes.func,
     onIconClick: PropTypes.func

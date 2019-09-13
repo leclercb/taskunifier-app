@@ -28,7 +28,7 @@ function TaskTemplateList(props) {
                     <List.Item
                         onClick={() => props.onTaskTemplateSelection(item)}
                         className={item.id === props.selectedTaskTemplateId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addTaskTemplate(item), () => props.deleteTaskTemplate(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateTaskTemplate(item), () => props.deleteTaskTemplate(item.id))}>
                             {defaultTaskTemplate === item.id ? createAction(
                                 'star',
                                 `"${item.title}" is the default task template`,
@@ -56,6 +56,7 @@ TaskTemplateList.propTypes = {
     taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
     selectedTaskTemplateId: PropTypes.string,
     addTaskTemplate: PropTypes.func.isRequired,
+    duplicateTaskTemplate: PropTypes.func.isRequired,
     deleteTaskTemplate: PropTypes.func.isRequired,
     onTaskTemplateSelection: PropTypes.func.isRequired,
     settings: PropTypes.shape({

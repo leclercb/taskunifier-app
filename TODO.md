@@ -9,6 +9,7 @@
 
 # Future Features
 
+* Import from Toodledo
 * Import/Export (+ from TaskUnifier Classic)
 * Print config (columns, size)
 * Electron auto update

@@ -1,17 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { LinkPropType } from 'proptypes/LinkPropTypes';
 import { Select, Tag } from 'antd';
-import withLinkedContactLinks from 'containers/WithLinkedContactLinks';
-import withLinkedFileLinks from 'containers/WithLinkedFileLinks';
-import withLinkedTaskLinks from 'containers/WithLinkedTaskLinks';
+import PropTypes from 'prop-types';
+import { useLinkApi } from 'hooks/UseLinkApi';
 
-export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
-    const { links, ...restProps } = props;
+const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
+    const linkApi = useLinkApi(props.property);
 
     return (
-        <Select ref={ref} mode="tags" allowClear={true} {...restProps}>
-            {links.map(link => (
+        <Select ref={ref} mode="tags" allowClear={true} {...props}>
+            {linkApi.links.map(link => (
                 <Select.Option key={link.id} value={link.id}>
                     <Tag color={link.color}>{link.title}</Tag>
                 </Select.Option>
@@ -23,9 +20,17 @@ export const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
 LinksSelect.displayName = 'ForwardRefLinksSelect';
 
 LinksSelect.propTypes = {
-    links: PropTypes.arrayOf(LinkPropType.isRequired).isRequired
+    property: PropTypes.string.isRequired
 };
 
-export const LinkedContactLinksSelect = withLinkedContactLinks(LinksSelect, { getId: null });
-export const LinkedFileLinksSelect = withLinkedFileLinks(LinksSelect, { getId: null });
-export const LinkedTaskLinksSelect = withLinkedTaskLinks(LinksSelect, { getId: null });
+export function LinkedContactLinksSelect(props) {
+    return (<LinksSelect {...props} property='linkedContacts' />);
+}
+
+export function LinkedFileLinksSelect(props) {
+    return (<LinksSelect {...props} property='linkedFiles' />);
+}
+
+export function LinkedTaskLinksSelect(props) {
+    return (<LinksSelect {...props} property='linkedTasks' />);
+}

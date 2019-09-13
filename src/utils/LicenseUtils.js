@@ -5,7 +5,7 @@ const PUBLIC_KEY = getConfig().license.publicKey;
 
 export function verifyLicense(license) {
     if (process.env.REACT_APP_MODE !== 'electron') {
-        return true;
+        return null;
     }
 
     const electron = window.require('electron');

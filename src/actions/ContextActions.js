@@ -2,6 +2,7 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setContexts(contexts) {
 
 export function addContext(context, options = {}) {
     return addObject('contexts', context, options);
+}
+
+export function duplicateContext(context, options = {}) {
+    return duplicateObject('contexts', context, options);
 }
 
 export function updateContext(context, options = {}) {

@@ -9,14 +9,14 @@ import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import Constants from 'constants/Constants';
-import withSettings from 'containers/WithSettings';
 import { getWidthForType } from 'data/DataFieldTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { LinkedObjectPropType } from 'proptypes/LinkedObjectPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getLinkedObjectBackgroundColor } from 'utils/SettingUtils';
 
 function LinkedObjectTable(props) {
+    const settingsApi = useSettingsApi();
     const [selectedLinkedObjectIds, setSelectedLinkedObjectIds] = useState([]);
 
     const { linkedObjectFields } = props;
@@ -44,12 +44,12 @@ function LinkedObjectTable(props) {
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler(props.widthSettingPrefix, props.updateSettings);
-    const onMove = moveHandler(props.orderSettingPrefix, linkedObjectFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler(props.widthSettingPrefix, settingsApi.updateSettings);
+    const onMove = moveHandler(props.orderSettingPrefix, linkedObjectFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const columns = sortBy(linkedObjectFields, field => props.settings[props.orderSettingPrefix + field.id] || 0).map(field => {
+    const columns = sortBy(linkedObjectFields, field => settingsApi.settings[props.orderSettingPrefix + field.id] || 0).map(field => {
         const settingKey = props.widthSettingPrefix + field.id;
-        let width = Number(props.settings[settingKey]);
+        let width = Number(settingsApi.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -107,7 +107,7 @@ function LinkedObjectTable(props) {
                                 }
 
                                 let foregroundColor = 'initial';
-                                let backgroundColor = getLinkedObjectBackgroundColor(linkedObject, index, props.settings);
+                                let backgroundColor = getLinkedObjectBackgroundColor(linkedObject, index, settingsApi.settings);
 
                                 if (selectedLinkedObjectIds.includes(linkedObject.id)) {
                                     foregroundColor = Constants.selectionForegroundColor;
@@ -146,10 +146,8 @@ LinkedObjectTable.propTypes = {
     linkedObjectFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     linkedObjects: PropTypes.arrayOf(LinkedObjectPropType.isRequired).isRequired,
     updateLinkedObjects: PropTypes.func.isRequired,
-    settings: SettingsPropType.isRequired,
-    updateSettings: PropTypes.func.isRequired,
     orderSettingPrefix: PropTypes.string.isRequired,
     widthSettingPrefix: PropTypes.string.isRequired
 };
 
-export default withSettings(LinkedObjectTable);
+export default LinkedObjectTable;

@@ -1,12 +1,13 @@
-import { 
-    addObject, 
-    cleanObjects, 
-    deleteObject, 
+import {
+    addObject,
+    cleanObjects,
+    deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    setObjects, 
-    updateObject 
+    setObjects,
+    updateObject
 } from 'actions/ObjectActions';
 
 export function loadGoalsFromFile(file) {
@@ -27,6 +28,10 @@ export function setGoals(goals) {
 
 export function addGoal(goal, options = {}) {
     return addObject('goals', goal, options);
+}
+
+export function duplicateGoal(goal, options = {}) {
+    return duplicateObject('goals', goal, options);
 }
 
 export function updateGoal(goal, options = {}) {

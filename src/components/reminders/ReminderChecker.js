@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import withTaskReminders from 'containers/WithTaskReminders';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { usePrevious } from 'hooks/UsePrevious';
+import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 
 function ReminderChecker(props) {
-    const prevTasks = usePrevious(props.tasks) || [];
+    const taskReminderApi = useTaskReminderApi(props.date);
+    const prevTasks = usePrevious(taskReminderApi.tasks) || [];
 
     useEffect(() => {
         const prevTaskIds = prevTasks.map(task => task.id);
-        const taskIds = props.tasks.map(task => task.id);
+        const taskIds = taskReminderApi.tasks.map(task => task.id);
 
         if (!taskIds.every(taskId => prevTaskIds.includes(taskId))) {
             props.show();
@@ -21,8 +21,7 @@ function ReminderChecker(props) {
 
 ReminderChecker.propTypes = {
     date: PropTypes.string.isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     show: PropTypes.func.isRequired
 };
 
-export default withTaskReminders(ReminderChecker);
+export default ReminderChecker;

@@ -1,27 +1,28 @@
 import React from 'react';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
-import withApp from 'containers/WithApp';
-import withSettings from 'containers/WithSettings';
-import withTasks from 'containers/WithTasks';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import 'components/tasks/calendar/TaskCalendar.css';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
-function TaskCalendar(props) {
+function TaskCalendar() {
+    const appApi = useAppApi();
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
+
     const getEvents = () => {
         const events = [];
 
-        props.tasks.forEach(task => {
-            const matchStartDate = task.startDate && (props.calendarDateMode === 'both' || props.calendarDateMode === 'startDate');
-            const matchDueDate = task.dueDate && (props.calendarDateMode === 'both' || props.calendarDateMode === 'dueDate');
+        taskApi.tasks.forEach(task => {
+            const matchStartDate = task.startDate && (taskApi.calendarDateMode === 'both' || taskApi.calendarDateMode === 'startDate');
+            const matchDueDate = task.dueDate && (taskApi.calendarDateMode === 'both' || taskApi.calendarDateMode === 'dueDate');
 
             if (matchStartDate) {
                 events.push({
@@ -30,9 +31,9 @@ function TaskCalendar(props) {
                     start: moment(task.startDate).toDate(),
                     end: moment(task.startDate).add(task.length, 'seconds').toDate(),
                     task,
-                    settings: props.settings,
+                    settings: settingsApi.settings,
                     mode: 'startDate',
-                    selected: props.selectedTaskIds.includes(task.id)
+                    selected: taskApi.selectedTaskIds.includes(task.id)
                 });
             }
 
@@ -43,9 +44,9 @@ function TaskCalendar(props) {
                     start: moment(task.dueDate).subtract(task.length, 'seconds').toDate(),
                     end: moment(task.dueDate).toDate(),
                     task,
-                    settings: props.settings,
+                    settings: settingsApi.settings,
                     mode: 'dueDate',
-                    selected: props.selectedTaskIds.includes(task.id)
+                    selected: taskApi.selectedTaskIds.includes(task.id)
                 });
             }
         });
@@ -54,29 +55,29 @@ function TaskCalendar(props) {
     };
 
     const onView = view => {
-        props.setSelectedCalendarView(view);
+        taskApi.setSelectedCalendarView(view);
     };
 
     const onSelectEvent = event => {
-        props.setSelectedTaskIds([event.task.id]);
+        taskApi.setSelectedTaskIds(event.task.id);
     };
 
     const onDoubleClickEvent = event => {
-        props.setTaskEditionManagerOptions({
+        appApi.setTaskEditionManagerOptions({
             visible: true,
             taskId: event.task.id
         });
     };
 
     const onSelectSlot = async ({ start, end, action }) => {
-        if (action === 'select' && ['week', 'work_week', 'day'].includes(props.selectedCalendarView)) {
-            const task = await props.addTask({
+        if (action === 'select' && ['week', 'work_week', 'day'].includes(taskApi.selectedCalendarView)) {
+            const task = await taskApi.addTask({
                 startDate: moment(start).toISOString(),
                 dueDate: moment(end).toISOString(),
                 length: moment(end).diff(moment(start), 'seconds')
             });
 
-            props.setTaskEditionManagerOptions({
+            appApi.setTaskEditionManagerOptions({
                 visible: true,
                 taskId: task.id
             });
@@ -85,13 +86,13 @@ function TaskCalendar(props) {
 
     const onEventChange = ({ event, start, end }) => {
         if (event.mode === 'startDate') {
-            props.updateTask({
+            taskApi.updateTask({
                 ...event.task,
                 startDate: moment(start).toISOString(),
                 length: moment(end).diff(moment(start), 'seconds')
             });
         } else {
-            props.updateTask({
+            taskApi.updateTask({
                 ...event.task,
                 dueDate: moment(end).toISOString(),
                 length: moment(end).diff(moment(start), 'seconds')
@@ -106,7 +107,7 @@ function TaskCalendar(props) {
         }}>
             <DnDCalendar
                 className="task-calendar"
-                view={props.selectedCalendarView}
+                view={taskApi.selectedCalendarView}
                 events={getEvents()}
                 localizer={localizer}
                 defaultDate={new Date()}
@@ -127,17 +128,4 @@ function TaskCalendar(props) {
     );
 }
 
-TaskCalendar.propTypes = {
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    addTask: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired,
-    selectedCalendarView: PropTypes.oneOf(['month', 'week', 'work_week', 'day', 'agenda']).isRequired,
-    calendarDateMode: PropTypes.oneOf(['both', 'startDate', 'dueDate']).isRequired,
-    setSelectedCalendarView: PropTypes.func.isRequired,
-    setTaskEditionManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(withSettings(withTasks(TaskCalendar, { applySelectedTaskFilter: true })));
+export default TaskCalendar;

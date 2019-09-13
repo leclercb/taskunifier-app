@@ -1,11 +1,13 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { getSelectedTaskFilter, getSelectedTaskFilterDate } from 'selectors/AppSelectors';
+import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
+import { getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
-import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
+import { compareStrings } from 'utils/CompareUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { showReminder } from 'utils/ReminderUtils';
@@ -16,7 +18,7 @@ export const getTasks = state => state.tasks;
 export const getTasksFilteredByVisibleState = createSelector(
     getTasks,
     (tasks) => {
-        return filterByVisibleState(tasks);
+        return filterByVisibleState(tasks).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
 
@@ -31,6 +33,10 @@ export const getTasksMetaDataFilteredByVisibleState = createSelector(
     }
 );
 
+/**
+ * WARNING: This selector value is not updated as long as the busy flag is set to true.
+ */
+let getTasksFilteredBySelectedFilterResult = [];
 export const getTasksFilteredBySelectedFilter = createSelector(
     getTasksFilteredByVisibleState,
     getTasksMetaDataFilteredByVisibleState,
@@ -38,7 +44,12 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getSelectedTaskFilter,
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
-    (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields) => {
+    isBusy,
+    (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
+        if (busy) {
+            return getTasksFilteredBySelectedFilterResult;
+        }
+
         if (!showCompletedTasks && !hasCompletedTaskConditionOnly(selectedTaskFilter)) {
             selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);
         }
@@ -63,7 +74,10 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             return true;
         });
 
-        return sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, true);
+        const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, true);
+        getTasksFilteredBySelectedFilterResult = result;
+        
+        return result;
     }
 );
 
@@ -85,9 +99,9 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
     }
 );
 
-export const getTaskReminders = createSelector(
+export const getTaskRemindersSelector = () => createSelector(
     getTasksFilteredBySelectedFilter,
-    (state, props) => props.date,
+    (state, date) => date,
     (tasks, date) => {
         return tasks.filter(task => {
             if (showReminder(task.startDate, task.startDateReminder, date)) {
@@ -100,5 +114,21 @@ export const getTaskReminders = createSelector(
 
             return false;
         });
+    }
+);
+
+export const getVisibleTaskSelector = () => createSelector(
+    getTasksFilteredByVisibleState,
+    (state, id) => id,
+    (tasks, id) => {
+        return tasks.find(task => task.id === id);
+    }
+);
+
+export const getSelectedTasks = createSelector(
+    getTasks,
+    getSelectedTaskIds,
+    (tasks, selectedTaskIds) => {
+        return tasks.filter(task => selectedTaskIds.includes(task.id));
     }
 );

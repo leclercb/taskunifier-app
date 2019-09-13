@@ -85,7 +85,7 @@ export function toStringPriority(value) {
 
 export function toStringRepeat(value, extended = false) {
     if (!value || typeof value !== 'string') {
-        return '';
+        return extended ? 'Do not repeat' : '';
     }
 
     if (value === 'PARENT') {
@@ -109,7 +109,7 @@ export function toStringRepeat(value, extended = false) {
     try {
         return RRule.fromString(value).toText() + (extended ? str : '');
     } catch (error) {
-        return '';
+        return extended ? 'Do not repeat' : '';
     }
 }
 

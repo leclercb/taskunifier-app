@@ -28,7 +28,7 @@ function FilterList(props) {
                     <List.Item
                         onClick={() => props.onFilterSelection(item)}
                         className={item.id === props.selectedFilterId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addFilter(item), () => props.deleteFilter(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateFilter(item), () => props.deleteFilter(item.id))}>
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>
@@ -45,6 +45,7 @@ FilterList.propTypes = {
     filters: PropTypes.array.isRequired,
     selectedFilterId: PropTypes.string,
     addFilter: PropTypes.func.isRequired,
+    duplicateFilter: PropTypes.func.isRequired,
     deleteFilter: PropTypes.func.isRequired,
     onFilterSelection: PropTypes.func.isRequired
 };

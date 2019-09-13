@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withApp from 'containers/WithApp';
 import Icon from 'components/common/Icon';
 import TaskFieldManager from 'components/taskfields/TaskFieldManager';
+import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalTaskFieldManager(props) {
+function ModalTaskFieldManager() {
+    const appApi = useAppApi();
+
     const onCloseTaskFieldManager = () => {
-        props.setTaskFieldManagerOptions({ visible: false });
+        appApi.setTaskFieldManagerOptions({ visible: false });
     };
 
     const onTaskFieldSelection = taskFieldId => {
-        props.setTaskFieldManagerOptions({ taskFieldId });
+        appApi.setTaskFieldManagerOptions({ taskFieldId });
     };
 
     return (
         <Modal
             title={<Icon icon="columns" text="Task Field Manager" />}
-            visible={props.taskFieldManager.visible}
+            visible={appApi.taskFieldManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseTaskFieldManager}
@@ -28,15 +29,10 @@ function ModalTaskFieldManager(props) {
                 </Button>
             )}>
             <TaskFieldManager
-                taskFieldId={props.taskFieldManager.taskFieldId}
+                taskFieldId={appApi.taskFieldManager.taskFieldId}
                 onTaskFieldSelection={onTaskFieldSelection} />
         </Modal>
     );
 }
 
-ModalTaskFieldManager.propTypes = {
-    taskFieldManager: PropTypes.object.isRequired,
-    setTaskFieldManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(ModalTaskFieldManager);
+export default ModalTaskFieldManager;

@@ -5,7 +5,7 @@ import { TaskTitle } from 'components/tasks/common/TaskTitle';
 function CalendarEvent({ event }) {
     return (
         <TaskTitle
-            task={event.task}
+            taskId={event.task.id}
             settings={event.settings} />
     );
 }

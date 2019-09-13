@@ -1,23 +1,27 @@
 import React from 'react';
-import { Col, Divider, Empty, Form, Row } from 'antd';
+import { Col, Divider, Empty, Row } from 'antd';
 import PropTypes from 'prop-types';
 import FilterConditionTree from 'components/filters/FilterConditionTree';
 import FilterList from 'components/filters/FilterList';
 import FilterForm from 'components/filters/FilterForm';
 import SorterTable from 'components/filters/SorterTable';
-import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import withProCheck from 'containers/WithProCheck';
-import withTaskFields from 'containers/WithTaskFields';
-import withTaskFilters from 'containers/WithTaskFilters';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
 
 function TaskFilterManager(props) {
+    const taskFieldApi = useTaskFieldApi();
+    const taskFilterApi = useTaskFilterApi();
     const selectedTaskFilterId = props.taskFilterId;
 
     const onAddTaskFilter = async taskFilter => {
-        taskFilter = await props.addTaskFilter(taskFilter);
+        taskFilter = await taskFilterApi.addTaskFilter(taskFilter);
+        props.onTaskFilterSelection(taskFilter.id);
+    };
+
+    const onDuplicateTaskFilter = async taskFilter => {
+        taskFilter = await taskFilterApi.duplicateTaskFilter(taskFilter);
         props.onTaskFilterSelection(taskFilter.id);
     };
 
@@ -26,22 +30,23 @@ function TaskFilterManager(props) {
     };
 
     const onUpdateSorters = sorters => {
-        props.updateTaskFilter({
+        taskFilterApi.updateTaskFilter({
             ...selectedTaskFilter,
             sorters
         });
     };
 
-    const selectedTaskFilter = props.taskFilters.find(taskFilter => taskFilter.id === selectedTaskFilterId);
+    const selectedTaskFilter = taskFilterApi.taskFilters.find(taskFilter => taskFilter.id === selectedTaskFilterId);
 
     return (
         <Row>
             <Col span={6}>
                 <FilterList
-                    filters={props.taskFilters}
+                    filters={taskFilterApi.taskFilters}
                     selectedFilterId={selectedTaskFilterId}
                     addFilter={onAddTaskFilter}
-                    deleteFilter={props.deleteTaskFilter}
+                    duplicateFilter={onDuplicateTaskFilter}
+                    deleteFilter={taskFilterApi.deleteTaskFilter}
                     onFilterSelection={onTaskFilterSelection} />
             </Col>
             <Col span={2} />
@@ -51,28 +56,15 @@ function TaskFilterManager(props) {
                         <FilterForm
                             key={selectedTaskFilterId}
                             filter={selectedTaskFilter}
-                            updateFilter={props.updateTaskFilter}
-                            extraFields={(props, getFieldDecorator, onCommit) => {
-                                /* eslint-disable react/prop-types */
-                                return (
-                                    <Form.Item label="Task Template">
-                                        {getFieldDecorator('taskTemplate', {
-                                            initialValue: props.filter.taskTemplate
-                                        })(
-                                            <TaskTemplateSelect onBlur={onCommit} />
-                                        )}
-                                    </Form.Item>
-                                );
-                                /* eslint-enable react/prop-types */
-                            }} />
+                            updateFilter={taskFilterApi.updateTaskFilter} />
                         <Divider>Filters</Divider>
                         <FilterConditionTree
                             key={'conditionTree_' + selectedTaskFilterId}
                             filter={selectedTaskFilter}
                             context={{
-                                fields: props.taskFields
+                                fields: taskFieldApi.taskFields
                             }}
-                            updateFilter={props.updateTaskFilter} />
+                            updateFilter={taskFilterApi.updateTaskFilter} />
                         <Divider>Sorters</Divider>
                         <SorterTable
                             key={'sorterTable_' + selectedTaskFilterId}
@@ -90,12 +82,7 @@ function TaskFilterManager(props) {
 
 TaskFilterManager.propTypes = {
     taskFilterId: PropTypes.string,
-    taskFilters: PropTypes.arrayOf(TaskFilterPropType.isRequired).isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    onTaskFilterSelection: PropTypes.func.isRequired,
-    addTaskFilter: PropTypes.func.isRequired,
-    updateTaskFilter: PropTypes.func.isRequired,
-    deleteTaskFilter: PropTypes.func.isRequired
+    onTaskFilterSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(withTaskFields(withTaskFilters(TaskFilterManager)));
+export default withProCheck(TaskFilterManager);

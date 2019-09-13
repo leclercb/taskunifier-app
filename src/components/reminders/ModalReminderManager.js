@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
 import moment from 'moment';
-import PropTypes from 'prop-types';
-import withApp from 'containers/WithApp';
 import Icon from 'components/common/Icon';
 import ReminderChecker from 'components/reminders/ReminderChecker';
 import ReminderManager from 'components/reminders/ReminderManager';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 
-function ModalReminderManager(props) {
+function ModalReminderManager() {
+    const appApi = useAppApi();
+
     const [date, setDate] = useState(moment().toISOString());
 
     useInterval(() => {
@@ -16,11 +17,11 @@ function ModalReminderManager(props) {
     }, 30000);
 
     const onShowReminderManager = () => {
-        props.setReminderManagerOptions({ visible: true });
+        appApi.setReminderManagerOptions({ visible: true });
     };
 
     const onCloseReminderManager = () => {
-        props.setReminderManagerOptions({ visible: false });
+        appApi.setReminderManagerOptions({ visible: false });
     };
 
     return (
@@ -28,7 +29,7 @@ function ModalReminderManager(props) {
             <ReminderChecker show={onShowReminderManager} date={date} />
             <Modal
                 title={<Icon icon="bell" text="Reminder Manager" />}
-                visible={props.reminderManager.visible}
+                visible={appApi.reminderManager.visible}
                 width="60%"
                 closable={false}
                 onOk={onCloseReminderManager}
@@ -44,9 +45,4 @@ function ModalReminderManager(props) {
     );
 }
 
-ModalReminderManager.propTypes = {
-    reminderManager: PropTypes.object.isRequired,
-    setReminderManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(ModalReminderManager);
+export default ModalReminderManager;

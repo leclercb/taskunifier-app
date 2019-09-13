@@ -2,6 +2,7 @@ import {
     addObject,
     cleanObjects,
     deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -32,6 +33,10 @@ export function addContact(contact, options = {}) {
         lastName: 'Unnamed',
         color: Constants.defaultObjectColor
     });
+}
+
+export function duplicateContact(contact, options = {}) {
+    return duplicateObject('contacts', contact, options);
 }
 
 export function updateContact(contact, options = {}) {

@@ -1,7 +1,7 @@
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { clone, removePrivateKeys } from 'utils/ObjectUtils';
 
-const Objects = (property, onUpdate = null) => (state = [], action) => {
+const Objects = property => (state = [], action) => {
     if (action.property !== property) {
         return state;
     }
@@ -17,7 +17,7 @@ const Objects = (property, onUpdate = null) => (state = [], action) => {
             return addObject(state, action);
         }
         case 'UPDATE_OBJECT': {
-            return updateObject(state, action, onUpdate);
+            return updateObject(state, action);
         }
         case 'DELETE_OBJECT': {
             const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
@@ -138,7 +138,7 @@ const addObject = (state, action) => {
     return newState;
 };
 
-const updateObject = (state, action, onUpdate) => {
+const updateObject = (state, action) => {
     let newState = [...state];
 
     if (!action.object.id) {
@@ -179,22 +179,6 @@ const updateObject = (state, action, onUpdate) => {
     }
 
     newState[index] = updatedObject;
-
-    const addedObjects = onUpdate ? onUpdate(newState[index], oldObject, action.updateDate) : null;
-
-    if (addedObjects) {
-        addedObjects.forEach(addedObject => {
-            addedObject.id = action.generateId();
-
-            newState = addObject(
-                newState,
-                {
-                    object: addedObject,
-                    creationDate: action.updateDate,
-                    options: {}
-                });
-        });
-    }
 
     return newState;
 };

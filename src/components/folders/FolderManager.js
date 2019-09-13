@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withFolders from 'containers/WithFolders';
 import FolderList from 'components/folders/FolderList';
 import FolderForm from 'components/folders/FolderForm';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
+import { useFolderApi } from 'hooks/UseFolderApi';
 
 function FolderManager(props) {
+    const folderApi = useFolderApi();
     const selectedFolderId = props.folderId;
 
     const onAddFolder = async folder => {
-        folder = await props.addFolder(folder);
+        folder = await folderApi.addFolder(folder);
+        props.onFolderSelection(folder.id);
+    };
+
+    const onDuplicateFolder = async folder => {
+        folder = await folderApi.duplicateFolder(folder);
         props.onFolderSelection(folder.id);
     };
 
@@ -18,22 +23,23 @@ function FolderManager(props) {
         props.onFolderSelection(folder.id);
     };
 
-    const selectedFolder = props.folders.find(folder => folder.id === selectedFolderId);
+    const selectedFolder = folderApi.folders.find(folder => folder.id === selectedFolderId);
 
     return (
         <Row>
             <Col span={6}>
                 <FolderList
-                    folders={props.folders}
+                    folders={folderApi.folders}
                     selectedFolderId={selectedFolderId}
                     addFolder={onAddFolder}
-                    deleteFolder={props.deleteFolder}
+                    duplicateFolder={onDuplicateFolder}
+                    deleteFolder={folderApi.deleteFolder}
                     onFolderSelection={onFolderSelection} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedFolder ? (
-                    <FolderForm key={selectedFolderId} folder={selectedFolder} updateFolder={props.updateFolder} />
+                    <FolderForm key={selectedFolderId} folder={selectedFolder} updateFolder={folderApi.updateFolder} />
                 ) : <Empty description="Please select a folder" />}
             </Col>
         </Row>
@@ -42,11 +48,7 @@ function FolderManager(props) {
 
 FolderManager.propTypes = {
     folderId: PropTypes.string,
-    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
-    onFolderSelection: PropTypes.func.isRequired,
-    addFolder: PropTypes.func.isRequired,
-    updateFolder: PropTypes.func.isRequired,
-    deleteFolder: PropTypes.func.isRequired
+    onFolderSelection: PropTypes.func.isRequired
 };
 
-export default withFolders(FolderManager);
+export default FolderManager;

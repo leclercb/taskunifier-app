@@ -2,21 +2,22 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
-import withSettings from 'containers/WithSettings';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function TaskTemplateForm(props) {
+    const settingsApi = useSettingsApi();
+    const taskFieldApi = useTaskFieldApi();
+
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
-    const fields = props.taskFields.filter(field => field.editable && props.settings['taskFieldVisible_' + field.id] !== false);
+    const fields = taskFieldApi.taskFields.filter(field => field.editable && settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
     const onCommit = () => onCommitForm(props.form, props.taskTemplate, props.updateTaskTemplate);
 
@@ -66,10 +67,8 @@ function TaskTemplateForm(props) {
 
 TaskTemplateForm.propTypes = {
     form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
     taskTemplate: TaskTemplatePropType.isRequired,
-    updateTaskTemplate: PropTypes.func.isRequired,
-    settings: SettingsPropType.isRequired
+    updateTaskTemplate: PropTypes.func.isRequired
 };
 
-export default withSettings(withTaskFields(Form.create({ name: 'taskTemplate' })(TaskTemplateForm)));
+export default Form.create({ name: 'taskTemplate' })(TaskTemplateForm);

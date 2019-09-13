@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import TaskTitle from 'components/tasks/common/TaskTitle';
-import withSettings from 'containers/WithSettings';
-import withTaskReminders from 'containers/WithTaskReminders';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { showReminder } from 'utils/ReminderUtils';
 import { formatDate } from 'utils/SettingUtils';
 
 function ReminderList(props) {
+    const settingsApi = useSettingsApi();
+    const taskReminderApi = useTaskReminderApi(props.date);
     const [selectedTaskId, setSelectedTaskId] = useState([]);
 
     const dismiss = task => {
@@ -30,11 +30,11 @@ function ReminderList(props) {
             newTask.dueDateReminder = null;
         }
 
-        props.updateTask(newTask);
+        taskReminderApi.updateTask(newTask);
     };
 
     const onDismiss = () => {
-        const task = props.tasks.find(task => task.id === selectedTaskId);
+        const task = taskReminderApi.tasks.find(task => task.id === selectedTaskId);
 
         if (task) {
             dismiss(task);
@@ -42,7 +42,7 @@ function ReminderList(props) {
     };
 
     const onDismissAll = () => {
-        props.tasks.forEach(task => dismiss(task));
+        taskReminderApi.tasks.forEach(task => dismiss(task));
     };
 
     return (
@@ -50,11 +50,11 @@ function ReminderList(props) {
             <List
                 size="small"
                 bordered={true}
-                dataSource={props.tasks}
+                dataSource={taskReminderApi.tasks}
                 style={{ minHeight: 300, maxHeight: 300, overflowY: 'auto' }}
                 renderItem={task => {
-                    const startDate = task.startDate ? formatDate(task.startDate, props.settings, props.settings.showStartTime) : 'none';
-                    const dueDate = task.dueDate ? formatDate(task.dueDate, props.settings, props.settings.showDueTime) : 'none';
+                    const startDate = task.startDate ? formatDate(task.startDate, settingsApi.settings, settingsApi.settings.showStartTime) : 'none';
+                    const dueDate = task.dueDate ? formatDate(task.dueDate, settingsApi.settings, settingsApi.settings.showDueTime) : 'none';
 
                     let showStartDateReminder = showReminder(task.startDate, task.startDateReminder);
                     let showDueDateReminder = showReminder(task.dueDate, task.dueDateReminder);
@@ -86,7 +86,7 @@ function ReminderList(props) {
             <Button
                 onClick={() => onDismiss()}
                 style={{ marginTop: 5 }}
-                disabled={!props.tasks.find(task => task.id === selectedTaskId)}>
+                disabled={!taskReminderApi.tasks.find(task => task.id === selectedTaskId)}>
                 <Icon icon="eye-slash" text="Dismiss" />
             </Button>
             <Spacer />
@@ -100,10 +100,7 @@ function ReminderList(props) {
 }
 
 ReminderList.propTypes = {
-    date: PropTypes.string.isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired,
-    updateTask: PropTypes.func.isRequired
+    date: PropTypes.string.isRequired
 };
 
-export default withSettings(withTaskReminders(ReminderList));
+export default ReminderList;

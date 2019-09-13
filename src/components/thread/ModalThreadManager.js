@@ -1,20 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withThread from 'containers/WithThread';
 import ProcessList from 'components/thread/ProcessList';
 import Icon from 'components/common/Icon';
-import { ProcessPropType } from 'proptypes/ProcessPropTypes';
+import { useThreadApi } from 'hooks/UseThreadApi';
 
-function ModalThreadManager(props) {
+function ModalThreadManager() {
+    const threadApi = useThreadApi();
+
     const onClose = () => {
-        props.setThreadManagerVisible(false);
+        threadApi.setThreadManagerVisible(false);
     };
 
     return (
         <Modal
             title={<Icon icon="cogs" text="Progress" />}
-            visible={props.threadManagerVisible}
+            visible={threadApi.threadManagerVisible}
             closable={false}
             onOk={onClose}
             onCancel={onClose}
@@ -23,15 +23,9 @@ function ModalThreadManager(props) {
                     Close
                 </Button>
             )}>
-            <ProcessList processes={props.processes} />
+            <ProcessList processes={threadApi.processes} />
         </Modal>
     );
 }
 
-ModalThreadManager.propTypes = {
-    processes: PropTypes.arrayOf(ProcessPropType.isRequired).isRequired,
-    threadManagerVisible: PropTypes.bool.isRequired,
-    setThreadManagerVisible: PropTypes.func.isRequired
-};
-
-export default withThread(ModalThreadManager);
+export default ModalThreadManager;

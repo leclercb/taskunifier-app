@@ -4,16 +4,21 @@ import { Col, Empty, Row } from 'antd';
 import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
 import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
 import withProCheck from 'containers/WithProCheck';
-import withSettings from 'containers/WithSettings';
-import withTaskTemplates from 'containers/WithTaskTemplates';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 
 function TaskTemplateManager(props) {
+    const settingsApi = useSettingsApi();
+    const taskTemplatesApi = useTaskTemplateApi();
     const selectedTaskTemplateId = props.taskTemplateId;
 
     const onAddTaskTemplate = async taskTemplate => {
-        taskTemplate = await props.addTaskTemplate(taskTemplate);
+        taskTemplate = await taskTemplatesApi.addTaskTemplate(taskTemplate);
+        props.onTaskTemplateSelection(taskTemplate.id);
+    };
+
+    const onDuplicateTaskTemplate = async taskTemplate => {
+        taskTemplate = await taskTemplatesApi.duplicateTaskTemplate(taskTemplate);
         props.onTaskTemplateSelection(taskTemplate.id);
     };
 
@@ -21,24 +26,25 @@ function TaskTemplateManager(props) {
         props.onTaskTemplateSelection(taskTemplate.id);
     };
 
-    const selectedTaskTemplate = props.taskTemplates.find(taskTemplate => taskTemplate.id === selectedTaskTemplateId);
+    const selectedTaskTemplate = taskTemplatesApi.taskTemplates.find(taskTemplate => taskTemplate.id === selectedTaskTemplateId);
 
     return (
         <Row>
             <Col span={6}>
                 <TaskTemplateList
-                    taskTemplates={props.taskTemplates}
+                    taskTemplates={taskTemplatesApi.taskTemplates}
                     selectedTaskTemplateId={selectedTaskTemplateId}
                     addTaskTemplate={onAddTaskTemplate}
-                    deleteTaskTemplate={props.deleteTaskTemplate}
+                    duplicateTaskTemplate={onDuplicateTaskTemplate}
+                    deleteTaskTemplate={taskTemplatesApi.deleteTaskTemplate}
                     onTaskTemplateSelection={onTaskTemplateSelection}
-                    settings={props.settings}
-                    updateSettings={props.updateSettings} />
+                    settings={settingsApi.settings}
+                    updateSettings={settingsApi.updateSettings} />
             </Col>
             <Col span={2} />
             <Col span={16}>
                 {selectedTaskTemplate ? (
-                    <TaskTemplateForm key={selectedTaskTemplateId} taskTemplate={selectedTaskTemplate} updateTaskTemplate={props.updateTaskTemplate} />
+                    <TaskTemplateForm key={selectedTaskTemplateId} taskTemplate={selectedTaskTemplate} updateTaskTemplate={taskTemplatesApi.updateTaskTemplate} />
                 ) : <Empty description="Please select a task template" />}
             </Col>
         </Row>
@@ -47,13 +53,7 @@ function TaskTemplateManager(props) {
 
 TaskTemplateManager.propTypes = {
     taskTemplateId: PropTypes.string,
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired,
-    onTaskTemplateSelection: PropTypes.func.isRequired,
-    addTaskTemplate: PropTypes.func.isRequired,
-    updateTaskTemplate: PropTypes.func.isRequired,
-    deleteTaskTemplate: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    onTaskTemplateSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(withSettings(withTaskTemplates(TaskTemplateManager)));
+export default withProCheck(TaskTemplateManager);

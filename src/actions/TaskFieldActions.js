@@ -2,6 +2,7 @@ import {
     addObject,
     cleanObjects,
     deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setTaskFields(taskFields) {
 
 export function addTaskField(taskField, options = {}) {
     return addObject('taskFields', taskField, options);
+}
+
+export function duplicateTaskField(taskField, options = {}) {
+    return duplicateObject('taskFields', taskField, options);
 }
 
 export function updateTaskField(taskField, options = {}) {

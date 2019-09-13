@@ -19,7 +19,7 @@ function GoalList(props) {
                     <List.Item
                         onClick={() => props.onGoalSelection(item)}
                         className={item.id === props.selectedGoalId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addGoal(item), () => props.deleteGoal(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateGoal(item), () => props.deleteGoal(item.id))}>
                             {item.archived ? createAction(
                                 'archive',
                                 `"${item.title}" is archived`,
@@ -43,6 +43,7 @@ GoalList.propTypes = {
     goals: PropTypes.array.isRequired,
     selectedGoalId: PropTypes.string,
     addGoal: PropTypes.func.isRequired,
+    duplicateGoal: PropTypes.func.isRequired,
     deleteGoal: PropTypes.func.isRequired,
     onGoalSelection: PropTypes.func.isRequired
 };

@@ -1,30 +1,29 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
-import withApp from 'containers/WithApp';
-import withTaskFields from 'containers/WithTaskFields';
-import withTasks from 'containers/WithTasks';
-import withSettings from 'containers/WithSettings';
-import withSize from 'containers/WithSize';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskMetaDataPropType, TaskPropType } from 'proptypes/TaskPropTypes';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
 
-function TaskTable(props) {
+function TaskTable() {
+    const appApi = useAppApi();
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
+
     const onMenuAction = action => {
-        const tasks = props.tasks.filter(task => props.selectedTaskIds.includes(task.id));
+        const tasks = taskApi.filteredExpandedTasks.filter(task => taskApi.selectedTaskIds.includes(task.id));
 
         switch (action.type) {
             case 'batchEdit':
@@ -33,8 +32,11 @@ function TaskTable(props) {
             case 'edit':
                 tasks.forEach(task => onEditTask(task));
                 break;
+            case 'duplicate':
+                tasks.forEach(task => onDuplicateTask(task));
+                break;
             case 'remove':
-                tasks.forEach(task => onRemoveTask(task));
+                onRemoveTasks(tasks.map(task => task.id));
                 break;
             case 'postponeStartDate':
                 tasks.forEach(task => onPostponeStartDate(task, action.amount, action.unit));
@@ -48,42 +50,46 @@ function TaskTable(props) {
     };
 
     const onBatchEditTask = () => {
-        props.setBatchEditTasksManagerOptions({
+        appApi.setBatchEditTasksManagerOptions({
             visible: true
         });
     };
 
     const onEditTask = task => {
-        props.setTaskEditionManagerOptions({
+        appApi.setTaskEditionManagerOptions({
             visible: true,
             taskId: task.id
         });
     };
 
-    const onRemoveTask = task => {
-        props.deleteTask(task.id);
+    const onDuplicateTask = task => {
+        taskApi.duplicateTask(task);
+    };
+
+    const onRemoveTasks = taskIds => {
+        taskApi.deleteTask(taskIds);
     };
 
     const onPostponeStartDate = (task, amount, unit) => {
-        props.updateTask({
+        taskApi.updateTask({
             ...task,
             startDate: moment(task.startDate ? task.startDate : undefined).add(amount, unit).toISOString()
         });
     };
 
     const onPostponeDueDate = (task, amount, unit) => {
-        props.updateTask({
+        taskApi.updateTask({
             ...task,
             dueDate: moment(task.dueDate ? task.dueDate : undefined).add(amount, unit).toISOString()
         });
     };
 
     const onUpdateTask = task => {
-        props.updateTask(task);
+        taskApi.updateTask(task);
     };
 
     const onDropTask = (dragData, dropData) => {
-        props.updateTask({
+        taskApi.updateTask({
             ...dragData.rowData,
             parent: dropData.rowData.id
         });
@@ -91,15 +97,15 @@ function TaskTable(props) {
 
     let tableWidth = 0;
 
-    const onResize = resizeHandler('taskColumnWidth_', props.updateSettings);
-    const onMove = moveHandler('taskColumnOrder_', props.taskFields, props.settings, props.updateSettings);
+    const onResize = resizeHandler('taskColumnWidth_', settingsApi.updateSettings);
+    const onMove = moveHandler('taskColumnOrder_', taskFieldApi.taskFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const sortedFields = sortBy(props.taskFields, field => props.settings['taskColumnOrder_' + field.id] || 0);
-    const sortedAndFilteredFields = sortedFields.filter(field => props.settings['taskColumnVisible_' + field.id] !== false);
+    const sortedFields = sortBy(taskFieldApi.taskFields, field => settingsApi.settings['taskColumnOrder_' + field.id] || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
         const settingKey = 'taskColumnWidth_' + field.id;
-        let width = Number(props.settings[settingKey]);
+        let width = Number(settingsApi.settings[settingKey]);
 
         if (!width) {
             width = getWidthForType(field.type);
@@ -111,7 +117,7 @@ function TaskTable(props) {
             let expanded = null;
 
             if (field.id === 'title') {
-                if (hasChildren(task, props.tasksExpandedAndCollapsed)) {
+                if (hasChildren(task, taskApi.filteredTasks)) {
                     expanded = task.expanded !== false ? 'expanded' : 'collapsed';
                 } else {
                     expanded = 'hidden';
@@ -147,6 +153,7 @@ function TaskTable(props) {
                             dragType: 'task',
                             dropType: 'task',
                             dndData: {
+                                object: rowData,
                                 rowData
                             },
                             onDrop: onDropTask
@@ -162,7 +169,7 @@ function TaskTable(props) {
                                 ...rowData,
                                 ...allValues
                             })}
-                            subLevel={field.id === 'title' ? getSubLevel(rowData, props.tasksMetaData) : 0}
+                            subLevel={field.id === 'title' ? getSubLevel(rowData, taskApi.tasksMetaData) : 0}
                             expandMode={getExpandMode(rowData)}
                             onSetExpanded={expanded => onUpdateTask({
                                 ...rowData,
@@ -183,29 +190,29 @@ function TaskTable(props) {
                     <Table
                         width={tableWidth}
                         height={height}
-                        rowHeight={props.settings.taskTableRowHeight}
+                        rowHeight={settingsApi.settings.taskTableRowHeight}
                         headerHeight={20}
-                        rowCount={props.tasks.length}
-                        rowGetter={({ index }) => props.tasks[index]}
+                        rowCount={taskApi.filteredExpandedTasks.length}
+                        rowGetter={({ index }) => taskApi.filteredExpandedTasks[index]}
                         rowRenderer={rendererProps => (
                             <TaskMenu
                                 key={rendererProps.key}
-                                selectedTaskIds={props.selectedTaskIds}
+                                selectedTaskIds={taskApi.selectedTaskIds}
                                 onAction={onMenuAction}>
                                 {defaultTableRowRenderer(rendererProps)}
                             </TaskMenu>
                         )}
                         rowStyle={({ index }) => {
-                            const task = props.tasks[index];
+                            const task = taskApi.filteredExpandedTasks[index];
 
                             if (!task) {
                                 return {};
                             }
 
-                            let foregroundColor = getTaskForegroundColor(task, index, props.settings);
-                            let backgroundColor = getTaskBackgroundColor(task, index, props.settings);
+                            let foregroundColor = getTaskForegroundColor(task, index, settingsApi.settings);
+                            let backgroundColor = getTaskBackgroundColor(task, index, settingsApi.settings);
 
-                            if (props.selectedTaskIds.includes(task.id)) {
+                            if (taskApi.selectedTaskIds.includes(task.id)) {
                                 foregroundColor = Constants.selectionForegroundColor;
                                 backgroundColor = Constants.selectionBackgroundColor;
                             }
@@ -216,7 +223,7 @@ function TaskTable(props) {
                             };
                         }}
                         rowClassName={({ index }) => {
-                            const task = props.tasks[index];
+                            const task = taskApi.filteredExpandedTasks[index];
 
                             if (!task) {
                                 return '';
@@ -224,7 +231,7 @@ function TaskTable(props) {
 
                             const classNames = [];
 
-                            if (props.selectedTaskIds.includes(task.id)) {
+                            if (taskApi.selectedTaskIds.includes(task.id)) {
                                 classNames.push('task-selected');
                             }
 
@@ -236,15 +243,15 @@ function TaskTable(props) {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.tasks,
-                            props.selectedTaskIds,
-                            props.setSelectedTaskIds,
+                            taskApi.filteredExpandedTasks,
+                            taskApi.selectedTaskIds,
+                            taskApi.setSelectedTaskIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            props.tasks,
-                            props.selectedTaskIds,
-                            props.setSelectedTaskIds,
+                            taskApi.filteredExpandedTasks,
+                            taskApi.selectedTaskIds,
+                            taskApi.setSelectedTaskIds,
                             true)} >
                         {columns}
                     </Table>
@@ -254,24 +261,4 @@ function TaskTable(props) {
     );
 }
 
-TaskTable.propTypes = {
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    tasksExpandedAndCollapsed: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    tasksMetaData: PropTypes.arrayOf(TaskMetaDataPropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired,
-    selectedTaskFilter: TaskFilterPropType,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired,
-    setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
-    setTaskEditionManagerOptions: PropTypes.func.isRequired,
-    size: PropTypes.object.isRequired
-};
-
-export default withApp(withSettings(withTaskFields(withTasks(withSize(TaskTable), {
-    includeMetaData: true,
-    applySelectedTaskFilter: true
-}))));
+export default TaskTable;

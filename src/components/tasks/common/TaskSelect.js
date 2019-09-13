@@ -1,28 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import withTasks from 'containers/WithTasks';
-import withSettings from 'containers/WithSettings';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
+import { useTaskApi } from 'hooks/UseTaskApi';
 
 export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
-    const { tasks, ...restProps } = props;
-
-    restProps.value = props.tasks.find(task => task.id === restProps.value) ? restProps.value : null;
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
+    const value = taskApi.tasks.find(task => task.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
-            {tasks.map(task => (
+        <Select ref={ref} allowClear={true} {...props} value={value}>
+            {taskApi.tasks.map(task => (
                 <Select.Option key={task.id} value={task.id}>
                     <Icon
                         icon="circle"
-                        color={getPriorityColor(task.priority, props.settings)}
+                        color={getPriorityColor(task.priority, settingsApi.settings)}
                         text={task.title}
                         globalStyle={{
-                            backgroundColor: getImportanceColor(task.importance, props.settings),
+                            backgroundColor: getImportanceColor(task.importance, settingsApi.settings),
                             borderRadius: 4,
                             padding: '2px 8px'
                         }} />
@@ -35,8 +33,7 @@ export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
 TaskSelect.displayName = 'ForwardRefTaskSelect';
 
 TaskSelect.propTypes = {
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    settings: SettingsPropType.isRequired
+    value: PropTypes.string
 };
 
-export default withSettings(withTasks(TaskSelect));
+export default TaskSelect;

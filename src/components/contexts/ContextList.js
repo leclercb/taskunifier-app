@@ -17,7 +17,7 @@ function ContextList(props) {
                     <List.Item
                         onClick={() => props.onContextSelection(item)}
                         className={item.id === props.selectedContextId ? 'selected-list-item' : null}>
-                        <LeftRight right={createActions(item, () => props.addContext(item), () => props.deleteContext(item.id))}>
+                        <LeftRight right={createActions(item, () => props.duplicateContext(item), () => props.deleteContext(item.id))}>
                             <Icon icon="circle" color={item.color} text={item.title} />
                         </LeftRight>
                     </List.Item>
@@ -34,6 +34,7 @@ ContextList.propTypes = {
     contexts: PropTypes.array.isRequired,
     selectedContextId: PropTypes.string,
     addContext: PropTypes.func.isRequired,
+    duplicateContext: PropTypes.func.isRequired,
     deleteContext: PropTypes.func.isRequired,
     onContextSelection: PropTypes.func.isRequired
 };

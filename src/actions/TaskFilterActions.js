@@ -2,6 +2,7 @@ import {
     addObject, 
     cleanObjects, 
     deleteObject, 
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setTaskFilters(taskFilters) {
 
 export function addTaskFilter(taskFilter, options = {}) {
     return addObject('taskFilters', taskFilter, options);
+}
+
+export function duplicateTaskFilter(taskFilter, options = {}) {
+    return duplicateObject('taskFilters', taskFilter, options);
 }
 
 export function updateTaskFilter(taskFilter, options = {}) {

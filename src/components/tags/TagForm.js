@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
 import Icon from 'components/common/Icon';
-import withSettings from 'containers/WithSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { TagPropType } from 'proptypes/TagPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import { merge } from 'utils/ObjectUtils';
 
 function TagForm(props) {
+    const settingsApi = useSettingsApi();
+
     const updateTag = () => {
         props.form.validateFields((error, values) => {
             if (error) {
@@ -26,7 +28,7 @@ function TagForm(props) {
                 return;
             }
 
-            props.updateSettings({
+            settingsApi.updateSettings({
                 [`tagColor_${btoa(props.tag.title)}`]: values.color
             });
         });
@@ -72,8 +74,7 @@ function TagForm(props) {
 TagForm.propTypes = {
     form: PropTypes.object.isRequired,
     tag: TagPropType.isRequired,
-    updateTag: PropTypes.func.isRequired,
-    updateSettings: PropTypes.func.isRequired
+    updateTag: PropTypes.func.isRequired
 };
 
-export default withSettings(Form.create({ name: 'tag' })(TagForm));
+export default Form.create({ name: 'tag' })(TagForm);

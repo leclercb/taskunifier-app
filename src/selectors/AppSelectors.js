@@ -1,6 +1,9 @@
 import { createSelector } from 'reselect';
+import { getSession } from 'selectors/SessionSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { verifyLicense } from 'utils/LicenseUtils';
+
+export const getEditingCell = state => state.app.editingCell;
 
 export const getSelectedNoteIds = state => state.app.selectedNoteIds;
 export const getSelectedNoteFilter = state => state.app.selectedNoteFilter;
@@ -27,4 +30,16 @@ export const getSettingManager = state => state.app.settingManager;
 export const isValidLicense = createSelector(
     getSettings,
     settings => !!verifyLicense(settings.license)
+);
+
+export const isPro = createSelector(
+    isValidLicense,
+    getSession,
+    (isValidLicense, session) => {
+        if (process.env.REACT_APP_MODE === 'electron') {
+            return isValidLicense;
+        } else {
+            return session.user ? session.user.metaData.computedSubscriptionType === 'pro' : false;
+        }
+    }
 );

@@ -1,20 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DragSource, DropTarget } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 
-function DndWrapper(props) {
-    const {
-        isOver,
-        connectDragSource,
-        connectDropTarget,
-        ...restProps
-    } = props;
+function DraggableElement(props) {
+    // eslint-disable-next-line no-unused-vars
+    const [collectedDragProps, drag] = useDrag({
+        item: {
+            type: props.dragType,
+            data: props.data
+        }
+    });
+
+    const [collectedDropProps, drop] = useDrop({
+        accept: props.dropType,
+        drop: item => props.onDrop ? props.onDrop(item.data, props.data) : null,
+        collect: monitor => ({
+            hovered: monitor.isOver()
+        })
+    });
+
+    const { ...restProps } = props;
 
     const style = { ...restProps.style, cursor: 'move' };
 
     let { className } = restProps;
 
-    if (isOver) {
+    if (collectedDropProps.hovered) {
         className += ' DropOver';
     }
 
@@ -22,54 +33,31 @@ function DndWrapper(props) {
     delete restProps.dragType;
     delete restProps.data;
     delete restProps.onDrop;
+    delete restProps.children;
 
-    return connectDragSource(connectDropTarget(<div {...restProps} className={className} style={style} />));
+    return (
+        <div
+            {...restProps}
+            className={className}
+            style={style}>
+            <div ref={drag}>
+                <div ref={drop}>
+                    {props.children}
+                </div>
+            </div>
+        </div>
+    );
 }
 
-DndWrapper.propTypes = {
-    dropType: PropTypes.string.isRequired,
+DraggableElement.propTypes = {
+    children: PropTypes.node.isRequired,
     dragType: PropTypes.string.isRequired,
+    dropType: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+    ]).isRequired,
     data: PropTypes.object.isRequired,
-    onDrop: PropTypes.func.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDropTarget: PropTypes.func.isRequired
+    onDrop: PropTypes.func
 };
-
-const source = {
-    beginDrag: props => {
-        return {
-            data: props.data
-        };
-    }
-};
-
-const target = {
-    drop: (props, monitor) => {
-        const dragData = monitor.getItem().data;
-        const dropData = props.data;
-
-        props.onDrop(dragData, dropData);
-    }
-};
-
-const dropTarget = DropTarget(
-    props => props.dropType,
-    target,
-    (connect, monitor) => ({
-        connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver()
-    })
-);
-
-const dragSource = DragSource(
-    props => props.dragType,
-    source,
-    (connect) => ({
-        connectDragSource: connect.dragSource()
-    })
-);
-
-const DraggableElement = dropTarget(dragSource(DndWrapper));
 
 export default DraggableElement;

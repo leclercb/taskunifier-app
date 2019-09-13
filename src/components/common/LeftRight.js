@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 function LeftRight(props) {
     return (
-        <div style={{ display: 'flex', width: '100%' }}>
+        <div
+            className={props.className}
+            style={{ display: 'flex', width: '100%' }}>
             <div
                 onClick={props.onClickLeft}
                 style={{ flexGrow: 1 }}>
@@ -18,6 +20,7 @@ function LeftRight(props) {
 }
 
 LeftRight.propTypes = {
+    className: PropTypes.string,
     left: PropTypes.node,
     right: PropTypes.node,
     children: PropTypes.node,

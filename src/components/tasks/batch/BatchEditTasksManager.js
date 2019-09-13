@@ -2,27 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Col, Form, Row } from 'antd';
 import Icon from 'components/common/Icon';
-import withSelectedTasks from 'containers/WithSelectedTasks';
-import withSettings from 'containers/WithSettings';
-import withTaskFields from 'containers/WithTaskFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { SettingsPropType } from 'proptypes/SettingPropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
 function BatchEditTasksManager(props) {
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
+
     const updateTasks = () => {
         props.form.validateFields((error, values) => {
             if (error) {
                 return;
             }
 
-            const tasks = props.selectedTasks.map(task => ({ ...task }));
+            const tasks = taskApi.selectedTasks.map(task => ({ ...task }));
 
-            props.taskFields.forEach(field => {
+            taskFieldApi.taskFields.forEach(field => {
                 if (values.checked[field.id]) {
                     tasks.forEach(task => {
                         task[field.id] = clone(values.value[field.id]);
@@ -30,11 +31,11 @@ function BatchEditTasksManager(props) {
                 }
             });
 
-            tasks.forEach(task => props.updateTask(task));
+            tasks.forEach(task => taskApi.updateTask(task));
         });
     };
 
-    const fields = props.taskFields.filter(field => props.settings['taskFieldVisible_' + field.id] !== false);
+    const fields = taskFieldApi.taskFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
     const { getFieldDecorator } = props.form;
 
@@ -73,11 +74,7 @@ function BatchEditTasksManager(props) {
 }
 
 BatchEditTasksManager.propTypes = {
-    form: PropTypes.object.isRequired,
-    taskFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    selectedTasks: PropTypes.arrayOf(TaskPropType).isRequired,
-    settings: SettingsPropType.isRequired,
-    updateTask: PropTypes.func.isRequired
+    form: PropTypes.object.isRequired
 };
 
-export default withSettings(withTaskFields(withSelectedTasks(Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager))));
+export default Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager);

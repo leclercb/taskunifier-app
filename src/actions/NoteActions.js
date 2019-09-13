@@ -2,6 +2,7 @@ import {
     addObject,
     cleanObjects,
     deleteObject,
+    duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
@@ -27,6 +28,10 @@ export function setNotes(notes) {
 
 export function addNote(note, options = {}) {
     return addObject('notes', note, options);
+}
+
+export function duplicateNote(note, options = {}) {
+    return duplicateObject('notes', note, options);
 }
 
 export function updateNote(note, options = {}) {

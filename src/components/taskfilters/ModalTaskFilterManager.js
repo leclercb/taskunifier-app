@@ -1,23 +1,24 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Modal } from 'antd';
-import withApp from 'containers/WithApp';
 import Icon from 'components/common/Icon';
 import TaskFilterManager from 'components/taskfilters/TaskFilterManager';
+import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalTaskFilterManager(props) {
+function ModalTaskFilterManager() {
+    const appApi = useAppApi();
+
     const onCloseTaskFilterManager = () => {
-        props.setTaskFilterManagerOptions({ visible: false });
+        appApi.setTaskFilterManagerOptions({ visible: false });
     };
 
     const onTaskFilterSelection = taskFilterId => {
-        props.setTaskFilterManagerOptions({ taskFilterId });
+        appApi.setTaskFilterManagerOptions({ taskFilterId });
     };
 
     return (
         <Modal
             title={<Icon icon="filter" text="Task Filter Manager" />}
-            visible={props.taskFilterManager.visible}
+            visible={appApi.taskFilterManager.visible}
             width="80%"
             closable={false}
             onOk={onCloseTaskFilterManager}
@@ -28,15 +29,10 @@ function ModalTaskFilterManager(props) {
                 </Button>
             )}>
             <TaskFilterManager
-                taskFilterId={props.taskFilterManager.taskFilterId}
+                taskFilterId={appApi.taskFilterManager.taskFilterId}
                 onTaskFilterSelection={onTaskFilterSelection} />
         </Modal>
     );
 }
 
-ModalTaskFilterManager.propTypes = {
-    taskFilterManager: PropTypes.object.isRequired,
-    setTaskFilterManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(ModalTaskFilterManager);
+export default ModalTaskFilterManager;

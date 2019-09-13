@@ -1,19 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withNotes from 'containers/WithNotes';
-import withNoteFields from 'containers/WithNoteFields';
 import withProCheck from 'containers/WithProCheck';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
-import { FieldPropType } from 'proptypes/FieldPropTypes';
-import { NotePropType } from 'proptypes/NotePropTypes';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 
 function NoteFieldManager(props) {
+    const noteApi = useNoteApi();
+    const noteFieldApi = useNoteFieldApi();
     const selectedNoteFieldId = props.noteFieldId;
 
     const onAddNoteField = async noteField => {
-        noteField = await props.addNoteField(noteField);
+        noteField = await noteFieldApi.addNoteField(noteField);
+        props.onNoteFieldSelection(noteField.id);
+    };
+
+    const onDuplicateNoteField = async noteField => {
+        noteField = await noteFieldApi.duplicateNoteField(noteField);
         props.onNoteFieldSelection(noteField.id);
     };
 
@@ -21,16 +26,17 @@ function NoteFieldManager(props) {
         props.onNoteFieldSelection(noteField.id);
     };
 
-    const selectedNoteField = props.noteFields.find(noteField => noteField.id === selectedNoteFieldId);
+    const selectedNoteField = noteFieldApi.noteFields.find(noteField => noteField.id === selectedNoteFieldId);
 
     return (
         <Row>
             <Col span={6}>
                 <FieldList
-                    fields={props.noteFields}
+                    fields={noteFieldApi.noteFields}
                     selectedFieldId={selectedNoteFieldId}
                     addField={onAddNoteField}
-                    deleteField={props.deleteNoteField}
+                    duplicateField={onDuplicateNoteField}
+                    deleteField={noteFieldApi.deleteNoteField}
                     onFieldSelection={onNoteFieldSelection} />
             </Col>
             <Col span={2} />
@@ -38,9 +44,9 @@ function NoteFieldManager(props) {
                 {selectedNoteField ? (
                     <FieldForm
                         key={selectedNoteFieldId}
-                        objects={props.notes}
+                        objects={noteApi.notes}
                         field={selectedNoteField}
-                        updateField={props.updateNoteField} />
+                        updateField={noteFieldApi.updateNoteField} />
                 ) : <Empty description="Please select a note field" />}
             </Col>
         </Row>
@@ -48,13 +54,8 @@ function NoteFieldManager(props) {
 }
 
 NoteFieldManager.propTypes = {
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     noteFieldId: PropTypes.string,
-    noteFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    onNoteFieldSelection: PropTypes.func.isRequired,
-    addNoteField: PropTypes.func.isRequired,
-    updateNoteField: PropTypes.func.isRequired,
-    deleteNoteField: PropTypes.func.isRequired
+    onNoteFieldSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(withNoteFields(withNotes(NoteFieldManager)));
+export default withProCheck(NoteFieldManager);

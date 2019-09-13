@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SortDirectionPropType } from 'proptypes/SortDirectionPropTypes';
-import withSortDirection from 'containers/WithSortDirection';
 import Icon from 'components/common/Icon';
+import { useSortDirectionApi } from 'hooks/UseSortDirectionApi';
 
 export function SortDirectionTitle(props) {
-    const { sortDirection } = props;
+    const sortDirectionApi = useSortDirectionApi();
+    const sortDirection = sortDirectionApi.sortDirections.find(sortDirection => sortDirection.id === props.sortDirectionId);
+
     return sortDirection ? (
         <Icon icon="circle" color={sortDirection.color} text={sortDirection.title} />
     ) : (<span>&nbsp;</span>);
 }
 
 SortDirectionTitle.propTypes = {
-    sortDirectionId: PropTypes.string,
-    sortDirection: SortDirectionPropType
+    sortDirectionId: PropTypes.string
 };
 
-export default withSortDirection(SortDirectionTitle);
+export default SortDirectionTitle;

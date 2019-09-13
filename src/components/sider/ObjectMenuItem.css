@@ -1,0 +1,13 @@
+.menu-item-highlighted {
+    border: 1px dashed #cccccc;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0px 5px;
+}
+
+.menu-item-hovered {
+    border: 1px dashed #0e67c4;
+    border-radius: 5px;
+    height: 30px;
+    padding: 0px 5px;
+}

@@ -1,23 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NotePropType } from 'proptypes/NotePropTypes';
-import withNote from 'containers/WithNote';
 import Icon from 'components/common/Icon';
+import { useNote } from 'hooks/UseNote';
 
 export function NoteTitle(props) {
-    const { note } = props;
-
-    return note ? (
-        <Icon
-            icon="circle"
-            color={note.color}
-            text={note.title} />
-    ) : <span>&nbsp;</span>;
+    const note = useNote(props.noteId);
+    return note ? <Icon icon="circle" color={note.color} text={note.title} /> : <span>&nbsp;</span>;
 }
 
 NoteTitle.propTypes = {
-    noteId: PropTypes.string,
-    note: NotePropType
+    noteId: PropTypes.string
 };
 
-export default withNote(NoteTitle);
+export default NoteTitle;

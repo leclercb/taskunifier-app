@@ -72,6 +72,9 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
                     </Menu.Item>
                 )
             }
+            <Menu.Item key="duplicate" action={{ type: 'duplicate' }}>
+                <Icon icon="copy" text={`Duplicate ${suffix}`} />
+            </Menu.Item>
             {createPostponeMenu('postponeStartDate', `Postpone start date of ${suffix}`)}
             {createPostponeMenu('postponeDueDate', `Postpone due date of ${suffix}`)}
             <Menu.Item key="remove" action={{ type: 'remove' }}>

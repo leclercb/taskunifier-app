@@ -1,13 +1,14 @@
 import React, { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import withNotes from 'containers/WithNotes';
-import withObjects from 'containers/WithObjects';
 import Icon from 'components/common/Icon';
 import { FolderTitle } from 'components/folders/FolderTitle';
-import { FolderPropType } from 'proptypes/FolderPropTypes';
+import { useFolderApi } from 'hooks/UseFolderApi';
+import { useNoteApi } from 'hooks/UseNoteApi';
 
-function NoteQuickAdd(props) {
+function NoteQuickAdd() {
+    const folderApi = useFolderApi();
+    const noteApi = useNoteApi();
+
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);
     const selectRef = useRef(null);
@@ -42,7 +43,7 @@ function NoteQuickAdd(props) {
             newNote[object.field] = object.value;
         });
 
-        props.addNote(newNote);
+        noteApi.addNote(newNote);
 
         setValues([]);
         setTimeout(() => setOpen(false));
@@ -64,7 +65,7 @@ function NoteQuickAdd(props) {
                     <Icon icon="plus" text="Create note" />
                 </Select.Option>,
                 <Select.OptGroup key='folders' label="Folders">
-                    {props.folders.map(folder => (
+                    {folderApi.folders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
                             <FolderTitle folder={folder} />
                         </Select.Option>
@@ -75,11 +76,4 @@ function NoteQuickAdd(props) {
     );
 }
 
-NoteQuickAdd.propTypes = {
-    folders: PropTypes.arrayOf(FolderPropType.isRequired).isRequired,
-    addNote: PropTypes.func.isRequired
-};
-
-export default withNotes(withObjects(NoteQuickAdd, {
-    includeFolders: true
-}), { includeState: false });
+export default NoteQuickAdd;

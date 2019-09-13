@@ -1,6 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Layout, Spin } from 'antd';
+import { useSelector } from 'react-redux';
 import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import Header from 'components/layout/Header';
 import ModalNoteFieldManager from 'components/notefields/ModalNoteFieldManager';
@@ -18,12 +18,15 @@ import TaskView from 'components/tasks/views/TaskView';
 import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
 import NotificationManager from 'components/thread/NotificationManager';
 import ModalThreadManager from 'components/thread/ModalThreadManager';
-import withApp from 'containers/WithApp';
-import withBusy from 'containers/WithBusy';
+import { getSelectedView } from 'selectors/SettingSelectors';
+import { isBusy } from 'selectors/ThreadSelectors';
 
-function AppLayout(props) {
+function AppLayout() {
+    const busy = useSelector(isBusy);
+    const selectedView = useSelector(getSelectedView);
+
     const getView = () => {
-        switch (props.selectedView) {
+        switch (selectedView) {
             case 'note':
                 return <NoteView />;
             case 'task':
@@ -50,7 +53,7 @@ function AppLayout(props) {
             <ModalTaskEditionManager />
             <ModalTaskTemplateManager />
             <ModalSettingManager />
-            <Spin style={{ minHeight: '100%', height: '100%' }} spinning={props.busy}>
+            <Spin style={{ minHeight: '100%', height: '100%' }} spinning={busy}>
                 <Layout style={{ minHeight: '100%', height: '100%' }}>
                     <Layout.Header>
                         <Header />
@@ -64,9 +67,4 @@ function AppLayout(props) {
     );
 }
 
-AppLayout.propTypes = {
-    busy: PropTypes.bool.isRequired,
-    selectedView: PropTypes.oneOf(['note', 'task', 'taskCalendar']).isRequired
-};
-
-export default withApp(withBusy(AppLayout));
+export default AppLayout;

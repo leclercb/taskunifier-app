@@ -1,18 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { ContextPropType } from 'proptypes/ContextPropTypes';
-import withContexts from 'containers/WithContexts';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import { useContextApi } from 'hooks/UseContextApi';
 
 export const ContextSelect = React.forwardRef(function ContextSelect(props, ref) {
-    const { contexts, ...restProps } = props;
-
-    restProps.value = contexts.find(context => context.id === restProps.value) ? restProps.value : null;
+    const contextApi = useContextApi();
+    const value = contextApi.contexts.find(context => context.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
-            {contexts.map(context => (
+        <Select ref={ref} allowClear={true} {...props} value={value}>
+            {contextApi.contexts.map(context => (
                 <Select.Option key={context.id} value={context.id}>
                     <Icon icon="circle" color={context.color} text={context.title} />
                 </Select.Option>
@@ -24,7 +22,7 @@ export const ContextSelect = React.forwardRef(function ContextSelect(props, ref)
 ContextSelect.displayName = 'ForwardRefContextSelect';
 
 ContextSelect.propTypes = {
-    contexts: PropTypes.arrayOf(ContextPropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withContexts(ContextSelect);
+export default ContextSelect;

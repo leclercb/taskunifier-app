@@ -1,18 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Select } from 'antd';
-import { NotePropType } from 'proptypes/NotePropTypes';
-import withNotes from 'containers/WithNotes';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import { useNoteApi } from 'hooks/UseNoteApi';
 
 export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
-    const { notes, ...restProps } = props;
-
-    restProps.value = notes.find(note => note.id === restProps.value) ? restProps.value : null;
+    const noteApi = useNoteApi();
+    const value = noteApi.notes.find(note => note.id === props.value) ? props.value : null;
 
     return (
-        <Select ref={ref} allowClear={true} {...restProps}>
-            {notes.map(note => (
+        <Select ref={ref} allowClear={true} {...props} value={value}>
+            {noteApi.notes.map(note => (
                 <Select.Option key={note.id} value={note.id}>
                     <Icon icon="circle" color={note.color} text={note.title} />
                 </Select.Option>
@@ -24,7 +22,7 @@ export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
 NoteSelect.displayName = 'ForwardRefNoteSelect';
 
 NoteSelect.propTypes = {
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired
+    value: PropTypes.string
 };
 
-export default withNotes(NoteSelect);
+export default NoteSelect;

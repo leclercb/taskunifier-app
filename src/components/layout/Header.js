@@ -1,125 +1,128 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
 import Spacer from 'components/common/Spacer';
 import UserMenu from 'components/layout/UserMenu';
-import withApp from 'containers/WithApp';
-import withNotes from 'containers/WithNotes';
-import withPrint from 'containers/WithPrint';
-import withTasks from 'containers/WithTasks';
-import withTaskTemplates from 'containers/WithTaskTemplates';
-import { NotePropType } from 'proptypes/NotePropTypes';
-import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { TaskFilterPropType } from 'proptypes/TaskFilterPropTypes';
-import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { usePrintApi } from 'hooks/UsePrintApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
-function Header(props) {
+function Header() {
+    const appApi = useAppApi();
+    const noteApi = useNoteApi();
+    const taskApi = useTaskApi();
+    const printApi = usePrintApi();
+    const taskTemplatesApi = useTaskTemplateApi();
+
     const onAddNote = async () => {
-        const note = await props.addNote();
-        props.setSelectedNoteIds([note.id]);
+        const note = await noteApi.addNote();
+        noteApi.setSelectedNoteIds(note.id);
+        appApi.setEditingCell(note.id, 'title');
     };
 
     const onRemoveNotes = () => {
-        props.deleteNote(props.selectedNoteIds);
+        noteApi.deleteNote(noteApi.selectedNoteIds);
     };
 
     const onPrintNotes = () => {
-        props.printNotes(props.notes);
+        printApi.printNotes(noteApi.notes);
     };
 
     const onAddTask = async () => {
         let task = {};
 
-        const taskTemplate = props.taskTemplates.find(taskTemplate =>
-            taskTemplate.id === props.selectedTaskFilter.taskTemplate);
+        const taskTemplate = taskTemplatesApi.taskTemplates.find(taskTemplate =>
+            taskTemplate.id === taskApi.selectedTaskFilter.taskTemplate);
 
         applyTaskTemplate(taskTemplate, task);
 
-        task = await props.addTask(task);
-        props.setSelectedTaskIds([task.id]);
+        task = await taskApi.addTask(task);
+        taskApi.setSelectedTaskIds(task.id);
+        appApi.setEditingCell(task.id, 'title');
     };
 
     const onEditTask = () => {
-        props.setTaskEditionManagerOptions({
+        appApi.setTaskEditionManagerOptions({
             visible: true,
-            taskId: props.selectedTaskIds[0]
+            taskId: taskApi.selectedTaskIds[0]
         });
     };
 
     const onRemoveTasks = () => {
-        props.deleteTask(props.selectedTaskIds);
+        taskApi.deleteTask(taskApi.selectedTaskIds);
     };
 
     const onPrintTasks = () => {
-        props.printTasks(props.tasks);
+        printApi.printTasks(taskApi.tasks);
     };
 
     const onSave = () => {
-        props.saveData();
+        appApi.saveData();
     };
 
     const onBackup = () => {
-        props.backupData();
+        appApi.backupData();
     };
 
     const onSetBatchAddTasksManagerVisible = () => {
-        props.setBatchAddTasksManagerOptions({ visible: true });
+        appApi.setBatchAddTasksManagerOptions({ visible: true });
     };
 
     const onSetBatchEditTasksManagerVisible = () => {
-        props.setBatchEditTasksManagerOptions({ visible: true });
+        appApi.setBatchEditTasksManagerOptions({ visible: true });
     };
 
     const onSetCategoryManagerVisible = () => {
-        props.setCategoryManagerOptions({ visible: true });
+        appApi.setCategoryManagerOptions({ visible: true });
     };
 
     const onSetReminderManagerVisible = () => {
-        props.setReminderManagerOptions({ visible: true });
+        appApi.setReminderManagerOptions({ visible: true });
     };
 
     const onSetNoteFieldManagerVisible = () => {
-        props.setNoteFieldManagerOptions({ visible: true });
+        appApi.setNoteFieldManagerOptions({ visible: true });
     };
 
     const onSetNoteFilterManagerVisible = () => {
-        props.setNoteFilterManagerOptions({ visible: true });
+        appApi.setNoteFilterManagerOptions({ visible: true });
     };
 
     const onSetTaskFieldManagerVisible = () => {
-        props.setTaskFieldManagerOptions({ visible: true });
+        appApi.setTaskFieldManagerOptions({ visible: true });
     };
 
     const onSetTaskFilterManagerVisible = () => {
-        props.setTaskFilterManagerOptions({ visible: true });
+        appApi.setTaskFilterManagerOptions({ visible: true });
     };
 
     const onSetTaskTemplateManagerVisible = () => {
-        props.setTaskTemplateManagerOptions({ visible: true });
+        appApi.setTaskTemplateManagerOptions({ visible: true });
     };
 
     const onSetSettingsVisible = () => {
-        props.setSettingManagerOptions({ visible: true });
+        appApi.setSettingManagerOptions({ visible: true });
     };
 
     const onSynchronize = () => {
-        props.synchronize();
+        appApi.synchronize();
     };
 
     const onShowTaskContent = () => {
-        props.setSelectedView('task');
+        appApi.setSelectedView('task');
     };
 
     const onShowTaskCalendarContent = () => {
-        props.setSelectedView('taskCalendar');
+        appApi.setSelectedView('taskCalendar');
     };
 
     const onShowNoteContent = () => {
-        props.setSelectedView('note');
+        appApi.setSelectedView('note');
     };
 
     const createButton = (icon, text, onClick, disabled = false) => {
@@ -138,7 +141,7 @@ function Header(props) {
     return (
         <LeftRight right={(
             <React.Fragment>
-                {props.pro ? (
+                {appApi.pro ? (
                     <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                 ) : null}
                 {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}
@@ -146,61 +149,61 @@ function Header(props) {
         )}>
             <Button.Group style={{ marginRight: 50 }}>
                 <Button
-                    type={props.selectedView === 'task' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'task' ? 'dashed' : 'default'}
                     onClick={onShowTaskContent}>
                     <Icon icon="tasks" text="Tasks" />
                 </Button>
                 <Button
-                    type={props.selectedView === 'taskCalendar' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'taskCalendar' ? 'dashed' : 'default'}
                     onClick={onShowTaskCalendarContent}>
                     <Icon icon="calendar-alt" text="Calendar" />
                 </Button>
                 <Button
-                    type={props.selectedView === 'note' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'note' ? 'dashed' : 'default'}
                     onClick={onShowNoteContent}>
                     <Icon icon="book" text="Notes" />
                 </Button>
             </Button.Group>
-            {props.selectedView === 'note' ?
+            {appApi.selectedView === 'note' ?
                 createButton('plus', 'Add Note', onAddNote)
                 : null}
-            {props.selectedView === 'note' ?
+            {appApi.selectedView === 'note' ?
                 createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
                 : null}
-            {props.selectedView === 'note' ?
+            {appApi.selectedView === 'note' ?
                 createButton('print', 'Print Notes', onPrintNotes)
                 : null}
-            {props.selectedView === 'note' ?
+            {appApi.selectedView === 'note' ?
                 createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
                 : null}
-            {props.selectedView === 'note' ?
+            {appApi.selectedView === 'note' ?
                 createButton('columns', 'Note Field Manager', onSetNoteFieldManagerVisible)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('plus', 'Add Task', onAddTask)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
                 : null}
-            {(props.selectedView === 'task' || props.selectedView === 'taskCalendar') ?
-                createButton('edit', 'Edit Task', onEditTask, props.selectedTaskIds.length !== 1)
+            {(appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar') ?
+                createButton('edit', 'Edit Task', onEditTask, taskApi.selectedTaskIds.length !== 1)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
-                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, props.selectedTaskIds.length <= 1 || props.selectedTaskIds.length > 50)
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, taskApi.selectedTaskIds.length <= 1 || taskApi.selectedTaskIds.length > 50)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('print', 'Print Tasks', onPrintTasks)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
                 : null}
-            {props.selectedView === 'task' || props.selectedView === 'taskCalendar' ?
+            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                 createButton('columns', 'Task Field Manager', onSetTaskFieldManagerVisible)
                 : null}
             <Spacer />
@@ -221,38 +224,4 @@ function Header(props) {
     );
 }
 
-Header.propTypes = {
-    pro: PropTypes.bool.isRequired,
-    notes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
-    tasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
-    taskTemplates: PropTypes.arrayOf(TaskTemplatePropType.isRequired).isRequired,
-    selectedView: PropTypes.oneOf(['note', 'task', 'taskCalendar']).isRequired,
-    selectedNoteIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    selectedTaskFilter: TaskFilterPropType.isRequired,
-    addNote: PropTypes.func.isRequired,
-    deleteNote: PropTypes.func.isRequired,
-    printNotes: PropTypes.func.isRequired,
-    addTask: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired,
-    printTasks: PropTypes.func.isRequired,
-    saveData: PropTypes.func.isRequired,
-    backupData: PropTypes.func.isRequired,
-    synchronize: PropTypes.func.isRequired,
-    setSelectedView: PropTypes.func.isRequired,
-    setSelectedNoteIds: PropTypes.func.isRequired,
-    setSelectedTaskIds: PropTypes.func.isRequired,
-    setCategoryManagerOptions: PropTypes.func.isRequired,
-    setReminderManagerOptions: PropTypes.func.isRequired,
-    setNoteFieldManagerOptions: PropTypes.func.isRequired,
-    setNoteFilterManagerOptions: PropTypes.func.isRequired,
-    setTaskFieldManagerOptions: PropTypes.func.isRequired,
-    setTaskFilterManagerOptions: PropTypes.func.isRequired,
-    setTaskEditionManagerOptions: PropTypes.func.isRequired,
-    setTaskTemplateManagerOptions: PropTypes.func.isRequired,
-    setBatchAddTasksManagerOptions: PropTypes.func.isRequired,
-    setBatchEditTasksManagerOptions: PropTypes.func.isRequired,
-    setSettingManagerOptions: PropTypes.func.isRequired
-};
-
-export default withApp(withNotes(withTasks(withTaskTemplates(withPrint(Header)))));
+export default Header;
