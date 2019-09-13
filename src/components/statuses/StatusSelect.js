@@ -1,13 +1,13 @@
 import React from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
-import { useSettings } from 'hooks/UseSettings';
-import { useStatuses } from 'hooks/UseStatuses';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useStatusApi } from 'hooks/UseStatusApi';
 import { getStatusColor } from 'utils/SettingUtils';
 
 export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
-    const settingsApi = useSettings();
-    const statusApi = useStatuses();
+    const settingsApi = useSettingsApi();
+    const statusApi = useStatusApi();
 
     return (
         <Select ref={ref} allowClear={true} {...props}>

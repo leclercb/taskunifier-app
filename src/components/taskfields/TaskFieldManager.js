@@ -4,12 +4,12 @@ import { Col, Empty, Row } from 'antd';
 import withProCheck from 'containers/WithProCheck';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
-import { useTasks } from 'hooks/UseTasks';
-import { useTaskFields } from 'hooks/UseTaskFields';
+import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 
 function TaskFieldManager(props) {
-    const taskApi = useTasks();
-    const taskFieldApi = useTaskFields();
+    const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
     const selectedTaskFieldId = props.taskFieldId;
 
     const onAddTaskField = async taskField => {

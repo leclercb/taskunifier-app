@@ -1,6 +1,6 @@
 import { getPriorities } from 'data/DataPriorities';
 
-export function usePriorities() {
+export function usePriorityApi() {
     const priorities = getPriorities();
 
     return {

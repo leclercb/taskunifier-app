@@ -1,11 +1,11 @@
 import React from 'react';
 import Joyride, { STATUS } from 'react-joyride';
 import { getConfig } from 'constants/JoyrideConfig';
-import { useJoyride } from 'hooks/UseJoyride';
+import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 
 function withJoyride(Component) {
     function WithJoyride(props) {
-        const joyrideApi = useJoyride();
+        const joyrideApi = useJoyrideApi();
 
         const callback = data => {
             const { status } = data;

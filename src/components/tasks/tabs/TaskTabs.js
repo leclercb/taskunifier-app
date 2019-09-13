@@ -5,11 +5,11 @@ import TaskTextForm from 'components/tasks/text/TaskTextForm';
 import { getLinkedContactFields } from 'data/DataLinkedContactFields';
 import { getLinkedFileFields } from 'data/DataLinkedFileFields';
 import { getLinkedTaskFields } from 'data/DataLinkedTaskFields';
-import { useTasks } from 'hooks/UseTasks';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import 'components/tasks/tabs/TaskTabs.css';
 
 function TaskTabs() {
-    const taskApi = useTasks();
+    const taskApi = useTaskApi();
 
     if (taskApi.selectedTasks.length !== 1) {
         return (

@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import TaskTitle from 'components/tasks/common/TaskTitle';
-import { useTaskReminders } from 'hooks/UseTaskReminders';
-import { useSettings } from 'hooks/UseSettings';
+import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { showReminder } from 'utils/ReminderUtils';
 import { formatDate } from 'utils/SettingUtils';
 
 function ReminderList(props) {
-    const settingsApi = useSettings();
-    const taskReminderApi = useTaskReminders(props.date);
+    const settingsApi = useSettingsApi();
+    const taskReminderApi = useTaskReminderApi(props.date);
     const [selectedTaskId, setSelectedTaskId] = useState([]);
 
     const dismiss = task => {

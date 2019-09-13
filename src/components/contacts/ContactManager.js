@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
 import ContactList from 'components/contacts/ContactList';
 import ContactForm from 'components/contacts/ContactForm';
-import { useContacts } from 'hooks/UseContacts';
+import { useContactApi } from 'hooks/UseContactApi';
 
 function ContactManager(props) {
-    const contactApi = useContacts();
+    const contactApi = useContactApi();
     const selectedContactId = props.contactId;
 
     const onAddContact = async contact => {

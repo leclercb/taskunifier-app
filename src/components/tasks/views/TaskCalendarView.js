@@ -4,10 +4,10 @@ import TaskSider from 'components/tasks/sider/TaskSider';
 import TaskCalendar from 'components/tasks/calendar/TaskCalendar';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 
 function TaskCalendarView() {
-    const settingsApi = useSettings();
+    const settingsApi = useSettingsApi();
 
     const onTaskCalendarViewSplitPaneSizeChange = size => {
         settingsApi.updateSettings({ taskCalendarViewSplitPaneSize: size });

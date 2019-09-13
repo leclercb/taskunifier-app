@@ -1,9 +1,9 @@
 import React from 'react';
 import { Select, Tag } from 'antd';
-import { useTags } from 'hooks/UseTags';
+import { useTagApi } from 'hooks/UseTagApi';
 
 export const TagsSelect = React.forwardRef(function TagsSelect(props, ref) {
-    const tagApi = useTags();
+    const tagApi = useTagApi();
 
     return (
         <Select ref={ref} mode="tags" allowClear={true} {...props}>

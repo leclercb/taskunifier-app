@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTaskTemplate, deleteTaskTemplate, duplicateTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 
-export function useTaskTemplates() {
+export function useTaskTemplateApi() {
     const dispatch = useDispatch();
     const taskTemplates = useSelector(getTaskTemplatesFilteredByVisibleState);
 

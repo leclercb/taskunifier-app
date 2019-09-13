@@ -1,13 +1,13 @@
 import React from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
-import { usePriorities } from 'hooks/UsePriorities';
-import { useSettings } from 'hooks/UseSettings';
+import { usePriorityApi } from 'hooks/UsePriorityApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getPriorityColor } from 'utils/SettingUtils';
 
 export const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
-    const priorityApi = usePriorities();
-    const settingsApi = useSettings();
+    const priorityApi = usePriorityApi();
+    const settingsApi = useSettingsApi();
 
     return (
         <Select ref={ref} allowClear={true} {...props}>

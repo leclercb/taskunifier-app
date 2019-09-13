@@ -4,7 +4,7 @@ import { buyItem } from 'actions/ItemActions';
 import { check, login, logout } from 'actions/SessionActions';
 import { getSession } from 'selectors/SessionSelectors';
 
-export function useSession() {
+export function useSessionApi() {
     const dispatch = useDispatch();
     const session = useSelector(getSession);
 

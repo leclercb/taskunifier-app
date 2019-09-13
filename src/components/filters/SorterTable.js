@@ -10,14 +10,14 @@ import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'component
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
 import { move } from 'utils/ArrayUtils';
 import { getSorterBackgroundColor } from 'utils/SettingUtils';
 
 function SorterTable(props) {
-    const settingsApi = useSettings();
+    const settingsApi = useSettingsApi();
     const [selectedSorterIds, setSelectedSorterIds] = useState([]);
 
     const onAddSorter = () => {

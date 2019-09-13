@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Alert, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import LoadingIndicator from 'components/common/LoadingIndicator';
-import { useSession } from 'hooks/UseSession';
+import { useSessionApi } from 'hooks/UseSessionApi';
 
 function PrivateComponent({ userRole, children }) {
-    const sessionApi = useSession();
+    const sessionApi = useSessionApi();
 
     useEffect(() => {
         const fn = async () => {

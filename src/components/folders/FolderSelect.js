@@ -2,10 +2,10 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { useFolders } from 'hooks/UseFolders';
+import { useFolderApi } from 'hooks/UseFolderApi';
 
 export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
-    const folderApi = useFolders();
+    const folderApi = useFolderApi();
     const value = folderApi.folders.find(folder => folder.id === props.value) ? props.value : null;
 
     return (

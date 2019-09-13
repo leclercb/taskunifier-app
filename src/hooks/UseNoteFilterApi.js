@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addNoteFilter, deleteNoteFilter, duplicateNoteFilter, updateNoteFilter } from 'actions/NoteFilterActions';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
 
-export function useNoteFilters() {
+export function useNoteFilterApi() {
     const dispatch = useDispatch();
     const noteFilters = useSelector(getNoteFiltersFilteredByVisibleState);
 

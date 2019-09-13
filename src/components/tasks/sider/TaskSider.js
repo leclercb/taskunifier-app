@@ -6,24 +6,24 @@ import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
 import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
-import { useApp } from 'hooks/UseApp';
-import { useContexts } from 'hooks/UseContexts';
-import { useFolders } from 'hooks/UseFolders';
-import { useGoals } from 'hooks/UseGoals';
-import { useLocations } from 'hooks/UseLocations';
-import { useTags } from 'hooks/UseTags';
-import { useTaskFilters } from 'hooks/UseTaskFilters';
-import { useTasks } from 'hooks/UseTasks';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useContextApi } from 'hooks/UseContextApi';
+import { useFolderApi } from 'hooks/UseFolderApi';
+import { useGoalApi } from 'hooks/UseGoalApi';
+import { useLocationApi } from 'hooks/UseLocationApi';
+import { useTagApi } from 'hooks/UseTagApi';
+import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 
 function TaskSider(props) {
-    const appApi = useApp();
-    const contextApi = useContexts();
-    const folderApi = useFolders();
-    const goalApi = useGoals();
-    const locationApi = useLocations();
-    const tagApi = useTags();
-    const taskApi = useTasks();
-    const taskFilterApi = useTaskFilters();
+    const appApi = useAppApi();
+    const contextApi = useContextApi();
+    const folderApi = useFolderApi();
+    const goalApi = useGoalApi();
+    const locationApi = useLocationApi();
+    const tagApi = useTagApi();
+    const taskApi = useTaskApi();
+    const taskFilterApi = useTaskFilterApi();
 
     const [openKeys, setOpenKeys] = useState(['general']);
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import SettingManager from 'components/settings/SettingManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalSettingManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onClose = () => {
         appApi.setSettingManagerOptions({ visible: false });

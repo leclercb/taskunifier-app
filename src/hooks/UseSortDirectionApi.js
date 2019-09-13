@@ -1,6 +1,6 @@
 import { getSortDirections } from 'data/DataSortDirections';
 
-export function useSortDirections() {
+export function useSortDirectionApi() {
     const sortDirections = getSortDirections();
 
     return {

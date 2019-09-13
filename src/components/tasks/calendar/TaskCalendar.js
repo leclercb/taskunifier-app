@@ -4,18 +4,18 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
-import { useApp } from 'hooks/UseApp';
-import { useSettings } from 'hooks/UseSettings';
-import { useTasks } from 'hooks/UseTasks';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import 'components/tasks/calendar/TaskCalendar.css';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 function TaskCalendar() {
-    const appApi = useApp();
-    const settingsApi = useSettings();
-    const taskApi = useTasks();
+    const appApi = useAppApi();
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
 
     const getEvents = () => {
         const events = [];

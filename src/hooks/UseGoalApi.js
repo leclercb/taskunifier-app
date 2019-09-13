@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addGoal, deleteGoal, duplicateGoal, updateGoal } from 'actions/GoalActions';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 
-export function useGoals() {
+export function useGoalApi() {
     const dispatch = useDispatch();
     const goals = useSelector(getGoalsFilteredByVisibleState);
 

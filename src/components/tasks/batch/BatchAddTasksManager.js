@@ -4,13 +4,13 @@ import { Button, Form, Input } from 'antd';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import Icon from 'components/common/Icon';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
-import { useTaskTemplates } from 'hooks/UseTaskTemplates';
-import { useTasks } from 'hooks/UseTasks';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function BatchAddTasksManager(props) {
-    const taskApi = useTasks();
-    const taskTemplatesApi = useTaskTemplates();
+    const taskApi = useTaskApi();
+    const taskTemplatesApi = useTaskTemplateApi();
 
     const addTasks = () => {
         props.form.validateFields(async (error, values) => {

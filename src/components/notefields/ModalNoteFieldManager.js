@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import NoteFieldManager from 'components/notefields/NoteFieldManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalNoteFieldManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onCloseNoteFieldManager = () => {
         appApi.setNoteFieldManagerOptions({ visible: false });

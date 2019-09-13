@@ -8,19 +8,19 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
-import { useApp } from 'hooks/UseApp';
-import { useSettings } from 'hooks/UseSettings';
-import { useTaskFields } from 'hooks/UseTaskFields';
-import { useTasks } from 'hooks/UseTasks';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
 
 function TaskTable() {
-    const appApi = useApp();
-    const settingsApi = useSettings();
-    const taskApi = useTasks();
-    const taskFieldApi = useTaskFields();
+    const appApi = useAppApi();
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
 
     const onMenuAction = action => {
         const tasks = taskApi.filteredExpandedTasks.filter(task => taskApi.selectedTaskIds.includes(task.id));

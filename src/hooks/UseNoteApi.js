@@ -5,7 +5,7 @@ import { addNote, deleteNote, duplicateNote, updateNote } from 'actions/NoteActi
 import { getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState, getSelectedNotes } from 'selectors/NoteSelectors';
 
-export function useNotes() {
+export function useNoteApi() {
     const dispatch = useDispatch();
 
     const notes = useSelector(getNotesFilteredByVisibleState);

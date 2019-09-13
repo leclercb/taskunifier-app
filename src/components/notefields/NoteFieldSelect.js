@@ -2,10 +2,10 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { useNoteFields } from 'hooks/UseNoteFields';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 
 export const NoteFieldSelect = React.forwardRef(function NoteFieldSelect(props, ref) {
-    const noteFieldApi = useNoteFields();
+    const noteFieldApi = useNoteFieldApi();
     const value = noteFieldApi.noteFields.find(noteField => noteField.id === props.value) ? props.value : null;
 
     return (

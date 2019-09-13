@@ -3,10 +3,10 @@ import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getContactTitle } from 'utils/ContactUtils';
-import { useContacts } from 'hooks/UseContacts';
+import { useContactApi } from 'hooks/UseContactApi';
 
 export const ContactSelect = React.forwardRef(function ContactSelect(props, ref) {
-    const contactApi = useContacts();
+    const contactApi = useContactApi();
     const value = contactApi.contacts.find(contact => contact.id === props.value) ? props.value : null;
 
     return (

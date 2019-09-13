@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addLocation, deleteLocation, duplicateLocation, updateLocation } from 'actions/LocationActions';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 
-export function useLocations() {
+export function useLocationApi() {
     const dispatch = useDispatch();
     const locations = useSelector(getLocationsFilteredByVisibleState);
 

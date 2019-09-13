@@ -5,18 +5,18 @@ import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
 import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
-import { useApp } from 'hooks/UseApp';
-import { useFolders } from 'hooks/UseFolders';
-import { useNoteFilters } from 'hooks/UseNoteFilters';
-import { useNotes } from 'hooks/UseNotes';
-import { useTags } from 'hooks/UseTags';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useFolderApi } from 'hooks/UseFolderApi';
+import { useNoteFilterApi } from 'hooks/UseNoteFilterApi';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { useTagApi } from 'hooks/UseTagApi';
 
 function NoteSider() {
-    const appApi = useApp();
-    const folderApi = useFolders();
-    const noteApi = useNotes();
-    const noteFilterApi = useNoteFilters();
-    const tagApi = useTags();
+    const appApi = useAppApi();
+    const folderApi = useFolderApi();
+    const noteApi = useNoteApi();
+    const noteFilterApi = useNoteFilterApi();
+    const tagApi = useTagApi();
 
     const [openKeys, setOpenKeys] = useState(['general']);
 

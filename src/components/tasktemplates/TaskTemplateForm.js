@@ -4,14 +4,14 @@ import { Divider, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
-import { useSettings } from 'hooks/UseSettings';
-import { useTaskFields } from 'hooks/UseTaskFields';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function TaskTemplateForm(props) {
-    const settingsApi = useSettings();
-    const taskFieldApi = useTaskFields();
+    const settingsApi = useSettingsApi();
+    const taskFieldApi = useTaskFieldApi();
 
     const { getFieldDecorator } = props.form;
 

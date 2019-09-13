@@ -7,12 +7,12 @@ import FilterForm from 'components/filters/FilterForm';
 import SorterTable from 'components/filters/SorterTable';
 import withProCheck from 'containers/WithProCheck';
 import { getNoteSorterFields } from 'data/DataNoteSorterFields';
-import { useNoteFields } from 'hooks/UseNoteFields';
-import { useNoteFilters } from 'hooks/UseNoteFilters';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { useNoteFilterApi } from 'hooks/UseNoteFilterApi';
 
 function NoteFilterManager(props) {
-    const noteFieldApi = useNoteFields();
-    const noteFilterApi = useNoteFilters();
+    const noteFieldApi = useNoteFieldApi();
+    const noteFilterApi = useNoteFilterApi();
     const selectedNoteFilterId = props.noteFilterId;
 
     const onAddNoteFilter = async noteFilter => {

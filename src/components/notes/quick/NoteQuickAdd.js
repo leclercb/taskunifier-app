@@ -2,12 +2,12 @@ import React, { useRef, useState } from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
 import { FolderTitle } from 'components/folders/FolderTitle';
-import { useFolders } from 'hooks/UseFolders';
-import { useNotes } from 'hooks/UseNotes';
+import { useFolderApi } from 'hooks/UseFolderApi';
+import { useNoteApi } from 'hooks/UseNoteApi';
 
 function NoteQuickAdd() {
-    const folderApi = useFolders();
-    const noteApi = useNotes();
+    const folderApi = useFolderApi();
+    const noteApi = useNoteApi();
 
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);

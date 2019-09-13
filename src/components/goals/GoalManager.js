@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
 import GoalList from 'components/goals/GoalList';
 import GoalForm from 'components/goals/GoalForm';
-import { useGoals } from 'hooks/UseGoals';
+import { useGoalApi } from 'hooks/UseGoalApi';
 
 function GoalManager(props) {
-    const goalApi = useGoals();
+    const goalApi = useGoalApi();
     const selectedGoalId = props.goalId;
 
     const onAddGoal = async goal => {

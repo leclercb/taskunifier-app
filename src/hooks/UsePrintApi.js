@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { printNotes, printTasks } from 'actions/PrintActions';
 
-export function usePrint() {
+export function usePrintApi() {
     const dispatch = useDispatch();
 
     const printNotesCallback = useCallback(

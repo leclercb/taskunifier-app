@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTaskFilter, deleteTaskFilter, duplicateTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 
-export function useTaskFilters() {
+export function useTaskFilterApi() {
     const dispatch = useDispatch();
     const taskFilters = useSelector(getTaskFiltersFilteredByVisibleState);
 

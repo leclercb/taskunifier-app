@@ -1,11 +1,11 @@
 import React from 'react';
 import { Tag } from 'antd';
 import PropTypes from 'prop-types';
-import { useTags } from 'hooks/UseTags';
+import { useTagApi } from 'hooks/UseTagApi';
 import { getTagsFromIds } from 'utils/TagUtils';
 
 export function TagsTitle(props) {
-    const tagApi = useTags();
+    const tagApi = useTagApi();
     const tags = getTagsFromIds(tagApi.tags, props.tagIds);
 
     return tags ? (

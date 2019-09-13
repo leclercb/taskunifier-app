@@ -7,15 +7,15 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
-import { useNoteFields } from 'hooks/UseNoteFields';
-import { useNotes } from 'hooks/UseNotes';
-import { useSettings } from 'hooks/UseSettings';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
 function NoteTable() {
-    const noteApi = useNotes();
-    const noteFieldApi = useNoteFields();
-    const settingsApi = useSettings();
+    const noteApi = useNoteApi();
+    const noteFieldApi = useNoteFieldApi();
+    const settingsApi = useSettingsApi();
 
     const onMenuAction = action => {
         const notes = noteApi.selectedNotes;

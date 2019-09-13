@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { message } from 'antd';
-import { useThreads } from 'hooks/UseThreads';
+import { useThreadApi } from 'hooks/UseThreadApi';
 
 function NotificationManager() {
-    const threadApi = useThreads();
+    const threadApi = useThreadApi();
 
     const getLevelFromState = state => {
         switch (state) {

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addContact, deleteContact, duplicateContact, updateContact } from 'actions/ContactActions';
 import { getContactsFilteredByVisibleState } from 'selectors/ContactSelectors';
 
-export function useContacts() {
+export function useContactApi() {
     const dispatch = useDispatch();
     const contacts = useSelector(getContactsFilteredByVisibleState);
 

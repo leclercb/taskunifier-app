@@ -4,12 +4,12 @@ import { Col, Empty, Row } from 'antd';
 import withProCheck from 'containers/WithProCheck';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
-import { useNotes } from 'hooks/UseNotes';
-import { useNoteFields } from 'hooks/UseNoteFields';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 
 function NoteFieldManager(props) {
-    const noteApi = useNotes();
-    const noteFieldApi = useNoteFields();
+    const noteApi = useNoteApi();
+    const noteFieldApi = useNoteFieldApi();
     const selectedNoteFieldId = props.noteFieldId;
 
     const onAddNoteField = async noteField => {

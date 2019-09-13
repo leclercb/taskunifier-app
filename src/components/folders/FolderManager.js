@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
 import FolderList from 'components/folders/FolderList';
 import FolderForm from 'components/folders/FolderForm';
-import { useFolders } from 'hooks/UseFolders';
+import { useFolderApi } from 'hooks/UseFolderApi';
 
 function FolderManager(props) {
-    const folderApi = useFolders();
+    const folderApi = useFolderApi();
     const selectedFolderId = props.folderId;
 
     const onAddFolder = async folder => {

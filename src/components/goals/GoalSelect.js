@@ -2,10 +2,10 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { useGoals } from 'hooks/UseGoals';
+import { useGoalApi } from 'hooks/UseGoalApi';
 
 export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
-    const goalApi = useGoals();
+    const goalApi = useGoalApi();
     const value = goalApi.goals.find(goal => goal.id === props.value) ? props.value : null;
 
     return (

@@ -2,13 +2,13 @@ import React from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
-import { useTasks } from 'hooks/UseTasks';
+import { useTaskApi } from 'hooks/UseTaskApi';
 
 export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
-    const settingsApi = useSettings();
-    const taskApi = useTasks();
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
     const value = taskApi.tasks.find(task => task.id === props.value) ? props.value : null;
 
     return (

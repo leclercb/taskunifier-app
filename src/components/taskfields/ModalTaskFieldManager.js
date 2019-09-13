@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import TaskFieldManager from 'components/taskfields/TaskFieldManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalTaskFieldManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onCloseTaskFieldManager = () => {
         appApi.setTaskFieldManagerOptions({ visible: false });

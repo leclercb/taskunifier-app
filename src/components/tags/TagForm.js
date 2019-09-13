@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
 import Icon from 'components/common/Icon';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { TagPropType } from 'proptypes/TagPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import { merge } from 'utils/ObjectUtils';
 
 function TagForm(props) {
-    const settingsApi = useSettings();
+    const settingsApi = useSettingsApi();
 
     const updateTag = () => {
         props.form.validateFields((error, values) => {

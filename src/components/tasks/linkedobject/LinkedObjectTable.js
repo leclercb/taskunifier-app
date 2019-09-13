@@ -10,13 +10,13 @@ import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'component
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import Constants from 'constants/Constants';
 import { getWidthForType } from 'data/DataFieldTypes';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { LinkedObjectPropType } from 'proptypes/LinkedObjectPropTypes';
 import { getLinkedObjectBackgroundColor } from 'utils/SettingUtils';
 
 function LinkedObjectTable(props) {
-    const settingsApi = useSettings();
+    const settingsApi = useSettingsApi();
     const [selectedLinkedObjectIds, setSelectedLinkedObjectIds] = useState([]);
 
     const { linkedObjectFields } = props;

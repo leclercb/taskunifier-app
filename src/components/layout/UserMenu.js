@@ -3,10 +3,10 @@ import { Button, Descriptions, Popover, message } from 'antd';
 import Avatar from 'components/common/Avatar';
 import LeftRight from 'components/common/LeftRight';
 import { getConfig } from 'config/Config';
-import { useSession } from 'hooks/UseSession';
+import { useSessionApi } from 'hooks/UseSessionApi';
 
 function UserMenu() {
-    const sessionApi = useSession();
+    const sessionApi = useSessionApi();
 
     const onBuyItem = async () => {
         message.info('Redirecting to Paypal...', 5);

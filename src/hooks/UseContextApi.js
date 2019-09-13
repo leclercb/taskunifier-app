@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addContext, deleteContext, duplicateContext, updateContext } from 'actions/ContextActions';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 
-export function useContexts() {
+export function useContextApi() {
     const dispatch = useDispatch();
     const contexts = useSelector(getContextsFilteredByVisibleState);
 

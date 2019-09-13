@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addFolder, deleteFolder, duplicateFolder, updateFolder } from 'actions/FolderActions';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 
-export function useFolders() {
+export function useFolderApi() {
     const dispatch = useDispatch();
     const folders = useSelector(getFoldersFilteredByVisibleState);
 

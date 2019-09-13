@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateSettings } from 'actions/SettingActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
-export function useSettings() {
+export function useSettingsApi() {
     const dispatch = useDispatch();
     const settings = useSelector(getSettings);
 

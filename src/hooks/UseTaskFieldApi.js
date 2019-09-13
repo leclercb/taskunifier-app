@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addTaskField, deleteTaskField, duplicateTaskField, updateTaskField } from 'actions/TaskFieldActions';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 
-export function useTaskFields() {
+export function useTaskFieldApi() {
     const dispatch = useDispatch();
     const taskFields = useSelector(getTaskFieldsIncludingDefaults);
 

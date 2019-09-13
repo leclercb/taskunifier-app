@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getPriorityColor } from 'utils/SettingUtils';
-import { usePriorities } from 'hooks/UsePriorities';
-import { useSettings } from 'hooks/UseSettings';
+import { usePriorityApi } from 'hooks/UsePriorityApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 
 export function PriorityTitle(props) {
-    const priorityApi = usePriorities();
-    const settingsApi = useSettings();
+    const priorityApi = usePriorityApi();
+    const settingsApi = useSettingsApi();
 
     const priority = priorityApi.priorities.find(priority => priority.id === props.priorityId);
 

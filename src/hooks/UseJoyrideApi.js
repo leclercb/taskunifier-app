@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setJoyrideOptions } from 'actions/AppActions';
 import { getJoyrideOptions } from 'selectors/AppSelectors';
 
-export function useJoyride() {
+export function useJoyrideApi() {
     const dispatch = useDispatch();
     const joyride = useSelector(getJoyrideOptions);
 

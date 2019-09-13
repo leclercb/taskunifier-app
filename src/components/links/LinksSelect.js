@@ -1,10 +1,10 @@
 import React from 'react';
 import { Select, Tag } from 'antd';
 import PropTypes from 'prop-types';
-import { useLinks } from 'hooks/UseLinks';
+import { useLinkApi } from 'hooks/UseLinkApi';
 
 const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
-    const linkApi = useLinks(props.property);
+    const linkApi = useLinkApi(props.property);
 
     return (
         <Select ref={ref} mode="tags" allowClear={true} {...props}>

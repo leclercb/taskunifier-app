@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addNoteField, deleteNoteField, duplicateNoteField, updateNoteField } from 'actions/NoteFieldActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 
-export function useNoteFields() {
+export function useNoteFieldApi() {
     const dispatch = useDispatch();
     const noteFields = useSelector(getNoteFieldsIncludingDefaults);
 

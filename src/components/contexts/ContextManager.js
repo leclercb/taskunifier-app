@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
 import ContextList from 'components/contexts/ContextList';
 import ContextForm from 'components/contexts/ContextForm';
-import { useContexts } from 'hooks/UseContexts';
+import { useContextApi } from 'hooks/UseContextApi';
 
 function ContextManager(props) {
-    const contextApi = useContexts();
+    const contextApi = useContextApi();
     const selectedContextId = props.contextId;
 
     const onAddContext = async context => {

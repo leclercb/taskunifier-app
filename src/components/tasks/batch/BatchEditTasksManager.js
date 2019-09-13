@@ -4,16 +4,16 @@ import { Button, Checkbox, Col, Form, Row } from 'antd';
 import Icon from 'components/common/Icon';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
-import { useTaskFields } from 'hooks/UseTaskFields';
-import { useSettings } from 'hooks/UseSettings';
-import { useTasks } from 'hooks/UseTasks';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
 function BatchEditTasksManager(props) {
-    const settingsApi = useSettings();
-    const taskApi = useTasks();
-    const taskFieldApi = useTaskFields();
+    const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
 
     const updateTasks = () => {
         props.form.validateFields((error, values) => {

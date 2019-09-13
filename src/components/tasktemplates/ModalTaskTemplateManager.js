@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import TaskTemplateManager from 'components/tasktemplates/TaskTemplateManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalTaskTemplateManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onCloseTaskTemplateManager = () => {
         appApi.setTaskTemplateManagerOptions({ visible: false });

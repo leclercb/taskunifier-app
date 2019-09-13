@@ -2,11 +2,11 @@ import React from 'react';
 import { Button, Empty, message } from 'antd';
 import Icon from 'components/common/Icon';
 import { getConfig } from 'config/Config';
-import { useSession } from 'hooks/UseSession';
+import { useSessionApi } from 'hooks/UseSessionApi';
 import { openExternalLink } from 'utils/ElectronUtils';
 
 export function CloudMaxObjectsReachedMessage() {
-    const sessionApi = useSession();
+    const sessionApi = useSessionApi();
 
     const onClick = () => {
         openExternalLink(getConfig().cloudUrl);

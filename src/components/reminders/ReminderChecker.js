@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { usePrevious } from 'hooks/UsePrevious';
-import { useTaskReminders } from 'hooks/UseTaskReminders';
+import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 
 function ReminderChecker(props) {
-    const taskReminderApi = useTaskReminders(props.date);
+    const taskReminderApi = useTaskReminderApi(props.date);
     const prevTasks = usePrevious(taskReminderApi.tasks) || [];
 
     useEffect(() => {

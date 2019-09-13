@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Col, Form, Row } from 'antd';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
-import { useSettings } from 'hooks/UseSettings';
-import { useTaskFields } from 'hooks/UseTaskFields';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskEditionForm(props) {
-    const settingsApi = useSettings();
-    const taskFieldApi = useTaskFields();
+    const settingsApi = useSettingsApi();
+    const taskFieldApi = useTaskFieldApi();
 
     const { getFieldDecorator } = props.form;
 

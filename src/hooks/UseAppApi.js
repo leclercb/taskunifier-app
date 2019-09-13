@@ -39,7 +39,7 @@ import {
 } from 'selectors/AppSelectors';
 import { getSelectedView } from 'selectors/SettingSelectors';
 
-export function useApp() {
+export function useAppApi() {
     const dispatch = useDispatch();
 
     const pro = useSelector(isPro);

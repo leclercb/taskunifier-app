@@ -1,11 +1,11 @@
 import React from 'react';
 import { Empty, Tabs } from 'antd';
 import NoteTextForm from 'components/notes/text/NoteTextForm';
-import { useNotes } from 'hooks/UseNotes';
+import { useNoteApi } from 'hooks/UseNoteApi';
 import 'components/notes/tabs/NoteTabs.css';
 
 function NoteTabs() {
-    const noteApi = useNotes();
+    const noteApi = useNoteApi();
 
     if (noteApi.selectedNotes.length !== 1) {
         return (

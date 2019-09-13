@@ -4,10 +4,10 @@ import TaskSider from 'components/tasks/sider/TaskSider';
 import TaskTable from 'components/tasks/table/TaskTable';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 
 function TaskView() {
-    const settingsApi = useSettings();
+    const settingsApi = useSettingsApi();
 
     const onTaskViewSplitPaneSizeChange = size => {
         settingsApi.updateSettings({ taskViewSplitPaneSize: size });

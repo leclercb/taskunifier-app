@@ -1,11 +1,11 @@
 import React from 'react';
 import { Tag } from 'antd';
 import PropTypes from 'prop-types';
-import { useLinks } from 'hooks/UseLinks';
+import { useLinkApi } from 'hooks/UseLinkApi';
 import { getLinksFromIds } from 'utils/LinkUtils';
 
 function LinksTitle(props) {
-    const linkApi = useLinks(props.property);
+    const linkApi = useLinkApi(props.property);
     const links = getLinksFromIds(linkApi.links, props.linkIds);
 
     return links && links.length > 0 ? (

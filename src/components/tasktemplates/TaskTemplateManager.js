@@ -4,12 +4,12 @@ import { Col, Empty, Row } from 'antd';
 import TaskTemplateList from 'components/tasktemplates/TaskTemplateList';
 import TaskTemplateForm from 'components/tasktemplates/TaskTemplateForm';
 import withProCheck from 'containers/WithProCheck';
-import { useSettings } from 'hooks/UseSettings';
-import { useTaskTemplates } from 'hooks/UseTaskTemplates';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 
 function TaskTemplateManager(props) {
-    const settingsApi = useSettings();
-    const taskTemplatesApi = useTaskTemplates();
+    const settingsApi = useSettingsApi();
+    const taskTemplatesApi = useTaskTemplateApi();
     const selectedTaskTemplateId = props.taskTemplateId;
 
     const onAddTaskTemplate = async taskTemplate => {

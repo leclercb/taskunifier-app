@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import TaskFilterManager from 'components/taskfilters/TaskFilterManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalTaskFilterManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onCloseTaskFilterManager = () => {
         appApi.setTaskFilterManagerOptions({ visible: false });

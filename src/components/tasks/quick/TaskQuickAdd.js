@@ -6,21 +6,21 @@ import { FolderTitle } from 'components/folders/FolderTitle';
 import { GoalTitle } from 'components/goals/GoalTitle';
 import { LocationTitle } from 'components/locations/LocationTitle';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
-import { useContexts } from 'hooks/UseContexts';
-import { useFolders } from 'hooks/UseFolders';
-import { useGoals } from 'hooks/UseGoals';
-import { useLocations } from 'hooks/UseLocations';
-import { useTaskTemplates } from 'hooks/UseTaskTemplates';
-import { useTasks } from 'hooks/UseTasks';
+import { useContextApi } from 'hooks/UseContextApi';
+import { useFolderApi } from 'hooks/UseFolderApi';
+import { useGoalApi } from 'hooks/UseGoalApi';
+import { useLocationApi } from 'hooks/UseLocationApi';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function TaskQuickAdd() {
-    const contextApi = useContexts();
-    const folderApi = useFolders();
-    const goalApi = useGoals();
-    const locationApi = useLocations();
-    const taskApi = useTasks();
-    const taskTemplateApi = useTaskTemplates();
+    const contextApi = useContextApi();
+    const folderApi = useFolderApi();
+    const goalApi = useGoalApi();
+    const locationApi = useLocationApi();
+    const taskApi = useTaskApi();
+    const taskTemplateApi = useTaskTemplateApi();
 
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);

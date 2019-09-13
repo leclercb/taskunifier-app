@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
 import LocationList from 'components/locations/LocationList';
 import LocationForm from 'components/locations/LocationForm';
-import { useLocations } from 'hooks/UseLocations';
+import { useLocationApi } from 'hooks/UseLocationApi';
 
 function LocationManager(props) {
-    const locationApi = useLocations();
+    const locationApi = useLocationApi();
     const selectedLocationId = props.locationId;
 
     const onAddLocation = async location => {

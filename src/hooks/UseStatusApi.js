@@ -1,6 +1,6 @@
 import { getStatuses } from 'data/DataStatuses';
 
-export function useStatuses() {
+export function useStatusApi() {
     const statuses = getStatuses();
 
     return {

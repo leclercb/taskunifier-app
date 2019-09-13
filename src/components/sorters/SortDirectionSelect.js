@@ -1,10 +1,10 @@
 import React from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
-import { useSortDirections } from 'hooks/UseSortDirections';
+import { useSortDirectionApi } from 'hooks/UseSortDirectionApi';
 
 export const SortDirectionSelect = React.forwardRef(function SortDirectionSelect(props, ref) {
-    const sortDirectionApi = useSortDirections();
+    const sortDirectionApi = useSortDirectionApi();
 
     return (
         <Select ref={ref} allowClear={true} {...props}>

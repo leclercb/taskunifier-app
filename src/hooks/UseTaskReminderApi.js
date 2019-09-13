@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateTask } from 'actions/TaskActions';
 import { getTaskRemindersSelector } from 'selectors/TaskSelectors';
 
-export function useTaskReminders(date) {
+export function useTaskReminderApi(date) {
     const dispatch = useDispatch();
 
     const getTaskReminders = useMemo(getTaskRemindersSelector, []);

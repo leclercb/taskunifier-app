@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import BatchEditTasksManager from 'components/tasks/batch/BatchEditTasksManager';
 import Icon from 'components/common/Icon';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalBatchEditTasksManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onClose = () => {
         appApi.setBatchEditTasksManagerOptions({ visible: false });

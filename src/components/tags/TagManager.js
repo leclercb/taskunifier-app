@@ -3,10 +3,10 @@ import { Col, Empty, Row } from 'antd';
 import PropTypes from 'prop-types';
 import TagList from 'components/tags/TagList';
 import TagForm from 'components/tags/TagForm';
-import { useTags } from 'hooks/UseTags';
+import { useTagApi } from 'hooks/UseTagApi';
 
 function TagManager(props) {
-    const tagApi = useTags();
+    const tagApi = useTagApi();
     const selectedTagId = props.tagId;
 
     const updateTag = async tag => {

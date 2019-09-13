@@ -4,11 +4,11 @@ import moment from 'moment';
 import Icon from 'components/common/Icon';
 import ReminderChecker from 'components/reminders/ReminderChecker';
 import ReminderManager from 'components/reminders/ReminderManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 
 function ModalReminderManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const [date, setDate] = useState(moment().toISOString());
 

@@ -3,13 +3,13 @@ import { Button, Form, Modal } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useTask } from 'hooks/UseTask';
-import { useTasks } from 'hooks/UseTasks';
+import { useTaskApi } from 'hooks/UseTaskApi';
 
 function ModalTaskEditionManager(props) {
-    const appApi = useApp();
-    const taskApi = useTasks();
+    const appApi = useAppApi();
+    const taskApi = useTaskApi();
     const task = useTask(appApi.taskEditionManager.taskId);
 
     const onCloseTaskEditionManager = () => {

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAccountInfo, synchronize } from 'actions/SynchronizationActions';
 import { getSynchronization } from 'selectors/SynchronizationSelectors';
 
-export function useSynchronization() {
+export function useSynchronizationApi() {
     const dispatch = useDispatch();
     const synchronization = useSelector(getSynchronization);
 

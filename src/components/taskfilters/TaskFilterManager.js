@@ -7,12 +7,12 @@ import FilterForm from 'components/filters/FilterForm';
 import SorterTable from 'components/filters/SorterTable';
 import withProCheck from 'containers/WithProCheck';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
-import { useTaskFields } from 'hooks/UseTaskFields';
-import { useTaskFilters } from 'hooks/UseTaskFilters';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
 
 function TaskFilterManager(props) {
-    const taskFieldApi = useTaskFields();
-    const taskFilterApi = useTaskFilters();
+    const taskFieldApi = useTaskFieldApi();
+    const taskFilterApi = useTaskFilterApi();
     const selectedTaskFilterId = props.taskFilterId;
 
     const onAddTaskFilter = async taskFilter => {

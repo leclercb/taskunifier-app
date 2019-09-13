@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import ProcessList from 'components/thread/ProcessList';
 import Icon from 'components/common/Icon';
-import { useThreads } from 'hooks/UseThreads';
+import { useThreadApi } from 'hooks/UseThreadApi';
 
 function ModalThreadManager() {
-    const threadApi = useThreads();
+    const threadApi = useThreadApi();
 
     const onClose = () => {
         threadApi.setThreadManagerVisible(false);

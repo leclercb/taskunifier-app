@@ -3,10 +3,10 @@ import SplitPane from 'react-split-pane';
 import NoteSider from 'components/notes/sider/NoteSider';
 import NoteTable from 'components/notes/table/NoteTable';
 import NoteTabs from 'components/notes/tabs/NoteTabs';
-import { useSettings } from 'hooks/UseSettings';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 
 function NoteView() {
-    const settingsApi = useSettings();
+    const settingsApi = useSettingsApi();
 
     const onNoteViewSplitPaneSizeChange = size => {
         settingsApi.updateSettings({ noteViewSplitPaneSize: size });

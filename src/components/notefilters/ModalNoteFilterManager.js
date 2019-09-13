@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
 import NoteFilterManager from 'components/notefilters/NoteFilterManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalNoteFilterManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onCloseNoteFilterManager = () => {
         appApi.setNoteFilterManagerOptions({ visible: false });

@@ -4,10 +4,10 @@ import HelpButton from 'components/common/HelpButton';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CategoryManager from 'components/categories/CategoryManager';
-import { useApp } from 'hooks/UseApp';
+import { useAppApi } from 'hooks/UseAppApi';
 
 function ModalCategoryManager() {
-    const appApi = useApp();
+    const appApi = useAppApi();
 
     const onCloseCategoryManager = () => {
         appApi.setCategoryManagerOptions({ visible: false });

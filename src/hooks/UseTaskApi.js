@@ -13,7 +13,7 @@ import {
     getTasksMetaDataFilteredByVisibleState
 } from 'selectors/TaskSelectors';
 
-export function useTasks() {
+export function useTaskApi() {
     const dispatch = useDispatch();
 
     const tasks = useSelector(getTasksFilteredByVisibleState);

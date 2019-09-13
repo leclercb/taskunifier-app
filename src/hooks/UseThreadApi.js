@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { clearProcesses, deleteNotification, setThreadManagerVisible } from 'actions/ThreadActions';
 import { getNotifications, getProcesses, isThreadManagerVisible } from 'selectors/ThreadSelectors';
 
-export function useThreads() {
+export function useThreadApi() {
     const dispatch = useDispatch();
 
     const threadManagerVisible = useSelector(isThreadManagerVisible);
