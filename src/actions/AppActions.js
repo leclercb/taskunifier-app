@@ -389,6 +389,16 @@ export function resetData(options) {
     };
 }
 
+export function setEditingCell(objectId, fieldId) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_EDITING_CELL',
+            objectId,
+            fieldId
+        });
+    };
+}
+
 export function setSelectedNoteIds(noteIds) {
     return async dispatch => {
         dispatch({

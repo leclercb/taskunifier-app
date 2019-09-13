@@ -56,10 +56,18 @@ const App = () => (state = {
     }
 }, action) => {
     switch (action.type) {
+        case 'SET_EDITING_CELL':
+            return {
+                ...state,
+                editingCell: {
+                    objectId: action.objectId,
+                    fieldId: action.fieldId
+                }
+            };
         case 'SET_SELECTED_NOTE_IDS':
             return {
                 ...state,
-                selectedNoteIds: action.noteIds
+                selectedNoteIds: Array.isArray(action.noteIds) ? action.noteIds : [action.noteIds]
             };
         case 'SET_SELECTED_NOTE_FILTER':
             return {
@@ -70,7 +78,7 @@ const App = () => (state = {
         case 'SET_SELECTED_TASK_IDS':
             return {
                 ...state,
-                selectedTaskIds: action.taskIds
+                selectedTaskIds: Array.isArray(action.taskIds) ? action.taskIds : [action.taskIds]
             };
         case 'SET_SELECTED_TASK_FILTER':
             return {

@@ -3,6 +3,8 @@ import { getSession } from 'selectors/SessionSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { verifyLicense } from 'utils/LicenseUtils';
 
+export const getEditingCell = state => state.app.editingCell;
+
 export const getSelectedNoteIds = state => state.app.selectedNoteIds;
 export const getSelectedNoteFilter = state => state.app.selectedNoteFilter;
 export const getSelectedNoteFilterDate = state => state.app.selectedNoteFilterDate;

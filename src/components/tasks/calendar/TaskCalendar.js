@@ -59,7 +59,7 @@ function TaskCalendar() {
     };
 
     const onSelectEvent = event => {
-        taskApi.setSelectedTaskIds([event.task.id]);
+        taskApi.setSelectedTaskIds(event.task.id);
     };
 
     const onDoubleClickEvent = event => {

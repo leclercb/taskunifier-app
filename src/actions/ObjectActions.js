@@ -54,7 +54,7 @@ export function addObject(
     object,
     options = {},
     defaultValues = {
-        title: 'Untitled',
+        title: '',
         color: Constants.defaultObjectColor
     }) {
     return async (dispatch, getState) => {

@@ -6,6 +6,7 @@ import {
     setBatchAddTasksManagerOptions,
     setBatchEditTasksManagerOptions,
     setCategoryManagerOptions,
+    setEditingCell,
     setNoteFieldManagerOptions,
     setNoteFilterManagerOptions,
     setReminderManagerOptions,
@@ -25,6 +26,7 @@ import {
     getBatchAddTasksManager,
     getBatchEditTasksManager,
     getCategoryManager,
+    getEditingCell,
     getNoteFieldManager,
     getNoteFilterManager,
     getReminderManager,
@@ -39,9 +41,10 @@ import { getSelectedView } from 'selectors/SettingSelectors';
 
 export function useApp() {
     const dispatch = useDispatch();
-    
+
     const pro = useSelector(isPro);
     const selectedView = useSelector(getSelectedView);
+    const editingCell = useSelector(getEditingCell);
     const batchAddTasksManager = useSelector(getBatchAddTasksManager);
     const batchEditTasksManager = useSelector(getBatchEditTasksManager);
     const categoryManager = useSelector(getCategoryManager);
@@ -81,6 +84,11 @@ export function useApp() {
 
     const setSelectedViewCallback = useCallback(
         view => dispatch(setSelectedView(view)),
+        [dispatch]
+    );
+
+    const setEditingCellCallback = useCallback(
+        (objectId, fieldId) => dispatch(setEditingCell(objectId, fieldId)),
         [dispatch]
     );
 
@@ -142,6 +150,7 @@ export function useApp() {
     return {
         pro,
         selectedView,
+        editingCell,
         batchAddTasksManager,
         batchEditTasksManager,
         categoryManager,
@@ -159,6 +168,7 @@ export function useApp() {
         cleanBackups: cleanBackupsCallback,
         synchronize: synchronizeCallback,
         setSelectedView: setSelectedViewCallback,
+        setEditingCell: setEditingCellCallback,
         setBatchAddTasksManagerOptions: setBatchAddTasksManagerOptionsCallback,
         setBatchEditTasksManagerOptions: setBatchEditTasksManagerOptionsCallback,
         setCategoryManagerOptions: setCategoryManagerOptionsCallback,

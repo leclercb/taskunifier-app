@@ -21,7 +21,8 @@ function Header() {
 
     const onAddNote = async () => {
         const note = await noteApi.addNote();
-        noteApi.setSelectedNoteIds([note.id]);
+        noteApi.setSelectedNoteIds(note.id);
+        appApi.setEditingCell(note.id, 'title');
     };
 
     const onRemoveNotes = () => {
@@ -41,7 +42,8 @@ function Header() {
         applyTaskTemplate(taskTemplate, task);
 
         task = await taskApi.addTask(task);
-        taskApi.setSelectedTaskIds([task.id]);
+        taskApi.setSelectedTaskIds(task.id);
+        appApi.setEditingCell(task.id, 'title');
     };
 
     const onEditTask = () => {
