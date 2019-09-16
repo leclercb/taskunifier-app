@@ -4,7 +4,7 @@ import { getConfig } from 'config/Config';
 const PUBLIC_KEY = getConfig().license.publicKey;
 
 export function verifyLicense(license) {
-    if (process.env.REACT_APP_MODE !== 'electron') {
+    if (process.env.REACT_APP_MODE === 'react') {
         return null;
     }
 

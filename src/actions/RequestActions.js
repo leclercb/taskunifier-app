@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getConfig } from 'config/Config';
 
 export function sendRequest(config, settings = {}) {
-    if (process.env.REACT_APP_MODE !== 'electron') {
+    if (process.env.REACT_APP_MODE === 'react') {
         return axios(config);
     }
 

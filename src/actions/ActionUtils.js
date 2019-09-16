@@ -60,7 +60,7 @@ export function loadFromFile(property, file) {
     };
 }
 
-export function loadFromServer(property, options) {
+export function loadFromServer(property, options, params) {
     options = merge({
         skipSetLoaded: false
     }, options || {});
@@ -82,6 +82,7 @@ export function loadFromServer(property, options) {
                     },
                     method: 'GET',
                     url: `${getConfig().apiUrl}/v1/${property}`,
+                    params,
                     responseType: 'json'
                 });
 

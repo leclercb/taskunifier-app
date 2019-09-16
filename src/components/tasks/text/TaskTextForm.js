@@ -26,7 +26,7 @@ function TaskTextForm(props) {
         });
     };
 
-    const spinning = process.env.REACT_APP_MODE !== 'electron' && !('text' in props.task);
+    const spinning = process.env.REACT_APP_MODE === 'react' && !('text' in props.task);
 
     return (
         <div ref={editorRef} style={{ height: '100%' }}>

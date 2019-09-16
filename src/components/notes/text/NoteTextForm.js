@@ -26,7 +26,7 @@ function NoteTextForm(props) {
         });
     };
 
-    const spinning = process.env.REACT_APP_MODE !== 'electron' && !('text' in props.note);
+    const spinning = process.env.REACT_APP_MODE === 'react' && !('text' in props.note);
 
     return (
         <div ref={editorRef} style={{ height: '100%' }}>

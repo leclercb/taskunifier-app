@@ -83,18 +83,22 @@ function SettingManager(props) {
                                             ) : null}
                                             {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
                                             {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (
-                                                getFieldDecorator(item.id, {
-                                                    valuePropName: getValuePropNameForType(item.type),
-                                                    initialValue: getSettingValue(item)
-                                                })(
-                                                    getInputForType(
-                                                        item.type,
-                                                        item.options,
-                                                        {
-                                                            disabled: item.editable === false,
-                                                            onCommit: () => onCommitForm(props.form, {}, settingsApi.updateSettings)
-                                                        })
-                                                )
+                                                <React.Fragment>
+                                                    {item.prefix}
+                                                    {getFieldDecorator(item.id, {
+                                                        valuePropName: getValuePropNameForType(item.type),
+                                                        initialValue: getSettingValue(item)
+                                                    })(
+                                                        getInputForType(
+                                                            item.type,
+                                                            item.options,
+                                                            {
+                                                                disabled: item.editable === false,
+                                                                onCommit: () => onCommitForm(props.form, {}, settingsApi.updateSettings)
+                                                            })
+                                                    )}
+                                                    {item.suffix}
+                                                </React.Fragment>
                                             ) : null}
                                         </Form.Item>
                                     )}

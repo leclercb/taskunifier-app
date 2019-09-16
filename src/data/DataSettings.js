@@ -165,6 +165,19 @@ export function getCategories() {
                     value: false,
                     editable: true,
                     mode: 'electron'
+                },
+                {
+                    id: 'loadTasksCompletedAfter',
+                    title: 'Load tasks completed less than',
+                    suffix: (<span style={{ marginLeft: 10 }}>month(s) ago</span>),
+                    type: 'number',
+                    value: 1,
+                    editable: true,
+                    options: {
+                        min: 1,
+                        max: 3
+                    },
+                    mode: 'react'
                 }
             ]
         },

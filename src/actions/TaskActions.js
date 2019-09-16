@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
     addObject,
     cleanObjects,
@@ -9,6 +10,7 @@ import {
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
+import { getSettings } from 'selectors/SettingSelectors';
 
 export function loadTasksFromFile(file) {
     return loadObjectsFromFile('tasks', file);
@@ -19,7 +21,11 @@ export function saveTasksToFile(file, data) {
 }
 
 export function loadTasksFromServer() {
-    return loadObjectsFromServer('tasks');
+    return async (dispatch, getState) => {
+        const settings = getSettings(getState());
+        const completedAfter = moment().subtract(settings.loadTasksCompletedAfter, 'months').toISOString();
+        return await dispatch(loadObjectsFromServer('tasks', null, { completedAfter }));
+    };
 }
 
 export function setTasks(tasks) {
