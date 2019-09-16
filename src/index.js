@@ -27,7 +27,7 @@ let element = (
     </React.Suspense>
 );
 
-if (process.env.REACT_APP_MODE !== 'electron') {
+if (process.env.REACT_APP_MODE === 'react') {
     configure();
 
     element = (

@@ -4,6 +4,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getSession } from 'selectors/SessionSelectors';
+import { getErrorMessages } from 'utils/CloudUtils';
 
 async function getCurrentUser(token) {
     const result = await sendRequest(
@@ -82,7 +83,8 @@ export function login(checkOnly = false) {
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
-                state: 'ERROR'
+                state: 'ERROR',
+                error: getErrorMessages(error, true)
             }));
 
             throw error;

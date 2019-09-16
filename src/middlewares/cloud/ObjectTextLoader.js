@@ -6,6 +6,7 @@ import { updateTask } from 'actions/TaskActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getObjectById } from 'selectors/ObjectSelectors';
+import { getErrorMessages } from 'utils/CloudUtils';
 
 function loadObjectFromServer(property, object) {
     return async dispatch => {
@@ -33,7 +34,7 @@ function loadObjectFromServer(property, object) {
                 id: processId,
                 state: 'ERROR',
                 title: `Load "${object.title}" from server`,
-                error: error.toString()
+                error: getErrorMessages(error, true)
             }));
 
             throw error;
@@ -42,6 +43,8 @@ function loadObjectFromServer(property, object) {
 }
 
 export const objectTextLoader = store => next => async action => {
+    const result = next(action);
+
     if (action.type === 'SET_SELECTED_NOTE_IDS') {
         if (action.noteIds.length === 1) {
             const state = store.getState();
@@ -72,5 +75,5 @@ export const objectTextLoader = store => next => async action => {
         }
     }
 
-    return next(action);
+    return result;
 };

@@ -8,7 +8,8 @@ import { updateProcess } from 'actions/ThreadActions';
 import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import { getConfig } from 'config/Config';
 import { getObjectById } from 'selectors/ObjectSelectors';
-import { diff, getValue } from 'utils/ObjectUtils';
+import { getErrorMessages } from 'utils/CloudUtils';
+import { diff } from 'utils/ObjectUtils';
 
 function pushObjectToServer(property, oldObject, newObject) {
     return async dispatch => {
@@ -55,7 +56,7 @@ function pushObjectToServer(property, oldObject, newObject) {
                     id: processId,
                     state: 'ERROR',
                     title: `Push "${newObject.title}" of type "${property}" to server`,
-                    error: getValue('error', 'response.data.message', true) || error.toString()
+                    error: getErrorMessages(error, true)
                 }));
             }
 
@@ -92,7 +93,7 @@ function pushSettingsToServer(oldSettings, newSettings) {
                 id: processId,
                 state: 'ERROR',
                 title: 'Save settings to server',
-                error: error.toString()
+                error: getErrorMessages(error, true)
             }));
 
             throw error;

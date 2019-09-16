@@ -4,6 +4,7 @@ import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
+import { getErrorMessages } from 'utils/CloudUtils';
 import {
     exists,
     getPath,
@@ -60,7 +61,7 @@ export function loadFromFile(property, file) {
     };
 }
 
-export function loadFromServer(property, options) {
+export function loadFromServer(property, options, params) {
     options = merge({
         skipSetLoaded: false
     }, options || {});
@@ -82,6 +83,7 @@ export function loadFromServer(property, options) {
                     },
                     method: 'GET',
                     url: `${getConfig().apiUrl}/v1/${property}`,
+                    params,
                     responseType: 'json'
                 });
 
@@ -99,7 +101,7 @@ export function loadFromServer(property, options) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                error: error.toString()
+                error: getErrorMessages(error, true)
             }));
 
             throw error;

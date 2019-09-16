@@ -1,21 +1,39 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Button, Modal } from 'antd';
 import PropTypes from 'prop-types';
+import CustomIndicator from 'components/common/CustomIndicator';
 import LoadingIndicator from 'components/common/LoadingIndicator';
 import { useSessionApi } from 'hooks/UseSessionApi';
 
 function PrivateComponent({ userRole, children }) {
     const sessionApi = useSessionApi();
 
+    const [loginError, setLoginError] = useState(null);
+
     useEffect(() => {
         const fn = async () => {
             if (!sessionApi.session.authenticated) {
-                await sessionApi.login();
+                try {
+                    await sessionApi.login();
+                    setLoginError(null);
+                } catch (error) {
+                    setLoginError(error);
+                }
             }
         };
 
         fn();
     }, [sessionApi.session.authenticated, sessionApi.login]);
+
+    if (loginError) {
+        return (
+            <CustomIndicator content={(
+                <Alert
+                    type="error"
+                    message={loginError.toString()} showIcon={true} />
+            )} />
+        );
+    }
 
     if (!sessionApi.session.authenticated) {
         return (<LoadingIndicator />);

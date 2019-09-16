@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
@@ -25,14 +26,18 @@ function TaskTextForm(props) {
         });
     };
 
+    const spinning = process.env.REACT_APP_MODE === 'react' && !('text' in props.task);
+
     return (
         <div ref={editorRef} style={{ height: '100%' }}>
-            <RichTextEditor
-                value={value}
-                onChange={setValue}
-                onBlur={onSave}
-                rootStyle={{ height: '100%' }}
-                editorClassName="rte-editor" />
+            <Spin spinning={spinning}>
+                <RichTextEditor
+                    value={value}
+                    onChange={setValue}
+                    onBlur={onSave}
+                    rootStyle={{ height: '100%' }}
+                    editorClassName="rte-editor" />
+            </Spin>
         </div>
     );
 }

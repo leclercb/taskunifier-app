@@ -25,6 +25,7 @@ It helps you manage your tasks and improve your productivity.
 * Custom Task Filters *
 * Custom Task Fields *
 * Synchronization with:
+    * TaskUnifier Cloud (www.taskunifier.app/cloud) *
     * Toodledo (www.toodledo.com) *
 
 The features marked with an asterisk are available in the PRO version only.

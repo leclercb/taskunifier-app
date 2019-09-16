@@ -10,6 +10,7 @@ import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors'
 import { getTasks } from 'selectors/TaskSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
+import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -20,15 +21,20 @@ export function synchronizeTasks() {
         const settings = getSettings(getState());
 
         let tasks = getTasks(getState());
+        const createdTasksWithParent = [];
 
         {
             const tasksToAdd = filterByVisibleState(tasks).filter(task => !task.refIds.toodledo);
 
             if (tasksToAdd.length > 0) {
-                const result = await dispatch(addRemoteTasks(tasksToAdd));
+                const result = await dispatch(addRemoteTasks(tasksToAdd, { skipParent: true }));
 
                 for (let task of result) {
                     await dispatch(updateTask(task, { loaded: true }));
+
+                    if (task.parent) {
+                        createdTasksWithParent.push(task);
+                    }
                 }
             }
         }
@@ -63,7 +69,9 @@ export function synchronizeTasks() {
                         await dispatch(addTask(remoteTask, { keepRefIds: true }));
                     } else {
                         if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
-                            await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                            if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
+                                await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                            }
                         }
                     }
                 }
@@ -93,6 +101,12 @@ export function synchronizeTasks() {
 
         {
             const tasksToUpdate = tasks.filter(task => !!task.refIds.toodledo && task.state === 'TO_UPDATE');
+
+            for (let createdTask of createdTasksWithParent) {
+                if (createdTask.parent && !!tasks.find(task => !!task.refIds.toodledo && task.id === createdTask.parent)) {
+                    tasksToUpdate.push(createdTask);
+                }
+            }
 
             if (tasksToUpdate.length > 0) {
                 await dispatch(editRemoteTasks(tasksToUpdate));
@@ -162,8 +176,8 @@ export function getRemoteDeletedTasks(deletedAfter) {
     };
 }
 
-export function addRemoteTasks(tasks) {
-    console.debug('addRemoteTasks', tasks);
+export function addRemoteTasks(tasks, options) {
+    console.debug('addRemoteTasks', tasks, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -183,7 +197,7 @@ export function addRemoteTasks(tasks) {
                     url: 'https://api.toodledo.com/3/tasks/add.php',
                     data: qs.stringify({
                         access_token: settings.toodledo.accessToken,
-                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state)))
+                        tasks: JSON.stringify(chunkTasks.map(task => convertTaskToRemote(task, state, options)))
                     })
                 },
                 settings);
@@ -269,7 +283,14 @@ export function deleteRemoteTasks(tasks) {
     };
 }
 
-function convertTaskToRemote(task, state) {
+function convertTaskToRemote(task, state, options) {
+    options = merge({
+        skipParent: false
+    }, options || {});
+
+    const tasks = getTaskFieldsFilteredByVisibleState(state);
+    const parent = tasks.find(t => t.id === task.parent);
+
     const contexts = getContextsFilteredByVisibleState(state);
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
@@ -285,9 +306,10 @@ function convertTaskToRemote(task, state) {
 
     return {
         id: task.refIds.toodledo,
-        title: task.title,
+        title: task.title || 'Untitled',
         completed: task.completed ? moment(task.completionDate).unix() : 0,
         tag: task.tags ? task.tags.join(',') : '',
+        parent: !options.skipParent && parent ? parent.refIds.toodledo : 0,
         context: context ? context.refIds.toodledo : 0,
         folder: folder ? folder.refIds.toodledo : 0,
         goal: goal ? goal.refIds.toodledo : 0,
@@ -297,7 +319,7 @@ function convertTaskToRemote(task, state) {
         duetime: task.dueDate ? moment(task.dueDate).unix() : 0,
         starttime: task.startDate ? moment(task.startDate).unix() : 0,
         remind: Math.round(task.startDateReminder / 60) || Math.round(task.dueDateReminder / 60) || 0,
-        repeat: task.repeat ? task.repeat : '',
+        repeat: convertRepeatToRemote(task.repeat),
         status: status ? status.value : 0,
         length: task.length ? Math.round(task.length / 60) : 0,
         priority: priority ? priority.value : -1,
@@ -339,7 +361,7 @@ function convertTaskToLocal(task, state) {
         startDate: (task.starttime || task.startdate) ? moment.unix(task.starttime || task.startdate).toISOString() : null,
         startDateReminder: task.remind ? task.remind * 60 : null,
         dueDateReminder: task.remind ? task.remind * 60 : null,
-        repeat: task.repeat ? task.repeat : null,
+        repeat: convertRepeatToLocal(task.repeat),
         status: status ? status.key : null,
         length: task.length * 60,
         priority: priority ? priority.key : null,
@@ -376,4 +398,27 @@ function getPriorities() {
         { key: 'high', value: 2 },
         { key: 'top', value: 3 }
     ];
+}
+
+function convertRepeatToRemote(value) {
+    if (!value) {
+        return '';
+    }
+
+    const lines = value.split('\n');
+    const rrule = lines.find(line => line.startsWith('RRULE:'));
+
+    if (rrule) {
+        return rrule.substr('RRULE:'.length);
+    }
+
+    return '';
+}
+
+function convertRepeatToLocal(value) {
+    if (!value) {
+        return null;
+    }
+
+    return 'RRULE:' + value;
 }

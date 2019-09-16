@@ -21,9 +21,9 @@ export function saveObjectsToFile(property, file, data) {
     return saveToFile(property, file, filterByStatic(data));
 }
 
-export function loadObjectsFromServer(property) {
+export function loadObjectsFromServer(property, options, params) {
     return async dispatch => {
-        const data = await dispatch(loadFromServer(property));
+        const data = await dispatch(loadFromServer(property, options, params));
         await dispatch(setObjects(property, data));
     };
 }

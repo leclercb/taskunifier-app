@@ -17,6 +17,7 @@ import { synchronizeNoteFields } from 'actions/synchronization/taskunifier/TaskU
 import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
 import { synchronizeTaskFields } from 'actions/synchronization/taskunifier/TaskUnifierTaskFieldActions';
 import { getSettings } from 'selectors/SettingSelectors';
+import { getErrorMessages } from 'utils/CloudUtils';
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -103,7 +104,7 @@ export function synchronizeWithTaskUnifier() {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                error: error.toString()
+                error: getErrorMessages(error)
             }));
 
             throw error;

@@ -29,5 +29,5 @@ export function hasChildren(o, objects) {
 
 export function getSubLevel(o, objectsMetaData) {
     const metaData = objectsMetaData.find(metaData => metaData.id === o.id);
-    return metaData.parents.length;
+    return metaData ? metaData.parents.length : 0;
 }
