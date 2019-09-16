@@ -42,6 +42,8 @@ function loadObjectFromServer(property, object) {
 }
 
 export const objectTextLoader = store => next => async action => {
+    const result = next(action);
+
     if (action.type === 'SET_SELECTED_NOTE_IDS') {
         if (action.noteIds.length === 1) {
             const state = store.getState();
@@ -72,5 +74,5 @@ export const objectTextLoader = store => next => async action => {
         }
     }
 
-    return next(action);
+    return result;
 };
