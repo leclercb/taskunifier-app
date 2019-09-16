@@ -35,7 +35,7 @@ function ProcessList(props) {
             const errors = Array.isArray(process.error) ? process.error : [process.error];
 
             return errors.map(error => (
-                <Alert type="error" message={error} showIcon={true} />
+                <Alert key={error} type="error" message={error} showIcon={true} />
             ));
         }
 
