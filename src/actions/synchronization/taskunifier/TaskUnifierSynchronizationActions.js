@@ -17,6 +17,7 @@ import { synchronizeNoteFields } from 'actions/synchronization/taskunifier/TaskU
 import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
 import { synchronizeTaskFields } from 'actions/synchronization/taskunifier/TaskUnifierTaskFieldActions';
 import { getSettings } from 'selectors/SettingSelectors';
+import { getErrorMessages } from 'utils/CloudUtils';
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -103,7 +104,7 @@ export function synchronizeWithTaskUnifier() {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                error: getErrorsFromResponse(error.response)
+                error: getErrorMessages(error)
             }));
 
             throw error;
@@ -115,21 +116,4 @@ export function resetDataForTaskUnifierSynchronization() {
     return resetData({
         resetAll: true
     });
-}
-
-function getErrorsFromResponse(response) {
-    const defaultError = 'Request failed with status code ' + response.status;
-
-    if (!response.data) {
-        return defaultError;
-    }
-
-    switch (response.data.code) {
-        case 'input_validation_errors': {
-            return response.data.validationErrors.errors.map(error => 'Validation Error: ' + error);
-        }
-        default: {
-            return response.data.message || defaultError;
-        }
-    }
 }

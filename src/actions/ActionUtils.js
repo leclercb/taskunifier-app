@@ -4,6 +4,7 @@ import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
+import { getErrorMessages } from 'utils/CloudUtils';
 import {
     exists,
     getPath,
@@ -100,7 +101,7 @@ export function loadFromServer(property, options, params) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                error: error.toString()
+                error: getErrorMessages(error, true)
             }));
 
             throw error;

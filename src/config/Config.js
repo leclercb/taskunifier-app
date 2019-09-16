@@ -11,6 +11,7 @@ const config = {
         cloudUrl: 'http://localhost:2100/cloud',
         appUrl: 'http://localhost:2100/app',
         downloadUrl: 'http://localhost:2100/app',
+        maintenanceUrl: 'http://localhost:2100/maintenance',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
@@ -42,6 +43,7 @@ const config = {
         cloudUrl: 'https://www-dev.taskunifier.app/cloud',
         appUrl: 'https://www-dev.taskunifier.app/app',
         downloadUrl: 'https://www-dev.taskunifier.app/app',
+        maintenanceUrl: 'https://www-dev.taskunifier.app/maintenance',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
@@ -73,6 +75,7 @@ const config = {
         cloudUrl: 'https://www.taskunifier.app/cloud',
         appUrl: 'https://www.taskunifier.app/app',
         downloadUrl: 'https://www.taskunifier.app/app',
+        maintenanceUrl: 'https://www.taskunifier.app/maintenance',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
