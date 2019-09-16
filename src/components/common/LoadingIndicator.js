@@ -1,23 +1,9 @@
 import React from 'react';
 import { Spin } from 'antd';
-import Logo from 'components/common/Logo';
+import CustomIndicator from 'components/common/CustomIndicator';
 
 function LoadingIndicator() {
-    return (
-        <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            textAlign: 'center'
-        }}>
-            <Logo size={120} />
-            <br />
-            <br />
-            <br />
-            <Spin size="large" />
-        </div>
-    );
+    return (<CustomIndicator content={(<Spin size="large" />)} />);
 }
 
 export default LoadingIndicator;

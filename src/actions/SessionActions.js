@@ -1,7 +1,7 @@
-import React from 'react';
-import { Modal } from 'antd';
 import { Auth } from 'aws-amplify';
+import uuid from 'uuid/v4';
 import { sendRequest } from 'actions/RequestActions';
+import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getSession } from 'selectors/SessionSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
@@ -26,12 +26,21 @@ export function check() {
 
 export function login(checkOnly = false) {
     return async (dispatch, getState) => {
+        const processId = uuid();
+
         try {
             const state = getState();
 
             if (getSession(state).loading) {
                 return;
             }
+
+            dispatch(updateProcess({
+                id: processId,
+                state: 'RUNNING',
+                title: 'Loading session',
+                notify: true
+            }));
 
             let session;
 
@@ -66,11 +75,17 @@ export function login(checkOnly = false) {
                 type: 'SET_LOADING',
                 loading: false
             });
+
+            dispatch(updateProcess({
+                id: processId,
+                state: 'COMPLETED'
+            }));
         } catch (error) {
-            Modal.error({
-                content: getErrorMessages(error, true).map(error => (<div key={error}>{error}</div>)),
-                onOk: () => window.location.href = getConfig().cloudUrl
-            });
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                error: getErrorMessages(error, true)
+            }));
 
             throw error;
         }
