@@ -76,7 +76,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
 
         const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, true);
         getTasksFilteredBySelectedFilterResult = result;
-        
+
         return result;
     }
 );
@@ -86,11 +86,13 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
     getTasksMetaDataFilteredByVisibleState,
     (tasks, tasksMetaData) => {
         return tasks.filter(task => {
-            const { parents } = tasksMetaData.find(meta => meta.id === task.id);
+            const taskMetaData = tasksMetaData.find(meta => meta.id === task.id);
 
-            for (let parent of parents) {
-                if (parent.expanded === false) {
-                    return false;
+            if (taskMetaData) {
+                for (let parent of taskMetaData.parents) {
+                    if (parent.expanded === false) {
+                        return false;
+                    }
                 }
             }
 

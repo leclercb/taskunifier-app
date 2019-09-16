@@ -1,8 +1,6 @@
 # Todo List
 
-* Handle server errors (max number of objects)
 * Synchronize with Toodledo and TaskUnifier Cloud
-
 * Normalizer for every field type
 * Improve joyride
 

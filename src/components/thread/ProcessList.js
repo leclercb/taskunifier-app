@@ -30,6 +30,18 @@ function ProcessList(props) {
         }
     };
 
+    const getErrorElement = process => {
+        if (process.state === 'ERROR' && process.error) {
+            const errors = Array.isArray(process.error) ? process.error : [process.error];
+
+            return errors.map(error => (
+                <Alert type="error" message={error} showIcon={true} />
+            ));
+        }
+
+        return null;
+    };
+
     return (
         <React.Fragment>
             {props.processes.map(process => (
@@ -38,9 +50,7 @@ function ProcessList(props) {
                         text={process.title}
                         icon={getIconFromState(process.state)}
                         color={getColorFromState(process.state)} />
-                    {process.state === 'ERROR' && process.error ? (
-                        <Alert type="error" message={process.error} showIcon={true} />
-                    ) : null}
+                    {getErrorElement(process)}
                 </div>
             ))}
         </React.Fragment>

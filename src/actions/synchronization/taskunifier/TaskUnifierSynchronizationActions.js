@@ -103,7 +103,7 @@ export function synchronizeWithTaskUnifier() {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                error: error.toString()
+                error: getErrorsFromResponse(error.response)
             }));
 
             throw error;
@@ -115,4 +115,21 @@ export function resetDataForTaskUnifierSynchronization() {
     return resetData({
         resetAll: true
     });
+}
+
+function getErrorsFromResponse(response) {
+    const defaultError = 'Request failed with status code ' + response.status;
+
+    if (!response.data) {
+        return defaultError;
+    }
+
+    switch (response.data.code) {
+        case 'input_validation_errors': {
+            return response.data.validationErrors.errors.map(error => 'Validation Error: ' + error);
+        }
+        default: {
+            return response.data.message || defaultError;
+        }
+    }
 }
