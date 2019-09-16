@@ -22,6 +22,6 @@ function CustomIndicator({ content }) {
 
 CustomIndicator.propTypes = {
     content: PropTypes.node
-}
+};
 
 export default CustomIndicator;
