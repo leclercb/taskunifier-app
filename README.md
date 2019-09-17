@@ -1,3 +1,10 @@
+<p align="center">
+    <img 
+        alt="Logo" 
+        src="https://www.taskunifier.app/resources/images/logo.png"
+        height="150"/>
+</p>
+
 # TaskUnifier
 
 [![Build Status](https://travis-ci.com/leclercb/taskunifier-app.svg?branch=master)](https://travis-ci.com/leclercb/taskunifier-app)
