@@ -22,7 +22,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "react-hooks"
     ],
     "rules": {
         "comma-dangle": [
@@ -47,6 +48,12 @@
         "quotes": [
             "error",
             "single"
+        ],
+        "react-hooks/rules-of-hooks": [
+            "error"
+        ],
+        "react-hooks/exhaustive-deps": [
+            "warn"
         ],
         "react/jsx-wrap-multilines": [
             "error",
