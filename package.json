@@ -1,6 +1,6 @@
 {
     "name": "taskunifier-app",
-    "description": "TaskUnifier - Manage your tasks and improve your productivity",
+    "description": "TaskUnifier - Task Management Application",
     "author": "BL-IT",
     "version": "0.6.0-beta",
     "private": true,
@@ -112,7 +112,7 @@
             "publish": {
                 "provider": "github"
             },
-            "description": "TaskUnifier - Manage your tasks and improve your productivity",
+            "description": "TaskUnifier - Task Management Application",
             "category": "Office;ProjectManagement"
         }
     },
