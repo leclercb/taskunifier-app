@@ -1,3 +1,5 @@
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+
 const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const fs = require('fs');
 const os = require('os');
