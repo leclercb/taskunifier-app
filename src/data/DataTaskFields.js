@@ -8,7 +8,7 @@ export function getDefaultTaskFields(settings) {
             title: 'ID',
             type: 'text',
             editable: false,
-            order: 1
+            defaultOrder: 1
         },
         {
             static: true,
@@ -16,7 +16,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Creation date',
             type: 'dateTime',
             editable: false,
-            order: 2
+            defaultOrder: 2
         },
         {
             static: true,
@@ -24,7 +24,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Update date',
             type: 'dateTime',
             editable: false,
-            order: 3
+            defaultOrder: 3
         },
         {
             static: true,
@@ -32,7 +32,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Completion date',
             type: 'dateTime',
             editable: false,
-            order: 4
+            defaultOrder: 4
         },
         {
             static: true,
@@ -40,7 +40,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Title',
             type: 'text',
             editable: true,
-            order: 7
+            defaultOrder: 7
         },
         {
             static: true,
@@ -48,7 +48,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Star',
             type: 'star',
             editable: true,
-            order: 6
+            defaultOrder: 6
         },
         {
             static: true,
@@ -56,7 +56,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Completed',
             type: 'boolean',
             editable: true,
-            order: 5
+            defaultOrder: 5
         },
         {
             static: true,
@@ -64,7 +64,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Progress',
             type: 'progress',
             editable: true,
-            order: 8
+            defaultOrder: 8
         },
         {
             static: true,
@@ -72,7 +72,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Length',
             type: 'length',
             editable: true,
-            order: 9
+            defaultOrder: 9
         },
         {
             static: true,
@@ -80,7 +80,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Timer',
             type: 'timer',
             editable: true,
-            order: 10
+            defaultOrder: 10
         },
         {
             static: true,
@@ -88,7 +88,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Priority',
             type: 'priority',
             editable: true,
-            order: 11
+            defaultOrder: 11
         },
         {
             static: true,
@@ -96,7 +96,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Importance',
             type: 'importance',
             editable: true,
-            order: 12
+            defaultOrder: 12
         },
         {
             static: true,
@@ -104,7 +104,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Status',
             type: 'status',
             editable: true,
-            order: 13
+            defaultOrder: 13
         },
         {
             static: true,
@@ -116,7 +116,7 @@ export function getDefaultTaskFields(settings) {
                 dateFormat: settings.dateFormat,
                 timeFormat: settings.timeFormat
             },
-            order: 14
+            defaultOrder: 14
         },
         {
             static: true,
@@ -128,7 +128,7 @@ export function getDefaultTaskFields(settings) {
                 dateFormat: settings.dateFormat,
                 timeFormat: settings.timeFormat
             },
-            order: 15
+            defaultOrder: 15
         },
         {
             static: true,
@@ -136,7 +136,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Tags',
             type: 'tags',
             editable: true,
-            order: 16
+            defaultOrder: 16
         },
         {
             static: true,
@@ -144,7 +144,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Context',
             type: 'context',
             editable: true,
-            order: 17
+            defaultOrder: 17
         },
         {
             static: true,
@@ -152,7 +152,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Folder',
             type: 'folder',
             editable: true,
-            order: 18
+            defaultOrder: 18
         },
         {
             static: true,
@@ -160,7 +160,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Goal',
             type: 'goal',
             editable: true,
-            order: 19
+            defaultOrder: 19
         },
         {
             static: true,
@@ -168,7 +168,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Location',
             type: 'location',
             editable: true,
-            order: 20
+            defaultOrder: 20
         },
         {
             static: true,
@@ -176,7 +176,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Repeat',
             type: 'repeat',
             editable: true,
-            order: 21
+            defaultOrder: 21
         },
         {
             static: true,
@@ -184,7 +184,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Start date reminder',
             type: 'reminder',
             editable: true,
-            order: 22
+            defaultOrder: 22
         },
         {
             static: true,
@@ -192,7 +192,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Due date reminder',
             type: 'reminder',
             editable: true,
-            order: 23
+            defaultOrder: 23
         },
         {
             static: true,
@@ -200,7 +200,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Text',
             type: 'textarea',
             editable: true,
-            order: 24
+            defaultOrder: 24
         }
     ]);
 }

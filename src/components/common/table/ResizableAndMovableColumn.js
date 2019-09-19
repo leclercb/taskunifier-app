@@ -20,7 +20,7 @@ export const resizeHandler = (prefix, updateSettings) => (data, fieldId, width) 
 export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFieldId, dropFieldId) => {
     const updatedSettings = {};
 
-    const array = sortBy(fields, field => settings[prefix + field.id] || 0).map(field => field.id);
+    const array = sortBy(fields, field => settings[prefix + field.id] || field.defaultOrder || 0).map(field => field.id);
     move(array, array.indexOf(dragFieldId), array.indexOf(dropFieldId));
 
     array.forEach((fieldId, index) => {
