@@ -7,56 +7,64 @@ export function getDefaultNoteFields() {
             id: 'id',
             title: 'ID',
             type: 'text',
-            editable: false
+            editable: false,
+            defaultOrder: 1
         },
         {
             static: true,
             id: 'creationDate',
             title: 'Creation date',
             type: 'dateTime',
-            editable: false
+            editable: false,
+            defaultOrder: 2
         },
         {
             static: true,
             id: 'updateDate',
             title: 'Update date',
             type: 'dateTime',
-            editable: false
+            editable: false,
+            defaultOrder: 3
         },
         {
             static: true,
             id: 'title',
             title: 'Title',
             type: 'text',
-            editable: true
+            editable: true,
+            defaultOrder: 5
         },
         {
             static: true,
             id: 'star',
             title: 'Star',
             type: 'star',
-            editable: true
+            editable: true,
+            defaultOrder: 4
         },
         {
             static: true,
             id: 'tags',
             title: 'Tags',
             type: 'tags',
-            editable: true
+            editable: true,
+            defaultOrder: 6
         },
         {
             static: true,
             id: 'folder',
             title: 'Folder',
             type: 'folder',
-            editable: true
+            editable: true,
+            defaultOrder: 7
         },
         {
             static: true,
             id: 'text',
             title: 'Text',
             type: 'textarea',
-            editable: true
+            editable: true,
+            defaultOrder: 8
         }
     ]);
 }

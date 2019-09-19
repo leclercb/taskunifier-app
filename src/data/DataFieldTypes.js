@@ -121,7 +121,7 @@ export function getFieldType(type, options) {
             configuration = {
                 title: 'Boolean',
                 allowCreation: true,
-                width: 100,
+                width: 80,
                 alwaysInEdition: true,
                 valuePropName: 'checked',
                 compare: (a, b) => compareBooleans(a, b),
@@ -1527,7 +1527,7 @@ export function getFieldType(type, options) {
             configuration = {
                 title: 'Progress',
                 allowCreation: true,
-                width: 200,
+                width: 100,
                 alwaysInEdition: false,
                 valuePropName: 'value',
                 compare: (a, b) => compareNumbers(a, b),
@@ -1775,7 +1775,7 @@ export function getFieldType(type, options) {
             configuration = {
                 title: 'Star',
                 allowCreation: true,
-                width: 100,
+                width: 80,
                 alwaysInEdition: true,
                 valuePropName: 'checked',
                 compare: (a, b) => compareBooleans(a, b),

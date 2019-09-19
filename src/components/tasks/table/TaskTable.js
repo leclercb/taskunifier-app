@@ -100,7 +100,7 @@ function TaskTable() {
     const onResize = resizeHandler('taskColumnWidth_', settingsApi.updateSettings);
     const onMove = moveHandler('taskColumnOrder_', taskFieldApi.taskFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const sortedFields = sortBy(taskFieldApi.taskFields, field => settingsApi.settings['taskColumnOrder_' + field.id] || 0);
+    const sortedFields = sortBy(taskFieldApi.taskFields, field => settingsApi.settings['taskColumnOrder_' + field.id] || field.defaultOrder || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskColumnVisible_' + field.id] !== false);
 
     const columns = sortedAndFilteredFields.map(field => {
