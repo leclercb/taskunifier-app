@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import withJoyride from 'containers/WithJoyride';
+import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 
 function HelpButton(props) {
+    const joyrideApi = useJoyrideApi();
+
     const onClick = () => {
-        props.setJoyrideOptions({
+        joyrideApi.setJoyrideOptions({
             id: props.id,
             run: true
         });
@@ -23,8 +26,7 @@ function HelpButton(props) {
 }
 
 HelpButton.propTypes = {
-    id: PropTypes.string.isRequired,
-    setJoyrideOptions: PropTypes.func.isRequired
+    id: PropTypes.string.isRequired
 };
 
 export default withJoyride(HelpButton);
