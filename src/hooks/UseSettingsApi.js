@@ -8,7 +8,7 @@ export function useSettingsApi() {
     const settings = useSelector(getSettings);
 
     const updateSettingsCallback = useCallback(
-        settings => dispatch(updateSettings(settings)),
+        (settings, options) => dispatch(updateSettings(settings, options)),
         [dispatch]
     );
 
