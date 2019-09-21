@@ -2,17 +2,20 @@ import React from 'react';
 import { Modal } from 'antd';
 import { Auth } from 'aws-amplify';
 import uuid from 'uuid/v4';
+import { buyItem } from 'actions/ItemActions';
 import { changeId } from 'actions/ObjectActions';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import { getConfig } from 'config/Config';
 import { getObjectById } from 'selectors/ObjectSelectors';
+import { getSession } from 'selectors/SessionSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
 import { diff } from 'utils/ObjectUtils';
 
 function pushObjectToServer(property, oldObject, newObject) {
-    return async dispatch => {
+    return async (dispatch, getState) => {
+        const state = getState();
         const processId = uuid();
 
         const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
@@ -49,7 +52,10 @@ function pushObjectToServer(property, oldObject, newObject) {
                 error.response.data.subscriptionType === 'free') {
                 Modal.info({
                     icon: null,
-                    content: (<CloudMaxObjectsReachedMessage />)
+                    width: 800,
+                    content: (<CloudMaxObjectsReachedMessage
+                        session={getSession(state)}
+                        buyItem={(itemSku, user, email) => dispatch(buyItem(itemSku, user, email))} />)
                 });
             } else {
                 dispatch(updateProcess({

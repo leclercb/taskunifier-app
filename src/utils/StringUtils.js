@@ -23,7 +23,7 @@ export function toStringContact(value, contacts) {
 }
 
 export function toStringObject(value, objects) {
-    const object = objects.find(contact => contact.id === value);
+    const object = objects.find(object => object.id === value);
     return object ? object.title : '';
 }
 
