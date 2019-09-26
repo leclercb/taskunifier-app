@@ -3,6 +3,10 @@ import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
+    editingCell: {
+        objectId: null,
+        fieldId: null
+    },
     selectedNoteIds: [],
     selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: moment().toISOString(),
