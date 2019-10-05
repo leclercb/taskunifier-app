@@ -1,9 +1,10 @@
 import { Buffer } from 'buffer';
+import moment from 'moment';
 import { getConfig } from 'config/Config';
 
 const PUBLIC_KEY = getConfig().license.publicKey;
 
-export function decodeLicense(license) {
+export function verifyLicense(license) {
     if (process.env.REACT_APP_MODE === 'react') {
         return null;
     }
@@ -27,7 +28,11 @@ export function decodeLicense(license) {
         try {
             const content = JSON.parse(jsonContent);
 
-            if (content.itemSku !== getConfig().appItemSku) {
+            if (content.itemSku !== getConfig().appItemSku && content.itemSku !== getConfig().appTrialItemSku) {
+                return null;
+            }
+
+            if (content.expirationDate && moment(content.expirationDate).isBefore(moment())) {
                 return null;
             }
 
@@ -38,18 +43,4 @@ export function decodeLicense(license) {
     } else {
         return null;
     }
-}
-
-export function verifyLicense(license) {
-    const l = decodeLicense(license);
-
-    if (!l) {
-        return null;
-    }
-
-    if (l.expirationDate) {
-        // TODO check expiration date
-    }
-
-    return l;
 }
