@@ -12,8 +12,17 @@ export function ProUnlockedMessage({ license }) {
                 <span>
                     TaskUnifier Pro has been successfully activated !<br />
                     <strong>Item: </strong>{license.itemName}<br />
-                    <strong>Owner: </strong>{license.firstName} {license.lastName}<br />
-                    <strong>Email: </strong>{license.email}
+                    {(license.firstName || license.lastName) && (
+                        <React.Fragment>
+                            <strong>Owner: </strong>{license.firstName} {license.lastName}<br />
+                        </React.Fragment>
+                    )}
+                    <strong>Email: </strong>{license.email}<br />
+                    {license.expirationDate && (
+                        <React.Fragment>
+                            <strong>Expiration Date: </strong>{license.expirationDate}<br />
+                        </React.Fragment>
+                    )}
                 </span>
             )} />
     );

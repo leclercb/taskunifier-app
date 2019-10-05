@@ -7,10 +7,10 @@ import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
-import { getTasks } from 'selectors/TaskSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
+import { getTasks } from 'selectors/TaskSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -335,11 +335,13 @@ function convertTaskToLocal(task, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
     const locations = getLocationsFilteredByVisibleState(state);
+    const tasks = getTaskFieldsFilteredByVisibleState(state);
 
     const context = contexts.find(context => context.refIds.toodledo === task.context);
     const folder = folders.find(folder => folder.refIds.toodledo === task.folder);
     const goal = goals.find(goal => goal.refIds.toodledo === task.goal);
     const location = locations.find(location => location.refIds.toodledo === task.location);
+    const parent = tasks.find(t => t.refIds.toodledo === task.parent);
 
     const status = getStatuses().find(status => status.value === task.status);
     const priority = getPriorities().find(priority => priority.value === task.priority);
@@ -357,6 +359,7 @@ function convertTaskToLocal(task, state) {
         folder: folder ? folder.id : null,
         goal: goal ? goal.id : null,
         location: location ? location.id : null,
+        parent: parent ? parent.id : null,
         dueDate: (task.duetime, task.duedate) ? moment.unix(task.duetime || task.duedate).toISOString() : null,
         startDate: (task.starttime || task.startdate) ? moment.unix(task.starttime || task.startdate).toISOString() : null,
         startDateReminder: task.remind ? task.remind * 60 : null,

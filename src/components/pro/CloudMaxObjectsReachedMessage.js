@@ -28,6 +28,6 @@ export function CloudMaxObjectsReachedMessage({ session, buyItem }) {
 CloudMaxObjectsReachedMessage.propTypes = {
     session: PropTypes.object.isRequired,
     buyItem: PropTypes.func.isRequired
-}
+};
 
 export default CloudMaxObjectsReachedMessage;

@@ -1,3 +1,15 @@
+# 0.7.0
+
+## New Features
+
+* Improve synchronization with Toodledo
+* Trial license
+
+## Bug Fixes
+
+* Fix help button
+* Fix default column order
+
 # 0.6.0-beta
 
 ## New Features

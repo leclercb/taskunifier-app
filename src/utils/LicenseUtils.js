@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import moment from 'moment';
 import { getConfig } from 'config/Config';
 
 const PUBLIC_KEY = getConfig().license.publicKey;
@@ -27,7 +28,11 @@ export function verifyLicense(license) {
         try {
             const content = JSON.parse(jsonContent);
 
-            if (content.itemSku !== getConfig().appItemSku) {
+            if (content.itemSku !== getConfig().appItemSku && content.itemSku !== getConfig().appTrialItemSku) {
+                return null;
+            }
+
+            if (content.expirationDate && moment(content.expirationDate).isBefore(moment())) {
                 return null;
             }
 
