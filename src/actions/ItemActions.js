@@ -16,7 +16,7 @@ export function buyItem(itemSku, user, email) {
         try {
             const result = await sendRequest({
                 method: 'POST',
-                url: `${getConfig().apiUrl}/v1/paypal/orders`,
+                url: `${getConfig().apiUrl}/v1/items/buy`,
                 responseType: 'json',
                 data: {
                     itemSku,

@@ -1,3 +1,9 @@
+# 0.7.0
+
+## New Features
+
+* Improve synchronization with Toodledo
+
 # 0.6.0-beta
 
 ## New Features

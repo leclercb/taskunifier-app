@@ -3,7 +3,7 @@ import { getConfig } from 'config/Config';
 
 const PUBLIC_KEY = getConfig().license.publicKey;
 
-export function verifyLicense(license) {
+export function decodeLicense(license) {
     if (process.env.REACT_APP_MODE === 'react') {
         return null;
     }
@@ -38,4 +38,18 @@ export function verifyLicense(license) {
     } else {
         return null;
     }
+}
+
+export function verifyLicense(license) {
+    const l = decodeLicense(license);
+
+    if (!l) {
+        return null;
+    }
+
+    if (l.expirationDate) {
+        // TODO check expiration date
+    }
+
+    return l;
 }
