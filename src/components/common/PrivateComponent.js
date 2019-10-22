@@ -23,7 +23,7 @@ function PrivateComponent({ userRole, children }) {
         };
 
         fn();
-    }, [sessionApi.session.authenticated, sessionApi.login]);
+    }, [sessionApi.session.authenticated, sessionApi.login]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (loginError) {
         return (
