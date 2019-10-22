@@ -8,7 +8,7 @@ import { getValuePropNameForType } from 'data/DataFieldTypes';
 function EditableCell(props) {
     useEffect(() => {
         props.form.resetFields();
-    }, [props.record.id]);
+    }, [props.record.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onChange = event => {
         props.form.validateFields((error, values) => {

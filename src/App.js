@@ -24,7 +24,7 @@ function App() {
 
     useEffect(() => {
         appApi.loadData();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
@@ -42,7 +42,7 @@ function App() {
                 clearTimeout(timeout);
             };
         }
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
@@ -83,7 +83,7 @@ function App() {
                 ipcRenderer.removeListener('app-close', onClose);
             };
         }
-    }, [settingsApi.settings]);
+    }, [settingsApi.settings]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(
         () => {
@@ -109,7 +109,7 @@ function App() {
                 };
             }
         },
-        [
+        [ // eslint-disable-line react-hooks/exhaustive-deps
             settingsApi.settings.automaticSave,
             settingsApi.settings.automaticSaveInterval
         ]
@@ -139,7 +139,7 @@ function App() {
                 };
             }
         },
-        [
+        [ // eslint-disable-line react-hooks/exhaustive-deps
             settingsApi.settings.automaticBackup,
             settingsApi.settings.automaticBackupInterval,
             settingsApi.settings.lastAutomaticBackup
@@ -170,7 +170,7 @@ function App() {
                 };
             }
         },
-        [
+        [ // eslint-disable-line react-hooks/exhaustive-deps
             settingsApi.settings.automaticSynchronization,
             settingsApi.settings.automaticSynchronizationInterval,
             settingsApi.settings.lastAutomaticSynchronization
