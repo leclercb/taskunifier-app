@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     loadData,
     saveData,
+    setAccountManagerOptions,
     setBatchAddTasksManagerOptions,
     setBatchEditTasksManagerOptions,
     setCategoryManagerOptions,
@@ -23,6 +24,7 @@ import {
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import {
+    getAccountManager,
     getBatchAddTasksManager,
     getBatchEditTasksManager,
     getCategoryManager,
@@ -55,6 +57,7 @@ export function useAppApi() {
     const taskFilterManager = useSelector(getTaskFilterManager);
     const taskEditionManager = useSelector(getTaskEditionManager);
     const taskTemplateManager = useSelector(getTaskTemplateManager);
+    const accountManager = useSelector(getAccountManager);
     const settingManager = useSelector(getSettingManager);
 
     const loadDataCallback = useCallback(
@@ -142,6 +145,11 @@ export function useAppApi() {
         [dispatch]
     );
 
+    const setAccountManagerOptionsCallback = useCallback(
+        options => dispatch(setAccountManagerOptions(options)),
+        [dispatch]
+    );
+
     const setSettingManagerOptionsCallback = useCallback(
         options => dispatch(setSettingManagerOptions(options)),
         [dispatch]
@@ -161,6 +169,7 @@ export function useAppApi() {
         taskFilterManager,
         taskEditionManager,
         taskTemplateManager,
+        accountManager,
         settingManager,
         loadData: loadDataCallback,
         saveData: saveDataCallback,
@@ -179,6 +188,7 @@ export function useAppApi() {
         setTaskFilterManagerOptions: setTaskFilterManagerOptionsCallback,
         setTaskEditionManagerOptions: setTaskEditionManagerOptionsCallback,
         setTaskTemplateManagerOptions: setTaskTemplateManagerOptionsCallback,
+        setAccountManagerOptions: setAccountManagerOptionsCallback,
         setSettingManagerOptions: setSettingManagerOptionsCallback
     };
 }

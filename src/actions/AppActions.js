@@ -536,6 +536,15 @@ export function setTaskTemplateManagerOptions(options) {
     };
 }
 
+export function setAccountManagerOptions(options) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_ACCOUNT_MANAGER_OPTIONS',
+            ...options
+        });
+    };
+}
+
 export function setSettingManagerOptions(options) {
     return async dispatch => {
         dispatch({

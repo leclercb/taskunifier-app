@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { buyItem } from 'actions/ItemActions';
 import { check, login, logout } from 'actions/SessionActions';
 import { getSession } from 'selectors/SessionSelectors';
 
@@ -23,16 +22,10 @@ export function useSessionApi() {
         [dispatch]
     );
 
-    const buyItemCallback = useCallback(
-        (itemSku, user, email) => dispatch(buyItem(itemSku, user, email)),
-        [dispatch]
-    );
-
     return {
         session,
         check: checkCallback,
         login: loginCallback,
-        logout: logoutCallback,
-        buyItem: buyItemCallback
+        logout: logoutCallback
     };
 }

@@ -11,12 +11,6 @@ export function ProUnlockedMessage({ license }) {
             description={(
                 <span>
                     TaskUnifier Pro has been successfully activated !<br />
-                    <strong>Item: </strong>{license.itemName}<br />
-                    {(license.firstName || license.lastName) && (
-                        <React.Fragment>
-                            <strong>Owner: </strong>{license.firstName} {license.lastName}<br />
-                        </React.Fragment>
-                    )}
                     <strong>Email: </strong>{license.email}<br />
                     {license.expirationDate && (
                         <React.Fragment>

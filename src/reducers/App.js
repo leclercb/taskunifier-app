@@ -55,6 +55,9 @@ const App = () => (state = {
         visible: false,
         taskTemplateId: null
     },
+    accountManager: {
+        visible: false
+    },
     settingManager: {
         visible: false
     }
@@ -174,6 +177,13 @@ const App = () => (state = {
                 taskTemplateManager: {
                     visible: 'visible' in action ? action.visible : state.taskTemplateManager.visible,
                     taskTemplateId: 'taskTemplateId' in action ? action.taskTemplateId : state.taskTemplateManager.taskTemplateId
+                }
+            };
+        case 'SET_ACCOUNT_MANAGER_OPTIONS':
+            return {
+                ...state,
+                accountManager: {
+                    visible: 'visible' in action ? action.visible : state.accountManager.visible
                 }
             };
         case 'SET_SETTING_MANAGER_OPTIONS':
