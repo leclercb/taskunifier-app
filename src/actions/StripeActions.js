@@ -48,6 +48,10 @@ export function getCurrentCustomer() {
 
             return result.data;
         } catch (error) {
+            if (error.response && error.response.status === 404) {
+                return null;
+            }
+
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',

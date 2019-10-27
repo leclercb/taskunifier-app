@@ -1,11 +1,15 @@
-import uuid from 'uuid/v4';
+import React from 'react';
+import { Modal } from 'antd';
 import moment from 'moment';
+import uuid from 'uuid/v4';
 import {
     loadFromFile,
     loadFromServer,
     saveToFile
 } from 'actions/ActionUtils';
+import { setAccountManagerOptions } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
+import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import Constants from 'constants/Constants';
 import { getObjectById } from 'selectors/ObjectSelectors';
 import { filterByStatic } from 'utils/CategoryUtils';
@@ -60,6 +64,8 @@ export function addObject(
     return async (dispatch, getState) => {
         const processId = uuid();
 
+        let newObject = null;
+
         try {
             let id = uuid();
 
@@ -76,7 +82,7 @@ export function addObject(
                 options
             });
 
-            const newObject = getObjectById(getState(), property, id);
+            newObject = getObjectById(getState(), property, id);
 
             const action = await dispatch({
                 type: 'POST_ADD_OBJECT',
@@ -87,14 +93,38 @@ export function addObject(
 
             return action.addedObject || newObject;
         } catch (error) {
-            dispatch(updateProcess({
-                id: processId,
-                state: 'ERROR',
-                title: `Add "${object.title}" of type "${property}"`,
-                error: error.toString()
-            }));
+            if (error.response &&
+                error.response.status === 403 &&
+                error.response.data &&
+                error.response.data.code === 'max_objects_reached' &&
+                error.response.data.subscriptionInfo &&
+                error.response.data.subscriptionInfo.type === 'free') {
+                await dispatch({
+                    type: 'DELETE_OBJECT',
+                    property,
+                    generateId: () => uuid(),
+                    updateDate: moment().toISOString(),
+                    objectId: newObject.id,
+                    options
+                });
 
-            throw error;
+                Modal.info({
+                    icon: null,
+                    width: 800,
+                    content: (<CloudMaxObjectsReachedMessage setAccountManagerOptions={() => dispatch(setAccountManagerOptions({ visible: true }))} />)
+                });
+
+                throw error;
+            } else {
+                dispatch(updateProcess({
+                    id: processId,
+                    state: 'ERROR',
+                    title: `Add "${object ? object.title : ''}" of type "${property}"`,
+                    error: error.toString()
+                }));
+
+                throw error;
+            }
         }
     };
 }
