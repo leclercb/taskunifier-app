@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     getCurrentCustomer,
+    getCurrentSubscriptionLatestInvoice,
     getCurrentSubscriptionPlanProration,
     getPlans,
     setCurrentCustomer,
@@ -15,6 +16,11 @@ export function useStripeApi() {
 
     const getCurrentCustomerCallback = useCallback(
         () => dispatch(getCurrentCustomer()),
+        [dispatch]
+    );
+
+    const getCurrentSubscriptionLatestInvoiceCallback = useCallback(
+        () => dispatch(getCurrentSubscriptionLatestInvoice()),
         [dispatch]
     );
 
@@ -50,6 +56,7 @@ export function useStripeApi() {
 
     return {
         getCurrentCustomer: getCurrentCustomerCallback,
+        getCurrentSubscriptionLatestInvoice: getCurrentSubscriptionLatestInvoiceCallback,
         getCurrentSubscriptionPlanProration: getCurrentSubscriptionPlanProrationCallback,
         getPlans: getPlansCallback,
         setCurrentCustomer: setCurrentCustomerCallback,

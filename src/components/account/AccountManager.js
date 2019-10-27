@@ -58,9 +58,13 @@ function AccountManager() {
             break;
         case 'subscription':
             element = (
-                <AccountSubscription
-                    customer={customer}
-                    onCustomerUpdated={customer => setCustomer(customer)} />
+                <StripeProvider apiKey={getConfig().stripe.publicKey}>
+                    <Elements>
+                        <AccountSubscription
+                            customer={customer}
+                            onCustomerUpdated={customer => setCustomer(customer)} />
+                    </Elements>
+                </StripeProvider>
             );
             break;
         default:

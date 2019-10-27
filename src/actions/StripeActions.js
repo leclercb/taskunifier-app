@@ -151,6 +151,34 @@ export function updateCurrentSubscription(subscription) {
     };
 }
 
+export function getCurrentSubscriptionLatestInvoice() {
+    return async dispatch => {
+        const processId = uuid();
+
+        try {
+            const result = await sendRequest({
+                headers: {
+                    Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                },
+                method: 'GET',
+                url: `${getConfig().apiUrl}/v1/stripe/subscriptions/current/invoices/latest`,
+                responseType: 'json'
+            });
+
+            return result.data;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: 'Get latest invoice',
+                error: error.toString()
+            }));
+
+            throw error;
+        }
+    };
+}
+
 export function setCurrentSubscriptionPlan(planId, quantity) {
     return async dispatch => {
         const processId = uuid();

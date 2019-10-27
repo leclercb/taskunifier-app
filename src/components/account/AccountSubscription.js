@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Button, Col, Descriptions, Empty, Modal, Row, Spin, Typography } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { injectStripe } from 'react-stripe-elements';
 import { useStripeApi } from 'hooks/UseStripeApi';
 import { getConfig } from 'config/Config';
 import LeftRight from 'components/common/LeftRight';
 
-function AccountSubscription({ customer, onCustomerUpdated }) {
+function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
     const stripeApi = useStripeApi();
 
     const [busy, setBusy] = useState(false);
@@ -34,7 +35,14 @@ function AccountSubscription({ customer, onCustomerUpdated }) {
         try {
             setBusy(true);
 
-            const proration = await stripeApi.getCurrentSubscriptionPlanProration(plan.id, 1);
+            let proration = {
+                cost: plan.amount
+            };
+
+            if (subscription) {
+                proration = await stripeApi.getCurrentSubscriptionPlanProration(plan.id, 1);
+            }
+
             console.debug('Proration', proration);
 
             Modal.confirm({
@@ -43,16 +51,26 @@ function AccountSubscription({ customer, onCustomerUpdated }) {
                     <React.Fragment>
                         <span>{`You selected the plan "${plan.nickname}".`}</span>
                         <br />
-                        <span>{`The subscription amount is ${(plan.amount / 100).toFixed(2)} ${plan.currency} per ${plan.interval}`}.</span>
+                        <span>{`The subscription amount is ${(plan.amount / 100).toFixed(2)} ${plan.currency} per ${plan.interval}.`}</span>
                         <br />
-                        <span>{`By confirming, the following amount will immediately be charged: ${(proration.cost / 100).toFixed(2)}`} ${plan.currency}.</span>
+                        <span>{`By confirming, the following amount will immediately be charged: ${(proration.cost / 100).toFixed(2)} ${plan.currency}.`}</span>
                     </React.Fragment>
                 ),
                 onOk: async () => {
                     try {
                         setBusy(true);
 
-                        await stripeApi.setCurrentSubscriptionPlan(plan.id, 1);
+                        const subscription = await stripeApi.setCurrentSubscriptionPlan(plan.id, 1);
+
+                        if (subscription.status === 'incomplete') {
+                            const invoice = await stripeApi.getCurrentSubscriptionLatestInvoice();
+                            console.debug('Invoice', invoice);
+
+                            if (invoice.payment_intent.status === 'requires_action') {
+                                const cardPaymentResult = await stripe.handleCardPayment(invoice.payment_intent.client_secret);
+                                console.debug('Handle Card Payment', cardPaymentResult);
+                            }
+                        }
 
                         const customer = await stripeApi.getCurrentCustomer();
                         onCustomerUpdated(customer);
@@ -136,7 +154,8 @@ function AccountSubscription({ customer, onCustomerUpdated }) {
 
 AccountSubscription.propTypes = {
     customer: PropTypes.object,
-    onCustomerUpdated: PropTypes.func
+    onCustomerUpdated: PropTypes.func,
+    stripe: PropTypes.object.isRequired
 };
 
-export default AccountSubscription; 
+export default injectStripe(AccountSubscription); 

@@ -21,7 +21,7 @@ function AccountSource({ customer, onCustomerUpdated, stripe }) {
                 return;
             }
 
-            stripeApi.setCurrentCustomerSource({
+            const customer = stripeApi.setCurrentCustomerSource({
                 tokenId: createTokenResult.token.id
             });
 
