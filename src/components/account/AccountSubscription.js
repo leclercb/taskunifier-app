@@ -1,35 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Col, Descriptions, Empty, Modal, Row, Spin, Typography } from 'antd';
+import React, { useState } from 'react';
+import { Button, Descriptions, Empty, Modal, Spin } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { injectStripe } from 'react-stripe-elements';
 import { useStripeApi } from 'hooks/UseStripeApi';
-import { getConfig } from 'config/Config';
+import Plans from 'components/account/Plans';
 import LeftRight from 'components/common/LeftRight';
 
 function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
     const stripeApi = useStripeApi();
 
     const [busy, setBusy] = useState(false);
-    const [plans, setPlans] = useState([]);
 
     const source = customer && customer.sources.data.length > 0 ? customer.sources.data[0] : null;
     const subscription = customer && customer.subscriptions.data.length > 0 ? customer.subscriptions.data[0] : null;
-
-    useEffect(() => {
-        const getPlans = async () => {
-            try {
-                setBusy(true);
-                const plans = await stripeApi.getPlans(getConfig().stripe.productId);
-                setPlans(plans);
-                console.debug('Plans', plans);
-            } finally {
-                setBusy(false);
-            }
-        };
-
-        getPlans();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const selectPlan = async plan => {
         try {
@@ -133,21 +117,7 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
                 </Descriptions.Item>
             </Descriptions>
             <Descriptions title="Change Plan" column={1} size="small" />
-            <Row gutter={20}>
-                {plans.map(plan => (
-                    <Col key={plan.id} span={8}>
-                        <div style={{ padding: 20, border: '3px solid #cccccc', borderRadius: 10, textAlign: 'center' }}>
-                            <Typography.Title level={3}>{plan.nickname}</Typography.Title>
-                            <Typography.Title level={4}>{(plan.amount / 100).toFixed(2)} {plan.currency} per {plan.interval}</Typography.Title>
-                            <Button
-                                type="primary"
-                                onClick={() => selectPlan(plan)}>
-                                Select this plan
-                                </Button>
-                        </div>
-                    </Col>
-                ))}
-            </Row>
+            <Plans onSelectPlan={selectPlan} />
         </Spin>
     );
 }
