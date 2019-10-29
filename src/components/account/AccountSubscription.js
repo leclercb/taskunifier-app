@@ -16,6 +16,15 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
     const subscription = customer && customer.subscriptions.data.length > 0 ? customer.subscriptions.data[0] : null;
 
     const selectPlan = async plan => {
+        if (!source) {
+            Modal.error({
+                title: 'Error',
+                content: 'Please fill in your billing details and your payment method first.'
+            });
+
+            return;
+        }
+
         try {
             setBusy(true);
 
@@ -82,12 +91,6 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
             setBusy(false);
         }
     };
-
-    if (!source) {
-        return (
-            <Empty description="Please fill in your billing details and your payment method first." />
-        );
-    }
 
     return (
         <Spin spinning={busy}>
