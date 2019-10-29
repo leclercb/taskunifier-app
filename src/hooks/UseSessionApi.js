@@ -1,11 +1,16 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { check, login, logout } from 'actions/SessionActions';
+import { check, login, logout, refreshCurrentUser } from 'actions/SessionActions';
 import { getSession } from 'selectors/SessionSelectors';
 
 export function useSessionApi() {
     const dispatch = useDispatch();
     const session = useSelector(getSession);
+
+    const refreshCurrentUserCallback = useCallback(
+        () => dispatch(refreshCurrentUser()),
+        [dispatch]
+    );
 
     const checkCallback = useCallback(
         () => dispatch(check()),
@@ -24,6 +29,7 @@ export function useSessionApi() {
 
     return {
         session,
+        refreshCurrentUser: refreshCurrentUserCallback,
         check: checkCallback,
         login: loginCallback,
         logout: logoutCallback

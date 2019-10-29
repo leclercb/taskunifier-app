@@ -6,6 +6,20 @@ import { getConfig } from 'config/Config';
 import { getSession } from 'selectors/SessionSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
 
+export async function refreshCurrentUser() {
+    return async dispatch => {
+        const session = await Auth.currentSession();
+
+        const user = await getCurrentUser(session.getAccessToken().getJwtToken());
+        user.groups = session.getAccessToken().payload['cognito:groups'];
+
+        await dispatch({
+            type: 'SET_USER',
+            user
+        });
+    };
+}
+
 async function getCurrentUser(token) {
     const result = await sendRequest(
         {

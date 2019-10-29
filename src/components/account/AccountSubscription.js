@@ -6,8 +6,10 @@ import { injectStripe } from 'react-stripe-elements';
 import { useStripeApi } from 'hooks/UseStripeApi';
 import Plans from 'components/account/Plans';
 import LeftRight from 'components/common/LeftRight';
+import { useSessionApi } from 'hooks/UseSessionApi';
 
 function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
+    const sessionApi = useSessionApi();
     const stripeApi = useStripeApi();
 
     const [busy, setBusy] = useState(false);
@@ -29,20 +31,28 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
             setSCARequired(invoice.payment_intent.status === 'requires_action');
         };
 
-        checkSCA();
+        checkSCA(subscription);
     }, [subscription]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleSCA = async subscription => {
-        if (!subscription || subscription.status !== 'incomplete') {
-            return;
-        }
+        try {
+            setBusy(true);
 
-        const invoice = await stripeApi.getCurrentSubscriptionLatestInvoice();
-        console.debug('Invoice', invoice);
+            if (subscription && subscription.status === 'incomplete') {
+                const invoice = await stripeApi.getCurrentSubscriptionLatestInvoice();
+                console.debug('Invoice', invoice);
 
-        if (invoice.payment_intent.status === 'requires_action') {
-            const cardPaymentResult = await stripe.handleCardPayment(invoice.payment_intent.client_secret);
-            console.debug('Handle Card Payment', cardPaymentResult);
+                if (invoice.payment_intent.status === 'requires_action') {
+                    const cardPaymentResult = await stripe.handleCardPayment(invoice.payment_intent.client_secret);
+                    console.debug('Handle Card Payment', cardPaymentResult);
+                }
+            }
+
+            const customer = await stripeApi.getCurrentCustomer();
+            onCustomerUpdated(customer);
+            await sessionApi.refreshCurrentUser();
+        } finally {
+            setBusy(false);
         }
     };
 
@@ -83,12 +93,8 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
                 onOk: async () => {
                     try {
                         setBusy(true);
-
                         const subscription = await stripeApi.setCurrentSubscriptionPlan(plan.id, 1);
                         await handleSCA(subscription);
-
-                        const customer = await stripeApi.getCurrentCustomer();
-                        onCustomerUpdated(customer);
                     } finally {
                         setBusy(false);
                     }
@@ -109,6 +115,7 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
 
             const customer = await stripeApi.getCurrentCustomer();
             onCustomerUpdated(customer);
+            await sessionApi.refreshCurrentUser();
         } finally {
             setBusy(false);
         }
