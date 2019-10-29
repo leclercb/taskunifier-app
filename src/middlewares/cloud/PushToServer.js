@@ -44,21 +44,21 @@ function pushObjectToServer(property, oldObject, newObject) {
 
             return result.data;
         } catch (error) {
+            if (!oldObject) {
+                await dispatch({
+                    type: 'DELETE_OBJECT',
+                    property,
+                    generateId: () => uuid(),
+                    updateDate: moment().toISOString(),
+                    objectId: newObject.id,
+                    options: {}
+                });
+            }
+
             if (error.response &&
                 error.response.status === 403 &&
                 error.response.data &&
                 error.response.data.code === 'max_objects_reached') {
-                if (!oldObject) {
-                    await dispatch({
-                        type: 'DELETE_OBJECT',
-                        property,
-                        generateId: () => uuid(),
-                        updateDate: moment().toISOString(),
-                        objectId: newObject.id,
-                        options: {}
-                    });
-                }
-
                 const modal = Modal.info({
                     icon: null,
                     width: 800,
