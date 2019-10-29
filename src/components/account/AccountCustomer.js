@@ -9,6 +9,8 @@ function AccountCustomer({ customer, onCustomerUpdated, form }) {
 
     const [busy, setBusy] = useState(false);
 
+    const taxId = customer && customer.tax_ids.data.length !== 0 ? customer.tax_ids.data[0] : null;
+
     const onSubmit = () => {
         form.validateFields(async (error, values) => {
             if (error) {
@@ -137,7 +139,7 @@ function AccountCustomer({ customer, onCustomerUpdated, form }) {
                     <div style={{ padding: 20, border: '1px solid #cccccc', borderRadius: 5 }}>
                         <Form.Item label="Type" {...formItemLayout}>
                             {getFieldDecorator('taxId.type', {
-                                initialValue: customer && customer.taxId ? customer.taxId.type : undefined
+                                initialValue: taxId ? taxId.type : undefined
                             })(
                                 <Select placeholder="Type">
                                     <Select.Option value="eu_vat">European VAT number</Select.Option>
@@ -150,10 +152,13 @@ function AccountCustomer({ customer, onCustomerUpdated, form }) {
                         </Form.Item>
                         <Form.Item label="Value" {...formItemLayout}>
                             {getFieldDecorator('taxId.value', {
-                                initialValue: customer && customer.taxId ? customer.taxId.value : undefined
+                                initialValue: taxId ? taxId.value : undefined
                             })(
                                 <Input placeholder="Value" />
                             )}
+                        </Form.Item>
+                        <Form.Item label="Verification Status" {...formItemLayout}>
+                            {taxId ? taxId.verification.status : ''}
                         </Form.Item>
                     </div>
                 </Form.Item>
