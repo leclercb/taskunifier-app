@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Descriptions, Empty, Modal, Spin } from 'antd';
+import { Button, Descriptions, Modal, Spin } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { injectStripe } from 'react-stripe-elements';

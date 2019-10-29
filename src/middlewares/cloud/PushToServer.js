@@ -1,12 +1,22 @@
+import React from 'react';
+import { Modal } from 'antd';
 import { Auth } from 'aws-amplify';
+import moment from 'moment';
+import uuid from 'uuid/v4';
+import { setAccountManagerOptions } from 'actions/AppActions';
 import { changeId } from 'actions/ObjectActions';
 import { sendRequest } from 'actions/RequestActions';
+import { updateProcess } from 'actions/ThreadActions';
+import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import { getConfig } from 'config/Config';
 import { getObjectById } from 'selectors/ObjectSelectors';
+import { getErrorMessages } from 'utils/CloudUtils';
 import { diff } from 'utils/ObjectUtils';
 
 function pushObjectToServer(property, oldObject, newObject) {
-    return async () => {
+    return async dispatch => {
+        const processId = uuid();
+
         const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
 
         delete diffObject.owner;
@@ -20,54 +30,116 @@ function pushObjectToServer(property, oldObject, newObject) {
             return newObject;
         }
 
-        const result = await sendRequest(
-            {
-                headers: {
-                    Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-                },
-                method: oldObject ? 'PUT' : 'POST',
-                url: `${getConfig().apiUrl}/v1/${property}/${oldObject ? oldObject.id : ''}`,
-                data: diffObject,
-                responseType: 'json'
-            });
+        try {
+            const result = await sendRequest(
+                {
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
+                    method: oldObject ? 'PUT' : 'POST',
+                    url: `${getConfig().apiUrl}/v1/${property}/${oldObject ? oldObject.id : ''}`,
+                    data: diffObject,
+                    responseType: 'json'
+                });
 
-        return result.data;
+            return result.data;
+        } catch (error) {
+            if (error.response &&
+                error.response.status === 403 &&
+                error.response.data &&
+                error.response.data.code === 'max_objects_reached') {
+                if (!oldObject) {
+                    await dispatch({
+                        type: 'DELETE_OBJECT',
+                        property,
+                        generateId: () => uuid(),
+                        updateDate: moment().toISOString(),
+                        objectId: newObject.id,
+                        options: {}
+                    });
+                }
+
+                const modal = Modal.info({
+                    icon: null,
+                    width: 800,
+                    content: (<CloudMaxObjectsReachedMessage setAccountManagerOptions={() => {
+                        modal.destroy();
+                        dispatch(setAccountManagerOptions({ visible: true }));
+                    }} />)
+                });
+            } else {
+                dispatch(updateProcess({
+                    id: processId,
+                    state: 'ERROR',
+                    title: `Push "${newObject && newObject.title ? newObject.title : ''}" of type "${property}" to server`,
+                    error: getErrorMessages(error, true)
+                }));
+            }
+
+            throw error;
+        }
     };
 }
 
 function pushSettingsToServer(oldSettings, newSettings) {
-    return async () => {
+    return async dispatch => {
+        const processId = uuid();
+
         const diffSettings = oldSettings ? diff(newSettings, oldSettings) : newSettings;
 
         if (Object.keys(diffSettings).length === 0) {
             return newSettings;
         }
 
-        const result = await sendRequest(
-            {
-                headers: {
-                    Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-                },
-                method: 'PUT',
-                url: `${getConfig().apiUrl}/v1/settings`,
-                data: diffSettings,
-                responseType: 'json'
-            });
+        try {
+            const result = await sendRequest(
+                {
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
+                    method: 'PUT',
+                    url: `${getConfig().apiUrl}/v1/settings`,
+                    data: diffSettings,
+                    responseType: 'json'
+                });
 
-        return result.data;
+            return result.data;
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: 'Save settings to server',
+                error: getErrorMessages(error, true)
+            }));
+
+            throw error;
+        }
     };
 }
 
 function deleteObjectFromServer(property, objectId) {
-    return async () => {
-        await sendRequest(
-            {
-                headers: {
-                    Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
-                },
-                method: 'DELETE',
-                url: `${getConfig().apiUrl}/v1/${property}/${objectId}`
-            });
+    return async dispatch => {
+        const processId = uuid();
+
+        try {
+            await sendRequest(
+                {
+                    headers: {
+                        Authorization: `Bearer ${(await Auth.currentSession()).getAccessToken().getJwtToken()}`
+                    },
+                    method: 'DELETE',
+                    url: `${getConfig().apiUrl}/v1/${property}/${objectId}`
+                });
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Delete object of type "${property}" from server`,
+                error: error.toString()
+            }));
+
+            throw error;
+        }
     };
 }
 

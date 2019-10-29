@@ -35,10 +35,10 @@ function UserMenu() {
             ) : null}
             <LeftRight
                 left={(
-                    <Button type="dashed" onClick={onShowAccount}>Account</Button>
+                    <Button type="primary" onClick={onShowAccount}>Account</Button>
                 )}
                 right={(
-                    <Button type="primary" onClick={sessionApi.logout}>Logout</Button>
+                    <Button type="dashed" onClick={sessionApi.logout}>Logout</Button>
                 )} />
         </React.Fragment>
     );

@@ -1,15 +1,11 @@
-import React from 'react';
-import { Modal } from 'antd';
-import moment from 'moment';
 import uuid from 'uuid/v4';
+import moment from 'moment';
 import {
     loadFromFile,
     loadFromServer,
     saveToFile
 } from 'actions/ActionUtils';
-import { setAccountManagerOptions } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
-import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import Constants from 'constants/Constants';
 import { getObjectById } from 'selectors/ObjectSelectors';
 import { filterByStatic } from 'utils/CategoryUtils';
@@ -64,7 +60,7 @@ export function addObject(
     return async (dispatch, getState) => {
         const processId = uuid();
 
-        let newObject = null;
+        let newObject;
 
         try {
             let id = uuid();
@@ -83,78 +79,41 @@ export function addObject(
             });
 
             newObject = getObjectById(getState(), property, id);
-
-            const action = await dispatch({
-                type: 'POST_ADD_OBJECT',
-                property,
-                object: newObject,
-                options
-            });
-
-            return action.addedObject || newObject;
         } catch (error) {
-            if (error.response &&
-                error.response.status === 403 &&
-                error.response.data &&
-                error.response.data.code === 'max_objects_reached' &&
-                error.response.data.subscriptionInfo &&
-                error.response.data.subscriptionInfo.type === 'free') {
-                await dispatch({
-                    type: 'DELETE_OBJECT',
-                    property,
-                    generateId: () => uuid(),
-                    updateDate: moment().toISOString(),
-                    objectId: newObject.id,
-                    options
-                });
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                title: `Add "${object && object.title ? object.title : ''}" of type "${property}"`,
+                error: error.toString()
+            }));
 
-                Modal.info({
-                    icon: null,
-                    width: 800,
-                    content: (<CloudMaxObjectsReachedMessage setAccountManagerOptions={() => dispatch(setAccountManagerOptions({ visible: true }))} />)
-                });
-
-                throw error;
-            } else {
-                dispatch(updateProcess({
-                    id: processId,
-                    state: 'ERROR',
-                    title: `Add "${object ? object.title : ''}" of type "${property}"`,
-                    error: error.toString()
-                }));
-
-                throw error;
-            }
+            throw error;
         }
+
+        const action = await dispatch({
+            type: 'POST_ADD_OBJECT',
+            property,
+            object: newObject,
+            options
+        });
+
+        return action.addedObject || newObject;
     };
 }
 
 export function duplicateObject(property, object, options = {}) {
     return async dispatch => {
-        const processId = uuid();
+        const objects = Array.isArray(object) ? object : [object];
+        const addedObjects = [];
 
-        try {
-            const objects = Array.isArray(object) ? object : [object];
-            const addedObjects = [];
+        for (let o of objects) {
+            addedObjects.push(await dispatch(addObject(property, o, options)));
+        }
 
-            for (let o of objects) {
-                addedObjects.push(await dispatch(addObject(property, o, options)));
-            }
-
-            if (Array.isArray(object)) {
-                return addedObjects;
-            } else {
-                return addedObjects[0];
-            }
-        } catch (error) {
-            dispatch(updateProcess({
-                id: processId,
-                state: 'ERROR',
-                title: `Duplicate object(s) of type "${property}"`,
-                error: error.toString()
-            }));
-
-            throw error;
+        if (Array.isArray(object)) {
+            return addedObjects;
+        } else {
+            return addedObjects[0];
         }
     };
 }
@@ -163,8 +122,11 @@ export function updateObject(property, object, options = {}) {
     return async (dispatch, getState) => {
         const processId = uuid();
 
+        let oldObject;
+        let newObject;
+
         try {
-            const oldObject = getObjectById(getState(), property, object.id);
+            oldObject = getObjectById(getState(), property, object.id);
 
             await dispatch({
                 type: 'UPDATE_OBJECT',
@@ -175,17 +137,7 @@ export function updateObject(property, object, options = {}) {
                 options
             });
 
-            const newObject = getObjectById(getState(), property, object.id);
-
-            await dispatch({
-                type: 'POST_UPDATE_OBJECT',
-                property,
-                oldObject,
-                newObject,
-                options
-            });
-
-            return newObject;
+            newObject = getObjectById(getState(), property, object.id);
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
@@ -196,6 +148,16 @@ export function updateObject(property, object, options = {}) {
 
             throw error;
         }
+
+        await dispatch({
+            type: 'POST_UPDATE_OBJECT',
+            property,
+            oldObject,
+            newObject,
+            options
+        });
+
+        return newObject;
     };
 }
 
@@ -212,13 +174,6 @@ export function deleteObject(property, objectId, options = {}) {
                 objectId,
                 options
             });
-
-            await dispatch({
-                type: 'POST_DELETE_OBJECT',
-                property,
-                objectId,
-                options
-            });
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
@@ -229,6 +184,13 @@ export function deleteObject(property, objectId, options = {}) {
 
             throw error;
         }
+
+        await dispatch({
+            type: 'POST_DELETE_OBJECT',
+            property,
+            objectId,
+            options
+        });
     };
 }
 
