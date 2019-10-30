@@ -6,7 +6,7 @@ import { getConfig } from 'config/Config';
 import { getSession } from 'selectors/SessionSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
 
-export async function refreshCurrentUser() {
+export function refreshCurrentUser() {
     return async dispatch => {
         const session = await Auth.currentSession();
 

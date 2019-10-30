@@ -16,6 +16,7 @@ function AccountSummary({ customer }) {
             {!!customer && (
                 <Descriptions title="Billing" column={1} size="small" bordered>
                     <Descriptions.Item label="Customer ID">{customer.id}</Descriptions.Item>
+                    <Descriptions.Item label="Customer Balance">{(customer.balance / 100).toFixed(2)} {customer.currency}</Descriptions.Item>
                     <Descriptions.Item label="Name">{customer.name}</Descriptions.Item>
                     <Descriptions.Item label="Email">{customer.email}</Descriptions.Item>
                     {!!customer.address && (
