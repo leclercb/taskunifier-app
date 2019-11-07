@@ -9,7 +9,7 @@ import { move } from 'utils/ArrayUtils';
 export const resizeHandler = (prefix, updateSettings) => (data, fieldId, width) => {
     updateSettings(
         {
-            [prefix + fieldId]: width
+            [prefix + fieldId]: Math.max(10, width)
         },
         {
             skipServerUpdate: !data.stop,
