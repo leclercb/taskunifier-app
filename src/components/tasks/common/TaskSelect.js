@@ -9,7 +9,7 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 export const TaskSelect = React.forwardRef(function TaskSelect(props, ref) {
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
-    const value = taskApi.tasks.find(task => task.id === props.value) ? props.value : null;
+    const value = taskApi.tasks.find(task => task.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

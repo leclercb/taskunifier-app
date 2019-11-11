@@ -7,7 +7,7 @@ import { useContactApi } from 'hooks/UseContactApi';
 
 export const ContactSelect = React.forwardRef(function ContactSelect(props, ref) {
     const contactApi = useContactApi();
-    const value = contactApi.contacts.find(contact => contact.id === props.value) ? props.value : null;
+    const value = contactApi.contacts.find(contact => contact.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

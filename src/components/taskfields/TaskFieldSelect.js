@@ -6,7 +6,7 @@ import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 
 export const TaskFieldSelect = React.forwardRef(function TaskFieldSelect(props, ref) {
     const taskFieldApi = useTaskFieldApi();
-    const value = taskFieldApi.taskFields.find(taskField => taskField.id === props.value) ? props.value : null;
+    const value = taskFieldApi.taskFields.find(taskField => taskField.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

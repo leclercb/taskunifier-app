@@ -6,7 +6,7 @@ import { useFolderApi } from 'hooks/UseFolderApi';
 
 export const FolderSelect = React.forwardRef(function FolderSelect(props, ref) {
     const folderApi = useFolderApi();
-    const value = folderApi.folders.find(folder => folder.id === props.value) ? props.value : null;
+    const value = folderApi.folders.find(folder => folder.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

@@ -6,7 +6,7 @@ import { useContextApi } from 'hooks/UseContextApi';
 
 export const ContextSelect = React.forwardRef(function ContextSelect(props, ref) {
     const contextApi = useContextApi();
-    const value = contextApi.contexts.find(context => context.id === props.value) ? props.value : null;
+    const value = contextApi.contexts.find(context => context.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

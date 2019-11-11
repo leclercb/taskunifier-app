@@ -6,7 +6,7 @@ import { useNoteApi } from 'hooks/UseNoteApi';
 
 export const NoteSelect = React.forwardRef(function NoteSelect(props, ref) {
     const noteApi = useNoteApi();
-    const value = noteApi.notes.find(note => note.id === props.value) ? props.value : null;
+    const value = noteApi.notes.find(note => note.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

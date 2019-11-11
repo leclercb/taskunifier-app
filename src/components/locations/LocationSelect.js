@@ -6,7 +6,7 @@ import { useLocationApi } from 'hooks/UseLocationApi';
 
 export const LocationSelect = React.forwardRef(function LocationSelect(props, ref) {
     const locationApi = useLocationApi();
-    const value = locationApi.locations.find(location => location.id === props.value) ? props.value : null;
+    const value = locationApi.locations.find(location => location.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>
