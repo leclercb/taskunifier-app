@@ -6,7 +6,7 @@ import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 
 export const NoteFieldSelect = React.forwardRef(function NoteFieldSelect(props, ref) {
     const noteFieldApi = useNoteFieldApi();
-    const value = noteFieldApi.noteFields.find(noteField => noteField.id === props.value) ? props.value : null;
+    const value = noteFieldApi.noteFields.find(noteField => noteField.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

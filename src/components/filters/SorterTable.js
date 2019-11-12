@@ -58,7 +58,7 @@ function SorterTable(props) {
         const settingKey = props.widthSettingPrefix + field.id;
         let width = Number(settingsApi.settings[settingKey]);
 
-        if (!width) {
+        if (!width || width < 10) {
             width = getWidthForType(field.type);
         }
 

@@ -1,21 +1,20 @@
 import React from 'react';
 import { Modal } from 'antd';
 import { Auth } from 'aws-amplify';
+import moment from 'moment';
 import uuid from 'uuid/v4';
-import { buyItem } from 'actions/ItemActions';
+import { setAccountManagerOptions } from 'actions/AppActions';
 import { changeId } from 'actions/ObjectActions';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import { getConfig } from 'config/Config';
 import { getObjectById } from 'selectors/ObjectSelectors';
-import { getSession } from 'selectors/SessionSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
 import { diff } from 'utils/ObjectUtils';
 
 function pushObjectToServer(property, oldObject, newObject) {
-    return async (dispatch, getState) => {
-        const state = getState();
+    return async dispatch => {
         const processId = uuid();
 
         const diffObject = oldObject ? diff(newObject, oldObject) : { ...newObject };
@@ -45,23 +44,34 @@ function pushObjectToServer(property, oldObject, newObject) {
 
             return result.data;
         } catch (error) {
+            if (!oldObject) {
+                await dispatch({
+                    type: 'DELETE_OBJECT',
+                    property,
+                    generateId: () => uuid(),
+                    updateDate: moment().toISOString(),
+                    objectId: newObject.id,
+                    options: {}
+                });
+            }
+
             if (error.response &&
                 error.response.status === 403 &&
                 error.response.data &&
-                error.response.data.code === 'max_objects_reached' &&
-                error.response.data.subscriptionType === 'free') {
-                Modal.info({
+                error.response.data.code === 'max_objects_reached') {
+                const modal = Modal.info({
                     icon: null,
                     width: 800,
-                    content: (<CloudMaxObjectsReachedMessage
-                        session={getSession(state)}
-                        buyItem={(itemSku, user, email) => dispatch(buyItem(itemSku, user, email))} />)
+                    content: (<CloudMaxObjectsReachedMessage setAccountManagerOptions={() => {
+                        modal.destroy();
+                        dispatch(setAccountManagerOptions({ visible: true }));
+                    }} />)
                 });
             } else {
                 dispatch(updateProcess({
                     id: processId,
                     state: 'ERROR',
-                    title: `Push "${newObject.title}" of type "${property}" to server`,
+                    title: `Push "${newObject && newObject.title ? newObject.title : ''}" of type "${property}" to server`,
                     error: getErrorMessages(error, true)
                 }));
             }

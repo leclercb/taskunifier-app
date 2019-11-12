@@ -56,7 +56,7 @@ function NoteTable() {
         const settingKey = 'noteColumnWidth_' + field.id;
         let width = Number(settingsApi.settings[settingKey]);
 
-        if (!width) {
+        if (!width || width < 10) {
             width = getWidthForType(field.type);
         }
 

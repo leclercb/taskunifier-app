@@ -6,7 +6,7 @@ import { useGoalApi } from 'hooks/UseGoalApi';
 
 export const GoalSelect = React.forwardRef(function GoalSelect(props, ref) {
     const goalApi = useGoalApi();
-    const value = goalApi.goals.find(goal => goal.id === props.value) ? props.value : null;
+    const value = goalApi.goals.find(goal => goal.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

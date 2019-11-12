@@ -28,7 +28,10 @@ export function verifyLicense(license) {
         try {
             const content = JSON.parse(jsonContent);
 
-            if (content.itemSku !== getConfig().appItemSku && content.itemSku !== getConfig().appTrialItemSku) {
+            // Backward compatibility with older licenses
+            const sku = content.sku || content.itemSku;
+
+            if (sku !== getConfig().appItemSku && sku !== getConfig().appTrialItemSku) {
                 return null;
             }
 

@@ -25,6 +25,7 @@ export const getTaskFieldManager = state => state.app.taskFieldManager;
 export const getTaskFilterManager = state => state.app.taskFilterManager;
 export const getTaskEditionManager = state => state.app.taskEditionManager;
 export const getTaskTemplateManager = state => state.app.taskTemplateManager;
+export const getAccountManager = state => state.app.accountManager;
 export const getSettingManager = state => state.app.settingManager;
 
 export const isValidLicense = createSelector(
@@ -39,7 +40,7 @@ export const isPro = createSelector(
         if (process.env.REACT_APP_MODE === 'electron') {
             return isValidLicense;
         } else {
-            return session.user ? session.user.metaData.computedSubscriptionType === 'pro' : false;
+            return session.user ? session.user.metaData.subscriptionInfo.type === 'pro' : false;
         }
     }
 );

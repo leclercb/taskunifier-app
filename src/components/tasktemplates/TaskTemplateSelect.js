@@ -6,7 +6,7 @@ import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 
 export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(props, ref) {
     const taskTemplateApi = useTaskTemplateApi();
-    const value = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === props.value) ? props.value : null;
+    const value = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === props.value) ? props.value : undefined;
 
     return (
         <Select ref={ref} allowClear={true} {...props} value={value}>

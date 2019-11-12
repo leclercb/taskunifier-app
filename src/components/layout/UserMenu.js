@@ -1,16 +1,16 @@
 import React from 'react';
-import { Button, Descriptions, Popover, message } from 'antd';
+import { Button, Descriptions, Popover } from 'antd';
 import Avatar from 'components/common/Avatar';
 import LeftRight from 'components/common/LeftRight';
-import { getConfig } from 'config/Config';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useSessionApi } from 'hooks/UseSessionApi';
 
 function UserMenu() {
+    const appApi = useAppApi();
     const sessionApi = useSessionApi();
 
-    const onBuyItem = async () => {
-        message.info('Redirecting to Paypal...', 5);
-        await sessionApi.buyItem(getConfig().cloudItemSku, sessionApi.session.user.id, sessionApi.session.user.email);
+    const onShowAccount = async () => {
+        appApi.setAccountManagerOptions({ visible: true });
     };
 
     const content = (
@@ -29,19 +29,16 @@ function UserMenu() {
                         {sessionApi.session.user.email}
                     </Descriptions.Item>
                     <Descriptions.Item label="Subscription Type">
-                        {sessionApi.session.user.metaData.computedSubscriptionType}
-                    </Descriptions.Item>
-                    <Descriptions.Item label="Subscription Expiration">
-                        {sessionApi.session.user.metaData.subscriptionExpiration}
+                        {sessionApi.session.user.metaData.subscriptionInfo.type}
                     </Descriptions.Item>
                 </Descriptions>
             ) : null}
             <LeftRight
                 left={(
-                    <Button type="dashed" onClick={onBuyItem}>Extend your &quot;pro&quot; subscription</Button>
+                    <Button type="primary" onClick={onShowAccount}>Account</Button>
                 )}
                 right={(
-                    <Button type="primary" onClick={sessionApi.logout}>Logout</Button>
+                    <Button type="dashed" onClick={sessionApi.logout}>Logout</Button>
                 )} />
         </React.Fragment>
     );
