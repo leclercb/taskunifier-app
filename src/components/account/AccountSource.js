@@ -8,7 +8,7 @@ function AccountSource({ customer, onCustomerUpdated, stripe }) {
     const stripeApi = useStripeApi();
 
     const [busy, setBusy] = useState(false);
-    const source = customer && customer.sources.data.length > 0 ? customer.sources.data[0] : null;
+    const source = customer && customer.sources && customer.sources.data && customer.sources.data.length > 0 ? customer.sources.data[0] : null;
 
     const onSubmit = async () => {
         try {
