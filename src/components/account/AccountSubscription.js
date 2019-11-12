@@ -95,6 +95,11 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
                         setBusy(true);
                         const subscription = await stripeApi.setCurrentSubscriptionPlan(plan.id, 1);
                         await handleSCA(subscription);
+
+                        Modal.success({
+                            title: 'Subscription',
+                            content: 'The subscription has been successfully activated.'
+                        });
                     } finally {
                         setBusy(false);
                     }
