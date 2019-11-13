@@ -15,7 +15,7 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
     const [busy, setBusy] = useState(false);
     const [scaRequired, setSCARequired] = useState(false);
 
-    const source = customer && customer.sources.data.length > 0 ? customer.sources.data[0] : null;
+    const source = customer && customer.sources && customer.sources.data && customer.sources.data.length > 0 ? customer.sources.data[0] : null;
     const subscription = customer && customer.subscriptions.data.length > 0 ? customer.subscriptions.data[0] : null;
 
     useEffect(() => {
