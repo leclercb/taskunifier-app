@@ -16,7 +16,7 @@ export const updateTask = store => next => async action => {
         }
 
         if (oldTask && !oldTask.completed && task.completed) {
-            newTask.completionDate = action.updateDate;
+            task.completionDate = action.updateDate;
 
             if (canRepeat(task)) {
                 newTask.completed = false;
