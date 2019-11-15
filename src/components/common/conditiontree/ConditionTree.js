@@ -78,9 +78,9 @@ function ConditionTree(props) {
         } else {
             return (
                 <React.Fragment>
-                    <AddButton onClick={(key) => onAdd(null, key)}>
-                        {props.addMenuItems}
-                    </AddButton>
+                    <AddButton
+                        onClick={(key) => onAdd(null, key)}
+                        menuItems={props.addMenuItems} />
                     <Empty description='No filter, click on the "+" icon to add your first condition !' />
                 </React.Fragment>
             );

@@ -49,9 +49,8 @@ function ConditionGroup(props) {
                         <div className='condition-group-operator-actions'>
                             <AddButton
                                 disabled={condition.operator === 'NOT' && condition.conditions.length >= 1}
-                                onClick={(key) => props.onAdd(condition, key)}>
-                                {props.addMenuItems}
-                            </AddButton>
+                                onClick={(key) => props.onAdd(condition, key)}
+                                menuItems={props.addMenuItems} />
                             <br />
                             <Button
                                 shape="circle"
