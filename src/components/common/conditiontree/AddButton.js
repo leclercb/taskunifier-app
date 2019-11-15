@@ -21,7 +21,7 @@ function AddButton(props) {
             content={(
                 <React.Fragment>
                     <Input.Search
-                        placeholder="Pattern"
+                        placeholder="Search..."
                         allowClear={true}
                         defaultValue={filter}
                         onChange={event => setFilter(event.target.value)} />
