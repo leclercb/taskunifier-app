@@ -55,7 +55,7 @@ function AddButton(props) {
 }
 
 AddButton.propTypes = {
-    menuItems: PropTypes.oneOfType([PropTypes.array.isRequired, PropTypes.func.isRequired]).isRequired,
+    menuItems: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func.isRequired]).isRequired,
     disabled: PropTypes.bool,
     onClick: PropTypes.func.isRequired
 };

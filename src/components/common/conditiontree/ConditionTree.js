@@ -106,7 +106,7 @@ ConditionTree.propTypes = {
     condition: ConditionPropType,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    addMenuItems: PropTypes.node.isRequired,
+    addMenuItems: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func.isRequired]).isRequired,
     createLeafObject: PropTypes.func.isRequired,
     getLeafComponent: PropTypes.any.isRequired,
     onSaveCondition: PropTypes.func.isRequired

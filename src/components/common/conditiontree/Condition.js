@@ -43,7 +43,7 @@ Condition.propTypes = {
     onDelete: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
     onEndDrag: PropTypes.func.isRequired,
-    addMenuItems: PropTypes.node.isRequired,
+    addMenuItems: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func.isRequired]).isRequired,
     getLeafComponent: PropTypes.any.isRequired
 };
 

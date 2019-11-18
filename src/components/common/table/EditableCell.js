@@ -1,20 +1,25 @@
-import { useEffect } from 'react';
-import { Form } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 
 function EditableCell(props) {
+    const [errors, setErrors] = useState([]);
+
     useEffect(() => {
         props.form.resetFields();
     }, [props.record.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const onChange = event => {
+    const onChange = () => {
         props.form.validateFields((error, values) => {
-            if (error && error[event.currentTarget.id]) {
+            if (error && error[props.field.id]) {
+                setErrors(error[props.field.id].errors);
                 return;
             }
+
+            setErrors([]);
 
             if (props.editing) {
                 props.toggleEdit();
@@ -34,14 +39,21 @@ function EditableCell(props) {
         inputProps.autoFocus = true;
     }
 
-    return props.form.getFieldDecorator(props.field.id, {
-        valuePropName: getValuePropNameForType(props.field.type),
-        initialValue: props.value
-    })(
-        getInputForType(
-            props.field.type,
-            props.field.options,
-            { ...inputProps })
+    return (
+        <Tooltip
+            visible={errors.length > 0}
+            title={errors.map(error => <p key={error.field}>{error.message}</p>)}>
+            {props.form.getFieldDecorator(props.field.id, {
+                valuePropName: getValuePropNameForType(props.field.type),
+                initialValue: props.value,
+                rules: props.field.rules ? props.field.rules(props.record) : []
+            })(
+                getInputForType(
+                    props.field.type,
+                    props.field.options,
+                    { ...inputProps })
+            )}
+        </Tooltip>
     );
 }
 
