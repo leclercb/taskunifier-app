@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
+import { setAccountManagerOptions } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
+import ProLockedMessage from 'components/pro/ProLockedMessage';
+import { isPro } from 'selectors/AppSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { isSynchronizing } from 'selectors/SynchronizationSelectors';
 import { getSynchronizationApp, getSynchronizationApps } from 'utils/SynchronizationUtils';
@@ -79,6 +82,21 @@ export function synchronize() {
         try {
             const state = getState();
             const settings = getSettings(state);
+
+            if (!isPro(state)) {
+                const modal = Modal.info({
+                    icon: null,
+                    width: 800,
+                    content: (
+                        <ProLockedMessage setAccountManagerOptions={options => {
+                            modal.destroy();
+                            dispatch(setAccountManagerOptions(options));
+                        }} />
+                    )
+                });
+
+                return;
+            }
 
             if (isSynchronizing(state)) {
                 return;

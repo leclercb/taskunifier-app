@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, Modal, Select, notification } from 'antd';
 import moment from 'moment';
 import { getUserDataPath } from 'actions/ActionUtils';
-import { loadData, saveData, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
+import { loadData, saveData, setAccountManagerOptions, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
@@ -267,13 +267,17 @@ export function getCategories() {
                     id: 'licenseIsValid',
                     title: '',
                     type: 'component',
-                    value: settings => {
+                    value: (settings, updateSettings, dispatch) => {
                         const license = verifyLicense(settings.license);
 
                         if (license) {
                             return (<ProUnlockedMessage license={license} />);
                         } else {
-                            return (<ProLockedMessage info={true} />);
+                            return (
+                                <ProLockedMessage
+                                    setAccountManagerOptions={options => dispatch(setAccountManagerOptions(options))}
+                                    info={true} />
+                            );
                         }
                     },
                     editable: false,
