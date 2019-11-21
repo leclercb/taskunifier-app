@@ -62,10 +62,12 @@ function pushObjectToServer(property, oldObject, newObject) {
                 const modal = Modal.info({
                     icon: null,
                     width: 800,
-                    content: (<CloudMaxObjectsReachedMessage setAccountManagerOptions={() => {
-                        modal.destroy();
-                        dispatch(setAccountManagerOptions({ visible: true }));
-                    }} />)
+                    content: (
+                        <CloudMaxObjectsReachedMessage setAccountManagerOptions={options => {
+                            modal.destroy();
+                            dispatch(setAccountManagerOptions(options));
+                        }} />
+                    )
                 });
             } else {
                 dispatch(updateProcess({

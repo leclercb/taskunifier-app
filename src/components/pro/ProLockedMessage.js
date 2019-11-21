@@ -3,12 +3,9 @@ import { Button, Empty } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getConfig } from 'config/Config';
-import { useAppApi } from 'hooks/UseAppApi';
 import { openExternalLink } from 'utils/ElectronUtils';
 
-export function ProLockedMessage({ info }) {
-    const appApi = useAppApi();
-
+export function ProLockedMessage({ setAccountManagerOptions, info }) {
     if (process.env.REACT_APP_MODE === 'electron') {
         const onClick = () => {
             openExternalLink(getConfig().appUrl);
@@ -29,7 +26,7 @@ export function ProLockedMessage({ info }) {
         );
     } else {
         const onShowAccount = async () => {
-            appApi.setAccountManagerOptions({ visible: true });
+            setAccountManagerOptions({ visible: true });
         };
 
         let description = 'This feature requires a TaskUnifier Cloud Pro subscription !';
@@ -49,6 +46,7 @@ export function ProLockedMessage({ info }) {
 }
 
 ProLockedMessage.propTypes = {
+    setAccountManagerOptions: PropTypes.func.isRequired,
     info: PropTypes.bool
 };
 
