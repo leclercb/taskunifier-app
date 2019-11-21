@@ -78,9 +78,9 @@ function ConditionTree(props) {
         } else {
             return (
                 <React.Fragment>
-                    <AddButton onClick={(key) => onAdd(null, key)}>
-                        {props.addMenuItems}
-                    </AddButton>
+                    <AddButton
+                        onClick={(key) => onAdd(null, key)}
+                        menuItems={props.addMenuItems} />
                     <Empty description='No filter, click on the "+" icon to add your first condition !' />
                 </React.Fragment>
             );
@@ -106,7 +106,7 @@ ConditionTree.propTypes = {
     condition: ConditionPropType,
     context: PropTypes.object,
     disabled: PropTypes.bool.isRequired,
-    addMenuItems: PropTypes.node.isRequired,
+    addMenuItems: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func.isRequired]).isRequired,
     createLeafObject: PropTypes.func.isRequired,
     getLeafComponent: PropTypes.any.isRequired,
     onSaveCondition: PropTypes.func.isRequired
