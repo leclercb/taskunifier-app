@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Modal } from 'antd';
 import moment from 'moment';
 import { DndProvider } from 'react-dnd';
-import { useInterval } from 'hooks/UseInterval';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from 'components/layout/AppLayout';
 import withJoyride from 'containers/WithJoyride';
@@ -154,7 +153,8 @@ function App() {
                 interval = setInterval(() => {
                     const { automaticSynchronization, automaticSynchronizationInterval, lastAutomaticSynchronization } = settingsApi.settings;
 
-                    if (automaticSynchronization &&
+                    if (appApi.pro &&
+                        automaticSynchronization &&
                         Number.isInteger(automaticSynchronizationInterval) &&
                         automaticSynchronizationInterval > 0 &&
                         (!lastAutomaticSynchronization || moment().diff(moment(lastAutomaticSynchronization)) > automaticSynchronizationInterval * 60 * 1000)) {
@@ -171,18 +171,12 @@ function App() {
             }
         },
         [ // eslint-disable-line react-hooks/exhaustive-deps
+            appApi.pro,
             settingsApi.settings.automaticSynchronization,
             settingsApi.settings.automaticSynchronizationInterval,
             settingsApi.settings.lastAutomaticSynchronization
         ]
     );
-
-    useInterval(() => {
-        if (process.env.REACT_APP_MODE === 'electron') {
-            appApi.backupData();
-            appApi.synchronize();
-        }
-    }, null);
 
     return (
         <DndProvider backend={HTML5Backend}>
