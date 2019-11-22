@@ -22,6 +22,13 @@ const template = [
     {
         label: 'File',
         submenu: [
+            {
+                label: 'Settings',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-settings');
+                }
+            },
+            { type: 'separator' },
             isMac ? { role: 'close' } : { role: 'quit' }
         ]
     },
@@ -63,6 +70,32 @@ const template = [
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-add-note');
                 }
+            },
+            {
+                label: 'Remove Note(s)',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-remove-notes');
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Print Notes',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-print-notes');
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Note Filter Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-note-filter-manager');
+                }
+            },
+            {
+                label: 'Note Field Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-note-field-manager');
+                }
             }
         ]
     },
@@ -74,6 +107,67 @@ const template = [
                 accelerator: process.platform === 'darwin' ? 'Cmd+Alt+T' : 'Ctrl+Shift+T',
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-add-task');
+                }
+            },
+            {
+                label: 'Batch Add Tasks',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-batch-add-tasks');
+                }
+            },
+            {
+                label: 'Edit Task',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-edit-task');
+                }
+            },
+            {
+                label: 'Batch Edit Tasks',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-batch-edit-tasks');
+                }
+            },
+            {
+                label: 'Remove Task(s)',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-remove-tasks');
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Print Tasks',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-print-tasks');
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Task Filter Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-task-filter-manager');
+                }
+            },
+            {
+                label: 'Task Template Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-task-template-manager');
+                }
+            },
+            {
+                label: 'Task Field Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-task-field-manager');
+                }
+            }
+        ]
+    },
+    {
+        label: 'Synchronization',
+        submenu: [
+            {
+                label: 'Synchronize',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-synchronize');
                 }
             }
         ]
@@ -97,6 +191,38 @@ const template = [
     {
         label: 'Window',
         submenu: [
+            {
+                label: 'Category Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-category-manager');
+                }
+            },
+            {
+                label: 'Reminder Manager',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-reminder-manager');
+                }
+            },
+            { type: 'separator' },
+            {
+                label: 'Show Tasks',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-show-tasks');
+                }
+            },
+            {
+                label: 'Show Calendar',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-show-calendar');
+                }
+            },
+            {
+                label: 'Show Notes',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-show-notes');
+                }
+            },
+            { type: 'separator' },
             { role: 'minimize' },
             { role: 'zoom' },
             ...(isMac ?

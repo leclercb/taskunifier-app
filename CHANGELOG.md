@@ -1,3 +1,15 @@
+# 0.7.1
+
+## New Features
+
+* Add search input in condition tree add menu
+
+## Bug Fixes
+
+* Fix column reordering
+* Set completion date
+* Synchronization license check
+
 # 0.7.0
 
 ## New Features
