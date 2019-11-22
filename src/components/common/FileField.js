@@ -80,7 +80,7 @@ class FileField extends React.Component {
                         text={this.state.value} />
                 );
             } else {
-                return this.state.value;
+                return <span>{this.state.value}</span>;
             }
         }
 
