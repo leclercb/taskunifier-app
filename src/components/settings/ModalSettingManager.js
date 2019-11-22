@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
 import Icon from 'components/common/Icon';
+import LeftRight from 'components/common/LeftRight';
 import SettingManager from 'components/settings/SettingManager';
 import { useAppApi } from 'hooks/UseAppApi';
 
@@ -20,9 +21,15 @@ function ModalSettingManager() {
             onOk={onClose}
             onCancel={onClose}
             footer={(
-                <Button onClick={onClose}>
-                    Close
-                </Button>
+                <LeftRight right={(
+                    <Button onClick={onClose}>
+                        Close
+                    </Button>
+                )}>
+                    <div style={{ textAlign: 'left', fontSize: 10 }}>
+                        Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({process.env.REACT_APP_GIT_COMMIT_HASH})
+                    </div>
+                </LeftRight>
             )}>
             <SettingManager />
         </Modal>
