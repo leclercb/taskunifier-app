@@ -16,7 +16,7 @@ function UserMenu() {
     const content = (
         <React.Fragment>
             <div style={{ width: '100%', textAlign: 'right', fontSize: 10 }}>
-                Version: <strong>{process.env.REACT_APP_VERSION}</strong>
+                Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({process.env.REACT_APP_GIT_COMMIT_HASH})
             </div>
             {sessionApi.session.user ? (
                 <Descriptions
