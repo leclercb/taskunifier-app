@@ -3,11 +3,13 @@
 ## New Features
 
 * Add search input in condition tree add menu
+* Display version in settings
 
 ## Bug Fixes
 
 * Fix column reordering
 * Set completion date
+* Fix add linked files
 * Synchronization license check
 
 # 0.7.0
