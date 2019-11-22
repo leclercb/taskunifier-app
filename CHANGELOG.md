@@ -1,3 +1,9 @@
+# 0.8.0
+
+## Bug Fixes
+
+* Fix check new version
+
 # 0.7.1
 
 ## New Features
