@@ -26,7 +26,7 @@ function ModalSettingManager() {
                         Close
                     </Button>
                 )}>
-                    <div style={{ fontSize: 10 }}>
+                    <div style={{ textAlign: 'left', fontSize: 10 }}>
                         Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({process.env.REACT_APP_GIT_COMMIT_HASH})
                     </div>
                 </LeftRight>
