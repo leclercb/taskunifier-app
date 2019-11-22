@@ -62,7 +62,7 @@
         "babel-eslint": "^10.0.3",
         "babel-jest": "^24.9.0",
         "electron": "^7.1.2",
-        "electron-builder": "^22.1.0",
+        "electron-builder": "^21.2.0",
         "electron-devtools-installer": "^2.2.4",
         "enzyme": "^3.10.0",
         "enzyme-adapter-react-16": "^1.15.1",
