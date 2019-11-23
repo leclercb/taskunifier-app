@@ -1,5 +1,10 @@
 # 0.8.0
 
+## New Features
+
+* Improve toolbar layout
+* Change default window size
+
 ## Bug Fixes
 
 * Fix check new version
