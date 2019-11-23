@@ -3,7 +3,6 @@ import { Button, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
-import Spacer from 'components/common/Spacer';
 import UserMenu from 'components/layout/UserMenu';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
