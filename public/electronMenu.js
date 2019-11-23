@@ -23,6 +23,19 @@ const template = [
         label: 'File',
         submenu: [
             {
+                label: 'Save',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-save');
+                }
+            },
+            {
+                label: 'Backup',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-backup');
+                }
+            },
+            { type: 'separator' },
+            {
                 label: 'Settings',
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-settings');
@@ -38,27 +51,7 @@ const template = [
         submenu: [
             { role: 'cut' },
             { role: 'copy' },
-            { role: 'paste' },
-            ...(isMac ?
-                [
-                    { role: 'pasteAndMatchStyle' },
-                    { role: 'delete' },
-                    { role: 'selectAll' },
-                    { type: 'separator' },
-                    {
-                        label: 'Speech',
-                        submenu: [
-                            { role: 'startspeaking' },
-                            { role: 'stopspeaking' }
-                        ]
-                    }
-                ] :
-                [
-                    { role: 'delete' },
-                    { type: 'separator' },
-                    { role: 'selectAll' }
-                ]
-            )
+            { role: 'paste' }
         ]
     },
     {

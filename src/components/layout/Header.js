@@ -3,7 +3,6 @@ import { Button, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
-import Spacer from 'components/common/Spacer';
 import UserMenu from 'components/layout/UserMenu';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
@@ -127,14 +126,11 @@ function Header() {
 
     const createButton = (icon, text, onClick, disabled = false) => {
         return (
-            <React.Fragment>
-                <Tooltip placement="bottom" title={text}>
-                    <Button onClick={onClick} disabled={disabled}>
-                        <Icon icon={icon} />
-                    </Button>
-                </Tooltip>
-                <Spacer />
-            </React.Fragment>
+            <Tooltip placement="bottom" title={text}>
+                <Button onClick={onClick} disabled={disabled}>
+                    <Icon icon={icon} />
+                </Button>
+            </Tooltip>
         );
     };
 
@@ -147,7 +143,7 @@ function Header() {
                 {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}
             </React.Fragment>
         )}>
-            <Button.Group style={{ marginRight: 50 }}>
+            <Button.Group style={{ marginRight: 20 }}>
                 <Button
                     type={appApi.selectedView === 'task' ? 'dashed' : 'default'}
                     onClick={onShowTaskContent}>
@@ -164,62 +160,64 @@ function Header() {
                     <Icon icon="book" text="Notes" />
                 </Button>
             </Button.Group>
-            {appApi.selectedView === 'note' ?
-                createButton('plus', 'Add Note', onAddNote)
-                : null}
-            {appApi.selectedView === 'note' ?
-                createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
-                : null}
-            {appApi.selectedView === 'note' ?
-                createButton('print', 'Print Notes', onPrintNotes)
-                : null}
-            {appApi.selectedView === 'note' ?
-                createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
-                : null}
-            {appApi.selectedView === 'note' ?
-                createButton('columns', 'Note Field Manager', onSetNoteFieldManagerVisible)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('plus', 'Add Task', onAddTask)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
-                : null}
-            {(appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar') ?
-                createButton('edit', 'Edit Task', onEditTask, taskApi.selectedTaskIds.length !== 1)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, taskApi.selectedTaskIds.length <= 1 || taskApi.selectedTaskIds.length > 50)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('print', 'Print Tasks', onPrintTasks)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
-                : null}
-            {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                createButton('columns', 'Task Field Manager', onSetTaskFieldManagerVisible)
-                : null}
-            <Spacer />
-            <Spacer />
-            {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
-            {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
-            {process.env.REACT_APP_MODE === 'electron' ?
-                createButton('save', 'Save', onSave)
-                : null}
-            {process.env.REACT_APP_MODE === 'electron' ?
-                createButton('box-open', 'Backup', onBackup)
-                : null}
-            {createButton('cog', 'Settings', onSetSettingsVisible)}
-            {process.env.REACT_APP_MODE === 'electron' ?
-                createButton('sync-alt', 'Synchronization', onSynchronize)
-                : null}
+            <Button.Group style={{ marginRight: 20 }}>
+                {appApi.selectedView === 'note' ?
+                    createButton('plus', 'Add Note', onAddNote)
+                    : null}
+                {appApi.selectedView === 'note' ?
+                    createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
+                    : null}
+                {appApi.selectedView === 'note' ?
+                    createButton('print', 'Print Notes', onPrintNotes)
+                    : null}
+                {appApi.selectedView === 'note' ?
+                    createButton('filter', 'Note Filter Manager', onSetNoteFilterManagerVisible)
+                    : null}
+                {appApi.selectedView === 'note' ?
+                    createButton('columns', 'Note Field Manager', onSetNoteFieldManagerVisible)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('plus', 'Add Task', onAddTask)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
+                    : null}
+                {(appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar') ?
+                    createButton('edit', 'Edit Task', onEditTask, taskApi.selectedTaskIds.length !== 1)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, taskApi.selectedTaskIds.length <= 1 || taskApi.selectedTaskIds.length > 50)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('print', 'Print Tasks', onPrintTasks)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('filter', 'Task Filter Manager', onSetTaskFilterManagerVisible)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('tasks', 'Task Template Manager', onSetTaskTemplateManagerVisible)
+                    : null}
+                {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
+                    createButton('columns', 'Task Field Manager', onSetTaskFieldManagerVisible)
+                    : null}
+            </Button.Group>
+            <Button.Group>
+                {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
+                {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
+                {process.env.REACT_APP_MODE === 'electron' ?
+                    createButton('save', 'Save', onSave)
+                    : null}
+                {process.env.REACT_APP_MODE === 'electron' ?
+                    createButton('box-open', 'Backup', onBackup)
+                    : null}
+                {createButton('cog', 'Settings', onSetSettingsVisible)}
+                {process.env.REACT_APP_MODE === 'electron' ?
+                    createButton('sync-alt', 'Synchronization', onSynchronize)
+                    : null}
+            </Button.Group>
         </LeftRight>
     );
 }

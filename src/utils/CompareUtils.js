@@ -147,7 +147,7 @@ export function compareVersions(a, b) {
         return -1;
     }
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 1; i <= 3; i++) {
         const nbA = Number.parseInt(matchA[i]);
         const nbB = Number.parseInt(matchB[i]);
         const result = compareNumbers(nbA, nbB);

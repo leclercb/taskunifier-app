@@ -1,3 +1,15 @@
+# 0.8.0
+
+## New Features
+
+* Improve file menu
+* Improve toolbar layout
+* Change default window size
+
+## Bug Fixes
+
+* Fix check new version
+
 # 0.7.1
 
 ## New Features

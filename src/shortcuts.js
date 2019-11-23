@@ -2,6 +2,7 @@ import { message } from 'antd';
 import Mousetrap from 'mousetrap';
 import { store } from 'store/Store';
 import {
+    saveData,
     setBatchAddTasksManagerOptions,
     setBatchEditTasksManagerOptions,
     setCategoryManagerOptions,
@@ -17,18 +18,27 @@ import {
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions
 } from 'actions/AppActions';
+import { backupData } from 'actions/BackupActions';
 import { addNote, deleteNote } from 'actions/NoteActions';
 import { printNotes, printTasks } from 'actions/PrintActions';
 import { setSelectedView } from 'actions/SettingActions';
+import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask } from 'actions/TaskActions';
 import { getSelectedNoteIds, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
-import { synchronize } from 'actions/SynchronizationActions';
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
         const { ipcRenderer } = window.require('electron');
+
+        ipcRenderer.on('menu-save', async () => {
+            await executeSave();
+        });
+
+        ipcRenderer.on('menu-backup', async () => {
+            await executeBackup();
+        });
 
         ipcRenderer.on('menu-settings', async () => {
             await executeSettings();
@@ -124,6 +134,14 @@ export function initializeShortcuts() {
             return false;
         });
     }
+}
+
+async function executeSave() {
+    await store.dispatch(saveData());
+}
+
+async function executeBackup() {
+    await store.dispatch(backupData());
 }
 
 async function executeSettings() {

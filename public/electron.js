@@ -17,7 +17,7 @@ function getWindowSettings() {
         const settings = JSON.parse(data);
 
         const window = {
-            width: 1024,
+            width: 1280,
             height: 768
         };
 
@@ -36,7 +36,7 @@ function getWindowSettings() {
         return window;
     } catch (err) {
         return {
-            width: 1024,
+            width: 1280,
             height: 768
         };
     }
