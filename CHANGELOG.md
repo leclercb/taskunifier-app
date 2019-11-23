@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Improve file menu
 * Improve toolbar layout
 * Change default window size
 
