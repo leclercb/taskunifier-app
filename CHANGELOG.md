@@ -1,3 +1,13 @@
+# 0.8.1
+
+## New Features
+
+* Drag and drop multiple tasks at once
+
+## Bug Fixes
+
+* Fix synchronization of sub-tasks
+
 # 0.8.0
 
 ## New Features
