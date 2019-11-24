@@ -9,8 +9,7 @@ import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
-import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
-import { getTasks } from 'selectors/TaskSelectors';
+import { getTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -288,7 +287,7 @@ function convertTaskToRemote(task, state, options) {
         skipParent: false
     }, options || {});
 
-    const tasks = getTaskFieldsFilteredByVisibleState(state);
+    const tasks = getTasksFilteredByVisibleState(state);
     const parent = tasks.find(t => t.id === task.parent);
 
     const contexts = getContextsFilteredByVisibleState(state);
@@ -335,7 +334,7 @@ function convertTaskToLocal(task, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
     const locations = getLocationsFilteredByVisibleState(state);
-    const tasks = getTaskFieldsFilteredByVisibleState(state);
+    const tasks = getTasksFilteredByVisibleState(state);
 
     const context = contexts.find(context => context.refIds.toodledo === task.context);
     const folder = folders.find(folder => folder.refIds.toodledo === task.folder);
