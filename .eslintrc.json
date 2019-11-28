@@ -43,7 +43,7 @@
             "always"
         ],
         "prefer-destructuring": [
-            "error"
+            "off"
         ],
         "quotes": [
             "error",
