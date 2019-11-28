@@ -1,3 +1,18 @@
+# 0.8.1
+
+## New Features
+
+* Drag and drop multiple tasks at once
+* Search task/note is now case insensitive
+* Improved help (guided tour)
+* Include parent tasks when a child matches a filter
+
+## Bug Fixes
+
+* Fix synchronization of tasks (only first 1000 tasks were retrieved)
+* Fix synchronization of sub-tasks
+* Keep note format when synchronizing with Toodledo
+
 # 0.8.0
 
 ## New Features

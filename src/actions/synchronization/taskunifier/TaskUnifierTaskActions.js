@@ -6,8 +6,7 @@ import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
-import { getTaskFieldsFilteredByVisibleState } from 'selectors/TaskFieldSelectors';
-import { getTasks } from 'selectors/TaskSelectors';
+import { getTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { diff, merge } from 'utils/ObjectUtils';
@@ -296,7 +295,7 @@ function convertTaskToRemote(task, state, options) {
     if (options.skipParent) {
         delete remoteTask.parent;
     } else {
-        const tasks = getTaskFieldsFilteredByVisibleState(state);
+        const tasks = getTasksFilteredByVisibleState(state);
         const parent = tasks.find(t => t.id === task.parent);
         remoteTask.parent = parent ? parent.refIds.taskunifier : null;
     }
@@ -309,7 +308,7 @@ function convertTaskToLocal(task, state) {
     const folders = getFoldersFilteredByVisibleState(state);
     const goals = getGoalsFilteredByVisibleState(state);
     const locations = getLocationsFilteredByVisibleState(state);
-    const tasks = getTaskFieldsFilteredByVisibleState(state);
+    const tasks = getTasksFilteredByVisibleState(state);
 
     const context = contexts.find(context => context.refIds.taskunifier === task.context);
     const folder = folders.find(folder => folder.refIds.taskunifier === task.folder);

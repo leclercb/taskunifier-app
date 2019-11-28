@@ -54,7 +54,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);
         }
 
-        let filteredTasks = tasks.filter(task => {
+        const filteredTasks = tasks.filter(task => {
             if (moment(task.creationDate).isAfter(moment(selectedTaskFilterDate))) {
                 return true;
             }
@@ -62,17 +62,19 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedTaskFilter, task, taskFields);
         });
 
-        filteredTasks = filteredTasks.filter(task => {
+        const parentsToAdd = [];
+
+        filteredTasks.forEach(task => {
             const { parents } = tasksMetaData.find(meta => meta.id === task.id);
 
             for (let parent of parents) {
-                if (!filteredTasks.includes(parent)) {
-                    return false;
+                if (!filteredTasks.includes(parent) && !parentsToAdd.includes(parent)) {
+                    parentsToAdd.push(parent);
                 }
             }
-
-            return true;
         });
+
+        filteredTasks.push(...parentsToAdd);
 
         const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, true);
         getTasksFilteredBySelectedFilterResult = result;

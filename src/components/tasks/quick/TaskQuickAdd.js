@@ -90,6 +90,7 @@ function TaskQuickAdd() {
             onFocus={onFocus}
             onBlur={onBlur}
             open={open}
+            className="joyride-task-quick-add"
             style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
                 <Select.Option key='add' value="__ADD__">

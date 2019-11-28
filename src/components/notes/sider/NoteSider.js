@@ -133,6 +133,7 @@ function NoteSider() {
                 openKeys={openKeys}
                 onSelect={onSelect}
                 mode="inline"
+                className="joyride-note-sider"
                 style={{ height: '100%' }}>
                 <Menu.Item
                     key={searchNoteFilter.id}

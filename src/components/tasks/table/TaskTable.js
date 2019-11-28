@@ -89,9 +89,14 @@ function TaskTable() {
     };
 
     const onDropTask = (dragData, dropData) => {
-        taskApi.updateTask({
-            ...dragData.rowData,
-            parent: dropData.rowData.id
+        const found = taskApi.selectedTasks.some(task => task.id === dragData.rowData.id);
+        const tasks = found ? taskApi.selectedTasks : [dragData.rowData];
+
+        tasks.forEach(task => {
+            taskApi.updateTask({
+                ...task,
+                parent: dropData.rowData.id
+            });
         });
     };
 
