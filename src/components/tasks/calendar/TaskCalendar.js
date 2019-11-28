@@ -101,10 +101,12 @@ function TaskCalendar() {
     };
 
     return (
-        <div style={{
-            height: 'calc(100% - 40px)',
-            padding: 3
-        }}>
+        <div
+            className="joyride-task-calendar"
+            style={{
+                height: 'calc(100% - 40px)',
+                padding: 3
+            }}>
             <DnDCalendar
                 className="task-calendar"
                 view={taskApi.selectedCalendarView}

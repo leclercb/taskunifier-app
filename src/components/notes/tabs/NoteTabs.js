@@ -9,12 +9,14 @@ function NoteTabs() {
 
     if (noteApi.selectedNotes.length !== 1) {
         return (
-            <Empty description="Please select one note" />
+            <Empty
+                description="Please select one note"
+                className="joyride-note-tabs" />
         );
     }
 
     return (
-        <Tabs animated={false} className="ant-tabs-full-height">
+        <Tabs animated={false} className="ant-tabs-full-height joyride-note-tabs">
             <Tabs.TabPane tab="Text" key="text">
                 <NoteTextForm note={noteApi.selectedNotes[0]} updateNote={noteApi.updateNote} />
             </Tabs.TabPane>

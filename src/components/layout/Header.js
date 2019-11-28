@@ -5,6 +5,7 @@ import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
 import UserMenu from 'components/layout/UserMenu';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { usePrintApi } from 'hooks/UsePrintApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -13,6 +14,7 @@ import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function Header() {
     const appApi = useAppApi();
+    const joyrideApi = useJoyrideApi();
     const noteApi = useNoteApi();
     const taskApi = useTaskApi();
     const printApi = usePrintApi();
@@ -124,10 +126,18 @@ function Header() {
         appApi.setSelectedView('note');
     };
 
-    const createButton = (icon, text, onClick, disabled = false) => {
+    const onShowHelp = () => {
+        joyrideApi.setJoyrideOptions({
+            id: appApi.selectedView,
+            run: true,
+            stepIndex: 0
+        });
+    };
+
+    const createButton = (icon, text, onClick, disabled = false, className = '') => {
         return (
             <Tooltip placement="bottom" title={text}>
-                <Button onClick={onClick} disabled={disabled}>
+                <Button onClick={onClick} disabled={disabled} className={className}>
                     <Icon icon={icon} />
                 </Button>
             </Tooltip>
@@ -135,15 +145,17 @@ function Header() {
     };
 
     return (
-        <LeftRight right={(
-            <React.Fragment>
-                {appApi.pro ? (
-                    <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
-                ) : null}
-                {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}
-            </React.Fragment>
-        )}>
-            <Button.Group style={{ marginRight: 20 }}>
+        <LeftRight
+            className="joyride-header"
+            right={(
+                <React.Fragment>
+                    {appApi.pro ? (
+                        <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
+                    ) : null}
+                    {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}
+                </React.Fragment>
+            )}>
+            <Button.Group style={{ marginRight: 20 }} className="joyride-header-selected-view">
                 <Button
                     type={appApi.selectedView === 'task' ? 'dashed' : 'default'}
                     onClick={onShowTaskContent}>
@@ -162,7 +174,7 @@ function Header() {
             </Button.Group>
             <Button.Group style={{ marginRight: 20 }}>
                 {appApi.selectedView === 'note' ?
-                    createButton('plus', 'Add Note', onAddNote)
+                    createButton('plus', 'Add Note', onAddNote, false, 'joyride-header-add-note')
                     : null}
                 {appApi.selectedView === 'note' ?
                     createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
@@ -177,7 +189,7 @@ function Header() {
                     createButton('columns', 'Note Field Manager', onSetNoteFieldManagerVisible)
                     : null}
                 {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                    createButton('plus', 'Add Task', onAddTask)
+                    createButton('plus', 'Add Task', onAddTask, false, 'joyride-header-add-task')
                     : null}
                 {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                     createButton('list', 'Batch Add Tasks', onSetBatchAddTasksManagerVisible)
@@ -204,8 +216,8 @@ function Header() {
                     createButton('columns', 'Task Field Manager', onSetTaskFieldManagerVisible)
                     : null}
             </Button.Group>
-            <Button.Group>
-                {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible)}
+            <Button.Group style={{ marginRight: 20 }}>
+                {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible, false, 'joyride-header-category-manager')}
                 {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
                 {process.env.REACT_APP_MODE === 'electron' ?
                     createButton('save', 'Save', onSave)
@@ -213,10 +225,13 @@ function Header() {
                 {process.env.REACT_APP_MODE === 'electron' ?
                     createButton('box-open', 'Backup', onBackup)
                     : null}
-                {createButton('cog', 'Settings', onSetSettingsVisible)}
+                {createButton('cog', 'Settings', onSetSettingsVisible, false, 'joyride-header-settings')}
                 {process.env.REACT_APP_MODE === 'electron' ?
                     createButton('sync-alt', 'Synchronization', onSynchronize)
                     : null}
+            </Button.Group>
+            <Button.Group>
+                {createButton('question-circle', 'Help', onShowHelp)}
             </Button.Group>
         </LeftRight>
     );

@@ -98,7 +98,8 @@ const App = () => (state = {
                 ...state,
                 joyride: {
                     id: 'id' in action ? action.id : state.joyride.id,
-                    run: 'run' in action ? action.run : state.joyride.run
+                    run: 'run' in action ? action.run : state.joyride.run,
+                    stepIndex: 'stepIndex' in action ? action.stepIndex : state.joyride.stepIndex
                 }
             };
         case 'SET_BATCH_ADD_TASKS_MANAGER_OPTIONS':

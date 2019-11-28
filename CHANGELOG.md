@@ -4,6 +4,8 @@
 
 * Drag and drop multiple tasks at once
 * Search task/note is now case insensitive
+* Improved help (guided tour)
+* Include parent tasks when a child matches a filter
 
 ## Bug Fixes
 

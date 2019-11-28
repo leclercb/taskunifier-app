@@ -13,7 +13,9 @@ function TaskTabs() {
 
     if (taskApi.selectedTasks.length !== 1) {
         return (
-            <Empty description="Please select one task" />
+            <Empty
+                description="Please select one task"
+                className="joyride-task-tabs" />
         );
     }
 
@@ -39,7 +41,9 @@ function TaskTabs() {
     };
 
     return (
-        <Tabs animated={false} className="ant-tabs-full-height">
+        <Tabs
+            animated={false}
+            className="ant-tabs-full-height joyride-task-tabs">
             <Tabs.TabPane tab="Text" key="text">
                 <TaskTextForm
                     task={taskApi.selectedTasks[0]}
