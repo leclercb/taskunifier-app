@@ -1,5 +1,6 @@
 import moment from 'moment';
 import qs from 'qs';
+import RichTextEditor from 'react-rte';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -286,7 +287,7 @@ function convertNoteToRemote(note, state) {
         id: note.refIds.toodledo,
         title: note.title,
         folder: folder ? folder.refIds.toodledo : 0,
-        text: note.text
+        text: RichTextEditor.createValueFromString(note.text || '', 'markdown').toString('html')
     };
 }
 
@@ -301,6 +302,6 @@ function convertNoteToLocal(note, state) {
         },
         title: note.title,
         folder: folder ? folder.refIds.toodledo : null,
-        text: note.text
+        text: RichTextEditor.createValueFromString(note.text || '', 'html').toString('markdown')
     };
 }
