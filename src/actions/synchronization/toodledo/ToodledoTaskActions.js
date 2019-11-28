@@ -1,5 +1,6 @@
 import moment from 'moment';
 import qs from 'qs';
+import RichTextEditor from 'react-rte';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
@@ -125,25 +126,38 @@ export function getRemoteTasks(updatedAfter) {
         const state = getState();
         const settings = getSettings(state);
 
-        const result = await sendRequest(
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+        let start = 0;
+        let total = 0;
+
+        const tasks = [];
+
+        do {
+            const result = await sendRequest(
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    method: 'POST',
+                    url: 'https://api.toodledo.com/3/tasks/get.php',
+                    data: qs.stringify({
+                        access_token: settings.toodledo.accessToken,
+                        after: updatedAfter ? updatedAfter.unix() : 0,
+                        start,
+                        fields: 'context,folder,goal,location,tag,startdate,duedate,duedatemod,starttime,duetime,remind,repeat,status,star,priority,length,timer,timeron,added,note,parent,children,meta'
+                    })
                 },
-                method: 'POST',
-                url: 'https://api.toodledo.com/3/tasks/get.php',
-                data: qs.stringify({
-                    access_token: settings.toodledo.accessToken,
-                    after: updatedAfter ? updatedAfter.unix() : 0,
-                    fields: 'context,folder,goal,location,tag,startdate,duedate,duedatemod,starttime,duetime,remind,repeat,status,star,priority,length,timer,timeron,added,note,parent,children,meta'
-                })
-            },
-            settings);
+                settings);
 
-        console.debug(result);
-        checkResult(result);
+            console.debug(result);
+            checkResult(result);
 
-        return result.data.slice(1).map(task => convertTaskToLocal(task, state));
+            start += result.data[0].num;
+            total = result.data[0].total;
+
+            tasks.push(...result.data.slice(1).map(task => convertTaskToLocal(task, state)));
+        } while (start < total);
+
+        return tasks;
     };
 }
 
@@ -325,7 +339,7 @@ function convertTaskToRemote(task, state, options) {
         star: task.star ? 1 : 0,
         timer: task.timer ? task.timer.value : 0,
         timeron: task.timer && task.timer.startDate ? moment(task.timer.startDate).unix() : 0,
-        note: task.text
+        note: RichTextEditor.createValueFromString(task.text || '', 'markdown').toString('html')
     };
 }
 
@@ -372,7 +386,7 @@ function convertTaskToLocal(task, state) {
             value: task.timer,
             startDate: task.timeron ? moment.unix(task.timeron).toISOString() : null
         },
-        text: task.note
+        text: RichTextEditor.createValueFromString(task.note || '', 'html').toString('markdown')
     };
 }
 

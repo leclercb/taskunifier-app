@@ -8,7 +8,7 @@ export function createSearchNoteFilter(searchValue) {
         condition: {
             id: uuid(),
             field: 'title',
-            type: 'contains',
+            type: 'containIgnoreCase',
             value: searchValue
         }
     };

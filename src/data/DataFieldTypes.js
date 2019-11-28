@@ -1981,10 +1981,24 @@ export function getFieldType(type, options) {
                         }
                     },
                     {
+                        type: 'equalIgnoreCase',
+                        title: 'Equals (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || '').toUpperCase() === (objectValue || '').toUpperCase();
+                        }
+                    },
+                    {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
                             return conditionValue !== objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqualIgnoreCase',
+                        title: 'Does not equal (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || '').toUpperCase() !== (objectValue || '').toUpperCase();
                         }
                     },
                     {
@@ -1995,10 +2009,24 @@ export function getFieldType(type, options) {
                         }
                     },
                     {
+                        type: 'containIgnoreCase',
+                        title: 'Contains (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return (objectValue || '').toUpperCase().includes((conditionValue || '').toUpperCase());
+                        }
+                    },
+                    {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
                             return !(objectValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContainIgnoreCase',
+                        title: 'Does not contain (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return !(objectValue || '').toUpperCase().includes((conditionValue || '').toUpperCase());
                         }
                     }
                 ],
@@ -2052,10 +2080,24 @@ export function getFieldType(type, options) {
                         }
                     },
                     {
+                        type: 'equalIgnoreCase',
+                        title: 'Equals (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || '').toUpperCase() === (objectValue || '').toUpperCase();
+                        }
+                    },
+                    {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
                             return conditionValue !== objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqualIgnoreCase',
+                        title: 'Does not equal (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || '').toUpperCase() !== (objectValue || '').toUpperCase();
                         }
                     },
                     {
@@ -2066,10 +2108,24 @@ export function getFieldType(type, options) {
                         }
                     },
                     {
+                        type: 'containIgnoreCase',
+                        title: 'Contains (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return (objectValue || '').toUpperCase().includes((conditionValue || '').toUpperCase());
+                        }
+                    },
+                    {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
                             return !(objectValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContainIgnoreCase',
+                        title: 'Does not contain (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            return !(objectValue || '').toUpperCase().includes((conditionValue || '').toUpperCase());
                         }
                     }
                 ],

@@ -109,24 +109,37 @@ export function getRemoteNotes(updatedAfter) {
         const state = getState();
         const settings = getSettings(state);
 
-        const result = await sendRequest(
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+        let start = 0;
+        let total = 0;
+
+        const notes = [];
+
+        do {
+            const result = await sendRequest(
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    method: 'POST',
+                    url: 'https://api.toodledo.com/3/notes/get.php',
+                    data: qs.stringify({
+                        access_token: settings.toodledo.accessToken,
+                        after: updatedAfter ? updatedAfter.unix() : 0,
+                        start
+                    })
                 },
-                method: 'POST',
-                url: 'https://api.toodledo.com/3/notes/get.php',
-                data: qs.stringify({
-                    access_token: settings.toodledo.accessToken,
-                    after: updatedAfter ? updatedAfter.unix() : 0
-                })
-            },
-            settings);
+                settings);
 
-        console.debug(result);
-        checkResult(result);
+            console.debug(result);
+            checkResult(result);
 
-        return result.data.slice(1).map(note => convertNoteToLocal(note, state));
+            start += result.data[0].num;
+            total = result.data[0].total;
+
+            notes.push(...result.data.slice(1).map(note => convertNoteToLocal(note, state)));
+        } while (start < total);
+
+        return notes;
     };
 }
 

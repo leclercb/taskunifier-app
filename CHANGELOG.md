@@ -3,10 +3,13 @@
 ## New Features
 
 * Drag and drop multiple tasks at once
+* Search task/note is now case insensitive
 
 ## Bug Fixes
 
+* Fix synchronization of tasks (only first 1000 tasks were retrieved)
 * Fix synchronization of sub-tasks
+* Keep note format when synchronizing with Toodledo
 
 # 0.8.0
 

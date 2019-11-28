@@ -9,7 +9,7 @@ export function createSearchTaskFilter(searchValue) {
         condition: {
             id: uuid(),
             field: 'title',
-            type: 'contain',
+            type: 'containIgnoreCase',
             value: searchValue
         }
     };
