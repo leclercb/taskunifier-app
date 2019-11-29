@@ -14,7 +14,7 @@
         "lint": "eslint src",
         "test": "craco test",
         "pack": "electron-builder --dir",
-        "dist": "electron-builder --x64 --mac --win --linux --c.extraMetadata.main=build/electron.js -p always"
+        "dist": "electron-builder --x64 --mac --win --linux --c.extraMetadata.main=build/electron.js -p never"
     },
     "dependencies": {
         "@craco/craco": "^5.6.2",
