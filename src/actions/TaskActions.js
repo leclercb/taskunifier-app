@@ -23,7 +23,7 @@ export function saveTasksToFile(file, data) {
 export function loadTasksFromServer() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
-        const completedAfter = moment().subtract(settings.loadTasksCompletedAfter, 'months').toISOString();
+        const completedAfter = moment().subtract(settings.loadTasksCompletedAfter, 'month').toISOString();
         return await dispatch(loadObjectsFromServer('tasks', null, { completedAfter }));
     };
 }

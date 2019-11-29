@@ -23,9 +23,9 @@ export const updateTask = store => next => async action => {
                 newTask.progress = 0;
 
                 if (newTask.startDate && newTask.dueDate) {
-                    const diff = moment(newTask.dueDate).diff(moment(newTask.startDate), 'seconds');
+                    const diff = moment(newTask.dueDate).diff(moment(newTask.startDate), 'second');
                     newTask.dueDate = getNextDate(task.repeat, task.dueDate, action.updateDate);
-                    newTask.startDate = moment(newTask.dueDate).subtract(diff, 'seconds').toISOString();
+                    newTask.startDate = moment(newTask.dueDate).subtract(diff, 'second').toISOString();
                 } else if (newTask.startDate) {
                     newTask.startDate = getNextDate(task.repeat, task.startDate, action.updateDate);
                 } else {

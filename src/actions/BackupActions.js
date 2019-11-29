@@ -40,7 +40,7 @@ export function deleteBackup(date) {
         dispatch(updateProcess({
             id: processId,
             state: 'RUNNING',
-            title: `Delete backup "${moment(Number(date)).format('DD-MM-YYYY HH:mm:ss')}"`
+            title: `Delete backup "${moment(date).format('DD-MM-YYYY HH:mm:ss')}"`
         }));
 
         try {
