@@ -1,9 +1,9 @@
 import moment from 'moment';
 import qs from 'qs';
-import RichTextEditor from 'react-rte';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
+import { convertTextToLocal, convertTextToRemote } from 'actions/synchronization/toodledo/ToodledoUtils';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
@@ -339,7 +339,7 @@ function convertTaskToRemote(task, state, options) {
         star: task.star ? 1 : 0,
         timer: task.timer ? task.timer.value : 0,
         timeron: task.timer && task.timer.startDate ? moment(task.timer.startDate).unix() : 0,
-        note: RichTextEditor.createValueFromString(task.text || '', 'markdown').toString('html')
+        note: convertTextToRemote(task.text)
     };
 }
 
@@ -386,7 +386,7 @@ function convertTaskToLocal(task, state) {
             value: task.timer,
             startDate: task.timeron ? moment.unix(task.timeron).toISOString() : null
         },
-        text: RichTextEditor.createValueFromString(task.note || '', 'html').toString('markdown')
+        text: convertTextToLocal(task.note)
     };
 }
 

@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export function showReminder(date, reminder, currentDate = undefined) {
     if (date && reminder) {
-        if (moment(currentDate).diff(moment(date).subtract(reminder, 'seconds')) > 0) {
+        if (moment(currentDate).diff(moment(date).subtract(reminder, 'second')) > 0) {
             return true;
         }
     }

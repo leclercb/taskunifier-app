@@ -18,37 +18,37 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
         <Menu.SubMenu
             key={key}
             title={(<Icon icon="calendar-alt" text={title} />)}>
-            <Menu.Item key={`${key}_1d`} action={{ type: key, amount: 1, unit: 'days' }}>
+            <Menu.Item key={`${key}_1d`} action={{ type: key, amount: 1, unit: 'day' }}>
                 <Icon icon="calendar-alt" text="Add 1 day" />
             </Menu.Item>
-            <Menu.Item key={`${key}_2d`} action={{ type: key, amount: 2, unit: 'days' }}>
+            <Menu.Item key={`${key}_2d`} action={{ type: key, amount: 2, unit: 'day' }}>
                 <Icon icon="calendar-alt" text="Add 2 days" />
             </Menu.Item>
-            <Menu.Item key={`${key}_3d`} action={{ type: key, amount: 3, unit: 'days' }}>
+            <Menu.Item key={`${key}_3d`} action={{ type: key, amount: 3, unit: 'day' }}>
                 <Icon icon="calendar-alt" text="Add 3 days" />
             </Menu.Item>
-            <Menu.Item key={`${key}_4d`} action={{ type: key, amount: 4, unit: 'days' }}>
+            <Menu.Item key={`${key}_4d`} action={{ type: key, amount: 4, unit: 'day' }}>
                 <Icon icon="calendar-alt" text="Add 4 days" />
             </Menu.Item>
-            <Menu.Item key={`${key}_5d`} action={{ type: key, amount: 5, unit: 'days' }}>
+            <Menu.Item key={`${key}_5d`} action={{ type: key, amount: 5, unit: 'day' }}>
                 <Icon icon="calendar-alt" text="Add 5 days" />
             </Menu.Item>
-            <Menu.Item key={`${key}_6d`} action={{ type: key, amount: 6, unit: 'days' }}>
+            <Menu.Item key={`${key}_6d`} action={{ type: key, amount: 6, unit: 'day' }}>
                 <Icon icon="calendar-alt" text="Add 6 days" />
             </Menu.Item>
-            <Menu.Item key={`${key}_1w`} action={{ type: key, amount: 1, unit: 'weeks' }}>
+            <Menu.Item key={`${key}_1w`} action={{ type: key, amount: 1, unit: 'week' }}>
                 <Icon icon="calendar-alt" text="Add 1 week" />
             </Menu.Item>
-            <Menu.Item key={`${key}_2w`} action={{ type: key, amount: 2, unit: 'weeks' }}>
+            <Menu.Item key={`${key}_2w`} action={{ type: key, amount: 2, unit: 'week' }}>
                 <Icon icon="calendar-alt" text="Add 2 weeks" />
             </Menu.Item>
-            <Menu.Item key={`${key}_3w`} action={{ type: key, amount: 3, unit: 'weeks' }}>
+            <Menu.Item key={`${key}_3w`} action={{ type: key, amount: 3, unit: 'week' }}>
                 <Icon icon="calendar-alt" text="Add 3 weeks" />
             </Menu.Item>
-            <Menu.Item key={`${key}_1m`} action={{ type: key, amount: 1, unit: 'months' }}>
+            <Menu.Item key={`${key}_1m`} action={{ type: key, amount: 1, unit: 'month' }}>
                 <Icon icon="calendar-alt" text="Add 1 month" />
             </Menu.Item>
-            <Menu.Item key={`${key}_2m`} action={{ type: key, amount: 2, unit: 'months' }}>
+            <Menu.Item key={`${key}_2m`} action={{ type: key, amount: 2, unit: 'month' }}>
                 <Icon icon="calendar-alt" text="Add 2 months" />
             </Menu.Item>
         </Menu.SubMenu>

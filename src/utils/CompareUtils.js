@@ -33,7 +33,7 @@ export function compareDates(a, b, useTime) {
         return -1;
     }
 
-    return moment(b).diff(moment(a), useTime ? 'seconds' : 'days');
+    return moment(b).diff(moment(a), useTime ? 'second' : 'day');
 }
 
 export function compareNumbers(a, b) {

@@ -53,7 +53,7 @@ class TimerField extends React.Component {
         const newTimer = {};
 
         if (startDate) {
-            newTimer.value = value + moment().diff(moment(startDate), 'seconds');
+            newTimer.value = value + moment().diff(moment(startDate), 'second');
             newTimer.startDate = null;
         } else {
             newTimer.value = value;

@@ -39,11 +39,11 @@ export function getNoteBackgroundColor(note, index, settings) {
 }
 
 export function getTaskForegroundColor(task, index, settings) {
-    if (task.dueDate && moment().diff(moment(task.dueDate), 'days') === 0) {
+    if (task.dueDate && moment().diff(moment(task.dueDate), 'day') === 0) {
         return settings.dueTodayForegroundColor;
     }
 
-    if (task.dueDate && moment().diff(moment(task.dueDate), 'days') > 0) {
+    if (task.dueDate && moment().diff(moment(task.dueDate), 'day') > 0) {
         return settings.overdueForegroundColor;
     }
 

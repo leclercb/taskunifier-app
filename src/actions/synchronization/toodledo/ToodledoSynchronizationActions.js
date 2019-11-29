@@ -63,9 +63,9 @@ export function synchronizeWithToodledo() {
             }
 
             const accessTokenCreationDate = moment(settings.toodledo.accessTokenCreationDate);
-            const expirationDate = moment(accessTokenCreationDate).add(settings.toodledo.accessTokenExpiresIn, 'seconds');
+            const expirationDate = moment(accessTokenCreationDate).add(settings.toodledo.accessTokenExpiresIn, 'second');
 
-            if (moment().diff(expirationDate, 'seconds') > -60) {
+            if (moment().diff(expirationDate, 'second') > -60) {
                 await dispatch(refreshToken());
             }
 

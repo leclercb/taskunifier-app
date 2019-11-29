@@ -67,9 +67,9 @@ export function synchronizeWithTaskUnifier() {
             }
 
             const accessTokenCreationDate = moment(settings.taskunifier.accessTokenCreationDate);
-            const expirationDate = moment(accessTokenCreationDate).add(settings.taskunifier.accessTokenExpiresIn, 'seconds');
+            const expirationDate = moment(accessTokenCreationDate).add(settings.taskunifier.accessTokenExpiresIn, 'second');
 
-            if (moment().diff(expirationDate, 'seconds') > -60) {
+            if (moment().diff(expirationDate, 'second') > -60) {
                 await dispatch(refreshToken());
             }
 

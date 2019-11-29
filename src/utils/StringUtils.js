@@ -126,7 +126,7 @@ export function toStringTimer(timer) {
     let value = timer.value || 0;
 
     if (timer.startDate) {
-        value = value + moment().diff(moment(timer.startDate), 'seconds');
+        value = value + moment().diff(moment(timer.startDate), 'second');
     }
 
     return toStringDuration(value);

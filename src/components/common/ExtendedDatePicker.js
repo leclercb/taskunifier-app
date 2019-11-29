@@ -39,7 +39,7 @@ class ExtendedDatePicker extends React.Component {
                         <React.Fragment>
                             <InputNumber {...this.props} onChange={this.onNumberChange} />
                             <Spacer />
-                            <span>({moment().add(this.props.value, 'days').format(this.props.format)})</span>
+                            <span>({moment().add(this.props.value, 'day').format(this.props.format)})</span>
                         </React.Fragment>
                     ) : (
                         <DatePicker {...this.props} />

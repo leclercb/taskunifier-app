@@ -29,7 +29,7 @@ function TaskCalendar() {
                     id: `${task.id}_startDate`,
                     title: task.title,
                     start: moment(task.startDate).toDate(),
-                    end: moment(task.startDate).add(task.length, 'seconds').toDate(),
+                    end: moment(task.startDate).add(task.length, 'second').toDate(),
                     task,
                     settings: settingsApi.settings,
                     mode: 'startDate',
@@ -41,7 +41,7 @@ function TaskCalendar() {
                 events.push({
                     id: `${task.id}_dueDate`,
                     title: task.title,
-                    start: moment(task.dueDate).subtract(task.length, 'seconds').toDate(),
+                    start: moment(task.dueDate).subtract(task.length, 'second').toDate(),
                     end: moment(task.dueDate).toDate(),
                     task,
                     settings: settingsApi.settings,
@@ -74,7 +74,7 @@ function TaskCalendar() {
             const task = await taskApi.addTask({
                 startDate: moment(start).toISOString(),
                 dueDate: moment(end).toISOString(),
-                length: moment(end).diff(moment(start), 'seconds')
+                length: moment(end).diff(moment(start), 'second')
             });
 
             appApi.setTaskEditionManagerOptions({
@@ -89,13 +89,13 @@ function TaskCalendar() {
             taskApi.updateTask({
                 ...event.task,
                 startDate: moment(start).toISOString(),
-                length: moment(end).diff(moment(start), 'seconds')
+                length: moment(end).diff(moment(start), 'second')
             });
         } else {
             taskApi.updateTask({
                 ...event.task,
                 dueDate: moment(end).toISOString(),
-                length: moment(end).diff(moment(start), 'seconds')
+                length: moment(end).diff(moment(start), 'second')
             });
         }
     };
