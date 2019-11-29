@@ -541,6 +541,7 @@ export function getCategories() {
                         if (synchronizationApp) {
                             await updateSettings({
                                 synchronizationApp,
+                                [synchronizationApp]: null,
                                 lastSynchronizationDate: null
                             });
                         }
@@ -559,6 +560,10 @@ export function getCategories() {
                                 [settings.synchronizationApp]: null
                             });
                         }
+
+                        await updateSettings({
+                            lastSynchronizationDate: null
+                        });
 
                         Modal.success({
                             content: 'The synchronization connection has been successfully reset'
