@@ -1,3 +1,4 @@
+import moment from 'moment';
 import RichTextEditor from 'react-rte';
 
 export function convertTextToRemote(value) {
@@ -23,4 +24,20 @@ export function replaceTag(tagA, tagB, value) {
     result = result.replace(new RegExp(`<${tagA}>`, 'g'), `<${tagB}>`);
     result = result.replace(new RegExp(`</${tagA}>`, 'g'), `</${tagB}>`);
     return result;
+}
+
+export function convertWeirdToodledoTimestampToRemote(value) {
+    const utcM = moment.utc(value);
+    const localM = moment(value);
+
+    utcM.set('second', localM.get('second'));
+    utcM.set('minute', localM.get('minute'));
+    utcM.set('hour', localM.get('hour'));
+
+    return value ? utcM.unix() : 0;
+}
+
+export function convertWeirdToodledoTimestampToLocal(value) {
+    // TODO
+    return value ? moment.unix(value).toISOString() : null;
 }

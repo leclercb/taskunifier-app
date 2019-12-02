@@ -3,7 +3,7 @@ import qs from 'qs';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
-import { convertTextToLocal, convertTextToRemote } from 'actions/synchronization/toodledo/ToodledoUtils';
+import { convertTextToLocal, convertTextToRemote, convertWeirdToodledoTimestampToLocal, convertWeirdToodledoTimestampToRemote } from 'actions/synchronization/toodledo/ToodledoUtils';
 import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
 import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
@@ -327,10 +327,10 @@ function convertTaskToRemote(task, state, options) {
         folder: folder ? folder.refIds.toodledo : 0,
         goal: goal ? goal.refIds.toodledo : 0,
         location: location ? location.refIds.toodledo : 0,
-        duedate: task.dueDate ? moment(task.dueDate).unix() : 0,
-        startdate: task.startDate ? moment(task.startDate).unix() : 0,
-        duetime: task.dueDate ? moment(task.dueDate).unix() : 0,
-        starttime: task.startDate ? moment(task.startDate).unix() : 0,
+        duedate: convertWeirdToodledoTimestampToRemote(task.dueDate),
+        startdate: convertWeirdToodledoTimestampToRemote(task.startDate),
+        duetime: convertWeirdToodledoTimestampToRemote(task.dueDate),
+        starttime: convertWeirdToodledoTimestampToRemote(task.startDate),
         remind: Math.round(task.startDateReminder / 60) || Math.round(task.dueDateReminder / 60) || 0,
         repeat: convertRepeatToRemote(task.repeat),
         status: status ? status.value : 0,
@@ -373,8 +373,8 @@ function convertTaskToLocal(task, state) {
         goal: goal ? goal.id : null,
         location: location ? location.id : null,
         parent: parent ? parent.id : null,
-        dueDate: (task.duetime, task.duedate) ? moment.unix(task.duetime || task.duedate).toISOString() : null,
-        startDate: (task.starttime || task.startdate) ? moment.unix(task.starttime || task.startdate).toISOString() : null,
+        dueDate: convertWeirdToodledoTimestampToLocal(task.duetime || task.duedate),
+        startDate: convertWeirdToodledoTimestampToLocal(task.starttime || task.startdate),
         startDateReminder: task.remind ? task.remind * 60 : null,
         dueDateReminder: task.remind ? task.remind * 60 : null,
         repeat: convertRepeatToLocal(task.repeat),
