@@ -1,3 +1,11 @@
+# 0.8.2
+
+## New Features
+
+## Bug Fixes
+
+* Fix Toodledo start & due date timezone synchronization
+
 # 0.8.1
 
 ## New Features
