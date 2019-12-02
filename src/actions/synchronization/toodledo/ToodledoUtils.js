@@ -1,6 +1,36 @@
 import moment from 'moment';
 import RichTextEditor from 'react-rte';
 
+export function convertWeirdToodledoTimestampToRemote(value) {
+    if (!value) {
+        return 0;
+    }
+
+    const localM = moment(value);
+    const utcM = moment.utc(localM);
+
+    utcM.set('second', localM.get('second'));
+    utcM.set('minute', localM.get('minute'));
+    utcM.set('hour', localM.get('hour'));
+
+    return utcM.unix();
+}
+
+export function convertWeirdToodledoTimestampToLocal(value) {
+    if (!value) {
+        return null;
+    }
+
+    const localM = moment.unix(value);
+    const utcM = moment.utc(localM);
+
+    localM.set('second', utcM.get('second'));
+    localM.set('minute', utcM.get('minute'));
+    localM.set('hour', utcM.get('hour'));
+
+    return localM.toISOString();
+}
+
 export function convertTextToRemote(value) {
     let result = RichTextEditor.createValueFromString(value || '', 'markdown').toString('html');
 
@@ -24,20 +54,4 @@ export function replaceTag(tagA, tagB, value) {
     result = result.replace(new RegExp(`<${tagA}>`, 'g'), `<${tagB}>`);
     result = result.replace(new RegExp(`</${tagA}>`, 'g'), `</${tagB}>`);
     return result;
-}
-
-export function convertWeirdToodledoTimestampToRemote(value) {
-    const utcM = moment.utc(value);
-    const localM = moment(value);
-
-    utcM.set('second', localM.get('second'));
-    utcM.set('minute', localM.get('minute'));
-    utcM.set('hour', localM.get('hour'));
-
-    return value ? utcM.unix() : 0;
-}
-
-export function convertWeirdToodledoTimestampToLocal(value) {
-    // TODO
-    return value ? moment.unix(value).toISOString() : null;
 }
