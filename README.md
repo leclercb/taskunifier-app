@@ -8,6 +8,7 @@
 # TaskUnifier
 
 [![Build Status](https://travis-ci.com/leclercb/taskunifier-app.svg?branch=master)](https://travis-ci.com/leclercb/taskunifier-app)
+[![Dependencies Status](https://david-dm.org/leclercb/taskunifier-app/status.svg)](https://david-dm.org/leclercb/taskunifier-app)
 
 TaskUnifier App is a task management application based on the GTD methodology.
 
