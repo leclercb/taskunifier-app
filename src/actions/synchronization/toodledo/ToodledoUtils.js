@@ -6,14 +6,19 @@ export function convertWeirdToodledoTimestampToRemote(value) {
         return 0;
     }
 
-    const localM = moment(value);
-    const utcM = moment.utc(localM);
+    const local = moment(value);
+    const utc = moment.utc(local);
 
-    utcM.set('second', localM.get('second'));
-    utcM.set('minute', localM.get('minute'));
-    utcM.set('hour', localM.get('hour'));
+    utc.set({
+        second: local.get('second'),
+        minute: local.get('minute'),
+        hour: local.get('hour'),
+        date: local.get('date'),
+        month: local.get('month'),
+        year: local.get('year')
+    });
 
-    return utcM.unix();
+    return utc.unix();
 }
 
 export function convertWeirdToodledoTimestampToLocal(value) {
@@ -21,14 +26,19 @@ export function convertWeirdToodledoTimestampToLocal(value) {
         return null;
     }
 
-    const localM = moment.unix(value);
-    const utcM = moment.utc(localM);
+    const local = moment.unix(value);
+    const utc = moment.utc(local);
 
-    localM.set('second', utcM.get('second'));
-    localM.set('minute', utcM.get('minute'));
-    localM.set('hour', utcM.get('hour'));
+    local.set({
+        second: utc.get('second'),
+        minute: utc.get('minute'),
+        hour: utc.get('hour'),
+        date: utc.get('date'),
+        month: utc.get('month'),
+        year: utc.get('year')
+    });
 
-    return localM.toISOString();
+    return local.toISOString();
 }
 
 export function convertTextToRemote(value) {
