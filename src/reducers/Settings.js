@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getSettings, isCoreSetting } from 'data/DataSettings';
 
 const Settings = () => (state = {
@@ -15,21 +16,37 @@ const Settings = () => (state = {
                 });
             }
 
-            return {
+            const settings = {
                 ...getSettings(),
                 ...action.settings,
                 ...coreSettings
             };
+
+            onUpdateSettings(settings);
+
+            return settings;
         }
         case 'UPDATE_SETTINGS': {
-            return {
+            const settings = {
                 ...state,
                 ...action.settings
             };
+
+            onUpdateSettings(settings);
+
+            return settings;
         }
         default:
             return state;
     }
 };
+
+function onUpdateSettings(settings) {
+    moment.updateLocale('en', {
+        week: {
+            dow: settings.firstDayOfWeek || 0
+        }
+    });
+}
 
 export default Settings;

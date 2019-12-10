@@ -2,6 +2,9 @@
 
 ## New Features
 
+* Setting to select first day of the week
+* Improve error reporting
+
 ## Bug Fixes
 
 * Fix Toodledo start & due date timezone synchronization

@@ -98,7 +98,8 @@ export function _loadDataFromFile(path, options) {
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
-                state: 'ERROR'
+                state: 'ERROR',
+                error: error.toString()
             }));
 
             throw error;
@@ -158,7 +159,8 @@ export function _loadDataFromServer(options) {
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
-                state: 'ERROR'
+                state: 'ERROR',
+                error: error.toString()
             }));
 
             throw error;
@@ -244,7 +246,8 @@ export function _saveDataToFile(path, options) {
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
-                state: 'ERROR'
+                state: 'ERROR',
+                error: error.toString()
             }));
 
             throw error;
@@ -286,7 +289,8 @@ export function cleanData() {
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
-                state: 'ERROR'
+                state: 'ERROR',
+                error: error.toString()
             }));
 
             throw error;
@@ -381,7 +385,8 @@ export function resetData(options) {
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
-                state: 'ERROR'
+                state: 'ERROR',
+                error: error.toString()
             }));
 
             throw error;
