@@ -62,7 +62,9 @@ export function _loadDataFromFile(path, options) {
         }));
 
         try {
-            await dispatch(loadSettingsFromFile(join(getUserDataPath(), 'coreSettings.json'), true));
+            if (!options.skipSettings) {
+                await dispatch(loadSettingsFromFile(join(getUserDataPath(), 'coreSettings.json'), true));
+            }
 
             if (!path) {
                 path = getState().settings.dataFolder;

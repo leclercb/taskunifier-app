@@ -5,14 +5,14 @@ import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getErrorMessages } from 'utils/CloudUtils';
 import {
+    ensureDir,
     exists,
     getPath,
     join,
     lstat,
-    mkdirp,
     readFile,
     readdir,
-    rimraf,
+    remove,
     sep,
     writeFile
 } from 'utils/ElectronUtils';
@@ -163,12 +163,12 @@ export async function createDirectory(path) {
     try {
         await exists(path);
     } catch (error) {
-        await mkdirp(path);
+        await ensureDir(path);
     }
 }
 
 export async function deleteDirectory(path, dataFolder) {
     if (path && (path.startsWith(getUserDataPath()) || path.startsWith(dataFolder))) {
-        await rimraf(path);
+        await remove(path);
     }
 }

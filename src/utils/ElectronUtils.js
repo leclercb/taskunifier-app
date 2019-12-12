@@ -17,7 +17,7 @@ export function lstat(path) {
     return fse.lstat(path);
 }
 
-export function mkdirp(path) {
+export function ensureDir(path) {
     return fse.ensureDir(path);
 }
 
@@ -29,7 +29,7 @@ export function readFile(path, encoding) {
     return fse.readFile(path, encoding);
 }
 
-export function rimraf(path) {
+export function remove(path) {
     return fse.remove(path);
 }
 
