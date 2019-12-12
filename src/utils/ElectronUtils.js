@@ -1,26 +1,12 @@
-import { Promise } from 'bluebird';
-
 const electron = process.env.REACT_APP_MODE === 'electron' ? window.require('electron') : null;
 
-const fs = electron ? electron.remote.require('fs') : {};
-const path = electron ? electron.remote.require('path') : {};
+const fse = electron ? electron.remote.require('fs-extra') : null;
+const path = electron ? electron.remote.require('path') : null;
 
-const mkdirpLib = electron ? electron.remote.require('mkdirp') : null;
-const rimrafLib = electron ? electron.remote.require('rimraf') : null;
-
-const mkdirpAsync = mkdirpLib ? Promise.promisify(mkdirpLib) : null;
-const rimrafAsync = rimrafLib ? Promise.promisify(rimrafLib) : null;
-
-const accessAsync = fs.access ? Promise.promisify(fs.access) : null;
-const lstatAsync = fs.lstat ? Promise.promisify(fs.lstat) : null;
-const readdirAsync = fs.readdir ? Promise.promisify(fs.readdir) : null;
-const readFileAsync = fs.readFile ? Promise.promisify(fs.readFile) : null;
-const writeFileAsync = fs.writeFile ? Promise.promisify(fs.writeFile) : null;
-
-export const { sep } = path;
+export const sep = path ? path.sep : '/';
 
 export function exists(path) {
-    return accessAsync(path, fs.constants.F_OK);
+    return fse.access(path, fse.constants.F_OK);
 }
 
 export function join() {
@@ -28,27 +14,27 @@ export function join() {
 }
 
 export function lstat(path) {
-    return lstatAsync(path);
+    return fse.lstat(path);
 }
 
 export function mkdirp(path) {
-    return mkdirpAsync(path);
+    return fse.ensureDir(path);
 }
 
 export function readdir(path) {
-    return readdirAsync(path);
+    return fse.readdir(path);
 }
 
 export function readFile(path, encoding) {
-    return readFileAsync(path, encoding);
+    return fse.readFile(path, encoding);
 }
 
 export function rimraf(path) {
-    return rimrafAsync(path);
+    return fse.remove(path);
 }
 
 export function writeFile(file, data) {
-    return writeFileAsync(file, data);
+    return fse.writeFile(file, data);
 }
 
 export function getPath(path) {
