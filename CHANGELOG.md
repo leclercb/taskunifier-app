@@ -10,6 +10,7 @@
 * Fix Toodledo start & due date timezone synchronization
 * Fix create backup folder on Windows
 * Fix skip restore backup settings
+* Fix note format (use html instead of markdown)
 
 # 0.8.1
 

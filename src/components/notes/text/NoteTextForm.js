@@ -5,13 +5,23 @@ import RichTextEditor from 'react-rte';
 import { NotePropType } from 'proptypes/NotePropTypes';
 
 function NoteTextForm(props) {
-    const [value, setValue] = React.useState(RichTextEditor.createValueFromString(props.note.text || '', 'markdown'));
+    const createValue = () => {
+        const text = props.note.text || '';
+
+        if (text && !text.match(/<(br|p|strong|b|em|i)\s*\/?>/)) {
+            return RichTextEditor.createValueFromString(text, 'markdown');
+        }
+
+        return RichTextEditor.createValueFromString(text, 'html');
+    };
+
+    const [value, setValue] = React.useState(createValue());
 
     const editorRef = React.createRef();
 
     useEffect(() => {
-        setValue(RichTextEditor.createValueFromString(props.note.text || '', 'markdown'));
-    }, [props.note.text]);
+        setValue(createValue());
+    }, [props.note.text]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onSave = () => {
         const element = editorRef.current;
@@ -20,7 +30,7 @@ function NoteTextForm(props) {
             if (!element || !element.contains(document.activeElement)) {
                 props.updateNote({
                     ...props.note,
-                    text: value.toString('markdown')
+                    text: value.toString('html')
                 });
             }
         });
