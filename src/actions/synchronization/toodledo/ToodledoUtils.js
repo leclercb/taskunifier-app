@@ -48,6 +48,7 @@ export function convertTextToRemote(value) {
         result = RichTextEditor.createValueFromString(result, 'markdown').toString('html');
     }
 
+    result = result.replace(/\r?\n/g, '');
     result = result.replace(/<br\s*\/?>/g, '\n');
     result = result.replace(/<p>/g, '');
     result = result.replace(/<\/p>/g, '\n\n');
