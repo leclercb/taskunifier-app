@@ -80,7 +80,8 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
     } catch (error) {
         dispatch(updateProcess({
             id: processId,
-            state: 'ERROR'
+            state: 'ERROR',
+            error: error.toString()
         }));
 
         throw error;

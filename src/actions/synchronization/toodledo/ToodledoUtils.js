@@ -42,8 +42,13 @@ export function convertWeirdToodledoTimestampToLocal(value) {
 }
 
 export function convertTextToRemote(value) {
-    let result = RichTextEditor.createValueFromString(value || '', 'markdown').toString('html');
+    let result = value || '';
 
+    if (result && !result.match(/<(br|p|strong|b|em|i)\s*\/?>/)) {
+        result = RichTextEditor.createValueFromString(result, 'markdown').toString('html');
+    }
+
+    result = result.replace(/\r?\n/g, '');
     result = result.replace(/<br\s*\/?>/g, '\n');
     result = result.replace(/<p>/g, '');
     result = result.replace(/<\/p>/g, '\n\n');
@@ -56,7 +61,7 @@ export function convertTextToRemote(value) {
 
 export function convertTextToLocal(value) {
     value = (value || '').replace(/\r?\n/g, '<br />');
-    return RichTextEditor.createValueFromString(value || '', 'html').toString('markdown');
+    return value;
 }
 
 export function replaceTag(tagA, tagB, value) {

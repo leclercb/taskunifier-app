@@ -287,9 +287,28 @@ export function getCategories() {
         },
         {
             id: 'date',
-            title: 'Date',
+            title: 'Date & Time',
             icon: 'calendar-alt',
             settings: [
+                {
+                    id: 'firstDayOfWeek',
+                    title: 'First day of the week',
+                    type: 'select',
+                    options: {
+                        values: [
+                            {
+                                title: 'Monday',
+                                value: 1
+                            },
+                            {
+                                title: 'Sunday',
+                                value: 0
+                            }
+                        ]
+                    },
+                    value: 1,
+                    editable: true
+                },
                 {
                     id: 'showStartTime',
                     title: 'Show start time',

@@ -5,13 +5,23 @@ import RichTextEditor from 'react-rte';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
 function TaskTextForm(props) {
-    const [value, setValue] = React.useState(RichTextEditor.createValueFromString(props.task.text || '', 'markdown'));
+    const createValue = () => {
+        const text = props.task.text || '';
+
+        if (text && !text.match(/<(br|p|strong|b|em|i)\s*\/?>/)) {
+            return RichTextEditor.createValueFromString(text, 'markdown');
+        }
+
+        return RichTextEditor.createValueFromString(text, 'html');
+    };
+
+    const [value, setValue] = React.useState(createValue());
 
     const editorRef = React.createRef();
 
     useEffect(() => {
-        setValue(RichTextEditor.createValueFromString(props.task.text || '', 'markdown'));
-    }, [props.task.text]);
+        setValue(createValue());
+    }, [props.task.text]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onSave = () => {
         const element = editorRef.current;
@@ -20,7 +30,7 @@ function TaskTextForm(props) {
             if (!element || !element.contains(document.activeElement)) {
                 props.updateTask({
                     ...props.task,
-                    text: value.toString('markdown')
+                    text: value.toString('html')
                 });
             }
         });

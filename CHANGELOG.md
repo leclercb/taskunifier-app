@@ -2,9 +2,15 @@
 
 ## New Features
 
+* Setting to select first day of the week
+* Improve error reporting
+
 ## Bug Fixes
 
 * Fix Toodledo start & due date timezone synchronization
+* Fix create backup folder on Windows
+* Fix skip restore backup settings
+* Fix note format (use html instead of markdown)
 
 # 0.8.1
 
