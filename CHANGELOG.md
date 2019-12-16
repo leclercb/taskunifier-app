@@ -4,6 +4,8 @@
 
 ## Bug Fixes
 
+* Fix invalid backup folder name
+
 # 0.8.2
 
 ## New Features

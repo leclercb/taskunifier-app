@@ -486,7 +486,9 @@ export function getCategories() {
                             ),
                             okText: 'Restore',
                             onOk: () => {
-                                dispatch(restoreBackup(selectedBackup.toString()));
+                                if (selectedBackup) {
+                                    dispatch(restoreBackup(selectedBackup));
+                                }
                             }
                         });
                     },
