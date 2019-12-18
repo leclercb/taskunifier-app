@@ -5,7 +5,7 @@ exports.default = async function (configuration) {
     const keyPass = process.env.WINDOWS_SIGN_KEY_PASS;
 
     require("child_process").execSync(
-        `java8 -jar jsign-2.1.jar --certfile "${certFile}" --keyfile "${keyFile}" --keypass "${keyPass}" --tsaurl http://timestamp.comodoca.com/authenticode "${file}"`,
+        `java -jar jsign-2.1.jar --certfile "${certFile}" --keyfile "${keyFile}" --keypass "${keyPass}" --tsaurl http://timestamp.comodoca.com/authenticode "${file}"`,
         {
             stdio: "inherit"
         }

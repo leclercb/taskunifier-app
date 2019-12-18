@@ -26,13 +26,13 @@ export function restoreBackup(backupId) {
 
 export function backupData() {
     return async (dispatch, getState) => {
-        const path = join(getState().settings.dataFolder, 'backups', moment().toISOString());
+        const path = join(getState().settings.dataFolder, 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]'));
         await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database' }));
         await dispatch(cleanBackups());
     };
 }
 
-export function deleteBackup(date) {
+export function deleteBackup(backupId) {
     return async (dispatch, getState) => {
         const state = getState();
         const processId = uuid();
@@ -40,11 +40,11 @@ export function deleteBackup(date) {
         dispatch(updateProcess({
             id: processId,
             state: 'RUNNING',
-            title: `Delete backup "${moment(date).format('DD-MM-YYYY HH:mm:ss')}"`
+            title: `Delete backup "${moment(backupId).format('DD-MM-YYYY HH:mm:ss')}"`
         }));
 
         try {
-            const path = join(getSettings(state).dataFolder, 'backups', '' + date);
+            const path = join(getSettings(state).dataFolder, 'backups', backupId);
             await deleteDirectory(path, getSettings(state).dataFolder);
 
             dispatch(updateProcess({
