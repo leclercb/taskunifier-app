@@ -6,6 +6,7 @@ import { FolderTitle } from 'components/folders/FolderTitle';
 import { GoalTitle } from 'components/goals/GoalTitle';
 import { LocationTitle } from 'components/locations/LocationTitle';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useContextApi } from 'hooks/UseContextApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useGoalApi } from 'hooks/UseGoalApi';
@@ -15,6 +16,7 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 function TaskQuickAdd() {
+    const appApi = useAppApi();
     const contextApi = useContextApi();
     const folderApi = useFolderApi();
     const goalApi = useGoalApi();
@@ -48,7 +50,7 @@ function TaskQuickAdd() {
         setOpen(false);
     };
 
-    const onAdd = values => {
+    const onAdd = async values => {
         const newTask = {
             title: values[0]
         };
@@ -73,7 +75,10 @@ function TaskQuickAdd() {
             }
         });
 
-        taskApi.addTask(newTask);
+        const task = await taskApi.addTask(newTask);
+
+        taskApi.setSelectedTaskIds(task.id);
+        appApi.setEditingCell(task.id, 'title');
 
         setValues([]);
         setTimeout(() => setOpen(false));

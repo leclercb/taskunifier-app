@@ -5,6 +5,8 @@
 ## Bug Fixes
 
 * Fix invalid backup folder name
+* Fix print booleans
+* Fix quick add task selection
 
 # 0.8.2
 

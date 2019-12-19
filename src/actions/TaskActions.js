@@ -10,6 +10,7 @@ import {
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
+import Constants from 'constants/Constants';
 import { getSettings } from 'selectors/SettingSelectors';
 
 export function loadTasksFromFile(file) {
@@ -33,7 +34,11 @@ export function setTasks(tasks) {
 }
 
 export function addTask(task, options = {}) {
-    return addObject('tasks', task, options);
+    return addObject('tasks', task, options, {
+        title: '',
+        color: Constants.defaultObjectColor,
+        text: ''
+    });
 }
 
 export function duplicateTask(task, options = {}) {
