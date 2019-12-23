@@ -24,9 +24,7 @@ function _containsCompletedTaskCondition(condition) {
                 }
             }
         } else {
-            return condition.field === 'completed' &&
-                condition.type === 'equal' &&
-                condition.value === true;
+            return condition.field === 'completed';
         }
     }
 
