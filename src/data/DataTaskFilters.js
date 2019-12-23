@@ -15,14 +15,26 @@ export function createSearchTaskFilter(searchValue) {
     };
 }
 
-export function hasCompletedTaskConditionOnly(filter) {
-    if (filter.condition) {
-        return filter.condition.field === 'completed' &&
-            filter.condition.type === 'equal' &&
-            filter.condition.value === true;
+function _containsCompletedTaskCondition(condition) {
+    if (condition) {
+        if (condition.operator) {
+            for (let c of condition.conditions) {
+                if (_containsCompletedTaskCondition(c)) {
+                    return true;
+                }
+            }
+        } else {
+            return condition.field === 'completed' &&
+                condition.type === 'equal' &&
+                condition.value === true;
+        }
     }
 
     return false;
+}
+
+export function containsCompletedTaskCondition(filter) {
+    return _containsCompletedTaskCondition(filter.condition);
 }
 
 export function addNonCompletedTasksCondition(filter) {

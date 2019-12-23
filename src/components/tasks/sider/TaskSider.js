@@ -25,6 +25,7 @@ function TaskSider(props) {
     const taskApi = useTaskApi();
     const taskFilterApi = useTaskFilterApi();
 
+    const [searchValue, setSearchValue] = useState('');
     const [openKeys, setOpenKeys] = useState(['general']);
 
     const onSelect = event => {
@@ -203,11 +204,19 @@ function TaskSider(props) {
                         text={(
                             <Tooltip title="Press enter to search" placement="bottom">
                                 <Input.Search
+                                    value={searchValue}
                                     allowClear={true}
                                     size="small"
                                     placeholder="Search for ..."
                                     style={{ width: '80%' }}
-                                    onSearch={value => onSearch(value)} />
+                                    onChange={event => setSearchValue(event.target.value)}
+                                    onSearch={value => onSearch(value)}
+                                    onKeyDown={event => {
+                                        if (event.key === 'Escape') {
+                                            setSearchValue('');
+                                            onSearch('');
+                                        }
+                                    }} />
                             </Tooltip>
                         )} />
                 </Menu.Item>

@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { addNonCompletedTasksCondition, hasCompletedTaskConditionOnly } from 'data/DataTaskFilters';
+import { addNonCompletedTasksCondition, containsCompletedTaskCondition } from 'data/DataTaskFilters';
 import { getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
@@ -50,7 +50,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             return getTasksFilteredBySelectedFilterResult;
         }
 
-        if (!showCompletedTasks && !hasCompletedTaskConditionOnly(selectedTaskFilter)) {
+        if (!showCompletedTasks && !containsCompletedTaskCondition(selectedTaskFilter)) {
             selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);
         }
 

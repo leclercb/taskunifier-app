@@ -2,6 +2,8 @@
 
 ## New Features
 
+* Escape clears search value
+
 ## Bug Fixes
 
 * Fix skip repeat if no next date
@@ -10,6 +12,7 @@
 * Fix invalid backup folder name
 * Fix print booleans
 * Fix quick add task selection
+* Fix filter by completed field
 
 # 0.8.2
 
