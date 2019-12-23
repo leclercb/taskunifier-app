@@ -5,6 +5,7 @@ import { getGoalLevel } from 'data/DataGoalLevels';
 import { getPriority } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getSortDirections } from 'data/DataSortDirections';
+import { getOptionsFromValue } from 'utils/RepeatUtils';
 
 export function toString(value) {
     if (typeof value === 'undefined' || value === null) {
@@ -95,19 +96,17 @@ export function toStringRepeat(value, extended = false) {
     let str = '';
 
     if (value.includes(';FROMCOMP')) {
-        value = value.replace(';FROMCOMP', '');
         str += ' from completion date';
     } else {
         str += ' from due date';
     }
 
     if (value.includes(';FASTFORWARD')) {
-        value = value.replace(';FASTFORWARD', '');
         str += ' (fast forward)';
     }
 
     try {
-        return RRule.fromString(value).toText() + (extended ? str : '');
+        return new RRule(getOptionsFromValue(value)).toText() + (extended ? str : '');
     } catch (error) {
         return extended ? 'Do not repeat' : '';
     }
