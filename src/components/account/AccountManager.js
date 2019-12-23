@@ -6,6 +6,7 @@ import AccountSource from 'components/account/AccountSource';
 import AccountSubscription from 'components/account/AccountSubscription';
 import AccountSummary from 'components/account/AccountSummary';
 import Icon from 'components/common/Icon';
+import ScriptLoader from 'components/common/ScriptLoader';
 import { getConfig } from 'config/Config';
 import { useStripeApi } from 'hooks/UseStripeApi';
 import { Empty } from 'antd';
@@ -73,49 +74,53 @@ function AccountManager() {
     }
 
     return (
-        <Row>
-            <Col span={6}>
-                <List
-                    size="small"
-                    bordered={true}
-                    dataSource={[
-                        {
-                            id: 'summary',
-                            title: 'Summary',
-                            icon: 'user'
-                        },
-                        {
-                            id: 'customer',
-                            title: 'Billing',
-                            icon: 'user'
-                        },
-                        {
-                            id: 'source',
-                            title: 'Payment Method',
-                            icon: 'user'
-                        },
-                        {
-                            id: 'subscription',
-                            title: 'Subscription',
-                            icon: 'user'
-                        }
-                    ]}
-                    renderItem={item => (
-                        <List.Item
-                            onClick={() => setSelectedCategoryId(item.id)}
-                            className={item.id === selectedCategoryId ? 'selected-list-item' : null}>
-                            <Icon icon={item.icon} text={item.title} />
-                        </List.Item>
-                    )}
-                />
-            </Col>
-            <Col span={2} />
-            <Col span={16}>
-                <Spin spinning={busy}>
-                    {element}
-                </Spin>
-            </Col>
-        </Row>
+        <ScriptLoader
+            uniqueId="stripe_v3_script"
+            script="https://js.stripe.com/v3/">
+            <Row>
+                <Col span={6}>
+                    <List
+                        size="small"
+                        bordered={true}
+                        dataSource={[
+                            {
+                                id: 'summary',
+                                title: 'Summary',
+                                icon: 'user'
+                            },
+                            {
+                                id: 'customer',
+                                title: 'Billing',
+                                icon: 'user'
+                            },
+                            {
+                                id: 'source',
+                                title: 'Payment Method',
+                                icon: 'user'
+                            },
+                            {
+                                id: 'subscription',
+                                title: 'Subscription',
+                                icon: 'user'
+                            }
+                        ]}
+                        renderItem={item => (
+                            <List.Item
+                                onClick={() => setSelectedCategoryId(item.id)}
+                                className={item.id === selectedCategoryId ? 'selected-list-item' : null}>
+                                <Icon icon={item.icon} text={item.title} />
+                            </List.Item>
+                        )}
+                    />
+                </Col>
+                <Col span={2} />
+                <Col span={16}>
+                    <Spin spinning={busy}>
+                        {element}
+                    </Spin>
+                </Col>
+            </Row>
+        </ScriptLoader>
     );
 }
 

@@ -169,7 +169,7 @@ export function printTable(doc, title, fields, records, state, subLevel = 0, pri
 
                 if (data.section === 'body') {
                     if (field.type === 'boolean' || field.type === 'star') {
-                        if (records[data.row.index][field.id] === true) {
+                        if (records[data.row.index] && records[data.row.index][field.id] === true) {
                             doc.addImage(checked, 'PNG', data.cell.x + 5, data.cell.y + 5, 10, 10);
                         }
                     }

@@ -4,7 +4,12 @@
 
 ## Bug Fixes
 
+* Fix skip repeat if no next date
+* Fix computed repeat date
+* Fix load stripe with proxy
 * Fix invalid backup folder name
+* Fix print booleans
+* Fix quick add task selection
 
 # 0.8.2
 

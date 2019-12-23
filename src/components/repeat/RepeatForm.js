@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import RRule from 'rrule';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
+import { getOptionsFromValue } from 'utils/RepeatUtils';
 import { toStringRepeat } from 'utils/StringUtils';
 
 function RepeatForm(props) {
@@ -61,54 +62,51 @@ function RepeatForm(props) {
         }
     };
 
-    let rule = null;
+    let options = null;
 
     let fromCompletionDate = false;
     let fastForward = false;
 
-    try {
-        if (props.repeat && typeof props.repeat === 'string') {
-            rule = new RRule({
-                dtstart: new Date(0),
-                freq: RRule.DAILY,
-                interval: 1
-            });
+    if (props.repeat && typeof props.repeat === 'string') {
+        options = {
+            dtstart: new Date(0),
+            freq: RRule.DAILY,
+            interval: 1
+        };
 
-            if (props.repeat === 'PARENT') {
-                rule.options.freq = 999;
-            } else {
-                rule = RRule.fromString(props.repeat.replace(';FROMCOMP', '').replace(';FASTFORWARD', ''));
-                fromCompletionDate = props.repeat.includes(';FROMCOMP');
-                fastForward = props.repeat.includes(';FASTFORWARD');
-            }
+        if (props.repeat === 'PARENT') {
+            options.freq = 999;
+        } else {
+            options = getOptionsFromValue(props.repeat);
+
+            fromCompletionDate = props.repeat.includes(';FROMCOMP');
+            fastForward = props.repeat.includes(';FASTFORWARD');
         }
-    } catch (error) {
-        // Use default rule
     }
 
     return (
         <Form {...getDefaultFormItemLayout()}>
             <Form.Item label={(<strong>Start</strong>)}>
                 {getFieldDecorator('start', {
-                    initialValue: rule && rule.options.dtstart && rule.options.dtstart.getTime() !== 0 ? 'FROM' : 'NONE'
+                    initialValue: options && options.dtstart && options.dtstart.getTime() !== 0 ? 'FROM' : 'NONE'
                 })(
                     <Select
                         onBlur={onCommit}
-                        disabled={!rule || rule.options.freq === 999}
+                        disabled={!options || options.freq === 999}
                         style={{ width: 100 }}>
                         <Select.Option value="NONE">None</Select.Option>
                         <Select.Option value="FROM">From</Select.Option>
                     </Select>
                 )}
-                {rule && rule.options.dtstart && rule.options.dtstart.getTime() !== 0 ? getFieldDecorator('dtstart', {
-                    initialValue: rule && rule.options.dtstart ? moment(rule.options.dtstart) : moment()
+                {options && options.dtstart && options.dtstart.getTime() !== 0 ? getFieldDecorator('dtstart', {
+                    initialValue: options && options.dtstart ? moment(options.dtstart) : moment()
                 })(
-                    <DatePicker onChange={onCommit} disabled={rule.options.freq === 999} style={{ marginLeft: 10 }} />
+                    <DatePicker onChange={onCommit} disabled={options.freq === 999} style={{ marginLeft: 10 }} />
                 ) : null}
             </Form.Item>
             <Form.Item label={(<strong>Repeat</strong>)}>
                 {getFieldDecorator('freq', {
-                    initialValue: String(rule && rule.options.freq ? rule.options.freq : -1)
+                    initialValue: String(options && options.freq ? options.freq : -1)
                 })(
                     <Select
                         onBlur={onCommit}
@@ -122,7 +120,7 @@ function RepeatForm(props) {
                     </Select>
                 )}
             </Form.Item>
-            {rule && rule.options.freq !== 999 && (
+            {options && options.freq !== 999 && (
                 <Form.Item label="Repeat from">
                     {getFieldDecorator('from', {
                         initialValue: fromCompletionDate ? 'completionDate' : 'dueDate',
@@ -148,10 +146,10 @@ function RepeatForm(props) {
                     )}
                 </Form.Item>
             )}
-            {rule && rule.options.freq !== 999 && (
+            {options && options.freq !== 999 && (
                 <Form.Item label="Every">
                     {getFieldDecorator('interval', {
-                        initialValue: rule && rule.options.interval ? rule.options.interval : 1,
+                        initialValue: options && options.interval ? options.interval : 1,
                         rules: [
                             {
                                 required: true,
@@ -163,13 +161,13 @@ function RepeatForm(props) {
                             onBlur={onCommit}
                             min={1} />
                     )}
-                    <span style={{ marginLeft: 10 }}>{getUnitFromFreq(rule.options.freq)}(s)</span>
+                    <span style={{ marginLeft: 10 }}>{getUnitFromFreq(options.freq)}(s)</span>
                 </Form.Item>
             )}
-            {rule && [RRule.DAILY, RRule.WEEKLY, RRule.MONTHLY, RRule.YEARLY].includes(rule.options.freq) && (
+            {options && [RRule.DAILY, RRule.WEEKLY, RRule.MONTHLY, RRule.YEARLY].includes(options.freq) && (
                 <Form.Item label="On the week day(s)">
                     {getFieldDecorator('byweekday', {
-                        initialValue: rule && rule.options.byweekday ? rule.options.byweekday.map(v => String(v)) : []
+                        initialValue: options && options.byweekday ? options.byweekday.map(v => String(v)) : []
                     })(
                         <Select
                             mode="multiple"
@@ -185,10 +183,10 @@ function RepeatForm(props) {
                     )}
                 </Form.Item>
             )}
-            {rule && [RRule.DAILY, RRule.WEEKLY, RRule.MONTHLY, RRule.YEARLY].includes(rule.options.freq) && (
+            {options && [RRule.DAILY, RRule.WEEKLY, RRule.MONTHLY, RRule.YEARLY].includes(options.freq) && (
                 <Form.Item label="On the day(s) of the month">
                     {getFieldDecorator('bymonthday', {
-                        initialValue: rule && rule.options.bymonthday ? rule.options.bymonthday.map(v => String(v)) : []
+                        initialValue: options && options.bymonthday ? options.bymonthday.map(v => String(v)) : []
                     })(
                         <Select
                             mode="multiple"
@@ -200,10 +198,10 @@ function RepeatForm(props) {
                     )}
                 </Form.Item>
             )}
-            {rule && [RRule.DAILY, RRule.WEEKLY, RRule.MONTHLY, RRule.YEARLY].includes(rule.options.freq) && (
+            {options && [RRule.DAILY, RRule.WEEKLY, RRule.MONTHLY, RRule.YEARLY].includes(options.freq) && (
                 <Form.Item label="On the month(s)">
                     {getFieldDecorator('bymonth', {
-                        initialValue: rule && rule.options.bymonth ? rule.options.bymonth.map(v => String(v)) : []
+                        initialValue: options && options.bymonth ? options.bymonth.map(v => String(v)) : []
                     })(
                         <Select
                             mode="multiple"
@@ -224,10 +222,10 @@ function RepeatForm(props) {
                     )}
                 </Form.Item>
             )}
-            {rule && [RRule.YEARLY].includes(rule.options.freq) && (
+            {options && [RRule.YEARLY].includes(options.freq) && (
                 <Form.Item label="On the day(s) of the year">
                     {getFieldDecorator('byyearday', {
-                        initialValue: rule && rule.options.byyearday ? rule.options.byyearday.map(v => String(v)) : []
+                        initialValue: options && options.byyearday ? options.byyearday.map(v => String(v)) : []
                     })(
                         <Select
                             mode="multiple"
@@ -239,10 +237,10 @@ function RepeatForm(props) {
                     )}
                 </Form.Item>
             )}
-            {rule && [RRule.YEARLY].includes(rule.options.freq) && (
+            {options && [RRule.YEARLY].includes(options.freq) && (
                 <Form.Item label="On the week(s) of the year">
                     {getFieldDecorator('byweekno', {
-                        initialValue: rule && rule.options.byweekno ? rule.options.byweekno.map(v => String(v)) : []
+                        initialValue: options && options.byweekno ? options.byweekno.map(v => String(v)) : []
                     })(
                         <Select
                             mode="multiple"
@@ -256,20 +254,20 @@ function RepeatForm(props) {
             )}
             <Form.Item label={(<strong>End</strong>)}>
                 {getFieldDecorator('end', {
-                    initialValue: rule && rule.options.until ? 'UNTIL' : 'NEVER'
+                    initialValue: options && options.until ? 'UNTIL' : 'NEVER'
                 })(
                     <Select
                         onBlur={onCommit}
-                        disabled={!rule || rule.options.freq === 999}
+                        disabled={!options || options.freq === 999}
                         style={{ width: 100 }}>
                         <Select.Option value="NEVER">Never</Select.Option>
                         <Select.Option value="UNTIL">Until</Select.Option>
                     </Select>
                 )}
-                {rule && rule.options.until ? getFieldDecorator('until', {
-                    initialValue: rule && rule.options.until ? moment(rule.options.until) : moment()
+                {options && options.until ? getFieldDecorator('until', {
+                    initialValue: options && options.until ? moment(options.until) : moment()
                 })(
-                    <DatePicker onChange={onCommit} disabled={rule.options.freq === 999} style={{ marginLeft: 10 }} />
+                    <DatePicker onChange={onCommit} disabled={options.freq === 999} style={{ marginLeft: 10 }} />
                 ) : null}
             </Form.Item>
             <Form.Item label={(<strong>Result</strong>)}>

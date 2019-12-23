@@ -9,6 +9,7 @@ import {
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
+import Constants from 'constants/Constants';
 
 export function loadNotesFromFile(file) {
     return loadObjectsFromFile('notes', file);
@@ -27,7 +28,11 @@ export function setNotes(notes) {
 }
 
 export function addNote(note, options = {}) {
-    return addObject('notes', note, options);
+    return addObject('notes', note, options, {
+        title: '',
+        color: Constants.defaultObjectColor,
+        text: ''
+    });
 }
 
 export function duplicateNote(note, options = {}) {
