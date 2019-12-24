@@ -142,15 +142,28 @@ function TaskSider(props) {
             className="joyride-task-sider"
             style={{ backgroundColor: '#ffffff', height: '100%' }}>
             {props.mode === 'table' ? (
-                <Checkbox
-                    checked={taskApi.showCompletedTasks}
-                    onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}
-                    style={{
-                        padding: 10,
-                        paddingBottom: 10
-                    }}>
-                    Show completed tasks
-                </Checkbox>
+                <div style={{
+                    padding: 10,
+                    paddingBottom: 10
+                }}>
+                    <Checkbox
+                        checked={taskApi.showCompletedTasks}
+                        onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
+                        Show completed tasks
+                    </Checkbox>
+                </div>
+            ) : null}
+            {props.mode === 'table' ? (
+                <div style={{
+                    padding: 10,
+                    paddingBottom: 10
+                }}>
+                    <Checkbox
+                        checked={taskApi.showTaskHierarchy}
+                        onChange={() => taskApi.setShowTaskHierarchy(!taskApi.showTaskHierarchy)}>
+                        Show task indentation
+                    </Checkbox>
+                </div>
             ) : null}
             {props.mode === 'calendar' ? (
                 <div style={{

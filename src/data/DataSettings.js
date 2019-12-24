@@ -1131,6 +1131,14 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'showTaskHierarchy',
+                    title: 'Show task indentation',
+                    type: 'boolean',
+                    value: true,
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'calendarDateMode',
                     title: 'Calendar date mode',
                     type: 'select',

@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchTaskValue, setSelectedTaskFilter, setSelectedTaskIds } from 'actions/AppActions';
-import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks } from 'actions/SettingActions';
+import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks, setShowTaskHierarchy } from 'actions/SettingActions';
 import { addTask, deleteTask, duplicateTask, updateTask } from 'actions/TaskActions';
 import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks } from 'selectors/SettingSelectors';
+import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import {
     getSelectedTasks,
     getTasksFilteredBySelectedFilter,
@@ -28,6 +28,7 @@ export function useTaskApi() {
 
     const selectedCalendarView = useSelector(getSelectedCalendarView);
     const showCompletedTasks = useSelector(isShowCompletedTasks);
+    const showTaskHierarchy = useSelector(isShowTaskHierarchy);
     const calendarDateMode = useSelector(getCalendarDateMode);
 
     const addTaskCallback = useCallback(
@@ -75,6 +76,11 @@ export function useTaskApi() {
         [dispatch]
     );
 
+    const setShowTaskHierarchyCallback = useCallback(
+        show => dispatch(setShowTaskHierarchy(show)),
+        [dispatch]
+    );
+
     const setCalendarDateModeCallback = useCallback(
         mode => dispatch(setCalendarDateMode(mode)),
         [dispatch]
@@ -91,6 +97,7 @@ export function useTaskApi() {
         searchTaskValue,
         selectedCalendarView,
         showCompletedTasks,
+        showTaskHierarchy,
         calendarDateMode,
         addTask: addTaskCallback,
         duplicateTask: duplicateTaskCallback,
@@ -101,6 +108,7 @@ export function useTaskApi() {
         setSearchTaskValue: setSearchTaskValueCallback,
         setSelectedCalendarView: setSelectedCalendarViewCallback,
         setShowCompletedTasks: setShowCompletedTasksCallback,
+        setShowTaskHierarchy: setShowTaskHierarchyCallback,
         setCalendarDateMode: setCalendarDateModeCallback
     };
 }

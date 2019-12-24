@@ -22,8 +22,10 @@ function TaskTable() {
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
 
+    const dataSource = taskApi.showTaskHierarchy ? taskApi.filteredExpandedTasks : taskApi.filteredTasks;
+
     const onMenuAction = action => {
-        const tasks = taskApi.filteredExpandedTasks.filter(task => taskApi.selectedTaskIds.includes(task.id));
+        const tasks = dataSource.filter(task => taskApi.selectedTaskIds.includes(task.id));
 
         switch (action.type) {
             case 'batchEdit':
@@ -174,8 +176,8 @@ function TaskTable() {
                                 ...rowData,
                                 ...allValues
                             })}
-                            subLevel={field.id === 'title' ? getSubLevel(rowData, taskApi.tasksMetaData) : 0}
-                            expandMode={getExpandMode(rowData)}
+                            subLevel={taskApi.showTaskHierarchy && field.id === 'title' ? getSubLevel(rowData, taskApi.tasksMetaData) : 0}
+                            expandMode={taskApi.showTaskHierarchy ? getExpandMode(rowData) : null}
                             onSetExpanded={expanded => onUpdateTask({
                                 ...rowData,
                                 expanded
@@ -197,8 +199,8 @@ function TaskTable() {
                         height={height}
                         rowHeight={settingsApi.settings.taskTableRowHeight}
                         headerHeight={20}
-                        rowCount={taskApi.filteredExpandedTasks.length}
-                        rowGetter={({ index }) => taskApi.filteredExpandedTasks[index]}
+                        rowCount={dataSource.length}
+                        rowGetter={({ index }) => dataSource[index]}
                         rowRenderer={rendererProps => (
                             <TaskMenu
                                 key={rendererProps.key}
@@ -208,7 +210,7 @@ function TaskTable() {
                             </TaskMenu>
                         )}
                         rowStyle={({ index }) => {
-                            const task = taskApi.filteredExpandedTasks[index];
+                            const task = dataSource[index];
 
                             if (!task) {
                                 return {};
@@ -228,7 +230,7 @@ function TaskTable() {
                             };
                         }}
                         rowClassName={({ index }) => {
-                            const task = taskApi.filteredExpandedTasks[index];
+                            const task = dataSource[index];
 
                             if (!task) {
                                 return '';
@@ -248,13 +250,13 @@ function TaskTable() {
                         }}
                         onRowClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            taskApi.filteredExpandedTasks,
+                            dataSource,
                             taskApi.selectedTaskIds,
                             taskApi.setSelectedTaskIds,
                             false)}
                         onRowRightClick={multiSelectionHandler(
                             rowData => rowData.id,
-                            taskApi.filteredExpandedTasks,
+                            dataSource,
                             taskApi.selectedTaskIds,
                             taskApi.setSelectedTaskIds,
                             true)} >

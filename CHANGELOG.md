@@ -1,7 +1,8 @@
-# 0.8.3
+# 0.9.0
 
 ## New Features
 
+* Show/hide task indentation (#74)
 * Auto focus title when category is added (#89)
 * Use selected filter when searching for text (#77)
 * Save and restore opened menu items (#88)
