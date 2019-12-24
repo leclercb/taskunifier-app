@@ -1155,6 +1155,22 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'noteSiderOpenKeys',
+                    title: 'Note sider - Open keys',
+                    type: 'selectTags',
+                    value: ['general'],
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskSiderOpenKeys',
+                    title: 'Task sider - Open keys',
+                    type: 'selectTags',
+                    value: ['general'],
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'windowSizeWidth',
                     title: 'Window size - Width',
                     type: 'number',

@@ -11,6 +11,7 @@ import { useContextApi } from 'hooks/UseContextApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useGoalApi } from 'hooks/UseGoalApi';
 import { useLocationApi } from 'hooks/UseLocationApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTagApi } from 'hooks/UseTagApi';
 import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -21,12 +22,20 @@ function TaskSider(props) {
     const folderApi = useFolderApi();
     const goalApi = useGoalApi();
     const locationApi = useLocationApi();
+    const settingsApi = useSettingsApi();
     const tagApi = useTagApi();
     const taskApi = useTaskApi();
     const taskFilterApi = useTaskFilterApi();
 
     const [searchValue, setSearchValue] = useState('');
-    const [openKeys, setOpenKeys] = useState(['general']);
+
+    const openKeys = settingsApi.settings.taskSiderOpenKeys;
+
+    const setOpenKeys = openKeys => {
+        settingsApi.updateSettings({
+            taskSiderOpenKeys: openKeys
+        });
+    };
 
     const onSelect = event => {
         taskApi.setSelectedTaskFilter(event.item.props.filter);

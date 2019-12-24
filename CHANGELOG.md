@@ -2,7 +2,8 @@
 
 ## New Features
 
-* Escape clears search value
+* Save and restore opened menu items (#88)
+* Escape clears search value (#78)
 
 ## Bug Fixes
 
@@ -10,9 +11,9 @@
 * Fix computed repeat date
 * Fix load stripe with proxy
 * Fix invalid backup folder name
-* Fix print booleans
-* Fix quick add task selection
-* Fix filter by completed field
+* Fix print booleans (#82)
+* Fix quick add task selection (#81)
+* Fix filter by completed field (#85)
 
 # 0.8.2
 

@@ -9,6 +9,7 @@ import { useAppApi } from 'hooks/UseAppApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useNoteFilterApi } from 'hooks/UseNoteFilterApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTagApi } from 'hooks/UseTagApi';
 
 function NoteSider() {
@@ -16,10 +17,18 @@ function NoteSider() {
     const folderApi = useFolderApi();
     const noteApi = useNoteApi();
     const noteFilterApi = useNoteFilterApi();
+    const settingsApi = useSettingsApi();
     const tagApi = useTagApi();
 
     const [searchValue, setSearchValue] = useState('');
-    const [openKeys, setOpenKeys] = useState(['general']);
+
+    const openKeys = settingsApi.settings.noteSiderOpenKeys;
+
+    const setOpenKeys = openKeys => {
+        settingsApi.updateSettings({
+            noteSiderOpenKeys: openKeys
+        });
+    };
 
     const onSelect = event => {
         noteApi.setSelectedNoteFilter(event.item.props.filter);
