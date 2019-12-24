@@ -4,7 +4,7 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
-import { createSearchNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
+import { getGeneralNoteFilters } from 'data/DataNoteFilters';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useNoteFilterApi } from 'hooks/UseNoteFilterApi';
@@ -20,7 +20,7 @@ function NoteSider() {
     const settingsApi = useSettingsApi();
     const tagApi = useTagApi();
 
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState(noteApi.searchNoteValue);
 
     const openKeys = settingsApi.settings.noteSiderOpenKeys;
 
@@ -111,12 +111,6 @@ function NoteSider() {
         };
     };
 
-    const onSearch = value => {
-        noteApi.setSelectedNoteFilter(createSearchNoteFilter(value));
-    };
-
-    const searchNoteFilter = createSearchNoteFilter();
-
     const createBadge = noteFilter => {
         if (noteFilter.id !== noteApi.selectedNoteFilter.id) {
             return null;
@@ -137,38 +131,39 @@ function NoteSider() {
     };
 
     return (
-        <React.Fragment>
+        <div
+            className="joyride-note-sider"
+            style={{ backgroundColor: '#ffffff', height: '100%' }}>
+            <div style={{
+                padding: 10,
+                paddingBottom: 10
+            }}>
+                <Icon
+                    icon="search"
+                    text={(
+                        <Tooltip title="Press enter to search" placement="bottom">
+                            <Input.Search
+                                value={searchValue}
+                                allowClear={true}
+                                size="small"
+                                placeholder="Search for ..."
+                                style={{ width: '80%' }}
+                                onChange={event => setSearchValue(event.target.value)}
+                                onSearch={value => noteApi.setSearchNoteValue(value)}
+                                onKeyDown={event => {
+                                    if (event.key === 'Escape') {
+                                        setSearchValue('');
+                                        noteApi.setSearchNoteValue('');
+                                    }
+                                }} />
+                        </Tooltip>
+                    )} />
+            </div>
             <Menu
                 selectedKeys={[noteApi.selectedNoteFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
-                mode="inline"
-                className="joyride-note-sider"
-                style={{ height: '100%' }}>
-                <Menu.Item
-                    key={searchNoteFilter.id}
-                    filter={searchNoteFilter}>
-                    <Icon
-                        icon={searchNoteFilter.icon}
-                        text={(
-                            <Tooltip title="Press enter to search" placement="bottom">
-                                <Input.Search
-                                    value={searchValue}
-                                    allowClear={true}
-                                    size="small"
-                                    placeholder="Search for ..."
-                                    style={{ width: '80%' }}
-                                    onChange={event => setSearchValue(event.target.value)}
-                                    onSearch={value => onSearch(value)}
-                                    onKeyDown={event => {
-                                        if (event.key === 'Escape') {
-                                            setSearchValue('');
-                                            onSearch('');
-                                        }
-                                    }} />
-                            </Tooltip>
-                        )} />
-                </Menu.Item>
+                mode="inline">
                 <Menu.SubMenu
                     key="general"
                     title={<Icon icon="home" text="General" />}
@@ -244,7 +239,7 @@ function NoteSider() {
                     ))}
                 </Menu.SubMenu>
             </Menu >
-        </React.Fragment>
+        </div>
     );
 }
 

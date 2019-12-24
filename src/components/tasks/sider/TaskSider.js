@@ -5,7 +5,7 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
-import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
+import { getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useContextApi } from 'hooks/UseContextApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
@@ -27,7 +27,7 @@ function TaskSider(props) {
     const taskApi = useTaskApi();
     const taskFilterApi = useTaskFilterApi();
 
-    const [searchValue, setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState(taskApi.searchTaskValue);
 
     const openKeys = settingsApi.settings.taskSiderOpenKeys;
 
@@ -118,12 +118,6 @@ function TaskSider(props) {
         };
     };
 
-    const onSearch = value => {
-        taskApi.setSelectedTaskFilter(createSearchTaskFilter(value));
-    };
-
-    const searchTaskFilter = createSearchTaskFilter();
-
     const createBadge = taskFilter => {
         if (taskFilter.id !== taskApi.selectedTaskFilter.id) {
             return null;
@@ -153,7 +147,7 @@ function TaskSider(props) {
                     onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}
                     style={{
                         padding: 10,
-                        paddingBottom: 20
+                        paddingBottom: 10
                     }}>
                     Show completed tasks
                 </Checkbox>
@@ -161,7 +155,7 @@ function TaskSider(props) {
             {props.mode === 'calendar' ? (
                 <div style={{
                     padding: 10,
-                    paddingBottom: 20
+                    paddingBottom: 10
                 }}>
                     <div style={{ marginBottom: 10 }}>Show tasks by:</div>
                     <Radio.Group
@@ -200,35 +194,36 @@ function TaskSider(props) {
                     </Radio.Group>
                 </div>
             ) : null}
+            <div style={{
+                padding: 10,
+                paddingBottom: 10
+            }}>
+                <Icon
+                    icon="search"
+                    text={(
+                        <Tooltip title="Press enter to search" placement="bottom">
+                            <Input.Search
+                                value={searchValue}
+                                allowClear={true}
+                                size="small"
+                                placeholder="Search for ..."
+                                style={{ width: '80%' }}
+                                onChange={event => setSearchValue(event.target.value)}
+                                onSearch={value => taskApi.setSearchTaskValue(value)}
+                                onKeyDown={event => {
+                                    if (event.key === 'Escape') {
+                                        setSearchValue('');
+                                        taskApi.setSearchTaskValue('');
+                                    }
+                                }} />
+                        </Tooltip>
+                    )} />
+            </div>
             <Menu
                 selectedKeys={[taskApi.selectedTaskFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
                 mode="inline">
-                <Menu.Item
-                    key={searchTaskFilter.id}
-                    filter={searchTaskFilter}>
-                    <Icon
-                        icon={searchTaskFilter.icon}
-                        text={(
-                            <Tooltip title="Press enter to search" placement="bottom">
-                                <Input.Search
-                                    value={searchValue}
-                                    allowClear={true}
-                                    size="small"
-                                    placeholder="Search for ..."
-                                    style={{ width: '80%' }}
-                                    onChange={event => setSearchValue(event.target.value)}
-                                    onSearch={value => onSearch(value)}
-                                    onKeyDown={event => {
-                                        if (event.key === 'Escape') {
-                                            setSearchValue('');
-                                            onSearch('');
-                                        }
-                                    }} />
-                            </Tooltip>
-                        )} />
-                </Menu.Item>
                 <Menu.SubMenu
                     key="general"
                     title={<Icon icon="home" text="General" />}

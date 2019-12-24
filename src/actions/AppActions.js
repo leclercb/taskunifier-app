@@ -425,6 +425,15 @@ export function setSelectedNoteFilter(noteFilter) {
     };
 }
 
+export function setSearchNoteValue(value) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_SEARCH_NOTE_VALUE',
+            value
+        });
+    };
+}
+
 export function setSelectedTaskIds(taskIds) {
     return async dispatch => {
         dispatch({
@@ -440,6 +449,15 @@ export function setSelectedTaskFilter(taskFilter) {
             type: 'SET_SELECTED_TASK_FILTER',
             taskFilter,
             date: moment().toISOString()
+        });
+    };
+}
+
+export function setSearchTaskValue(value) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_SEARCH_TASK_VALUE',
+            value
         });
     };
 }

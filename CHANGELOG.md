@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Use selected filter when searching for text (#77)
 * Save and restore opened menu items (#88)
 * Escape clears search value (#78)
 

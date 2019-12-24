@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { addNonCompletedTasksCondition, containsCompletedTaskCondition } from 'data/DataTaskFilters';
-import { getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { addNonCompletedTasksCondition, addSearchTaskValueCondition, containsCompletedTaskCondition } from 'data/DataTaskFilters';
+import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { isShowCompletedTasks } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
@@ -40,15 +40,18 @@ let getTasksFilteredBySelectedFilterResult = [];
 export const getTasksFilteredBySelectedFilter = createSelector(
     getTasksFilteredByVisibleState,
     getTasksMetaDataFilteredByVisibleState,
+    getSearchTaskValue,
     isShowCompletedTasks,
     getSelectedTaskFilter,
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
     isBusy,
-    (tasks, tasksMetaData, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
+    (tasks, tasksMetaData, searchTaskValue, showCompletedTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
         if (busy) {
             return getTasksFilteredBySelectedFilterResult;
         }
+
+        selectedTaskFilter = addSearchTaskValueCondition(selectedTaskFilter, searchTaskValue);
 
         if (!showCompletedTasks && !containsCompletedTaskCondition(selectedTaskFilter)) {
             selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);

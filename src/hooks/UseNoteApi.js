@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedNoteFilter, setSelectedNoteIds } from 'actions/AppActions';
+import { setSearchNoteValue, setSelectedNoteFilter, setSelectedNoteIds } from 'actions/AppActions';
 import { addNote, deleteNote, duplicateNote, updateNote } from 'actions/NoteActions';
-import { getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
+import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState, getSelectedNotes } from 'selectors/NoteSelectors';
 
 export function useNoteApi() {
@@ -14,6 +14,7 @@ export function useNoteApi() {
     const selectedNoteIds = useSelector(getSelectedNoteIds);
     const selectedNotes = useSelector(getSelectedNotes);
     const selectedNoteFilter = useSelector(getSelectedNoteFilter);
+    const searchNoteValue = useSelector(getSearchNoteValue);
 
     const addNoteCallback = useCallback(
         note => dispatch(addNote(note)),
@@ -45,17 +46,24 @@ export function useNoteApi() {
         [dispatch]
     );
 
+    const setSearchNoteValueCallback = useCallback(
+        value => dispatch(setSearchNoteValue(value)),
+        [dispatch]
+    );
+
     return {
         notes,
         filteredNotes,
         selectedNoteIds,
         selectedNotes,
         selectedNoteFilter,
+        searchNoteValue,
         addNote: addNoteCallback,
         duplicateNote: duplicateNoteCallback,
         updateNote: updateNoteCallback,
         deleteNote: deleteNoteCallback,
         setSelectedNoteIds: setSelectedNoteIdsCallback,
-        setSelectedNoteFilter: setSelectedNoteFilterCallback
+        setSelectedNoteFilter: setSelectedNoteFilterCallback,
+        setSearchNoteValue: setSearchNoteValueCallback
     };
 }
