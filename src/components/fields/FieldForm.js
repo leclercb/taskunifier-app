@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Empty, Form, Input, Select } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
@@ -11,6 +11,14 @@ function FieldForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
+
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (titleRef.current && !props.field.title) {
+            titleRef.current.focus();
+        }
+    }, [props.field.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const config = getFieldType(props.field.type, props.field.options);
 
@@ -30,7 +38,7 @@ function FieldForm(props) {
                         }
                     ]
                 })(
-                    <Input onBlur={onCommit} />
+                    <Input ref={titleRef} onBlur={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Color">

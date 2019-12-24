@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Auto focus title when category is added (#89)
 * Use selected filter when searching for text (#77)
 * Save and restore opened menu items (#88)
 * Escape clears search value (#78)

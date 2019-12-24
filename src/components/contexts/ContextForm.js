@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'antd';
 import { getContextFields } from 'data/DataContextFields';
@@ -14,6 +14,14 @@ function ContextForm(props) {
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (titleRef.current && !props.context.title) {
+            titleRef.current.focus();
+        }
+    }, [props.context.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <Form {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => (
@@ -26,6 +34,7 @@ function ContextForm(props) {
                             field.type,
                             field.options,
                             {
+                                ref: field.id === 'title' ? titleRef : undefined,
                                 onCommit: () => onCommitForm(props.form, props.context, props.updateContext)
                             })
                     )}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'antd';
 import { getGoalFields } from 'data/DataGoalFields';
@@ -13,6 +13,14 @@ function GoalForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
+
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (titleRef.current && !props.goal.title) {
+            titleRef.current.focus();
+        }
+    }, [props.goal.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Form {...formItemLayout}>
@@ -35,6 +43,7 @@ function GoalForm(props) {
                                 field.options,
                                 {
                                     ...fieldProps,
+                                    ref: field.id === 'title' ? titleRef : undefined,
                                     onCommit: () => onCommitForm(props.form, props.goal, props.updateGoal)
                                 })
                         )}
