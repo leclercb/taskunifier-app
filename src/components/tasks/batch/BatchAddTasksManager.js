@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Input } from 'antd';
+import { Alert, Button, Form, Input, message } from 'antd';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import Icon from 'components/common/Icon';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
@@ -8,12 +8,14 @@ import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
-function BatchAddTasksManager(props) {
+function BatchAddTasksManager({ form, onSuccess }) {
     const taskApi = useTaskApi();
     const taskTemplatesApi = useTaskTemplateApi();
 
+    const [showExample, setShowExample] = useState(false);
+
     const addTasks = () => {
-        props.form.validateFields(async (error, values) => {
+        form.validateFields(async (error, values) => {
             if (error) {
                 return;
             }
@@ -70,17 +72,42 @@ function BatchAddTasksManager(props) {
                         parent: parents[taskSubLevels[index] - 1]
                     });
                 });
+
+                taskApi.setSelectedTaskIds(tasks.map(task => task.id));
+
+                message.success('Tasks sucessfully added');
+                onSuccess();
+                form.resetFields();
             }
         });
     };
 
-    const { getFieldDecorator } = props.form;
+    const { getFieldDecorator } = form;
 
     const formItemLayout = getDefaultFormItemLayout();
     const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Form {...formItemLayout}>
+            <Form.Item {...tailFormItemLayout}>
+                <Alert
+                    type="info"
+                    showIcon
+                    message={showExample ?
+                        (
+                            <div>
+                                <span>You can use a dash (-) before the title to create subtasks.</span>
+                                &nbsp;<Button size="small" onClick={() => setShowExample(false)}>Hide example</Button>
+                                <br />
+                                <span>Task 1<br />- Task 1.1<br />-- Task 1.1.1<br />- Task 1.2<br />Task 2</span>
+                            </div>
+                        ) : (
+                            <div>
+                                <span>You can use a dash (-) before the title to create subtasks.</span>
+                                &nbsp;<Button size="small" onClick={() => setShowExample(true)}>Show example</Button>
+                            </div>
+                        )} />
+            </Form.Item>
             <Form.Item label="Titles (each task on a separate line)">
                 {getFieldDecorator('titles', {
                     initialValue: null,
@@ -91,7 +118,7 @@ function BatchAddTasksManager(props) {
                         }
                     ]
                 })(
-                    <Input.TextArea autosize={{ minRows: 5 }} />
+                    <Input.TextArea autoSize={{ minRows: 5 }} />
                 )}
             </Form.Item>
             <Form.Item label="Task Template">
@@ -112,7 +139,7 @@ function BatchAddTasksManager(props) {
 
 BatchAddTasksManager.propTypes = {
     form: PropTypes.object.isRequired,
-    onAdd: PropTypes.func.isRequired
+    onSuccess: PropTypes.func.isRequired
 };
 
 export default Form.create({ name: 'batchAddTasks' })(BatchAddTasksManager);

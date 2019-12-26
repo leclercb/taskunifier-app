@@ -11,3 +11,13 @@ export function applyTaskTemplate(taskTemplate, task) {
         }
     });
 }
+
+export function applyTaskTemplateFromTaskFilter(taskFilter, taskTemplates, task) {
+    let taskTemplate = taskFilter.taskTemplate;
+
+    if (typeof taskTemplate === 'string') {
+        taskTemplate = taskTemplates.find(taskTemplate => taskTemplate.id === taskTemplate);
+    }
+
+    applyTaskTemplate(taskTemplate, task);
+}

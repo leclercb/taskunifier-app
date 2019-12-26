@@ -24,9 +24,11 @@ import { printNotes, printTasks } from 'actions/PrintActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask } from 'actions/TaskActions';
-import { getSelectedNoteIds, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
@@ -72,12 +74,8 @@ export function initializeShortcuts() {
             await executeBatchAddTasks();
         });
 
-        ipcRenderer.on('menu-edit-task', async () => {
-            await executeEditTask();
-        });
-
-        ipcRenderer.on('menu-batch-edit-tasks', async () => {
-            await executeBatchEditTasks();
+        ipcRenderer.on('menu-edit-tasks', async () => {
+            await executeEditTasks();
         });
 
         ipcRenderer.on('menu-remove-tasks', async () => {
@@ -133,6 +131,16 @@ export function initializeShortcuts() {
             await executeAddTask();
             return false;
         });
+
+        Mousetrap.bind(['command+alt+b', 'ctrl+shift+b'], async () => {
+            await executeBatchAddTasks();
+            return false;
+        });
+
+        Mousetrap.bind(['command+alt+e', 'ctrl+shift+e'], async () => {
+            await executeEditTasks();
+            return false;
+        });
     }
 }
 
@@ -172,8 +180,15 @@ async function executeNoteFieldManager() {
 }
 
 async function executeAddTask() {
+    const state = store.getState();
+
     await store.dispatch(setSelectedView('task'));
-    const task = await store.dispatch(addTask());
+
+    let task = {};
+
+    applyTaskTemplateFromTaskFilter(getSelectedTaskFilter(state), getTaskTemplatesFilteredByVisibleState(state), task);
+
+    task = await store.dispatch(addTask(task));
     await store.dispatch(setSelectedTaskIds(task.id));
     await store.dispatch(setEditingCell(task.id, 'title'));
 }
@@ -182,29 +197,19 @@ async function executeBatchAddTasks() {
     await store.dispatch(setBatchAddTasksManagerOptions({ visible: true }));
 }
 
-async function executeEditTask() {
+async function executeEditTasks() {
     const selectedTaskIds = getSelectedTaskIds(store.getState());
 
-    if (selectedTaskIds.length !== 1) {
-        message.error('Please select a task');
-        return;
+    if (selectedTaskIds.length === 1) {
+        await store.dispatch(setTaskEditionManagerOptions({
+            visible: true,
+            taskId: selectedTaskIds[0]
+        }));
+    } else if (selectedTaskIds.length > 1 && selectedTaskIds.length <= 50) {
+        await store.dispatch(setBatchEditTasksManagerOptions({ visible: true }));
+    } else {
+        message.error('Please select one or more tasks (maximum 50)');
     }
-
-    await store.dispatch(setTaskEditionManagerOptions({
-        visible: true,
-        taskId: selectedTaskIds[0]
-    }));
-}
-
-async function executeBatchEditTasks() {
-    const selectedTaskIds = getSelectedTaskIds(store.getState());
-
-    if (selectedTaskIds.length <= 1 || selectedTaskIds.length > 50) {
-        message.error('Please select two or more tasks (maximum 50)');
-        return;
-    }
-
-    await store.dispatch(setBatchEditTasksManagerOptions({ visible: true }));
 }
 
 async function executeRemoveTasks() {

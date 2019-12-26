@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
+import { addSearchNoteValueCondition } from 'data/DataNoteFilters';
+import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
@@ -24,14 +25,17 @@ export const getNotesFilteredByVisibleState = createSelector(
 let getNotesFilteredBySelectedFilterResult = [];
 export const getNotesFilteredBySelectedFilter = createSelector(
     getNotesFilteredByVisibleState,
+    getSearchNoteValue,
     getSelectedNoteFilter,
     getSelectedNoteFilterDate,
     getNoteFieldsIncludingDefaults,
     isBusy,
-    (notes, selectedNoteFilter, selectedNoteFilterDate, noteFields, busy) => {
+    (notes, searchNoteValue, selectedNoteFilter, selectedNoteFilterDate, noteFields, busy) => {
         if (busy) {
             return getNotesFilteredBySelectedFilterResult;
         }
+
+        selectedNoteFilter = addSearchNoteValueCondition(selectedNoteFilter, searchNoteValue);
 
         const filteredNotes = notes.filter(note => {
             if (moment(note.creationDate).isAfter(moment(selectedNoteFilterDate))) {

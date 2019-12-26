@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'antd';
 import { getLocationFields } from 'data/DataLocationFields';
@@ -14,6 +14,14 @@ function LocationForm(props) {
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (titleRef.current && !props.location.title) {
+            titleRef.current.focus();
+        }
+    }, [props.location.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <Form {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => (
@@ -26,6 +34,7 @@ function LocationForm(props) {
                             field.type,
                             field.options,
                             {
+                                ref: field.id === 'title' ? titleRef : undefined,
                                 onCommit: () => onCommitForm(props.form, props.location, props.updateLocation)
                             })
                     )}

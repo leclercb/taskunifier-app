@@ -13,9 +13,15 @@ import 'index.css';
 initializeShortcuts();
 
 window.addEventListener('error', function (e) {
+    console.error(e);
+
+    if (e.message === 'ResizeObserver loop limit exceeded') {
+        return false;
+    }
+
     notification.error({
         message: 'An error occurred',
-        description: e.error.message
+        description: e.error ? e.error.toString() : e.message
     });
 
     return false;

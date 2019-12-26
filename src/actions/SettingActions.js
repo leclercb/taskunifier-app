@@ -80,6 +80,12 @@ export function setShowCompletedTasks(show) {
     }, { skipServerUpdate: false });
 }
 
+export function setShowTaskHierarchy(show) {
+    return updateSettings({
+        showTaskHierarchy: show
+    }, { skipServerUpdate: false });
+}
+
 export function setCalendarDateMode(mode) {
     return updateSettings({
         calendarDateMode: mode

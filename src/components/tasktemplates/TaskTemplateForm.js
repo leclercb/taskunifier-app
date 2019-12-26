@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
@@ -17,6 +17,14 @@ function TaskTemplateForm(props) {
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (titleRef.current && !props.taskTemplate.title) {
+            titleRef.current.focus();
+        }
+    }, [props.taskTemplate.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
     const fields = taskFieldApi.taskFields.filter(field => field.editable && settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
     const onCommit = () => onCommitForm(props.form, props.taskTemplate, props.updateTaskTemplate);
@@ -33,7 +41,7 @@ function TaskTemplateForm(props) {
                         }
                     ]
                 })(
-                    <Input onBlur={onCommit} />
+                    <Input ref={titleRef} onBlur={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Color">

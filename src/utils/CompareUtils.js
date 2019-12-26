@@ -49,15 +49,15 @@ export function compareObjects(a, b, objects) {
     return compareStrings(objectA ? objectA.title : '', objectB ? objectB.title : '');
 }
 
-export function compareObjectsHierarchy(field, a, b, state, getMetaDataFunction, indented) {
+export function compareObjectsHierarchy(field, a, b, sortDirection, state, getMetaDataFunction, indented) {
     if (indented) {
-        return compareObjectsIndented(field, a, b, state, getMetaDataFunction);
+        return compareObjectsIndented(field, a, b, sortDirection, state, getMetaDataFunction);
     } else {
-        return compareObjectsUnindented(field, a, b, state);
+        return compareObjectsUnindented(field, a, b, sortDirection, state);
     }
 }
 
-export function compareObjectsIndented(field, a, b, state, getMetaDataFunction) {
+function compareObjectsIndented(field, a, b, sortDirection, state, getMetaDataFunction) {
     const valueA = a[field.id];
     const valueB = b[field.id];
 
@@ -68,8 +68,16 @@ export function compareObjectsIndented(field, a, b, state, getMetaDataFunction) 
 
     if (parentsA.length === 0 && parentsB.length === 0) {
         result = getCompareForType(field.type, valueA, valueB, state);
+
+        if (sortDirection === 'descending') {
+            result *= -1;
+        }
     } else if (a.parent === b.parent) {
         result = getCompareForType(field.type, valueA, valueB, state);
+
+        if (sortDirection === 'descending') {
+            result *= -1;
+        }
     } else if (parentsA.includes(b)) {
         result = 1;
     } else if (parentsB.includes(a)) {
@@ -93,6 +101,10 @@ export function compareObjectsIndented(field, a, b, state, getMetaDataFunction) 
 
             result = getCompareForType(field.type, a[field.id], b[field.id], state);
 
+            if (sortDirection === 'descending') {
+                result *= -1;
+            }
+
             break;
         }
     }
@@ -100,11 +112,17 @@ export function compareObjectsIndented(field, a, b, state, getMetaDataFunction) 
     return result;
 }
 
-export function compareObjectsUnindented(field, a, b, state) {
+function compareObjectsUnindented(field, a, b, sortDirection, state) {
     const valueA = a[field.id];
     const valueB = b[field.id];
 
-    return getCompareForType(field.type, valueA, valueB, state);
+    let result = getCompareForType(field.type, valueA, valueB, state);
+
+    if (sortDirection === 'descending') {
+        result *= -1;
+    }
+
+    return result;
 }
 
 export function compareSortDirections(a, b) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'antd';
 import { getContactFields } from 'data/DataContactFields';
@@ -14,6 +14,14 @@ function ContactForm(props) {
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const firstNameRef = useRef(null);
+
+    useEffect(() => {
+        if (firstNameRef.current && !props.contact.firstName) {
+            firstNameRef.current.focus();
+        }
+    }, [props.contact.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
     return (
         <Form {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => (
@@ -26,6 +34,7 @@ function ContactForm(props) {
                             field.type,
                             field.options,
                             {
+                                ref: field.id === 'firstName' ? firstNameRef : undefined,
                                 onCommit: () => onCommitForm(props.form, props.contact, props.updateContact)
                             })
                     )}

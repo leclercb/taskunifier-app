@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSelectedTaskFilter, setSelectedTaskIds } from 'actions/AppActions';
-import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks } from 'actions/SettingActions';
+import { setSearchTaskValue, setSelectedTaskFilter, setSelectedTaskIds } from 'actions/AppActions';
+import { setCalendarDateMode, setSelectedCalendarView, setShowCompletedTasks, setShowTaskHierarchy } from 'actions/SettingActions';
 import { addTask, deleteTask, duplicateTask, updateTask } from 'actions/TaskActions';
-import { getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks } from 'selectors/SettingSelectors';
+import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import {
     getSelectedTasks,
     getTasksFilteredBySelectedFilter,
@@ -24,9 +24,11 @@ export function useTaskApi() {
     const selectedTaskIds = useSelector(getSelectedTaskIds);
     const selectedTasks = useSelector(getSelectedTasks);
     const selectedTaskFilter = useSelector(getSelectedTaskFilter);
+    const searchTaskValue = useSelector(getSearchTaskValue);
 
     const selectedCalendarView = useSelector(getSelectedCalendarView);
     const showCompletedTasks = useSelector(isShowCompletedTasks);
+    const showTaskHierarchy = useSelector(isShowTaskHierarchy);
     const calendarDateMode = useSelector(getCalendarDateMode);
 
     const addTaskCallback = useCallback(
@@ -59,6 +61,11 @@ export function useTaskApi() {
         [dispatch]
     );
 
+    const setSearchTaskValueCallback = useCallback(
+        value => dispatch(setSearchTaskValue(value)),
+        [dispatch]
+    );
+
     const setSelectedCalendarViewCallback = useCallback(
         show => dispatch(setSelectedCalendarView(show)),
         [dispatch]
@@ -66,6 +73,11 @@ export function useTaskApi() {
 
     const setShowCompletedTasksCallback = useCallback(
         show => dispatch(setShowCompletedTasks(show)),
+        [dispatch]
+    );
+
+    const setShowTaskHierarchyCallback = useCallback(
+        show => dispatch(setShowTaskHierarchy(show)),
         [dispatch]
     );
 
@@ -82,8 +94,10 @@ export function useTaskApi() {
         selectedTaskIds,
         selectedTasks,
         selectedTaskFilter,
+        searchTaskValue,
         selectedCalendarView,
         showCompletedTasks,
+        showTaskHierarchy,
         calendarDateMode,
         addTask: addTaskCallback,
         duplicateTask: duplicateTaskCallback,
@@ -91,8 +105,10 @@ export function useTaskApi() {
         deleteTask: deleteTaskCallback,
         setSelectedTaskIds: setSelectedTaskIdsCallback,
         setSelectedTaskFilter: setSelectedTaskFilterCallback,
+        setSearchTaskValue: setSearchTaskValueCallback,
         setSelectedCalendarView: setSelectedCalendarViewCallback,
         setShowCompletedTasks: setShowCompletedTasksCallback,
+        setShowTaskHierarchy: setShowTaskHierarchyCallback,
         setCalendarDateMode: setCalendarDateModeCallback
     };
 }

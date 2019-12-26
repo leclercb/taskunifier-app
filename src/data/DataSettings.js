@@ -1131,6 +1131,14 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'showTaskHierarchy',
+                    title: 'Show task indentation',
+                    type: 'boolean',
+                    value: true,
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'calendarDateMode',
                     title: 'Calendar date mode',
                     type: 'select',
@@ -1151,6 +1159,22 @@ export function getCategories() {
                         ]
                     },
                     value: 'both',
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'noteSiderOpenKeys',
+                    title: 'Note sider - Open keys',
+                    type: 'selectTags',
+                    value: ['general'],
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'taskSiderOpenKeys',
+                    title: 'Task sider - Open keys',
+                    type: 'selectTags',
+                    value: ['general'],
                     editable: false,
                     visible: false
                 },

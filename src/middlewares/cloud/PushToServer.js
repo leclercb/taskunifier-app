@@ -153,7 +153,7 @@ export const pushToServer = store => next => async action => {
         action.addedObject = addedObject; // eslint-disable-line require-atomic-updates
     }
 
-    if (action.type === 'POST_UPDATE_OBJECT') {
+    if (action.type === 'POST_UPDATE_OBJECT' && !action.newObject.static) {
         await store.dispatch(pushObjectToServer(action.property, action.oldObject, action.newObject));
     }
 

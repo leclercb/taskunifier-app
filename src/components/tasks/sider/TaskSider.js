@@ -5,12 +5,13 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
-import { createSearchTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
+import { getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useContextApi } from 'hooks/UseContextApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useGoalApi } from 'hooks/UseGoalApi';
 import { useLocationApi } from 'hooks/UseLocationApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTagApi } from 'hooks/UseTagApi';
 import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -21,11 +22,20 @@ function TaskSider(props) {
     const folderApi = useFolderApi();
     const goalApi = useGoalApi();
     const locationApi = useLocationApi();
+    const settingsApi = useSettingsApi();
     const tagApi = useTagApi();
     const taskApi = useTaskApi();
     const taskFilterApi = useTaskFilterApi();
 
-    const [openKeys, setOpenKeys] = useState(['general']);
+    const [searchValue, setSearchValue] = useState(taskApi.searchTaskValue);
+
+    const openKeys = settingsApi.settings.taskSiderOpenKeys;
+
+    const setOpenKeys = openKeys => {
+        settingsApi.updateSettings({
+            taskSiderOpenKeys: openKeys
+        });
+    };
 
     const onSelect = event => {
         taskApi.setSelectedTaskFilter(event.item.props.filter);
@@ -104,15 +114,15 @@ function TaskSider(props) {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition
+            condition,
+            taskTemplate: {
+                id: null,
+                properties: {
+                    [field]: condition.value
+                }
+            }
         };
     };
-
-    const onSearch = value => {
-        taskApi.setSelectedTaskFilter(createSearchTaskFilter(value));
-    };
-
-    const searchTaskFilter = createSearchTaskFilter();
 
     const createBadge = taskFilter => {
         if (taskFilter.id !== taskApi.selectedTaskFilter.id) {
@@ -138,20 +148,33 @@ function TaskSider(props) {
             className="joyride-task-sider"
             style={{ backgroundColor: '#ffffff', height: '100%' }}>
             {props.mode === 'table' ? (
-                <Checkbox
-                    checked={taskApi.showCompletedTasks}
-                    onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}
-                    style={{
-                        padding: 10,
-                        paddingBottom: 20
-                    }}>
-                    Show completed tasks
-                </Checkbox>
+                <div style={{
+                    padding: 10,
+                    paddingBottom: 10
+                }}>
+                    <Checkbox
+                        checked={taskApi.showCompletedTasks}
+                        onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
+                        Show completed tasks
+                    </Checkbox>
+                </div>
+            ) : null}
+            {props.mode === 'table' ? (
+                <div style={{
+                    padding: 10,
+                    paddingBottom: 10
+                }}>
+                    <Checkbox
+                        checked={taskApi.showTaskHierarchy}
+                        onChange={() => taskApi.setShowTaskHierarchy(!taskApi.showTaskHierarchy)}>
+                        Show task indentation
+                    </Checkbox>
+                </div>
             ) : null}
             {props.mode === 'calendar' ? (
                 <div style={{
                     padding: 10,
-                    paddingBottom: 20
+                    paddingBottom: 10
                 }}>
                     <div style={{ marginBottom: 10 }}>Show tasks by:</div>
                     <Radio.Group
@@ -190,27 +213,36 @@ function TaskSider(props) {
                     </Radio.Group>
                 </div>
             ) : null}
+            <div style={{
+                padding: 10,
+                paddingBottom: 10
+            }}>
+                <Icon
+                    icon="search"
+                    text={(
+                        <Tooltip title="Press enter to search" placement="bottom">
+                            <Input.Search
+                                value={searchValue}
+                                allowClear={true}
+                                size="small"
+                                placeholder="Search for ..."
+                                style={{ width: '80%' }}
+                                onChange={event => setSearchValue(event.target.value)}
+                                onSearch={value => taskApi.setSearchTaskValue(value)}
+                                onKeyDown={event => {
+                                    if (event.key === 'Escape') {
+                                        setSearchValue('');
+                                        taskApi.setSearchTaskValue('');
+                                    }
+                                }} />
+                        </Tooltip>
+                    )} />
+            </div>
             <Menu
                 selectedKeys={[taskApi.selectedTaskFilter.id]}
                 openKeys={openKeys}
                 onSelect={onSelect}
                 mode="inline">
-                <Menu.Item
-                    key={searchTaskFilter.id}
-                    filter={searchTaskFilter}>
-                    <Icon
-                        icon={searchTaskFilter.icon}
-                        text={(
-                            <Tooltip title="Press enter to search" placement="bottom">
-                                <Input.Search
-                                    allowClear={true}
-                                    size="small"
-                                    placeholder="Search for ..."
-                                    style={{ width: '80%' }}
-                                    onSearch={value => onSearch(value)} />
-                            </Tooltip>
-                        )} />
-                </Menu.Item>
                 <Menu.SubMenu
                     key="general"
                     title={<Icon icon="home" text="General" />}
@@ -313,7 +345,7 @@ function TaskSider(props) {
                     title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
                     {tagApi.tags.map(tag => {
                         const filter = createTaskFilterForObject(tag, 'tags', {
-                            id: '1',
+                            id: null,
                             field: 'tags',
                             type: 'contain',
                             value: [tag.id]

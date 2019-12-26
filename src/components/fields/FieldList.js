@@ -5,6 +5,7 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { createActions } from 'utils/CategoryListUtils';
+import { filterByStatic } from 'utils/CategoryUtils';
 import { getColorFromIndex } from 'utils/ColorUtils';
 
 function FieldList(props) {
@@ -21,7 +22,7 @@ function FieldList(props) {
             <List
                 size="small"
                 bordered={true}
-                dataSource={props.fields.filter(field => !field.static)}
+                dataSource={filterByStatic(props.fields)}
                 style={{ minHeight: 400, maxHeight: 400, overflowY: 'auto' }}
                 renderItem={item => (
                     <List.Item

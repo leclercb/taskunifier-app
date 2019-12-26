@@ -719,7 +719,7 @@ export function getFieldComponents(type, options) {
                 input: props => (
                     <Input.TextArea
                         onBlur={props.onCommit}
-                        autosize={true}
+                        autoSize={true}
                         {...removeExtraProps(props)} />
                 )
             };

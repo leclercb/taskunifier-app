@@ -104,20 +104,16 @@ const template = [
             },
             {
                 label: 'Batch Add Tasks',
+                accelerator: process.platform === 'darwin' ? 'Cmd+Alt+B' : 'Ctrl+Shift+B',
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-batch-add-tasks');
                 }
             },
             {
-                label: 'Edit Task',
+                label: 'Edit Task(s)',
+                accelerator: process.platform === 'darwin' ? 'Cmd+Alt+E' : 'Ctrl+Shift+E',
                 click: async () => {
-                    BrowserWindow.getFocusedWindow().webContents.send('menu-edit-task');
-                }
-            },
-            {
-                label: 'Batch Edit Tasks',
-                click: async () => {
-                    BrowserWindow.getFocusedWindow().webContents.send('menu-batch-edit-tasks');
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-edit-tasks');
                 }
             },
             {

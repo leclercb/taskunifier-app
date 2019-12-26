@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
@@ -9,6 +9,14 @@ function FilterForm(props) {
     const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
+
+    const titleRef = useRef(null);
+
+    useEffect(() => {
+        if (titleRef.current && !props.filter.title) {
+            titleRef.current.focus();
+        }
+    }, [props.filter.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onCommit = () => onCommitForm(props.form, props.filter, props.updateFilter);
 
@@ -24,7 +32,7 @@ function FilterForm(props) {
                         }
                     ]
                 })(
-                    <Input onBlur={onCommit} />
+                    <Input ref={titleRef} onBlur={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Color">

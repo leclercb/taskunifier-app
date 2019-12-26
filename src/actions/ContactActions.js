@@ -29,8 +29,8 @@ export function setContacts(contacts) {
 
 export function addContact(contact, options = {}) {
     return addObject('contacts', contact, options, {
-        firstName: 'Unnamed',
-        lastName: 'Unnamed',
+        firstName: '',
+        lastName: '',
         color: Constants.defaultObjectColor
     });
 }

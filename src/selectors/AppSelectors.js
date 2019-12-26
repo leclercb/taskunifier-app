@@ -8,10 +8,12 @@ export const getEditingCell = state => state.app.editingCell;
 export const getSelectedNoteIds = state => state.app.selectedNoteIds;
 export const getSelectedNoteFilter = state => state.app.selectedNoteFilter;
 export const getSelectedNoteFilterDate = state => state.app.selectedNoteFilterDate;
+export const getSearchNoteValue = state => state.app.searchNoteValue;
 
 export const getSelectedTaskIds = state => state.app.selectedTaskIds;
 export const getSelectedTaskFilter = state => state.app.selectedTaskFilter;
 export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDate;
+export const getSearchTaskValue = state => state.app.searchTaskValue;
 
 export const getJoyrideOptions = state => state.app.joyride;
 

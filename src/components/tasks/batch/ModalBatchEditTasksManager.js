@@ -24,7 +24,7 @@ function ModalBatchEditTasksManager() {
                     Close
                 </Button>
             )}>
-            <BatchEditTasksManager onEdit={() => onClose()} />
+            <BatchEditTasksManager onSuccess={() => onClose()} />
         </Modal>
     );
 }

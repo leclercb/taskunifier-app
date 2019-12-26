@@ -1,15 +1,28 @@
-# 0.8.3
+# 0.9.0
 
 ## New Features
 
+* Improved batch add tasks dialog
+* Show/hide task indentation (#74)
+* Auto focus title when category is added (#89)
+* Use selected filter when searching for text (#77)
+* Save and restore opened menu items (#88)
+* Escape clears search value (#78)
+* Set selected category to added task (#79)
+* Improve sort order of default filters (#84)
+* New keyboard shortcuts (#6)
+
 ## Bug Fixes
 
+* Clear batch add/edit tasks dialog on success (#91)
+* Fix descending order of subtasks
 * Fix skip repeat if no next date
 * Fix computed repeat date
 * Fix load stripe with proxy
 * Fix invalid backup folder name
-* Fix print booleans
-* Fix quick add task selection
+* Fix print booleans (#82)
+* Fix quick add task selection (#81)
+* Fix filter by completed field (#85)
 
 # 0.8.2
 
