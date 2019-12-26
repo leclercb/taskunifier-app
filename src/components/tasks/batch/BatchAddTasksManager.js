@@ -118,7 +118,7 @@ function BatchAddTasksManager({ form, onSuccess }) {
                         }
                     ]
                 })(
-                    <Input.TextArea autosize={{ minRows: 5 }} />
+                    <Input.TextArea autoSize={{ minRows: 5 }} />
                 )}
             </Form.Item>
             <Form.Item label="Task Template">

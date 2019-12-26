@@ -10,6 +10,7 @@
 * Escape clears search value (#78)
 * Set selected category to added task (#79)
 * Improve sort order of default filters (#84)
+* New keyboard shortcuts (#6)
 
 ## Bug Fixes
 
