@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Improved batch add tasks dialog
 * Show/hide task indentation (#74)
 * Auto focus title when category is added (#89)
 * Use selected filter when searching for text (#77)
@@ -10,6 +11,7 @@
 
 ## Bug Fixes
 
+* Clear batch add/edit tasks dialog on success (#91)
 * Fix skip repeat if no next date
 * Fix computed repeat date
 * Fix load stripe with proxy

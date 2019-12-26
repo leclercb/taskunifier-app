@@ -24,7 +24,7 @@ function ModalBatchAddTasksManager() {
                     Close
                 </Button>
             )}>
-            <BatchAddTasksManager onAdd={() => onClose()} />
+            <BatchAddTasksManager onSuccess={() => onClose()} />
         </Modal>
     );
 }

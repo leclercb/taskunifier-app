@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Col, Form, Row } from 'antd';
+import { Button, Checkbox, Col, Form, Row, message } from 'antd';
 import Icon from 'components/common/Icon';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
@@ -10,13 +10,13 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
-function BatchEditTasksManager(props) {
+function BatchEditTasksManager({ form, onSuccess }) {
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
 
     const updateTasks = () => {
-        props.form.validateFields((error, values) => {
+        form.validateFields((error, values) => {
             if (error) {
                 return;
             }
@@ -32,12 +32,16 @@ function BatchEditTasksManager(props) {
             });
 
             tasks.forEach(task => taskApi.updateTask(task));
+
+            message.success('Tasks sucessfully updated');
+            onSuccess();
+            form.resetFields();
         });
     };
 
     const fields = taskFieldApi.taskFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
-    const { getFieldDecorator } = props.form;
+    const { getFieldDecorator } = form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
@@ -64,7 +68,7 @@ function BatchEditTasksManager(props) {
                 <Col span={24}>
                     <div style={{ width: '90%', textAlign: 'right' }}>
                         <Button onClick={() => updateTasks()}>
-                            <Icon icon="plus" text="Batch edit tasks" />
+                            <Icon icon="edit" text="Batch edit tasks" />
                         </Button>
                     </div>
                 </Col>
@@ -74,7 +78,8 @@ function BatchEditTasksManager(props) {
 }
 
 BatchEditTasksManager.propTypes = {
-    form: PropTypes.object.isRequired
+    form: PropTypes.object.isRequired,
+    onSuccess: PropTypes.func.isRequired
 };
 
 export default Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager);
