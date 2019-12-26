@@ -37,7 +37,18 @@ export function getGeneralNoteFilters() {
             id: 'all',
             title: 'All',
             icon: 'book',
-            condition: null
+            condition: null,
+            sorters: getDefaultSorters()
+        }
+    ];
+}
+
+function getDefaultSorters() {
+    return [
+        {
+            id: 'title',
+            field: 'title',
+            direction: 'ascending'
         }
     ];
 }

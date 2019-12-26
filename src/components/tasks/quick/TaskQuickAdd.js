@@ -13,7 +13,7 @@ import { useGoalApi } from 'hooks/UseGoalApi';
 import { useLocationApi } from 'hooks/UseLocationApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
-import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
+import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 function TaskQuickAdd() {
     const appApi = useAppApi();
@@ -55,10 +55,7 @@ function TaskQuickAdd() {
             title: values[0]
         };
 
-        const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate =>
-            taskTemplate.id === taskApi.selectedTaskFilter.taskTemplate);
-
-        applyTaskTemplate(taskTemplate, newTask);
+        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, newTask);
 
         values.forEach((value, index) => {
             if (index === 0) {

@@ -114,7 +114,13 @@ function TaskSider(props) {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition
+            condition,
+            taskTemplate: {
+                id: null,
+                properties: {
+                    [field]: condition.value
+                }
+            }
         };
     };
 
@@ -339,7 +345,7 @@ function TaskSider(props) {
                     title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
                     {tagApi.tags.map(tag => {
                         const filter = createTaskFilterForObject(tag, 'tags', {
-                            id: '1',
+                            id: null,
                             field: 'tags',
                             type: 'contain',
                             value: [tag.id]

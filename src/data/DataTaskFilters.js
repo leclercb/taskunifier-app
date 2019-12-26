@@ -83,7 +83,8 @@ export function getGeneralTaskFilters() {
             id: 'all',
             title: 'All',
             icon: 'tasks',
-            condition: null
+            condition: null,
+            sorters: getDefaultSorters()
         },
         {
             id: 'not-completed',
@@ -95,7 +96,8 @@ export function getGeneralTaskFilters() {
                 field: 'completed',
                 type: 'equal',
                 value: false
-            }
+            },
+            sorters: getDefaultSorters()
         },
         {
             id: 'due-today',
@@ -107,7 +109,8 @@ export function getGeneralTaskFilters() {
                 field: 'dueDate',
                 type: 'dateEqual',
                 value: 0
-            }
+            },
+            sorters: getDefaultSorters()
         },
         {
             id: 'overdue',
@@ -119,7 +122,8 @@ export function getGeneralTaskFilters() {
                 field: 'dueDate',
                 type: 'dateTimeBefore',
                 value: 0
-            }
+            },
+            sorters: getDefaultSorters()
         },
         {
             id: 'hot-list',
@@ -143,19 +147,27 @@ export function getGeneralTaskFilters() {
                         value: 'high'
                     }
                 ]
-            }
+            },
+            sorters: getDefaultSorters()
         },
         {
             id: 'importance',
             title: 'Importance',
             color: '#fcc635',
             icon: 'exclamation-triangle',
-            condition: {
-                id: '1',
-                field: 'completed',
-                type: 'equal',
-                value: false
-            }
+            condition: null,
+            sorters: [
+                {
+                    id: 'importance',
+                    field: 'importance',
+                    direction: 'descending'
+                },
+                {
+                    id: 'title',
+                    field: 'title',
+                    direction: 'ascending'
+                }
+            ]
         },
         {
             id: 'starred',
@@ -167,7 +179,8 @@ export function getGeneralTaskFilters() {
                 field: 'star',
                 type: 'equal',
                 value: true
-            }
+            },
+            sorters: getDefaultSorters()
         },
         {
             id: 'next-action',
@@ -179,7 +192,8 @@ export function getGeneralTaskFilters() {
                 field: 'status',
                 type: 'equal',
                 value: 'nextAction'
-            }
+            },
+            sorters: getDefaultSorters()
         },
         {
             id: 'completed',
@@ -191,7 +205,28 @@ export function getGeneralTaskFilters() {
                 field: 'completed',
                 type: 'equal',
                 value: true
-            }
+            },
+            sorters: getDefaultSorters()
+        }
+    ];
+}
+
+function getDefaultSorters() {
+    return [
+        {
+            id: 'dueDate',
+            field: 'dueDate',
+            direction: 'ascending'
+        },
+        {
+            id: 'priority',
+            field: 'priority',
+            direction: 'descending'
+        },
+        {
+            id: 'title',
+            field: 'title',
+            direction: 'ascending'
         }
     ];
 }

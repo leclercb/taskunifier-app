@@ -24,9 +24,11 @@ import { printNotes, printTasks } from 'actions/PrintActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask } from 'actions/TaskActions';
-import { getSelectedNoteIds, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
@@ -172,8 +174,15 @@ async function executeNoteFieldManager() {
 }
 
 async function executeAddTask() {
+    const state = store.getState();
+
     await store.dispatch(setSelectedView('task'));
-    const task = await store.dispatch(addTask());
+
+    let task = {};
+
+    applyTaskTemplateFromTaskFilter(getSelectedTaskFilter(state), getTaskTemplatesFilteredByVisibleState(state), task);
+
+    task = await store.dispatch(addTask(task));
     await store.dispatch(setSelectedTaskIds(task.id));
     await store.dispatch(setEditingCell(task.id, 'title'));
 }

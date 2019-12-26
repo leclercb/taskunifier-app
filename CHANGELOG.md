@@ -8,10 +8,13 @@
 * Use selected filter when searching for text (#77)
 * Save and restore opened menu items (#88)
 * Escape clears search value (#78)
+* Set selected category to added task (#79)
+* Improve sort order of default filters (#84)
 
 ## Bug Fixes
 
 * Clear batch add/edit tasks dialog on success (#91)
+* Fix descending order of subtasks
 * Fix skip repeat if no next date
 * Fix computed repeat date
 * Fix load stripe with proxy

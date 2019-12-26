@@ -206,7 +206,7 @@ function NoteSider() {
                     title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
                     {tagApi.tags.map(tag => {
                         const filter = createNoteFilterForObject(tag, 'tags', {
-                            id: '1',
+                            id: null,
                             field: 'tags',
                             type: 'contain',
                             value: [tag.id]
