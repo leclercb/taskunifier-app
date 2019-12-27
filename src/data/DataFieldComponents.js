@@ -9,6 +9,7 @@ import DatePicker from 'components/common/DatePicker';
 import DurationField from 'components/common/DurationField';
 import ExtendedDatePicker from 'components/common/ExtendedDatePicker';
 import FileField from 'components/common/FileField';
+import RichTextField from 'components/common/RichTextField';
 import StarCheckbox from 'components/common/StarCheckbox';
 import ContactTitle from 'components/contacts/ContactTitle';
 import ContactSelect from 'components/contacts/ContactSelect';
@@ -546,6 +547,22 @@ export function getFieldComponents(type, options) {
 
             break;
         }
+        case 'richtext': {
+            configuration = {
+                render: value => (
+                    <RichTextField
+                        value={value}
+                        readOnly={true} />
+                ),
+                input: props => (
+                    <RichTextField
+                        onBlur={props.onCommit}
+                        {...removeExtraProps(props)} />
+                )
+            };
+
+            break;
+        }
         case 'select': {
             let values = options && options.values ? options.values : [];
             values = Array.isArray(values) ? values : [values];
@@ -715,7 +732,12 @@ export function getFieldComponents(type, options) {
         }
         case 'textarea': {
             configuration = {
-                render: value => value ? value : <span>&nbsp;</span>,
+                render: value => (
+                    <Input.TextArea
+                        value={value}
+                        readOnly={true}
+                        autoSize={true} />
+                ),
                 input: props => (
                     <Input.TextArea
                         onBlur={props.onCommit}

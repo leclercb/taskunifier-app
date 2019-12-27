@@ -1,3 +1,11 @@
+# 0.9.1
+
+## New Features
+
+## Bug Fixes
+
+* Fix note field in task edition window (#94)
+
 # 0.9.0
 
 ## New Features

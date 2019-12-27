@@ -5,7 +5,7 @@ import { getPriorityIndex } from 'data/DataPriorities';
 import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
-import { toStringRepeat } from 'utils/StringUtils';
+import { toStringRepeat, toStringRichText } from 'utils/StringUtils';
 
 export function compareBooleans(a, b) {
     const boolA = a ? true : false;
@@ -147,6 +147,10 @@ export function compareGoalLevels(a, b) {
 
 export function compareStrings(a, b) {
     return (a || '').localeCompare((b || ''), undefined, { sensitivity: 'base' });
+}
+
+export function compareRichTexts(a, b) {
+    return compareStrings(toStringRichText(a), toStringRichText(b));
 }
 
 export function compareVersions(a, b) {

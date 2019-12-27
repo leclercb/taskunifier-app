@@ -13,11 +13,11 @@ import 'index.css';
 initializeShortcuts();
 
 window.addEventListener('error', function (e) {
-    console.error(e);
-
     if (e.message === 'ResizeObserver loop limit exceeded') {
         return false;
     }
+
+    console.error(e);
 
     notification.error({
         message: 'An error occurred',
