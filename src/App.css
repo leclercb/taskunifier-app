@@ -140,9 +140,9 @@ ant-input:focus {
     margin-right: 3px;
 }
 
-/* RC Color Picker */
+/* React Color */
 
-.rc-color-picker-trigger {
+.color-picker {
     border: 1px solid #d9d9d9 !important;
     width: 50px !important;
     height: 32px !important;
