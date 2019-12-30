@@ -14,6 +14,7 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { SorterPropType } from 'proptypes/SorterPropTypes';
 import { move } from 'utils/ArrayUtils';
+import { clone } from 'utils/ObjectUtils';
 import { getSorterBackgroundColor } from 'utils/SettingUtils';
 
 function SorterTable(props) {
@@ -55,6 +56,11 @@ function SorterTable(props) {
     const onMove = moveHandler(props.orderSettingPrefix, props.sorterFields, settingsApi.settings, settingsApi.updateSettings);
 
     const columns = sortBy(props.sorterFields, field => settingsApi.settings[props.orderSettingPrefix + field.id] || 0).map(field => {
+        if (props.disabled) {
+            field = clone(field);
+            field.editable = false;
+        }
+
         const settingKey = props.widthSettingPrefix + field.id;
         let width = Number(settingsApi.settings[settingKey]);
 
@@ -86,7 +92,7 @@ function SorterTable(props) {
 
                     if (!isAlwaysInEditionForType(field.type)) {
                         dndProps = {
-                            dndEnabled: true,
+                            dndEnabled: !props.disabled,
                             dragType: 'sorter',
                             dropType: 'sorter',
                             dndData: {
@@ -154,15 +160,17 @@ function SorterTable(props) {
                     {columns}
                 </Table>
             )}
-            <div style={{ marginTop: 10 }}>
-                <Button onClick={() => onAddSorter()}>
-                    Add
-                </Button>
-                <Spacer />
-                <Button onClick={() => onDeleteSorters(selectedSorterIds)}>
-                    Delete
-                </Button>
-            </div>
+            {!props.disabled && (
+                <div style={{ marginTop: 10 }}>
+                    <Button onClick={() => onAddSorter()}>
+                        Add
+                    </Button>
+                    <Spacer />
+                    <Button onClick={() => onDeleteSorters(selectedSorterIds)}>
+                        Delete
+                    </Button>
+                </div>
+            )}
         </React.Fragment>
     );
 }
@@ -170,9 +178,10 @@ function SorterTable(props) {
 SorterTable.propTypes = {
     sorters: PropTypes.arrayOf(SorterPropType.isRequired).isRequired,
     sorterFields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired,
-    updateSorters: PropTypes.func.isRequired,
+    updateSorters: PropTypes.func,
     orderSettingPrefix: PropTypes.string.isRequired,
-    widthSettingPrefix: PropTypes.string.isRequired
+    widthSettingPrefix: PropTypes.string.isRequired,
+    disabled: PropTypes.bool
 };
 
 export default SorterTable;

@@ -253,8 +253,24 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 valuePropName: 'value',
-                compare: (a, b) => compareDates(a, b, false),
-                toString: value => toStringDate(value, dateFormat),
+                compare: (a, b) => {
+                    if (Number.isInteger(a)) {
+                        a = moment().add(Number.parseInt(a), 'day').toISOString();
+                    }
+
+                    if (Number.isInteger(b)) {
+                        b = moment().add(Number.parseInt(b), 'day').toISOString();
+                    }
+
+                    return compareDates(a, b, false);
+                },
+                toString: value => {
+                    if (Number.isInteger(value)) {
+                        value = moment().add(Number.parseInt(value), 'day').toISOString();
+                    }
+
+                    return toStringDate(value, dateFormat);
+                },
                 conditions: [
                     {
                         type: 'dateEqual',
@@ -481,8 +497,24 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 valuePropName: 'value',
-                compare: (a, b) => compareDates(a, b, true),
-                toString: value => toStringDate(value, `${dateFormat} ${timeFormat}`),
+                compare: (a, b) => {
+                    if (Number.isInteger(a)) {
+                        a = moment().add(Number.parseInt(a), 'day').toISOString();
+                    }
+
+                    if (Number.isInteger(b)) {
+                        b = moment().add(Number.parseInt(b), 'day').toISOString();
+                    }
+
+                    return compareDates(a, b, true);
+                },
+                toString: value => {
+                    if (Number.isInteger(value)) {
+                        value = moment().add(Number.parseInt(value), 'day').toISOString();
+                    }
+
+                    return toStringDate(value, `${dateFormat} ${timeFormat}`);
+                },
                 conditions: [
                     {
                         type: 'dateEqual',

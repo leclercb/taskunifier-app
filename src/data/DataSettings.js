@@ -9,8 +9,12 @@ import { resetDataForSynchronization, selectSynchronizationApp, synchronize } fr
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
+import { getDefaultNoteSorters } from 'data/DataNoteFilters';
+import { getNoteSorterFields } from 'data/DataNoteSorterFields';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
+import { getDefaultTaskSorters } from 'data/DataTaskFilters';
+import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { verifyLicense } from 'utils/LicenseUtils';
 import { getSynchronizationApp } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
@@ -37,6 +41,10 @@ export function getSettings() {
             }
 
             if (setting.type === 'label') {
+                return;
+            }
+
+            if (setting.type === 'sorters') {
                 return;
             }
 
@@ -330,75 +338,75 @@ export function getCategories() {
                     options: {
                         values: [
                             {
-                                title: 'DD/MM/YYYY (18/01/2019)',
+                                title: `DD/MM/YYYY (${moment().format('DD/MM/YYYY')})`,
                                 value: 'DD/MM/YYYY'
                             },
                             {
-                                title: 'DD-MM-YYYY (18-01-2019)',
+                                title: `DD-MM-YYYY (${moment().format('DD-MM-YYYY')})`,
                                 value: 'DD-MM-YYYY'
                             },
                             {
-                                title: 'DD.MM.YYYY (18.01.2019)',
+                                title: `DD.MM.YYYY (${moment().format('DD.MM.YYYY')})`,
                                 value: 'DD.MM.YYYY'
                             },
                             {
-                                title: 'MM/DD/YYYY (01/18/2019)',
+                                title: `MM/DD/YYYY (${moment().format('MM/DD/YYYY')})`,
                                 value: 'MM/DD/YYYY'
                             },
                             {
-                                title: 'MM-DD-YYYY (01-18-2019)',
+                                title: `MM-DD-YYYY (${moment().format('MM-DD-YYYY')})`,
                                 value: 'MM-DD-YYYY'
                             },
                             {
-                                title: 'MM.DD.YYYY (01.18.2019)',
+                                title: `MM.DD.YYYY (${moment().format('MM.DD.YYYY')})`,
                                 value: 'MM.DD.YYYY'
                             },
                             {
-                                title: 'YYYY/MM/DD (2019/01/18)',
+                                title: `YYYY/MM/DD (${moment().format('YYYY/MM/DD')})`,
                                 value: 'YYYY/MM/DD'
                             },
                             {
-                                title: 'YYYY-MM-DD (2019-01-18)',
+                                title: `YYYY-MM-DD (${moment().format('YYYY-MM-DD')})`,
                                 value: 'YYYY-MM-DD'
                             },
                             {
-                                title: 'YYYY.MM.DD (2019.01.18)',
+                                title: `YYYY.MM.DD (${moment().format('YYYY.MM.DD')})`,
                                 value: 'YYYY.MM.DD'
                             },
                             {
-                                title: 'ddd DD/MM/YYYY (Fri 18/01/2019)',
+                                title: `ddd DD/MM/YYYY (${moment().format('ddd DD/MM/YYYY')})`,
                                 value: 'ddd DD/MM/YYYY'
                             },
                             {
-                                title: 'ddd DD-MM-YYYY (Fri 18-01-2019)',
+                                title: `ddd DD-MM-YYYY (${moment().format('ddd DD-MM-YYYY')})`,
                                 value: 'ddd DD-MM-YYYY'
                             },
                             {
-                                title: 'ddd DD.MM.YYYY (Fri 18.01.2019)',
+                                title: `ddd DD.MM.YYYY (${moment().format('ddd DD.MM.YYYY')})`,
                                 value: 'ddd DD.MM.YYYY'
                             },
                             {
-                                title: 'ddd MM/DD/YYYY (Fri 01/18/2019)',
+                                title: `ddd MM/DD/YYYY (${moment().format('ddd MM/DD/YYYY')})`,
                                 value: 'ddd MM/DD/YYYY'
                             },
                             {
-                                title: 'ddd MM-DD-YYYY (Fri 01-18-2019)',
+                                title: `ddd MM-DD-YYYY (${moment().format('ddd MM-DD-YYYY')})`,
                                 value: 'ddd MM-DD-YYYY'
                             },
                             {
-                                title: 'ddd MM.DD.YYYY (Fri 01.18.2019)',
+                                title: `ddd MM.DD.YYYY (${moment().format('ddd MM.DD.YYYY')})`,
                                 value: 'ddd MM.DD.YYYY'
                             },
                             {
-                                title: 'ddd YYYY/MM/DD (Fri 2019/01/18)',
+                                title: `ddd YYYY/MM/DD (${moment().format('ddd YYYY/MM/DD')})`,
                                 value: 'ddd YYYY/MM/DD'
                             },
                             {
-                                title: 'ddd YYYY-MM-DD (Fri 2019-01-18)',
+                                title: `ddd YYYY-MM-DD (${moment().format('ddd YYYY-MM-DD')})`,
                                 value: 'ddd YYYY-MM-DD'
                             },
                             {
-                                title: 'ddd YYYY.MM.DD (Fri 2019.01.18)',
+                                title: `ddd YYYY.MM.DD (${moment().format('ddd YYYY.MM.DD')})`,
                                 value: 'ddd YYYY.MM.DD'
                             }
                         ]
@@ -814,6 +822,31 @@ export function getCategories() {
                 value: true,
                 editable: true
             })
+        },
+        {
+            id: 'sorter',
+            title: 'Sort Order',
+            icon: 'list-ol',
+            settings: [
+                {
+                    id: 'categoryNoteSorters',
+                    title: 'Category Note Sorters',
+                    type: 'sorters',
+                    fields: getNoteSorterFields(),
+                    value: getDefaultNoteSorters(),
+                    editable: true,
+                    visible: true
+                },
+                {
+                    id: 'categoryTaskSorters',
+                    title: 'Category Task Sorters',
+                    type: 'sorters',
+                    fields: getTaskSorterFields(),
+                    value: getDefaultTaskSorters(),
+                    editable: true,
+                    visible: true
+                }
+            ]
         },
         {
             id: 'theme',

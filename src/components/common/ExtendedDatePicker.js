@@ -33,7 +33,8 @@ class ExtendedDatePicker extends React.Component {
                     onChange={this.onSwitchChange}
                     checkedChildren="Use number of days from now"
                     unCheckedChildren="Use fixed date"
-                    style={{ marginRight: 10 }} />
+                    style={{ marginRight: 10 }}
+                    disabled={this.props.disabled} />
                 {Number.isInteger(this.props.value) ?
                     (
                         <React.Fragment>
@@ -55,7 +56,8 @@ ExtendedDatePicker.propTypes = {
         PropTypes.number,
         PropTypes.string
     ]),
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool
 };
 
 export default ExtendedDatePicker;

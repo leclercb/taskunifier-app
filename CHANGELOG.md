@@ -2,6 +2,10 @@
 
 ## New Features
 
+* Show general task filter info
+* Change default sort order (#97)
+* Improve duration format (#98)
+
 ## Bug Fixes
 
 * Fix note field in task edition window (#94)

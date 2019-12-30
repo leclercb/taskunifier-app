@@ -41,20 +41,18 @@ export function toStringDate(value, format) {
     return moment(value).format(format);
 }
 
-export function toStringDuration(value) {
-    if (typeof value === 'undefined' || value === null) {
+export function toStringDuration(value, explicit = false) {
+    if (!value) {
         return '';
     }
 
-    const days = Math.floor(value / 86400);
-    const hours = Math.floor((value % 86400) / 3600);
-    const minutes = Math.floor(((value % 86400) % 3600) / 60);
+    const hours = Math.floor(value / 3600);
+    const minutes = Math.floor((value % 3600) / 60);
 
     let str = '';
 
-    str += days.toString().padStart(2, '0') + 'd ';
-    str += hours.toString().padStart(2, '0') + 'h';
-    str += minutes.toString().padStart(2, '0') + 'm';
+    str += hours.toString().padStart(2, '0') + (explicit ? 'h' : ':');
+    str += minutes.toString().padStart(2, '0') + (explicit ? 'm' : '');
 
     return str.trim();
 }
