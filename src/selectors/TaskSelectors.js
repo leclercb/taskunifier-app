@@ -114,7 +114,7 @@ export const getStatistics = createSelector(
     getTasksFilteredBySelectedFilter,
     (tasks, filteredTasks) => {
         const computeStats = tasks => {
-            const stats = { nbTotal: tasks.length, nbCompleted: 0, length: 0, ellapsed: 0 };
+            const stats = { nbTotal: tasks.length, nbCompleted: 0, length: 0, elapsed: 0 };
 
             for (let task of tasks) {
                 if (task.completed) {
@@ -123,10 +123,10 @@ export const getStatistics = createSelector(
                 }
 
                 stats.length += task.length || 0;
-                stats.ellapsed += task.timer ? task.timer.value || 0 : 0;
+                stats.elapsed += task.timer ? task.timer.value || 0 : 0;
 
                 if (task.timer && task.timer.startDate) {
-                    stats.ellapsed += moment().diff(moment(task.timer.startDate), 'second');
+                    stats.elapsed += moment().diff(moment(task.timer.startDate), 'second');
                 }
             }
 
