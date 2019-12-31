@@ -27,10 +27,10 @@ function TaskStatusBar() {
                 <strong>{title}</strong>
                 <span> - Total Length: </span>
                 <strong>{toStringDuration(stats.length, false, false)}</strong>
-                <span> - Total Ellapsed: </span>
-                <strong>{toStringDuration(stats.ellapsed, false, false)}</strong>
+                <span> - Total Elapsed: </span>
+                <strong>{toStringDuration(stats.elapsed, false, false)}</strong>
                 <span> - </span>
-                <Progress percent={stats.length === 0 ? 100 : Math.round(100 * stats.ellapsed / stats.length)} style={{ width: 60 }} />
+                <Progress percent={stats.length === 0 ? 100 : Math.round(100 * stats.elapsed / stats.length)} style={{ width: 60 }} />
             </div>
         </React.Fragment>
     );
