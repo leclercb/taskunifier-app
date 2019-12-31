@@ -44,10 +44,6 @@ export function getSettings() {
                 return;
             }
 
-            if (setting.type === 'sorters') {
-                return;
-            }
-
             settings[setting.id] = setting.value;
         });
     });
