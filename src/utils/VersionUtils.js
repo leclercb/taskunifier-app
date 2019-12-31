@@ -37,7 +37,7 @@ export async function checkLatestVersion(settings, quiet = false) {
             }
         }
 
-        if (compareVersions(currentVersion, latestVersion) > 0) {
+        if (compareVersions(latestVersion, currentVersion) > 0) {
             notification.info({
                 message: `A new version is available: ${latestVersion}`,
                 description: (

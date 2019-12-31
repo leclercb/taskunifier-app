@@ -10,6 +10,7 @@
 
 ## Bug Fixes
 
+* Fix comparison of dates and numbers
 * Fix note field in task edition window (#94)
 
 # 0.9.0
