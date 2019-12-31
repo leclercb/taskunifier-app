@@ -29,7 +29,10 @@ class ColorPicker extends React.Component {
                 trigger="click"
                 onVisibleChange={this.onVisibleChange}
                 content={(
-                    <SketchPicker {...this.props} onChange={this.onChange} />
+                    <SketchPicker
+                        disableAlpha={true}
+                        {...this.props}
+                        onChange={this.onChange} />
                 )}>
                 <button
                     className="color-picker"
