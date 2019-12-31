@@ -10,7 +10,7 @@ import { toStringRepeat, toStringRichText } from 'utils/StringUtils';
 export function compareBooleans(a, b) {
     const boolA = a ? true : false;
     const boolB = b ? true : false;
-    return boolB - boolA;
+    return boolA - boolB;
 }
 
 export function compareContacts(a, b, contacts) {
