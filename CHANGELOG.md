@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Add status bar
 * Add "Move out of parent task" action
 * Show general task filter info
 * Change default sort order (#97)

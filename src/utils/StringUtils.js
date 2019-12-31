@@ -41,9 +41,9 @@ export function toStringDate(value, format) {
     return moment(value).format(format);
 }
 
-export function toStringDuration(value, explicit = false) {
+export function toStringDuration(value, explicit = false, short = true) {
     if (!value) {
-        return '';
+        return short ? '' : '00:00';
     }
 
     const hours = Math.floor(value / 3600);

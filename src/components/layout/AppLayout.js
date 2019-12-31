@@ -6,6 +6,7 @@ import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import Header from 'components/layout/Header';
 import ModalNoteFieldManager from 'components/notefields/ModalNoteFieldManager';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
+import NoteStatusBar from 'components/notes/statusbar/NoteStatusBar';
 import NoteView from 'components/notes/views/NoteView';
 import ModalReminderManager from 'components/reminders/ModalReminderManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
@@ -43,7 +44,7 @@ function AppLayout() {
     const getFooter = () => {
         switch (selectedView) {
             case 'note':
-                return null;
+                return <NoteStatusBar />;
             case 'task':
                 return <TaskStatusBar />;
             case 'taskCalendar':

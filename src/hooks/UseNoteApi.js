@@ -3,13 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSearchNoteValue, setSelectedNoteFilter, setSelectedNoteIds } from 'actions/AppActions';
 import { addNote, deleteNote, duplicateNote, updateNote } from 'actions/NoteActions';
 import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
-import { getNotesFilteredBySelectedFilter, getNotesFilteredByVisibleState, getSelectedNotes } from 'selectors/NoteSelectors';
+import {
+    getNotesFilteredBySelectedFilter,
+    getNotesFilteredByVisibleState,
+    getSelectedNotes,
+    getStatistics
+} from 'selectors/NoteSelectors';
 
 export function useNoteApi() {
     const dispatch = useDispatch();
 
     const notes = useSelector(getNotesFilteredByVisibleState);
     const filteredNotes = useSelector(getNotesFilteredBySelectedFilter);
+    const statistics = useSelector(getStatistics);
 
     const selectedNoteIds = useSelector(getSelectedNoteIds);
     const selectedNotes = useSelector(getSelectedNotes);
@@ -54,6 +60,7 @@ export function useNoteApi() {
     return {
         notes,
         filteredNotes,
+        statistics,
         selectedNoteIds,
         selectedNotes,
         selectedNoteFilter,
