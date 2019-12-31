@@ -27,12 +27,18 @@ export function addSearchTaskValueCondition(filter, searchValue) {
     };
 }
 
+export function containsCompletedTaskCondition(filter) {
+    return _containsCompletedTaskCondition(filter.condition);
+}
+
 function _containsCompletedTaskCondition(condition) {
     if (condition) {
         if (condition.operator) {
-            for (let c of condition.conditions) {
-                if (_containsCompletedTaskCondition(c)) {
-                    return true;
+            if (condition.conditions) {
+                for (let c of condition.conditions) {
+                    if (_containsCompletedTaskCondition(c)) {
+                        return true;
+                    }
                 }
             }
         } else {
@@ -41,10 +47,6 @@ function _containsCompletedTaskCondition(condition) {
     }
 
     return false;
-}
-
-export function containsCompletedTaskCondition(filter) {
-    return _containsCompletedTaskCondition(filter.condition);
 }
 
 export function addNonCompletedTasksCondition(filter) {
@@ -84,7 +86,7 @@ export function getGeneralTaskFilters() {
             title: 'All',
             icon: 'tasks',
             condition: null,
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'not-completed',
@@ -97,7 +99,7 @@ export function getGeneralTaskFilters() {
                 type: 'equal',
                 value: false
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'due-today',
@@ -110,7 +112,7 @@ export function getGeneralTaskFilters() {
                 type: 'dateEqual',
                 value: 0
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'overdue',
@@ -123,7 +125,7 @@ export function getGeneralTaskFilters() {
                 type: 'dateTimeBefore',
                 value: 0
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'hot-list',
@@ -148,7 +150,7 @@ export function getGeneralTaskFilters() {
                     }
                 ]
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'importance',
@@ -180,7 +182,7 @@ export function getGeneralTaskFilters() {
                 type: 'equal',
                 value: true
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'next-action',
@@ -193,7 +195,7 @@ export function getGeneralTaskFilters() {
                 type: 'equal',
                 value: 'nextAction'
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         },
         {
             id: 'completed',
@@ -206,25 +208,25 @@ export function getGeneralTaskFilters() {
                 type: 'equal',
                 value: true
             },
-            sorters: getDefaultSorters()
+            sorters: getDefaultTaskSorters()
         }
     ];
 }
 
-function getDefaultSorters() {
+export function getDefaultTaskSorters() {
     return [
         {
-            id: 'dueDate',
+            id: 'default-task-sorter_dueDate',
             field: 'dueDate',
             direction: 'ascending'
         },
         {
-            id: 'priority',
+            id: 'default-task-sorter_priority',
             field: 'priority',
             direction: 'descending'
         },
         {
-            id: 'title',
+            id: 'default-task-sorter_title',
             field: 'title',
             direction: 'ascending'
         }

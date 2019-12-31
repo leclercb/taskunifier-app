@@ -7,6 +7,7 @@ import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskIds } from 's
 import { getCalendarDateMode, getSelectedCalendarView, isShowCompletedTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import {
     getSelectedTasks,
+    getStatistics,
     getTasksFilteredBySelectedFilter,
     getTasksFilteredBySelectedFilterAndExpanded,
     getTasksFilteredByVisibleState,
@@ -20,6 +21,7 @@ export function useTaskApi() {
     const tasksMetaData = useSelector(getTasksMetaDataFilteredByVisibleState);
     const filteredTasks = useSelector(getTasksFilteredBySelectedFilter);
     const filteredExpandedTasks = useSelector(getTasksFilteredBySelectedFilterAndExpanded);
+    const statistics = useSelector(getStatistics);
 
     const selectedTaskIds = useSelector(getSelectedTaskIds);
     const selectedTasks = useSelector(getSelectedTasks);
@@ -91,6 +93,7 @@ export function useTaskApi() {
         tasksMetaData,
         filteredTasks,
         filteredExpandedTasks,
+        statistics,
         selectedTaskIds,
         selectedTasks,
         selectedTaskFilter,

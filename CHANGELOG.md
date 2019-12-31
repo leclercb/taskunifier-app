@@ -1,3 +1,18 @@
+# 0.9.1
+
+## New Features
+
+* Add status bar
+* Add "Move out of parent task" action
+* Show general task filter info
+* Change default sort order (#97)
+* Improve duration format (#98)
+
+## Bug Fixes
+
+* Fix comparison of dates and numbers
+* Fix note field in task edition window (#94)
+
 # 0.9.0
 
 ## New Features

@@ -6,6 +6,7 @@ import { getPriority } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getSortDirections } from 'data/DataSortDirections';
 import { getOptionsFromValue } from 'utils/RepeatUtils';
+import { convertToPlainText } from 'utils/RichTextUtils';
 
 export function toString(value) {
     if (typeof value === 'undefined' || value === null) {
@@ -13,6 +14,10 @@ export function toString(value) {
     }
 
     return String(value);
+}
+
+export function toStringRichText(value) {
+    return convertToPlainText(value);
 }
 
 export function toStringBoolean(value) {
@@ -36,20 +41,18 @@ export function toStringDate(value, format) {
     return moment(value).format(format);
 }
 
-export function toStringDuration(value) {
-    if (typeof value === 'undefined' || value === null) {
-        return '';
+export function toStringDuration(value, explicit = false, short = true) {
+    if (!value) {
+        return short ? '' : '00:00';
     }
 
-    const days = Math.floor(value / 86400);
-    const hours = Math.floor((value % 86400) / 3600);
-    const minutes = Math.floor(((value % 86400) % 3600) / 60);
+    const hours = Math.floor(value / 3600);
+    const minutes = Math.floor((value % 3600) / 60);
 
     let str = '';
 
-    str += days.toString().padStart(2, '0') + 'd ';
-    str += hours.toString().padStart(2, '0') + 'h';
-    str += minutes.toString().padStart(2, '0') + 'm';
+    str += hours.toString().padStart(2, '0') + (explicit ? 'h' : ':');
+    str += minutes.toString().padStart(2, '0') + (explicit ? 'm' : '');
 
     return str.trim();
 }

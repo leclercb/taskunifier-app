@@ -62,7 +62,7 @@ export function getDefaultNoteFields() {
             static: true,
             id: 'text',
             title: 'Text',
-            type: 'textarea',
+            type: 'richtext',
             editable: true,
             defaultOrder: 8
         }

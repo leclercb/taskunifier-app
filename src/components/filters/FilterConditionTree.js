@@ -39,10 +39,12 @@ function FilterConditionTree(props) {
     };
 
     const onSaveCondition = condition => {
-        props.updateFilter({
-            ...props.filter,
-            condition
-        });
+        if (props.updateFilter) {
+            props.updateFilter({
+                ...props.filter,
+                condition
+            });
+        }
     };
 
     return (
@@ -65,7 +67,7 @@ FilterConditionTree.propTypes = {
         fields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
     }).isRequired,
     disabled: PropTypes.bool,
-    updateFilter: PropTypes.func.isRequired
+    updateFilter: PropTypes.func
 };
 
 export default FilterConditionTree;

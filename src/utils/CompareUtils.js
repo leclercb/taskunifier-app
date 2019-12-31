@@ -5,12 +5,12 @@ import { getPriorityIndex } from 'data/DataPriorities';
 import { getSortDirectionIndex } from 'data/DataSortDirections';
 import { getStatuses } from 'data/DataStatuses';
 import { getContactTitle } from 'utils/ContactUtils';
-import { toStringRepeat } from 'utils/StringUtils';
+import { toStringRepeat, toStringRichText } from 'utils/StringUtils';
 
 export function compareBooleans(a, b) {
     const boolA = a ? true : false;
     const boolB = b ? true : false;
-    return boolB - boolA;
+    return boolA - boolB;
 }
 
 export function compareContacts(a, b, contacts) {
@@ -33,13 +33,13 @@ export function compareDates(a, b, useTime) {
         return -1;
     }
 
-    return moment(b).diff(moment(a), useTime ? 'second' : 'day');
+    return moment(a).diff(moment(b), useTime ? 'minute' : 'day');
 }
 
 export function compareNumbers(a, b) {
     const numA = a ? a : 0;
     const numB = b ? b : 0;
-    return numB - numA;
+    return numA - numB;
 }
 
 export function compareObjects(a, b, objects) {
@@ -126,11 +126,11 @@ function compareObjectsUnindented(field, a, b, sortDirection, state) {
 }
 
 export function compareSortDirections(a, b) {
-    return getSortDirectionIndex(b) - getSortDirectionIndex(a);
+    return getSortDirectionIndex(a) - getSortDirectionIndex(b);
 }
 
 export function comparePriorities(a, b) {
-    return getPriorityIndex(b) - getPriorityIndex(a);
+    return getPriorityIndex(a) - getPriorityIndex(b);
 }
 
 export function compareRepeats(a, b) {
@@ -142,11 +142,15 @@ export function compareStatuses(a, b) {
 }
 
 export function compareGoalLevels(a, b) {
-    return getGoalLevelIndex(b) - getGoalLevelIndex(a);
+    return getGoalLevelIndex(a) - getGoalLevelIndex(b);
 }
 
 export function compareStrings(a, b) {
     return (a || '').localeCompare((b || ''), undefined, { sensitivity: 'base' });
+}
+
+export function compareRichTexts(a, b) {
+    return compareStrings(toStringRichText(a), toStringRichText(b));
 }
 
 export function compareVersions(a, b) {

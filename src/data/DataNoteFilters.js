@@ -38,15 +38,15 @@ export function getGeneralNoteFilters() {
             title: 'All',
             icon: 'book',
             condition: null,
-            sorters: getDefaultSorters()
+            sorters: getDefaultNoteSorters()
         }
     ];
 }
 
-function getDefaultSorters() {
+export function getDefaultNoteSorters() {
     return [
         {
-            id: 'title',
+            id: 'default-note-sorter_title',
             field: 'title',
             direction: 'ascending'
         }

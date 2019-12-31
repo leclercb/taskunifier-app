@@ -52,6 +52,22 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     }
 );
 
+export const getStatistics = createSelector(
+    getNotesFilteredByVisibleState,
+    getNotesFilteredBySelectedFilter,
+    (notes, filteredNotes) => {
+        const computeStats = notes => {
+            const stats = { nbTotal: notes.length };
+            return stats;
+        };
+
+        return {
+            notes: computeStats(notes),
+            filteredNotes: computeStats(filteredNotes)
+        };
+    }
+);
+
 export const getVisibleNoteSelector = () => createSelector(
     getNotesFilteredByVisibleState,
     (state, id) => id,

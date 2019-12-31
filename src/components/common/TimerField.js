@@ -24,23 +24,19 @@ class TimerField extends React.Component {
         this.inputRef.current.focus();
     }
 
-    formatDuration(value) {
-        return toStringDuration(value);
+    formatDuration(value, explicit) {
+        return toStringDuration(value, explicit);
     }
 
     parseDuration(match) {
         let value = 0;
 
         if (match[1]) {
-            value += Number(match[1]) * 86400;
+            value += Number(match[1]) * 3600;
         }
 
         if (match[2]) {
-            value += Number(match[2]) * 3600;
-        }
-
-        if (match[3]) {
-            value += Number(match[3]) * 60;
+            value += Number(match[2]) * 60;
         }
 
         return value;
@@ -66,7 +62,7 @@ class TimerField extends React.Component {
     }
 
     onChange(value) {
-        const match = value.match(/^([0-9]{2})d ([0-9]{2})h([0-9]{2})m$/);
+        const match = value.match(/^([0-9]{2})h([0-9]{2})m$/);
 
         if (!match) {
             return;
@@ -86,8 +82,6 @@ class TimerField extends React.Component {
             startDate: null
         };
 
-        const formattedDuration = this.formatDuration(timer.value);
-
         const restProps = { ...this.props };
         delete restProps.timer;
         delete restProps.onStartStop;
@@ -102,14 +96,14 @@ class TimerField extends React.Component {
                     icon={timer.startDate ? 'pause' : 'play'}
                     style={{ cursor: 'pointer' }}
                     onIconClick={this.onClick}
-                    text={readOnly ? formattedDuration : null} />
+                    text={readOnly ? this.formatDuration(timer.value, false) : null} />
                 {!readOnly && (
                     <React.Fragment>
                         <Spacer />
                         <MaskTextField
                             ref={this.inputRef}
-                            mask="11d 11h11m"
-                            value={formattedDuration}
+                            mask="11h11m"
+                            value={this.formatDuration(timer.value, true)}
                             onChange={e => this.onChange(e.target.value)}
                             style={{ width: 100 }}
                             {...restProps} />

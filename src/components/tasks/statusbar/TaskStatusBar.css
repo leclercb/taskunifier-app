@@ -1,0 +1,11 @@
+.task-status-bar {
+    display: flex;
+    justify-content: center;
+}
+
+.task-status-bar-element {
+    margin: 0px 4px;
+    padding: 0px 8px;
+    background-color: #dddddd;
+    border-radius: 10px;
+}

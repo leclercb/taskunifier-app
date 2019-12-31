@@ -34,6 +34,9 @@ function TaskTable() {
             case 'edit':
                 tasks.forEach(task => onEditTask(task));
                 break;
+            case 'moveOutOfParentTask':
+                tasks.forEach(task => onMoveOutOfParentTask(task));
+                break;
             case 'duplicate':
                 tasks.forEach(task => onDuplicateTask(task));
                 break;
@@ -61,6 +64,13 @@ function TaskTable() {
         appApi.setTaskEditionManagerOptions({
             visible: true,
             taskId: task.id
+        });
+    };
+
+    const onMoveOutOfParentTask = task => {
+        taskApi.updateTask({
+            ...task,
+            parent: null
         });
     };
 

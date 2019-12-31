@@ -107,7 +107,8 @@ function NoteSider() {
             id: object.id,
             title: object.title,
             color: object.color,
-            condition
+            condition,
+            sorters: settingsApi.settings.categoryNoteSorters
         };
     };
 

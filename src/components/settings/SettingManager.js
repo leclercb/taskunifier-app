@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Form, List, Row } from 'antd';
 import Icon from 'components/common/Icon';
+import SorterTable from 'components/filters/SorterTable';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { getCategories, getCategorySettings } from 'data/DataSettings';
@@ -42,6 +43,62 @@ function SettingManager(props) {
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const createElement = item => {
+        switch (item.type) {
+            case 'component':
+                return (
+                    <div style={{ width: '100%', margin: '20px 0px' }}>
+                        {item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}
+                    </div>
+                );
+            case 'sorters':
+                return (
+                    <Form.Item label={item.title} style={{ width: '100%' }}>
+                        <SorterTable
+                            sorters={settingsApi.settings[item.id]}
+                            sorterFields={item.fields}
+                            updateSorters={sorters => settingsApi.updateSettings({
+                                [item.id]: sorters
+                            })}
+                            orderSettingPrefix="categorySorterColumnOrder_"
+                            widthSettingPrefix="categorySorterColumnWidth_"
+                            disabled={item.editable === false} />
+                    </Form.Item>
+                );
+            default:
+                return (
+                    <Form.Item label={item.title} style={{ width: '100%' }}>
+                        {item.type === 'button' ? (
+                            <Button
+                                type={item.buttonType}
+                                onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
+                                {item.title}
+                            </Button>
+                        ) : null}
+                        {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
+                        {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (
+                            <React.Fragment>
+                                {item.prefix}
+                                {getFieldDecorator(item.id, {
+                                    valuePropName: getValuePropNameForType(item.type),
+                                    initialValue: getSettingValue(item)
+                                })(
+                                    getInputForType(
+                                        item.type,
+                                        item.options,
+                                        {
+                                            disabled: item.editable === false,
+                                            onCommit: () => onCommitForm(props.form, {}, settingsApi.updateSettings)
+                                        })
+                                )}
+                                {item.suffix}
+                            </React.Fragment>
+                        ) : null}
+                    </Form.Item>
+                );
+        }
+    };
+
     return (
         <Row>
             <Col span={6}>
@@ -67,41 +124,7 @@ function SettingManager(props) {
                         dataSource={settings}
                         renderItem={item => (
                             <List.Item>
-                                {item.type === 'component' ?
-                                    (
-                                        <div style={{ width: '100%', margin: '20px 0px' }}>
-                                            {item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}
-                                        </div>
-                                    ) : (
-                                        <Form.Item label={item.title} style={{ width: '100%' }}>
-                                            {item.type === 'button' ? (
-                                                <Button
-                                                    type={item.buttonType}
-                                                    onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
-                                                    {item.title}
-                                                </Button>
-                                            ) : null}
-                                            {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
-                                            {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (
-                                                <React.Fragment>
-                                                    {item.prefix}
-                                                    {getFieldDecorator(item.id, {
-                                                        valuePropName: getValuePropNameForType(item.type),
-                                                        initialValue: getSettingValue(item)
-                                                    })(
-                                                        getInputForType(
-                                                            item.type,
-                                                            item.options,
-                                                            {
-                                                                disabled: item.editable === false,
-                                                                onCommit: () => onCommitForm(props.form, {}, settingsApi.updateSettings)
-                                                            })
-                                                    )}
-                                                    {item.suffix}
-                                                </React.Fragment>
-                                            ) : null}
-                                        </Form.Item>
-                                    )}
+                                {createElement(item)}
                             </List.Item>
                         )} />
                 </Form>

@@ -32,7 +32,7 @@ function FilterForm(props) {
                         }
                     ]
                 })(
-                    <Input ref={titleRef} onBlur={onCommit} />
+                    <Input ref={titleRef} onBlur={onCommit} disabled={props.disabled} />
                 )}
             </Form.Item>
             <Form.Item label="Color">
@@ -46,7 +46,7 @@ function FilterForm(props) {
                         }
                     ]
                 })(
-                    <ColorPicker onClose={onCommit} />
+                    <ColorPicker onClose={onCommit} disabled={props.disabled} />
                 )}
             </Form.Item>
         </Form>
@@ -56,7 +56,8 @@ function FilterForm(props) {
 FilterForm.propTypes = {
     form: PropTypes.object.isRequired,
     filter: FilterPropType.isRequired,
-    updateFilter: PropTypes.func.isRequired
+    updateFilter: PropTypes.func,
+    disabled: PropTypes.bool
 };
 
 export default Form.create({ name: 'filter' })(FilterForm);

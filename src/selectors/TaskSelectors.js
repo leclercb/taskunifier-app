@@ -109,6 +109,37 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
     }
 );
 
+export const getStatistics = createSelector(
+    getTasksFilteredByVisibleState,
+    getTasksFilteredBySelectedFilter,
+    (tasks, filteredTasks) => {
+        const computeStats = tasks => {
+            const stats = { nbTotal: tasks.length, nbCompleted: 0, length: 0, ellapsed: 0 };
+
+            for (let task of tasks) {
+                if (task.completed) {
+                    stats.nbCompleted++;
+                    continue;
+                }
+
+                stats.length += task.length || 0;
+                stats.ellapsed += task.timer ? task.timer.value || 0 : 0;
+
+                if (task.timer && task.timer.startDate) {
+                    stats.ellapsed += moment().diff(moment(task.timer.startDate), 'second');
+                }
+            }
+
+            return stats;
+        };
+
+        return {
+            tasks: computeStats(tasks),
+            filteredTasks: computeStats(filteredTasks)
+        };
+    }
+);
+
 export const getTaskRemindersSelector = () => createSelector(
     getTasksFilteredBySelectedFilter,
     (state, date) => date,

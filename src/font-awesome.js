@@ -29,8 +29,10 @@ import {
     faFolder,
     faFolderOpen,
     faHome,
+    faInfoCircle,
     faKey,
     faList,
+    faListOl,
     faLock,
     faLockOpen,
     faMagic,
@@ -87,8 +89,10 @@ library.add(faFilter);
 library.add(faFolder);
 library.add(faFolderOpen);
 library.add(faHome);
+library.add(faInfoCircle);
 library.add(faKey);
 library.add(faList);
+library.add(faListOl);
 library.add(faLock);
 library.add(faLockOpen);
 library.add(faMagic);

@@ -72,11 +72,16 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
                     </Menu.Item>
                 )
             }
+            <Menu.Item key="moveOutOfParentTask" action={{ type: 'moveOutOfParentTask' }}>
+                <Icon icon="trash-alt" text="Move out of parent task" />
+            </Menu.Item>
             <Menu.Item key="duplicate" action={{ type: 'duplicate' }}>
                 <Icon icon="copy" text={`Duplicate ${suffix}`} />
             </Menu.Item>
+            <Menu.Divider />
             {createPostponeMenu('postponeStartDate', `Postpone start date of ${suffix}`)}
             {createPostponeMenu('postponeDueDate', `Postpone due date of ${suffix}`)}
+            <Menu.Divider />
             <Menu.Item key="remove" action={{ type: 'remove' }}>
                 <Icon icon="trash-alt" text={`Remove ${suffix}`} />
             </Menu.Item>

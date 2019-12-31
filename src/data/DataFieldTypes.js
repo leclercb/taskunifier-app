@@ -19,6 +19,7 @@ import {
     compareObjects,
     comparePriorities,
     compareRepeats,
+    compareRichTexts,
     compareSortDirections,
     compareStatuses,
     compareStrings
@@ -37,6 +38,7 @@ import {
     toStringPassword,
     toStringPriority,
     toStringRepeat,
+    toStringRichText,
     toStringSortDirection,
     toStringStatus,
     toStringTimer
@@ -70,6 +72,7 @@ export function getFieldTypes() {
         'progress',
         'reminder',
         'repeat',
+        'richtext',
         'select',
         'selectTags',
         'sortDirection',
@@ -250,8 +253,24 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 valuePropName: 'value',
-                compare: (a, b) => compareDates(a, b, false),
-                toString: value => toStringDate(value, dateFormat),
+                compare: (a, b) => {
+                    if (Number.isInteger(a)) {
+                        a = moment().add(Number.parseInt(a), 'day').toISOString();
+                    }
+
+                    if (Number.isInteger(b)) {
+                        b = moment().add(Number.parseInt(b), 'day').toISOString();
+                    }
+
+                    return compareDates(a, b, false);
+                },
+                toString: value => {
+                    if (Number.isInteger(value)) {
+                        value = moment().add(Number.parseInt(value), 'day').toISOString();
+                    }
+
+                    return toStringDate(value, dateFormat);
+                },
                 conditions: [
                     {
                         type: 'dateEqual',
@@ -478,8 +497,24 @@ export function getFieldType(type, options) {
                 width: 250,
                 alwaysInEdition: false,
                 valuePropName: 'value',
-                compare: (a, b) => compareDates(a, b, true),
-                toString: value => toStringDate(value, `${dateFormat} ${timeFormat}`),
+                compare: (a, b) => {
+                    if (Number.isInteger(a)) {
+                        a = moment().add(Number.parseInt(a), 'day').toISOString();
+                    }
+
+                    if (Number.isInteger(b)) {
+                        b = moment().add(Number.parseInt(b), 'day').toISOString();
+                    }
+
+                    return compareDates(a, b, true);
+                },
+                toString: value => {
+                    if (Number.isInteger(value)) {
+                        value = moment().add(Number.parseInt(value), 'day').toISOString();
+                    }
+
+                    return toStringDate(value, `${dateFormat} ${timeFormat}`);
+                },
                 conditions: [
                     {
                         type: 'dateEqual',
@@ -1655,6 +1690,87 @@ export function getFieldType(type, options) {
                     }
                 ],
                 conditionsFieldType: 'repeat',
+                options: []
+            };
+
+            break;
+        }
+        case 'richtext': {
+            configuration = {
+                title: 'Rich Text',
+                allowCreation: false,
+                width: 250,
+                alwaysInEdition: false,
+                valuePropName: 'value',
+                compare: (a, b) => compareRichTexts(a, b),
+                toString: value => toStringRichText(value),
+                conditions: [
+                    {
+                        type: 'equal',
+                        title: 'Equals',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return conditionValue === objectValue;
+                        }
+                    },
+                    {
+                        type: 'equalIgnoreCase',
+                        title: 'Equals (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return (conditionValue || '').toUpperCase() === (objectValue || '').toUpperCase();
+                        }
+                    },
+                    {
+                        type: 'notEqual',
+                        title: 'Does not equal',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return conditionValue !== objectValue;
+                        }
+                    },
+                    {
+                        type: 'notEqualIgnoreCase',
+                        title: 'Does not equal (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return (conditionValue || '').toUpperCase() !== (objectValue || '').toUpperCase();
+                        }
+                    },
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return (objectValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'containIgnoreCase',
+                        title: 'Contains (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return (objectValue || '').toUpperCase().includes((conditionValue || '').toUpperCase());
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return !(objectValue || '').includes(conditionValue);
+                        }
+                    },
+                    {
+                        type: 'notContainIgnoreCase',
+                        title: 'Does not contain (ignore case)',
+                        apply: (conditionValue, objectValue) => {
+                            objectValue = toStringRichText(objectValue);
+                            return !(objectValue || '').toUpperCase().includes((conditionValue || '').toUpperCase());
+                        }
+                    }
+                ],
+                conditionsFieldType: 'textarea',
                 options: []
             };
 

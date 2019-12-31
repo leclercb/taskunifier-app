@@ -6,6 +6,7 @@ import ModalCategoryManager from 'components/categories/ModalCategoryManager';
 import Header from 'components/layout/Header';
 import ModalNoteFieldManager from 'components/notefields/ModalNoteFieldManager';
 import ModalNoteFilterManager from 'components/notefilters/ModalNoteFilterManager';
+import NoteStatusBar from 'components/notes/statusbar/NoteStatusBar';
 import NoteView from 'components/notes/views/NoteView';
 import ModalReminderManager from 'components/reminders/ModalReminderManager';
 import ModalSettingManager from 'components/settings/ModalSettingManager';
@@ -14,6 +15,7 @@ import ModalTaskFilterManager from 'components/taskfilters/ModalTaskFilterManage
 import ModalBatchAddTasksManager from 'components/tasks/batch/ModalBatchAddTasksManager';
 import ModalBatchEditTasksManager from 'components/tasks/batch/ModalBatchEditTasksManager';
 import ModalTaskEditionManager from 'components/tasks/edit/ModalTaskEditionManager';
+import TaskStatusBar from 'components/tasks/statusbar/TaskStatusBar';
 import TaskCalendarView from 'components/tasks/views/TaskCalendarView';
 import TaskView from 'components/tasks/views/TaskView';
 import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
@@ -36,6 +38,19 @@ function AppLayout() {
                 return <TaskCalendarView />;
             default:
                 return <TaskView />;
+        }
+    };
+
+    const getFooter = () => {
+        switch (selectedView) {
+            case 'note':
+                return <NoteStatusBar />;
+            case 'task':
+                return <TaskStatusBar />;
+            case 'taskCalendar':
+                return <TaskStatusBar />;
+            default:
+                return null;
         }
     };
 
@@ -63,6 +78,9 @@ function AppLayout() {
                     <Layout style={{ height: '100%', position: 'relative' }}>
                         {getView()}
                     </Layout>
+                    <Layout.Footer>
+                        {getFooter()}
+                    </Layout.Footer>
                 </Layout>
             </Spin>
         </React.Fragment>
