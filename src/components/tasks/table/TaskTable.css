@@ -5,3 +5,7 @@
 .task-selected .ant-progress-text {
     color: #ffffff;
 }
+
+.task-selected svg.colorable {
+    color: #ffffff !important;
+}

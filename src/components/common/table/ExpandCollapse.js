@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import Constants from 'constants/Constants';
 
 function ExpandCollapse(props) {
     let expanded;
@@ -12,12 +11,12 @@ function ExpandCollapse(props) {
         case 'expanded':
             expanded = true;
             icon = 'minus-square';
-            color = Constants.color; // eslint-disable-line prefer-destructuring
+            color = undefined;
             break;
         case 'collapsed':
             expanded = false;
             icon = 'plus-square';
-            color = Constants.color; // eslint-disable-line prefer-destructuring
+            color = undefined;
             break;
         default:
         case 'hidden':

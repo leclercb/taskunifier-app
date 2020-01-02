@@ -12,6 +12,7 @@ import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
+import 'components/notes/table/NoteTable.css';
 
 function NoteTable() {
     const editingCellApi = useEditingCellApi();
@@ -180,6 +181,21 @@ function NoteTable() {
                                         color: foregroundColor,
                                         backgroundColor
                                     };
+                                }}
+                                rowClassName={({ index }) => {
+                                    const note = noteApi.filteredNotes[index];
+
+                                    if (!note) {
+                                        return '';
+                                    }
+
+                                    const classNames = [];
+
+                                    if (noteApi.selectedNoteIds.includes(note.id)) {
+                                        classNames.push('note-selected');
+                                    }
+
+                                    return classNames.join(' ');
                                 }}
                                 onRowClick={multiSelectionHandler(
                                     rowData => rowData.id,

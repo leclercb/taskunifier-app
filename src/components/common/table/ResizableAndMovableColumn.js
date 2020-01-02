@@ -7,7 +7,7 @@ import DraggableElement from 'components/common/table/DraggableElement';
 import { move } from 'utils/ArrayUtils';
 
 export const resizeHandler = (prefix, updateSettings) => (data, fieldId, width) => {
-    updateSettings(
+    return updateSettings(
         {
             [prefix + fieldId]: Math.max(10, width)
         },
