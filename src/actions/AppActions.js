@@ -91,6 +91,8 @@ export function _loadDataFromFile(path, options) {
 
             await Promise.all(promises);
 
+            dispatch(refreshDataUuid());
+
             dispatch(updateProcess({
                 id: processId,
                 state: 'COMPLETED'
@@ -151,6 +153,8 @@ export function _loadDataFromServer(options) {
             }
 
             await Promise.all(promises);
+
+            dispatch(refreshDataUuid());
 
             dispatch(updateProcess({
                 id: processId,
@@ -393,6 +397,15 @@ export function resetData(options) {
 
             throw error;
         }
+    };
+}
+
+function refreshDataUuid() {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_DATA_UUID',
+            uuid: uuid()
+        });
     };
 }
 

@@ -151,6 +151,10 @@ ant-input:focus {
     outline: 0;
 }
 
+.ReactVirtualized__Table__headerRow {
+    text-transform: none !important;
+}
+
 .ReactVirtualized__Table__headerColumn, .ReactVirtualized__Table__rowColumn {
     margin-right: 3px;
 }

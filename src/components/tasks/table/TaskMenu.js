@@ -90,13 +90,18 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
     );
 
     return (
-        <Dropdown
-            overlay={menu}
-            trigger={['contextMenu']}
-            visible={visible}
-            onVisibleChange={setVisible}>
-            {children}
-        </Dropdown>
+        <div
+            onClick={() => setVisible(false)}
+            onContextMenu={() => setVisible(true)}
+            style={{ flexGrow: 1 }}>
+            <Dropdown
+                overlay={menu}
+                trigger={['contextMenu']}
+                visible={visible}
+                onVisibleChange={setVisible}>
+                {children}
+            </Dropdown>
+        </div>
     );
 }
 

@@ -65,7 +65,7 @@ export function ResizableAndMovableColumn(props) {
 
 ResizableAndMovableColumn.propTypes = {
     dataKey: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.node.isRequired,
     sortBy: PropTypes.string,
     sortDirection: PropTypes.string,
     onResize: PropTypes.func.isRequired,
