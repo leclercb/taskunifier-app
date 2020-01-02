@@ -3,7 +3,7 @@ import RichTextEditor from 'react-rte';
 export function createValueFromString(value) {
     const text = value || '';
 
-    if (text && !text.match(/<(br|p|strong|b|em|i)\s*\/?>/)) {
+    if (text && !text.match(/<([a-z]+)\s*\/?>/)) {
         return RichTextEditor.createValueFromString(text, 'markdown');
     }
 
