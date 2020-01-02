@@ -5,6 +5,7 @@
 * Add status bar
 * Add "Move out of parent task" action
 * Show general task filter info
+* Change note/task selection with arrow keys (#80)
 * Change default sort order (#97)
 * Improve duration format (#98)
 * Auto scroll to added note/task (#99)

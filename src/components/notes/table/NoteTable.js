@@ -1,6 +1,6 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
-import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
+import { ArrowKeyStepper, AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
@@ -113,6 +113,14 @@ function NoteTable() {
 
     let scrollToIndex = undefined;
 
+    if (noteApi.selectedNoteIds.length === 1) {
+        const index = noteApi.filteredNotes.findIndex(note => note.id === noteApi.selectedNoteIds[0]);
+
+        if (index >= 0) {
+            scrollToIndex = index;
+        }
+    }
+
     if (editingCellApi.editingCell) {
         const index = noteApi.filteredNotes.findIndex(note => note.id === editingCellApi.editingCell.objectId);
 
@@ -125,59 +133,70 @@ function NoteTable() {
         <div
             className="joyride-note-table"
             style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
-            <AutoSizer>
+            <AutoSizer disableWidth>
                 {({ height }) => (
-                    <Table
-                        width={tableWidth}
-                        height={height}
-                        rowHeight={settingsApi.settings.noteTableRowHeight}
-                        headerHeight={20}
-                        scrollToIndex={scrollToIndex}
-                        scrollToAlignment="center"
+                    <ArrowKeyStepper
+                        columnCount={1}
                         rowCount={noteApi.filteredNotes.length}
-                        rowGetter={({ index }) => noteApi.filteredNotes[index]}
-                        rowRenderer={rendererProps => (
-                            <NoteMenu
-                                key={rendererProps.key}
-                                selectedNoteIds={noteApi.selectedNoteIds}
-                                onAction={onMenuAction}>
-                                {defaultTableRowRenderer(rendererProps)}
-                            </NoteMenu>
+                        mode="cells"
+                        isControlled={true}
+                        disabled={scrollToIndex === undefined}
+                        scrollToRow={scrollToIndex}
+                        onScrollToChange={({ scrollToRow }) => noteApi.setSelectedNoteIds(noteApi.filteredNotes[scrollToRow].id)}>
+                        {({ onSectionRendered }) => (
+                            <Table
+                                width={tableWidth}
+                                height={height}
+                                rowHeight={settingsApi.settings.noteTableRowHeight}
+                                headerHeight={20}
+                                scrollToIndex={scrollToIndex}
+                                onSectionRendered={onSectionRendered}
+                                rowCount={noteApi.filteredNotes.length}
+                                rowGetter={({ index }) => noteApi.filteredNotes[index]}
+                                rowRenderer={rendererProps => (
+                                    <NoteMenu
+                                        key={rendererProps.key}
+                                        selectedNoteIds={noteApi.selectedNoteIds}
+                                        onAction={onMenuAction}>
+                                        {defaultTableRowRenderer(rendererProps)}
+                                    </NoteMenu>
+                                )}
+                                rowStyle={({ index }) => {
+                                    const note = noteApi.filteredNotes[index];
+
+                                    if (!note) {
+                                        return {};
+                                    }
+
+                                    let foregroundColor = 'initial';
+                                    let backgroundColor = getNoteBackgroundColor(note, index, settingsApi.settings);
+
+                                    if (noteApi.selectedNoteIds.includes(note.id)) {
+                                        foregroundColor = Constants.selectionForegroundColor;
+                                        backgroundColor = Constants.selectionBackgroundColor;
+                                    }
+
+                                    return {
+                                        color: foregroundColor,
+                                        backgroundColor
+                                    };
+                                }}
+                                onRowClick={multiSelectionHandler(
+                                    rowData => rowData.id,
+                                    noteApi.filteredNotes,
+                                    noteApi.selectedNoteIds,
+                                    noteApi.setSelectedNoteIds,
+                                    false)}
+                                onRowRightClick={multiSelectionHandler(
+                                    rowData => rowData.id,
+                                    noteApi.filteredNotes,
+                                    noteApi.selectedNoteIds,
+                                    noteApi.setSelectedNoteIds,
+                                    true)} >
+                                {columns}
+                            </Table>
                         )}
-                        rowStyle={({ index }) => {
-                            const note = noteApi.filteredNotes[index];
-
-                            if (!note) {
-                                return {};
-                            }
-
-                            let foregroundColor = 'initial';
-                            let backgroundColor = getNoteBackgroundColor(note, index, settingsApi.settings);
-
-                            if (noteApi.selectedNoteIds.includes(note.id)) {
-                                foregroundColor = Constants.selectionForegroundColor;
-                                backgroundColor = Constants.selectionBackgroundColor;
-                            }
-
-                            return {
-                                color: foregroundColor,
-                                backgroundColor
-                            };
-                        }}
-                        onRowClick={multiSelectionHandler(
-                            rowData => rowData.id,
-                            noteApi.filteredNotes,
-                            noteApi.selectedNoteIds,
-                            noteApi.setSelectedNoteIds,
-                            false)}
-                        onRowRightClick={multiSelectionHandler(
-                            rowData => rowData.id,
-                            noteApi.filteredNotes,
-                            noteApi.selectedNoteIds,
-                            noteApi.setSelectedNoteIds,
-                            true)} >
-                        {columns}
-                    </Table>
+                    </ArrowKeyStepper>
                 )}
             </AutoSizer>
         </div>
