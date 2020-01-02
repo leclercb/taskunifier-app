@@ -9,6 +9,7 @@ import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useEditingCellApi } from 'hooks/UseEditingCellApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -18,6 +19,7 @@ import 'components/tasks/table/TaskTable.css';
 
 function TaskTable() {
     const appApi = useAppApi();
+    const editingCellApi = useEditingCellApi();
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
@@ -198,6 +200,16 @@ function TaskTable() {
         );
     });
 
+    let scrollToIndex = undefined;
+
+    if (editingCellApi.editingCell) {
+        const index = dataSource.findIndex(task => task.id === editingCellApi.editingCell.objectId);
+
+        if (index >= 0) {
+            scrollToIndex = index;
+        }
+    }
+
     return (
         <div
             className="joyride-task-table"
@@ -209,6 +221,8 @@ function TaskTable() {
                         height={height}
                         rowHeight={settingsApi.settings.taskTableRowHeight}
                         headerHeight={20}
+                        scrollToIndex={scrollToIndex}
+                        scrollToAlignment="center"
                         rowCount={dataSource.length}
                         rowGetter={({ index }) => dataSource[index]}
                         rowRenderer={rendererProps => (

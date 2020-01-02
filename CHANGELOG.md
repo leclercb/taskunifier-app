@@ -7,6 +7,8 @@
 * Show general task filter info
 * Change default sort order (#97)
 * Improve duration format (#98)
+* Auto scroll to added note/task (#99)
+* New setting to open the task edition window when a task is added
 
 ## Bug Fixes
 

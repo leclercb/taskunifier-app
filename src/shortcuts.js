@@ -26,6 +26,7 @@ import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask } from 'actions/TaskActions';
 import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getSettings } from 'selectors/SettingSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
@@ -190,7 +191,15 @@ async function executeAddTask() {
 
     task = await store.dispatch(addTask(task));
     await store.dispatch(setSelectedTaskIds(task.id));
-    await store.dispatch(setEditingCell(task.id, 'title'));
+
+    if (getSettings(state).openTaskEditionManagerWhenTaskAdded) {
+        await store.dispatch(setTaskEditionManagerOptions({
+            visible: true,
+            taskId: task.id
+        }));
+    } else {
+        await store.dispatch(setEditingCell(task.id, 'title'));
+    }
 }
 
 async function executeBatchAddTasks() {

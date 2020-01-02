@@ -7,12 +7,14 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useEditingCellApi } from 'hooks/UseEditingCellApi';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getNoteBackgroundColor } from 'utils/SettingUtils';
 
 function NoteTable() {
+    const editingCellApi = useEditingCellApi();
     const noteApi = useNoteApi();
     const noteFieldApi = useNoteFieldApi();
     const settingsApi = useSettingsApi();
@@ -109,6 +111,16 @@ function NoteTable() {
         );
     });
 
+    let scrollToIndex = undefined;
+
+    if (editingCellApi.editingCell) {
+        const index = noteApi.filteredNotes.findIndex(note => note.id === editingCellApi.editingCell.objectId);
+
+        if (index >= 0) {
+            scrollToIndex = index;
+        }
+    }
+
     return (
         <div
             className="joyride-note-table"
@@ -120,6 +132,8 @@ function NoteTable() {
                         height={height}
                         rowHeight={settingsApi.settings.noteTableRowHeight}
                         headerHeight={20}
+                        scrollToIndex={scrollToIndex}
+                        scrollToAlignment="center"
                         rowCount={noteApi.filteredNotes.length}
                         rowGetter={({ index }) => noteApi.filteredNotes[index]}
                         rowRenderer={rendererProps => (

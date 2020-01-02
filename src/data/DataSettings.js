@@ -171,6 +171,13 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
+                    id: 'openTaskEditionManagerWhenTaskAdded',
+                    title: 'Open the task edition window when a task is added',
+                    type: 'boolean',
+                    value: false,
+                    editable: true
+                },
+                {
                     id: 'loadTasksCompletedAfter',
                     title: 'Load tasks completed less than',
                     suffix: (<span style={{ marginLeft: 10 }}>month(s) ago</span>),
