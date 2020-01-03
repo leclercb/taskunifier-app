@@ -13,7 +13,7 @@ function Icon(props) {
                 <FontAwesomeIcon
                     icon={props.icon}
                     onClick={props.onIconClick}
-                    className={props.className}
+                    className={(props.className || '') + (props.color ? '' : ' colorable')}
                     style={{
                         fontSize: props.size ? props.size : undefined,
                         color: props.color ? props.color : Constants.color,

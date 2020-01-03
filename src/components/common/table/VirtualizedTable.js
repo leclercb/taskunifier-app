@@ -17,7 +17,7 @@ export const multiSelectionHandler = (getId, items, selectedIds, setSelectedIds,
     if (document &&
         document.activeElement &&
         document.activeElement !== document.body &&
-        (!document.activeElement.className || !document.activeElement.className.includes('ReactVirtualized__Table__row'))) {
+        (!document.activeElement.className || (!document.activeElement.className.includes('ReactVirtualized__Grid') && !document.activeElement.className.includes('ReactVirtualized__Table__row')))) {
         return;
     }
 

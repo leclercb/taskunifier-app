@@ -1,7 +1,7 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
-import { AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
+import { ArrowKeyStepper, AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
@@ -9,6 +9,7 @@ import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useEditingCellApi } from 'hooks/UseEditingCellApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -18,6 +19,7 @@ import 'components/tasks/table/TaskTable.css';
 
 function TaskTable() {
     const appApi = useAppApi();
+    const editingCellApi = useEditingCellApi();
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
@@ -198,80 +200,111 @@ function TaskTable() {
         );
     });
 
+    let scrollToIndex = undefined;
+
+    if (taskApi.selectedTaskIds.length === 1) {
+        const index = dataSource.findIndex(task => task.id === taskApi.selectedTaskIds[0]);
+
+        if (index >= 0) {
+            scrollToIndex = index;
+        }
+    }
+
+    if (editingCellApi.editingCell) {
+        const index = dataSource.findIndex(task => task.id === editingCellApi.editingCell.objectId);
+
+        if (index >= 0) {
+            scrollToIndex = index;
+        }
+    }
+
     return (
         <div
             className="joyride-task-table"
             style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
-            <AutoSizer>
+            <AutoSizer disableWidth>
                 {({ height }) => (
-                    <Table
-                        width={tableWidth}
-                        height={height}
-                        rowHeight={settingsApi.settings.taskTableRowHeight}
-                        headerHeight={20}
+                    <ArrowKeyStepper
+                        columnCount={1}
                         rowCount={dataSource.length}
-                        rowGetter={({ index }) => dataSource[index]}
-                        rowRenderer={rendererProps => (
-                            <TaskMenu
-                                key={rendererProps.key}
-                                selectedTaskIds={taskApi.selectedTaskIds}
-                                onAction={onMenuAction}>
-                                {defaultTableRowRenderer(rendererProps)}
-                            </TaskMenu>
+                        mode="cells"
+                        isControlled={true}
+                        disabled={scrollToIndex === undefined}
+                        scrollToRow={scrollToIndex}
+                        onScrollToChange={({ scrollToRow }) => taskApi.setSelectedTaskIds(dataSource[scrollToRow].id)}>
+                        {({ onSectionRendered }) => (
+                            <Table
+                                width={tableWidth}
+                                height={height}
+                                rowHeight={settingsApi.settings.taskTableRowHeight}
+                                headerHeight={20}
+                                scrollToIndex={scrollToIndex}
+                                onSectionRendered={onSectionRendered}
+                                rowCount={dataSource.length}
+                                rowGetter={({ index }) => dataSource[index]}
+                                rowRenderer={rendererProps => (
+                                    <TaskMenu
+                                        key={rendererProps.key}
+                                        selectedTaskIds={taskApi.selectedTaskIds}
+                                        onAction={onMenuAction}>
+                                        {defaultTableRowRenderer(rendererProps)}
+                                    </TaskMenu>
+                                )}
+                                rowStyle={({ index }) => {
+                                    const task = dataSource[index];
+
+                                    if (!task) {
+                                        return {};
+                                    }
+
+                                    let foregroundColor = getTaskForegroundColor(task, index, settingsApi.settings);
+                                    let backgroundColor = getTaskBackgroundColor(task, index, settingsApi.settings);
+
+                                    if (taskApi.selectedTaskIds.includes(task.id)) {
+                                        foregroundColor = Constants.selectionForegroundColor;
+                                        backgroundColor = Constants.selectionBackgroundColor;
+                                    }
+
+                                    return {
+                                        color: foregroundColor,
+                                        backgroundColor
+                                    };
+                                }}
+                                rowClassName={({ index }) => {
+                                    const task = dataSource[index];
+
+                                    if (!task) {
+                                        return '';
+                                    }
+
+                                    const classNames = [];
+
+                                    if (taskApi.selectedTaskIds.includes(task.id)) {
+                                        classNames.push('task-selected');
+                                    }
+
+                                    if (task.completed) {
+                                        classNames.push('task-completed');
+                                    }
+
+                                    return classNames.join(' ');
+                                }}
+                                onRowClick={multiSelectionHandler(
+                                    rowData => rowData.id,
+                                    dataSource,
+                                    taskApi.selectedTaskIds,
+                                    taskApi.setSelectedTaskIds,
+                                    false)}
+                                onRowRightClick={multiSelectionHandler(
+                                    rowData => rowData.id,
+                                    dataSource,
+                                    taskApi.selectedTaskIds,
+                                    taskApi.setSelectedTaskIds,
+                                    true)} >
+                                {columns}
+                            </Table>
                         )}
-                        rowStyle={({ index }) => {
-                            const task = dataSource[index];
-
-                            if (!task) {
-                                return {};
-                            }
-
-                            let foregroundColor = getTaskForegroundColor(task, index, settingsApi.settings);
-                            let backgroundColor = getTaskBackgroundColor(task, index, settingsApi.settings);
-
-                            if (taskApi.selectedTaskIds.includes(task.id)) {
-                                foregroundColor = Constants.selectionForegroundColor;
-                                backgroundColor = Constants.selectionBackgroundColor;
-                            }
-
-                            return {
-                                color: foregroundColor,
-                                backgroundColor
-                            };
-                        }}
-                        rowClassName={({ index }) => {
-                            const task = dataSource[index];
-
-                            if (!task) {
-                                return '';
-                            }
-
-                            const classNames = [];
-
-                            if (taskApi.selectedTaskIds.includes(task.id)) {
-                                classNames.push('task-selected');
-                            }
-
-                            if (task.completed) {
-                                classNames.push('task-completed');
-                            }
-
-                            return classNames.join(' ');
-                        }}
-                        onRowClick={multiSelectionHandler(
-                            rowData => rowData.id,
-                            dataSource,
-                            taskApi.selectedTaskIds,
-                            taskApi.setSelectedTaskIds,
-                            false)}
-                        onRowRightClick={multiSelectionHandler(
-                            rowData => rowData.id,
-                            dataSource,
-                            taskApi.selectedTaskIds,
-                            taskApi.setSelectedTaskIds,
-                            true)} >
-                        {columns}
-                    </Table>
+                    </ArrowKeyStepper>
                 )}
             </AutoSizer>
         </div>

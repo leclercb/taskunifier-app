@@ -1,0 +1,7 @@
+.note-selected .ant-progress-text {
+    color: #ffffff;
+}
+
+.note-selected svg.colorable {
+    color: #ffffff !important;
+}

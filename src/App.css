@@ -55,6 +55,16 @@ ant-input:focus {
     overflow: auto;
 }
 
+.ant-menu-submenu-title {
+    height: 30px !important;
+    line-height: 30px !important;
+}
+
+.ant-menu-item {
+    height: 24px !important;
+    line-height: 24px !important;
+}
+
 .ant-menu-item-active, .ant-dropdown-menu-item-active, .ant-dropdown-menu-submenu-active {
     background-color: #e6f6ff !important;
 }
@@ -129,12 +139,20 @@ ant-input:focus {
 
 /* React Virtualized */
 
+.ReactVirtualized__Grid {
+    outline: 0;
+}
+
 .ReactVirtualized__Table__Grid {
     outline: 0;
 }
 
 .ReactVirtualized__Table__row {
     outline: 0;
+}
+
+.ReactVirtualized__Table__headerRow {
+    text-transform: none !important;
 }
 
 .ReactVirtualized__Table__headerColumn, .ReactVirtualized__Table__rowColumn {

@@ -24,7 +24,6 @@ import {
     compareStatuses,
     compareStrings
 } from 'utils/CompareUtils';
-import { equals } from 'utils/ObjectUtils';
 import {
     toString,
     toStringArray,
@@ -165,14 +164,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -196,14 +195,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -227,14 +226,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -744,28 +743,28 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     },
                     {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            return (objectValue || '').includes(conditionValue);
+                            return (objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            return !(objectValue || '').includes(conditionValue);
+                            return !(objectValue || '').includes(conditionValue || '');
                         }
                     }
                 ],
@@ -789,14 +788,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -820,14 +819,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -851,14 +850,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -882,14 +881,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -913,58 +912,42 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || 0) === (objectValue || 0);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || 0) !== (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue < objectValue;
+                            return (conditionValue || 0) < (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= objectValue;
+                            return (conditionValue || 0) <= (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue > objectValue;
+                            return (conditionValue || 0) > (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= objectValue;
+                            return (conditionValue || 0) >= (objectValue || 0);
                         }
                     }
                 ],
@@ -988,58 +971,42 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || 0) === (objectValue || 0);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || 0) !== (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue < objectValue;
+                            return (conditionValue || 0) < (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= objectValue;
+                            return (conditionValue || 0) <= (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue > objectValue;
+                            return (conditionValue || 0) > (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= objectValue;
+                            return (conditionValue || 0) >= (objectValue || 0);
                         }
                     }
                 ],
@@ -1174,14 +1141,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -1207,58 +1174,42 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || 0) === (objectValue || 0);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || 0) !== (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue < objectValue;
+                            return (conditionValue || 0) < (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= objectValue;
+                            return (conditionValue || 0) <= (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue > objectValue;
+                            return (conditionValue || 0) > (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= objectValue;
+                            return (conditionValue || 0) >= (objectValue || 0);
                         }
                     }
                 ],
@@ -1288,14 +1239,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -1319,14 +1270,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -1350,58 +1301,42 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || 0) === (objectValue || 0);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || 0) !== (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue < objectValue;
+                            return (conditionValue || 0) < (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= objectValue;
+                            return (conditionValue || 0) <= (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue > objectValue;
+                            return (conditionValue || 0) > (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= objectValue;
+                            return (conditionValue || 0) >= (objectValue || 0);
                         }
                     }
                 ],
@@ -1436,28 +1371,28 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     },
                     {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            return (objectValue || '').includes(conditionValue);
+                            return (objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            return !(objectValue || '').includes(conditionValue);
+                            return !(objectValue || '').includes(conditionValue || '');
                         }
                     }
                 ],
@@ -1481,24 +1416,20 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
                             if (!conditionValue || !objectValue) {
                                 return false;
                             }
@@ -1514,10 +1445,6 @@ export function getFieldType(type, options) {
                                 return false;
                             }
 
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
                             return getPriorityIndex(conditionValue) <= getPriorityIndex(objectValue);
                         }
                     },
@@ -1529,10 +1456,6 @@ export function getFieldType(type, options) {
                                 return false;
                             }
 
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
                             return getPriorityIndex(conditionValue) > getPriorityIndex(objectValue);
                         }
                     },
@@ -1540,10 +1463,6 @@ export function getFieldType(type, options) {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
                             if (!conditionValue || !objectValue) {
                                 return false;
                             }
@@ -1572,58 +1491,42 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || 0) === (objectValue || 0);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || 0) !== (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThan',
                         title: 'Greater than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue < objectValue;
+                            return (conditionValue || 0) < (objectValue || 0);
                         }
                     },
                     {
                         type: 'greaterThanOrEqual',
                         title: 'Greater than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue <= objectValue;
+                            return (conditionValue || 0) <= (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThan',
                         title: 'Less than',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue > objectValue;
+                            return (conditionValue || 0) > (objectValue || 0);
                         }
                     },
                     {
                         type: 'lessThanOrEqual',
                         title: 'Less than or equal',
                         apply: (conditionValue, objectValue) => {
-                            if (!conditionValue || !objectValue) {
-                                return false;
-                            }
-
-                            return conditionValue >= objectValue;
+                            return (conditionValue || 0) >= (objectValue || 0);
                         }
                     }
                 ],
@@ -1647,14 +1550,42 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return equals(conditionValue, objectValue);
+                            return (conditionValue || 0) === (objectValue || 0);
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return !equals(conditionValue, objectValue);
+                            return (conditionValue || 0) !== (objectValue || 0);
+                        }
+                    },
+                    {
+                        type: 'greaterThan',
+                        title: 'Greater than',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || 0) < (objectValue || 0);
+                        }
+                    },
+                    {
+                        type: 'greaterThanOrEqual',
+                        title: 'Greater than or equal',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || 0) <= (objectValue || 0);
+                        }
+                    },
+                    {
+                        type: 'lessThan',
+                        title: 'Less than',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || 0) > (objectValue || 0);
+                        }
+                    },
+                    {
+                        type: 'lessThanOrEqual',
+                        title: 'Less than or equal',
+                        apply: (conditionValue, objectValue) => {
+                            return (conditionValue || 0) >= (objectValue || 0);
                         }
                     }
                 ],
@@ -1678,14 +1609,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return equals(conditionValue, objectValue);
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return !equals(conditionValue, objectValue);
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -1710,7 +1641,7 @@ export function getFieldType(type, options) {
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
                             objectValue = toStringRichText(objectValue);
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
@@ -1726,7 +1657,7 @@ export function getFieldType(type, options) {
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
                             objectValue = toStringRichText(objectValue);
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     },
                     {
@@ -1742,7 +1673,7 @@ export function getFieldType(type, options) {
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
                             objectValue = toStringRichText(objectValue);
-                            return (objectValue || '').includes(conditionValue);
+                            return (objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
@@ -1758,7 +1689,7 @@ export function getFieldType(type, options) {
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
                             objectValue = toStringRichText(objectValue);
-                            return !(objectValue || '').includes(conditionValue);
+                            return !(objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
@@ -1790,14 +1721,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -1870,14 +1801,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return !!conditionValue === !!objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return !!conditionValue !== !!objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -1932,14 +1863,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -2000,14 +1931,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -2031,14 +1962,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -2062,14 +1993,14 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     }
                 ],
@@ -2093,7 +2024,7 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
@@ -2107,7 +2038,7 @@ export function getFieldType(type, options) {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     },
                     {
@@ -2121,7 +2052,7 @@ export function getFieldType(type, options) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            return (objectValue || '').includes(conditionValue);
+                            return (objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
@@ -2135,7 +2066,7 @@ export function getFieldType(type, options) {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            return !(objectValue || '').includes(conditionValue);
+                            return !(objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
@@ -2167,7 +2098,7 @@ export function getFieldType(type, options) {
                         title: 'Started',
                         apply: (conditionValue, objectValue) => {
                             const startDate = objectValue ? objectValue.startDate : null;
-                            return !!startDate === conditionValue;
+                            return !!startDate === !!conditionValue;
                         }
                     }
                 ],
@@ -2192,7 +2123,7 @@ export function getFieldType(type, options) {
                         type: 'equal',
                         title: 'Equals',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue === objectValue;
+                            return (conditionValue || '') === (objectValue || '');
                         }
                     },
                     {
@@ -2206,7 +2137,7 @@ export function getFieldType(type, options) {
                         type: 'notEqual',
                         title: 'Does not equal',
                         apply: (conditionValue, objectValue) => {
-                            return conditionValue !== objectValue;
+                            return (conditionValue || '') !== (objectValue || '');
                         }
                     },
                     {
@@ -2220,7 +2151,7 @@ export function getFieldType(type, options) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            return (objectValue || '').includes(conditionValue);
+                            return (objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {
@@ -2234,7 +2165,7 @@ export function getFieldType(type, options) {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            return !(objectValue || '').includes(conditionValue);
+                            return !(objectValue || '').includes(conditionValue || '');
                         }
                     },
                     {

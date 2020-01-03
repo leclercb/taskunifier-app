@@ -44,7 +44,7 @@ export function convertWeirdToodledoTimestampToLocal(value) {
 export function convertTextToRemote(value) {
     let result = value || '';
 
-    if (result && !result.match(/<(br|p|strong|b|em|i)\s*\/?>/)) {
+    if (result && !result.match(/<([a-z]+)\s*\/?>/)) {
         result = RichTextEditor.createValueFromString(result, 'markdown').toString('html');
     }
 

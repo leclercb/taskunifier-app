@@ -156,7 +156,7 @@ export function useAppApi() {
     );
 
     return {
-        pro,
+        isPro: pro,
         selectedView,
         editingCell,
         batchAddTasksManager,

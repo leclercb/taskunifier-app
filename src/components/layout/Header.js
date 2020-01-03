@@ -8,6 +8,7 @@ import { useAppApi } from 'hooks/UseAppApi';
 import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { usePrintApi } from 'hooks/UsePrintApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
@@ -18,6 +19,7 @@ function Header() {
     const noteApi = useNoteApi();
     const taskApi = useTaskApi();
     const printApi = usePrintApi();
+    const settingsApi = useSettingsApi();
     const taskTemplateApi = useTaskTemplateApi();
 
     const onAddNote = async () => {
@@ -41,7 +43,15 @@ function Header() {
 
         task = await taskApi.addTask(task);
         taskApi.setSelectedTaskIds(task.id);
-        appApi.setEditingCell(task.id, 'title');
+
+        if (settingsApi.settings.openTaskEditionManagerWhenTaskAdded) {
+            appApi.setTaskEditionManagerOptions({
+                visible: true,
+                taskId: task.id
+            });
+        } else {
+            appApi.setEditingCell(task.id, 'title');
+        }
     };
 
     const onEditTask = () => {
@@ -146,7 +156,7 @@ function Header() {
             className="joyride-header"
             right={(
                 <React.Fragment>
-                    {appApi.pro ? (
+                    {appApi.isPro ? (
                         <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                     ) : null}
                     {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}

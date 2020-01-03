@@ -2,16 +2,24 @@
 
 ## New Features
 
+* Activate using TaskUnifier Cloud Pro account
 * Add status bar
 * Add "Move out of parent task" action
 * Show general task filter info
+* Change note/task selection with arrow keys (#80)
+* Reduce height of menu items (#95)
 * Change default sort order (#97)
 * Improve duration format (#98)
+* Auto scroll to added note/task (#99)
+* Improve icons color when a note/task is selected (#106)
+* New setting to open the task edition window when a task is added
 
 ## Bug Fixes
 
 * Fix comparison of dates and numbers
 * Fix note field in task edition window (#94)
+* Fix identification of markdown format (#104)
+* Fix filtering of empty values (#107)
 
 # 0.9.0
 

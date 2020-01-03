@@ -40,15 +40,36 @@ async function getAuthorizationCode() {
     });
 }
 
-export function synchronizeWithTaskUnifier() {
+export function connectToTaskUnifier() {
     return async (dispatch, getState) => {
+        let settings = getSettings(getState());
+
+        if (!settings.taskunifier || !settings.taskunifier.accessToken || !settings.taskunifier.refreshToken) {
+            message.info('Opening TaskUnifier\'s website... Please log into your account and enter the authorization code.', 10);
+
+            await dispatch(authorize());
+            const code = await getAuthorizationCode();
+            await dispatch(createToken(code));
+
+            settings = getSettings(getState());
+        }
+
+        const accessTokenCreationDate = moment(settings.taskunifier.accessTokenCreationDate);
+        const expirationDate = moment(accessTokenCreationDate).add(settings.taskunifier.accessTokenExpiresIn, 'second');
+
+        if (moment().diff(expirationDate, 'second') > -60) {
+            await dispatch(refreshToken());
+        }
+    };
+}
+
+export function synchronizeWithTaskUnifier() {
+    return async dispatch => {
         await dispatch(checkIsBusy());
 
         const processId = uuid();
 
         try {
-            let settings = getSettings(getState());
-
             dispatch(updateProcess({
                 id: processId,
                 state: 'RUNNING',
@@ -56,22 +77,7 @@ export function synchronizeWithTaskUnifier() {
                 notify: true
             }));
 
-            if (!settings.taskunifier || !settings.taskunifier.accessToken || !settings.taskunifier.refreshToken) {
-                message.info('Opening TaskUnifier\'s website... Please log into your account and enter the authorization code.', 10);
-
-                await dispatch(authorize());
-                const code = await getAuthorizationCode();
-                await dispatch(createToken(code));
-
-                settings = getSettings(getState());
-            }
-
-            const accessTokenCreationDate = moment(settings.taskunifier.accessTokenCreationDate);
-            const expirationDate = moment(accessTokenCreationDate).add(settings.taskunifier.accessTokenExpiresIn, 'second');
-
-            if (moment().diff(expirationDate, 'second') > -60) {
-                await dispatch(refreshToken());
-            }
+            await dispatch(connectToTaskUnifier());
 
             await dispatch(getTaskUnifierAccountInfo());
 
