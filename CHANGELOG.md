@@ -19,6 +19,7 @@
 * Fix comparison of dates and numbers
 * Fix note field in task edition window (#94)
 * Fix identification of markdown format (#104)
+* Fix filtering of empty values (#107)
 
 # 0.9.0
 
