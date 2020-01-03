@@ -1,11 +1,15 @@
 import React from 'react';
-import { Checkbox, Modal, Select, notification } from 'antd';
+import { Alert, Checkbox, Modal, Select, notification } from 'antd';
 import moment from 'moment';
+import uuid from 'uuid/v4';
 import { getUserDataPath } from 'actions/ActionUtils';
 import { loadData, saveData, setAccountManagerOptions, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackups, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
+import { updateProcess } from 'actions/ThreadActions';
+import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
+import { connectToTaskUnifier } from 'actions/synchronization/taskunifier/TaskUnifierSynchronizationActions';
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
@@ -15,7 +19,8 @@ import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getDefaultTaskSorters } from 'data/DataTaskFilters';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
-import { verifyLicense } from 'utils/LicenseUtils';
+import { getActivationInfo, isPro } from 'selectors/AppSelectors';
+import { store } from 'store/Store';
 import { getSynchronizationApp } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
@@ -267,22 +272,91 @@ export function getCategories() {
             mode: 'electron',
             settings: [
                 {
+                    id: 'infoLicense',
+                    title: '',
+                    type: 'component',
+                    value: () => { // eslint-disable-line react/display-name
+                        return (
+                            <React.Fragment>
+                                <Alert type="info" showIcon message={(
+                                    <React.Fragment>
+                                        <span>There are two ways to activate TaskUnifier App Pro:</span>
+                                        <br />
+                                        <span>If you have a TaskUnifier Cloud Pro account, click on &quot;Activate using your TaskUnifier Cloud Pro account&quot;.</span>
+                                        <br />
+                                        <span>If you purchased a TaskUnifier App Pro license, please enter your license in the license field.</span>
+                                    </React.Fragment>
+                                )} />
+                            </React.Fragment>
+                        );
+                    },
+                    editable: false,
+                    mode: 'electron'
+                },
+                {
+                    id: 'activateUsingCloudPro',
+                    title: 'Activate using your TaskUnifier Cloud Pro account',
+                    type: 'button',
+                    value: async (settings, updateSettings, dispatch) => {
+                        const processId = uuid();
+
+                        try {
+                            await updateSettings({
+                                taskunifier: null,
+                                lastSynchronizationDate: null
+                            });
+
+                            await dispatch(connectToTaskUnifier());
+                            await dispatch(getTaskUnifierAccountInfo());
+
+                            const pro = isPro(store.getState());
+
+                            if (pro) {
+                                Modal.success({
+                                    content: 'Your license has been successfully activated'
+                                });
+                            } else {
+                                Modal.warning({
+                                    content: 'The specified account is not a TaskUnifier Cloud Pro account'
+                                });
+                            }
+                        } catch (error) {
+                            dispatch(updateProcess({
+                                id: processId,
+                                state: 'ERROR',
+                                title: 'Connection with TaskUnifier Cloud',
+                                error: error.toString()
+                            }));
+
+                            throw error;
+                        }
+                    },
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
                     id: 'license',
-                    title: 'License',
+                    title: 'TaskUnifier App Pro license',
                     type: 'textarea',
+                    options: {
+                        autoSize: {
+                            minRows: 3,
+                            maxRows: 3
+                        }
+                    },
                     value: null,
                     editable: true,
                     mode: 'electron'
                 },
                 {
-                    id: 'licenseIsValid',
+                    id: 'activationInfo',
                     title: '',
                     type: 'component',
                     value: (settings, updateSettings, dispatch) => {
-                        const license = verifyLicense(settings.license);
+                        const activationInfo = getActivationInfo(store.getState());
 
-                        if (license) {
-                            return (<ProUnlockedMessage license={license} />);
+                        if (activationInfo) {
+                            return (<ProUnlockedMessage activationInfo={activationInfo} />);
                         } else {
                             return (
                                 <ProLockedMessage

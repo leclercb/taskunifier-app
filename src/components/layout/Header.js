@@ -156,7 +156,7 @@ function Header() {
             className="joyride-header"
             right={(
                 <React.Fragment>
-                    {appApi.pro ? (
+                    {appApi.isPro ? (
                         <img src="resources/images/pro_badge.png" height={32} alt="Pro" style={{ marginRight: 10 }} />
                     ) : null}
                     {process.env.REACT_APP_MODE === 'electron' ? (<Logo alt={true} size={40} />) : (<UserMenu />)}

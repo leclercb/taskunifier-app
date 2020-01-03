@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Activate using TaskUnifier Cloud Pro account
 * Add status bar
 * Add "Move out of parent task" action
 * Show general task filter info

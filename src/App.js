@@ -152,7 +152,7 @@ function App() {
                 interval = setInterval(() => {
                     const { automaticSynchronization, automaticSynchronizationInterval, lastAutomaticSynchronization } = settingsApi.settings;
 
-                    if (appApi.pro &&
+                    if (appApi.isPro &&
                         automaticSynchronization &&
                         Number.isInteger(automaticSynchronizationInterval) &&
                         automaticSynchronizationInterval > 0 &&
@@ -170,7 +170,7 @@ function App() {
             }
         },
         [ // eslint-disable-line react-hooks/exhaustive-deps
-            appApi.pro,
+            appApi.isPro,
             settingsApi.settings.automaticSynchronization,
             settingsApi.settings.automaticSynchronizationInterval,
             settingsApi.settings.lastAutomaticSynchronization
