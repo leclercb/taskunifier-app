@@ -82,7 +82,6 @@ export function getCategories() {
             id: 'general',
             title: 'General',
             icon: 'home',
-            mode: 'electron',
             settings: [
                 {
                     id: 'checkVersion',

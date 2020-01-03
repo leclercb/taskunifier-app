@@ -176,6 +176,10 @@ ant-input:focus {
     color: #ffffff;
 }
 
+.selected-list-item svg.colorable {
+    color: #ffffff !important;
+}
+
 .object-actions:hover {
     color: #e6f6ff !important;
 }
