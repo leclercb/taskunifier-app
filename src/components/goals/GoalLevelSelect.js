@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
 import { getGoalLevels } from 'data/DataGoalLevels';
 
-export const GoalLevelSelect = React.forwardRef(function GoalLevelSelect(props, ref) {
+const GoalLevelSelect = forwardRef(function GoalLevelSelect(props, ref) {
     return (
         <Select ref={ref} allowClear={true} {...props}>
             {getGoalLevels().map(level => (

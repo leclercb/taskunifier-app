@@ -1,11 +1,15 @@
-import React from 'react';
-import { Button, Modal } from 'antd';
-import BatchEditTasksManager from 'components/tasks/batch/BatchEditTasksManager';
+import React, { useRef } from 'react';
+import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
+import { BatchEditTasksManager } from 'components/tasks/batch/BatchEditTasksManager';
 import Icon from 'components/common/Icon';
+import Spacer from 'components/common/Spacer';
 import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalBatchEditTasksManager() {
+function ModalBatchEditTasksManager({ form }) {
     const appApi = useAppApi();
+
+    const managerRef = useRef();
 
     const onClose = () => {
         appApi.setBatchEditTasksManagerOptions({ visible: false });
@@ -20,13 +24,23 @@ function ModalBatchEditTasksManager() {
             onOk={onClose}
             onCancel={onClose}
             footer={(
-                <Button onClick={onClose}>
-                    Close
-                </Button>
+                <React.Fragment>
+                    <Button onClick={() => managerRef.current.updateTasks()}>
+                        <Icon icon="edit" text="Batch edit tasks" />
+                    </Button>
+                    <Spacer />
+                    <Button onClick={onClose}>
+                        Close
+                    </Button>
+                </React.Fragment>
             )}>
-            <BatchEditTasksManager onSuccess={() => onClose()} />
+            <BatchEditTasksManager ref={managerRef} form={form} onSuccess={() => onClose()} />
         </Modal>
     );
 }
 
-export default ModalBatchEditTasksManager;
+ModalBatchEditTasksManager.propTypes = {
+    form: PropTypes.object.isRequired
+};
+
+export default Form.create({ name: 'batchEditTasks' })(ModalBatchEditTasksManager);

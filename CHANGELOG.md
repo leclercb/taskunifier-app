@@ -1,3 +1,11 @@
+# 0.9.2
+
+## New Features
+
+* Improved batch add and edit tasks dialog
+
+## Bug Fixes
+
 # 0.9.1
 
 ## New Features

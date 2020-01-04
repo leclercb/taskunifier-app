@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getContactTitle } from 'utils/ContactUtils';
 import { useContactApi } from 'hooks/UseContactApi';
 
-export const ContactSelect = React.forwardRef(function ContactSelect(props, ref) {
+const ContactSelect = forwardRef(function ContactSelect(props, ref) {
     const contactApi = useContactApi();
     const value = contactApi.contacts.find(contact => contact.id === props.value) ? props.value : undefined;
 

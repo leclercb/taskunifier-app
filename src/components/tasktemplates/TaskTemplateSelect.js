@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 
-export const TaskTemplateSelect = React.forwardRef(function TaskTemplateSelect(props, ref) {
+const TaskTemplateSelect = forwardRef(function TaskTemplateSelect(props, ref) {
     const taskTemplateApi = useTaskTemplateApi();
     const value = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === props.value) ? props.value : undefined;
 

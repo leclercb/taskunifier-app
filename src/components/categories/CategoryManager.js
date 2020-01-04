@@ -24,6 +24,7 @@ function CategoryManager(props) {
             activeKey={category}
             onChange={onActiveKeyChange}
             animated={false}
+            size="small"
             className="joyride-category-manager-tabs">
             <Tabs.TabPane tab="Contacts" key="contacts">
                 <ContactManager contactId={category === 'contacts' ? objectId : null} onContactSelection={onObjectSelection} />
