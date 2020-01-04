@@ -1,5 +1,10 @@
 /* Ant Design */
 
+.ant-badge-count {
+    height: 18px !important;
+    line-height: 18px !important;
+}
+
 .ant-btn {
     border-width: 2px !important;
 }
