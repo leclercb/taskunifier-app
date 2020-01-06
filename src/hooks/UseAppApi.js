@@ -28,6 +28,7 @@ import {
     getBatchAddTasksManager,
     getBatchEditTasksManager,
     getCategoryManager,
+    getDataUuid,
     getEditingCell,
     getNoteFieldManager,
     getNoteFilterManager,
@@ -44,6 +45,7 @@ import { getSelectedView } from 'selectors/SettingSelectors';
 export function useAppApi() {
     const dispatch = useDispatch();
 
+    const dataUuid = useSelector(getDataUuid);
     const pro = useSelector(isPro);
     const selectedView = useSelector(getSelectedView);
     const editingCell = useSelector(getEditingCell);
@@ -156,6 +158,7 @@ export function useAppApi() {
     );
 
     return {
+        dataUuid,
         isPro: pro,
         selectedView,
         editingCell,

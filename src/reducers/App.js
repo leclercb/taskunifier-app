@@ -3,6 +3,7 @@ import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
+    dataUuid: null,
     editingCell: {
         objectId: null,
         fieldId: null
@@ -65,6 +66,11 @@ const App = () => (state = {
     }
 }, action) => {
     switch (action.type) {
+        case 'SET_DATA_UUID':
+            return {
+                ...state,
+                dataUuid: action.uuid
+            };
         case 'SET_EDITING_CELL':
             return {
                 ...state,
