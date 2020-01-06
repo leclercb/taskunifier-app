@@ -1,5 +1,10 @@
 /* Ant Design */
 
+.ant-badge-count {
+    height: 18px !important;
+    line-height: 18px !important;
+}
+
 .ant-btn {
     border-width: 2px !important;
 }
@@ -128,15 +133,6 @@ ant-input:focus {
     border-color: transparent;
 }
 
-/* React RTE */
-
-.rte-editor {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
-    font-size: 14px !important;
-    overflow: auto !important;
-    max-height: calc(100% - 55px) !important;
-}
-
 /* React Virtualized */
 
 .ReactVirtualized__Grid {
@@ -174,6 +170,10 @@ ant-input:focus {
 .selected-list-item {
     background-color: #0e67c4;
     color: #ffffff;
+}
+
+.selected-list-item svg.colorable {
+    color: #ffffff !important;
 }
 
 .object-actions:hover {

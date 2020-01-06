@@ -43,6 +43,7 @@ function TaskTabs() {
     return (
         <Tabs
             animated={false}
+            size="small"
             className="ant-tabs-full-height joyride-task-tabs">
             <Tabs.TabPane tab="Text" key="text">
                 <TaskTextForm

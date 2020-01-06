@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Col, Form, List, Row } from 'antd';
+import { Col, Form, List, Row } from 'antd';
 import Icon from 'components/common/Icon';
+import PromiseButton from 'components/common/PromiseButton';
 import SorterTable from 'components/filters/SorterTable';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
@@ -69,11 +70,11 @@ function SettingManager(props) {
                 return (
                     <Form.Item label={item.title} style={{ width: '100%' }}>
                         {item.type === 'button' ? (
-                            <Button
+                            <PromiseButton
                                 type={item.buttonType}
                                 onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
                                 {item.title}
-                            </Button>
+                            </PromiseButton>
                         ) : null}
                         {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
                         {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (

@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import Constants from 'constants/Constants';
 
-export function ProUnlockedMessage({ license }) {
+export function ProUnlockedMessage({ activationInfo }) {
     return (
         <Empty
             image={(<Icon color={Constants.fadeIconColor} icon="lock-open" size={64} />)}
             description={(
                 <span>
                     TaskUnifier Pro has been successfully activated !<br />
-                    <strong>Email: </strong>{license.email}<br />
-                    {license.expirationDate && (
+                    <strong>Email: </strong>{activationInfo.email}<br />
+                    {activationInfo.expirationDate && (
                         <React.Fragment>
-                            <strong>Expiration Date: </strong>{license.expirationDate}<br />
+                            <strong>Expiration Date: </strong>{activationInfo.expirationDate}<br />
                         </React.Fragment>
                     )}
                 </span>
@@ -23,7 +23,7 @@ export function ProUnlockedMessage({ license }) {
 }
 
 ProUnlockedMessage.propTypes = {
-    license: PropTypes.object
+    activationInfo: PropTypes.object
 };
 
 export default ProUnlockedMessage;

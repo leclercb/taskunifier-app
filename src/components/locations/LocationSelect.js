@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { useLocationApi } from 'hooks/UseLocationApi';
 
-export const LocationSelect = React.forwardRef(function LocationSelect(props, ref) {
+const LocationSelect = forwardRef(function LocationSelect(props, ref) {
     const locationApi = useLocationApi();
     const value = locationApi.locations.find(location => location.id === props.value) ? props.value : undefined;
 

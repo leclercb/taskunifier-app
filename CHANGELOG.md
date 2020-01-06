@@ -1,7 +1,16 @@
+# 0.9.2
+
+## New Features
+
+* Improved batch add and edit tasks dialog
+
+## Bug Fixes
+
 # 0.9.1
 
 ## New Features
 
+* Activate using TaskUnifier Cloud Pro account
 * Add status bar
 * Add "Move out of parent task" action
 * Show general task filter info
@@ -18,6 +27,7 @@
 * Fix comparison of dates and numbers
 * Fix note field in task edition window (#94)
 * Fix identification of markdown format (#104)
+* Fix filtering of empty values (#107)
 
 # 0.9.0
 

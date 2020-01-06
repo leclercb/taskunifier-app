@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Button, Form, Input, message } from 'antd';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
-import Icon from 'components/common/Icon';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
-function BatchAddTasksManager({ form, onSuccess }) {
+export const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ form, onSuccess }, ref) {
     const taskApi = useTaskApi();
     const taskTemplatesApi = useTaskTemplateApi();
 
@@ -82,6 +81,10 @@ function BatchAddTasksManager({ form, onSuccess }) {
         });
     };
 
+    useImperativeHandle(ref, () => ({
+        addTasks
+    }));
+
     const { getFieldDecorator } = form;
 
     const formItemLayout = getDefaultFormItemLayout();
@@ -128,14 +131,11 @@ function BatchAddTasksManager({ form, onSuccess }) {
                     <TaskTemplateSelect />
                 )}
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-                <Button onClick={() => addTasks()}>
-                    <Icon icon="plus" text="Add tasks" />
-                </Button>
-            </Form.Item>
         </Form>
     );
-}
+});
+
+BatchAddTasksManager.displayName = 'BatchAddTasksManager';
 
 BatchAddTasksManager.propTypes = {
     form: PropTypes.object.isRequired,

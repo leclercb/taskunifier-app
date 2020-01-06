@@ -1,7 +1,9 @@
 import { createSelector } from 'reselect';
+import { getConfig } from 'config/Config';
 import { getSession } from 'selectors/SessionSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { verifyLicense } from 'utils/LicenseUtils';
+import { getValue } from 'utils/ObjectUtils';
 
 export const getDataUuid = state => state.app.dataUuid;
 
@@ -32,19 +34,47 @@ export const getTaskTemplateManager = state => state.app.taskTemplateManager;
 export const getAccountManager = state => state.app.accountManager;
 export const getSettingManager = state => state.app.settingManager;
 
-export const isValidLicense = createSelector(
+export const getActivationInfo = createSelector(
     getSettings,
-    settings => !!verifyLicense(settings.license)
+    getSession,
+    (settings, session) => {
+        if (process.env.REACT_APP_MODE === 'electron') {
+            const license = verifyLicense(settings.license);
+
+            if (license) {
+                return license;
+            }
+
+            if (getValue(settings, 'taskunifier.accountInfo.metaData.subscriptionInfo.type', true) === 'pro') {
+                return {
+                    transaction: null,
+                    sku: getConfig().appItemSku,
+                    itemSku: getConfig().appItemSku,
+                    expirationDate: null,
+                    email: getValue(settings, 'taskunifier.accountInfo.email', true)
+                };
+            }
+
+            return null;
+        } else {
+            if (session.user && session.user.metaData.subscriptionInfo.type === 'pro') {
+                return {
+                    transaction: null,
+                    sku: getConfig().appItemSku,
+                    itemSku: getConfig().appItemSku,
+                    expirationDate: null,
+                    email: session.user.email
+                };
+            }
+
+            return null;
+        }
+    }
 );
 
 export const isPro = createSelector(
-    isValidLicense,
-    getSession,
-    (isValidLicense, session) => {
-        if (process.env.REACT_APP_MODE === 'electron') {
-            return isValidLicense;
-        } else {
-            return session.user ? session.user.metaData.subscriptionInfo.type === 'pro' : false;
-        }
+    getActivationInfo,
+    (activationInfo) => {
+        return !!activationInfo;
     }
 );

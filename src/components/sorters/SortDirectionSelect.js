@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
 import { useSortDirectionApi } from 'hooks/UseSortDirectionApi';
 
-export const SortDirectionSelect = React.forwardRef(function SortDirectionSelect(props, ref) {
+const SortDirectionSelect = forwardRef(function SortDirectionSelect(props, ref) {
     const sortDirectionApi = useSortDirectionApi();
 
     return (

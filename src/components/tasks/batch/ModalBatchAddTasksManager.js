@@ -1,11 +1,15 @@
-import React from 'react';
-import { Button, Modal } from 'antd';
-import BatchAddTasksManager from 'components/tasks/batch/BatchAddTasksManager';
+import React, { useRef } from 'react';
+import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
+import { BatchAddTasksManager } from 'components/tasks/batch/BatchAddTasksManager';
 import Icon from 'components/common/Icon';
+import Spacer from 'components/common/Spacer';
 import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalBatchAddTasksManager() {
+function ModalBatchAddTasksManager({ form }) {
     const appApi = useAppApi();
+
+    const managerRef = useRef();
 
     const onClose = () => {
         appApi.setBatchAddTasksManagerOptions({ visible: false });
@@ -20,13 +24,23 @@ function ModalBatchAddTasksManager() {
             onOk={onClose}
             onCancel={onClose}
             footer={(
-                <Button onClick={onClose}>
-                    Close
-                </Button>
+                <React.Fragment>
+                    <Button onClick={() => managerRef.current.addTasks()}>
+                        <Icon icon="plus" text="Add tasks" />
+                    </Button>
+                    <Spacer />
+                    <Button onClick={onClose}>
+                        Close
+                    </Button>
+                </React.Fragment>
             )}>
-            <BatchAddTasksManager onSuccess={() => onClose()} />
+            <BatchAddTasksManager ref={managerRef} form={form} onSuccess={() => onClose()} />
         </Modal>
     );
 }
 
-export default ModalBatchAddTasksManager;
+ModalBatchAddTasksManager.propTypes = {
+    form: PropTypes.object.isRequired
+};
+
+export default Form.create({ name: 'batchAddTasks' })(ModalBatchAddTasksManager);

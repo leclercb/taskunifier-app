@@ -46,7 +46,7 @@ function TaskEditionForm(props) {
                 {textField && (
                     <Col key={textField.id} span={24}>
                         <Collapse bordered={false}>
-                            <Collapse.Panel header="Text" key="text">
+                            <Collapse.Panel key="text" header="Text">
                                 <div style={{ height: 200 }}>
                                     {getFieldDecorator(textField.id, {
                                         valuePropName: getValuePropNameForType(textField.type),

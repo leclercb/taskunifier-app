@@ -159,7 +159,7 @@ export function useAppApi() {
 
     return {
         dataUuid,
-        pro,
+        isPro: pro,
         selectedView,
         editingCell,
         batchAddTasksManager,
