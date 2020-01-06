@@ -27,7 +27,7 @@ export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFi
         updatedSettings[prefix + fieldId] = index;
     });
 
-    updateSettings(updatedSettings);
+    return updateSettings(updatedSettings);
 };
 
 export function ResizableAndMovableColumn(props) {

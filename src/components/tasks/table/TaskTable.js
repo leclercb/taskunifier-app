@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import sortBy from 'lodash/sortBy';
 import moment from 'moment';
-import { ArrowKeyStepper, AutoSizer, Grid } from 'react-virtualized';
+import { ArrowKeyStepper, AutoSizer, MultiGrid } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
@@ -161,7 +161,10 @@ function TaskTable() {
                             gridRef.current.recomputeGridSize();
                         }
                     }}
-                    onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
+                    onMove={async (dragColumn, dropColumn) => {
+                        await onMove(dragColumn.dataKey, dropColumn.dataKey);
+                        gridRef.current.recomputeGridSize();
+                    }} />
             );
         }
 
@@ -253,10 +256,10 @@ function TaskTable() {
                         mode="cells"
                         isControlled={true}
                         disabled={scrollToIndex === undefined}
-                        scrollToRow={scrollToIndex ? scrollToIndex + 1 : undefined}
+                        scrollToRow={scrollToIndex !== undefined ? scrollToIndex + 1 : undefined}
                         onScrollToChange={({ scrollToRow }) => taskApi.setSelectedTaskIds(dataSource[scrollToRow - 1].id)}>
                         {({ onSectionRendered }) => (
-                            <Grid
+                            <MultiGrid
                                 ref={gridRef}
                                 width={width}
                                 height={height}
@@ -265,8 +268,10 @@ function TaskTable() {
                                 columnCount={sortedAndFilteredFields.length}
                                 columnWidth={({ index }) => getColumnWidth(index)}
                                 estimatedColumnSize={totalWidth / sortedAndFilteredFields.length}
+                                fixedColumnCount={0}
                                 rowHeight={settingsApi.settings.taskTableRowHeight}
                                 rowCount={dataSource.length + 1}
+                                fixedRowCount={1}
                                 cellRenderer={({ columnIndex, rowIndex, key, style }) => {
                                     const task = dataSource[rowIndex - 1];
                                     const classNames = [];
