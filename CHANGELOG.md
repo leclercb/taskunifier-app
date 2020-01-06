@@ -6,6 +6,8 @@
 
 ## Bug Fixes
 
+* Fix display bugs in note and task tables (#50) (#52)
+
 # 0.9.1
 
 ## New Features

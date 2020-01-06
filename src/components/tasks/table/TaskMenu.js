@@ -1,17 +1,92 @@
 import React, { useState } from 'react';
 import { Dropdown, Menu } from 'antd';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import { useAppApi } from 'hooks/UseAppApi';
+import { useTaskApi } from 'hooks/UseTaskApi';
+import { TaskPropType } from 'proptypes/TaskPropTypes';
 
-function TaskMenu({ selectedTaskIds, onAction, children }) {
+function TaskMenu({ selectedTasks, children }) {
+    const appApi = useAppApi();
+    const taskApi = useTaskApi();
+
     const [visible, setVisible] = useState(false);
 
     const onClick = ({ item }) => {
         if (item.props.action) {
-            onAction(item.props.action);
+            const action = item.props.action;
+
+            switch (action.type) {
+                case 'batchEdit':
+                    onBatchEditTask();
+                    break;
+                case 'edit':
+                    selectedTasks.forEach(task => onEditTask(task));
+                    break;
+                case 'moveOutOfParentTask':
+                    selectedTasks.forEach(task => onMoveOutOfParentTask(task));
+                    break;
+                case 'duplicate':
+                    selectedTasks.forEach(task => onDuplicateTask(task));
+                    break;
+                case 'remove':
+                    onRemoveTasks(selectedTasks.map(task => task.id));
+                    break;
+                case 'postponeStartDate':
+                    selectedTasks.forEach(task => onPostponeStartDate(task, action.amount, action.unit));
+                    break;
+                case 'postponeDueDate':
+                    selectedTasks.forEach(task => onPostponeDueDate(task, action.amount, action.unit));
+                    break;
+                default:
+                    break;
+            }
         }
 
         setVisible(false);
+    };
+
+    const onBatchEditTask = () => {
+        appApi.setBatchEditTasksManagerOptions({
+            visible: true
+        });
+    };
+
+    const onEditTask = task => {
+        appApi.setTaskEditionManagerOptions({
+            visible: true,
+            taskId: task.id
+        });
+    };
+
+    const onMoveOutOfParentTask = task => {
+        taskApi.updateTask({
+            ...task,
+            parent: null
+        });
+    };
+
+    const onDuplicateTask = task => {
+        taskApi.duplicateTask(task);
+    };
+
+    const onRemoveTasks = taskIds => {
+        taskApi.deleteTask(taskIds);
+    };
+
+    const onPostponeStartDate = (task, amount, unit) => {
+        taskApi.updateTask({
+            ...task,
+            startDate: moment(task.startDate ? task.startDate : undefined).add(amount, unit).toISOString()
+        });
+    };
+
+    const onPostponeDueDate = (task, amount, unit) => {
+        taskApi.updateTask({
+            ...task,
+            dueDate: moment(task.dueDate ? task.dueDate : undefined).add(amount, unit).toISOString()
+        });
     };
 
     const createPostponeMenu = (key, title) => (
@@ -54,13 +129,13 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
         </Menu.SubMenu>
     );
 
-    const suffix = `${selectedTaskIds.length} task${selectedTaskIds.length > 1 ? 's' : ''}`;
+    const suffix = `${selectedTasks.length} task${selectedTasks.length > 1 ? 's' : ''}`;
 
     const menu = (
         <Menu
             onClick={onClick}
             style={{ width: 300 }}>
-            {selectedTaskIds.length > 1 ?
+            {selectedTasks.length > 1 ?
                 (
                     <Menu.Item key="batchEdit" action={{ type: 'batchEdit' }}>
                         <Icon icon="magic" text={`Batch edit ${suffix}`} />
@@ -89,6 +164,7 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
 
     );
 
+    // Dropdown trigger is not working in React Virtualized Grid
     return (
         <div
             onClick={() => setVisible(false)}
@@ -106,8 +182,7 @@ function TaskMenu({ selectedTaskIds, onAction, children }) {
 }
 
 TaskMenu.propTypes = {
-    selectedTaskIds: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-    onAction: PropTypes.func.isRequired,
+    selectedTasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     children: PropTypes.node.isRequired
 };
 

@@ -34,6 +34,10 @@ export function getStatusColor(status, settings) {
     return settings['status_' + (status ? status : 'negative')];
 }
 
+export function getNoteForegroundColor() {
+    return 'initial';
+}
+
 export function getNoteBackgroundColor(note, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 }
