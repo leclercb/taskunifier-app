@@ -81,6 +81,16 @@
             "buildResources": "build",
             "output": "dist"
         },
+        "protocols": [
+            {
+                "name": "TaskUnifier",
+                "role": "Viewer",
+                "schemes": [
+                    "tu",
+                    "taskunifier"
+                ]
+            }
+        ],
         "mac": {
             "icon": "assets/icon.icns",
             "type": "distribution",

@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Add custom protocol handler
 * Improved batch add and edit tasks dialog
 
 ## Bug Fixes

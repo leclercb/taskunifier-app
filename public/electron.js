@@ -1,6 +1,6 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
+const { app, dialog, ipcMain, protocol, shell, BrowserWindow } = require('electron');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -96,6 +96,16 @@ function createMainWindow() {
     return window;
 }
 
+function registerProtocol(scheme) {
+    protocol.registerStringProtocol(scheme, request => {
+        console.log(request);
+    }, (error) => {
+        if (error) {
+            console.error(`Failed to register protocol scheme "${scheme}"`);
+        }
+    });
+}
+
 ipcMain.on('get-current-window-size', event => {
     event.returnValue = mainWindow.getSize();
 });
@@ -162,4 +172,6 @@ app.on('activate', () => {
 
 app.on('ready', () => {
     mainWindow = createMainWindow();
+    registerProtocol('tu');
+    registerProtocol('taskunifier');
 });
