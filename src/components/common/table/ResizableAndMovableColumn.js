@@ -27,7 +27,7 @@ export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFi
         updatedSettings[prefix + fieldId] = index;
     });
 
-    updateSettings(updatedSettings);
+    return updateSettings(updatedSettings);
 };
 
 export function ResizableAndMovableColumn(props) {
@@ -65,7 +65,7 @@ export function ResizableAndMovableColumn(props) {
 
 ResizableAndMovableColumn.propTypes = {
     dataKey: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.node.isRequired,
     sortBy: PropTypes.string,
     sortDirection: PropTypes.string,
     onResize: PropTypes.func.isRequired,

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import { useLinkApi } from 'hooks/UseLinkApi';
 
-const LinksSelect = React.forwardRef(function LinksSelect(props, ref) {
+const LinksSelect = forwardRef(function LinksSelect(props, ref) {
     const linkApi = useLinkApi(props.property);
 
     return (

@@ -5,6 +5,8 @@ import { getSettings } from 'selectors/SettingSelectors';
 import { verifyLicense } from 'utils/LicenseUtils';
 import { getValue } from 'utils/ObjectUtils';
 
+export const getDataUuid = state => state.app.dataUuid;
+
 export const getEditingCell = state => state.app.editingCell;
 
 export const getSelectedNoteIds = state => state.app.selectedNoteIds;

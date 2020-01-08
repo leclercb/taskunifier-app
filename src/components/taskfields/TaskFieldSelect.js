@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 
-export const TaskFieldSelect = React.forwardRef(function TaskFieldSelect(props, ref) {
+const TaskFieldSelect = forwardRef(function TaskFieldSelect(props, ref) {
     const taskFieldApi = useTaskFieldApi();
     const value = taskFieldApi.taskFields.find(taskField => taskField.id === props.value) ? props.value : undefined;
 

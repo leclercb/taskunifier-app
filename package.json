@@ -2,7 +2,7 @@
     "name": "taskunifier-app",
     "description": "TaskUnifier - Task Management Application",
     "author": "BL-IT",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "private": true,
     "main": "public/electron.js",
     "homepage": "./",
@@ -81,6 +81,16 @@
             "buildResources": "build",
             "output": "dist"
         },
+        "protocols": [
+            {
+                "name": "TaskUnifier",
+                "role": "Viewer",
+                "schemes": [
+                    "tu",
+                    "taskunifier"
+                ]
+            }
+        ],
         "mac": {
             "icon": "assets/icon.icns",
             "type": "distribution",

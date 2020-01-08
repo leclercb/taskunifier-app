@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useStatusApi } from 'hooks/UseStatusApi';
 import { getStatusColor } from 'utils/SettingUtils';
 
-export const StatusSelect = React.forwardRef(function StatusSelect(props, ref) {
+const StatusSelect = forwardRef(function StatusSelect(props, ref) {
     const settingsApi = useSettingsApi();
     const statusApi = useStatusApi();
 

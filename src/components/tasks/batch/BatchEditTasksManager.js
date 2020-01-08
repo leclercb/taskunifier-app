@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
+import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, Col, Form, Row, message } from 'antd';
-import Icon from 'components/common/Icon';
+import { Checkbox, Col, Collapse, Form, Row, message } from 'antd';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
@@ -10,7 +10,7 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
-function BatchEditTasksManager({ form, onSuccess }) {
+export const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, onSuccess }, ref) {
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
@@ -39,16 +39,23 @@ function BatchEditTasksManager({ form, onSuccess }) {
         });
     };
 
-    const fields = taskFieldApi.taskFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
+    useImperativeHandle(ref, () => ({
+        updateTasks
+    }));
 
     const { getFieldDecorator } = form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
+    const sortedFields = sortBy(taskFieldApi.taskFields, field => ('taskColumnOrder_' + field.id) in settingsApi.settings ? settingsApi.settings['taskColumnOrder_' + field.id] : field.defaultOrder || 0);
+    const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);
+
+    const textField = sortedAndFilteredFields.find(field => field.id === 'text');
+
     return (
         <Row gutter={20}>
             <Form {...formItemLayout}>
-                {fields.map(field => (
+                {sortedAndFilteredFields.filter(field => field.id !== 'text').map(field => (
                     <Col key={field.id} span={12}>
                         <Form.Item label={(
                             getFieldDecorator('checked.' + field.id, {
@@ -65,17 +72,33 @@ function BatchEditTasksManager({ form, onSuccess }) {
                         </Form.Item>
                     </Col>
                 ))}
-                <Col span={24}>
-                    <div style={{ width: '90%', textAlign: 'right' }}>
-                        <Button onClick={() => updateTasks()}>
-                            <Icon icon="edit" text="Batch edit tasks" />
-                        </Button>
-                    </div>
-                </Col>
+                {textField && (
+                    <Col key={textField.id} span={24}>
+                        <Collapse bordered={false}>
+                            <Collapse.Panel key="text" header={(
+                                getFieldDecorator('checked.' + textField.id, {
+                                    valuePropName: 'checked'
+                                })(
+                                    <Checkbox>Text</Checkbox>
+                                )
+                            )}>
+                                <div style={{ height: 200 }}>
+                                    {getFieldDecorator('value.' + textField.id, {
+                                        valuePropName: getValuePropNameForType(textField.type)
+                                    })(
+                                        getInputForType(textField.type, textField.options, { disabled: !textField.editable })
+                                    )}
+                                </div>
+                            </Collapse.Panel>
+                        </Collapse>
+                    </Col>
+                )}
             </Form>
         </Row>
     );
-}
+});
+
+BatchEditTasksManager.displayName = 'BatchEditTasksManager';
 
 BatchEditTasksManager.propTypes = {
     form: PropTypes.object.isRequired,

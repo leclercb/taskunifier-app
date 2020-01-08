@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import sortBy from 'lodash/sortBy';
-import moment from 'moment';
-import { ArrowKeyStepper, AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
+import { ArrowKeyStepper, AutoSizer, MultiGrid } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
@@ -11,8 +10,8 @@ import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useEditingCellApi } from 'hooks/UseEditingCellApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
-import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
@@ -24,79 +23,15 @@ function TaskTable() {
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
 
+    const gridRef = useRef();
+
     const dataSource = taskApi.showTaskHierarchy ? taskApi.filteredExpandedTasks : taskApi.filteredTasks;
 
-    const onMenuAction = action => {
-        const tasks = dataSource.filter(task => taskApi.selectedTaskIds.includes(task.id));
-
-        switch (action.type) {
-            case 'batchEdit':
-                onBatchEditTask();
-                break;
-            case 'edit':
-                tasks.forEach(task => onEditTask(task));
-                break;
-            case 'moveOutOfParentTask':
-                tasks.forEach(task => onMoveOutOfParentTask(task));
-                break;
-            case 'duplicate':
-                tasks.forEach(task => onDuplicateTask(task));
-                break;
-            case 'remove':
-                onRemoveTasks(tasks.map(task => task.id));
-                break;
-            case 'postponeStartDate':
-                tasks.forEach(task => onPostponeStartDate(task, action.amount, action.unit));
-                break;
-            case 'postponeDueDate':
-                tasks.forEach(task => onPostponeDueDate(task, action.amount, action.unit));
-                break;
-            default:
-                break;
+    useEffect(() => {
+        if (gridRef.current) {
+            gridRef.current.recomputeGridSize();
         }
-    };
-
-    const onBatchEditTask = () => {
-        appApi.setBatchEditTasksManagerOptions({
-            visible: true
-        });
-    };
-
-    const onEditTask = task => {
-        appApi.setTaskEditionManagerOptions({
-            visible: true,
-            taskId: task.id
-        });
-    };
-
-    const onMoveOutOfParentTask = task => {
-        taskApi.updateTask({
-            ...task,
-            parent: null
-        });
-    };
-
-    const onDuplicateTask = task => {
-        taskApi.duplicateTask(task);
-    };
-
-    const onRemoveTasks = taskIds => {
-        taskApi.deleteTask(taskIds);
-    };
-
-    const onPostponeStartDate = (task, amount, unit) => {
-        taskApi.updateTask({
-            ...task,
-            startDate: moment(task.startDate ? task.startDate : undefined).add(amount, unit).toISOString()
-        });
-    };
-
-    const onPostponeDueDate = (task, amount, unit) => {
-        taskApi.updateTask({
-            ...task,
-            dueDate: moment(task.dueDate ? task.dueDate : undefined).add(amount, unit).toISOString()
-        });
-    };
+    }, [appApi.dataUuid]);
 
     const onUpdateTask = task => {
         taskApi.updateTask(task);
@@ -114,15 +49,14 @@ function TaskTable() {
         });
     };
 
-    let tableWidth = 0;
-
     const onResize = resizeHandler('taskColumnWidth_', settingsApi.updateSettings);
     const onMove = moveHandler('taskColumnOrder_', taskFieldApi.taskFields, settingsApi.settings, settingsApi.updateSettings);
 
     const sortedFields = sortBy(taskFieldApi.taskFields, field => ('taskColumnOrder_' + field.id) in settingsApi.settings ? settingsApi.settings['taskColumnOrder_' + field.id] : field.defaultOrder || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskColumnVisible_' + field.id] !== false);
 
-    const columns = sortedAndFilteredFields.map(field => {
+    const getColumnWidth = columnIndex => {
+        const field = sortedAndFilteredFields[columnIndex];
         const settingKey = 'taskColumnWidth_' + field.id;
         let width = Number(settingsApi.settings[settingKey]);
 
@@ -130,7 +64,36 @@ function TaskTable() {
             width = getWidthForType(field.type);
         }
 
-        tableWidth += width + 10;
+        return width;
+    };
+
+    let totalWidth = 0;
+
+    sortedAndFilteredFields.forEach((field, index) => {
+        totalWidth += getColumnWidth(index);
+    });
+
+    const getCellRenderer = ({ columnIndex, rowIndex }) => { // eslint-disable-line react/prop-types
+        const field = sortedAndFilteredFields[columnIndex];
+
+        if (rowIndex === 0) {
+            return (
+                <ResizableAndMovableColumn
+                    dataKey={field.id}
+                    label={(<strong>{field.title}</strong>)}
+                    onResize={async data => {
+                        await onResize(data, field.id, getColumnWidth(columnIndex) + data.deltaX);
+
+                        if (gridRef.current && data.stop) {
+                            gridRef.current.recomputeGridSize();
+                        }
+                    }}
+                    onMove={async (dragColumn, dropColumn) => {
+                        await onMove(dragColumn.dataKey, dropColumn.dataKey);
+                        gridRef.current.recomputeGridSize();
+                    }} />
+            );
+        }
 
         const getExpandMode = task => {
             let expanded = null;
@@ -146,59 +109,47 @@ function TaskTable() {
             return expanded;
         };
 
+        const rowData = dataSource[rowIndex - 1];
+        const cellData = rowData[field.id];
+
+        let dndProps = {};
+
+        if (!isAlwaysInEditionForType(field.type)) {
+            dndProps = {
+                dndEnabled: true,
+                dragType: 'task',
+                dropType: 'task',
+                dndData: {
+                    object: rowData,
+                    rowData
+                },
+                onDrop: onDropTask
+            };
+        }
+
         return (
-            <Column
-                key={field.id}
-                label={field.title}
-                dataKey={field.id}
-                width={width}
-                flexGrow={0}
-                flexShrink={0}
-                headerRenderer={data => (
-                    <ResizableAndMovableColumn
-                        dataKey={data.dataKey}
-                        label={data.label}
-                        sortBy={data.sortBy}
-                        sortDirection={data.sortDirection}
-                        onResize={data => onResize(data, field.id, width + data.deltaX)}
-                        onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
-                )}
-                cellRenderer={({ cellData, rowData }) => {
-                    let dndProps = {};
-
-                    if (!isAlwaysInEditionForType(field.type)) {
-                        dndProps = {
-                            dndEnabled: true,
-                            dragType: 'task',
-                            dropType: 'task',
-                            dndData: {
-                                object: rowData,
-                                rowData
-                            },
-                            onDrop: onDropTask
-                        };
-                    }
-
-                    return (
-                        <CellRenderer
-                            record={rowData}
-                            field={field}
-                            value={cellData}
-                            onChange={allValues => onUpdateTask({
-                                ...rowData,
-                                ...allValues
-                            })}
-                            subLevel={taskApi.showTaskHierarchy && field.id === 'title' ? getSubLevel(rowData, taskApi.tasksMetaData) : 0}
-                            expandMode={taskApi.showTaskHierarchy ? getExpandMode(rowData) : null}
-                            onSetExpanded={expanded => onUpdateTask({
-                                ...rowData,
-                                expanded
-                            })}
-                            {...dndProps} />
-                    );
-                }} />
+            <TaskMenu selectedTasks={taskApi.selectedTasks}>
+                <CellRenderer
+                    record={rowData}
+                    field={field}
+                    value={cellData}
+                    onChange={allValues => {
+                        taskApi.setSelectedTaskIds(rowData.id);
+                        return onUpdateTask({
+                            ...rowData,
+                            ...allValues
+                        });
+                    }}
+                    subLevel={taskApi.showTaskHierarchy && field.id === 'title' ? getSubLevel(rowData, taskApi.tasksMetaData) : 0}
+                    expandMode={taskApi.showTaskHierarchy ? getExpandMode(rowData) : null}
+                    onSetExpanded={expanded => onUpdateTask({
+                        ...rowData,
+                        expanded
+                    })}
+                    {...dndProps} />
+            </TaskMenu>
         );
-    });
+    };
 
     let scrollToIndex = undefined;
 
@@ -221,88 +172,86 @@ function TaskTable() {
     return (
         <div
             className="joyride-task-table"
-            style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
-            <AutoSizer disableWidth>
-                {({ height }) => (
+            style={{ height: 'calc(100% - 40px)' }}>
+            <AutoSizer>
+                {({ width, height }) => (
                     <ArrowKeyStepper
-                        columnCount={1}
-                        rowCount={dataSource.length}
+                        columnCount={sortedAndFilteredFields.length}
+                        rowCount={dataSource.length + 1}
                         mode="cells"
                         isControlled={true}
                         disabled={scrollToIndex === undefined}
-                        scrollToRow={scrollToIndex}
-                        onScrollToChange={({ scrollToRow }) => taskApi.setSelectedTaskIds(dataSource[scrollToRow].id)}>
+                        scrollToRow={scrollToIndex !== undefined ? scrollToIndex + 1 : undefined}
+                        onScrollToChange={({ scrollToRow }) => taskApi.setSelectedTaskIds(dataSource[scrollToRow - 1].id)}>
                         {({ onSectionRendered }) => (
-                            <Table
-                                width={tableWidth}
+                            <MultiGrid
+                                ref={gridRef}
+                                width={width}
                                 height={height}
-                                rowHeight={settingsApi.settings.taskTableRowHeight}
-                                headerHeight={20}
-                                scrollToIndex={scrollToIndex}
+                                scrollToRow={scrollToIndex ? scrollToIndex + 1 : undefined}
                                 onSectionRendered={onSectionRendered}
-                                rowCount={dataSource.length}
-                                rowGetter={({ index }) => dataSource[index]}
-                                rowRenderer={rendererProps => (
-                                    <TaskMenu
-                                        key={rendererProps.key}
-                                        selectedTaskIds={taskApi.selectedTaskIds}
-                                        onAction={onMenuAction}>
-                                        {defaultTableRowRenderer(rendererProps)}
-                                    </TaskMenu>
-                                )}
-                                rowStyle={({ index }) => {
-                                    const task = dataSource[index];
-
-                                    if (!task) {
-                                        return {};
-                                    }
-
-                                    let foregroundColor = getTaskForegroundColor(task, index, settingsApi.settings);
-                                    let backgroundColor = getTaskBackgroundColor(task, index, settingsApi.settings);
-
-                                    if (taskApi.selectedTaskIds.includes(task.id)) {
-                                        foregroundColor = Constants.selectionForegroundColor;
-                                        backgroundColor = Constants.selectionBackgroundColor;
-                                    }
-
-                                    return {
-                                        color: foregroundColor,
-                                        backgroundColor
-                                    };
-                                }}
-                                rowClassName={({ index }) => {
-                                    const task = dataSource[index];
-
-                                    if (!task) {
-                                        return '';
-                                    }
-
+                                columnCount={sortedAndFilteredFields.length}
+                                columnWidth={({ index }) => getColumnWidth(index)}
+                                estimatedColumnSize={totalWidth / sortedAndFilteredFields.length}
+                                fixedColumnCount={0}
+                                rowHeight={settingsApi.settings.taskTableRowHeight}
+                                rowCount={dataSource.length + 1}
+                                fixedRowCount={1}
+                                cellRenderer={({ columnIndex, rowIndex, key, style }) => {
+                                    const task = dataSource[rowIndex - 1];
                                     const classNames = [];
 
-                                    if (taskApi.selectedTaskIds.includes(task.id)) {
+                                    if (task && taskApi.selectedTaskIds.includes(task.id)) {
                                         classNames.push('task-selected');
                                     }
 
-                                    if (task.completed) {
+                                    if (task && task.completed) {
                                         classNames.push('task-completed');
                                     }
 
-                                    return classNames.join(' ');
-                                }}
-                                onRowClick={multiSelectionHandler(
-                                    rowData => rowData.id,
-                                    dataSource,
-                                    taskApi.selectedTaskIds,
-                                    taskApi.setSelectedTaskIds,
-                                    false)}
-                                onRowRightClick={multiSelectionHandler(
-                                    rowData => rowData.id,
-                                    dataSource,
-                                    taskApi.selectedTaskIds,
-                                    taskApi.setSelectedTaskIds,
-                                    true)} >
-                                {columns}
-                            </Table>
+                                    style = {
+                                        ...style,
+                                        padding: '0px 5px',
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    };
+
+                                    if (task) {
+                                        let foregroundColor = getTaskForegroundColor(task, rowIndex - 1, settingsApi.settings);
+                                        let backgroundColor = getTaskBackgroundColor(task, rowIndex - 1, settingsApi.settings);
+
+                                        if (taskApi.selectedTaskIds.includes(task.id)) {
+                                            foregroundColor = Constants.selectionForegroundColor;
+                                            backgroundColor = Constants.selectionBackgroundColor;
+                                        }
+
+                                        style.color = foregroundColor;
+                                        style.backgroundColor = backgroundColor;
+                                    }
+
+                                    const onClick = (event, rightClick) => {
+                                        if (task) {
+                                            multiSelectionHandler(
+                                                rowData => rowData.id,
+                                                dataSource,
+                                                taskApi.selectedTaskIds,
+                                                taskApi.setSelectedTaskIds,
+                                                rightClick)({ event, rowData: task });
+                                        }
+                                    };
+
+                                    return (
+                                        <div
+                                            key={key}
+                                            style={style}
+                                            className={classNames.join(' ')}
+                                            onClick={event => onClick(event, false)}
+                                            onDoubleClick={() => taskApi.setSelectedTaskIds(task.id)}
+                                            onContextMenu={event => onClick(event, true)}>
+                                            {getCellRenderer({ columnIndex, rowIndex })}
+                                        </div>
+                                    );
+                                }} />
                         )}
                     </ArrowKeyStepper>
                 )}

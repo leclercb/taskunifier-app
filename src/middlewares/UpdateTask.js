@@ -1,4 +1,5 @@
 import moment from 'moment';
+import uuid from 'uuid/v4';
 import { addObject } from 'actions/ObjectActions';
 import { getObjectById } from 'selectors/ObjectSelectors';
 import { clone } from 'utils/ObjectUtils';
@@ -13,6 +14,20 @@ export const updateTask = store => next => async action => {
 
         if (task.completed) {
             task.progress = 100;
+        }
+
+        if (oldTask && oldTask.timer && oldTask.timer.startDate) {
+            if (!task.timer || !task.timer.startDate) {
+                // Timer has been stopped
+                task.workLogs = [
+                    ...(task.workLogs || []),
+                    {
+                        id: uuid(),
+                        start: oldTask.timer.startDate,
+                        end: moment().toISOString()
+                    }
+                ];
+            }
         }
 
         if (oldTask && !oldTask.completed && task.completed) {

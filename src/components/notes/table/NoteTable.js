@@ -1,61 +1,49 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import sortBy from 'lodash/sortBy';
-import { ArrowKeyStepper, AutoSizer, Column, Table, defaultTableRowRenderer } from 'react-virtualized';
+import { ArrowKeyStepper, AutoSizer, MultiGrid } from 'react-virtualized';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useEditingCellApi } from 'hooks/UseEditingCellApi';
-import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
-import { useNoteApi } from 'hooks/UseNoteApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
-import { getNoteBackgroundColor } from 'utils/SettingUtils';
+import { useNoteApi } from 'hooks/UseNoteApi';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { getNoteBackgroundColor, getNoteForegroundColor } from 'utils/SettingUtils';
 import 'components/notes/table/NoteTable.css';
 
 function NoteTable() {
+    const appApi = useAppApi();
     const editingCellApi = useEditingCellApi();
     const noteApi = useNoteApi();
     const noteFieldApi = useNoteFieldApi();
     const settingsApi = useSettingsApi();
 
-    const onMenuAction = action => {
-        const notes = noteApi.selectedNotes;
+    const gridRef = useRef();
 
-        switch (action.type) {
-            case 'duplicate':
-                notes.forEach(note => onDuplicateNote(note));
-                break;
-            case 'remove':
-                onRemoveNotes(notes.map(note => note.id));
-                break;
-            default:
-                break;
+    const dataSource = noteApi.filteredNotes;
+
+    useEffect(() => {
+        if (gridRef.current) {
+            gridRef.current.recomputeGridSize();
         }
-    };
-
-    const onDuplicateNote = note => {
-        noteApi.duplicateNote(note);
-    };
-
-    const onRemoveNotes = noteIds => {
-        noteApi.deleteNote(noteIds);
-    };
+    }, [appApi.dataUuid]);
 
     const onUpdateNote = note => {
         noteApi.updateNote(note);
     };
 
-    let tableWidth = 0;
-
     const onResize = resizeHandler('noteColumnWidth_', settingsApi.updateSettings);
     const onMove = moveHandler('noteColumnOrder_', noteFieldApi.noteFields, settingsApi.settings, settingsApi.updateSettings);
 
-    const sortedFields = sortBy(noteFieldApi.noteFields, field => settingsApi.settings['noteColumnOrder_' + field.id] || 0);
+    const sortedFields = sortBy(noteFieldApi.noteFields, field => ('noteColumnOrder_' + field.id) in settingsApi.settings ? settingsApi.settings['noteColumnOrder_' + field.id] : field.defaultOrder || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['noteColumnVisible_' + field.id] !== false);
 
-    const columns = sortedAndFilteredFields.map(field => {
+    const getColumnWidth = columnIndex => {
+        const field = sortedAndFilteredFields[columnIndex];
         const settingKey = 'noteColumnWidth_' + field.id;
         let width = Number(settingsApi.settings[settingKey]);
 
@@ -63,59 +51,76 @@ function NoteTable() {
             width = getWidthForType(field.type);
         }
 
-        tableWidth += width + 10;
+        return width;
+    };
+
+    let totalWidth = 0;
+
+    sortedAndFilteredFields.forEach((field, index) => {
+        totalWidth += getColumnWidth(index);
+    });
+
+    const getCellRenderer = ({ columnIndex, rowIndex }) => { // eslint-disable-line react/prop-types
+        const field = sortedAndFilteredFields[columnIndex];
+
+        if (rowIndex === 0) {
+            return (
+                <ResizableAndMovableColumn
+                    dataKey={field.id}
+                    label={(<strong>{field.title}</strong>)}
+                    onResize={async data => {
+                        await onResize(data, field.id, getColumnWidth(columnIndex) + data.deltaX);
+
+                        if (gridRef.current && data.stop) {
+                            gridRef.current.recomputeGridSize();
+                        }
+                    }}
+                    onMove={async (dragColumn, dropColumn) => {
+                        await onMove(dragColumn.dataKey, dropColumn.dataKey);
+                        gridRef.current.recomputeGridSize();
+                    }} />
+            );
+        }
+
+        const rowData = dataSource[rowIndex - 1];
+        const cellData = rowData[field.id];
+
+        let dndProps = {};
+
+        if (!isAlwaysInEditionForType(field.type)) {
+            dndProps = {
+                dndEnabled: true,
+                dragType: 'note',
+                dropType: [],
+                dndData: {
+                    object: rowData,
+                    rowData
+                }
+            };
+        }
 
         return (
-            <Column
-                key={field.id}
-                label={field.title}
-                dataKey={field.id}
-                width={width}
-                flexGrow={0}
-                flexShrink={0}
-                headerRenderer={data => (
-                    <ResizableAndMovableColumn
-                        dataKey={data.dataKey}
-                        label={data.label}
-                        sortBy={data.sortBy}
-                        sortDirection={data.sortDirection}
-                        onResize={data => onResize(data, field.id, width + data.deltaX)}
-                        onMove={(dragColumn, dropColumn) => onMove(dragColumn.dataKey, dropColumn.dataKey)} />
-                )}
-                cellRenderer={({ cellData, rowData }) => {
-                    let dndProps = {};
-
-                    if (!isAlwaysInEditionForType(field.type)) {
-                        dndProps = {
-                            dndEnabled: true,
-                            dragType: 'note',
-                            dropType: [],
-                            dndData: {
-                                object: rowData,
-                                rowData
-                            }
-                        };
-                    }
-
-                    return (
-                        <CellRenderer
-                            record={rowData}
-                            field={field}
-                            value={cellData}
-                            onChange={allValues => onUpdateNote({
-                                ...rowData,
-                                ...allValues
-                            })}
-                            {...dndProps} />
-                    );
-                }} />
+            <NoteMenu selectedNotes={noteApi.selectedNotes}>
+                <CellRenderer
+                    record={rowData}
+                    field={field}
+                    value={cellData}
+                    onChange={allValues => {
+                        noteApi.setSelectedNoteIds(rowData.id);
+                        return onUpdateNote({
+                            ...rowData,
+                            ...allValues
+                        });
+                    }}
+                    {...dndProps} />
+            </NoteMenu>
         );
-    });
+    };
 
     let scrollToIndex = undefined;
 
     if (noteApi.selectedNoteIds.length === 1) {
-        const index = noteApi.filteredNotes.findIndex(note => note.id === noteApi.selectedNoteIds[0]);
+        const index = dataSource.findIndex(note => note.id === noteApi.selectedNoteIds[0]);
 
         if (index >= 0) {
             scrollToIndex = index;
@@ -123,7 +128,7 @@ function NoteTable() {
     }
 
     if (editingCellApi.editingCell) {
-        const index = noteApi.filteredNotes.findIndex(note => note.id === editingCellApi.editingCell.objectId);
+        const index = dataSource.findIndex(note => note.id === editingCellApi.editingCell.objectId);
 
         if (index >= 0) {
             scrollToIndex = index;
@@ -133,84 +138,82 @@ function NoteTable() {
     return (
         <div
             className="joyride-note-table"
-            style={{ overflowY: 'hidden', height: 'calc(100% - 40px)' }}>
-            <AutoSizer disableWidth>
-                {({ height }) => (
+            style={{ height: 'calc(100% - 40px)' }}>
+            <AutoSizer>
+                {({ width, height }) => (
                     <ArrowKeyStepper
-                        columnCount={1}
-                        rowCount={noteApi.filteredNotes.length}
+                        columnCount={sortedAndFilteredFields.length}
+                        rowCount={dataSource.length + 1}
                         mode="cells"
                         isControlled={true}
                         disabled={scrollToIndex === undefined}
-                        scrollToRow={scrollToIndex}
-                        onScrollToChange={({ scrollToRow }) => noteApi.setSelectedNoteIds(noteApi.filteredNotes[scrollToRow].id)}>
+                        scrollToRow={scrollToIndex !== undefined ? scrollToIndex + 1 : undefined}
+                        onScrollToChange={({ scrollToRow }) => noteApi.setSelectedNoteIds(dataSource[scrollToRow - 1].id)}>
                         {({ onSectionRendered }) => (
-                            <Table
-                                width={tableWidth}
+                            <MultiGrid
+                                ref={gridRef}
+                                width={width}
                                 height={height}
-                                rowHeight={settingsApi.settings.noteTableRowHeight}
-                                headerHeight={20}
-                                scrollToIndex={scrollToIndex}
+                                scrollToRow={scrollToIndex ? scrollToIndex + 1 : undefined}
                                 onSectionRendered={onSectionRendered}
-                                rowCount={noteApi.filteredNotes.length}
-                                rowGetter={({ index }) => noteApi.filteredNotes[index]}
-                                rowRenderer={rendererProps => (
-                                    <NoteMenu
-                                        key={rendererProps.key}
-                                        selectedNoteIds={noteApi.selectedNoteIds}
-                                        onAction={onMenuAction}>
-                                        {defaultTableRowRenderer(rendererProps)}
-                                    </NoteMenu>
-                                )}
-                                rowStyle={({ index }) => {
-                                    const note = noteApi.filteredNotes[index];
-
-                                    if (!note) {
-                                        return {};
-                                    }
-
-                                    let foregroundColor = 'initial';
-                                    let backgroundColor = getNoteBackgroundColor(note, index, settingsApi.settings);
-
-                                    if (noteApi.selectedNoteIds.includes(note.id)) {
-                                        foregroundColor = Constants.selectionForegroundColor;
-                                        backgroundColor = Constants.selectionBackgroundColor;
-                                    }
-
-                                    return {
-                                        color: foregroundColor,
-                                        backgroundColor
-                                    };
-                                }}
-                                rowClassName={({ index }) => {
-                                    const note = noteApi.filteredNotes[index];
-
-                                    if (!note) {
-                                        return '';
-                                    }
-
+                                columnCount={sortedAndFilteredFields.length}
+                                columnWidth={({ index }) => getColumnWidth(index)}
+                                estimatedColumnSize={totalWidth / sortedAndFilteredFields.length}
+                                fixedColumnCount={0}
+                                rowHeight={settingsApi.settings.noteTableRowHeight}
+                                rowCount={dataSource.length + 1}
+                                fixedRowCount={1}
+                                cellRenderer={({ columnIndex, rowIndex, key, style }) => {
+                                    const note = dataSource[rowIndex - 1];
                                     const classNames = [];
 
-                                    if (noteApi.selectedNoteIds.includes(note.id)) {
+                                    if (note && noteApi.selectedNoteIds.includes(note.id)) {
                                         classNames.push('note-selected');
                                     }
 
-                                    return classNames.join(' ');
-                                }}
-                                onRowClick={multiSelectionHandler(
-                                    rowData => rowData.id,
-                                    noteApi.filteredNotes,
-                                    noteApi.selectedNoteIds,
-                                    noteApi.setSelectedNoteIds,
-                                    false)}
-                                onRowRightClick={multiSelectionHandler(
-                                    rowData => rowData.id,
-                                    noteApi.filteredNotes,
-                                    noteApi.selectedNoteIds,
-                                    noteApi.setSelectedNoteIds,
-                                    true)} >
-                                {columns}
-                            </Table>
+                                    style = {
+                                        ...style,
+                                        padding: '0px 5px',
+                                        display: 'flex',
+                                        alignItems: 'center'
+                                    };
+
+                                    if (note) {
+                                        let foregroundColor = getNoteForegroundColor();
+                                        let backgroundColor = getNoteBackgroundColor(note, rowIndex - 1, settingsApi.settings);
+
+                                        if (noteApi.selectedNoteIds.includes(note.id)) {
+                                            foregroundColor = Constants.selectionForegroundColor;
+                                            backgroundColor = Constants.selectionBackgroundColor;
+                                        }
+
+                                        style.color = foregroundColor;
+                                        style.backgroundColor = backgroundColor;
+                                    }
+
+                                    const onClick = (event, rightClick) => {
+                                        if (note) {
+                                            multiSelectionHandler(
+                                                rowData => rowData.id,
+                                                dataSource,
+                                                noteApi.selectedNoteIds,
+                                                noteApi.setSelectedNoteIds,
+                                                rightClick)({ event, rowData: note });
+                                        }
+                                    };
+
+                                    return (
+                                        <div
+                                            key={key}
+                                            style={style}
+                                            className={classNames.join(' ')}
+                                            onClick={event => onClick(event, false)}
+                                            onDoubleClick={() => noteApi.setSelectedNoteIds(note.id)}
+                                            onContextMenu={event => onClick(event, true)}>
+                                            {getCellRenderer({ columnIndex, rowIndex })}
+                                        </div>
+                                    );
+                                }} />
                         )}
                     </ArrowKeyStepper>
                 )}

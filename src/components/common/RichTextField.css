@@ -1,0 +1,29 @@
+.rte-editor {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif !important;
+    font-size: 14px !important;
+    overflow: auto !important;
+    max-height: calc(100% - 50px) !important;
+}
+
+.rte-toolbar {
+    padding: 8px 0 0px;
+}
+
+.rte button {
+    height: 24px;
+}
+
+.rte button span {
+    width: 16px;
+    height: 16px;
+    background-size: 14px;
+}
+
+.rte div span {
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.rte div span select {
+    height: 24px;
+}

@@ -1,3 +1,15 @@
+# 0.9.2
+
+## New Features
+
+* Add work logs
+* Add custom protocol handler
+* Improved batch add and edit tasks dialog
+
+## Bug Fixes
+
+* Fix display bugs in note and task tables (#50) (#52)
+
 # 0.9.1
 
 ## New Features

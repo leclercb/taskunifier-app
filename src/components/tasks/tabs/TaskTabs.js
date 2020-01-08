@@ -2,6 +2,7 @@ import React from 'react';
 import { Empty, Tabs } from 'antd';
 import LinkedObjectTable from 'components/tasks/linkedobject/LinkedObjectTable';
 import TaskTextForm from 'components/tasks/text/TaskTextForm';
+import WorkLogTable from 'components/tasks/worklogs/WorkLogTable';
 import { getLinkedContactFields } from 'data/DataLinkedContactFields';
 import { getLinkedFileFields } from 'data/DataLinkedFileFields';
 import { getLinkedTaskFields } from 'data/DataLinkedTaskFields';
@@ -40,9 +41,17 @@ function TaskTabs() {
         });
     };
 
+    const onUpdateWorkLogs = workLogs => {
+        taskApi.updateTask({
+            ...taskApi.selectedTasks[0],
+            workLogs
+        });
+    };
+
     return (
         <Tabs
             animated={false}
+            size="small"
             className="ant-tabs-full-height joyride-task-tabs">
             <Tabs.TabPane tab="Text" key="text">
                 <TaskTextForm
@@ -72,6 +81,11 @@ function TaskTabs() {
                     updateLinkedObjects={onUpdateLinkedTasks}
                     orderSettingPrefix="linkedTaskColumnOrder_"
                     widthSettingPrefix="linkedTaskColumnWidth_" />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Work Log" key="workLogs">
+                <WorkLogTable
+                    workLogs={taskApi.selectedTasks[0].workLogs || []}
+                    updateWorkLogs={onUpdateWorkLogs} />
             </Tabs.TabPane>
         </Tabs>
     );

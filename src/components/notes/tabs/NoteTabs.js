@@ -16,7 +16,10 @@ function NoteTabs() {
     }
 
     return (
-        <Tabs animated={false} className="ant-tabs-full-height joyride-note-tabs">
+        <Tabs
+            animated={false}
+            size="small"
+            className="ant-tabs-full-height joyride-note-tabs">
             <Tabs.TabPane tab="Text" key="text">
                 <NoteTextForm note={noteApi.selectedNotes[0]} updateNote={noteApi.updateNote} />
             </Tabs.TabPane>

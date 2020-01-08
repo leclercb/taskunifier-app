@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte';
 import { createValueFromString } from 'utils/RichTextUtils';
+import 'components/common/RichTextField.css';
 
 function RichTextField(props) {
     const [value, setValue] = React.useState(createValueFromString(props.value));
@@ -36,7 +37,9 @@ function RichTextField(props) {
                 onChange={setValue}
                 onBlur={onSave}
                 rootStyle={{ height: '100%' }}
-                editorClassName="rte-editor" />
+                className="rte"
+                editorClassName="rte-editor"
+                toolbarClassName="rte-toolbar" />
         </div>
     );
 }

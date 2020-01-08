@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
 import { usePriorityApi } from 'hooks/UsePriorityApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getPriorityColor } from 'utils/SettingUtils';
 
-export const PrioritySelect = React.forwardRef(function PrioritySelect(props, ref) {
+const PrioritySelect = forwardRef(function PrioritySelect(props, ref) {
     const priorityApi = usePriorityApi();
     const settingsApi = useSettingsApi();
 
