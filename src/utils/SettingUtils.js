@@ -69,3 +69,7 @@ export function getSorterBackgroundColor(sorter, index, settings) {
 export function getLinkedObjectBackgroundColor(linkedObject, index, settings) {
     return index % 2 === 0 ? settings.evenColor : settings.oddColor;
 }
+
+export function getWorkLogBackgroundColor(workLog, index, settings) {
+    return index % 2 === 0 ? settings.evenColor : settings.oddColor;
+}
