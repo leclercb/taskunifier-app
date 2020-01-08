@@ -4,6 +4,7 @@ import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { Column, Table } from 'react-virtualized';
 import uuid from 'uuid/v4';
+import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
@@ -128,7 +129,7 @@ function SorterTable(props) {
                 <Table
                     width={tableWidth}
                     height={150}
-                    rowHeight={32}
+                    rowHeight={28}
                     headerHeight={20}
                     rowCount={props.sorters.length}
                     rowGetter={({ index }) => props.sorters[index]}
@@ -163,11 +164,13 @@ function SorterTable(props) {
             {!props.disabled && (
                 <div style={{ marginTop: 10 }}>
                     <Button onClick={() => onAddSorter()}>
-                        Add
+                        <Icon icon="plus" text="Add" />
                     </Button>
                     <Spacer />
-                    <Button onClick={() => onDeleteSorters(selectedSorterIds)}>
-                        Delete
+                    <Button
+                        onClick={() => onDeleteSorters(selectedSorterIds)}
+                        disabled={selectedSorterIds.length === 0}>
+                        <Icon icon="trash-alt" text="Delete" />
                     </Button>
                 </div>
             )}

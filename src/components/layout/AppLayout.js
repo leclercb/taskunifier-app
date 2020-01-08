@@ -21,10 +21,13 @@ import TaskView from 'components/tasks/views/TaskView';
 import ModalTaskTemplateManager from 'components/tasktemplates/ModalTaskTemplateManager';
 import NotificationManager from 'components/thread/NotificationManager';
 import ModalThreadManager from 'components/thread/ModalThreadManager';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { getSelectedView } from 'selectors/SettingSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
 
 function AppLayout() {
+    const settingsApi = useSettingsApi();
+
     const busy = useSelector(isBusy);
     const selectedView = useSelector(getSelectedView);
 
@@ -44,15 +47,17 @@ function AppLayout() {
     const getFooter = () => {
         switch (selectedView) {
             case 'note':
-                return <NoteStatusBar />;
+                return settingsApi.settings.showNoteStatusBar ? (<NoteStatusBar />) : null;
             case 'task':
-                return <TaskStatusBar />;
+                return settingsApi.settings.showTaskStatusBar ? (<TaskStatusBar />) : null;
             case 'taskCalendar':
-                return <TaskStatusBar />;
+                return settingsApi.settings.showTaskCalendarStatusBar ? (<TaskStatusBar />) : null;
             default:
                 return null;
         }
     };
+
+    const footer = getFooter();
 
     return (
         <React.Fragment>
@@ -78,9 +83,11 @@ function AppLayout() {
                     <Layout style={{ height: '100%', position: 'relative' }}>
                         {getView()}
                     </Layout>
-                    <Layout.Footer>
-                        {getFooter()}
-                    </Layout.Footer>
+                    {footer && (
+                        <Layout.Footer>
+                            {footer}
+                        </Layout.Footer>
+                    )}
                 </Layout>
             </Spin>
         </React.Fragment>

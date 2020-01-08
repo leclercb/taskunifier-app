@@ -28,6 +28,7 @@ import {
     faFilter,
     faFolder,
     faFolderOpen,
+    faGripLines,
     faHome,
     faInfoCircle,
     faKey,
@@ -88,6 +89,7 @@ library.add(faEyeSlash);
 library.add(faFilter);
 library.add(faFolder);
 library.add(faFolderOpen);
+library.add(faGripLines);
 library.add(faHome);
 library.add(faInfoCircle);
 library.add(faKey);

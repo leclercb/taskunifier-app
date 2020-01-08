@@ -114,7 +114,7 @@ export const getStatistics = createSelector(
     getTasksFilteredBySelectedFilter,
     (tasks, filteredTasks) => {
         const computeStats = tasks => {
-            const stats = { nbTotal: tasks.length, nbCompleted: 0, length: 0, elapsed: 0 };
+            const stats = { nbTotal: tasks.length, nbCompleted: 0, length: 0, elapsed: 0, elapsedToday: 0 };
 
             for (let task of tasks) {
                 if (task.completed) {
@@ -128,6 +128,20 @@ export const getStatistics = createSelector(
                 if (task.timer && task.timer.startDate) {
                     stats.elapsed += moment().diff(moment(task.timer.startDate), 'second');
                 }
+
+                const totalToday = (task.workLogs || []).reduce((total, workLog) => {
+                    if (workLog.start && workLog.end && moment(workLog.start).isBefore(workLog.end)) {
+                        const diff = moment.min(moment(workLog.end), moment().endOf('day')).diff(moment.max(moment(workLog.start), moment().startOf('day')), 'second');
+
+                        if (diff > 0) {
+                            return total + diff;
+                        }
+                    }
+
+                    return total;
+                }, 0);
+
+                stats.elapsedToday += totalToday;
             }
 
             return stats;
