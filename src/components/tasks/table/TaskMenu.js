@@ -4,12 +4,17 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
+import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 function TaskMenu({ selectedTasks, children }) {
     const appApi = useAppApi();
+    const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
+    const taskTemplateApi = useTaskTemplateApi();
 
     const [visible, setVisible] = useState(false);
 
@@ -18,6 +23,9 @@ function TaskMenu({ selectedTasks, children }) {
             const action = item.props.action;
 
             switch (action.type) {
+                case 'addSubTask':
+                    onAddSubTask();
+                    break;
                 case 'batchEdit':
                     onBatchEditTask();
                     break;
@@ -45,6 +53,26 @@ function TaskMenu({ selectedTasks, children }) {
         }
 
         setVisible(false);
+    };
+
+    const onAddSubTask = async () => {
+        let task = {
+            parent: selectedTasks[0].id
+        };
+
+        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, task);
+
+        task = await taskApi.addTask(task);
+        taskApi.setSelectedTaskIds(task.id);
+
+        if (settingsApi.settings.openTaskEditionManagerWhenTaskAdded) {
+            appApi.setTaskEditionManagerOptions({
+                visible: true,
+                taskId: task.id
+            });
+        } else {
+            appApi.setEditingCell(task.id, 'title');
+        }
     };
 
     const onBatchEditTask = () => {
@@ -135,6 +163,11 @@ function TaskMenu({ selectedTasks, children }) {
         <Menu
             onClick={onClick}
             style={{ width: 300 }}>
+            {selectedTasks.length === 1 && (
+                <Menu.Item key="addSubTask" action={{ type: 'addSubTask' }}>
+                    <Icon icon="plus" text="Add sub-task" />
+                </Menu.Item>
+            )}
             {selectedTasks.length > 1 ?
                 (
                     <Menu.Item key="batchEdit" action={{ type: 'batchEdit' }}>

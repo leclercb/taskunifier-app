@@ -9,9 +9,15 @@ const LocationSelect = forwardRef(function LocationSelect(props, ref) {
     const value = locationApi.locations.find(location => location.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {locationApi.locations.map(location => (
-                <Select.Option key={location.id} value={location.id}>
+                <Select.Option key={location.id} value={location.id} title={location.title}>
                     <Icon icon="circle" color={location.color} text={location.title} />
                 </Select.Option>
             ))}

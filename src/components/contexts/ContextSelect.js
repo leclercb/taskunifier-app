@@ -9,9 +9,15 @@ const ContextSelect = forwardRef(function ContextSelect(props, ref) {
     const value = contextApi.contexts.find(context => context.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {contextApi.contexts.map(context => (
-                <Select.Option key={context.id} value={context.id}>
+                <Select.Option key={context.id} value={context.id} title={context.title}>
                     <Icon icon="circle" color={context.color} text={context.title} />
                 </Select.Option>
             ))}

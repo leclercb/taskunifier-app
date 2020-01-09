@@ -12,9 +12,15 @@ const TaskSelect = forwardRef(function TaskSelect(props, ref) {
     const value = taskApi.tasks.find(task => task.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {taskApi.tasks.map(task => (
-                <Select.Option key={task.id} value={task.id}>
+                <Select.Option key={task.id} value={task.id} title={task.title}>
                     <Icon
                         icon="circle"
                         color={getPriorityColor(task.priority, settingsApi.settings)}

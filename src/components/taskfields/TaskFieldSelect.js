@@ -9,9 +9,15 @@ const TaskFieldSelect = forwardRef(function TaskFieldSelect(props, ref) {
     const value = taskFieldApi.taskFields.find(taskField => taskField.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {taskFieldApi.taskFields.map(taskField => (
-                <Select.Option key={taskField.id} value={taskField.id}>
+                <Select.Option key={taskField.id} value={taskField.id} title={taskField.title}>
                     <Icon icon="circle" color={taskField.color} text={taskField.title} />
                 </Select.Option>
             ))}

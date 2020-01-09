@@ -9,9 +9,15 @@ const FolderSelect = forwardRef(function FolderSelect(props, ref) {
     const value = folderApi.folders.find(folder => folder.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {folderApi.folders.map(folder => (
-                <Select.Option key={folder.id} value={folder.id}>
+                <Select.Option key={folder.id} value={folder.id} title={folder.title}>
                     <Icon icon="circle" color={folder.color} text={folder.title} />
                 </Select.Option>
             ))}

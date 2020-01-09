@@ -4,13 +4,17 @@
 
 * Add work log tab
 * Add status bar settings
+* Add "Add sub-task" action
 * Add custom protocol handler
 * Improved batch add and edit tasks dialog
 * Show total elapsed time for today in status bar (#116)
+* Allow search in select fields
 
 ## Bug Fixes
 
 * Fix display bugs in note and task tables (#50) (#52)
+* Fix date format in fields
+* Fix Toodledo task completion date
 
 # 0.9.1
 
