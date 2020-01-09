@@ -4,11 +4,14 @@ import { Form } from 'antd';
 import { getFolderFields } from 'data/DataFolderFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function FolderForm(props) {
-    const fields = getFolderFields();
+    const settingsApi = useSettingsApi();
+
+    const fields = getFolderFields(settingsApi.settings);
 
     const { getFieldDecorator } = props.form;
 

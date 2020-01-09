@@ -1,6 +1,6 @@
 import { addColorsToArray } from 'utils/ColorUtils';
 
-export function getDefaultNoteFields() {
+export function getDefaultNoteFields(settings) {
     return addColorsToArray([
         {
             static: true,
@@ -15,6 +15,10 @@ export function getDefaultNoteFields() {
             id: 'creationDate',
             title: 'Creation date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             defaultOrder: 2
         },
@@ -23,6 +27,10 @@ export function getDefaultNoteFields() {
             id: 'updateDate',
             title: 'Update date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             defaultOrder: 3
         },

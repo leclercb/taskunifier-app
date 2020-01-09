@@ -15,6 +15,10 @@ export function getDefaultTaskFields(settings) {
             id: 'creationDate',
             title: 'Creation date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             defaultOrder: 2
         },
@@ -23,6 +27,10 @@ export function getDefaultTaskFields(settings) {
             id: 'updateDate',
             title: 'Update date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             defaultOrder: 3
         },
@@ -31,6 +39,10 @@ export function getDefaultTaskFields(settings) {
             id: 'completionDate',
             title: 'Completion date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             defaultOrder: 4
         },
@@ -111,11 +123,11 @@ export function getDefaultTaskFields(settings) {
             id: 'startDate',
             title: 'Start date',
             type: (settings.showStartTime ? 'dateTime' : 'date'),
-            editable: true,
             options: {
                 dateFormat: settings.dateFormat,
                 timeFormat: settings.timeFormat
             },
+            editable: true,
             defaultOrder: 14
         },
         {
@@ -123,11 +135,11 @@ export function getDefaultTaskFields(settings) {
             id: 'dueDate',
             title: 'Due date',
             type: (settings.showDueTime ? 'dateTime' : 'date'),
-            editable: true,
             options: {
                 dateFormat: settings.dateFormat,
                 timeFormat: settings.timeFormat
             },
+            editable: true,
             defaultOrder: 15
         },
         {

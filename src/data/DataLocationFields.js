@@ -1,6 +1,6 @@
 import { addColorsToArray } from 'utils/ColorUtils';
 
-export function getLocationFields() {
+export function getLocationFields(settings) {
     return addColorsToArray([
         {
             static: true,
@@ -15,6 +15,10 @@ export function getLocationFields() {
             id: 'creationDate',
             title: 'Creation date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             visible: false
         },
@@ -23,6 +27,10 @@ export function getLocationFields() {
             id: 'updateDate',
             title: 'Update date',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: false,
             visible: false
         },

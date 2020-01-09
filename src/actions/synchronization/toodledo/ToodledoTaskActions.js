@@ -366,7 +366,7 @@ function convertTaskToLocal(task, state) {
         },
         title: task.title,
         completed: task.completed > 0,
-        completionDate: moment.unix(task.completed).toISOString(),
+        completionDate: task.completed > 0 ? moment.unix(task.completed).toISOString() : null,
         tags: task.tag ? task.tag.split(',') : null,
         context: context ? context.id : null,
         folder: folder ? folder.id : null,

@@ -4,11 +4,14 @@ import { Form } from 'antd';
 import { getContextFields } from 'data/DataContextFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function ContextForm(props) {
-    const fields = getContextFields();
+    const settingsApi = useSettingsApi();
+
+    const fields = getContextFields(settingsApi.settings);
 
     const { getFieldDecorator } = props.form;
 

@@ -4,11 +4,14 @@ import { Form } from 'antd';
 import { getContactFields } from 'data/DataContactFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { ContactPropType } from 'proptypes/ContactPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function ContactForm(props) {
-    const fields = getContactFields();
+    const settingsApi = useSettingsApi();
+
+    const fields = getContactFields(settingsApi.settings);
 
     const { getFieldDecorator } = props.form;
 
