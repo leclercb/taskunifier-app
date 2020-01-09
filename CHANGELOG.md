@@ -2,9 +2,11 @@
 
 ## New Features
 
-* Add work logs
+* Add work log tab
+* Add status bar settings
 * Add custom protocol handler
 * Improved batch add and edit tasks dialog
+* Show total elapsed time for today in status bar (#116)
 
 ## Bug Fixes
 

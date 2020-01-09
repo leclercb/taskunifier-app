@@ -6,6 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from 'components/layout/AppLayout';
 import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
@@ -19,6 +20,10 @@ import 'components/common/table/VirtualizedTable.css';
 function App() {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
+
+    useInterval(() => {
+        appApi.updateMinuteTimer();
+    }, 60000);
 
     useEffect(() => {
         appApi.loadData();

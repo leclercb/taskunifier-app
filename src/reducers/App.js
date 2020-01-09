@@ -4,6 +4,7 @@ import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
     dataUuid: null,
+    minuteTimer: moment().toISOString(),
     editingCell: {
         objectId: null,
         fieldId: null
@@ -62,7 +63,8 @@ const App = () => (state = {
         visible: false
     },
     settingManager: {
-        visible: false
+        visible: false,
+        category: 'general'
     }
 }, action) => {
     switch (action.type) {
@@ -70,6 +72,11 @@ const App = () => (state = {
             return {
                 ...state,
                 dataUuid: action.uuid
+            };
+        case 'SET_MINUTE_TIMER':
+            return {
+                ...state,
+                minuteTimer: action.date
             };
         case 'SET_EDITING_CELL':
             return {
@@ -209,7 +216,8 @@ const App = () => (state = {
             return {
                 ...state,
                 settingManager: {
-                    visible: 'visible' in action ? action.visible : state.settingManager.visible
+                    visible: 'visible' in action ? action.visible : state.settingManager.visible,
+                    category: 'category' in action ? action.category : state.settingManager.category
                 }
             };
         default:

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Alert, Button } from 'antd';
 import sortBy from 'lodash/sortBy';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import uuid from 'uuid/v4';
+import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
@@ -12,21 +12,25 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import Constants from 'constants/Constants';
 import { getWidthForType } from 'data/DataFieldTypes';
 import { getWorkLogFields } from 'data/DataWorkLogFields';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { TimerPropType } from 'proptypes/TimerPropTypes';
 import { WorkLogPropType } from 'proptypes/WorkLogPropTypes';
-import { compareDates } from 'utils/CompareUtils';
 import { getWorkLogBackgroundColor } from 'utils/SettingUtils';
+import { toStringDuration } from 'utils/StringUtils';
+import { getDuration, getDurationForDay, getWorkLogsWithLength, getWorkLogsWithTimer } from 'utils/WorkLogUtils';
 
-function WorkLogTable({ workLogs, updateWorkLogs }) {
+function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
+    const appApi = useAppApi();
     const settingsApi = useSettingsApi();
     const [selectedWorkLogIds, setSelectedWorkLogIds] = useState([]);
 
     const workLogFields = getWorkLogFields();
+    const workLogsWithLength = getWorkLogsWithLength(workLogs);
+    const workLogsWithTimer = getWorkLogsWithTimer(workLogs, timer, appApi.minuteTimer);
 
-    const workLogsWithLength = workLogs.map(workLog => ({
-        ...workLog,
-        length: workLog.start && workLog.end ? moment(workLog.end).diff(workLog.start, 'second') : null
-    })).sort((a, b) => compareDates(a.start, b.start));
+    const total = workLogsWithTimer.reduce((total, workLog) => total + getDuration(workLog), 0);
+    const totalToday = workLogsWithTimer.reduce((total, workLog) => total + getDurationForDay(workLog, appApi.minuteTimer), 0);
 
     const onAddWorkLog = () => {
         updateWorkLogs([
@@ -50,6 +54,10 @@ function WorkLogTable({ workLogs, updateWorkLogs }) {
     const onDeleteWorkLogs = workLogIds => {
         const newWorkLogs = workLogs.filter(item => !workLogIds.includes(item.id));
         updateWorkLogs(newWorkLogs);
+    };
+
+    const onUpdateTotalLength = () => {
+        updateTotalLength(total);
     };
 
     let tableWidth = 0;
@@ -99,13 +107,13 @@ function WorkLogTable({ workLogs, updateWorkLogs }) {
 
     return (
         <React.Fragment>
-            <div style={{ overflowY: 'hidden', height: 'calc(100% - 50px)' }}>
+            <div style={{ overflowY: 'hidden', height: 'calc(100% - 80px)' }}>
                 <AutoSizer>
                     {({ height }) => (
                         <Table
                             width={tableWidth}
                             height={height}
-                            rowHeight={32}
+                            rowHeight={28}
                             headerHeight={20}
                             rowCount={workLogs.length}
                             rowGetter={({ index }) => workLogsWithLength[index]}
@@ -141,20 +149,40 @@ function WorkLogTable({ workLogs, updateWorkLogs }) {
             </div>
             <div style={{ marginTop: 10 }}>
                 <Button onClick={() => onAddWorkLog()}>
-                    Add
+                    <Icon icon="plus" text="Add" />
                 </Button>
                 <Spacer />
-                <Button onClick={() => onDeleteWorkLogs(selectedWorkLogIds)}>
-                    Delete
+                <Button
+                    onClick={() => onDeleteWorkLogs(selectedWorkLogIds)}
+                    disabled={selectedWorkLogIds.length === 0}>
+                    <Icon icon="trash-alt" text="Delete" />
                 </Button>
+                <Spacer />
+                <Button onClick={() => onUpdateTotalLength()}>
+                    <Icon icon="edit" text="Update timer value with total" />
+                </Button>
+                <Spacer />
+                <span>Total: <strong>{toStringDuration(total)}</strong></span>
+                <Spacer />
+                <span>Total for today: <strong>{toStringDuration(totalToday)}</strong></span>
             </div>
+            <Alert
+                type={timer && timer.startDate ? 'warning' : 'info'}
+                showIcon
+                message={timer && timer.startDate ?
+                    'The timer is started. The time between the start of the timer and now is included in the total.' :
+                    'The timer is paused.'
+                }
+                style={{ marginTop: 5 }} />
         </React.Fragment>
     );
 }
 
 WorkLogTable.propTypes = {
+    timer: TimerPropType,
     workLogs: PropTypes.arrayOf(WorkLogPropType.isRequired).isRequired,
-    updateWorkLogs: PropTypes.func.isRequired
+    updateWorkLogs: PropTypes.func.isRequired,
+    updateTotalLength: PropTypes.func.isRequired
 };
 
 export default WorkLogTable;

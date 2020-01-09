@@ -15,7 +15,8 @@ import {
     setTaskEditionManagerOptions,
     setTaskFieldManagerOptions,
     setTaskFilterManagerOptions,
-    setTaskTemplateManagerOptions
+    setTaskTemplateManagerOptions,
+    updateMinuteTimer
 } from 'actions/AppActions';
 import {
     backupData,
@@ -30,6 +31,7 @@ import {
     getCategoryManager,
     getDataUuid,
     getEditingCell,
+    getMinuteTimer,
     getNoteFieldManager,
     getNoteFilterManager,
     getReminderManager,
@@ -46,6 +48,7 @@ export function useAppApi() {
     const dispatch = useDispatch();
 
     const dataUuid = useSelector(getDataUuid);
+    const minuteTimer = useSelector(getMinuteTimer);
     const pro = useSelector(isPro);
     const selectedView = useSelector(getSelectedView);
     const editingCell = useSelector(getEditingCell);
@@ -61,6 +64,11 @@ export function useAppApi() {
     const taskTemplateManager = useSelector(getTaskTemplateManager);
     const accountManager = useSelector(getAccountManager);
     const settingManager = useSelector(getSettingManager);
+
+    const updateMinuteTimerCallback = useCallback(
+        () => dispatch(updateMinuteTimer()),
+        [dispatch]
+    );
 
     const loadDataCallback = useCallback(
         () => dispatch(loadData()),
@@ -159,6 +167,7 @@ export function useAppApi() {
 
     return {
         dataUuid,
+        minuteTimer,
         isPro: pro,
         selectedView,
         editingCell,
@@ -174,6 +183,7 @@ export function useAppApi() {
         taskTemplateManager,
         accountManager,
         settingManager,
+        updateMinuteTimer: updateMinuteTimerCallback,
         loadData: loadDataCallback,
         saveData: saveDataCallback,
         backupData: backupDataCallback,

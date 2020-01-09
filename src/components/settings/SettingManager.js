@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, List, Row } from 'antd';
 import Icon from 'components/common/Icon';
@@ -16,10 +16,9 @@ function SettingManager(props) {
     const noteFieldApi = useNoteFieldApi();
     const taskFieldApi = useTaskFieldApi();
     const settingsApi = useSettingsApi();
-    const [selectedCategoryId, setSelectedCategoryId] = useState('general');
 
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
-    const category = categories.find(category => category.id === selectedCategoryId);
+    const category = categories.find(category => category.id === props.category);
     const settings = getCategorySettings(
         category,
         {
@@ -37,7 +36,7 @@ function SettingManager(props) {
     };
 
     const onCategorySelection = category => {
-        setSelectedCategoryId(category.id);
+        props.onCategorySelection(category.id);
     };
 
     const { getFieldDecorator } = props.form;
@@ -110,7 +109,7 @@ function SettingManager(props) {
                     renderItem={item => (
                         <List.Item
                             onClick={() => onCategorySelection(item)}
-                            className={item.id === selectedCategoryId ? 'selected-list-item' : null}>
+                            className={item.id === props.category ? 'selected-list-item' : null}>
                             <Icon icon={item.icon} text={item.title} />
                         </List.Item>
                     )}
@@ -135,7 +134,9 @@ function SettingManager(props) {
 }
 
 SettingManager.propTypes = {
-    form: PropTypes.object.isRequired
+    form: PropTypes.object.isRequired,
+    category: PropTypes.string.isRequired,
+    onCategorySelection: PropTypes.func.isRequired
 };
 
 export default Form.create({ name: 'settings' })(SettingManager);

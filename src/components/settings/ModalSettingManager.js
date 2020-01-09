@@ -31,7 +31,9 @@ function ModalSettingManager() {
                     </div>
                 </LeftRight>
             )}>
-            <SettingManager />
+            <SettingManager
+                category={appApi.settingManager.category}
+                onCategorySelection={category => appApi.setSettingManagerOptions({ category })} />
         </Modal>
     );
 }

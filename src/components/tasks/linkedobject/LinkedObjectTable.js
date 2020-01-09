@@ -4,6 +4,7 @@ import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import uuid from 'uuid/v4';
+import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
@@ -95,7 +96,7 @@ function LinkedObjectTable(props) {
                         <Table
                             width={tableWidth}
                             height={height}
-                            rowHeight={32}
+                            rowHeight={28}
                             headerHeight={20}
                             rowCount={props.linkedObjects.length}
                             rowGetter={({ index }) => props.linkedObjects[index]}
@@ -131,11 +132,13 @@ function LinkedObjectTable(props) {
             </div>
             <div style={{ marginTop: 10 }}>
                 <Button onClick={() => onAddLinkedObject()}>
-                    Add
+                    <Icon icon="plus" text="Add" />
                 </Button>
                 <Spacer />
-                <Button onClick={() => onDeleteLinkedObjects(selectedLinkedObjectIds)}>
-                    Delete
+                <Button
+                    onClick={() => onDeleteLinkedObjects(selectedLinkedObjectIds)}
+                    disabled={selectedLinkedObjectIds.length === 0}>
+                    <Icon icon="trash-alt" text="Delete" />
                 </Button>
             </div>
         </React.Fragment>

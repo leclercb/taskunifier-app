@@ -1,5 +1,6 @@
 import React from 'react';
 import { Empty, Tabs } from 'antd';
+import moment from 'moment';
 import LinkedObjectTable from 'components/tasks/linkedobject/LinkedObjectTable';
 import TaskTextForm from 'components/tasks/text/TaskTextForm';
 import WorkLogTable from 'components/tasks/worklogs/WorkLogTable';
@@ -48,6 +49,18 @@ function TaskTabs() {
         });
     };
 
+    const onUpdateTotalLength = totalLength => {
+        const task = taskApi.selectedTasks[0];
+
+        taskApi.updateTask({
+            ...task,
+            timer: {
+                startDate: task.timer && task.timer && task.timer.startDate ? moment().toISOString() : null,
+                value: totalLength
+            }
+        });
+    };
+
     return (
         <Tabs
             animated={false}
@@ -84,8 +97,10 @@ function TaskTabs() {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Work Log" key="workLogs">
                 <WorkLogTable
+                    timer={taskApi.selectedTasks[0].timer}
                     workLogs={taskApi.selectedTasks[0].workLogs || []}
-                    updateWorkLogs={onUpdateWorkLogs} />
+                    updateWorkLogs={onUpdateWorkLogs}
+                    updateTotalLength={onUpdateTotalLength} />
             </Tabs.TabPane>
         </Tabs>
     );

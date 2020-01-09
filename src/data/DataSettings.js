@@ -1171,6 +1171,69 @@ export function getCategories() {
             }))
         },
         {
+            id: 'statusBar',
+            title: 'Status Bar',
+            icon: 'grip-lines',
+            settings: [
+                {
+                    id: 'showNoteStatusBar',
+                    title: 'Show "Note" status bar',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskStatusBar',
+                    title: 'Show "Task" status bar',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskCalendarStatusBar',
+                    title: 'Show "Calendar" status bar',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskTotalNumber',
+                    title: 'Show total number of tasks',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskCompletedNumber',
+                    title: 'Show number of completed tasks',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskTotalLength',
+                    title: 'Show total length of tasks',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskTotalElapsed',
+                    title: 'Show total elapsed time of tasks',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
+                    id: 'showTaskTotalElapsedToday',
+                    title: 'Show total elapsed time of tasks for today',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                }
+            ]
+        },
+        {
             id: 'window',
             title: 'Window',
             icon: 'desktop',
