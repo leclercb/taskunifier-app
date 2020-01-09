@@ -409,6 +409,15 @@ function refreshDataUuid() {
     };
 }
 
+export function updateMinuteTimer() {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_MINUTE_TIMER',
+            date: moment().toISOString()
+        });
+    };
+}
+
 export function setEditingCell(objectId, fieldId) {
     return async dispatch => {
         dispatch({

@@ -4,6 +4,7 @@ import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
     dataUuid: null,
+    minuteTimer: moment().toISOString(),
     editingCell: {
         objectId: null,
         fieldId: null
@@ -71,6 +72,11 @@ const App = () => (state = {
             return {
                 ...state,
                 dataUuid: action.uuid
+            };
+        case 'SET_MINUTE_TIMER':
+            return {
+                ...state,
+                minuteTimer: action.date
             };
         case 'SET_EDITING_CELL':
             return {

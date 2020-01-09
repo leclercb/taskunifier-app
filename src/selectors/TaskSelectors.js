@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
 import { addNonCompletedTasksCondition, addSearchTaskValueCondition, containsCompletedTaskCondition } from 'data/DataTaskFilters';
-import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getMinuteTimer, getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { isShowCompletedTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
@@ -12,6 +12,7 @@ import { applyFilter } from 'utils/FilterUtils';
 import { findChildren, findParents } from 'utils/HierarchyUtils';
 import { showReminder } from 'utils/ReminderUtils';
 import { sortObjects } from 'utils/SorterUtils';
+import { getDurationForDay, getWorkLogsWithTimer } from 'utils/WorkLogUtils';
 
 export const getTasks = state => state.tasks;
 
@@ -110,9 +111,10 @@ export const getTasksFilteredBySelectedFilterAndExpanded = createSelector(
 );
 
 export const getStatistics = createSelector(
+    getMinuteTimer,
     getTasksFilteredByVisibleState,
     getTasksFilteredBySelectedFilter,
-    (tasks, filteredTasks) => {
+    (minuteTimer, tasks, filteredTasks) => {
         const computeStats = tasks => {
             const stats = { nbTotal: tasks.length, nbCompleted: 0, length: 0, elapsed: 0, elapsedToday: 0 };
 
@@ -126,20 +128,11 @@ export const getStatistics = createSelector(
                 stats.elapsed += task.timer ? task.timer.value || 0 : 0;
 
                 if (task.timer && task.timer.startDate) {
-                    stats.elapsed += moment().diff(moment(task.timer.startDate), 'second');
+                    stats.elapsed += moment(minuteTimer).diff(moment(task.timer.startDate), 'second');
                 }
 
-                const totalToday = (task.workLogs || []).reduce((total, workLog) => {
-                    if (workLog.start && workLog.end && moment(workLog.start).isBefore(workLog.end)) {
-                        const diff = moment.min(moment(workLog.end), moment().endOf('day')).diff(moment.max(moment(workLog.start), moment().startOf('day')), 'second');
-
-                        if (diff > 0) {
-                            return total + diff;
-                        }
-                    }
-
-                    return total;
-                }, 0);
+                const workLogs = getWorkLogsWithTimer(task.workLogs, task.timer, minuteTimer);
+                const totalToday = workLogs.reduce((total, workLog) => total + getDurationForDay(workLog, minuteTimer), 0);
 
                 stats.elapsedToday += totalToday;
             }

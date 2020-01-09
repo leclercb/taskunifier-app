@@ -6,6 +6,7 @@ import { verifyLicense } from 'utils/LicenseUtils';
 import { getValue } from 'utils/ObjectUtils';
 
 export const getDataUuid = state => state.app.dataUuid;
+export const getMinuteTimer = state => state.app.minuteTimer;
 
 export const getEditingCell = state => state.app.editingCell;
 

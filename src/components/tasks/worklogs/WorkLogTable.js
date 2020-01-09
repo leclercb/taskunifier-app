@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Button } from 'antd';
 import sortBy from 'lodash/sortBy';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import uuid from 'uuid/v4';
@@ -13,47 +12,25 @@ import { multiSelectionHandler } from 'components/common/table/VirtualizedTable'
 import Constants from 'constants/Constants';
 import { getWidthForType } from 'data/DataFieldTypes';
 import { getWorkLogFields } from 'data/DataWorkLogFields';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { TimerPropType } from 'proptypes/TimerPropTypes';
 import { WorkLogPropType } from 'proptypes/WorkLogPropTypes';
-import { compareDates } from 'utils/CompareUtils';
 import { getWorkLogBackgroundColor } from 'utils/SettingUtils';
 import { toStringDuration } from 'utils/StringUtils';
+import { getDuration, getDurationForDay, getWorkLogsWithLength, getWorkLogsWithTimer } from 'utils/WorkLogUtils';
 
 function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
+    const appApi = useAppApi();
     const settingsApi = useSettingsApi();
     const [selectedWorkLogIds, setSelectedWorkLogIds] = useState([]);
 
     const workLogFields = getWorkLogFields();
+    const workLogsWithLength = getWorkLogsWithLength(workLogs);
+    const workLogsWithTimer = getWorkLogsWithTimer(workLogs, timer, appApi.minuteTimer);
 
-    const workLogsWithLength = workLogs.map(workLog => ({
-        ...workLog,
-        length: workLog.start && workLog.end && moment(workLog.start).isBefore(workLog.end) ? moment(workLog.end).diff(workLog.start, 'second') : null
-    })).sort((a, b) => compareDates(a.start, b.start));
-
-    const total = workLogs.reduce((total, workLog) => {
-        if (workLog.start && workLog.end && moment(workLog.start).isBefore(workLog.end)) {
-            const diff = moment(workLog.end).diff(workLog.start, 'second');
-
-            if (diff > 0) {
-                return total + diff;
-            }
-        }
-
-        return total;
-    }, 0);
-
-    const totalToday = workLogs.reduce((total, workLog) => {
-        if (workLog.start && workLog.end && moment(workLog.start).isBefore(workLog.end)) {
-            const diff = moment.min(moment(workLog.end), moment().endOf('day')).diff(moment.max(moment(workLog.start), moment().startOf('day')), 'second');
-
-            if (diff > 0) {
-                return total + diff;
-            }
-        }
-
-        return total;
-    }, 0);
+    const total = workLogsWithTimer.reduce((total, workLog) => total + getDuration(workLog), 0);
+    const totalToday = workLogsWithTimer.reduce((total, workLog) => total + getDurationForDay(workLog, appApi.minuteTimer), 0);
 
     const onAddWorkLog = () => {
         updateWorkLogs([
@@ -192,7 +169,10 @@ function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
             <Alert
                 type={timer && timer.startDate ? 'warning' : 'info'}
                 showIcon
-                message="The time between the start of the timer and now is not included in the total."
+                message={timer && timer.startDate ?
+                    'The timer is started. The time between the start of the timer and now is included in the total.' :
+                    'The timer is paused.'
+                }
                 style={{ marginTop: 5 }} />
         </React.Fragment>
     );
