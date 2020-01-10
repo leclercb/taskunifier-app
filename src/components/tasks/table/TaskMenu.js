@@ -6,14 +6,16 @@ import Icon from 'components/common/Icon';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 function TaskMenu({ selectedTasks, children }) {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
     const taskTemplateApi = useTaskTemplateApi();
 
     const [visible, setVisible] = useState(false);
@@ -56,11 +58,12 @@ function TaskMenu({ selectedTasks, children }) {
     };
 
     const onAddSubTask = async () => {
-        let task = {
-            parent: selectedTasks[0].id
-        };
+        let task = {};
 
-        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, task);
+        applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, task, taskFieldApi.taskFields);
+        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, task, taskFieldApi.taskFields);
+
+        task.parent = selectedTasks[0].id;
 
         task = await taskApi.addTask(task);
         taskApi.setSelectedTaskIds(task.id);

@@ -65,7 +65,10 @@ function TaskTemplateForm(props) {
                         valuePropName: getValuePropNameForType(field.type),
                         initialValue: props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : undefined
                     })(
-                        getInputForType(field.type, field.options, { onCommit })
+                        getInputForType(
+                            field.type,
+                            { ...field.options, ...(field.type === 'date' || field.type === 'dateTime' ? { extended: true } : {}) },
+                            { onCommit })
                     )}
                 </Form.Item>
             ))}

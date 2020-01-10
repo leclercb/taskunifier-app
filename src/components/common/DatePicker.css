@@ -1,0 +1,11 @@
+.datepicker-button {
+    padding: 0px 3px !important;
+}
+
+.datepicker-button.first {
+    padding-left: 0px !important;
+}
+
+.datepicker-button.last {
+    padding-right: 0px !important;
+}

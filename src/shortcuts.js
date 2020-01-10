@@ -28,8 +28,9 @@ import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 's
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
-import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
-import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
@@ -187,7 +188,8 @@ async function executeAddTask() {
 
     let task = {};
 
-    applyTaskTemplateFromTaskFilter(getSelectedTaskFilter(state), getTaskTemplatesFilteredByVisibleState(state), task);
+    applyTaskTemplate(getDefaultTaskTemplate(state), task, getTaskFieldsIncludingDefaults(state));
+    applyTaskTemplateFromTaskFilter(getSelectedTaskFilter(state), getTaskTemplatesFilteredByVisibleState(state), task, getTaskFieldsIncludingDefaults(state));
 
     task = await store.dispatch(addTask(task));
     await store.dispatch(setSelectedTaskIds(task.id));

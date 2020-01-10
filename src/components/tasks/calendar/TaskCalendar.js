@@ -7,6 +7,9 @@ import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper
 import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
+import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 import 'components/tasks/calendar/TaskCalendar.css';
 
 const localizer = momentLocalizer(moment);
@@ -16,6 +19,8 @@ function TaskCalendar() {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
+    const taskTemplateApi = useTaskTemplateApi();
 
     const getEvents = () => {
         const events = [];
@@ -73,11 +78,15 @@ function TaskCalendar() {
 
     const onSelectSlot = async ({ start, end, action }) => {
         if (action === 'select' && ['week', 'work_week', 'day'].includes(taskApi.selectedCalendarView)) {
-            const task = await taskApi.addTask({
-                startDate: moment(start).toISOString(),
-                dueDate: moment(end).toISOString(),
-                length: moment(end).diff(moment(start), 'second')
-            });
+            let task = {};
+
+            applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, task, taskFieldApi.taskFields);
+
+            task.startDate = moment(start).toISOString();
+            task.dueDate = moment(end).toISOString();
+            task.length = moment(end).diff(moment(start), 'second');
+
+            task = await taskApi.addTask(task);
 
             appApi.setTaskEditionManagerOptions({
                 visible: true,

@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTaskTemplate, deleteTaskTemplate, duplicateTaskTemplate, updateTaskTemplate } from 'actions/TaskTemplateActions';
-import { getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 
 export function useTaskTemplateApi() {
     const dispatch = useDispatch();
+    const defaultTaskTemplate = useSelector(getDefaultTaskTemplate);
     const taskTemplates = useSelector(getTaskTemplatesFilteredByVisibleState);
 
     const addTaskTemplateCallback = useCallback(
@@ -28,6 +29,7 @@ export function useTaskTemplateApi() {
     );
 
     return {
+        defaultTaskTemplate,
         taskTemplates,
         addTaskTemplate: addTaskTemplateCallback,
         duplicateTaskTemplate: duplicateTaskTemplateCallback,
