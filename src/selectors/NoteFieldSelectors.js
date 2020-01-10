@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 import { getDefaultNoteFields } from 'data/DataNoteFields';
+import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { compareStrings } from 'utils/CompareUtils';
 
@@ -14,8 +15,9 @@ export const getNoteFieldsFilteredByVisibleState = createSelector(
 
 export const getNoteFieldsIncludingDefaults = createSelector(
     getNoteFields,
-    (noteFields) => {
-        return getDefaultNoteFields().concat(filterByVisibleState(noteFields)).sort((a, b) => compareStrings(a.title, b.title));
+    getSettings,
+    (noteFields, settings) => {
+        return getDefaultNoteFields(settings).concat(filterByVisibleState(noteFields)).sort((a, b) => compareStrings(a.title, b.title));
     }
 );
 

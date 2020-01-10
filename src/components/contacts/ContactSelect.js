@@ -10,9 +10,15 @@ const ContactSelect = forwardRef(function ContactSelect(props, ref) {
     const value = contactApi.contacts.find(contact => contact.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {contactApi.contacts.map(contact => (
-                <Select.Option key={contact.id} value={contact.id}>
+                <Select.Option key={contact.id} value={contact.id} title={getContactTitle(contact)}>
                     <Icon icon="circle" color={contact.color} text={getContactTitle(contact)} />
                 </Select.Option>
             ))}

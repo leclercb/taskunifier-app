@@ -1,12 +1,16 @@
 import { addColorsToArray } from 'utils/ColorUtils';
 
-export function getWorkLogFields() {
+export function getWorkLogFields(settings) {
     return addColorsToArray([
         {
             static: true,
             id: 'start',
             title: 'Start',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: true
         },
         {
@@ -14,6 +18,10 @@ export function getWorkLogFields() {
             id: 'end',
             title: 'End',
             type: 'dateTime',
+            options: {
+                dateFormat: settings.dateFormat,
+                timeFormat: settings.timeFormat
+            },
             editable: true
         },
         {

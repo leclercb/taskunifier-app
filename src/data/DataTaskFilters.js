@@ -1,17 +1,13 @@
+import moment from 'moment';
 import uuid from 'uuid/v4';
 import { clone } from 'utils/ObjectUtils';
 
-export function addSearchTaskValueCondition(filter, searchValue) {
-    filter = clone(filter);
+export function combineConditions(filter, conditions) {
+    if (!conditions || conditions.length === 0) {
+        return filter;
+    }
 
-    const conditions = [
-        {
-            id: uuid(),
-            field: 'title',
-            type: 'containIgnoreCase',
-            value: searchValue
-        }
-    ];
+    filter = clone(filter);
 
     if (filter.condition) {
         conditions.push(filter.condition);
@@ -24,6 +20,32 @@ export function addSearchTaskValueCondition(filter, searchValue) {
             operator: 'AND',
             conditions
         }
+    };
+}
+
+export function createSearchTaskValueCondition(searchValue) {
+    return {
+        id: uuid(),
+        field: 'title',
+        type: 'containIgnoreCase',
+        value: searchValue
+    };
+}
+
+export function createNonCompletedTasksCondition() {
+    return {
+        id: uuid(),
+        field: 'completed',
+        type: 'equal',
+        value: false
+    };
+}
+export function createFutureTasksCondition() {
+    return {
+        id: uuid(),
+        field: 'startDate',
+        type: 'dateBeforeOrEqual',
+        value: moment().toISOString()
     };
 }
 
@@ -47,32 +69,6 @@ function _containsCompletedTaskCondition(condition) {
     }
 
     return false;
-}
-
-export function addNonCompletedTasksCondition(filter) {
-    filter = clone(filter);
-
-    const conditions = [
-        {
-            id: uuid(),
-            field: 'completed',
-            type: 'equal',
-            value: false
-        }
-    ];
-
-    if (filter.condition) {
-        conditions.push(filter.condition);
-    }
-
-    return {
-        ...filter,
-        condition: {
-            id: uuid(),
-            operator: 'AND',
-            conditions
-        }
-    };
 }
 
 export function getDefaultSelectedTaskFilter() {

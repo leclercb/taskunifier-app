@@ -13,6 +13,7 @@ import { useGoalApi } from 'hooks/UseGoalApi';
 import { useLocationApi } from 'hooks/UseLocationApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 function TaskQuickAdd() {
@@ -22,6 +23,7 @@ function TaskQuickAdd() {
     const goalApi = useGoalApi();
     const locationApi = useLocationApi();
     const taskApi = useTaskApi();
+    const taskFieldApi = useTaskFieldApi();
     const taskTemplateApi = useTaskTemplateApi();
 
     const [values, setValues] = useState([]);
@@ -55,7 +57,8 @@ function TaskQuickAdd() {
             title: values[0]
         };
 
-        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, newTask);
+        applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, newTask, taskFieldApi.taskFields);
+        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, newTask, taskFieldApi.taskFields);
 
         values.forEach((value, index) => {
             if (index === 0) {
@@ -66,7 +69,7 @@ function TaskQuickAdd() {
 
             if (object.field === 'taskTemplate') {
                 const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === object.value);
-                applyTaskTemplate(taskTemplate, newTask);
+                applyTaskTemplate(taskTemplate, newTask, taskFieldApi.taskFields);
             } else {
                 newTask[object.field] = object.value;
             }

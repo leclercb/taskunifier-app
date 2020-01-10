@@ -4,11 +4,14 @@ import { Form } from 'antd';
 import { getLocationFields } from 'data/DataLocationFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { LocationPropType } from 'proptypes/LocationPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function LocationForm(props) {
-    const fields = getLocationFields();
+    const settingsApi = useSettingsApi();
+
+    const fields = getLocationFields(settingsApi.settings);
 
     const { getFieldDecorator } = props.form;
 

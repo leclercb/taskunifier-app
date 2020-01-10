@@ -135,10 +135,7 @@ function NoteSider() {
         <div
             className="joyride-note-sider"
             style={{ backgroundColor: '#ffffff', height: '100%' }}>
-            <div style={{
-                padding: 10,
-                paddingBottom: 10
-            }}>
+            <div style={{ padding: 10 }}>
                 <Icon
                     icon="search"
                     text={(
@@ -148,7 +145,7 @@ function NoteSider() {
                                 allowClear={true}
                                 size="small"
                                 placeholder="Search for ..."
-                                style={{ width: '80%' }}
+                                style={{ width: '90%' }}
                                 onChange={event => setSearchValue(event.target.value)}
                                 onSearch={value => noteApi.setSearchNoteValue(value)}
                                 onKeyDown={event => {

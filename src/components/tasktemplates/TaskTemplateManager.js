@@ -9,16 +9,16 @@ import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 
 function TaskTemplateManager(props) {
     const settingsApi = useSettingsApi();
-    const taskTemplatesApi = useTaskTemplateApi();
+    const taskTemplateApi = useTaskTemplateApi();
     const selectedTaskTemplateId = props.taskTemplateId;
 
     const onAddTaskTemplate = async taskTemplate => {
-        taskTemplate = await taskTemplatesApi.addTaskTemplate(taskTemplate);
+        taskTemplate = await taskTemplateApi.addTaskTemplate(taskTemplate);
         props.onTaskTemplateSelection(taskTemplate.id);
     };
 
     const onDuplicateTaskTemplate = async taskTemplate => {
-        taskTemplate = await taskTemplatesApi.duplicateTaskTemplate(taskTemplate);
+        taskTemplate = await taskTemplateApi.duplicateTaskTemplate(taskTemplate);
         props.onTaskTemplateSelection(taskTemplate.id);
     };
 
@@ -26,17 +26,17 @@ function TaskTemplateManager(props) {
         props.onTaskTemplateSelection(taskTemplate.id);
     };
 
-    const selectedTaskTemplate = taskTemplatesApi.taskTemplates.find(taskTemplate => taskTemplate.id === selectedTaskTemplateId);
+    const selectedTaskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === selectedTaskTemplateId);
 
     return (
         <Row>
             <Col span={6}>
                 <TaskTemplateList
-                    taskTemplates={taskTemplatesApi.taskTemplates}
+                    taskTemplates={taskTemplateApi.taskTemplates}
                     selectedTaskTemplateId={selectedTaskTemplateId}
                     addTaskTemplate={onAddTaskTemplate}
                     duplicateTaskTemplate={onDuplicateTaskTemplate}
-                    deleteTaskTemplate={taskTemplatesApi.deleteTaskTemplate}
+                    deleteTaskTemplate={taskTemplateApi.deleteTaskTemplate}
                     onTaskTemplateSelection={onTaskTemplateSelection}
                     settings={settingsApi.settings}
                     updateSettings={settingsApi.updateSettings} />
@@ -44,7 +44,7 @@ function TaskTemplateManager(props) {
             <Col span={2} />
             <Col span={16}>
                 {selectedTaskTemplate ? (
-                    <TaskTemplateForm key={selectedTaskTemplateId} taskTemplate={selectedTaskTemplate} updateTaskTemplate={taskTemplatesApi.updateTaskTemplate} />
+                    <TaskTemplateForm key={selectedTaskTemplateId} taskTemplate={selectedTaskTemplate} updateTaskTemplate={taskTemplateApi.updateTaskTemplate} />
                 ) : <Empty description="Please select a task template" />}
             </Col>
         </Row>

@@ -9,9 +9,15 @@ const NoteFieldSelect = forwardRef(function NoteFieldSelect(props, ref) {
     const value = noteFieldApi.noteFields.find(noteField => noteField.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {noteFieldApi.noteFields.map(noteField => (
-                <Select.Option key={noteField.id} value={noteField.id}>
+                <Select.Option key={noteField.id} value={noteField.id} title={noteField.title}>
                     <Icon icon="circle" color={noteField.color} text={noteField.title} />
                 </Select.Option>
             ))}

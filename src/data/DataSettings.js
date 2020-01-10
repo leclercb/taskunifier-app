@@ -1295,6 +1295,14 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'showTaskHierarchy',
+                    title: 'Show task indentation',
+                    type: 'boolean',
+                    value: true,
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'showCompletedTasks',
                     title: 'Show completed tasks',
                     type: 'boolean',
@@ -1303,8 +1311,8 @@ export function getCategories() {
                     visible: false
                 },
                 {
-                    id: 'showTaskHierarchy',
-                    title: 'Show task indentation',
+                    id: 'showFutureTasks',
+                    title: 'Show future tasks',
                     type: 'boolean',
                     value: true,
                     editable: false,

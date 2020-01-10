@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { Alert, Button, Form, Input, message } from 'antd';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
 
 export const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ form, onSuccess }, ref) {
     const taskApi = useTaskApi();
-    const taskTemplatesApi = useTaskTemplateApi();
+    const taskFieldApi = useTaskFieldApi();
+    const taskTemplateApi = useTaskTemplateApi();
 
     const [showExample, setShowExample] = useState(false);
 
@@ -20,7 +22,7 @@ export const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ f
             }
 
             if (values.titles) {
-                const taskTemplate = taskTemplatesApi.taskTemplates.find(taskTemplate => taskTemplate.id === values.taskTemplate);
+                const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === values.taskTemplate);
                 const tokens = values.titles.split('\n');
                 const taskSubLevels = [];
                 const promises = [];
@@ -33,7 +35,10 @@ export const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ f
 
                     if (match[2]) {
                         const task = {};
-                        applyTaskTemplate(taskTemplate, task);
+
+                        applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, task, taskFieldApi.taskFields);
+                        applyTaskTemplate(taskTemplate, task, taskFieldApi.taskFields);
+
                         task.title = match[2]; // eslint-disable-line prefer-destructuring
                         promises.push(taskApi.addTask(task));
 

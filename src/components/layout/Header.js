@@ -10,8 +10,9 @@ import { useNoteApi } from 'hooks/UseNoteApi';
 import { usePrintApi } from 'hooks/UsePrintApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
-import { applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 function Header() {
     const appApi = useAppApi();
@@ -20,6 +21,7 @@ function Header() {
     const taskApi = useTaskApi();
     const printApi = usePrintApi();
     const settingsApi = useSettingsApi();
+    const taskFieldApi = useTaskFieldApi();
     const taskTemplateApi = useTaskTemplateApi();
 
     const onAddNote = async () => {
@@ -39,7 +41,8 @@ function Header() {
     const onAddTask = async () => {
         let task = {};
 
-        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, task);
+        applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, task, taskFieldApi.taskFields);
+        applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, task, taskFieldApi.taskFields);
 
         task = await taskApi.addTask(task);
         taskApi.setSelectedTaskIds(task.id);

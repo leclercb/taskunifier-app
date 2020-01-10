@@ -4,11 +4,14 @@ import { Form } from 'antd';
 import { getGoalFields } from 'data/DataGoalFields';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function GoalForm(props) {
-    const fields = getGoalFields();
+    const settingsApi = useSettingsApi();
+
+    const fields = getGoalFields(settingsApi.settings);
 
     const { getFieldDecorator } = props.form;
 

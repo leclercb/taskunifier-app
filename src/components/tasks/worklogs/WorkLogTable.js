@@ -25,7 +25,7 @@ function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
     const settingsApi = useSettingsApi();
     const [selectedWorkLogIds, setSelectedWorkLogIds] = useState([]);
 
-    const workLogFields = getWorkLogFields();
+    const workLogFields = getWorkLogFields(settingsApi.settings);
     const workLogsWithLength = getWorkLogsWithLength(workLogs);
     const workLogsWithTimer = getWorkLogsWithTimer(workLogs, timer, appApi.minuteTimer);
 

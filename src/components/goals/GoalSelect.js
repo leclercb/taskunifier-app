@@ -9,9 +9,15 @@ const GoalSelect = forwardRef(function GoalSelect(props, ref) {
     const value = goalApi.goals.find(goal => goal.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {goalApi.goals.map(goal => (
-                <Select.Option key={goal.id} value={goal.id}>
+                <Select.Option key={goal.id} value={goal.id} title={goal.title}>
                     <Icon icon="circle" color={goal.color} text={goal.title} />
                 </Select.Option>
             ))}

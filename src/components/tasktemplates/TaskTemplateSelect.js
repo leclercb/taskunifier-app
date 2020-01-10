@@ -9,9 +9,15 @@ const TaskTemplateSelect = forwardRef(function TaskTemplateSelect(props, ref) {
     const value = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === props.value) ? props.value : undefined;
 
     return (
-        <Select ref={ref} allowClear={true} {...props} value={value}>
+        <Select
+            ref={ref}
+            allowClear={true}
+            showSearch={true}
+            filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
+            {...props}
+            value={value}>
             {taskTemplateApi.taskTemplates.map(taskTemplate => (
-                <Select.Option key={taskTemplate.id} value={taskTemplate.id}>
+                <Select.Option key={taskTemplate.id} value={taskTemplate.id} title={taskTemplate.title}>
                     <Icon icon="circle" color={taskTemplate.color} text={taskTemplate.title} />
                 </Select.Option>
             ))}
