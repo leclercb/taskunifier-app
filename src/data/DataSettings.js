@@ -955,7 +955,7 @@ export function getCategories() {
                     id: 'showImportanceColor',
                     title: 'Show importance color',
                     type: 'boolean',
-                    value: true,
+                    value: false,
                     editable: true
                 },
                 {
