@@ -22,7 +22,7 @@
 
 .ant-layout-footer {
     border-top: 1px solid rgba(0, 0, 0, 0.2);
-    padding: 3px 10px !important;
+    padding: 0px !important;
 }
 
 .ant-spin-nested-loading, .ant-spin-container {
