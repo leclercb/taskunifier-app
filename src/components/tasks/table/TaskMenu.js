@@ -204,7 +204,10 @@ function TaskMenu({ selectedTasks, children }) {
     return (
         <div
             onClick={() => setVisible(false)}
-            onContextMenu={() => { setVisible(true); return false; }}
+            onContextMenu={event => {
+                setVisible(true);
+                event.preventDefault();
+            }}
             style={{ flexGrow: 1 }}>
             <Dropdown
                 overlay={menu}
