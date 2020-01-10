@@ -1,11 +1,14 @@
 .note-status-bar {
     display: flex;
+    flex-flow: wrap;
     justify-content: center;
+    padding: 0px 10px;
 }
 
 .note-status-bar-element {
-    margin: 0px 4px;
+    margin: 3px 4px;
     padding: 0px 8px;
     background-color: #dddddd;
     border-radius: 10px;
+    white-space: nowrap;
 }

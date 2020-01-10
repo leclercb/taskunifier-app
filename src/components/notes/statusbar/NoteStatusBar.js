@@ -24,7 +24,9 @@ function NoteStatusBar() {
         <div className="note-status-bar">
             {createStatsElement('All', noteApi.statistics.notes)}
             {createStatsElement('Selected Filter', noteApi.statistics.filteredNotes)}
-            <Icon icon="cog" onClick={() => appApi.setSettingManagerOptions({ visible: true, category: 'statusBar' })} />
+            <div className="note-status-bar-element">
+                <Icon icon="cog" onClick={() => appApi.setSettingManagerOptions({ visible: true, category: 'statusBar' })} />
+            </div>
         </div>
     );
 }

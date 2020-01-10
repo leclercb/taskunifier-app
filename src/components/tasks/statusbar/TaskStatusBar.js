@@ -64,11 +64,13 @@ function TaskStatusBar() {
 
     return (
         <div className="task-status-bar">
-            <MediaQuery minWidth={1500}>
+            <MediaQuery minWidth={1650}>
                 {createStatsElement('All', taskApi.statistics.tasks)}
             </MediaQuery>
             {createStatsElement('Selected Filter', taskApi.statistics.filteredTasks)}
-            <Icon icon="cog" onClick={() => appApi.setSettingManagerOptions({ visible: true, category: 'statusBar' })} />
+            <div className="task-status-bar-element">
+                <Icon icon="cog" onClick={() => appApi.setSettingManagerOptions({ visible: true, category: 'statusBar' })} />
+            </div>
         </div>
     );
 }
