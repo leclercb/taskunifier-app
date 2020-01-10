@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { addNonCompletedTasksCondition, addSearchTaskValueCondition, containsCompletedTaskCondition } from 'data/DataTaskFilters';
+import { combineConditions, containsCompletedTaskCondition, createFutureTasksCondition, createNonCompletedTasksCondition, createSearchTaskValueCondition } from 'data/DataTaskFilters';
 import { getMinuteTimer, getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { isShowCompletedTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
+import { isShowCompletedTasks, isShowFutureTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
@@ -42,22 +42,33 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getTasksFilteredByVisibleState,
     getTasksMetaDataFilteredByVisibleState,
     getSearchTaskValue,
-    isShowCompletedTasks,
     isShowTaskHierarchy,
+    isShowCompletedTasks,
+    isShowFutureTasks,
     getSelectedTaskFilter,
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
     isBusy,
-    (tasks, tasksMetaData, searchTaskValue, showCompletedTasks, isShowTaskHierarchy, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
+    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
         if (busy) {
             return getTasksFilteredBySelectedFilterResult;
         }
 
-        selectedTaskFilter = addSearchTaskValueCondition(selectedTaskFilter, searchTaskValue);
+        const extraConditions = [];
+
+        if (searchTaskValue) {
+            extraConditions.push(createSearchTaskValueCondition(searchTaskValue));
+        }
 
         if (!showCompletedTasks && !containsCompletedTaskCondition(selectedTaskFilter)) {
-            selectedTaskFilter = addNonCompletedTasksCondition(selectedTaskFilter);
+            extraConditions.push(createNonCompletedTasksCondition());
         }
+
+        if (!showFutureTasks) {
+            extraConditions.push(createFutureTasksCondition());
+        }
+
+        selectedTaskFilter = combineConditions(selectedTaskFilter, extraConditions);
 
         const filteredTasks = tasks.filter(task => {
             if (moment(task.creationDate).isAfter(moment(selectedTaskFilterDate))) {
@@ -69,7 +80,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
 
         const parentsToAdd = [];
 
-        if (isShowTaskHierarchy) {
+        if (showTaskHierarchy) {
             filteredTasks.forEach(task => {
                 const { parents } = tasksMetaData.find(meta => meta.id === task.id);
 
@@ -83,7 +94,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
 
         filteredTasks.push(...parentsToAdd);
 
-        const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, isShowTaskHierarchy);
+        const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, showTaskHierarchy);
         getTasksFilteredBySelectedFilterResult = result;
 
         return result;

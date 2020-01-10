@@ -7,6 +7,7 @@
 * Add "Add sub-task" action
 * Add shortcuts in date picker
 * Add custom protocol handler
+* Add "Show future tasks" filter
 * Improved batch add and edit tasks dialog
 * Show total elapsed time for today in status bar (#116)
 * Allow search in select fields

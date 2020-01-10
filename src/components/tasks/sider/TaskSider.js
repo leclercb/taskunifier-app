@@ -155,36 +155,34 @@ function TaskSider(props) {
             <div
                 className="joyride-task-sider"
                 style={{ backgroundColor: '#ffffff', height: '100%' }}>
-                {props.mode === 'table' ? (
-                    <div style={{
-                        padding: 10,
-                        paddingBottom: 10
-                    }}>
-                        <Checkbox
-                            checked={taskApi.showCompletedTasks}
-                            onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
-                            Show completed tasks
-                    </Checkbox>
+                {props.mode === 'table' && (
+                    <div style={{ padding: '10px 10px 0px 10px' }}>
+                        <div>
+                            <Checkbox
+                                checked={taskApi.showTaskHierarchy}
+                                onChange={() => taskApi.setShowTaskHierarchy(!taskApi.showTaskHierarchy)}>
+                                Show task indentation
+                            </Checkbox>
+                        </div>
+                        <div style={{ paddingTop: 3 }}>
+                            <Checkbox
+                                checked={taskApi.showCompletedTasks}
+                                onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
+                                Show completed tasks
+                            </Checkbox>
+                        </div>
+                        <div style={{ paddingTop: 3 }}>
+                            <Checkbox
+                                checked={taskApi.showFutureTasks}
+                                onChange={() => taskApi.setShowFutureTasks(!taskApi.showFutureTasks)}>
+                                Show future tasks
+                            </Checkbox>
+                        </div>
                     </div>
-                ) : null}
-                {props.mode === 'table' ? (
-                    <div style={{
-                        padding: 10,
-                        paddingBottom: 10
-                    }}>
-                        <Checkbox
-                            checked={taskApi.showTaskHierarchy}
-                            onChange={() => taskApi.setShowTaskHierarchy(!taskApi.showTaskHierarchy)}>
-                            Show task indentation
-                    </Checkbox>
-                    </div>
-                ) : null}
-                {props.mode === 'calendar' ? (
-                    <div style={{
-                        padding: 10,
-                        paddingBottom: 10
-                    }}>
-                        <div style={{ marginBottom: 10 }}>Show tasks by:</div>
+                )}
+                {props.mode === 'calendar' && (
+                    <div style={{ padding: '10px 10px 0px 10px' }}>
+                        <div style={{ marginBottom: 5 }}>Show tasks by:</div>
                         <Radio.Group
                             value={taskApi.calendarDateMode}
                             onChange={event => taskApi.setCalendarDateMode(event.target.value)}>
@@ -199,7 +197,7 @@ function TaskSider(props) {
                                     padding: 3
                                 }}>
                                 Both
-                        </Radio>
+                            </Radio>
                             <Radio
                                 value="startDate"
                                 style={{
@@ -208,7 +206,7 @@ function TaskSider(props) {
                                     padding: 3
                                 }}>
                                 Start date
-                        </Radio>
+                            </Radio>
                             <Radio
                                 value="dueDate"
                                 style={{
@@ -217,14 +215,11 @@ function TaskSider(props) {
                                     padding: 3
                                 }}>
                                 Due date
-                        </Radio>
+                            </Radio>
                         </Radio.Group>
                     </div>
-                ) : null}
-                <div style={{
-                    padding: 10,
-                    paddingBottom: 10
-                }}>
+                )}
+                <div style={{ padding: 10 }}>
                     <Icon
                         icon="search"
                         text={(
@@ -234,7 +229,7 @@ function TaskSider(props) {
                                     allowClear={true}
                                     size="small"
                                     placeholder="Search for ..."
-                                    style={{ width: '80%' }}
+                                    style={{ width: '90%' }}
                                     onChange={event => setSearchValue(event.target.value)}
                                     onSearch={value => taskApi.setSearchTaskValue(value)}
                                     onKeyDown={event => {

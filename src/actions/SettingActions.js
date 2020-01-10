@@ -74,15 +74,21 @@ export function setSelectedCalendarView(view) {
     }, { skipServerUpdate: true });
 }
 
+export function setShowTaskHierarchy(show) {
+    return updateSettings({
+        showTaskHierarchy: show
+    }, { skipServerUpdate: false });
+}
+
 export function setShowCompletedTasks(show) {
     return updateSettings({
         showCompletedTasks: show
     }, { skipServerUpdate: false });
 }
 
-export function setShowTaskHierarchy(show) {
+export function setShowFutureTasks(show) {
     return updateSettings({
-        showTaskHierarchy: show
+        showFutureTasks: show
     }, { skipServerUpdate: false });
 }
 
