@@ -220,6 +220,10 @@ function TaskTable() {
                                         let foregroundColor = getTaskForegroundColor(task, rowIndex - 1, settingsApi.settings);
                                         let backgroundColor = getTaskBackgroundColor(task, rowIndex - 1, settingsApi.settings);
 
+                                        if (settingsApi.settings.showImportanceColor) {
+                                            style.borderBottom = '1px solid #e3ebf2';
+                                        }
+
                                         if (taskApi.selectedTaskIds.includes(task.id)) {
                                             foregroundColor = Constants.selectionForegroundColor;
                                             backgroundColor = Constants.selectionBackgroundColor;

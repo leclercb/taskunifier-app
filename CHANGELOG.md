@@ -1,3 +1,11 @@
+# 0.9.3
+
+## New Features
+
+* Add line between rows in task table (#127)
+
+## Bug Fixes
+
 # 0.9.2
 
 ## New Features
