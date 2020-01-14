@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import sortBy from 'lodash/sortBy';
 import { ArrowKeyStepper, AutoSizer, MultiGrid } from 'react-virtualized';
+import PropTypes from 'prop-types';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import NoteMenu from 'components/notes/table/NoteMenu';
 import Constants from 'constants/Constants';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useEditingCellApi } from 'hooks/UseEditingCellApi';
@@ -15,12 +17,8 @@ import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { getNoteBackgroundColor, getNoteForegroundColor } from 'utils/SettingUtils';
 import 'components/notes/table/NoteTable.css';
 
-function NoteTable() {
-    const appApi = useAppApi();
-    const editingCellApi = useEditingCellApi();
-    const noteApi = useNoteApi();
-    const noteFieldApi = useNoteFieldApi();
-    const settingsApi = useSettingsApi();
+function NoteTable({ apis }) {
+    const { appApi, editingCellApi, noteApi, noteFieldApi, settingsApi } = apis;
 
     const gridRef = useRef();
 
@@ -222,4 +220,14 @@ function NoteTable() {
     );
 }
 
-export default NoteTable;
+NoteTable.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(NoteTable, () => ({
+    appApi: useAppApi(),
+    editingCellApi: useEditingCellApi(),
+    noteApi: useNoteApi(),
+    noteFieldApi: useNoteFieldApi(),
+    settingsApi: useSettingsApi()
+}));

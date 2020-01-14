@@ -6,6 +6,8 @@
 
 ## Bug Fixes
 
+* Improve synchronization speed (#123)
+
 # 0.9.2
 
 ## New Features
