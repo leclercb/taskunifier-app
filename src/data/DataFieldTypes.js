@@ -1257,7 +1257,7 @@ export function getFieldType(type, options) {
         case 'note': {
             configuration = {
                 title: 'Note',
-                allowCreation: true,
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 valuePropName: 'value',
@@ -1949,7 +1949,7 @@ export function getFieldType(type, options) {
         case 'task': {
             configuration = {
                 title: 'Task',
-                allowCreation: true,
+                allowCreation: false,
                 width: 200,
                 alwaysInEdition: false,
                 valuePropName: 'value',
