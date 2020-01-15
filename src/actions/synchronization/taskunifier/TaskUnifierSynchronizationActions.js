@@ -14,8 +14,11 @@ import { synchronizeGoals } from 'actions/synchronization/taskunifier/TaskUnifie
 import { synchronizeLocations } from 'actions/synchronization/taskunifier/TaskUnifierLocationActions';
 import { synchronizeNotes } from 'actions/synchronization/taskunifier/TaskUnifierNoteActions';
 import { synchronizeNoteFields } from 'actions/synchronization/taskunifier/TaskUnifierNoteFieldActions';
+import { synchronizeNoteFilters } from 'actions/synchronization/taskunifier/TaskUnifierNoteFilterActions';
 import { synchronizeTasks } from 'actions/synchronization/taskunifier/TaskUnifierTaskActions';
 import { synchronizeTaskFields } from 'actions/synchronization/taskunifier/TaskUnifierTaskFieldActions';
+import { synchronizeTaskFilters } from 'actions/synchronization/taskunifier/TaskUnifierTaskFilterActions';
+import { synchronizeTaskTemplates } from 'actions/synchronization/taskunifier/TaskUnifierTaskTemplateActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
 
@@ -91,6 +94,10 @@ export function synchronizeWithTaskUnifier() {
 
             await dispatch(synchronizeNotes());
             await dispatch(synchronizeTasks());
+
+            await dispatch(synchronizeNoteFilters());
+            await dispatch(synchronizeTaskFilters());
+            await dispatch(synchronizeTaskTemplates());
 
             await dispatch(updateSettings({
                 lastSynchronizationDate: moment().toISOString()

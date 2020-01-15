@@ -1,13 +1,19 @@
 import moment from 'moment';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
+import {
+    convertFieldsToLocal,
+    convertFieldsToRemote,
+    convertLinkedContactsToLocal,
+    convertLinkedContactsToRemote,
+    convertLinkedTasksToLocal,
+    convertLinkedTasksToRemote,
+    getObjectLocalValue
+} from 'actions/synchronization/taskunifier/TaskUnifierUtils';
 import { getConfig } from 'config/Config';
-import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
-import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
-import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
-import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
-import { getTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
+import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { getTasks } from 'selectors/TaskSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { diff, merge } from 'utils/ObjectUtils';
 
@@ -17,7 +23,8 @@ export function synchronizeTasks() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
-        let tasks = getTasks(getState());
+        let state = getState();
+        let tasks = getTasks(state);
         const createdTasksWithParent = [];
 
         {
@@ -36,7 +43,8 @@ export function synchronizeTasks() {
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
 
         {
             const tasksToDelete = tasks.filter(task => !!task.refIds.taskunifier && task.state === 'TO_DELETE');
@@ -50,26 +58,46 @@ export function synchronizeTasks() {
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
+
+        const tasksWithRemoteParent = [];
 
         const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const remoteTasks = await dispatch(getRemoteTasks(lastSync));
+        const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync));
 
-        for (let remoteTask of remoteTasks) {
+        for (let remoteUnconvertedTask of remoteUnconvertedTasks) {
+            const remoteTask = convertTaskToLocal(remoteUnconvertedTask, state);
             const localTask = tasks.find(task => task.refIds.taskunifier === remoteTask.refIds.taskunifier);
 
+            let updatedTask = null;
+
             if (!localTask) {
-                await dispatch(addTask(remoteTask, { keepRefIds: true }));
+                updatedTask = await dispatch(addTask(remoteTask, { keepRefIds: true }));
             } else {
                 if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                     if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
-                        await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                        updatedTask = await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
                     }
                 }
             }
+
+            if (updatedTask && remoteUnconvertedTask.parent) {
+                tasksWithRemoteParent.push({ task: updatedTask, parent: remoteUnconvertedTask.parent });
+            }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+
+        for (let taskWithRemoteParent of tasksWithRemoteParent) {
+            await dispatch(updateTask({
+                ...taskWithRemoteParent.task,
+                parent: getObjectLocalValue(state, 'task', taskWithRemoteParent.parent)
+            }, { loaded: true }));
+        }
+
+        state = getState();
+        tasks = getTasks(state);
 
         {
             const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
@@ -83,7 +111,8 @@ export function synchronizeTasks() {
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
 
         {
             const tasksToUpdate = tasks.filter(task => !!task.refIds.taskunifier && task.state === 'TO_UPDATE');
@@ -95,7 +124,7 @@ export function synchronizeTasks() {
             }
 
             if (tasksToUpdate.length > 0) {
-                await dispatch(editRemoteTasks(tasksToUpdate, remoteTasks));
+                await dispatch(editRemoteTasks(tasksToUpdate, remoteUnconvertedTasks));
             }
 
             for (let task of tasksToUpdate) {
@@ -128,7 +157,7 @@ export function getRemoteTasks(updatedAfter) {
 
         console.debug(result);
 
-        return result.data.map(task => convertTaskToLocal(task, state));
+        return result.data;
     };
 }
 
@@ -196,7 +225,7 @@ export function addRemoteTasks(tasks, options) {
     };
 }
 
-export function editRemoteTasks(tasks, remoteTasks) {
+export function editRemoteTasks(tasks, remoteUnconvertedTasks) {
     console.debug('editRemoteTasks', tasks);
 
     return async (dispatch, getState) => {
@@ -214,11 +243,11 @@ export function editRemoteTasks(tasks, remoteTasks) {
                     method: 'PUT',
                     url: `${getConfig().apiUrl}/v1/tasks/batch`,
                     data: chunkTasks.map(task => {
-                        const remoteTask = remoteTasks.find(remoteTask => remoteTask.refIds.taskunifier === task.refIds.taskunifier);
+                        const remoteUnconvertedTask = remoteUnconvertedTasks.find(remoteUnconvertedTask => remoteUnconvertedTask.id === task.refIds.taskunifier);
                         let convertedTask = convertTaskToRemote(task, state);
 
-                        if (remoteTask) {
-                            convertedTask = diff(convertedTask, convertTaskToRemote(remoteTask, state));
+                        if (remoteUnconvertedTask) {
+                            convertedTask = diff(convertedTask, remoteUnconvertedTask);
                         }
 
                         return {
@@ -268,22 +297,10 @@ function convertTaskToRemote(task, state, options) {
         skipParent: false
     }, options || {});
 
-    const contexts = getContextsFilteredByVisibleState(state);
-    const folders = getFoldersFilteredByVisibleState(state);
-    const goals = getGoalsFilteredByVisibleState(state);
-    const locations = getLocationsFilteredByVisibleState(state);
-
-    const context = contexts.find(context => context.id === task.context);
-    const folder = folders.find(folder => folder.id === task.folder);
-    const goal = goals.find(goal => goal.id === task.goal);
-    const location = locations.find(location => location.id === task.location);
-
     const remoteTask = {
-        ...task,
-        context: context ? context.refIds.taskunifier : null,
-        folder: folder ? folder.refIds.taskunifier : null,
-        goal: goal ? goal.refIds.taskunifier : null,
-        location: location ? location.refIds.taskunifier : null
+        ...convertFieldsToRemote(getTaskFieldsIncludingDefaults(state), state, task),
+        linkedContacts: convertLinkedContactsToRemote(task.linkedContacts, state),
+        linkedTasks: convertLinkedTasksToRemote(task.linkedTasks, state)
     };
 
     delete remoteTask.id;
@@ -294,38 +311,19 @@ function convertTaskToRemote(task, state, options) {
 
     if (options.skipParent) {
         delete remoteTask.parent;
-    } else {
-        const tasks = getTasksFilteredByVisibleState(state);
-        const parent = tasks.find(t => t.id === task.parent);
-        remoteTask.parent = parent ? parent.refIds.taskunifier : null;
     }
 
     return remoteTask;
 }
 
 function convertTaskToLocal(task, state) {
-    const contexts = getContextsFilteredByVisibleState(state);
-    const folders = getFoldersFilteredByVisibleState(state);
-    const goals = getGoalsFilteredByVisibleState(state);
-    const locations = getLocationsFilteredByVisibleState(state);
-    const tasks = getTasksFilteredByVisibleState(state);
-
-    const context = contexts.find(context => context.refIds.taskunifier === task.context);
-    const folder = folders.find(folder => folder.refIds.taskunifier === task.folder);
-    const goal = goals.find(goal => goal.refIds.taskunifier === task.goal);
-    const location = locations.find(location => location.refIds.taskunifier === task.location);
-    const parent = tasks.find(t => t.refIds.taskunifier === task.parent);
-
     const localTask = {
-        ...task,
+        ...convertFieldsToLocal(getTaskFieldsIncludingDefaults(state), state, task),
         refIds: {
             taskunifier: task.id
         },
-        context: context ? context.id : null,
-        folder: folder ? folder.id : null,
-        goal: goal ? goal.id : null,
-        location: location ? location.id : null,
-        parent: parent ? parent.id : null
+        linkedContacts: convertLinkedContactsToLocal(task.linkedContacts, state),
+        linkedTasks: convertLinkedTasksToLocal(task.linkedTasks, state)
     };
 
     delete localTask.id;

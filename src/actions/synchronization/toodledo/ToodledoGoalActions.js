@@ -3,7 +3,8 @@ import qs from 'qs';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
-import { getGoals, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
+import { getObjectLocalValue, getObjectRemoteValue } from 'actions/synchronization/toodledo/ToodledoUtils';
+import { getGoals } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -209,9 +210,6 @@ function convertGoalToRemote(goal, state, options) {
         skipContributesTo: false
     }, options || {});
 
-    const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(g => g.id === goal.contributesTo);
-
     let level;
 
     switch (goal.level) {
@@ -231,14 +229,11 @@ function convertGoalToRemote(goal, state, options) {
         id: goal.refIds.toodledo,
         name: goal.title,
         level,
-        contributes: !options.skipContributesTo && contributesTo ? contributesTo.refIds.toodledo : 0
+        contributes: !options.skipContributesTo ? getObjectRemoteValue(state, 'goalContributesTo', goal.contributesTo) : 0
     };
 }
 
 function convertGoalToLocal(goal, state) {
-    const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(g => g.refIds.toodledo === goal.contributes);
-
     let level;
 
     switch (goal.level) {
@@ -260,6 +255,6 @@ function convertGoalToLocal(goal, state) {
         },
         title: goal.name,
         level,
-        contributesTo: contributesTo ? contributesTo.id : null
+        contributesTo: getObjectLocalValue(state, 'goalContributesTo', goal.contributes)
     };
 }

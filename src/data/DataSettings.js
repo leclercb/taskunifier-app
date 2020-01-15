@@ -827,6 +827,14 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'taskColumnVisible_parent',
+                    title: 'Show column "Parent"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'taskColumnVisible_text',
                     title: 'Show column "Text"',
                     type: 'boolean',

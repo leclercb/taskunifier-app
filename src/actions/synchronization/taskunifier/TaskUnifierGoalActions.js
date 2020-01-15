@@ -1,8 +1,9 @@
 import moment from 'moment';
 import { addGoal, deleteGoal, updateGoal } from 'actions/GoalActions';
 import { sendRequest } from 'actions/RequestActions';
+import { getObjectLocalValue, getObjectRemoteValue } from 'actions/synchronization/taskunifier/TaskUnifierUtils';
 import { getConfig } from 'config/Config';
-import { getGoals, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
+import { getGoals } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
@@ -198,24 +199,19 @@ function convertGoalToRemote(goal, state, options) {
     if (options.skipContributesTo) {
         delete remoteGoal.contributesTo;
     } else {
-        const goals = getGoalsFilteredByVisibleState(state);
-        const contributesTo = goals.find(g => g.id === goal.contributesTo);
-        remoteGoal.contributesTo = contributesTo ? contributesTo.refIds.taskunifier : null;
+        remoteGoal.contributesTo = getObjectRemoteValue(state, 'goalContributesTo', goal.contributesTo);
     }
 
     return remoteGoal;
 }
 
 function convertGoalToLocal(goal, state) {
-    const goals = getGoalsFilteredByVisibleState(state);
-    const contributesTo = goals.find(g => g.refIds.taskunifier === goal.contributesTo);
-
     const localGoal = {
         ...goal,
         refIds: {
             taskunifier: goal.id
         },
-        contributesTo: contributesTo ? contributesTo.id : null
+        contributesTo: getObjectLocalValue(state, 'goalContributesTo', goal.contributesTo)
     };
 
     delete localGoal.id;

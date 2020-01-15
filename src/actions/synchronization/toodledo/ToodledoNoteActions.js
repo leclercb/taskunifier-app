@@ -3,8 +3,12 @@ import qs from 'qs';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
-import { convertTextToLocal, convertTextToRemote } from 'actions/synchronization/toodledo/ToodledoUtils';
-import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
+import {
+    convertTextToLocal,
+    convertTextToRemote,
+    getObjectLocalValue,
+    getObjectRemoteValue
+} from 'actions/synchronization/toodledo/ToodledoUtils';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
@@ -280,28 +284,22 @@ export function deleteRemoteNotes(notes) {
 }
 
 function convertNoteToRemote(note, state) {
-    const folders = getFoldersFilteredByVisibleState(state);
-    const folder = folders.find(folder => folder.id === note.folder);
-
     return {
         id: note.refIds.toodledo,
         title: note.title,
-        folder: folder ? folder.refIds.toodledo : 0,
+        folder: getObjectRemoteValue(state, 'folder', note.folder),
         text: convertTextToRemote(note.text)
     };
 }
 
 function convertNoteToLocal(note, state) {
-    const folders = getFoldersFilteredByVisibleState(state);
-    const folder = folders.find(folder => folder.refIds.toodledo === note.folder);
-
     return {
         updateDate: moment.unix(note.modified).toISOString(),
         refIds: {
             toodledo: note.id
         },
         title: note.title,
-        folder: folder ? folder.refIds.toodledo : null,
+        folder: getObjectLocalValue(state, 'folder', note.folder),
         text: convertTextToLocal(note.text)
     };
 }

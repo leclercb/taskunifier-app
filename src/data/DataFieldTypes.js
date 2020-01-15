@@ -87,6 +87,35 @@ export function getFieldTypes() {
     ];
 }
 
+export function getObjectsForFieldType(state, type) {
+    switch (type) {
+        case 'contact':
+            return getContactsFilteredByVisibleState(state);
+        case 'context':
+            return getContextsFilteredByVisibleState(state);
+        case 'folder':
+            return getFoldersFilteredByVisibleState(state);
+        case 'goal':
+            return getGoalsFilteredByVisibleState(state);
+        case 'goalContributesTo':
+            return getGoalsFilteredByVisibleState(state);
+        case 'location':
+            return getLocationsFilteredByVisibleState(state);
+        case 'note':
+            return getNotesFilteredByVisibleState(state);
+        case 'noteField':
+            return getNoteFieldsIncludingDefaults(state);
+        case 'task':
+            return getTasksFilteredByVisibleState(state);
+        case 'taskField':
+            return getTaskFieldsIncludingDefaults(state);
+        case 'taskTemplate':
+            return getTaskTemplatesFilteredByVisibleState(state);
+        default:
+            return null;
+    }
+}
+
 export function getWidthForType(type) {
     return getFieldType(type).width;
 }
