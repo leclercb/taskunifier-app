@@ -2,8 +2,10 @@ import React from 'react';
 import moment from 'moment';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import PropTypes from 'prop-types';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -15,12 +17,8 @@ import 'components/tasks/calendar/TaskCalendar.css';
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
-function TaskCalendar() {
-    const appApi = useAppApi();
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
-    const taskTemplateApi = useTaskTemplateApi();
+function TaskCalendar({ apis }) {
+    const { appApi, settingsApi, taskApi, taskFieldApi, taskTemplateApi } = apis;
 
     const getEvents = () => {
         const events = [];
@@ -141,4 +139,14 @@ function TaskCalendar() {
     );
 }
 
-export default TaskCalendar;
+TaskCalendar.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TaskCalendar, () => ({
+    appApi: useAppApi(),
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi(),
+    taskTemplateApi: useTaskTemplateApi()
+}));

@@ -18,7 +18,13 @@ import { TimerPropType } from 'proptypes/TimerPropTypes';
 import { WorkLogPropType } from 'proptypes/WorkLogPropTypes';
 import { getWorkLogBackgroundColor } from 'utils/SettingUtils';
 import { toStringDuration } from 'utils/StringUtils';
-import { getDuration, getDurationForDay, getWorkLogsWithLength, getWorkLogsWithTimer } from 'utils/WorkLogUtils';
+import {
+    getDuration,
+    getDurationForDay,
+    getDurationUntilNow,
+    getWorkLogsWithLength,
+    getWorkLogsWithTimer
+} from 'utils/WorkLogUtils';
 
 function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
     const appApi = useAppApi();
@@ -31,6 +37,7 @@ function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
 
     const total = workLogsWithTimer.reduce((total, workLog) => total + getDuration(workLog), 0);
     const totalToday = workLogsWithTimer.reduce((total, workLog) => total + getDurationForDay(workLog, appApi.minuteTimer), 0);
+    const totalUntilNow = workLogsWithTimer.reduce((total, workLog) => total + getDurationUntilNow(workLog, appApi.minuteTimer), 0);
 
     const onAddWorkLog = () => {
         updateWorkLogs([
@@ -163,6 +170,8 @@ function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
                 </Button>
                 <Spacer />
                 <span>Total: <strong>{toStringDuration(total)}</strong></span>
+                <Spacer />
+                <span>Total until now: <strong>{toStringDuration(totalUntilNow)}</strong></span>
                 <Spacer />
                 <span>Total for today: <strong>{toStringDuration(totalToday)}</strong></span>
             </div>

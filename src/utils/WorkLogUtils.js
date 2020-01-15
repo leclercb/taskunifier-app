@@ -49,3 +49,14 @@ export function getDurationForDay(workLog, date) {
 
     return 0;
 }
+
+export function getDurationUntilNow(workLog, now) {
+    if (workLog.start && moment(workLog.start).isBefore(workLog.end)) {
+        const start = moment(workLog.start);
+        const end = moment.min(moment(workLog.end), moment(now));
+        const diff = end.diff(start, 'second');
+        return Math.max(diff, 0);
+    }
+
+    return 0;
+}

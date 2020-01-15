@@ -1,5 +1,30 @@
 import moment from 'moment';
 import RichTextEditor from 'react-rte';
+import { getObjectsForFieldType } from 'data/DataFieldTypes';
+
+export function getObjectRemoteValue(state, fieldType, value) {
+    const objects = getObjectsForFieldType(state, fieldType);
+
+    if (!objects) {
+        return value;
+    }
+
+    const object = objects.find(object => object.id === value);
+
+    return object ? object.refIds.toodledo : 0;
+}
+
+export function getObjectLocalValue(state, fieldType, value) {
+    const objects = getObjectsForFieldType(state, fieldType);
+
+    if (!objects) {
+        return value;
+    }
+
+    const object = objects.find(object => object.refIds.toodledo === value);
+
+    return object ? object.id : null;
+}
 
 export function convertWeirdToodledoTimestampToRemote(value) {
     if (!value) {

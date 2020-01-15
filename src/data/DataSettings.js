@@ -827,6 +827,14 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'taskColumnVisible_parent',
+                    title: 'Show column "Parent"',
+                    type: 'boolean',
+                    value: false,
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'taskColumnVisible_text',
                     title: 'Show column "Text"',
                     type: 'boolean',
@@ -965,7 +973,7 @@ export function getCategories() {
                     value: (settings, updateSettings) => {
                         updateSettings({
                             evenColor: '#fafafa',
-                            oddColor: '#e8f1f7',
+                            oddColor: '#e3ebf2',
                             dueTodayForegroundColor: '#1b5e20',
                             overdueForegroundColor: '#b71c1c'
                         });
@@ -983,7 +991,7 @@ export function getCategories() {
                     id: 'oddColor',
                     title: 'Odd color',
                     type: 'color',
-                    value: '#e8f1f7',
+                    value: '#e3ebf2',
                     editable: true
                 },
                 {

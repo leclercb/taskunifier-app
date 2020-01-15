@@ -184,11 +184,19 @@ export function getDefaultTaskFields(settings) {
         },
         {
             static: true,
+            id: 'parent',
+            title: 'Parent',
+            type: 'task',
+            editable: true,
+            defaultOrder: 21
+        },
+        {
+            static: true,
             id: 'repeat',
             title: 'Repeat',
             type: 'repeat',
             editable: true,
-            defaultOrder: 21
+            defaultOrder: 22
         },
         {
             static: true,
@@ -196,7 +204,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Start date reminder',
             type: 'reminder',
             editable: true,
-            defaultOrder: 22
+            defaultOrder: 23
         },
         {
             static: true,
@@ -204,7 +212,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Due date reminder',
             type: 'reminder',
             editable: true,
-            defaultOrder: 23
+            defaultOrder: 24
         },
         {
             static: true,
@@ -212,7 +220,7 @@ export function getDefaultTaskFields(settings) {
             title: 'Text',
             type: 'richtext',
             editable: true,
-            defaultOrder: 24
+            defaultOrder: 25
         }
     ]);
 }

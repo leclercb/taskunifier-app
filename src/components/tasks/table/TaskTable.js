@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import sortBy from 'lodash/sortBy';
 import { ArrowKeyStepper, AutoSizer, MultiGrid } from 'react-virtualized';
+import PropTypes from 'prop-types';
 import CellRenderer from 'components/common/table/CellRenderer';
 import { ResizableAndMovableColumn, moveHandler, resizeHandler } from 'components/common/table/ResizableAndMovableColumn';
 import { multiSelectionHandler } from 'components/common/table/VirtualizedTable';
 import TaskMenu from 'components/tasks/table/TaskMenu';
 import Constants from 'constants/Constants';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getWidthForType, isAlwaysInEditionForType } from 'data/DataFieldTypes';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useEditingCellApi } from 'hooks/UseEditingCellApi';
@@ -16,12 +18,8 @@ import { getSubLevel, hasChildren } from 'utils/HierarchyUtils';
 import { getTaskBackgroundColor, getTaskForegroundColor } from 'utils/SettingUtils';
 import 'components/tasks/table/TaskTable.css';
 
-function TaskTable() {
-    const appApi = useAppApi();
-    const editingCellApi = useEditingCellApi();
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
+function TaskTable({ apis }) {
+    const { appApi, editingCellApi, settingsApi, taskApi, taskFieldApi } = apis;
 
     const gridRef = useRef();
 
@@ -220,6 +218,10 @@ function TaskTable() {
                                         let foregroundColor = getTaskForegroundColor(task, rowIndex - 1, settingsApi.settings);
                                         let backgroundColor = getTaskBackgroundColor(task, rowIndex - 1, settingsApi.settings);
 
+                                        if (settingsApi.settings.showImportanceColor) {
+                                            style.borderBottom = '1px solid #e3ebf2';
+                                        }
+
                                         if (taskApi.selectedTaskIds.includes(task.id)) {
                                             foregroundColor = Constants.selectionForegroundColor;
                                             backgroundColor = Constants.selectionBackgroundColor;
@@ -260,4 +262,14 @@ function TaskTable() {
     );
 }
 
-export default TaskTable;
+TaskTable.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TaskTable, () => ({
+    appApi: useAppApi(),
+    editingCellApi: useEditingCellApi(),
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi()
+}));

@@ -3,14 +3,17 @@ import qs from 'qs';
 import { addTask, deleteTask, updateTask } from 'actions/TaskActions';
 import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
-import { convertTextToLocal, convertTextToRemote, convertWeirdToodledoTimestampToLocal, convertWeirdToodledoTimestampToRemote } from 'actions/synchronization/toodledo/ToodledoUtils';
-import { getContextsFilteredByVisibleState } from 'selectors/ContextSelectors';
-import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
-import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
-import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
+import {
+    convertTextToLocal,
+    convertTextToRemote,
+    convertWeirdToodledoTimestampToLocal,
+    convertWeirdToodledoTimestampToRemote,
+    getObjectLocalValue,
+    getObjectRemoteValue
+} from 'actions/synchronization/toodledo/ToodledoUtils';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
-import { getTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getTasks } from 'selectors/TaskSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
 import { merge } from 'utils/ObjectUtils';
 
@@ -20,7 +23,8 @@ export function synchronizeTasks() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
-        let tasks = getTasks(getState());
+        let state = getState();
+        let tasks = getTasks(state);
         const createdTasksWithParent = [];
 
         {
@@ -39,7 +43,8 @@ export function synchronizeTasks() {
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
 
         {
             const tasksToDelete = tasks.filter(task => !!task.refIds.toodledo && task.state === 'TO_DELETE');
@@ -53,32 +58,52 @@ export function synchronizeTasks() {
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
 
         {
+            const tasksWithRemoteParent = [];
+
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditTask = moment.unix(getToodledoAccountInfo(getState()).lastedit_task);
 
             if (!lastSync || lastEditTask.diff(lastSync) > 0) {
-                const remoteTasks = await dispatch(getRemoteTasks(lastSync));
+                const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync));
 
-                for (let remoteTask of remoteTasks) {
+                for (let remoteUnconvertedTask of remoteUnconvertedTasks) {
+                    const remoteTask = convertTaskToLocal(remoteUnconvertedTask, state);
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteTask.refIds.toodledo);
 
+                    let updatedTask = null;
+
                     if (!localTask) {
-                        await dispatch(addTask(remoteTask, { keepRefIds: true }));
+                        updatedTask = await dispatch(addTask(remoteTask, { keepRefIds: true }));
                     } else {
                         if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                             if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
-                                await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                                updatedTask = await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
                             }
                         }
                     }
+
+                    if (updatedTask && remoteUnconvertedTask.parent) {
+                        tasksWithRemoteParent.push({ task: updatedTask, parent: remoteUnconvertedTask.parent });
+                    }
+                }
+
+                state = getState();
+
+                for (let taskWithRemoteParent of tasksWithRemoteParent) {
+                    await dispatch(updateTask({
+                        ...taskWithRemoteParent.task,
+                        parent: getObjectLocalValue(state, 'task', taskWithRemoteParent.parent)
+                    }, { loaded: true }));
                 }
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
 
         {
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
@@ -97,7 +122,8 @@ export function synchronizeTasks() {
             }
         }
 
-        tasks = getTasks(getState());
+        state = getState();
+        tasks = getTasks(state);
 
         {
             const tasksToUpdate = tasks.filter(task => !!task.refIds.toodledo && task.state === 'TO_UPDATE');
@@ -154,7 +180,7 @@ export function getRemoteTasks(updatedAfter) {
             start += result.data[0].num;
             total = result.data[0].total;
 
-            tasks.push(...result.data.slice(1).map(task => convertTaskToLocal(task, state)));
+            tasks.push(...result.data.slice(1));
         } while (start < total);
 
         return tasks;
@@ -301,19 +327,6 @@ function convertTaskToRemote(task, state, options) {
         skipParent: false
     }, options || {});
 
-    const tasks = getTasksFilteredByVisibleState(state);
-    const parent = tasks.find(t => t.id === task.parent);
-
-    const contexts = getContextsFilteredByVisibleState(state);
-    const folders = getFoldersFilteredByVisibleState(state);
-    const goals = getGoalsFilteredByVisibleState(state);
-    const locations = getLocationsFilteredByVisibleState(state);
-
-    const context = contexts.find(context => context.id === task.context);
-    const folder = folders.find(folder => folder.id === task.folder);
-    const goal = goals.find(goal => goal.id === task.goal);
-    const location = locations.find(location => location.id === task.location);
-
     const status = getStatuses().find(status => status.key === task.status);
     const priority = getPriorities().find(priority => priority.key === task.priority);
 
@@ -322,11 +335,11 @@ function convertTaskToRemote(task, state, options) {
         title: task.title || 'Untitled',
         completed: task.completed ? moment(task.completionDate).unix() : 0,
         tag: task.tags ? task.tags.join(',') : '',
-        parent: !options.skipParent && parent ? parent.refIds.toodledo : 0,
-        context: context ? context.refIds.toodledo : 0,
-        folder: folder ? folder.refIds.toodledo : 0,
-        goal: goal ? goal.refIds.toodledo : 0,
-        location: location ? location.refIds.toodledo : 0,
+        context: getObjectRemoteValue(state, 'context', task.context),
+        folder: getObjectRemoteValue(state, 'folder', task.folder),
+        goal: getObjectRemoteValue(state, 'goal', task.goal),
+        location: getObjectRemoteValue(state, 'location', task.location),
+        parent: !options.skipParent ? getObjectLocalValue(state, 'task', task.parent) : 0,
         duedate: convertWeirdToodledoTimestampToRemote(task.dueDate),
         startdate: convertWeirdToodledoTimestampToRemote(task.startDate),
         duetime: convertWeirdToodledoTimestampToRemote(task.dueDate),
@@ -344,18 +357,6 @@ function convertTaskToRemote(task, state, options) {
 }
 
 function convertTaskToLocal(task, state) {
-    const contexts = getContextsFilteredByVisibleState(state);
-    const folders = getFoldersFilteredByVisibleState(state);
-    const goals = getGoalsFilteredByVisibleState(state);
-    const locations = getLocationsFilteredByVisibleState(state);
-    const tasks = getTasksFilteredByVisibleState(state);
-
-    const context = contexts.find(context => context.refIds.toodledo === task.context);
-    const folder = folders.find(folder => folder.refIds.toodledo === task.folder);
-    const goal = goals.find(goal => goal.refIds.toodledo === task.goal);
-    const location = locations.find(location => location.refIds.toodledo === task.location);
-    const parent = tasks.find(t => t.refIds.toodledo === task.parent);
-
     const status = getStatuses().find(status => status.value === task.status);
     const priority = getPriorities().find(priority => priority.value === task.priority);
 
@@ -368,11 +369,11 @@ function convertTaskToLocal(task, state) {
         completed: task.completed > 0,
         completionDate: task.completed > 0 ? moment.unix(task.completed).toISOString() : null,
         tags: task.tag ? task.tag.split(',') : null,
-        context: context ? context.id : null,
-        folder: folder ? folder.id : null,
-        goal: goal ? goal.id : null,
-        location: location ? location.id : null,
-        parent: parent ? parent.id : null,
+        context: getObjectLocalValue(state, 'context', task.context),
+        folder: getObjectLocalValue(state, 'folder', task.folder),
+        goal: getObjectLocalValue(state, 'goal', task.goal),
+        location: getObjectLocalValue(state, 'location', task.location),
+        parent: getObjectLocalValue(state, 'task', task.parent),
         dueDate: convertWeirdToodledoTimestampToLocal(task.duetime || task.duedate),
         startDate: convertWeirdToodledoTimestampToLocal(task.starttime || task.startdate),
         startDateReminder: task.remind ? task.remind * 60 : null,

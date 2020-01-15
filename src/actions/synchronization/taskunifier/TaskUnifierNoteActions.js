@@ -1,8 +1,9 @@
 import moment from 'moment';
 import { addNote, deleteNote, updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
+import { convertFieldsToLocal, convertFieldsToRemote } from 'actions/synchronization/taskunifier/TaskUnifierUtils';
 import { getConfig } from 'config/Config';
-import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -248,12 +249,8 @@ export function deleteRemoteNotes(notes) {
 }
 
 function convertNoteToRemote(note, state) {
-    const folders = getFoldersFilteredByVisibleState(state);
-    const folder = folders.find(folder => folder.id === note.folder);
-
     const remoteNote = {
-        ...note,
-        folder: folder ? folder.refIds.taskunifier : null
+        ...convertFieldsToRemote(getNoteFieldsIncludingDefaults(state), state, note)
     };
 
     delete remoteNote.id;
@@ -266,15 +263,11 @@ function convertNoteToRemote(note, state) {
 }
 
 function convertNoteToLocal(note, state) {
-    const folders = getFoldersFilteredByVisibleState(state);
-    const folder = folders.find(folder => folder.refIds.taskunifier === note.folder);
-
     const localNote = {
-        ...note,
+        ...convertFieldsToLocal(getNoteFieldsIncludingDefaults(state), state, note),
         refIds: {
             taskunifier: note.id
-        },
-        folder: folder ? folder.id : null
+        }
     };
 
     delete localNote.id;
