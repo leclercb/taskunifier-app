@@ -1,6 +1,11 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchTaskValue, setSelectedTaskFilter, setSelectedTaskIds } from 'actions/AppActions';
+import {
+    refreshSelectedTaskFilter,
+    setSearchTaskValue,
+    setSelectedTaskFilter,
+    setSelectedTaskIds
+} from 'actions/AppActions';
 import {
     setCalendarDateMode,
     setSelectedCalendarView,
@@ -76,6 +81,11 @@ export function useTaskApi() {
         [dispatch]
     );
 
+    const refreshSelectedTaskFilterCallback = useCallback(
+        () => dispatch(refreshSelectedTaskFilter()),
+        [dispatch]
+    );
+
     const setSearchTaskValueCallback = useCallback(
         value => dispatch(setSearchTaskValue(value)),
         [dispatch]
@@ -127,6 +137,7 @@ export function useTaskApi() {
         deleteTask: deleteTaskCallback,
         setSelectedTaskIds: setSelectedTaskIdsCallback,
         setSelectedTaskFilter: setSelectedTaskFilterCallback,
+        refreshSelectedTaskFilter: refreshSelectedTaskFilterCallback,
         setSearchTaskValue: setSearchTaskValueCallback,
         setSelectedCalendarView: setSelectedCalendarViewCallback,
         setShowTaskHierarchy: setShowTaskHierarchyCallback,

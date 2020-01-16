@@ -17,7 +17,7 @@ export function synchronizeNoteFields() {
             const result = await Promise.all(noteFieldsToAddPromises);
 
             for (let noteField of result) {
-                await dispatch(updateNoteField(noteField, { loaded: true }));
+                await dispatch(updateNoteField(noteField, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -44,7 +44,7 @@ export function synchronizeNoteFields() {
                 await dispatch(addNoteField(remoteNoteField, { keepRefIds: true }));
             } else {
                 if (moment(remoteNoteField.updateDate).diff(moment(localNoteField.updateDate)) > 0) {
-                    await dispatch(updateNoteField(merge(localNoteField, remoteNoteField), { loaded: true }));
+                    await dispatch(updateNoteField(merge(localNoteField, remoteNoteField), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -66,7 +66,7 @@ export function synchronizeNoteFields() {
             await Promise.all(noteFieldsToUpdatePromises);
 
             for (let noteField of noteFieldsToUpdate) {
-                await dispatch(updateNoteField(noteField, { loaded: true }));
+                await dispatch(updateNoteField(noteField, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

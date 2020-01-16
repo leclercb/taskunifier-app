@@ -34,7 +34,7 @@ export function synchronizeTasks() {
                 const result = await dispatch(addRemoteTasks(tasksToAdd, { skipParent: true }));
 
                 for (let task of result) {
-                    await dispatch(updateTask(task, { loaded: true }));
+                    await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
 
                     if (task.parent) {
                         createdTasksWithParent.push(task);
@@ -81,7 +81,7 @@ export function synchronizeTasks() {
                     } else {
                         if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                             if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
-                                updatedTask = await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true }));
+                                updatedTask = await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true, skipUpdateMiddleware: true }));
                             }
                         }
                     }
@@ -97,7 +97,7 @@ export function synchronizeTasks() {
                     await dispatch(updateTask({
                         ...taskWithRemoteParent.task,
                         parent: getObjectLocalValue(state, 'task', taskWithRemoteParent.parent)
-                    }, { loaded: true }));
+                    }, { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -139,7 +139,7 @@ export function synchronizeTasks() {
             }
 
             for (let task of tasksToUpdate) {
-                await dispatch(updateTask(task, { loaded: true }));
+                await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

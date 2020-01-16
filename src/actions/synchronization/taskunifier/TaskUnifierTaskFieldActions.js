@@ -17,7 +17,7 @@ export function synchronizeTaskFields() {
             const result = await Promise.all(taskFieldsToAddPromises);
 
             for (let taskField of result) {
-                await dispatch(updateTaskField(taskField, { loaded: true }));
+                await dispatch(updateTaskField(taskField, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -44,7 +44,7 @@ export function synchronizeTaskFields() {
                 await dispatch(addTaskField(remoteTaskField, { keepRefIds: true }));
             } else {
                 if (moment(remoteTaskField.updateDate).diff(moment(localTaskField.updateDate)) > 0) {
-                    await dispatch(updateTaskField(merge(localTaskField, remoteTaskField), { loaded: true }));
+                    await dispatch(updateTaskField(merge(localTaskField, remoteTaskField), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -66,7 +66,7 @@ export function synchronizeTaskFields() {
             await Promise.all(taskFieldsToUpdatePromises);
 
             for (let taskField of taskFieldsToUpdate) {
-                await dispatch(updateTaskField(taskField, { loaded: true }));
+                await dispatch(updateTaskField(taskField, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

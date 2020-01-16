@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     loadData,
+    refreshSelectedNoteFilter,
+    refreshSelectedTaskFilter,
     saveData,
     setAccountManagerOptions,
     setBatchAddTasksManagerOptions,
@@ -36,6 +38,7 @@ import {
     getNoteFilterManager,
     getReminderManager,
     getSettingManager,
+    getStartDate,
     getTaskEditionManager,
     getTaskFieldManager,
     getTaskFilterManager,
@@ -48,6 +51,7 @@ export function useAppApi() {
     const dispatch = useDispatch();
 
     const dataUuid = useSelector(getDataUuid);
+    const startDate = useSelector(getStartDate);
     const minuteTimer = useSelector(getMinuteTimer);
     const pro = useSelector(isPro);
     const selectedView = useSelector(getSelectedView);
@@ -165,8 +169,19 @@ export function useAppApi() {
         [dispatch]
     );
 
+    const refreshSelectedNoteFilterCallback = useCallback(
+        () => dispatch(refreshSelectedNoteFilter()),
+        [dispatch]
+    );
+
+    const refreshSelectedTaskFilterCallback = useCallback(
+        () => dispatch(refreshSelectedTaskFilter()),
+        [dispatch]
+    );
+
     return {
         dataUuid,
+        startDate,
         minuteTimer,
         isPro: pro,
         selectedView,
@@ -202,6 +217,8 @@ export function useAppApi() {
         setTaskEditionManagerOptions: setTaskEditionManagerOptionsCallback,
         setTaskTemplateManagerOptions: setTaskTemplateManagerOptionsCallback,
         setAccountManagerOptions: setAccountManagerOptionsCallback,
-        setSettingManagerOptions: setSettingManagerOptionsCallback
+        setSettingManagerOptions: setSettingManagerOptionsCallback,
+        refreshSelectedNoteFilter: refreshSelectedNoteFilterCallback,
+        refreshSelectedTaskFilter: refreshSelectedTaskFilterCallback
     };
 }

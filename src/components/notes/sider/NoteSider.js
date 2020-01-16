@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Badge, Input, Menu, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
+import ModalNoteFilterInfo from 'components/notefilters/ModalNoteFilterInfo';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
 import { getGeneralNoteFilters } from 'data/DataNoteFilters';
@@ -21,6 +22,7 @@ function NoteSider() {
     const tagApi = useTagApi();
 
     const [searchValue, setSearchValue] = useState(noteApi.searchNoteValue);
+    const [selectedNoteFilterInfo, setSelectedNoteFilterInfo] = useState(null);
 
     const openKeys = settingsApi.settings.noteSiderOpenKeys;
 
@@ -132,112 +134,127 @@ function NoteSider() {
     };
 
     return (
-        <div
-            className="joyride-note-sider"
-            style={{ backgroundColor: '#ffffff', height: '100%' }}>
-            <div style={{ padding: 10 }}>
-                <Icon
-                    icon="search"
-                    text={(
-                        <Tooltip title="Press enter to search" placement="bottom">
-                            <Input.Search
-                                value={searchValue}
-                                allowClear={true}
-                                size="small"
-                                placeholder="Search for ..."
-                                style={{ width: '90%' }}
-                                onChange={event => setSearchValue(event.target.value)}
-                                onSearch={value => noteApi.setSearchNoteValue(value)}
-                                onKeyDown={event => {
-                                    if (event.key === 'Escape') {
-                                        setSearchValue('');
-                                        noteApi.setSearchNoteValue('');
-                                    }
-                                }} />
-                        </Tooltip>
-                    )} />
+        <React.Fragment>
+            <ModalNoteFilterInfo
+                noteFilter={selectedNoteFilterInfo}
+                visible={!!selectedNoteFilterInfo}
+                onClose={() => setSelectedNoteFilterInfo(null)} />
+            <div
+                className="joyride-note-sider"
+                style={{ backgroundColor: '#ffffff', height: '100%' }}>
+                <div style={{ padding: 10 }}>
+                    <Icon
+                        icon="search"
+                        text={(
+                            <Tooltip title="Press enter to search" placement="bottom">
+                                <Input.Search
+                                    value={searchValue}
+                                    allowClear={true}
+                                    size="small"
+                                    placeholder="Search for ..."
+                                    style={{ width: '90%' }}
+                                    onChange={event => setSearchValue(event.target.value)}
+                                    onSearch={value => noteApi.setSearchNoteValue(value)}
+                                    onKeyDown={event => {
+                                        if (event.key === 'Escape') {
+                                            setSearchValue('');
+                                            noteApi.setSearchNoteValue('');
+                                        }
+                                    }} />
+                            </Tooltip>
+                        )} />
+                </div>
+                <Menu
+                    selectedKeys={[noteApi.selectedNoteFilter.id]}
+                    openKeys={openKeys}
+                    onSelect={onSelect}
+                    mode="inline">
+                    <Menu.SubMenu
+                        key="general"
+                        title={<Icon icon="home" text="General" />}
+                        onTitleClick={({ key }) => onOpenChange(key)}>
+                        {getGeneralNoteFilters().map(noteFilter => (
+                            <Menu.Item
+                                key={noteFilter.id}
+                                filter={noteFilter}>
+                                <LeftRight right={(
+                                    <React.Fragment>
+                                        <Icon
+                                            icon="info-circle"
+                                            color={Constants.fadeIconColor}
+                                            className="object-actions"
+                                            onClick={() => setSelectedNoteFilterInfo(noteFilter)} />
+                                        {createBadge(noteFilter)}
+                                    </React.Fragment>
+                                )}>
+                                    <Icon
+                                        icon={noteFilter.icon}
+                                        color={noteFilter.color}
+                                        text={noteFilter.title} />
+                                </LeftRight>
+                            </Menu.Item>
+                        ))}
+                    </Menu.SubMenu>
+                    <Menu.SubMenu
+                        key="folders"
+                        title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
+                        {folderApi.folders.map(folder => {
+                            const filter = createNoteFilterForObject(folder, 'folder');
+
+                            return (
+                                <Menu.Item key={folder.id} filter={filter}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(filter)}
+                                        object={folder}
+                                        onManage={() => manageObjects('folders')}
+                                        onEdit={() => editObject('folders', folder.id)}
+                                        onDelete={() => folderApi.deleteFolder(folder.id)}
+                                        dropType="note"
+                                        onDrop={(note, folder) => dropObject(note, folder, 'folder')} />
+                                </Menu.Item>
+                            );
+                        })}
+                    </Menu.SubMenu>
+                    <Menu.SubMenu
+                        key="tags"
+                        title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
+                        {tagApi.tags.map(tag => {
+                            const filter = createNoteFilterForObject(tag, 'tags', {
+                                id: null,
+                                field: 'tags',
+                                type: 'contain',
+                                value: [tag.id]
+                            });
+
+                            return (
+                                <Menu.Item key={tag.id} filter={filter}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(filter)}
+                                        object={tag}
+                                        onManage={() => manageObjects('tags')}
+                                        onEdit={() => editObject('tags', tag.id)}
+                                        onDelete={() => tagApi.deleteTag(tag.id)} />
+                                </Menu.Item>
+                            );
+                        })}
+                    </Menu.SubMenu>
+                    <Menu.SubMenu
+                        key="noteFilters"
+                        title={createCategorySubMenu('Note Filters', 'filter', () => manageNoteFilters(), () => onOpenChange('noteFilters'))}>
+                        {noteFilterApi.noteFilters.map(noteFilter => (
+                            <Menu.Item key={noteFilter.id} filter={noteFilter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(noteFilter)}
+                                    object={noteFilter}
+                                    onManage={() => manageNoteFilters()}
+                                    onEdit={() => editNoteFilter(noteFilter.id)}
+                                    onDelete={() => noteFilterApi.deleteNoteFilter(noteFilter.id)} />
+                            </Menu.Item>
+                        ))}
+                    </Menu.SubMenu>
+                </Menu >
             </div>
-            <Menu
-                selectedKeys={[noteApi.selectedNoteFilter.id]}
-                openKeys={openKeys}
-                onSelect={onSelect}
-                mode="inline">
-                <Menu.SubMenu
-                    key="general"
-                    title={<Icon icon="home" text="General" />}
-                    onTitleClick={({ key }) => onOpenChange(key)}>
-                    {getGeneralNoteFilters().map(noteFilter => (
-                        <Menu.Item
-                            key={noteFilter.id}
-                            filter={noteFilter}>
-                            <LeftRight right={createBadge(noteFilter)}>
-                                <Icon
-                                    icon={noteFilter.icon}
-                                    color={noteFilter.color}
-                                    text={noteFilter.title} />
-                            </LeftRight>
-                        </Menu.Item>
-                    ))}
-                </Menu.SubMenu>
-                <Menu.SubMenu
-                    key="folders"
-                    title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                    {folderApi.folders.map(folder => {
-                        const filter = createNoteFilterForObject(folder, 'folder');
-
-                        return (
-                            <Menu.Item key={folder.id} filter={filter}>
-                                <ObjectMenuItem
-                                    badge={createBadge(filter)}
-                                    object={folder}
-                                    onManage={() => manageObjects('folders')}
-                                    onEdit={() => editObject('folders', folder.id)}
-                                    onDelete={() => folderApi.deleteFolder(folder.id)}
-                                    dropType="note"
-                                    onDrop={(note, folder) => dropObject(note, folder, 'folder')} />
-                            </Menu.Item>
-                        );
-                    })}
-                </Menu.SubMenu>
-                <Menu.SubMenu
-                    key="tags"
-                    title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
-                    {tagApi.tags.map(tag => {
-                        const filter = createNoteFilterForObject(tag, 'tags', {
-                            id: null,
-                            field: 'tags',
-                            type: 'contain',
-                            value: [tag.id]
-                        });
-
-                        return (
-                            <Menu.Item key={tag.id} filter={filter}>
-                                <ObjectMenuItem
-                                    badge={createBadge(filter)}
-                                    object={tag}
-                                    onManage={() => manageObjects('tags')}
-                                    onEdit={() => editObject('tags', tag.id)}
-                                    onDelete={() => tagApi.deleteTag(tag.id)} />
-                            </Menu.Item>
-                        );
-                    })}
-                </Menu.SubMenu>
-                <Menu.SubMenu
-                    key="noteFilters"
-                    title={createCategorySubMenu('Note Filters', 'filter', () => manageNoteFilters(), () => onOpenChange('noteFilters'))}>
-                    {noteFilterApi.noteFilters.map(noteFilter => (
-                        <Menu.Item key={noteFilter.id} filter={noteFilter}>
-                            <ObjectMenuItem
-                                badge={createBadge(noteFilter)}
-                                object={noteFilter}
-                                onManage={() => manageNoteFilters()}
-                                onEdit={() => editNoteFilter(noteFilter.id)}
-                                onDelete={() => noteFilterApi.deleteNoteFilter(noteFilter.id)} />
-                        </Menu.Item>
-                    ))}
-                </Menu.SubMenu>
-            </Menu >
-        </div>
+        </React.Fragment>
     );
 }
 

@@ -154,6 +154,9 @@ export function getCategories() {
                     id: 'automaticSaveInterval',
                     title: 'Save interval in minutes',
                     type: 'number',
+                    options: {
+                        min: 1
+                    },
                     value: 15,
                     editable: true,
                     mode: 'electron'
@@ -529,6 +532,9 @@ export function getCategories() {
                     id: 'maxBackups',
                     title: 'Maximum number of backups to keep',
                     type: 'number',
+                    options: {
+                        min: 1
+                    },
                     value: 100,
                     editable: true,
                     mode: 'electron'
@@ -537,6 +543,9 @@ export function getCategories() {
                     id: 'automaticBackupInterval',
                     title: 'Backup interval in minutes',
                     type: 'number',
+                    options: {
+                        min: 1
+                    },
                     value: 120,
                     editable: true,
                     mode: 'electron'
@@ -623,6 +632,9 @@ export function getCategories() {
                     id: 'automaticSynchronizationInterval',
                     title: 'Synchronization interval in minutes',
                     type: 'number',
+                    options: {
+                        min: 10
+                    },
                     value: 60,
                     editable: true,
                     mode: 'electron'

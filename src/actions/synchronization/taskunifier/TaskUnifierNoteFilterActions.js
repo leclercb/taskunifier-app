@@ -18,7 +18,7 @@ export function synchronizeNoteFilters() {
             const result = await Promise.all(noteFiltersToAddPromises);
 
             for (let noteFilter of result) {
-                await dispatch(updateNoteFilter(noteFilter, { loaded: true }));
+                await dispatch(updateNoteFilter(noteFilter, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -45,7 +45,7 @@ export function synchronizeNoteFilters() {
                 await dispatch(addNoteFilter(remoteNoteFilter, { keepRefIds: true }));
             } else {
                 if (moment(remoteNoteFilter.updateDate).diff(moment(localNoteFilter.updateDate)) > 0) {
-                    await dispatch(updateNoteFilter(merge(localNoteFilter, remoteNoteFilter), { loaded: true }));
+                    await dispatch(updateNoteFilter(merge(localNoteFilter, remoteNoteFilter), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -67,7 +67,7 @@ export function synchronizeNoteFilters() {
             await Promise.all(noteFiltersToUpdatePromises);
 
             for (let noteFilter of noteFiltersToUpdate) {
-                await dispatch(updateNoteFilter(noteFilter, { loaded: true }));
+                await dispatch(updateNoteFilter(noteFilter, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

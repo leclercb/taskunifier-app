@@ -17,7 +17,7 @@ export function synchronizeFolders() {
             const result = await Promise.all(foldersToAddPromises);
 
             for (let folder of result) {
-                await dispatch(updateFolder(folder, { loaded: true }));
+                await dispatch(updateFolder(folder, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -44,7 +44,7 @@ export function synchronizeFolders() {
                 await dispatch(addFolder(remoteFolder, { keepRefIds: true }));
             } else {
                 if (moment(remoteFolder.updateDate).diff(moment(localFolder.updateDate)) > 0) {
-                    await dispatch(updateFolder(merge(localFolder, remoteFolder), { loaded: true }));
+                    await dispatch(updateFolder(merge(localFolder, remoteFolder), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -66,7 +66,7 @@ export function synchronizeFolders() {
             await Promise.all(foldersToUpdatePromises);
 
             for (let folder of foldersToUpdate) {
-                await dispatch(updateFolder(folder, { loaded: true }));
+                await dispatch(updateFolder(folder, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

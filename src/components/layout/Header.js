@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Tooltip } from 'antd';
+import moment from 'moment';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
 import UserMenu from 'components/layout/UserMenu';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useInterval } from 'hooks/UseInterval';
 import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { usePrintApi } from 'hooks/UsePrintApi';
@@ -12,6 +15,10 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
+import { SettingsPropType } from 'proptypes/SettingPropTypes';
+import { getSecondsUntilNextSave } from 'utils/AppUtils';
+import { getSecondsUntilNextBackup } from 'utils/BackupUtils';
+import { getSecondsUntilNextSync } from 'utils/SynchronizationUtils';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 function Header() {
@@ -229,16 +236,24 @@ function Header() {
             <Button.Group style={{ marginRight: 20 }}>
                 {createButton('cubes', 'Category Manager', onSetCategoryManagerVisible, false, 'joyride-header-category-manager')}
                 {createButton('bell', 'Reminder Manager', onSetReminderManagerVisible)}
-                {process.env.REACT_APP_MODE === 'electron' ?
-                    createButton('save', 'Save', onSave)
-                    : null}
-                {process.env.REACT_APP_MODE === 'electron' ?
-                    createButton('box-open', 'Backup', onBackup)
-                    : null}
+                {process.env.REACT_APP_MODE === 'electron' ? (
+                    <SaveButton
+                        settings={settingsApi.settings}
+                        startDate={appApi.startDate}
+                        save={onSave} />
+                ) : null}
+                {process.env.REACT_APP_MODE === 'electron' ? (
+                    <BackupButton
+                        settings={settingsApi.settings}
+                        backup={onBackup} />
+                ) : null}
                 {createButton('cog', 'Settings', onSetSettingsVisible, false, 'joyride-header-settings')}
-                {process.env.REACT_APP_MODE === 'electron' ?
-                    createButton('sync-alt', 'Synchronization', onSynchronize)
-                    : null}
+                {process.env.REACT_APP_MODE === 'electron' ? (
+                    <SynchronizationButton
+                        settings={settingsApi.settings}
+                        isPro={appApi.isPro}
+                        synchronize={onSynchronize} />
+                ) : null}
             </Button.Group>
             <Button.Group>
                 {createButton('question-circle', 'Help', onShowHelp)}
@@ -246,5 +261,100 @@ function Header() {
         </LeftRight>
     );
 }
+
+function SaveButton({ settings, startDate, save }) {
+    const [seconds, setSeconds] = useState(getSecondsUntilNextSave(settings, startDate));
+
+    useInterval(() => {
+        setSeconds(getSecondsUntilNextSave(settings, startDate));
+    }, 5000);
+
+    const now = moment();
+
+    const title = (
+        <React.Fragment>
+            Save
+            <br />
+            <em>{seconds >= 0 ? 'Next save ' + now.to(moment(now).add(seconds + 1, 'second')) : 'Automatic save is disabled'}</em>
+        </React.Fragment>
+    );
+
+    return (
+        <Tooltip placement="bottom" title={title}>
+            <Button onClick={save}>
+                <Icon icon="save" />
+            </Button>
+        </Tooltip>
+    );
+}
+
+SaveButton.propTypes = {
+    settings: SettingsPropType.isRequired,
+    startDate: PropTypes.string.isRequired,
+    save: PropTypes.func.isRequired
+};
+
+function BackupButton({ settings, backup }) {
+    const [seconds, setSeconds] = useState(getSecondsUntilNextBackup(settings));
+
+    useInterval(() => {
+        setSeconds(getSecondsUntilNextBackup(settings));
+    }, 5000);
+
+    const now = moment();
+
+    const title = (
+        <React.Fragment>
+            Backup
+            <br />
+            <em>{seconds >= 0 ? 'Next backup ' + now.to(moment(now).add(seconds + 1, 'second')) : 'Automatic backup is disabled'}</em>
+        </React.Fragment>
+    );
+
+    return (
+        <Tooltip placement="bottom" title={title}>
+            <Button onClick={backup}>
+                <Icon icon="box-open" />
+            </Button>
+        </Tooltip>
+    );
+}
+
+BackupButton.propTypes = {
+    settings: SettingsPropType.isRequired,
+    backup: PropTypes.func.isRequired
+};
+
+function SynchronizationButton({ settings, isPro, synchronize }) {
+    const [seconds, setSeconds] = useState(getSecondsUntilNextSync(settings, isPro));
+
+    useInterval(() => {
+        setSeconds(getSecondsUntilNextSync(settings, isPro));
+    }, 5000);
+
+    const now = moment();
+
+    const title = (
+        <React.Fragment>
+            Synchronize
+            <br />
+            <em>{seconds >= 0 ? 'Next synchronization ' + now.to(moment(now).add(seconds + 1, 'second')) : 'Automatic synchronization is disabled'}</em>
+        </React.Fragment>
+    );
+
+    return (
+        <Tooltip placement="bottom" title={title}>
+            <Button onClick={synchronize}>
+                <Icon icon="sync-alt" />
+            </Button>
+        </Tooltip>
+    );
+}
+
+SynchronizationButton.propTypes = {
+    settings: SettingsPropType.isRequired,
+    isPro: PropTypes.bool.isRequired,
+    synchronize: PropTypes.func.isRequired
+};
 
 export default Header;

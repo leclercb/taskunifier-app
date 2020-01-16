@@ -24,7 +24,7 @@ export function synchronizeNotes() {
                 const result = await dispatch(addRemoteNotes(notesToAdd));
 
                 for (let note of result) {
-                    await dispatch(updateNote(note, { loaded: true }));
+                    await dispatch(updateNote(note, { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -55,7 +55,7 @@ export function synchronizeNotes() {
                 await dispatch(addNote(remoteNote, { keepRefIds: true }));
             } else {
                 if (moment(remoteNote.updateDate).diff(moment(localNote.updateDate)) > 0) {
-                    await dispatch(updateNote(merge(localNote, remoteNote), { loaded: true }));
+                    await dispatch(updateNote(merge(localNote, remoteNote), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -84,7 +84,7 @@ export function synchronizeNotes() {
             }
 
             for (let note of notesToUpdate) {
-                await dispatch(updateNote(note, { loaded: true }));
+                await dispatch(updateNote(note, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };
