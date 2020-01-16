@@ -53,7 +53,7 @@ function FilterConditionTree(props) {
             condition={props.filter.condition}
             context={props.context}
             addMenuItems={filter => props.context.fields
-                .filter(field => field.title.includes(filter))
+                .filter(field => (field.title || '').includes(filter))
                 .map(field => (<Menu.Item key={field.id}>{field.title}</Menu.Item>))}
             createLeafObject={createLeafObject}
             getLeafComponent={getLeafComponent}
