@@ -6,17 +6,20 @@ import { verifyLicense } from 'utils/LicenseUtils';
 import { getValue } from 'utils/ObjectUtils';
 
 export const getDataUuid = state => state.app.dataUuid;
+export const getStartDate = state => state.app.startDate;
 export const getMinuteTimer = state => state.app.minuteTimer;
 
 export const getEditingCell = state => state.app.editingCell;
 
 export const getSelectedNoteIds = state => state.app.selectedNoteIds;
 export const getSelectedNoteFilter = state => state.app.selectedNoteFilter;
+export const getSelectedNoteFilterId = state => state.app.selectedNoteFilter ? state.app.selectedNoteFilter.id : null;
 export const getSelectedNoteFilterDate = state => state.app.selectedNoteFilterDate;
 export const getSearchNoteValue = state => state.app.searchNoteValue;
 
 export const getSelectedTaskIds = state => state.app.selectedTaskIds;
 export const getSelectedTaskFilter = state => state.app.selectedTaskFilter;
+export const getSelectedTaskFilterId = state => state.app.selectedTaskFilter ? state.app.selectedTaskFilter.id : null;
 export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDate;
 export const getSearchTaskValue = state => state.app.searchTaskValue;
 

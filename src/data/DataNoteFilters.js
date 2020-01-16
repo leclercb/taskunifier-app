@@ -1,17 +1,12 @@
 import uuid from 'uuid/v4';
 import { clone } from 'utils/ObjectUtils';
 
-export function addSearchNoteValueCondition(filter, searchValue) {
-    filter = clone(filter);
+export function combineConditions(filter, conditions) {
+    if (!conditions || conditions.length === 0) {
+        return filter;
+    }
 
-    const conditions = [
-        {
-            id: uuid(),
-            field: 'title',
-            type: 'containIgnoreCase',
-            value: searchValue
-        }
-    ];
+    filter = clone(filter);
 
     if (filter.condition) {
         conditions.push(filter.condition);
@@ -24,6 +19,15 @@ export function addSearchNoteValueCondition(filter, searchValue) {
             operator: 'AND',
             conditions
         }
+    };
+}
+
+export function createSearchNoteValueCondition(searchValue) {
+    return {
+        id: uuid(),
+        field: 'title',
+        type: 'containIgnoreCase',
+        value: searchValue
     };
 }
 

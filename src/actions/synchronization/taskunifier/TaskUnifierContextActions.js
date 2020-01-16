@@ -17,7 +17,7 @@ export function synchronizeContexts() {
             const result = await Promise.all(contextsToAddPromises);
 
             for (let context of result) {
-                await dispatch(updateContext(context, { loaded: true }));
+                await dispatch(updateContext(context, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -44,7 +44,7 @@ export function synchronizeContexts() {
                 await dispatch(addContext(remoteContext, { keepRefIds: true }));
             } else {
                 if (moment(remoteContext.updateDate).diff(moment(localContext.updateDate)) > 0) {
-                    await dispatch(updateContext(merge(localContext, remoteContext), { loaded: true }));
+                    await dispatch(updateContext(merge(localContext, remoteContext), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -66,7 +66,7 @@ export function synchronizeContexts() {
             await Promise.all(contextsToUpdatePromises);
 
             for (let context of contextsToUpdate) {
-                await dispatch(updateContext(context, { loaded: true }));
+                await dispatch(updateContext(context, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

@@ -4,6 +4,7 @@ import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
     dataUuid: null,
+    startDate: moment().toISOString(),
     minuteTimer: moment().toISOString(),
     editingCell: {
         objectId: null,

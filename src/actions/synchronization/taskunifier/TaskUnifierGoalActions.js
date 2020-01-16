@@ -19,7 +19,7 @@ export function synchronizeGoals() {
             const result = await Promise.all(goalsToAddPromises);
 
             for (let goal of result) {
-                await dispatch(updateGoal(goal, { loaded: true }));
+                await dispatch(updateGoal(goal, { loaded: true, skipUpdateMiddleware: true }));
 
                 if (goal.contributesTo) {
                     createdGoalsWithContributesTo.push(goal);
@@ -51,7 +51,7 @@ export function synchronizeGoals() {
             } else {
                 if (moment(remoteGoal.updateDate).diff(moment(localGoal.updateDate)) > 0) {
                     if (!createdGoalsWithContributesTo.find(goal => goal.id === localGoal.id)) {
-                        await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true }));
+                        await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true, skipUpdateMiddleware: true }));
                     }
                 }
             }
@@ -81,7 +81,7 @@ export function synchronizeGoals() {
             await Promise.all(goalsToUpdatePromises);
 
             for (let goal of goalsToUpdate) {
-                await dispatch(updateGoal(goal, { loaded: true }));
+                await dispatch(updateGoal(goal, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

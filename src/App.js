@@ -8,6 +8,9 @@ import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { isAutomaticSaveNeeded } from 'utils/AppUtils';
+import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
+import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
 import 'App.css';
@@ -91,21 +94,15 @@ function App() {
     useEffect(
         () => {
             if (process.env.REACT_APP_MODE === 'electron') {
-                let interval = null;
-
-                const { automaticSave, automaticSaveInterval } = settingsApi.settings;
-
-                if (automaticSave &&
-                    Number.isInteger(automaticSaveInterval) &&
-                    automaticSaveInterval > 0) {
-                    interval = setInterval(() => {
+                const interval = setInterval(() => {
+                    if (isAutomaticSaveNeeded(settingsApi.settings, appApi.startDate)) {
                         appApi.saveData();
+
                         settingsApi.updateSettings({
                             lastAutomaticSave: moment().toISOString()
                         });
-                    }, automaticSaveInterval * 60 * 1000);
-
-                }
+                    }
+                }, 30 * 1000);
 
                 return () => {
                     clearInterval(interval);
@@ -113,24 +110,20 @@ function App() {
             }
         },
         [ // eslint-disable-line react-hooks/exhaustive-deps
+            appApi.startDate,
             settingsApi.settings.automaticSave,
-            settingsApi.settings.automaticSaveInterval
+            settingsApi.settings.automaticSaveInterval,
+            settingsApi.settings.lastAutomaticSave
         ]
     );
 
     useEffect(
         () => {
             if (process.env.REACT_APP_MODE === 'electron') {
-                let interval = null;
-
-                interval = setInterval(() => {
-                    const { automaticBackup, automaticBackupInterval, lastAutomaticBackup } = settingsApi.settings;
-
-                    if (automaticBackup &&
-                        Number.isInteger(automaticBackupInterval) &&
-                        automaticBackupInterval > 0 &&
-                        (!lastAutomaticBackup || moment().diff(moment(lastAutomaticBackup)) > automaticBackupInterval * 60 * 1000)) {
+                const interval = setInterval(() => {
+                    if (isAutomaticBackupNeeded(settingsApi.settings)) {
                         appApi.backupData();
+
                         settingsApi.updateSettings({
                             lastAutomaticBackup: moment().toISOString()
                         });
@@ -152,17 +145,10 @@ function App() {
     useEffect(
         () => {
             if (process.env.REACT_APP_MODE === 'electron') {
-                let interval = null;
-
-                interval = setInterval(() => {
-                    const { automaticSynchronization, automaticSynchronizationInterval, lastAutomaticSynchronization } = settingsApi.settings;
-
-                    if (appApi.isPro &&
-                        automaticSynchronization &&
-                        Number.isInteger(automaticSynchronizationInterval) &&
-                        automaticSynchronizationInterval > 0 &&
-                        (!lastAutomaticSynchronization || moment().diff(moment(lastAutomaticSynchronization)) > automaticSynchronizationInterval * 60 * 1000)) {
+                const interval = setInterval(() => {
+                    if (isAutomaticSyncNeeded(settingsApi.settings, appApi.isPro)) {
                         appApi.synchronize();
+
                         settingsApi.updateSettings({
                             lastAutomaticSynchronization: moment().toISOString()
                         });

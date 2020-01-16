@@ -17,7 +17,7 @@ export function synchronizeContacts() {
             const result = await Promise.all(contactsToAddPromises);
 
             for (let contact of result) {
-                await dispatch(updateContact(contact, { loaded: true }));
+                await dispatch(updateContact(contact, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -44,7 +44,7 @@ export function synchronizeContacts() {
                 await dispatch(addContact(remoteContact, { keepRefIds: true }));
             } else {
                 if (moment(remoteContact.updateDate).diff(moment(localContact.updateDate)) > 0) {
-                    await dispatch(updateContact(merge(localContact, remoteContact), { loaded: true }));
+                    await dispatch(updateContact(merge(localContact, remoteContact), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -66,7 +66,7 @@ export function synchronizeContacts() {
             await Promise.all(contactsToUpdatePromises);
 
             for (let contact of contactsToUpdate) {
-                await dispatch(updateContact(contact, { loaded: true }));
+                await dispatch(updateContact(contact, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

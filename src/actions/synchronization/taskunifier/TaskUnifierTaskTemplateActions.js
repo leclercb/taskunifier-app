@@ -19,7 +19,7 @@ export function synchronizeTaskTemplates() {
             const result = await Promise.all(taskTemplatesToAddPromises);
 
             for (let taskTemplate of result) {
-                await dispatch(updateTaskTemplate(taskTemplate, { loaded: true }));
+                await dispatch(updateTaskTemplate(taskTemplate, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -46,7 +46,7 @@ export function synchronizeTaskTemplates() {
                 await dispatch(addTaskTemplate(remoteTaskTemplate, { keepRefIds: true }));
             } else {
                 if (moment(remoteTaskTemplate.updateDate).diff(moment(localTaskTemplate.updateDate)) > 0) {
-                    await dispatch(updateTaskTemplate(merge(localTaskTemplate, remoteTaskTemplate), { loaded: true }));
+                    await dispatch(updateTaskTemplate(merge(localTaskTemplate, remoteTaskTemplate), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -68,7 +68,7 @@ export function synchronizeTaskTemplates() {
             await Promise.all(taskTemplatesToUpdatePromises);
 
             for (let taskTemplate of taskTemplatesToUpdate) {
-                await dispatch(updateTaskTemplate(taskTemplate, { loaded: true }));
+                await dispatch(updateTaskTemplate(taskTemplate, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

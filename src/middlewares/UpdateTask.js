@@ -6,7 +6,7 @@ import { clone } from 'utils/ObjectUtils';
 import { canRepeat, getNextDate } from 'utils/RepeatUtils';
 
 export const updateTask = store => next => async action => {
-    if (action.type === 'UPDATE_OBJECT' && action.property === 'tasks') {
+    if (action.type === 'UPDATE_OBJECT' && action.property === 'tasks' && !action.options.skipUpdateMiddleware) {
         const task = action.object;
 
         const newTask = clone(task);

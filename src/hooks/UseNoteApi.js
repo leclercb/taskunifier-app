@@ -1,6 +1,11 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchNoteValue, setSelectedNoteFilter, setSelectedNoteIds } from 'actions/AppActions';
+import {
+    refreshSelectedNoteFilter,
+    setSearchNoteValue,
+    setSelectedNoteFilter,
+    setSelectedNoteIds
+} from 'actions/AppActions';
 import { addNote, deleteNote, duplicateNote, updateNote } from 'actions/NoteActions';
 import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
 import {
@@ -52,6 +57,11 @@ export function useNoteApi() {
         [dispatch]
     );
 
+    const refreshSelectedNoteFilterCallback = useCallback(
+        () => dispatch(refreshSelectedNoteFilter()),
+        [dispatch]
+    );
+
     const setSearchNoteValueCallback = useCallback(
         value => dispatch(setSearchNoteValue(value)),
         [dispatch]
@@ -71,6 +81,7 @@ export function useNoteApi() {
         deleteNote: deleteNoteCallback,
         setSelectedNoteIds: setSelectedNoteIdsCallback,
         setSelectedNoteFilter: setSelectedNoteFilterCallback,
+        refreshSelectedNoteFilter: refreshSelectedNoteFilterCallback,
         setSearchNoteValue: setSearchNoteValueCallback
     };
 }

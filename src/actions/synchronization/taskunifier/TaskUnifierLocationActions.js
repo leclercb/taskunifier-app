@@ -17,7 +17,7 @@ export function synchronizeLocations() {
             const result = await Promise.all(locationsToAddPromises);
 
             for (let location of result) {
-                await dispatch(updateLocation(location, { loaded: true }));
+                await dispatch(updateLocation(location, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -44,7 +44,7 @@ export function synchronizeLocations() {
                 await dispatch(addLocation(remoteLocation, { keepRefIds: true }));
             } else {
                 if (moment(remoteLocation.updateDate).diff(moment(localLocation.updateDate)) > 0) {
-                    await dispatch(updateLocation(merge(localLocation, remoteLocation), { loaded: true }));
+                    await dispatch(updateLocation(merge(localLocation, remoteLocation), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -66,7 +66,7 @@ export function synchronizeLocations() {
             await Promise.all(locationsToUpdatePromises);
 
             for (let location of locationsToUpdate) {
-                await dispatch(updateLocation(location, { loaded: true }));
+                await dispatch(updateLocation(location, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

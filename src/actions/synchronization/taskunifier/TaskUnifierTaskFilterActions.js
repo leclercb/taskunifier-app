@@ -18,7 +18,7 @@ export function synchronizeTaskFilters() {
             const result = await Promise.all(taskFiltersToAddPromises);
 
             for (let taskFilter of result) {
-                await dispatch(updateTaskFilter(taskFilter, { loaded: true }));
+                await dispatch(updateTaskFilter(taskFilter, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -45,7 +45,7 @@ export function synchronizeTaskFilters() {
                 await dispatch(addTaskFilter(remoteTaskFilter, { keepRefIds: true }));
             } else {
                 if (moment(remoteTaskFilter.updateDate).diff(moment(localTaskFilter.updateDate)) > 0) {
-                    await dispatch(updateTaskFilter(merge(localTaskFilter, remoteTaskFilter), { loaded: true }));
+                    await dispatch(updateTaskFilter(merge(localTaskFilter, remoteTaskFilter), { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -67,7 +67,7 @@ export function synchronizeTaskFilters() {
             await Promise.all(taskFiltersToUpdatePromises);
 
             for (let taskFilter of taskFiltersToUpdate) {
-                await dispatch(updateTaskFilter(taskFilter, { loaded: true }));
+                await dispatch(updateTaskFilter(taskFilter, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
     };

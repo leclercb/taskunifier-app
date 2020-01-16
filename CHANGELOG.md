@@ -3,12 +3,15 @@
 ## New Features
 
 * Show "total until now" in work log tab
+* Show next save/backup/synchronization date (#121)
 * Add line between rows in task table (#127)
 * Synchronize note/task filters and task templates with TaskUnifier Cloud
+* Show general note filter info
 
 ## Bug Fixes
 
 * Improve synchronization speed (#123)
+* Refresh filter after update (#135)
 * Fix initial synchronization of sub-tasks
 
 # 0.9.2

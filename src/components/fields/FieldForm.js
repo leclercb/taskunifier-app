@@ -52,7 +52,7 @@ function FieldForm(props) {
                         }
                     ]
                 })(
-                    <ColorPicker onClose={onCommit} placement="bottomLeft" />
+                    <ColorPicker onClose={onCommit} />
                 )}
             </Form.Item>
             <Form.Item label="Type">
