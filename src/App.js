@@ -8,6 +8,7 @@ import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useThreadApi } from 'hooks/UseThreadApi';
 import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
@@ -23,6 +24,7 @@ import 'components/common/table/VirtualizedTable.css';
 function App() {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
+    const threadApi = useThreadApi();
 
     useInterval(() => {
         appApi.updateMinuteTimer();
@@ -96,11 +98,15 @@ function App() {
             if (process.env.REACT_APP_MODE === 'electron') {
                 const interval = setInterval(() => {
                     if (isAutomaticSaveNeeded(settingsApi.settings, appApi.startDate)) {
-                        appApi.saveData();
+                        try {
+                            threadApi.checkIsBusy(() => appApi.saveData());
 
-                        settingsApi.updateSettings({
-                            lastAutomaticSave: moment().toISOString()
-                        });
+                            settingsApi.updateSettings({
+                                lastAutomaticSave: moment().toISOString()
+                            });
+                        } catch (error) {
+                            // Skip
+                        }
                     }
                 }, 30 * 1000);
 
@@ -122,11 +128,15 @@ function App() {
             if (process.env.REACT_APP_MODE === 'electron') {
                 const interval = setInterval(() => {
                     if (isAutomaticBackupNeeded(settingsApi.settings)) {
-                        appApi.backupData();
+                        try {
+                            threadApi.checkIsBusy(() => appApi.backupData());
 
-                        settingsApi.updateSettings({
-                            lastAutomaticBackup: moment().toISOString()
-                        });
+                            settingsApi.updateSettings({
+                                lastAutomaticBackup: moment().toISOString()
+                            });
+                        } catch (error) {
+                            // Skip
+                        }
                     }
                 }, 30 * 1000);
 
@@ -147,11 +157,15 @@ function App() {
             if (process.env.REACT_APP_MODE === 'electron') {
                 const interval = setInterval(() => {
                     if (isAutomaticSyncNeeded(settingsApi.settings, appApi.isPro)) {
-                        appApi.synchronize();
+                        try {
+                            threadApi.checkIsBusy(() => appApi.synchronize());
 
-                        settingsApi.updateSettings({
-                            lastAutomaticSynchronization: moment().toISOString()
-                        });
+                            settingsApi.updateSettings({
+                                lastAutomaticSynchronization: moment().toISOString()
+                            });
+                        } catch (error) {
+                            // Skip
+                        }
                     }
                 }, 30 * 1000);
 

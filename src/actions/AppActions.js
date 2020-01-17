@@ -9,7 +9,7 @@ import { cleanLocations, loadLocationsFromFile, loadLocationsFromServer, saveLoc
 import { cleanNotes, loadNotesFromFile, loadNotesFromServer, saveNotesToFile, setNotes } from 'actions/NoteActions';
 import { cleanNoteFields, loadNoteFieldsFromFile, loadNoteFieldsFromServer, saveNoteFieldsToFile, setNoteFields } from 'actions/NoteFieldActions';
 import { cleanNoteFilters, loadNoteFiltersFromFile, loadNoteFiltersFromServer, saveNoteFiltersToFile, setNoteFilters } from 'actions/NoteFilterActions';
-import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
+import { updateProcess } from 'actions/ThreadActions';
 import { loadSettingsFromFile, loadSettingsFromServer, saveSettingsToFile } from 'actions/SettingActions';
 import { cleanTasks, loadTasksFromFile, loadTasksFromServer, saveTasksToFile, setTasks } from 'actions/TaskActions';
 import { cleanTaskFields, loadTaskFieldsFromFile, loadTaskFieldsFromServer, saveTaskFieldsToFile, setTaskFields } from 'actions/TaskFieldActions';
@@ -51,8 +51,6 @@ export function _loadDataFromFile(path, options) {
     }, options || {});
 
     return async (dispatch, getState) => {
-        await dispatch(checkIsBusy());
-
         const processId = uuid();
 
         dispatch(updateProcess({
@@ -122,8 +120,6 @@ export function _loadDataFromServer(options) {
     }, options || {});
 
     return async (dispatch, getState) => {
-        await dispatch(checkIsBusy());
-
         const processId = uuid();
 
         dispatch(updateProcess({
@@ -195,8 +191,6 @@ export function _saveDataToFile(path, options) {
     }, options || {});
 
     return async (dispatch, getState) => {
-        await checkIsBusy();
-
         const processId = uuid();
         const state = getState();
 

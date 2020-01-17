@@ -4,7 +4,7 @@ import moment from 'moment';
 import uuid from 'uuid/v4';
 import { resetData } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
-import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
+import { updateProcess } from 'actions/ThreadActions';
 import { getToodledoAccountInfo } from 'actions/synchronization/toodledo/ToodledoAccountInfoActions';
 import { authorize, createToken, refreshToken } from 'actions/synchronization/toodledo/ToodledoAuthorizationActions';
 import { synchronizeContexts } from 'actions/synchronization/toodledo/ToodledoContextActions';
@@ -38,8 +38,6 @@ async function getAuthorizationCode() {
 
 export function synchronizeWithToodledo() {
     return async (dispatch, getState) => {
-        await dispatch(checkIsBusy());
-
         const processId = uuid();
 
         try {

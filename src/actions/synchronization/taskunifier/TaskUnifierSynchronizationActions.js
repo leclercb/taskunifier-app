@@ -4,7 +4,7 @@ import moment from 'moment';
 import uuid from 'uuid/v4';
 import { resetData } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
-import { checkIsBusy, updateProcess } from 'actions/ThreadActions';
+import { updateProcess } from 'actions/ThreadActions';
 import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
 import { authorize, createToken, refreshToken } from 'actions/synchronization/taskunifier/TaskUnifierAuthorizationActions';
 import { synchronizeContacts } from 'actions/synchronization/taskunifier/TaskUnifierContactActions';
@@ -68,8 +68,6 @@ export function connectToTaskUnifier() {
 
 export function synchronizeWithTaskUnifier() {
     return async dispatch => {
-        await dispatch(checkIsBusy());
-
         const processId = uuid();
 
         try {
