@@ -1,12 +1,20 @@
 import uuid from 'uuid/v4';
 import { isBusy } from 'selectors/ThreadSelectors';
 
-export function checkIsBusy() {
+export function checkIsBusy(fn = null, silent = false) {
     return async (dispatch, getState) => {
         const state = getState();
 
         if (isBusy(state)) {
-            // TODO throw Error('Another process is currently running');
+            if (!silent) {
+                throw Error('Another process is currently running');
+            }
+
+            return;
+        }
+
+        if (fn) {
+            return fn();
         }
     };
 }
