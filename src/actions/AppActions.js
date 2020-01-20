@@ -1,6 +1,7 @@
+import JSZip from 'jszip';
 import moment from 'moment';
 import uuid from 'uuid/v4';
-import { createDirectory, getUserDataPath } from 'actions/ActionUtils';
+import { createDirectory, getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile, setContexts } from 'actions/ContextActions';
 import { cleanFolders, loadFoldersFromFile, loadFoldersFromServer, saveFoldersToFile, setFolders } from 'actions/FolderActions';
@@ -47,7 +48,8 @@ export function loadDataFromFile(options) {
 
 export function _loadDataFromFile(path, options) {
     options = merge({
-        skipSettings: false
+        skipSettings: false,
+        zip: false
     }, options || {});
 
     return async (dispatch, getState) => {
@@ -69,23 +71,42 @@ export function _loadDataFromFile(path, options) {
                 path = getState().settings.dataFolder;
             }
 
+            let zip = null;
+
+            if (options.zip) {
+                zip = new JSZip();
+                await zip.loadAsync(await readBufferFromFile(join(path, 'data.zip')));
+            }
+
+            const getFile = name => {
+                if (options.zip) {
+                    return {
+                        type: 'zip',
+                        zip,
+                        name
+                    };
+                }
+
+                return join(path, name);
+            };
+
             const promises = [
-                dispatch(loadContactsFromFile(join(path, 'contacts.json'))),
-                dispatch(loadContextsFromFile(join(path, 'contexts.json'))),
-                dispatch(loadFoldersFromFile(join(path, 'folders.json'))),
-                dispatch(loadGoalsFromFile(join(path, 'goals.json'))),
-                dispatch(loadLocationsFromFile(join(path, 'locations.json'))),
-                dispatch(loadNotesFromFile(join(path, 'notes.json'))),
-                dispatch(loadNoteFieldsFromFile(join(path, 'noteFields.json'))),
-                dispatch(loadNoteFiltersFromFile(join(path, 'noteFilters.json'))),
-                dispatch(loadTasksFromFile(join(path, 'tasks.json'))),
-                dispatch(loadTaskFieldsFromFile(join(path, 'taskFields.json'))),
-                dispatch(loadTaskFiltersFromFile(join(path, 'taskFilters.json'))),
-                dispatch(loadTaskTemplatesFromFile(join(path, 'taskTemplates.json')))
+                dispatch(loadContactsFromFile(getFile('contacts.json'))),
+                dispatch(loadContextsFromFile(getFile('contexts.json'))),
+                dispatch(loadFoldersFromFile(getFile('folders.json'))),
+                dispatch(loadGoalsFromFile(getFile('goals.json'))),
+                dispatch(loadLocationsFromFile(getFile('locations.json'))),
+                dispatch(loadNotesFromFile(getFile('notes.json'))),
+                dispatch(loadNoteFieldsFromFile(getFile('noteFields.json'))),
+                dispatch(loadNoteFiltersFromFile(getFile('noteFilters.json'))),
+                dispatch(loadTasksFromFile(getFile('tasks.json'))),
+                dispatch(loadTaskFieldsFromFile(getFile('taskFields.json'))),
+                dispatch(loadTaskFiltersFromFile(getFile('taskFilters.json'))),
+                dispatch(loadTaskTemplatesFromFile(getFile('taskTemplates.json')))
             ];
 
             if (!options.skipSettings) {
-                promises.unshift(dispatch(loadSettingsFromFile(join(path, 'settings.json'))));
+                promises.unshift(dispatch(loadSettingsFromFile(getFile('settings.json'))));
             }
 
             await Promise.all(promises);
@@ -187,7 +208,8 @@ export function _saveDataToFile(path, options) {
     options = merge({
         coreSettingsOnly: false,
         clean: false,
-        message: null
+        message: null,
+        zip: false
     }, options || {});
 
     return async (dispatch, getState) => {
@@ -220,25 +242,55 @@ export function _saveDataToFile(path, options) {
                 dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true)))
             ];
 
+            let zip = null;
+
             if (!options.coreSettingsOnly) {
+                if (options.zip) {
+                    zip = new JSZip();
+                }
+
+                const getFile = name => {
+                    if (options.zip) {
+                        return {
+                            type: 'zip',
+                            zip,
+                            name
+                        };
+                    }
+
+                    return join(path, name);
+                };
+
                 promises.push(
-                    dispatch(saveSettingsToFile(join(path, 'settings.json'), filterSettings(getSettings(state), false))),
-                    dispatch(saveContactsToFile(join(path, 'contacts.json'), getContacts(state))),
-                    dispatch(saveContextsToFile(join(path, 'contexts.json'), getContexts(state))),
-                    dispatch(saveFoldersToFile(join(path, 'folders.json'), getFolders(state))),
-                    dispatch(saveGoalsToFile(join(path, 'goals.json'), getGoals(state))),
-                    dispatch(saveLocationsToFile(join(path, 'locations.json'), getLocations(state))),
-                    dispatch(saveNotesToFile(join(path, 'notes.json'), getNotes(state))),
-                    dispatch(saveNoteFieldsToFile(join(path, 'noteFields.json'), getNoteFields(state))),
-                    dispatch(saveNoteFiltersToFile(join(path, 'noteFilters.json'), getNoteFilters(state))),
-                    dispatch(saveTasksToFile(join(path, 'tasks.json'), getTasks(state))),
-                    dispatch(saveTaskFieldsToFile(join(path, 'taskFields.json'), getTaskFields(state))),
-                    dispatch(saveTaskFiltersToFile(join(path, 'taskFilters.json'), getTaskFilters(state))),
-                    dispatch(saveTaskTemplatesToFile(join(path, 'taskTemplates.json'), getTaskTemplates(state)))
+                    dispatch(saveSettingsToFile(getFile('settings.json'), filterSettings(getSettings(state), false))),
+                    dispatch(saveContactsToFile(getFile('contacts.json'), getContacts(state))),
+                    dispatch(saveContextsToFile(getFile('contexts.json'), getContexts(state))),
+                    dispatch(saveFoldersToFile(getFile('folders.json'), getFolders(state))),
+                    dispatch(saveGoalsToFile(getFile('goals.json'), getGoals(state))),
+                    dispatch(saveLocationsToFile(getFile('locations.json'), getLocations(state))),
+                    dispatch(saveNotesToFile(getFile('notes.json'), getNotes(state))),
+                    dispatch(saveNoteFieldsToFile(getFile('noteFields.json'), getNoteFields(state))),
+                    dispatch(saveNoteFiltersToFile(getFile('noteFilters.json'), getNoteFilters(state))),
+                    dispatch(saveTasksToFile(getFile('tasks.json'), getTasks(state))),
+                    dispatch(saveTaskFieldsToFile(getFile('taskFields.json'), getTaskFields(state))),
+                    dispatch(saveTaskFiltersToFile(getFile('taskFilters.json'), getTaskFilters(state))),
+                    dispatch(saveTaskTemplatesToFile(getFile('taskTemplates.json'), getTaskTemplates(state)))
                 );
             }
 
             await Promise.all(promises);
+
+            if (!options.coreSettingsOnly && options.zip) {
+                const zipContent = await zip.generateAsync({
+                    type: 'nodebuffer',
+                    compression: 'DEFLATE',
+                    compressionOptions: {
+                        level: 9
+                    }
+                });
+
+                await saveBufferToFile(join(path, 'data.zip'), zipContent);
+            }
 
             dispatch(updateProcess({
                 id: processId,

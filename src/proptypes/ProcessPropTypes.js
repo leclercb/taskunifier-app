@@ -5,5 +5,8 @@ export const ProcessPropType = PropTypes.shape({
     state: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     notify: PropTypes.bool,
-    error: PropTypes.string
+    error: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string.isRequired)
+    ])
 });

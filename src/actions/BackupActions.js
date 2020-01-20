@@ -4,7 +4,7 @@ import { deleteDirectory, getDirectories, getPathSeparator } from 'actions/Actio
 import { _loadDataFromFile, _saveDataToFile } from 'actions/AppActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
-import { join } from 'utils/ElectronUtils';
+import { exists, join } from 'utils/ElectronUtils';
 
 export function getBackupId(directory) {
     return directory.substr(directory.lastIndexOf(getPathSeparator()) + 1);
@@ -18,16 +18,26 @@ export async function getBackups(settings) {
 }
 
 export function restoreBackup(backupId) {
-    return (dispatch, getState) => {
+    return async (dispatch, getState) => {
         const path = join(getState().settings.dataFolder, 'backups', backupId);
-        return dispatch(_loadDataFromFile(path, { skipSettings: true }));
+
+        let zip;
+
+        try {
+            await exists(join(path, 'data.zip'));
+            zip = true;
+        } catch (e) {
+            zip = false;
+        }
+
+        return dispatch(_loadDataFromFile(path, { skipSettings: true, zip }));
     };
 }
 
 export function backupData() {
     return async (dispatch, getState) => {
         const path = join(getState().settings.dataFolder, 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]'));
-        await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database' }));
+        await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database', zip: true }));
         await dispatch(cleanBackups());
     };
 }

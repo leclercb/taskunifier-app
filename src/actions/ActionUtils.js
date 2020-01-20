@@ -18,6 +18,22 @@ import {
 } from 'utils/ElectronUtils';
 import { merge } from 'utils/ObjectUtils';
 
+/**
+ * Loads the data from the provided file.
+ * 
+ * The file can be a string or an object.
+ * 
+ * If the file is a string, it has to contain the path and the name of the file.
+ * If the file is an object, it has to contain a property called "type".
+ * 
+ * If the "type" property equals "zip", then the object has to contain the following properties:
+ * - type: "zip"
+ * - zip: the zip instance
+ * - name: the name of the file to read in the zip object
+ * 
+ * @param {*} property The name of the property being loaded
+ * @param {*} file A string or an object
+ */
 export function loadFromFile(property, file) {
     return async dispatch => {
         const processId = uuid();
@@ -29,7 +45,20 @@ export function loadFromFile(property, file) {
         }));
 
         try {
-            await exists(file);
+            if (typeof file === 'string') {
+                await exists(file);
+            } else {
+                switch (file.type) {
+                    case 'zip':
+                        if (!file.zip.file(file.name)) {
+                            throw new Error('File is missing');
+                        }
+
+                        break;
+                    default:
+                        throw new Error('Unsupported Operation');
+                }
+            }
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
@@ -40,7 +69,19 @@ export function loadFromFile(property, file) {
         }
 
         try {
-            const data = await readFile(file, 'utf-8');
+            let data = null;
+
+            if (typeof file === 'string') {
+                data = await readFile(file, 'utf8');
+            } else {
+                switch (file.type) {
+                    case 'zip':
+                        data = await file.zip.file(file.name).async('string');
+                        break;
+                    default:
+                        throw new Error('Unsupported Operation');
+                }
+            }
 
             dispatch(updateProcess({
                 id: processId,
@@ -108,6 +149,23 @@ export function loadFromServer(property, options, params) {
     };
 }
 
+/**
+ * Saves the provided data into the file.
+ * 
+ * The file can be a string or an object.
+ * 
+ * If the file is a string, it has to contain the path and the name of the file.
+ * If the file is an object, it has to contain a property called "type".
+ * 
+ * If the "type" property equals "zip", then the object has to contain the following properties:
+ * - type: "zip"
+ * - zip: the zip instance
+ * - name: the name of the file to create in the zip object
+ * 
+ * @param {*} property The name of the property being saved
+ * @param {*} file A string or an object
+ * @param {*} data The data to save
+ */
 export function saveToFile(property, file, data) {
     return async dispatch => {
         const processId = uuid();
@@ -119,7 +177,19 @@ export function saveToFile(property, file, data) {
         }));
 
         try {
-            await writeFile(file, JSON.stringify(data, null, 4));
+            const content = JSON.stringify(data, null, 4);
+
+            if (typeof file === 'string') {
+                await writeFile(file, content);
+            } else {
+                switch (file.type) {
+                    case 'zip':
+                        file.zip.file(file.name, content);
+                        break;
+                    default:
+                        throw new Error('Unsupported Operation');
+                }
+            }
 
             dispatch(updateProcess({
                 id: processId,
@@ -135,6 +205,10 @@ export function saveToFile(property, file, data) {
             throw error;
         }
     };
+}
+
+export async function readBufferFromFile(file) {
+    return await readFile(file);
 }
 
 export async function saveBufferToFile(file, buffer) {

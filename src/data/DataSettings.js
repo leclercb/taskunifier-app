@@ -580,8 +580,10 @@ export function getCategories() {
                             okText: 'Restore',
                             onOk: () => {
                                 if (selectedBackup) {
-                                    dispatch(restoreBackup(selectedBackup));
+                                    return dispatch(restoreBackup(selectedBackup));
                                 }
+
+                                return null;
                             }
                         });
                     },
