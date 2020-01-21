@@ -1,11 +1,11 @@
 import sortBy from 'lodash/sortBy';
 import uuid from 'uuid/v4';
-import { createDirectory, saveBufferToFile } from 'actions/ActionUtils';
+import { saveBufferToFile } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { join } from 'utils/ElectronUtils';
+import { ensureDir, join } from 'utils/ElectronUtils';
 import { printDocument, printTable } from 'utils/PrintUtils';
 
 export function printNotes(notes) {
@@ -66,7 +66,7 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
             const path = join(getSettings(state).dataFolder, 'temp');
             const file = join(path, fileName);
 
-            await createDirectory(path);
+            await ensureDir(path);
             await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));
             ipcRenderer.send('pdf-viewer', file);
         } else {

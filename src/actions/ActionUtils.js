@@ -5,15 +5,11 @@ import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
 import { getErrorMessages } from 'utils/CloudUtils';
 import {
-    ensureDir,
     exists,
     getPath,
-    join,
-    lstat,
     readFile,
     readdir,
     remove,
-    sep,
     writeFile
 } from 'utils/ElectronUtils';
 import { merge } from 'utils/ObjectUtils';
@@ -215,10 +211,6 @@ export async function saveBufferToFile(file, buffer) {
     await writeFile(file, buffer);
 }
 
-export function getPathSeparator() {
-    return sep;
-}
-
 export function getUserDataPath() {
     if (process.env.REACT_APP_MODE === 'electron') {
         return getPath('userData');
@@ -227,21 +219,11 @@ export function getUserDataPath() {
     return null;
 }
 
-export async function getDirectories(path) {
-    const paths = (await readdir(path)).map(name => join(path, name));
-    const lstats = await Promise.all(paths.map(path => lstat(path)));
-    return paths.filter((item, i) => lstats[i].isDirectory());
+export async function readDirectory(path) {
+    return await readdir(path);
 }
 
-export async function createDirectory(path) {
-    try {
-        await exists(path);
-    } catch (error) {
-        await ensureDir(path);
-    }
-}
-
-export async function deleteDirectory(path, dataFolder) {
+export async function deletePath(path, dataFolder) {
     if (path && (path.startsWith(getUserDataPath()) || path.startsWith(dataFolder))) {
         await remove(path);
     }

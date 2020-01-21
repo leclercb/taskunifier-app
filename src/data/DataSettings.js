@@ -4,7 +4,7 @@ import moment from 'moment';
 import uuid from 'uuid/v4';
 import { getUserDataPath } from 'actions/ActionUtils';
 import { loadData, saveData, setAccountManagerOptions, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
-import { getBackups, restoreBackup } from 'actions/BackupActions';
+import { getBackupIds, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
 import { updateProcess } from 'actions/ThreadActions';
@@ -563,14 +563,14 @@ export function getCategories() {
                     title: 'Restore from backup',
                     type: 'button',
                     value: async (settings, updateSettings, dispatch) => {
-                        const backups = await getBackups(settings);
+                        const backupIds = await getBackupIds(settings);
                         let selectedBackup = null;
 
                         Modal.confirm({
                             title: 'Restore from backup',
                             content: (
                                 <Select onChange={value => selectedBackup = value} style={{ width: 200 }}>
-                                    {backups.map(backup => (
+                                    {backupIds.map(backup => (
                                         <Select.Option key={backup} value={backup}>
                                             {moment(backup).format(`${settings.dateFormat} ${settings.timeFormat}`)}
                                         </Select.Option>

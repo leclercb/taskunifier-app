@@ -5,6 +5,14 @@ const path = electron ? electron.remote.require('path') : null;
 
 export const sep = path ? path.sep : '/';
 
+export function basename(p) {
+    return path.basename(p);
+}
+
+export function dirname(p) {
+    return path.dirname(p);
+}
+
 export function exists(path) {
     return fse.access(path, fse.constants.F_OK);
 }

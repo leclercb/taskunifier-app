@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import moment from 'moment';
 import uuid from 'uuid/v4';
-import { createDirectory, getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
+import { getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile, setContexts } from 'actions/ContextActions';
 import { cleanFolders, loadFoldersFromFile, loadFoldersFromServer, saveFoldersToFile, setFolders } from 'actions/FolderActions';
@@ -30,7 +30,7 @@ import { getTasks } from 'selectors/TaskSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getTaskFilters, getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
-import { join } from 'utils/ElectronUtils';
+import { dirname, ensureDir, join } from 'utils/ElectronUtils';
 import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
 
@@ -68,6 +68,10 @@ export function _loadDataFromFile(path, options) {
             }
 
             if (!path) {
+                if (options.zip) {
+                    throw new Error('The path is missing');
+                }
+
                 path = getState().settings.dataFolder;
             }
 
@@ -75,7 +79,7 @@ export function _loadDataFromFile(path, options) {
 
             if (options.zip) {
                 zip = new JSZip();
-                await zip.loadAsync(await readBufferFromFile(join(path, 'data.zip')));
+                await zip.loadAsync(await readBufferFromFile(path));
             }
 
             const getFile = name => {
@@ -225,10 +229,18 @@ export function _saveDataToFile(path, options) {
 
         try {
             if (!path) {
+                if (options.zip) {
+                    throw new Error('The path is missing');
+                }
+
                 path = getState().settings.dataFolder;
             }
 
-            await createDirectory(path);
+            if (options.zip) {
+                await ensureDir(dirname(path));
+            } else {
+                await ensureDir(path);
+            }
 
             if (options.clean === true) {
                 try {
@@ -289,7 +301,7 @@ export function _saveDataToFile(path, options) {
                     }
                 });
 
-                await saveBufferToFile(join(path, 'data.zip'), zipContent);
+                await saveBufferToFile(path, zipContent);
             }
 
             dispatch(updateProcess({
