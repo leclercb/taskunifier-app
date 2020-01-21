@@ -31,7 +31,7 @@ import FileField from 'components/common/FileField';
 import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getSelectedTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { lstat } from 'utils/ElectronUtils';
@@ -83,6 +83,10 @@ export function initializeShortcuts() {
 
         ipcRenderer.on('menu-add-task', async () => {
             await executeAddTask();
+        });
+
+        ipcRenderer.on('menu-add-sub-task', async () => {
+            await executeAddSubTask();
         });
 
         ipcRenderer.on('menu-batch-add-tasks', async () => {
@@ -144,6 +148,11 @@ export function initializeShortcuts() {
 
         Mousetrap.bind(['command+alt+t', 'ctrl+shift+t'], async () => {
             await executeAddTask();
+            return false;
+        });
+
+        Mousetrap.bind(['command+alt+y', 'ctrl+shift+y'], async () => {
+            await executeAddSubTask();
             return false;
         });
 
@@ -272,7 +281,7 @@ async function executeNoteFieldManager() {
     await store.dispatch(setNoteFieldManagerOptions({ visible: true }));
 }
 
-async function executeAddTask() {
+async function executeAddTask(callback = null) {
     const state = store.getState();
 
     await store.dispatch(setSelectedView('task'));
@@ -281,6 +290,10 @@ async function executeAddTask() {
 
     applyTaskTemplate(getDefaultTaskTemplate(state), task, getTaskFieldsIncludingDefaults(state));
     applyTaskTemplateFromTaskFilter(getSelectedTaskFilter(state), getTaskTemplatesFilteredByVisibleState(state), task, getTaskFieldsIncludingDefaults(state));
+
+    if (callback) {
+        callback(task);
+    }
 
     task = await store.dispatch(addTask(task));
     await store.dispatch(setSelectedTaskIds(task.id));
@@ -292,6 +305,22 @@ async function executeAddTask() {
         }));
     } else {
         await store.dispatch(setEditingCell(task.id, 'title'));
+    }
+}
+
+async function executeAddSubTask() {
+    const selectedTasks = getSelectedTasks(store.getState());
+
+    if (selectedTasks.length === 1) {
+        await executeAddTask(task => {
+            task.parent = selectedTasks[0].id;
+            task.context = selectedTasks[0].context;
+            task.folder = selectedTasks[0].folder;
+            task.goal = selectedTasks[0].goal;
+            task.location = selectedTasks[0].location;
+        });
+    } else {
+        message.error('Please select one task');
     }
 }
 

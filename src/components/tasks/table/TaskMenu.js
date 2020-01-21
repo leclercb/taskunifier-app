@@ -64,6 +64,10 @@ function TaskMenu({ selectedTasks, children }) {
         applyTaskTemplateFromTaskFilter(taskApi.selectedTaskFilter, taskTemplateApi.taskTemplates, task, taskFieldApi.taskFields);
 
         task.parent = selectedTasks[0].id;
+        task.context = selectedTasks[0].context;
+        task.folder = selectedTasks[0].folder;
+        task.goal = selectedTasks[0].goal;
+        task.location = selectedTasks[0].location;
 
         task = await taskApi.addTask(task);
         taskApi.setSelectedTaskIds(task.id);

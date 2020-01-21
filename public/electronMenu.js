@@ -116,6 +116,13 @@ const template = [
                 }
             },
             {
+                label: 'Add Sub-Task',
+                accelerator: process.platform === 'darwin' ? 'Cmd+Alt+Y' : 'Ctrl+Shift+Y',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-add-sub-task');
+                }
+            },
+            {
                 label: 'Batch Add Tasks',
                 accelerator: process.platform === 'darwin' ? 'Cmd+Alt+B' : 'Ctrl+Shift+B',
                 click: async () => {
