@@ -3,6 +3,7 @@
 ## New Features
 
 * Show "total until now" in work log tab
+* Import/export data (#119)
 * Show next save/backup/synchronization date (#121)
 * Add line between rows in task table (#127)
 * Synchronize note/task filters and task templates with TaskUnifier Cloud
