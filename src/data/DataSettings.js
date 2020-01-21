@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Checkbox, Modal, Select, notification } from 'antd';
+import { Alert, Checkbox, Modal, Select, message, notification } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import { getUserDataPath } from 'actions/ActionUtils';
@@ -116,6 +116,11 @@ export function getCategories() {
                                 <React.Fragment>
                                     <FileField
                                         onChange={value => dataFolder = value}
+                                        options={{
+                                            properties: [
+                                                'openDirectory'
+                                            ]
+                                        }}
                                         style={{
                                             width: 400,
                                             marginBottom: 10
@@ -130,10 +135,14 @@ export function getCategories() {
                             ),
                             okText: 'Change',
                             onOk: async () => {
-                                await dispatch(saveData());
-                                await updateSettings({ dataFolder });
-                                await dispatch(saveData({ coreSettingsOnly: !copy }));
-                                await dispatch(loadData());
+                                if (dataFolder) {
+                                    await dispatch(saveData());
+                                    await updateSettings({ dataFolder });
+                                    await dispatch(saveData({ coreSettingsOnly: !copy }));
+                                    await dispatch(loadData());
+                                } else {
+                                    message.error('Please select a data folder');
+                                }
                             },
                             width: 500
                         });

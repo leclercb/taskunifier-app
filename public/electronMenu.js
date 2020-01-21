@@ -36,6 +36,19 @@ const template = [
             },
             { type: 'separator' },
             {
+                label: 'Import Data',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-import-data');
+                }
+            },
+            {
+                label: 'Export Data',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-export-data');
+                }
+            },
+            { type: 'separator' },
+            {
                 label: 'Settings',
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-settings');
