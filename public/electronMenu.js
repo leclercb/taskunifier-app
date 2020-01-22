@@ -36,6 +36,19 @@ const template = [
             },
             { type: 'separator' },
             {
+                label: 'Import Data',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-import-data');
+                }
+            },
+            {
+                label: 'Export Data',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-export-data');
+                }
+            },
+            { type: 'separator' },
+            {
                 label: 'Settings',
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-settings');
@@ -100,6 +113,13 @@ const template = [
                 accelerator: process.platform === 'darwin' ? 'Cmd+Alt+T' : 'Ctrl+Shift+T',
                 click: async () => {
                     BrowserWindow.getFocusedWindow().webContents.send('menu-add-task');
+                }
+            },
+            {
+                label: 'Add Sub-Task',
+                accelerator: process.platform === 'darwin' ? 'Cmd+Alt+Y' : 'Ctrl+Shift+Y',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-add-sub-task');
                 }
             },
             {

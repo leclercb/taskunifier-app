@@ -123,8 +123,13 @@ ipcMain.on('get-version', event => {
 });
 
 ipcMain.on('show-open-dialog', async (event, options) => {
-    const filePaths = await dialog.showOpenDialog(options);
-    mainWindow.webContents.send('file-paths-selected', filePaths);
+    const result = await dialog.showOpenDialog(options);
+    mainWindow.webContents.send('file-paths-selected', result);
+});
+
+ipcMain.on('show-save-dialog', async (event, options) => {
+    const result = await dialog.showSaveDialog(options);
+    mainWindow.webContents.send('file-paths-selected', result);
 });
 
 ipcMain.on('open-file', (event, file) => {

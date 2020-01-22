@@ -173,25 +173,35 @@ function NoteSider() {
                         key="general"
                         title={<Icon icon="home" text="General" />}
                         onTitleClick={({ key }) => onOpenChange(key)}>
-                        {getGeneralNoteFilters().map(noteFilter => (
+                        {getGeneralNoteFilters().filter(filter => settingsApi.settings['noteFilterVisible_' + filter.id] !== false).map(filter => (
                             <Menu.Item
-                                key={noteFilter.id}
-                                filter={noteFilter}>
+                                key={filter.id}
+                                filter={filter}>
                                 <LeftRight right={(
                                     <React.Fragment>
                                         <Icon
                                             icon="info-circle"
                                             color={Constants.fadeIconColor}
                                             className="object-actions"
-                                            onClick={() => setSelectedNoteFilterInfo(noteFilter)} />
-                                        {createBadge(noteFilter)}
+                                            onClick={() => setSelectedNoteFilterInfo(filter)} />
+                                        {createBadge(filter)}
                                     </React.Fragment>
                                 )}>
                                     <Icon
-                                        icon={noteFilter.icon}
-                                        color={noteFilter.color}
-                                        text={noteFilter.title} />
+                                        icon={filter.icon}
+                                        color={filter.color}
+                                        text={filter.title} />
                                 </LeftRight>
+                            </Menu.Item>
+                        ))}
+                        {noteFilterApi.noteFilters.filter(filter => filter.directory === 'general').map(filter => (
+                            <Menu.Item key={filter.id} filter={filter}>
+                                <ObjectMenuItem
+                                    badge={createBadge(filter)}
+                                    object={filter}
+                                    onManage={() => manageNoteFilters()}
+                                    onEdit={() => editNoteFilter(filter.id)}
+                                    onDelete={() => noteFilterApi.deleteNoteFilter(filter.id)} />
                             </Menu.Item>
                         ))}
                     </Menu.SubMenu>
@@ -241,14 +251,14 @@ function NoteSider() {
                     <Menu.SubMenu
                         key="noteFilters"
                         title={createCategorySubMenu('Note Filters', 'filter', () => manageNoteFilters(), () => onOpenChange('noteFilters'))}>
-                        {noteFilterApi.noteFilters.map(noteFilter => (
-                            <Menu.Item key={noteFilter.id} filter={noteFilter}>
+                        {noteFilterApi.noteFilters.filter(filter => filter.directory !== 'general').map(filter => (
+                            <Menu.Item key={filter.id} filter={filter}>
                                 <ObjectMenuItem
-                                    badge={createBadge(noteFilter)}
-                                    object={noteFilter}
+                                    badge={createBadge(filter)}
+                                    object={filter}
                                     onManage={() => manageNoteFilters()}
-                                    onEdit={() => editNoteFilter(noteFilter.id)}
-                                    onDelete={() => noteFilterApi.deleteNoteFilter(noteFilter.id)} />
+                                    onEdit={() => editNoteFilter(filter.id)}
+                                    onDelete={() => noteFilterApi.deleteNoteFilter(filter.id)} />
                             </Menu.Item>
                         ))}
                     </Menu.SubMenu>

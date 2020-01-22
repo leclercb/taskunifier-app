@@ -45,10 +45,16 @@ class FileField extends React.Component {
         const { ipcRenderer } = window.require('electron');
 
         ipcRenderer.once('file-paths-selected', (event, message) => {
-            const files = message.filePaths;
+            let filePath;
 
-            if (files && files.length === 1) {
-                this.onChange(files[0]);
+            if (this.props.type === 'save') {
+                filePath = message.filePath;
+            } else {
+                filePath = message.filePaths && message.filePaths.length === 1 ? message.filePaths[0] : null;
+            }
+
+            if (!message.canceled && filePath) {
+                this.onChange(filePath);
 
                 if (this.props.onPressEnter) {
                     this.props.onPressEnter();
@@ -60,11 +66,7 @@ class FileField extends React.Component {
             }, 200);
         });
 
-        ipcRenderer.send('show-open-dialog', {
-            properties: [
-                'openFile'
-            ]
-        });
+        ipcRenderer.send(this.props.type === 'save' ? 'show-save-dialog' : 'show-open-dialog', this.props.options);
     }
 
     render() {
@@ -113,7 +115,18 @@ FileField.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
     onBlur: PropTypes.func,
-    onPressEnter: PropTypes.func
+    onPressEnter: PropTypes.func,
+    type: PropTypes.oneOf(['open', 'save']).isRequired,
+    options: PropTypes.object
+};
+
+FileField.defaultProps = {
+    type: 'open',
+    options: {
+        properties: [
+            'openFile'
+        ]
+    }
 };
 
 export default FileField;

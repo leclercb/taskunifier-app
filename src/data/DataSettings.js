@@ -1,10 +1,10 @@
 import React from 'react';
-import { Alert, Checkbox, Modal, Select, notification } from 'antd';
+import { Alert, Checkbox, Modal, Select, message, notification } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import { getUserDataPath } from 'actions/ActionUtils';
 import { loadData, saveData, setAccountManagerOptions, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
-import { getBackups, restoreBackup } from 'actions/BackupActions';
+import { getBackupIds, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
 import { updateProcess } from 'actions/ThreadActions';
@@ -13,11 +13,11 @@ import { connectToTaskUnifier } from 'actions/synchronization/taskunifier/TaskUn
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
-import { getDefaultNoteSorters } from 'data/DataNoteFilters';
+import { getDefaultNoteSorters, getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getNoteSorterFields } from 'data/DataNoteSorterFields';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
-import { getDefaultTaskSorters } from 'data/DataTaskFilters';
+import { getDefaultSelectedTaskFilter, getDefaultTaskSorters } from 'data/DataTaskFilters';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
@@ -63,10 +63,18 @@ export function getCategorySettings(category, options = {}) {
 
     const settings = [...category.settings];
 
-    const { noteFields, taskFields } = options;
+    const { generalNoteFilters, noteFields, generalTaskFilters, taskFields } = options;
+
+    if (category.type === 'generalNoteFilter' && generalNoteFilters) {
+        generalNoteFilters.forEach(filter => settings.push(category.createSetting(filter)));
+    }
 
     if (category.type === 'noteField' && noteFields) {
         noteFields.forEach(field => settings.push(category.createSetting(field)));
+    }
+
+    if (category.type === 'generalTaskFilter' && generalTaskFilters) {
+        generalTaskFilters.forEach(filter => settings.push(category.createSetting(filter)));
     }
 
     if (category.type === 'taskField' && taskFields) {
@@ -116,6 +124,11 @@ export function getCategories() {
                                 <React.Fragment>
                                     <FileField
                                         onChange={value => dataFolder = value}
+                                        options={{
+                                            properties: [
+                                                'openDirectory'
+                                            ]
+                                        }}
                                         style={{
                                             width: 400,
                                             marginBottom: 10
@@ -130,10 +143,14 @@ export function getCategories() {
                             ),
                             okText: 'Change',
                             onOk: async () => {
-                                await dispatch(saveData());
-                                await updateSettings({ dataFolder });
-                                await dispatch(saveData({ coreSettingsOnly: !copy }));
-                                await dispatch(loadData());
+                                if (dataFolder) {
+                                    await dispatch(saveData());
+                                    await updateSettings({ dataFolder });
+                                    await dispatch(saveData({ coreSettingsOnly: !copy }));
+                                    await dispatch(loadData());
+                                } else {
+                                    message.error('Please select a data folder');
+                                }
                             },
                             width: 500
                         });
@@ -563,14 +580,14 @@ export function getCategories() {
                     title: 'Restore from backup',
                     type: 'button',
                     value: async (settings, updateSettings, dispatch) => {
-                        const backups = await getBackups(settings);
+                        const backupIds = await getBackupIds(settings);
                         let selectedBackup = null;
 
                         Modal.confirm({
                             title: 'Restore from backup',
                             content: (
                                 <Select onChange={value => selectedBackup = value} style={{ width: 200 }}>
-                                    {backups.map(backup => (
+                                    {backupIds.map(backup => (
                                         <Select.Option key={backup} value={backup}>
                                             {moment(backup).format(`${settings.dateFormat} ${settings.timeFormat}`)}
                                         </Select.Option>
@@ -580,8 +597,10 @@ export function getCategories() {
                             okText: 'Restore',
                             onOk: () => {
                                 if (selectedBackup) {
-                                    dispatch(restoreBackup(selectedBackup));
+                                    return dispatch(restoreBackup(selectedBackup));
                                 }
+
+                                return null;
                             }
                         });
                     },
@@ -722,20 +741,6 @@ export function getCategories() {
             ]
         },
         {
-            id: 'taskTemplates',
-            title: 'Task templates',
-            icon: 'tasks',
-            settings: [
-                {
-                    id: 'defaultTaskTemplate',
-                    title: 'Default task template',
-                    type: 'taskTemplate',
-                    value: null,
-                    editable: true
-                }
-            ]
-        },
-        {
             id: 'noteTable',
             title: 'Note table',
             icon: 'table',
@@ -789,6 +794,20 @@ export function getCategories() {
                 type: 'boolean',
                 value: true,
                 editable: true
+            })
+        },
+        {
+            id: 'noteFilters',
+            title: 'Note filters',
+            icon: 'filter',
+            type: 'generalNoteFilter',
+            settings: [],
+            createSetting: filter => ({
+                id: `noteFilterVisible_${filter.id}`,
+                title: `Show filter "${filter.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: getDefaultSelectedNoteFilter().id !== filter.id
             })
         },
         {
@@ -864,6 +883,20 @@ export function getCategories() {
             })
         },
         {
+            id: 'taskFilters',
+            title: 'Task filters',
+            icon: 'filter',
+            type: 'generalTaskFilter',
+            settings: [],
+            createSetting: filter => ({
+                id: `taskFilterVisible_${filter.id}`,
+                title: `Show filter "${filter.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: getDefaultSelectedTaskFilter().id !== filter.id
+            })
+        },
+        {
             id: 'taskFields',
             title: 'Task edition form',
             icon: 'columns',
@@ -918,6 +951,20 @@ export function getCategories() {
                 value: true,
                 editable: true
             })
+        },
+        {
+            id: 'taskTemplates',
+            title: 'Task templates',
+            icon: 'tasks',
+            settings: [
+                {
+                    id: 'defaultTaskTemplate',
+                    title: 'Default task template',
+                    type: 'taskTemplate',
+                    value: null,
+                    editable: true
+                }
+            ]
         },
         {
             id: 'sorter',

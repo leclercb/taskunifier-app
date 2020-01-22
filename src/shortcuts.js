@@ -1,7 +1,10 @@
-import { message } from 'antd';
+import React from 'react';
+import { Modal, message } from 'antd';
 import Mousetrap from 'mousetrap';
 import { store } from 'store/Store';
 import {
+    _loadDataFromFile,
+    _saveDataToFile,
     saveData,
     setBatchAddTasksManagerOptions,
     setBatchEditTasksManagerOptions,
@@ -24,12 +27,14 @@ import { printNotes, printTasks } from 'actions/PrintActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask } from 'actions/TaskActions';
+import FileField from 'components/common/FileField';
 import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { getSelectedTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
+import { lstat } from 'utils/ElectronUtils';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
 export function initializeShortcuts() {
@@ -42,6 +47,14 @@ export function initializeShortcuts() {
 
         ipcRenderer.on('menu-backup', async () => {
             await executeBackup();
+        });
+
+        ipcRenderer.on('menu-import-data', async () => {
+            await executeImportData();
+        });
+
+        ipcRenderer.on('menu-export-data', async () => {
+            await executeExportData();
         });
 
         ipcRenderer.on('menu-settings', async () => {
@@ -70,6 +83,10 @@ export function initializeShortcuts() {
 
         ipcRenderer.on('menu-add-task', async () => {
             await executeAddTask();
+        });
+
+        ipcRenderer.on('menu-add-sub-task', async () => {
+            await executeAddSubTask();
         });
 
         ipcRenderer.on('menu-batch-add-tasks', async () => {
@@ -134,6 +151,11 @@ export function initializeShortcuts() {
             return false;
         });
 
+        Mousetrap.bind(['command+alt+y', 'ctrl+shift+y'], async () => {
+            await executeAddSubTask();
+            return false;
+        });
+
         Mousetrap.bind(['command+alt+b', 'ctrl+shift+b'], async () => {
             await executeBatchAddTasks();
             return false;
@@ -152,6 +174,84 @@ async function executeSave() {
 
 async function executeBackup() {
     await store.dispatch(backupData());
+}
+
+async function executeImportData() {
+    let file = null;
+
+    Modal.confirm({
+        title: 'Import data',
+        content: (
+            <FileField
+                onChange={value => file = value}
+                options={{
+                    filters: [
+                        {
+                            name: 'Zip Files',
+                            extensions: ['zip']
+                        }
+                    ],
+                    properties: [
+                        'openFile'
+                    ]
+                }}
+                style={{
+                    width: 400,
+                    marginBottom: 10
+                }} />
+        ),
+        okText: 'Import',
+        onOk: async () => {
+            if (file) {
+                const fileStat = await lstat(file);
+
+                if (!fileStat.isFile()) {
+                    message.error('Please select a zip file');
+                    return;
+                }
+
+                await store.dispatch(backupData());
+                await store.dispatch(_loadDataFromFile(file, { zip: true }));
+            } else {
+                message.error('Please select a zip file');
+            }
+        },
+        width: 500
+    });
+}
+
+async function executeExportData() {
+    let file = null;
+
+    Modal.confirm({
+        title: 'Export data',
+        content: (
+            <FileField
+                onChange={value => file = value}
+                type="save"
+                options={{
+                    filters: [
+                        {
+                            name: 'Zip Files',
+                            extensions: ['zip']
+                        }
+                    ]
+                }}
+                style={{
+                    width: 400,
+                    marginBottom: 10
+                }} />
+        ),
+        okText: 'Export',
+        onOk: async () => {
+            if (file) {
+                await store.dispatch(_saveDataToFile(file, { zip: true }));
+            } else {
+                message.error('Please select a zip file');
+            }
+        },
+        width: 500
+    });
 }
 
 async function executeSettings() {
@@ -181,7 +281,7 @@ async function executeNoteFieldManager() {
     await store.dispatch(setNoteFieldManagerOptions({ visible: true }));
 }
 
-async function executeAddTask() {
+async function executeAddTask(callback = null) {
     const state = store.getState();
 
     await store.dispatch(setSelectedView('task'));
@@ -190,6 +290,10 @@ async function executeAddTask() {
 
     applyTaskTemplate(getDefaultTaskTemplate(state), task, getTaskFieldsIncludingDefaults(state));
     applyTaskTemplateFromTaskFilter(getSelectedTaskFilter(state), getTaskTemplatesFilteredByVisibleState(state), task, getTaskFieldsIncludingDefaults(state));
+
+    if (callback) {
+        callback(task);
+    }
 
     task = await store.dispatch(addTask(task));
     await store.dispatch(setSelectedTaskIds(task.id));
@@ -201,6 +305,22 @@ async function executeAddTask() {
         }));
     } else {
         await store.dispatch(setEditingCell(task.id, 'title'));
+    }
+}
+
+async function executeAddSubTask() {
+    const selectedTasks = getSelectedTasks(store.getState());
+
+    if (selectedTasks.length === 1) {
+        await executeAddTask(task => {
+            task.parent = selectedTasks[0].id;
+            task.context = selectedTasks[0].context;
+            task.folder = selectedTasks[0].folder;
+            task.goal = selectedTasks[0].goal;
+            task.location = selectedTasks[0].location;
+        });
+    } else {
+        message.error('Please select one task');
     }
 }
 

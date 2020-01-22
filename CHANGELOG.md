@@ -3,10 +3,14 @@
 ## New Features
 
 * Show "total until now" in work log tab
+* Move custom filters to the general directory (#100)
+* Import/export data (#119)
 * Show next save/backup/synchronization date (#121)
 * Add line between rows in task table (#127)
+* Improve "Add sub-task" action (#134)
 * Synchronize note/task filters and task templates with TaskUnifier Cloud
 * Show general note filter info
+* Compress backup files (#9)
 
 ## Bug Fixes
 

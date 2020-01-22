@@ -9,6 +9,7 @@ import {
     setObjects,
     updateObject
 } from 'actions/ObjectActions';
+import Constants from 'constants/Constants';
 
 export function loadNoteFiltersFromFile(file) {
     return loadObjectsFromFile('noteFilters', file);
@@ -27,7 +28,11 @@ export function setNoteFilters(noteFilters) {
 }
 
 export function addNoteFilter(noteFilter, options = {}) {
-    return addObject('noteFilters', noteFilter, options);
+    return addObject('noteFilters', noteFilter, options, {
+        title: '',
+        color: Constants.defaultObjectColor,
+        directory: 'default'
+    });
 }
 
 export function duplicateNoteFilter(noteFilter, options = {}) {

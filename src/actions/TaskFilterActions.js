@@ -1,14 +1,15 @@
-import { 
-    addObject, 
-    cleanObjects, 
-    deleteObject, 
+import {
+    addObject,
+    cleanObjects,
+    deleteObject,
     duplicateObject,
     loadObjectsFromFile,
     loadObjectsFromServer,
     saveObjectsToFile,
-    setObjects, 
-    updateObject 
+    setObjects,
+    updateObject
 } from 'actions/ObjectActions';
+import Constants from 'constants/Constants';
 
 export function loadTaskFiltersFromFile(file) {
     return loadObjectsFromFile('taskFilters', file);
@@ -27,7 +28,11 @@ export function setTaskFilters(taskFilters) {
 }
 
 export function addTaskFilter(taskFilter, options = {}) {
-    return addObject('taskFilters', taskFilter, options);
+    return addObject('taskFilters', taskFilter, options, {
+        title: '',
+        color: Constants.defaultObjectColor,
+        directory: 'default'
+    });
 }
 
 export function duplicateTaskFilter(taskFilter, options = {}) {
