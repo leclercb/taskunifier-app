@@ -9,7 +9,6 @@ function ModalNoteFilterManager() {
 
     const onCloseNoteFilterManager = () => {
         appApi.setNoteFilterManagerOptions({ visible: false });
-        appApi.refreshSelectedNoteFilter();
     };
 
     const onNoteFilterSelection = noteFilterId => {

@@ -36,6 +36,16 @@ const Settings = () => (state = {
 
             return settings;
         }
+        case 'SET_SELECTED_NOTE_FILTER_DEFINITION':
+            return {
+                ...state,
+                selectedNoteFilterDefinition: 'noteFilterDefinition' in action ? action.noteFilterDefinition : state.selectedNoteFilterDefinition
+            };
+        case 'SET_SELECTED_TASK_FILTER_DEFINITION':
+            return {
+                ...state,
+                selectedTaskFilterDefinition: 'taskFilterDefinition' in action ? action.taskFilterDefinition : state.selectedTaskFilterDefinition
+            };
         default:
             return state;
     }

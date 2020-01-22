@@ -4,6 +4,7 @@
 
 * Show "total until now" in work log tab
 * Move custom filters to the general directory (#100)
+* Restore last used filter on startup (#110)
 * Import/export data (#119)
 * Show next save/backup/synchronization date (#121)
 * Add line between rows in task table (#127)

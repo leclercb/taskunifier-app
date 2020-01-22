@@ -40,7 +40,7 @@ function TaskSider(props) {
     };
 
     const onSelect = event => {
-        taskApi.setSelectedTaskFilter(event.item.props.filter);
+        taskApi.setSelectedTaskFilterDefinition(event.item.props.filterdef);
     };
 
     const onOpenChange = key => {
@@ -106,29 +106,8 @@ function TaskSider(props) {
         });
     };
 
-    const createTaskFilterForObject = (object, field, condition = {
-        id: null,
-        field,
-        type: 'equal',
-        value: object.id
-    }) => {
-        return {
-            id: object.id,
-            title: object.title,
-            color: object.color,
-            condition,
-            sorters: settingsApi.settings.categoryTaskSorters,
-            taskTemplate: {
-                id: null,
-                properties: {
-                    [field]: condition.value
-                }
-            }
-        };
-    };
-
-    const createBadge = taskFilter => {
-        if (taskFilter.id !== taskApi.selectedTaskFilter.id) {
+    const createBadge = filterId => {
+        if (filterId !== taskApi.selectedTaskFilter.id) {
             return null;
         }
 
@@ -253,7 +232,7 @@ function TaskSider(props) {
                         {getGeneralTaskFilters().filter(filter => settingsApi.settings['taskFilterVisible_' + filter.id] !== false).map(filter => (
                             <Menu.Item
                                 key={filter.id}
-                                filter={filter}>
+                                filterdef={{ id: filter.id, type: 'general' }}>
                                 <LeftRight right={(
                                     <React.Fragment>
                                         <Icon
@@ -272,7 +251,7 @@ function TaskSider(props) {
                             </Menu.Item>
                         ))}
                         {taskFilterApi.taskFilters.filter(filter => filter.directory === 'general').map(filter => (
-                            <Menu.Item key={filter.id} filter={filter}>
+                            <Menu.Item key={filter.id} filterdef={{ id: filter.id, type: 'default' }}>
                                 <ObjectMenuItem
                                     badge={createBadge(filter)}
                                     object={filter}
@@ -285,111 +264,86 @@ function TaskSider(props) {
                     <Menu.SubMenu
                         key="folders"
                         title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                        {folderApi.folders.map(folder => {
-                            const filter = createTaskFilterForObject(folder, 'folder');
-
-                            return (
-                                <Menu.Item key={folder.id} filter={filter}>
-                                    <ObjectMenuItem
-                                        badge={createBadge(filter)}
-                                        object={folder}
-                                        onManage={() => manageObjects('folders')}
-                                        onEdit={() => editObject('folders', folder.id)}
-                                        onDelete={() => folderApi.deleteFolder(folder.id)}
-                                        dropType="task"
-                                        onDrop={(task, folder) => dropObject(task, folder, 'folder')} />
-                                </Menu.Item>
-                            );
-                        })}
+                        {folderApi.folders.map(folder => (
+                            <Menu.Item key={folder.id} filterdef={{ id: folder.id, type: 'folder' }}>
+                                <ObjectMenuItem
+                                    badge={createBadge(folder.id)}
+                                    object={folder}
+                                    onManage={() => manageObjects('folders')}
+                                    onEdit={() => editObject('folders', folder.id)}
+                                    onDelete={() => folderApi.deleteFolder(folder.id)}
+                                    dropType="task"
+                                    onDrop={(task, folder) => dropObject(task, folder, 'folder')} />
+                            </Menu.Item>
+                        ))}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="contexts"
                         title={createCategorySubMenu('Contexts', 'thumbtack', () => manageObjects('contexts'), () => onOpenChange('contexts'))}>
-                        {contextApi.contexts.map(context => {
-                            const filter = createTaskFilterForObject(context, 'context');
-
-                            return (
-                                <Menu.Item key={context.id} filter={filter}>
-                                    <ObjectMenuItem
-                                        badge={createBadge(filter)}
-                                        object={context}
-                                        onManage={() => manageObjects('contexts')}
-                                        onEdit={() => editObject('contexts', context.id)}
-                                        onDelete={() => contextApi.deleteContext(context.id)}
-                                        dropType="task"
-                                        onDrop={(task, context) => dropObject(task, context, 'context')} />
-                                </Menu.Item>
-                            );
-                        })}
+                        {contextApi.contexts.map(context => (
+                            <Menu.Item key={context.id} filterdef={{ id: context.id, type: 'context' }}>
+                                <ObjectMenuItem
+                                    badge={createBadge(context.id)}
+                                    object={context}
+                                    onManage={() => manageObjects('contexts')}
+                                    onEdit={() => editObject('contexts', context.id)}
+                                    onDelete={() => contextApi.deleteContext(context.id)}
+                                    dropType="task"
+                                    onDrop={(task, context) => dropObject(task, context, 'context')} />
+                            </Menu.Item>
+                        ))}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="goals"
                         title={createCategorySubMenu('Goals', 'bullseye', () => manageObjects('goals'), () => onOpenChange('goals'))}>
-                        {goalApi.goals.map(goal => {
-                            const filter = createTaskFilterForObject(goal, 'goal');
-
-                            return (
-                                <Menu.Item key={goal.id} filter={filter}>
-                                    <ObjectMenuItem
-                                        badge={createBadge(filter)}
-                                        object={goal}
-                                        onManage={() => manageObjects('goals')}
-                                        onEdit={() => editObject('goals', goal.id)}
-                                        onDelete={() => goalApi.deleteGoal(goal.id)}
-                                        dropType="task"
-                                        onDrop={(task, goal) => dropObject(task, goal, 'goal')} />
-                                </Menu.Item>
-                            );
-                        })}
+                        {goalApi.goals.map(goal => (
+                            <Menu.Item key={goal.id} filterdef={{ id: goal.id, type: 'goal' }}>
+                                <ObjectMenuItem
+                                    badge={createBadge(goal.id)}
+                                    object={goal}
+                                    onManage={() => manageObjects('goals')}
+                                    onEdit={() => editObject('goals', goal.id)}
+                                    onDelete={() => goalApi.deleteGoal(goal.id)}
+                                    dropType="task"
+                                    onDrop={(task, goal) => dropObject(task, goal, 'goal')} />
+                            </Menu.Item>
+                        ))}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="locations"
                         title={createCategorySubMenu('Locations', 'compass', () => manageObjects('locations'), () => onOpenChange('locations'))}>
-                        {locationApi.locations.map(location => {
-                            const filter = createTaskFilterForObject(location, 'location');
-
-                            return (
-                                <Menu.Item key={location.id} filter={filter}>
-                                    <ObjectMenuItem
-                                        badge={createBadge(filter)}
-                                        object={location}
-                                        onManage={() => manageObjects('locations')}
-                                        onEdit={() => editObject('locations', location.id)}
-                                        onDelete={() => locationApi.deleteLocation(location.id)}
-                                        dropType="task"
-                                        onDrop={(task, location) => dropObject(task, location, 'location')} />
-                                </Menu.Item>
-                            );
-                        })}
+                        {locationApi.locations.map(location => (
+                            <Menu.Item key={location.id} filterdef={{ id: location.id, type: 'location' }}>
+                                <ObjectMenuItem
+                                    badge={createBadge(location.id)}
+                                    object={location}
+                                    onManage={() => manageObjects('locations')}
+                                    onEdit={() => editObject('locations', location.id)}
+                                    onDelete={() => locationApi.deleteLocation(location.id)}
+                                    dropType="task"
+                                    onDrop={(task, location) => dropObject(task, location, 'location')} />
+                            </Menu.Item>
+                        ))}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="tags"
                         title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
-                        {tagApi.tags.map(tag => {
-                            const filter = createTaskFilterForObject(tag, 'tags', {
-                                id: null,
-                                field: 'tags',
-                                type: 'contain',
-                                value: [tag.id]
-                            });
-
-                            return (
-                                <Menu.Item key={tag.id} filter={filter}>
-                                    <ObjectMenuItem
-                                        badge={createBadge(filter)}
-                                        object={tag}
-                                        onManage={() => manageObjects('tags')}
-                                        onEdit={() => editObject('tags', tag.id)}
-                                        onDelete={() => tagApi.deleteTag(tag.id)} />
-                                </Menu.Item>
-                            );
-                        })}
+                        {tagApi.tags.map(tag => (
+                            <Menu.Item key={tag.id} filterdef={{ id: tag.id, type: 'tags' }}>
+                                <ObjectMenuItem
+                                    badge={createBadge(tag.id)}
+                                    object={tag}
+                                    onManage={() => manageObjects('tags')}
+                                    onEdit={() => editObject('tags', tag.id)}
+                                    onDelete={() => tagApi.deleteTag(tag.id)} />
+                            </Menu.Item>
+                        ))}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="taskFilters"
                         title={createCategorySubMenu('Task Filters', 'filter', () => manageTaskFilters(), () => onOpenChange('taskFilters'))}>
                         {taskFilterApi.taskFilters.filter(filter => filter.directory !== 'general').map(filter => (
-                            <Menu.Item key={filter.id} filter={filter}>
+                            <Menu.Item key={filter.id} filterdef={{ id: filter.id, type: 'default' }}>
                                 <ObjectMenuItem
                                     badge={createBadge(filter)}
                                     object={filter}

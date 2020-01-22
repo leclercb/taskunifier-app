@@ -9,7 +9,6 @@ function ModalTaskFilterManager() {
 
     const onCloseTaskFilterManager = () => {
         appApi.setTaskFilterManagerOptions({ visible: false });
-        appApi.refreshSelectedTaskFilter();
     };
 
     const onTaskFilterSelection = taskFilterId => {
