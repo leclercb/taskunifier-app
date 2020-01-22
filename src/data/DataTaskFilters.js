@@ -238,7 +238,7 @@ export function getDefaultTaskSorters() {
     ];
 }
 
-export function createTaskFilterFromDefinition(filterDefinition, filters, settings) {
+export function createTaskFilterFromDefinition(filterDefinition, filters, sorters) {
     switch (filterDefinition.type) {
         case 'default':
             return filters.find(filter => filter.id === filterDefinition.id);
@@ -257,7 +257,7 @@ export function createTaskFilterFromDefinition(filterDefinition, filters, settin
                     type: 'equal',
                     value: filterDefinition.id
                 },
-                sorters: settings.categoryTaskSorters,
+                sorters,
                 taskTemplate: {
                     id: null,
                     properties: {
@@ -275,7 +275,7 @@ export function createTaskFilterFromDefinition(filterDefinition, filters, settin
                     type: 'contain',
                     value: [filterDefinition.id]
                 },
-                sorters: settings.categoryTaskSorters,
+                sorters,
                 taskTemplate: {
                     id: null,
                     properties: {

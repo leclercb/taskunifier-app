@@ -296,7 +296,7 @@ function NoteSider() {
                     <Alert
                         type="info"
                         showIcon
-                        message={`${combinedFilterDefinitionNumber} filter${combinedFilterDefinitionNumber > 1 ? 's are' : ' is'} combined`}
+                        message={`${combinedFilterDefinitionNumber} combined filter${combinedFilterDefinitionNumber > 1 ? 's' : ''}`}
                         style={{ margin: 10 }} />
                 )}
             </div>

@@ -4,7 +4,7 @@ import { combineConditions, createNoteFilterFromDefinition, createSearchNoteValu
 import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
-import { getSettings } from 'selectors/SettingSelectors';
+import { getCategoryNoteSorters, getCombinedNoteFilterDefinitions } from 'selectors/SettingSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -32,9 +32,10 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     getSelectedNoteFilterDate,
     getNoteFieldsIncludingDefaults,
     getNoteFiltersFilteredByVisibleState,
-    getSettings,
+    getCombinedNoteFilterDefinitions,
+    getCategoryNoteSorters,
     isBusy,
-    (notes, searchNoteValue, selectedNoteFilter, selectedNoteFilterDate, noteFields, noteFilters, settings, busy) => {
+    (notes, searchNoteValue, selectedNoteFilter, selectedNoteFilterDate, noteFields, noteFilters, combinedNoteFilterDefinitions, categoryNoteSorters, busy) => {
         if (busy) {
             return getNotesFilteredBySelectedFilterResult;
         }
@@ -45,8 +46,8 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             extraConditions.push(createSearchNoteValueCondition(searchNoteValue));
         }
 
-        (settings.combinedNoteFilterDefinitions || []).forEach(filterDefinition => {
-            const filter = createNoteFilterFromDefinition(filterDefinition, noteFilters, settings);
+        (combinedNoteFilterDefinitions || []).forEach(filterDefinition => {
+            const filter = createNoteFilterFromDefinition(filterDefinition, noteFilters, categoryNoteSorters);
 
             if (filter) {
                 extraConditions.push(filter.condition);

@@ -9,7 +9,7 @@ import {
     createTaskFilterFromDefinition
 } from 'data/DataTaskFilters';
 import { getMinuteTimer, getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { getSettings, isShowCompletedTasks, isShowFutureTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
+import { getCategoryTaskSorters, getCombinedTaskFilterDefinitions, isShowCompletedTasks, isShowFutureTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
@@ -57,9 +57,10 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
     getTaskFiltersFilteredByVisibleState,
-    getSettings,
+    getCombinedTaskFilterDefinitions,
+    getCategoryTaskSorters,
     isBusy,
-    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, taskFilters, settings, busy) => {
+    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, taskFilters, combinedTaskFilterDefinitions, categoryTaskSorters, busy) => {
         if (busy) {
             return getTasksFilteredBySelectedFilterResult;
         }
@@ -78,8 +79,8 @@ export const getTasksFilteredBySelectedFilter = createSelector(
             extraConditions.push(createFutureTasksCondition());
         }
 
-        (settings.combinedTaskFilterDefinitions || []).forEach(filterDefinition => {
-            const filter = createTaskFilterFromDefinition(filterDefinition, taskFilters, settings);
+        (combinedTaskFilterDefinitions || []).forEach(filterDefinition => {
+            const filter = createTaskFilterFromDefinition(filterDefinition, taskFilters, categoryTaskSorters);
 
             if (filter) {
                 extraConditions.push(filter.condition);

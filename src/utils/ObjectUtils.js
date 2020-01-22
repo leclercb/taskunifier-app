@@ -1,5 +1,21 @@
 import { isEqual, transform } from 'lodash';
 
+export function shallowEquals(objectA, objectB) {
+    for (let key in objectA) {
+        if (!(key in objectB) || objectA[key] !== objectB[key]) {
+            return false;
+        }
+    }
+
+    for (let key in objectB) {
+        if (!(key in objectA)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 export function equals(object1, object2) {
     return JSON.stringify(object1) === JSON.stringify(object2);
 }

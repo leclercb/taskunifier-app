@@ -58,7 +58,7 @@ export function getDefaultNoteSorters() {
     ];
 }
 
-export function createNoteFilterFromDefinition(filterDefinition, filters, settings) {
+export function createNoteFilterFromDefinition(filterDefinition, filters, sorters) {
     switch (filterDefinition.type) {
         case 'default':
             return filters.find(filter => filter.id === filterDefinition.id);
@@ -77,7 +77,7 @@ export function createNoteFilterFromDefinition(filterDefinition, filters, settin
                     type: 'equal',
                     value: filterDefinition.id
                 },
-                sorters: settings.categoryNoteSorters
+                sorters
             };
         case 'tags':
             return {
@@ -89,7 +89,7 @@ export function createNoteFilterFromDefinition(filterDefinition, filters, settin
                     type: 'contain',
                     value: [filterDefinition.id]
                 },
-                sorters: settings.categoryNoteSorters
+                sorters
             };
         default:
             return null;

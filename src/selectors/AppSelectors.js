@@ -4,7 +4,7 @@ import { createNoteFilterFromDefinition, getDefaultSelectedNoteFilter } from 'da
 import { createTaskFilterFromDefinition, getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
 import { getSession } from 'selectors/SessionSelectors';
-import { getSettings } from 'selectors/SettingSelectors';
+import { getCategoryNoteSorters, getCategoryTaskSorters, getSettings } from 'selectors/SettingSelectors';
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { verifyLicense } from 'utils/LicenseUtils';
 import { getValue } from 'utils/ObjectUtils';
@@ -90,9 +90,9 @@ export const isPro = createSelector(
 export const getSelectedNoteFilter = createSelector(
     getSelectedNoteFilterDefinition,
     getNoteFiltersFilteredByVisibleState,
-    getSettings,
-    (filterDefinition, filters, settings) => {
-        const filter = createNoteFilterFromDefinition(filterDefinition, filters, settings);
+    getCategoryNoteSorters,
+    (filterDefinition, filters, sorters) => {
+        const filter = createNoteFilterFromDefinition(filterDefinition, filters, sorters);
         return filter ? filter : getDefaultSelectedNoteFilter();
     }
 );
@@ -100,9 +100,9 @@ export const getSelectedNoteFilter = createSelector(
 export const getSelectedTaskFilter = createSelector(
     getSelectedTaskFilterDefinition,
     getTaskFiltersFilteredByVisibleState,
-    getSettings,
-    (filterDefinition, filters, settings) => {
-        const filter = createTaskFilterFromDefinition(filterDefinition, filters, settings);
+    getCategoryTaskSorters,
+    (filterDefinition, filters, sorters) => {
+        const filter = createTaskFilterFromDefinition(filterDefinition, filters, sorters);
         return filter ? filter : getDefaultSelectedTaskFilter();
     }
 );
