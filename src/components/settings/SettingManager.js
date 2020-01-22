@@ -6,7 +6,9 @@ import PromiseButton from 'components/common/PromiseButton';
 import SorterTable from 'components/filters/SorterTable';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
+import { getGeneralNoteFilters } from 'data/DataNoteFilters';
 import { getCategories, getCategorySettings } from 'data/DataSettings';
+import { getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
@@ -22,7 +24,9 @@ function SettingManager(props) {
     const settings = getCategorySettings(
         category,
         {
+            generalNoteFilters: getGeneralNoteFilters(),
             noteFields: noteFieldApi.noteFields,
+            generalTaskFilters: getGeneralTaskFilters(),
             taskFields: taskFieldApi.taskFields
         }).filter(setting =>
             setting.visible !== false && (!setting.mode || setting.mode === process.env.REACT_APP_MODE));

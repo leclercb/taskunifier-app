@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input } from 'antd';
+import { Form, Input, Select } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
 import { FilterPropType } from 'proptypes/FilterPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
@@ -47,6 +47,22 @@ function FilterForm(props) {
                     ]
                 })(
                     <ColorPicker onClose={onCommit} disabled={props.disabled} />
+                )}
+            </Form.Item>
+            <Form.Item label="Directory">
+                {getFieldDecorator('directory', {
+                    initialValue: props.filter.directory,
+                    rules: [
+                        {
+                            required: true,
+                            message: 'The directory is required'
+                        }
+                    ]
+                })(
+                    <Select onBlur={onCommit} disabled={props.disabled}>
+                        <Select.Option value="default">Default</Select.Option>
+                        <Select.Option value="general">General</Select.Option>
+                    </Select>
                 )}
             </Form.Item>
         </Form>

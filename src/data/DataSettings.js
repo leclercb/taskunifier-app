@@ -13,11 +13,11 @@ import { connectToTaskUnifier } from 'actions/synchronization/taskunifier/TaskUn
 import FileField from 'components/common/FileField';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
 import ProUnlockedMessage from 'components/pro/ProUnlockedMessage';
-import { getDefaultNoteSorters } from 'data/DataNoteFilters';
+import { getDefaultNoteSorters, getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
 import { getNoteSorterFields } from 'data/DataNoteSorterFields';
 import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
-import { getDefaultTaskSorters } from 'data/DataTaskFilters';
+import { getDefaultSelectedTaskFilter, getDefaultTaskSorters } from 'data/DataTaskFilters';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
@@ -63,10 +63,18 @@ export function getCategorySettings(category, options = {}) {
 
     const settings = [...category.settings];
 
-    const { noteFields, taskFields } = options;
+    const { generalNoteFilters, noteFields, generalTaskFilters, taskFields } = options;
+
+    if (category.type === 'generalNoteFilter' && generalNoteFilters) {
+        generalNoteFilters.forEach(filter => settings.push(category.createSetting(filter)));
+    }
 
     if (category.type === 'noteField' && noteFields) {
         noteFields.forEach(field => settings.push(category.createSetting(field)));
+    }
+
+    if (category.type === 'generalTaskFilter' && generalTaskFilters) {
+        generalTaskFilters.forEach(filter => settings.push(category.createSetting(filter)));
     }
 
     if (category.type === 'taskField' && taskFields) {
@@ -733,20 +741,6 @@ export function getCategories() {
             ]
         },
         {
-            id: 'taskTemplates',
-            title: 'Task templates',
-            icon: 'tasks',
-            settings: [
-                {
-                    id: 'defaultTaskTemplate',
-                    title: 'Default task template',
-                    type: 'taskTemplate',
-                    value: null,
-                    editable: true
-                }
-            ]
-        },
-        {
             id: 'noteTable',
             title: 'Note table',
             icon: 'table',
@@ -800,6 +794,20 @@ export function getCategories() {
                 type: 'boolean',
                 value: true,
                 editable: true
+            })
+        },
+        {
+            id: 'noteFilters',
+            title: 'Note filters',
+            icon: 'filter',
+            type: 'generalNoteFilter',
+            settings: [],
+            createSetting: filter => ({
+                id: `noteFilterVisible_${filter.id}`,
+                title: `Show filter "${filter.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: getDefaultSelectedNoteFilter().id !== filter.id
             })
         },
         {
@@ -875,6 +883,20 @@ export function getCategories() {
             })
         },
         {
+            id: 'taskFilters',
+            title: 'Task filters',
+            icon: 'filter',
+            type: 'generalTaskFilter',
+            settings: [],
+            createSetting: filter => ({
+                id: `taskFilterVisible_${filter.id}`,
+                title: `Show filter "${filter.title}"`,
+                type: 'boolean',
+                value: true,
+                editable: getDefaultSelectedTaskFilter().id !== filter.id
+            })
+        },
+        {
             id: 'taskFields',
             title: 'Task edition form',
             icon: 'columns',
@@ -929,6 +951,20 @@ export function getCategories() {
                 value: true,
                 editable: true
             })
+        },
+        {
+            id: 'taskTemplates',
+            title: 'Task templates',
+            icon: 'tasks',
+            settings: [
+                {
+                    id: 'defaultTaskTemplate',
+                    title: 'Default task template',
+                    type: 'taskTemplate',
+                    value: null,
+                    editable: true
+                }
+            ]
         },
         {
             id: 'sorter',
