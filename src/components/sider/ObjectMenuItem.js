@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popconfirm } from 'antd';
+import { Popconfirm, Switch } from 'antd';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import Icon from 'components/common/Icon';
@@ -9,7 +9,7 @@ import ObjectMenu from 'components/sider/ObjectMenu';
 import Constants from 'constants/Constants';
 import 'components/sider/ObjectMenuItem.css';
 
-function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, onDrop }) {
+function ObjectMenuItem({ badge, object, isCombinedFilter, onCombineFilter, onManage, onEdit, onDelete, dropType, onDrop }) {
     const [collectedDropProps, drop] = useDrop({
         accept: dropType || [],
         drop: item => onDrop ? onDrop(item.data.object, object) : null,
@@ -27,7 +27,7 @@ function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, o
                     color={Constants.fadeIconColor}
                     className="object-actions"
                     onClick={() => onEdit()} />
-                <Spacer />
+                <Spacer size={5} />
                 <Popconfirm
                     title={`Do you really want to delete "${object.title}" ?`}
                     onConfirm={() => onDelete()}
@@ -63,8 +63,13 @@ function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, o
                 <LeftRight
                     right={(
                         <React.Fragment>
-                            {createEditDeleteButtons(object, onEdit, onDelete)}
                             {badge}
+                            {createEditDeleteButtons(object, onEdit, onDelete)}
+                            <Switch
+                                checked={isCombinedFilter}
+                                onChange={onCombineFilter}
+                                size="small"
+                                style={{ marginLeft: 5 }} />
                         </React.Fragment>
                     )}
                     className={className}>
@@ -78,6 +83,8 @@ function ObjectMenuItem({ badge, object, onManage, onEdit, onDelete, dropType, o
 ObjectMenuItem.propTypes = {
     badge: PropTypes.node,
     object: PropTypes.object.isRequired,
+    isCombinedFilter: PropTypes.bool.isRequired,
+    onCombineFilter: PropTypes.func.isRequired,
     onManage: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,

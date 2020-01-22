@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { getConfig } from 'config/Config';
-import { getDefaultSelectedNoteFilter, getGeneralNoteFilters } from 'data/DataNoteFilters';
-import { getDefaultSelectedTaskFilter, getGeneralTaskFilters } from 'data/DataTaskFilters';
+import { createNoteFilterFromDefinition, getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
+import { createTaskFilterFromDefinition, getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
 import { getSession } from 'selectors/SessionSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
@@ -92,53 +92,8 @@ export const getSelectedNoteFilter = createSelector(
     getNoteFiltersFilteredByVisibleState,
     getSettings,
     (filterDefinition, filters, settings) => {
-        let filter;
-
-        switch (filterDefinition.type) {
-            case 'default':
-                filter = filters.find(filter => filter.id === filterDefinition.id);
-                break;
-            case 'general':
-                filter = getGeneralNoteFilters().find(filter => filter.id === filterDefinition.id);
-                break;
-            case 'context':
-            case 'folder':
-            case 'goal':
-            case 'location':
-                filter = {
-                    id: filterDefinition.id,
-                    title: 'Generated Filter',
-                    condition: {
-                        id: null,
-                        field: filterDefinition.type,
-                        type: 'equal',
-                        value: filterDefinition.id
-                    },
-                    sorters: settings.categoryNoteSorters
-                };
-                break;
-            case 'tags':
-                filter = {
-                    id: filterDefinition.id,
-                    title: 'Generated Filter',
-                    condition: {
-                        id: null,
-                        field: filterDefinition.type,
-                        type: 'contain',
-                        value: [filterDefinition.id]
-                    },
-                    sorters: settings.categoryNoteSorters
-                };
-                break;
-            default:
-                break;
-        }
-
-        if (!filter) {
-            filter = getDefaultSelectedNoteFilter();
-        }
-
-        return filter;
+        const filter = createNoteFilterFromDefinition(filterDefinition, filters, settings);
+        return filter ? filter : getDefaultSelectedNoteFilter();
     }
 );
 
@@ -147,64 +102,7 @@ export const getSelectedTaskFilter = createSelector(
     getTaskFiltersFilteredByVisibleState,
     getSettings,
     (filterDefinition, filters, settings) => {
-        let filter;
-
-        switch (filterDefinition.type) {
-            case 'default':
-                filter = filters.find(filter => filter.id === filterDefinition.id);
-                break;
-            case 'general':
-                filter = getGeneralTaskFilters().find(filter => filter.id === filterDefinition.id);
-                break;
-            case 'context':
-            case 'folder':
-            case 'goal':
-            case 'location':
-                filter = {
-                    id: filterDefinition.id,
-                    title: 'Generated Filter',
-                    condition: {
-                        id: null,
-                        field: filterDefinition.type,
-                        type: 'equal',
-                        value: filterDefinition.id
-                    },
-                    sorters: settings.categoryTaskSorters,
-                    taskTemplate: {
-                        id: null,
-                        properties: {
-                            [filterDefinition.type]: filterDefinition.id
-                        }
-                    }
-                };
-                break;
-            case 'tags':
-                filter = {
-                    id: filterDefinition.id,
-                    title: 'Generated Filter',
-                    condition: {
-                        id: null,
-                        field: filterDefinition.type,
-                        type: 'contain',
-                        value: [filterDefinition.id]
-                    },
-                    sorters: settings.categoryTaskSorters,
-                    taskTemplate: {
-                        id: null,
-                        properties: {
-                            [filterDefinition.type]: filterDefinition.id
-                        }
-                    }
-                };
-                break;
-            default:
-                break;
-        }
-
-        if (!filter) {
-            filter = getDefaultSelectedTaskFilter();
-        }
-
-        return filter;
+        const filter = createTaskFilterFromDefinition(filterDefinition, filters, settings);
+        return filter ? filter : getDefaultSelectedTaskFilter();
     }
 );

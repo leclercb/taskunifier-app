@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, Input, Menu, Tooltip } from 'antd';
+import { Alert, Badge, Input, Menu, Switch, Tooltip } from 'antd';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ModalNoteFilterInfo from 'components/notefilters/ModalNoteFilterInfo';
@@ -12,6 +12,7 @@ import { useNoteFilterApi } from 'hooks/UseNoteFilterApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTagApi } from 'hooks/UseTagApi';
+import { equals } from 'utils/ObjectUtils';
 
 function NoteSider() {
     const appApi = useAppApi();
@@ -112,11 +113,33 @@ function NoteSider() {
                 style={{
                     backgroundColor: Constants.badgeColor,
                     fontWeight: 'bold',
-                    marginLeft: 10,
+                    marginRight: 5,
                     marginBottom: 2
                 }} />
         );
     };
+
+    const containsFilterDefinition = filterDefinition => {
+        const definitions = settingsApi.settings.combinedNoteFilterDefinitions || [];
+        return !!definitions.find(definition => equals(definition, filterDefinition));
+    };
+
+    const updateCombinedFilterDefinitions = filterDefinition => {
+        let definitions = [...(settingsApi.settings.combinedNoteFilterDefinitions || [])];
+        const index = definitions.findIndex(definition => equals(definition, filterDefinition));
+
+        if (index >= 0) {
+            definitions.splice(index, 1);
+        } else {
+            definitions.push(filterDefinition);
+        }
+
+        settingsApi.updateSettings({
+            combinedNoteFilterDefinitions: definitions
+        });
+    };
+
+    const combinedFilterDefinitionNumber = (settingsApi.settings.combinedNoteFilterDefinitions || []).length;
 
     return (
         <React.Fragment>
@@ -126,7 +149,7 @@ function NoteSider() {
                 onClose={() => setSelectedNoteFilterInfo(null)} />
             <div
                 className="joyride-note-sider"
-                style={{ backgroundColor: '#ffffff', height: '100%' }}>
+                style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff', minHeight: '100%' }}>
                 <div style={{ padding: 10 }}>
                     <Icon
                         icon="search"
@@ -153,88 +176,129 @@ function NoteSider() {
                     selectedKeys={[noteApi.selectedNoteFilter.id]}
                     openKeys={openKeys}
                     onSelect={onSelect}
-                    mode="inline">
+                    mode="inline"
+                    style={{ flex: 1 }}>
                     <Menu.SubMenu
                         key="general"
                         title={<Icon icon="home" text="General" />}
                         onTitleClick={({ key }) => onOpenChange(key)}>
-                        {getGeneralNoteFilters().filter(filter => settingsApi.settings['noteFilterVisible_' + filter.id] !== false).map(filter => (
-                            <Menu.Item
-                                key={filter.id}
-                                filterdef={{ id: filter.id, type: 'general' }}>
-                                <LeftRight right={(
-                                    <React.Fragment>
+                        {getGeneralNoteFilters().filter(filter => settingsApi.settings['noteFilterVisible_' + filter.id] !== false).map(filter => {
+                            const filterDefinition = { id: filter.id, type: 'general' };
+
+                            return (
+                                <Menu.Item
+                                    key={filter.id}
+                                    filterdef={filterDefinition}>
+                                    <LeftRight right={(
+                                        <React.Fragment>
+                                            {createBadge(filter.id)}
+                                            <Icon
+                                                icon="info-circle"
+                                                color={Constants.fadeIconColor}
+                                                className="object-actions"
+                                                onClick={() => setSelectedNoteFilterInfo(filter)} />
+                                            <Switch
+                                                checked={containsFilterDefinition(filterDefinition)}
+                                                onChange={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                                size="small"
+                                                style={{ marginLeft: 5 }} />
+                                        </React.Fragment>
+                                    )}>
                                         <Icon
-                                            icon="info-circle"
-                                            color={Constants.fadeIconColor}
-                                            className="object-actions"
-                                            onClick={() => setSelectedNoteFilterInfo(filter)} />
-                                        {createBadge(filter)}
-                                    </React.Fragment>
-                                )}>
-                                    <Icon
-                                        icon={filter.icon}
-                                        color={filter.color}
-                                        text={filter.title} />
-                                </LeftRight>
-                            </Menu.Item>
-                        ))}
-                        {noteFilterApi.noteFilters.filter(filter => filter.directory === 'general').map(filter => (
-                            <Menu.Item key={filter.id} filterdef={{ id: filter.id, type: 'default' }}>
-                                <ObjectMenuItem
-                                    badge={createBadge(filter)}
-                                    object={filter}
-                                    onManage={() => manageNoteFilters()}
-                                    onEdit={() => editNoteFilter(filter.id)}
-                                    onDelete={() => noteFilterApi.deleteNoteFilter(filter.id)} />
-                            </Menu.Item>
-                        ))}
+                                            icon={filter.icon}
+                                            color={filter.color}
+                                            text={filter.title} />
+                                    </LeftRight>
+                                </Menu.Item>
+                            );
+                        })}
+                        {noteFilterApi.noteFilters.filter(filter => filter.directory === 'general').map(filter => {
+                            const filterDefinition = { id: filter.id, type: 'default' };
+
+                            return (
+                                <Menu.Item key={filter.id} filterdef={filterDefinition}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(filter.id)}
+                                        object={filter}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                        onManage={() => manageNoteFilters()}
+                                        onEdit={() => editNoteFilter(filter.id)}
+                                        onDelete={() => noteFilterApi.deleteNoteFilter(filter.id)} />
+                                </Menu.Item>
+                            );
+                        })}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="folders"
                         title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                        {folderApi.folders.map(folder => (
-                            <Menu.Item key={folder.id} filterdef={{ id: folder.id, type: 'folder' }}>
-                                <ObjectMenuItem
-                                    badge={createBadge(folder.id)}
-                                    object={folder}
-                                    onManage={() => manageObjects('folders')}
-                                    onEdit={() => editObject('folders', folder.id)}
-                                    onDelete={() => folderApi.deleteFolder(folder.id)}
-                                    dropType="note"
-                                    onDrop={(note, folder) => dropObject(note, folder, 'folder')} />
-                            </Menu.Item>
-                        ))}
+                        {folderApi.folders.map(folder => {
+                            const filterDefinition = { id: folder.id, type: 'folder' };
+
+                            return (
+                                <Menu.Item key={folder.id} filterdef={filterDefinition}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(folder.id)}
+                                        object={folder}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                        onManage={() => manageObjects('folders')}
+                                        onEdit={() => editObject('folders', folder.id)}
+                                        onDelete={() => folderApi.deleteFolder(folder.id)}
+                                        dropType="note"
+                                        onDrop={(note, folder) => dropObject(note, folder, 'folder')} />
+                                </Menu.Item>
+                            );
+                        })}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="tags"
                         title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
-                        {tagApi.tags.map(tag => (
-                            <Menu.Item key={tag.id} filterdef={{ id: tag.id, type: 'tags' }}>
-                                <ObjectMenuItem
-                                    badge={createBadge(tag.id)}
-                                    object={tag}
-                                    onManage={() => manageObjects('tags')}
-                                    onEdit={() => editObject('tags', tag.id)}
-                                    onDelete={() => tagApi.deleteTag(tag.id)} />
-                            </Menu.Item>
-                        ))}
+                        {tagApi.tags.map(tag => {
+                            const filterDefinition = { id: tag.id, type: 'tags' };
+
+                            return (
+                                <Menu.Item key={tag.id} filterdef={filterDefinition}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(tag.id)}
+                                        object={tag}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                        onManage={() => manageObjects('tags')}
+                                        onEdit={() => editObject('tags', tag.id)}
+                                        onDelete={() => tagApi.deleteTag(tag.id)} />
+                                </Menu.Item>
+                            );
+                        })}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="noteFilters"
                         title={createCategorySubMenu('Note Filters', 'filter', () => manageNoteFilters(), () => onOpenChange('noteFilters'))}>
-                        {noteFilterApi.noteFilters.filter(filter => filter.directory !== 'general').map(filter => (
-                            <Menu.Item key={filter.id} filterdef={{ id: filter.id, type: 'default' }}>
-                                <ObjectMenuItem
-                                    badge={createBadge(filter)}
-                                    object={filter}
-                                    onManage={() => manageNoteFilters()}
-                                    onEdit={() => editNoteFilter(filter.id)}
-                                    onDelete={() => noteFilterApi.deleteNoteFilter(filter.id)} />
-                            </Menu.Item>
-                        ))}
+                        {noteFilterApi.noteFilters.filter(filter => filter.directory !== 'general').map(filter => {
+                            const filterDefinition = { id: filter.id, type: 'default' };
+
+                            return (
+                                <Menu.Item key={filter.id} filterdef={filterDefinition}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(filter.id)}
+                                        object={filter}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                        onManage={() => manageNoteFilters()}
+                                        onEdit={() => editNoteFilter(filter.id)}
+                                        onDelete={() => noteFilterApi.deleteNoteFilter(filter.id)} />
+                                </Menu.Item>
+                            );
+                        })}
                     </Menu.SubMenu>
-                </Menu >
+                </Menu>
+                {combinedFilterDefinitionNumber > 0 && (
+                    <Alert
+                        type="info"
+                        showIcon
+                        message={`${combinedFilterDefinitionNumber} filter${combinedFilterDefinitionNumber > 1 ? 's are' : ' is'} combined`}
+                        style={{ margin: 10 }} />
+                )}
             </div>
         </React.Fragment>
     );
