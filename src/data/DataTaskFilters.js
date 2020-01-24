@@ -81,6 +81,7 @@ export function getGeneralTaskFilters() {
             id: 'all',
             title: 'All',
             icon: 'tasks',
+            directory: 'general',
             condition: null,
             sorters: getDefaultTaskSorters()
         },
@@ -89,6 +90,7 @@ export function getGeneralTaskFilters() {
             title: 'Not Completed',
             color: '#0e80ea',
             icon: 'times',
+            directory: 'general',
             condition: {
                 id: '1',
                 field: 'completed',
@@ -102,6 +104,7 @@ export function getGeneralTaskFilters() {
             title: 'Due Today',
             color: '#fcaf35',
             icon: 'calendar-alt',
+            directory: 'general',
             condition: {
                 id: '1',
                 field: 'dueDate',
@@ -115,6 +118,7 @@ export function getGeneralTaskFilters() {
             title: 'Overdue',
             color: '#ff1111',
             icon: 'bomb',
+            directory: 'general',
             condition: {
                 id: '1',
                 field: 'dueDate',
@@ -128,6 +132,7 @@ export function getGeneralTaskFilters() {
             title: 'Hot List',
             color: '#d83131',
             icon: 'pepper-hot',
+            directory: 'general',
             condition: {
                 id: '1',
                 operator: 'AND',
@@ -153,6 +158,7 @@ export function getGeneralTaskFilters() {
             title: 'Importance',
             color: '#fcc635',
             icon: 'exclamation-triangle',
+            directory: 'general',
             condition: null,
             sorters: [
                 {
@@ -172,6 +178,7 @@ export function getGeneralTaskFilters() {
             title: 'Starred',
             color: '#fcde35',
             icon: 'star',
+            directory: 'general',
             condition: {
                 id: '1',
                 field: 'star',
@@ -185,6 +192,7 @@ export function getGeneralTaskFilters() {
             title: 'Next Action',
             color: '#2abff9',
             icon: 'chevron-circle-right',
+            directory: 'general',
             condition: {
                 id: '1',
                 field: 'status',
@@ -198,6 +206,7 @@ export function getGeneralTaskFilters() {
             title: 'Completed',
             color: '#17e510',
             icon: 'check',
+            directory: 'general',
             condition: {
                 id: '1',
                 field: 'completed',
@@ -227,4 +236,54 @@ export function getDefaultTaskSorters() {
             direction: 'ascending'
         }
     ];
+}
+
+export function createTaskFilterFromDefinition(filterDefinition, filters, sorters) {
+    switch (filterDefinition.type) {
+        case 'default':
+            return filters.find(filter => filter.id === filterDefinition.id);
+        case 'general':
+            return getGeneralTaskFilters().find(filter => filter.id === filterDefinition.id);
+        case 'context':
+        case 'folder':
+        case 'goal':
+        case 'location':
+            return {
+                id: filterDefinition.id,
+                title: 'Generated Filter',
+                condition: {
+                    id: null,
+                    field: filterDefinition.type,
+                    type: 'equal',
+                    value: filterDefinition.id
+                },
+                sorters,
+                taskTemplate: {
+                    id: null,
+                    properties: {
+                        [filterDefinition.type]: filterDefinition.id
+                    }
+                }
+            };
+        case 'tags':
+            return {
+                id: filterDefinition.id,
+                title: 'Generated Filter',
+                condition: {
+                    id: null,
+                    field: filterDefinition.type,
+                    type: 'contain',
+                    value: [filterDefinition.id]
+                },
+                sorters,
+                taskTemplate: {
+                    id: null,
+                    properties: {
+                        [filterDefinition.type]: filterDefinition.id
+                    }
+                }
+            };
+        default:
+            return null;
+    }
 }

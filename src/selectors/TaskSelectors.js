@@ -1,9 +1,17 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
-import { combineConditions, containsCompletedTaskCondition, createFutureTasksCondition, createNonCompletedTasksCondition, createSearchTaskValueCondition } from 'data/DataTaskFilters';
+import {
+    combineConditions,
+    containsCompletedTaskCondition,
+    createFutureTasksCondition,
+    createNonCompletedTasksCondition,
+    createSearchTaskValueCondition,
+    createTaskFilterFromDefinition
+} from 'data/DataTaskFilters';
 import { getMinuteTimer, getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { isShowCompletedTasks, isShowFutureTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
+import { getCategoryTaskSorters, getCombinedTaskFilterDefinitions, isShowCompletedTasks, isShowFutureTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -48,8 +56,11 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getSelectedTaskFilter,
     getSelectedTaskFilterDate,
     getTaskFieldsIncludingDefaults,
+    getTaskFiltersFilteredByVisibleState,
+    getCombinedTaskFilterDefinitions,
+    getCategoryTaskSorters,
     isBusy,
-    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, busy) => {
+    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, taskFilters, combinedTaskFilterDefinitions, categoryTaskSorters, busy) => {
         if (busy) {
             return getTasksFilteredBySelectedFilterResult;
         }
@@ -67,6 +78,14 @@ export const getTasksFilteredBySelectedFilter = createSelector(
         if (!showFutureTasks) {
             extraConditions.push(createFutureTasksCondition());
         }
+
+        (combinedTaskFilterDefinitions || []).forEach(filterDefinition => {
+            const filter = createTaskFilterFromDefinition(filterDefinition, taskFilters, categoryTaskSorters);
+
+            if (filter) {
+                extraConditions.push(filter.condition);
+            }
+        });
 
         selectedTaskFilter = combineConditions(selectedTaskFilter, extraConditions);
 

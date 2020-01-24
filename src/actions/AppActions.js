@@ -16,7 +16,6 @@ import { cleanTasks, loadTasksFromFile, loadTasksFromServer, saveTasksToFile, se
 import { cleanTaskFields, loadTaskFieldsFromFile, loadTaskFieldsFromServer, saveTaskFieldsToFile, setTaskFields } from 'actions/TaskFieldActions';
 import { cleanTaskFilters, loadTaskFiltersFromFile, loadTaskFiltersFromServer, saveTaskFiltersToFile, setTaskFilters } from 'actions/TaskFilterActions';
 import { cleanTaskTemplates, loadTaskTemplatesFromFile, loadTaskTemplatesFromServer, saveTaskTemplatesToFile, setTaskTemplates } from 'actions/TaskTemplateActions';
-import { getSelectedNoteFilterId, getSelectedTaskFilterId } from 'selectors/AppSelectors';
 import { getContacts } from 'selectors/ContactSelectors';
 import { getContexts } from 'selectors/ContextSelectors';
 import { getFolders } from 'selectors/FolderSelectors';
@@ -24,11 +23,11 @@ import { getGoals } from 'selectors/GoalSelectors';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getNoteFields } from 'selectors/NoteFieldSelectors';
-import { getNoteFilters, getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
+import { getNoteFilters } from 'selectors/NoteFilterSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getTasks } from 'selectors/TaskSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
-import { getTaskFilters, getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
+import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
 import { dirname, ensureDir, join } from 'utils/ElectronUtils';
 import { merge } from 'utils/ObjectUtils';
@@ -496,25 +495,13 @@ export function setSelectedNoteIds(noteIds) {
     };
 }
 
-export function setSelectedNoteFilter(noteFilter) {
+export function setSelectedNoteFilterDefinition(noteFilterDefinition) {
     return async dispatch => {
         dispatch({
-            type: 'SET_SELECTED_NOTE_FILTER',
-            noteFilter,
+            type: 'SET_SELECTED_NOTE_FILTER_DEFINITION',
+            noteFilterDefinition,
             date: moment().toISOString()
         });
-    };
-}
-
-export function refreshSelectedNoteFilter() {
-    return async (dispatch, getState) => {
-        const state = getState();
-        const id = getSelectedNoteFilterId(state);
-        const filter = getNoteFiltersFilteredByVisibleState(state).find(filter => filter.id === id);
-
-        if (filter) {
-            return dispatch(setSelectedNoteFilter(filter));
-        }
     };
 }
 
@@ -536,25 +523,13 @@ export function setSelectedTaskIds(taskIds) {
     };
 }
 
-export function setSelectedTaskFilter(taskFilter) {
+export function setSelectedTaskFilterDefinition(taskFilterDefinition) {
     return async dispatch => {
         dispatch({
-            type: 'SET_SELECTED_TASK_FILTER',
-            taskFilter,
+            type: 'SET_SELECTED_TASK_FILTER_DEFINITION',
+            taskFilterDefinition,
             date: moment().toISOString()
         });
-    };
-}
-
-export function refreshSelectedTaskFilter() {
-    return async (dispatch, getState) => {
-        const state = getState();
-        const id = getSelectedTaskFilterId(state);
-        const filter = getTaskFiltersFilteredByVisibleState(state).find(filter => filter.id === id);
-
-        if (filter) {
-            return dispatch(setSelectedTaskFilter(filter));
-        }
     };
 }
 

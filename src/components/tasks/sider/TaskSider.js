@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, Checkbox, Input, Menu, Radio, Tooltip } from 'antd';
+import { Alert, Badge, Checkbox, Input, Menu, Radio, Switch, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
@@ -16,6 +16,7 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTagApi } from 'hooks/UseTagApi';
 import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { equals } from 'utils/ObjectUtils';
 
 function TaskSider(props) {
     const appApi = useAppApi();
@@ -40,7 +41,7 @@ function TaskSider(props) {
     };
 
     const onSelect = event => {
-        taskApi.setSelectedTaskFilter(event.item.props.filter);
+        taskApi.setSelectedTaskFilterDefinition(event.item.props.filterdef);
     };
 
     const onOpenChange = key => {
@@ -106,29 +107,8 @@ function TaskSider(props) {
         });
     };
 
-    const createTaskFilterForObject = (object, field, condition = {
-        id: null,
-        field,
-        type: 'equal',
-        value: object.id
-    }) => {
-        return {
-            id: object.id,
-            title: object.title,
-            color: object.color,
-            condition,
-            sorters: settingsApi.settings.categoryTaskSorters,
-            taskTemplate: {
-                id: null,
-                properties: {
-                    [field]: condition.value
-                }
-            }
-        };
-    };
-
-    const createBadge = taskFilter => {
-        if (taskFilter.id !== taskApi.selectedTaskFilter.id) {
+    const createBadge = filterId => {
+        if (filterId !== taskApi.selectedTaskFilter.id) {
             return null;
         }
 
@@ -140,11 +120,33 @@ function TaskSider(props) {
                 style={{
                     backgroundColor: Constants.badgeColor,
                     fontWeight: 'bold',
-                    marginLeft: 10,
+                    marginRight: 5,
                     marginBottom: 2
                 }} />
         );
     };
+
+    const containsFilterDefinition = filterDefinition => {
+        const definitions = settingsApi.settings.combinedTaskFilterDefinitions || [];
+        return !!definitions.find(definition => equals(definition, filterDefinition));
+    };
+
+    const updateCombinedFilterDefinitions = filterDefinition => {
+        let definitions = [...(settingsApi.settings.combinedTaskFilterDefinitions || [])];
+        const index = definitions.findIndex(definition => equals(definition, filterDefinition));
+
+        if (index >= 0) {
+            definitions.splice(index, 1);
+        } else {
+            definitions.push(filterDefinition);
+        }
+
+        settingsApi.updateSettings({
+            combinedTaskFilterDefinitions: definitions
+        });
+    };
+
+    const combinedFilterDefinitionNumber = (settingsApi.settings.combinedTaskFilterDefinitions || []).length;
 
     return (
         <React.Fragment>
@@ -154,7 +156,7 @@ function TaskSider(props) {
                 onClose={() => setSelectedTaskFilterInfo(null)} />
             <div
                 className="joyride-task-sider"
-                style={{ backgroundColor: '#ffffff', height: '100%' }}>
+                style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#ffffff', minHeight: '100%' }}>
                 {props.mode === 'table' && (
                     <div style={{ padding: '10px 10px 0px 10px' }}>
                         <div>
@@ -245,54 +247,72 @@ function TaskSider(props) {
                     selectedKeys={[taskApi.selectedTaskFilter.id]}
                     openKeys={openKeys}
                     onSelect={onSelect}
-                    mode="inline">
+                    mode="inline"
+                    style={{ flex: 1 }}>
                     <Menu.SubMenu
                         key="general"
                         title={<Icon icon="home" text="General" />}
                         onTitleClick={({ key }) => onOpenChange(key)}>
-                        {getGeneralTaskFilters().filter(filter => settingsApi.settings['taskFilterVisible_' + filter.id] !== false).map(filter => (
-                            <Menu.Item
-                                key={filter.id}
-                                filter={filter}>
-                                <LeftRight right={(
-                                    <React.Fragment>
+                        {getGeneralTaskFilters().filter(filter => settingsApi.settings['taskFilterVisible_' + filter.id] !== false).map(filter => {
+                            const filterDefinition = { id: filter.id, type: 'general' };
+
+                            return (
+                                <Menu.Item
+                                    key={filter.id}
+                                    filterdef={filterDefinition}>
+                                    <LeftRight right={(
+                                        <React.Fragment>
+                                            {createBadge(filter.id)}
+                                            <Icon
+                                                icon="info-circle"
+                                                color={Constants.fadeIconColor}
+                                                className="object-actions"
+                                                onClick={() => setSelectedTaskFilterInfo(filter)} />
+                                            <Switch
+                                                checked={containsFilterDefinition(filterDefinition)}
+                                                onChange={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                                size="small"
+                                                style={{ marginLeft: 5 }} />
+                                        </React.Fragment>
+                                    )}>
                                         <Icon
-                                            icon="info-circle"
-                                            color={Constants.fadeIconColor}
-                                            className="object-actions"
-                                            onClick={() => setSelectedTaskFilterInfo(filter)} />
-                                        {createBadge(filter)}
-                                    </React.Fragment>
-                                )}>
-                                    <Icon
-                                        icon={filter.icon}
-                                        color={filter.color}
-                                        text={filter.title} />
-                                </LeftRight>
-                            </Menu.Item>
-                        ))}
-                        {taskFilterApi.taskFilters.filter(filter => filter.directory === 'general').map(filter => (
-                            <Menu.Item key={filter.id} filter={filter}>
-                                <ObjectMenuItem
-                                    badge={createBadge(filter)}
-                                    object={filter}
-                                    onManage={() => manageTaskFilters()}
-                                    onEdit={() => editTaskFilter(filter.id)}
-                                    onDelete={() => taskFilterApi.deleteTaskFilter(filter.id)} />
-                            </Menu.Item>
-                        ))}
+                                            icon={filter.icon}
+                                            color={filter.color}
+                                            text={filter.title} />
+                                    </LeftRight>
+                                </Menu.Item>
+                            );
+                        })}
+                        {taskFilterApi.taskFilters.filter(filter => filter.directory === 'general').map(filter => {
+                            const filterDefinition = { id: filter.id, type: 'default' };
+
+                            return (
+                                <Menu.Item key={filter.id} filterdef={filterDefinition}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(filter.id)}
+                                        object={filter}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                        onManage={() => manageTaskFilters()}
+                                        onEdit={() => editTaskFilter(filter.id)}
+                                        onDelete={() => taskFilterApi.deleteTaskFilter(filter.id)} />
+                                </Menu.Item>
+                            );
+                        })}
                     </Menu.SubMenu>
                     <Menu.SubMenu
                         key="folders"
                         title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
                         {folderApi.folders.map(folder => {
-                            const filter = createTaskFilterForObject(folder, 'folder');
+                            const filterDefinition = { id: folder.id, type: 'folder' };
 
                             return (
-                                <Menu.Item key={folder.id} filter={filter}>
+                                <Menu.Item key={folder.id} filterdef={filterDefinition}>
                                     <ObjectMenuItem
-                                        badge={createBadge(filter)}
+                                        badge={createBadge(folder.id)}
                                         object={folder}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
                                         onManage={() => manageObjects('folders')}
                                         onEdit={() => editObject('folders', folder.id)}
                                         onDelete={() => folderApi.deleteFolder(folder.id)}
@@ -306,13 +326,15 @@ function TaskSider(props) {
                         key="contexts"
                         title={createCategorySubMenu('Contexts', 'thumbtack', () => manageObjects('contexts'), () => onOpenChange('contexts'))}>
                         {contextApi.contexts.map(context => {
-                            const filter = createTaskFilterForObject(context, 'context');
+                            const filterDefinition = { id: context.id, type: 'context' };
 
                             return (
-                                <Menu.Item key={context.id} filter={filter}>
+                                <Menu.Item key={context.id} filterdef={filterDefinition}>
                                     <ObjectMenuItem
-                                        badge={createBadge(filter)}
+                                        badge={createBadge(context.id)}
                                         object={context}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
                                         onManage={() => manageObjects('contexts')}
                                         onEdit={() => editObject('contexts', context.id)}
                                         onDelete={() => contextApi.deleteContext(context.id)}
@@ -326,13 +348,15 @@ function TaskSider(props) {
                         key="goals"
                         title={createCategorySubMenu('Goals', 'bullseye', () => manageObjects('goals'), () => onOpenChange('goals'))}>
                         {goalApi.goals.map(goal => {
-                            const filter = createTaskFilterForObject(goal, 'goal');
+                            const filterDefinition = { id: goal.id, type: 'goal' };
 
                             return (
-                                <Menu.Item key={goal.id} filter={filter}>
+                                <Menu.Item key={goal.id} filterdef={filterDefinition}>
                                     <ObjectMenuItem
-                                        badge={createBadge(filter)}
+                                        badge={createBadge(goal.id)}
                                         object={goal}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
                                         onManage={() => manageObjects('goals')}
                                         onEdit={() => editObject('goals', goal.id)}
                                         onDelete={() => goalApi.deleteGoal(goal.id)}
@@ -346,13 +370,15 @@ function TaskSider(props) {
                         key="locations"
                         title={createCategorySubMenu('Locations', 'compass', () => manageObjects('locations'), () => onOpenChange('locations'))}>
                         {locationApi.locations.map(location => {
-                            const filter = createTaskFilterForObject(location, 'location');
+                            const filterDefinition = { id: location.id, type: 'location' };
 
                             return (
-                                <Menu.Item key={location.id} filter={filter}>
+                                <Menu.Item key={location.id} filterdef={filterDefinition}>
                                     <ObjectMenuItem
-                                        badge={createBadge(filter)}
+                                        badge={createBadge(location.id)}
                                         object={location}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
                                         onManage={() => manageObjects('locations')}
                                         onEdit={() => editObject('locations', location.id)}
                                         onDelete={() => locationApi.deleteLocation(location.id)}
@@ -366,18 +392,15 @@ function TaskSider(props) {
                         key="tags"
                         title={createCategorySubMenu('Tags', 'tag', () => manageObjects('tags'), () => onOpenChange('tags'))}>
                         {tagApi.tags.map(tag => {
-                            const filter = createTaskFilterForObject(tag, 'tags', {
-                                id: null,
-                                field: 'tags',
-                                type: 'contain',
-                                value: [tag.id]
-                            });
+                            const filterDefinition = { id: tag.id, type: 'tags' };
 
                             return (
-                                <Menu.Item key={tag.id} filter={filter}>
+                                <Menu.Item key={tag.id} filterdef={filterDefinition}>
                                     <ObjectMenuItem
-                                        badge={createBadge(filter)}
+                                        badge={createBadge(tag.id)}
                                         object={tag}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
                                         onManage={() => manageObjects('tags')}
                                         onEdit={() => editObject('tags', tag.id)}
                                         onDelete={() => tagApi.deleteTag(tag.id)} />
@@ -388,18 +411,31 @@ function TaskSider(props) {
                     <Menu.SubMenu
                         key="taskFilters"
                         title={createCategorySubMenu('Task Filters', 'filter', () => manageTaskFilters(), () => onOpenChange('taskFilters'))}>
-                        {taskFilterApi.taskFilters.filter(filter => filter.directory !== 'general').map(filter => (
-                            <Menu.Item key={filter.id} filter={filter}>
-                                <ObjectMenuItem
-                                    badge={createBadge(filter)}
-                                    object={filter}
-                                    onManage={() => manageTaskFilters()}
-                                    onEdit={() => editTaskFilter(filter.id)}
-                                    onDelete={() => taskFilterApi.deleteTaskFilter(filter.id)} />
-                            </Menu.Item>
-                        ))}
+                        {taskFilterApi.taskFilters.filter(filter => filter.directory !== 'general').map(filter => {
+                            const filterDefinition = { id: filter.id, type: 'default' };
+
+                            return (
+                                <Menu.Item key={filter.id} filterdef={filterDefinition}>
+                                    <ObjectMenuItem
+                                        badge={createBadge(filter.id)}
+                                        object={filter}
+                                        isCombinedFilter={containsFilterDefinition(filterDefinition)}
+                                        onCombineFilter={() => updateCombinedFilterDefinitions(filterDefinition)}
+                                        onManage={() => manageTaskFilters()}
+                                        onEdit={() => editTaskFilter(filter.id)}
+                                        onDelete={() => taskFilterApi.deleteTaskFilter(filter.id)} />
+                                </Menu.Item>
+                            );
+                        })}
                     </Menu.SubMenu>
-                </Menu >
+                </Menu>
+                {combinedFilterDefinitionNumber > 0 && (
+                    <Alert
+                        type="info"
+                        showIcon
+                        message={`${combinedFilterDefinitionNumber} combined filter${combinedFilterDefinitionNumber > 1 ? 's' : ''}`}
+                        style={{ margin: 10 }} />
+                )}
             </div>
         </React.Fragment>
     );

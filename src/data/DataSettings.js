@@ -1362,6 +1362,22 @@ export function getCategories() {
                     visible: false
                 },
                 {
+                    id: 'selectedNoteFilterDefinition',
+                    title: 'Selected Note Filter Definition',
+                    type: 'object',
+                    value: { id: getDefaultSelectedNoteFilter().id, type: 'general' },
+                    editable: false,
+                    visible: false
+                },
+                {
+                    id: 'selectedTaskFilterDefinition',
+                    title: 'Selected Task Filter Definition',
+                    type: 'object',
+                    value: { id: getDefaultSelectedTaskFilter().id, type: 'general' },
+                    editable: false,
+                    visible: false
+                },
+                {
                     id: 'showTaskHierarchy',
                     title: 'Show task indentation',
                     type: 'boolean',

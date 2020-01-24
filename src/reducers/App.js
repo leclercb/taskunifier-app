@@ -1,6 +1,4 @@
 import moment from 'moment';
-import { getDefaultSelectedNoteFilter } from 'data/DataNoteFilters';
-import { getDefaultSelectedTaskFilter } from 'data/DataTaskFilters';
 
 const App = () => (state = {
     dataUuid: null,
@@ -11,11 +9,9 @@ const App = () => (state = {
         fieldId: null
     },
     selectedNoteIds: [],
-    selectedNoteFilter: getDefaultSelectedNoteFilter(),
     selectedNoteFilterDate: moment().toISOString(),
     searchNoteValue: '',
     selectedTaskIds: [],
-    selectedTaskFilter: getDefaultSelectedTaskFilter(),
     selectedTaskFilterDate: moment().toISOString(),
     searchTaskValue: '',
     joyride: {
@@ -92,10 +88,9 @@ const App = () => (state = {
                 ...state,
                 selectedNoteIds: Array.isArray(action.noteIds) ? action.noteIds : [action.noteIds]
             };
-        case 'SET_SELECTED_NOTE_FILTER':
+        case 'SET_SELECTED_NOTE_FILTER_DEFINITION':
             return {
                 ...state,
-                selectedNoteFilter: action.noteFilter,
                 selectedNoteFilterDate: action.date
             };
         case 'SET_SEARCH_NOTE_VALUE':
@@ -108,10 +103,9 @@ const App = () => (state = {
                 ...state,
                 selectedTaskIds: Array.isArray(action.taskIds) ? action.taskIds : [action.taskIds]
             };
-        case 'SET_SELECTED_TASK_FILTER':
+        case 'SET_SELECTED_TASK_FILTER_DEFINITION':
             return {
                 ...state,
-                selectedTaskFilter: action.taskFilter,
                 selectedTaskFilterDate: action.date
             };
         case 'SET_SEARCH_TASK_VALUE':

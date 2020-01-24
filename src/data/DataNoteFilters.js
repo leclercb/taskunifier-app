@@ -41,6 +41,7 @@ export function getGeneralNoteFilters() {
             id: 'all',
             title: 'All',
             icon: 'book',
+            directory: 'general',
             condition: null,
             sorters: getDefaultNoteSorters()
         }
@@ -55,4 +56,42 @@ export function getDefaultNoteSorters() {
             direction: 'ascending'
         }
     ];
+}
+
+export function createNoteFilterFromDefinition(filterDefinition, filters, sorters) {
+    switch (filterDefinition.type) {
+        case 'default':
+            return filters.find(filter => filter.id === filterDefinition.id);
+        case 'general':
+            return getGeneralNoteFilters().find(filter => filter.id === filterDefinition.id);
+        case 'context':
+        case 'folder':
+        case 'goal':
+        case 'location':
+            return {
+                id: filterDefinition.id,
+                title: 'Generated Filter',
+                condition: {
+                    id: null,
+                    field: filterDefinition.type,
+                    type: 'equal',
+                    value: filterDefinition.id
+                },
+                sorters
+            };
+        case 'tags':
+            return {
+                id: filterDefinition.id,
+                title: 'Generated Filter',
+                condition: {
+                    id: null,
+                    field: filterDefinition.type,
+                    type: 'contain',
+                    value: [filterDefinition.id]
+                },
+                sorters
+            };
+        default:
+            return null;
+    }
 }

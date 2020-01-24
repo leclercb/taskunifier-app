@@ -2,8 +2,6 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     loadData,
-    refreshSelectedNoteFilter,
-    refreshSelectedTaskFilter,
     saveData,
     setAccountManagerOptions,
     setBatchAddTasksManagerOptions,
@@ -169,16 +167,6 @@ export function useAppApi() {
         [dispatch]
     );
 
-    const refreshSelectedNoteFilterCallback = useCallback(
-        () => dispatch(refreshSelectedNoteFilter()),
-        [dispatch]
-    );
-
-    const refreshSelectedTaskFilterCallback = useCallback(
-        () => dispatch(refreshSelectedTaskFilter()),
-        [dispatch]
-    );
-
     return {
         dataUuid,
         startDate,
@@ -217,8 +205,6 @@ export function useAppApi() {
         setTaskEditionManagerOptions: setTaskEditionManagerOptionsCallback,
         setTaskTemplateManagerOptions: setTaskTemplateManagerOptionsCallback,
         setAccountManagerOptions: setAccountManagerOptionsCallback,
-        setSettingManagerOptions: setSettingManagerOptionsCallback,
-        refreshSelectedNoteFilter: refreshSelectedNoteFilterCallback,
-        refreshSelectedTaskFilter: refreshSelectedTaskFilterCallback
+        setSettingManagerOptions: setSettingManagerOptionsCallback
     };
 }
