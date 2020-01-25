@@ -26,6 +26,7 @@
         "axios": "^0.19.2",
         "craco-antd": "^1.14.1",
         "electron-is-dev": "^1.1.0",
+        "electron-updater": "^4.2.0",
         "fs-extra": "^8.1.0",
         "https-proxy-agent": "^4.0.0",
         "inputmask-core": "^2.2.0",
@@ -109,7 +110,6 @@
                 "portable",
                 "nsis"
             ],
-            "sign": "./sign.js",
             "publish": {
                 "provider": "github"
             }
