@@ -11,6 +11,7 @@
         "electron:start": "electron .",
         "start": "REACT_APP_GIT_COMMIT_HASH=$(git rev-parse --short HEAD) craco start",
         "build": "REACT_APP_GIT_COMMIT_HASH=$(git rev-parse --short HEAD) craco build",
+        "build:github": "craco build",
         "lint": "eslint src",
         "test": "craco test",
         "pack": "electron-builder --dir",

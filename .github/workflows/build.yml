@@ -1,4 +1,4 @@
-name: Build/release
+name: Build
 
 on: push
 
@@ -20,7 +20,7 @@ jobs:
           node-version: 12
 
       - name: Build and Release
-        uses: samuelmeuli/action-electron-builder@v1
+        uses: leclercb/action-electron-builder
         with:
           github_token: ${{ secrets.github_token }}
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
