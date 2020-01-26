@@ -12,6 +12,8 @@ function ModalSettingManager() {
         appApi.setSettingManagerOptions({ visible: false });
     };
 
+    const shortHash = (process.env.REACT_APP_GIT_COMMIT_HASH || '').substring(0, 7);
+
     return (
         <Modal
             title={<Icon icon="cog" text="Settings" />}
@@ -27,7 +29,7 @@ function ModalSettingManager() {
                     </Button>
                 )}>
                     <div style={{ textAlign: 'left', fontSize: 10 }}>
-                        Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({process.env.REACT_APP_GIT_COMMIT_HASH})
+                        Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({shortHash})
                     </div>
                 </LeftRight>
             )}>

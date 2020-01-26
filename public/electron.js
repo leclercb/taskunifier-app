@@ -1,6 +1,7 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, dialog, ipcMain, protocol, shell, BrowserWindow } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -143,7 +144,7 @@ ipcMain.on('open-external', (event, url) => {
 ipcMain.on('pdf-viewer', (event, file) => {
     /*
     const pdfViewer = new BrowserWindow({
-        title: 'TaskUnifer 2 - PDF Viewer',
+        title: 'TaskUnifer - PDF Viewer',
         icon: 'public/resources/images/logo.png',
         width: 800,
         height: 600,
@@ -179,4 +180,5 @@ app.on('ready', () => {
     mainWindow = createMainWindow();
     registerProtocol('tu');
     registerProtocol('taskunifier');
+    autoUpdater.checkForUpdatesAndNotify();
 });

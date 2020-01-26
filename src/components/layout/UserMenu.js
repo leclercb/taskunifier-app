@@ -13,10 +13,12 @@ function UserMenu() {
         appApi.setAccountManagerOptions({ visible: true });
     };
 
+    const shortHash = (process.env.REACT_APP_GIT_COMMIT_HASH || '').substring(0, 7);
+
     const content = (
         <React.Fragment>
             <div style={{ width: '100%', textAlign: 'right', fontSize: 10 }}>
-                Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({process.env.REACT_APP_GIT_COMMIT_HASH})
+                Version: <strong>{process.env.REACT_APP_VERSION}</strong> ({shortHash})
             </div>
             {sessionApi.session.user ? (
                 <Descriptions
