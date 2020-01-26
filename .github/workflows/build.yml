@@ -19,8 +19,15 @@ jobs:
         with:
           node-version: 12
 
+      - name: Print Git Commit Hash
+        run: echo GIT COMMIT HASH $REACT_APP_GIT_COMMIT_HASH
+        env:
+          REACT_APP_GIT_COMMIT_HASH: "${{ env.GITHUB_SHA }}"
+
       - name: Build and Release
         uses: leclercb/action-electron-builder@v1.2.1
         with:
           github_token: ${{ secrets.github_token }}
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+        env:
+          REACT_APP_GIT_COMMIT_HASH: "${{ env.GITHUB_SHA }}"
