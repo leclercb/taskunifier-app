@@ -11,23 +11,18 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
-      - name: Checkout Git Repository
+      - name: Git Checkout
         uses: actions/checkout@v1
 
-      - name: Install Node JS, NPM and Yarn
+      - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 12
 
-      - name: Print Git Commit Hash
-        run: echo GIT COMMIT HASH $REACT_APP_GIT_COMMIT_HASH
-        env:
-          REACT_APP_GIT_COMMIT_HASH: "${{ env.GITHUB_SHA }}"
-
-      - name: Build and Release
+      - name: Build
         uses: leclercb/action-electron-builder@v1.2.1
         with:
-          github_token: ${{ secrets.github_token }}
+          github_token: ${{ github.token }}
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
         env:
-          REACT_APP_GIT_COMMIT_HASH: "${{ env.GITHUB_SHA }}"
+          REACT_APP_GIT_COMMIT_HASH: "${{ github.sha }}"
