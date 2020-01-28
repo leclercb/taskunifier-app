@@ -20,9 +20,10 @@ jobs:
           node-version: 12
 
       - name: Build
-        uses: leclercb/action-electron-builder@v1.2.1
+        uses: leclercb/action-electron-builder@v1.2.2
         with:
           github_token: ${{ github.token }}
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          build_script_name: "build:github"
         env:
           REACT_APP_GIT_COMMIT_HASH: "${{ github.sha }}"
