@@ -505,6 +505,15 @@ export function setSelectedNoteFilterDefinition(noteFilterDefinition) {
     };
 }
 
+export function setNoteFilterCounts(counts) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_NOTE_FILTER_COUNTS',
+            counts
+        });
+    };
+}
+
 export function setSearchNoteValue(value) {
     return async dispatch => {
         dispatch({
@@ -529,6 +538,15 @@ export function setSelectedTaskFilterDefinition(taskFilterDefinition) {
             type: 'SET_SELECTED_TASK_FILTER_DEFINITION',
             taskFilterDefinition,
             date: moment().toISOString()
+        });
+    };
+}
+
+export function setTaskFilterCounts(counts) {
+    return async dispatch => {
+        dispatch({
+            type: 'SET_TASK_FILTER_COUNTS',
+            counts
         });
     };
 }

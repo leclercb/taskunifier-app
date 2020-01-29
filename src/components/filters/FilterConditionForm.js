@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Input, Row } from 'antd';
 import { getInputForType, getSelectForType } from 'data/DataFieldComponents';
-import { getConditionsFieldTypeForType, getValuePropNameForType } from 'data/DataFieldTypes';
+import { getConditionsFieldTypeForType } from 'data/DataFieldFilterTypes';
+import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { onCommitForm } from 'utils/FormUtils';
 

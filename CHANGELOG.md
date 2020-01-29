@@ -2,7 +2,11 @@
 
 ## New Features
 
+* Show badge counts for every filter (#44)
+
 ## Bug Fixes
+
+* Hide archived folders and goals in note/task sider
 
 # 0.9.3
 

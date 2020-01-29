@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addGoal, deleteGoal, duplicateGoal, updateGoal } from 'actions/GoalActions';
-import { getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
+import { getGoalsFilteredByNonArchived, getGoalsFilteredByVisibleState } from 'selectors/GoalSelectors';
 
 export function useGoalApi() {
     const dispatch = useDispatch();
     const goals = useSelector(getGoalsFilteredByVisibleState);
+    const nonArchivedGoals = useSelector(getGoalsFilteredByNonArchived);
 
     const addGoalCallback = useCallback(
         goal => dispatch(addGoal(goal)),
@@ -29,6 +30,7 @@ export function useGoalApi() {
 
     return {
         goals,
+        nonArchivedGoals,
         addGoal: addGoalCallback,
         duplicateGoal: duplicateGoalCallback,
         updateGoal: updateGoalCallback,

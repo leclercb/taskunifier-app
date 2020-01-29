@@ -101,17 +101,29 @@ function NoteSider() {
     };
 
     const createBadge = filterId => {
-        if (filterId !== noteApi.selectedNoteFilter.id) {
+        if (!settingsApi.settings.showAllBadgeCounts && filterId !== noteApi.selectedNoteFilter.id) {
             return null;
+        }
+
+        let count = 0;
+
+        if (filterId === noteApi.selectedNoteFilter.id) {
+            count = noteApi.filteredNotes.length;
+        } else {
+            if (!(filterId in noteFilterApi.noteFilterCounts)) {
+                return null;
+            }
+
+            count = noteFilterApi.noteFilterCounts[filterId] || 0;
         }
 
         return (
             <Badge
-                count={noteApi.filteredNotes.length}
+                count={count}
                 showZero={true}
                 overflowCount={9999}
                 style={{
-                    backgroundColor: Constants.badgeColor,
+                    backgroundColor: filterId === noteApi.selectedNoteFilter.id ? Constants.badgeColor : Constants.inactiveBadgeColor,
                     fontWeight: 'bold',
                     marginRight: 5,
                     marginBottom: 2
@@ -232,7 +244,7 @@ function NoteSider() {
                     <Menu.SubMenu
                         key="folders"
                         title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                        {folderApi.folders.map(folder => {
+                        {folderApi.nonArchivedFolders.map(folder => {
                             const filterDefinition = { id: folder.id, type: 'folder' };
 
                             return (

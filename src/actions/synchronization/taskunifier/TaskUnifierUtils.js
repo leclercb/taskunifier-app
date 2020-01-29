@@ -1,4 +1,5 @@
-import { getConditionsFieldTypeForType, getObjectsForFieldType } from 'data/DataFieldTypes';
+import { getConditionsFieldTypeForType } from 'data/DataFieldFilterTypes';
+import { getObjectsForFieldType } from 'data/DataFieldTypes';
 
 export function getObjectRemoteValue(state, fieldType, value) {
     const objects = getObjectsForFieldType(state, fieldType);

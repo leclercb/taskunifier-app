@@ -187,6 +187,13 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
+                    id: 'showAllBadgeCounts',
+                    title: 'Show all badge counts',
+                    type: 'boolean',
+                    value: true,
+                    editable: true
+                },
+                {
                     id: 'confirmBeforeClosing',
                     title: 'Confirm before closing',
                     type: 'boolean',
