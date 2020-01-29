@@ -9,11 +9,13 @@ import {
     setCategoryManagerOptions,
     setEditingCell,
     setNoteFieldManagerOptions,
+    setNoteFilterCounts,
     setNoteFilterManagerOptions,
     setReminderManagerOptions,
     setSettingManagerOptions,
     setTaskEditionManagerOptions,
     setTaskFieldManagerOptions,
+    setTaskFilterCounts,
     setTaskFilterManagerOptions,
     setTaskTemplateManagerOptions,
     updateMinuteTimer
@@ -167,6 +169,16 @@ export function useAppApi() {
         [dispatch]
     );
 
+    const setNoteFilterCountsCallback = useCallback(
+        counts => dispatch(setNoteFilterCounts(counts)),
+        [dispatch]
+    );
+
+    const setTaskFilterCountsCallback = useCallback(
+        counts => dispatch(setTaskFilterCounts(counts)),
+        [dispatch]
+    );
+
     return {
         dataUuid,
         startDate,
@@ -205,6 +217,8 @@ export function useAppApi() {
         setTaskEditionManagerOptions: setTaskEditionManagerOptionsCallback,
         setTaskTemplateManagerOptions: setTaskTemplateManagerOptionsCallback,
         setAccountManagerOptions: setAccountManagerOptionsCallback,
-        setSettingManagerOptions: setSettingManagerOptionsCallback
+        setSettingManagerOptions: setSettingManagerOptionsCallback,
+        setNoteFilterCounts: setNoteFilterCountsCallback,
+        setTaskFilterCounts: setTaskFilterCountsCallback
     };
 }

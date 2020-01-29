@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addNoteFilter, deleteNoteFilter, duplicateNoteFilter, updateNoteFilter } from 'actions/NoteFilterActions';
+import { getNoteFilterCounts } from 'selectors/AppSelectors';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
 
 export function useNoteFilterApi() {
     const dispatch = useDispatch();
     const noteFilters = useSelector(getNoteFiltersFilteredByVisibleState);
+    const noteFilterCounts = useSelector(getNoteFilterCounts);
 
     const addNoteFilterCallback = useCallback(
         noteFilter => dispatch(addNoteFilter(noteFilter)),
@@ -29,6 +31,7 @@ export function useNoteFilterApi() {
 
     return {
         noteFilters,
+        noteFilterCounts,
         addNoteFilter: addNoteFilterCallback,
         duplicateNoteFilter: duplicateNoteFilterCallback,
         updateNoteFilter: updateNoteFilterCallback,

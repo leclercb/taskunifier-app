@@ -10,9 +10,11 @@ const App = () => (state = {
     },
     selectedNoteIds: [],
     selectedNoteFilterDate: moment().toISOString(),
+    noteFilterCounts: {},
     searchNoteValue: '',
     selectedTaskIds: [],
     selectedTaskFilterDate: moment().toISOString(),
+    taskFilterCounts: {},
     searchTaskValue: '',
     joyride: {
         id: null,
@@ -93,6 +95,11 @@ const App = () => (state = {
                 ...state,
                 selectedNoteFilterDate: action.date
             };
+        case 'SET_NOTE_FILTER_COUNTS':
+            return {
+                ...state,
+                noteFilterCounts: action.counts
+            };
         case 'SET_SEARCH_NOTE_VALUE':
             return {
                 ...state,
@@ -107,6 +114,11 @@ const App = () => (state = {
             return {
                 ...state,
                 selectedTaskFilterDate: action.date
+            };
+        case 'SET_TASK_FILTER_COUNTS':
+            return {
+                ...state,
+                taskFilterCounts: action.counts
             };
         case 'SET_SEARCH_TASK_VALUE':
             return {

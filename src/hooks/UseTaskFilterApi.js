@@ -1,11 +1,13 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addTaskFilter, deleteTaskFilter, duplicateTaskFilter, updateTaskFilter } from 'actions/TaskFilterActions';
+import { getTaskFilterCounts } from 'selectors/AppSelectors';
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 
 export function useTaskFilterApi() {
     const dispatch = useDispatch();
     const taskFilters = useSelector(getTaskFiltersFilteredByVisibleState);
+    const taskFilterCounts = useSelector(getTaskFilterCounts);
 
     const addTaskFilterCallback = useCallback(
         taskFilter => dispatch(addTaskFilter(taskFilter)),
@@ -29,6 +31,7 @@ export function useTaskFilterApi() {
 
     return {
         taskFilters,
+        taskFilterCounts,
         addTaskFilter: addTaskFilterCallback,
         duplicateTaskFilter: duplicateTaskFilterCallback,
         updateTaskFilter: updateTaskFilterCallback,

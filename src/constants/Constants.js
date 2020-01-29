@@ -18,6 +18,7 @@ export default {
     archivedColor: '#5e666d',
     defaultTaskTemplateColor: '#ffd632',
     badgeColor: '#0e67c4',
+    inactiveBadgeColor: '#e3ebf2',
     calendarDateModeColor_startDate: '#32cd32',
     calendarDateModeColor_dueDate: '#1e90ff'
 };

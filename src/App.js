@@ -13,6 +13,7 @@ import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
+import { startNoteFilterCounterWorker, startTaskFilterCounterWorker } from 'utils/WorkerUtils';
 
 import 'App.css';
 import 'font-awesome.js';
@@ -181,6 +182,23 @@ function App() {
             settingsApi.settings.lastAutomaticSynchronization
         ]
     );
+
+    useEffect(() => {
+        if (settingsApi.settings.showAllBadgeCounts) {
+            const terminateNoteFilterCounterWorker = startNoteFilterCounterWorker(10000, data => {
+                appApi.setNoteFilterCounts(data);
+            });
+
+            const terminateTaskFilterCounterWorker = startTaskFilterCounterWorker(10000, data => {
+                appApi.setTaskFilterCounts(data);
+            });
+
+            return () => {
+                terminateNoteFilterCounterWorker();
+                terminateTaskFilterCounterWorker();
+            };
+        }
+    }, [settingsApi.settings.showAllBadgeCounts]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <DndProvider backend={HTML5Backend}>

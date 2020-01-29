@@ -109,14 +109,14 @@ function TaskQuickAdd() {
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='folders' label="Folders">
-                    {folderApi.folders.map(folder => (
+                    {folderApi.nonArchivedFolders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
                             <FolderTitle folderId={folder.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='goals' label="Goals">
-                    {goalApi.goals.map(goal => (
+                    {goalApi.nonArchivedGoals.map(goal => (
                         <Select.Option key={goal.id} value={goal.title + '__' + JSON.stringify({ field: 'goal', value: goal.id })}>
                             <GoalTitle goalId={goal.id} />
                         </Select.Option>

@@ -65,7 +65,7 @@ function NoteQuickAdd() {
                     <Icon icon="plus" text="Create note" />
                 </Select.Option>,
                 <Select.OptGroup key='folders' label="Folders">
-                    {folderApi.folders.map(folder => (
+                    {folderApi.nonArchivedFolders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
                             <FolderTitle folder={folder} />
                         </Select.Option>

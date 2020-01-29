@@ -3,7 +3,6 @@
 import React from 'react';
 import moment from 'moment';
 import { Checkbox, Input, InputNumber, Progress, Select, Tag } from 'antd';
-import { getFieldType } from 'data/DataFieldTypes';
 import ColorPicker from 'components/common/ColorPicker';
 import DatePicker from 'components/common/DatePicker';
 import DurationField from 'components/common/DurationField';
@@ -53,6 +52,7 @@ import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import { getConditionsForType } from 'data/DataFieldFilterTypes';
 import {
     toStringNumber,
     toStringPassword,
@@ -793,7 +793,7 @@ export function getFieldComponents(type, options) {
             dropdownMatchSelectWidth={false}
             placeholder="Condition"
             {...props}>
-            {getFieldType(type).conditions.filter(condition => condition.visible !== false).map(condition => (
+            {getConditionsForType(type).filter(condition => condition.visible !== false).map(condition => (
                 <Select.Option
                     key={condition.type}
                     value={condition.type}>

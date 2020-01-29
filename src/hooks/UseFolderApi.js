@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFolder, deleteFolder, duplicateFolder, updateFolder } from 'actions/FolderActions';
-import { getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
+import { getFoldersFilteredByNonArchived, getFoldersFilteredByVisibleState } from 'selectors/FolderSelectors';
 
 export function useFolderApi() {
     const dispatch = useDispatch();
     const folders = useSelector(getFoldersFilteredByVisibleState);
+    const nonArchivedFolders = useSelector(getFoldersFilteredByNonArchived);
 
     const addFolderCallback = useCallback(
         folder => dispatch(addFolder(folder)),
@@ -29,6 +30,7 @@ export function useFolderApi() {
 
     return {
         folders,
+        nonArchivedFolders,
         addFolder: addFolderCallback,
         duplicateFolder: duplicateFolderCallback,
         updateFolder: updateFolderCallback,

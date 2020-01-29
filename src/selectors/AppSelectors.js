@@ -19,12 +19,14 @@ export const getSelectedNoteIds = state => state.app.selectedNoteIds;
 export const getSelectedNoteFilterDefinition = state => state.settings.selectedNoteFilterDefinition;
 export const getSelectedNoteFilterId = state => state.settings.selectedNoteFilterDefinition ? state.settings.selectedNoteFilterDefinition.id : null;
 export const getSelectedNoteFilterDate = state => state.app.selectedNoteFilterDate;
+export const getNoteFilterCounts = state => state.app.noteFilterCounts;
 export const getSearchNoteValue = state => state.app.searchNoteValue;
 
 export const getSelectedTaskIds = state => state.app.selectedTaskIds;
 export const getSelectedTaskFilterDefinition = state => state.settings.selectedTaskFilterDefinition;
 export const getSelectedTaskFilterId = state => state.settings.selectedTaskFilterDefinition ? state.settings.selectedTaskFilterDefinition.id : null;
 export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDate;
+export const getTaskFilterCounts = state => state.app.taskFilterCounts;
 export const getSearchTaskValue = state => state.app.searchTaskValue;
 
 export const getJoyrideOptions = state => state.app.joyride;

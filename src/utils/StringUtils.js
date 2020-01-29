@@ -6,7 +6,6 @@ import { getPriority } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getSortDirections } from 'data/DataSortDirections';
 import { getOptionsFromValue } from 'utils/RepeatUtils';
-import { convertToPlainText } from 'utils/RichTextUtils';
 
 export function toString(value) {
     if (typeof value === 'undefined' || value === null) {
@@ -17,7 +16,7 @@ export function toString(value) {
 }
 
 export function toStringRichText(value) {
-    return convertToPlainText(value);
+    return value; // TODO convert to plain text
 }
 
 export function toStringBoolean(value) {

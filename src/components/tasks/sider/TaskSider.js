@@ -108,17 +108,29 @@ function TaskSider(props) {
     };
 
     const createBadge = filterId => {
-        if (filterId !== taskApi.selectedTaskFilter.id) {
+        if (!settingsApi.settings.showAllBadgeCounts && filterId !== taskApi.selectedTaskFilter.id) {
             return null;
+        }
+
+        let count = 0;
+
+        if (filterId === taskApi.selectedTaskFilter.id) {
+            count = taskApi.filteredTasks.length;
+        } else {
+            if (!(filterId in taskFilterApi.taskFilterCounts)) {
+                return null;
+            }
+
+            count = taskFilterApi.taskFilterCounts[filterId] || 0;
         }
 
         return (
             <Badge
-                count={taskApi.filteredTasks.length}
+                count={count}
                 showZero={true}
                 overflowCount={9999}
                 style={{
-                    backgroundColor: Constants.badgeColor,
+                    backgroundColor: filterId === taskApi.selectedTaskFilter.id ? Constants.badgeColor : Constants.inactiveBadgeColor,
                     fontWeight: 'bold',
                     marginRight: 5,
                     marginBottom: 2
@@ -303,7 +315,7 @@ function TaskSider(props) {
                     <Menu.SubMenu
                         key="folders"
                         title={createCategorySubMenu('Folders', 'folder', () => manageObjects('folders'), () => onOpenChange('folders'))}>
-                        {folderApi.folders.map(folder => {
+                        {folderApi.nonArchivedFolders.map(folder => {
                             const filterDefinition = { id: folder.id, type: 'folder' };
 
                             return (
@@ -347,7 +359,7 @@ function TaskSider(props) {
                     <Menu.SubMenu
                         key="goals"
                         title={createCategorySubMenu('Goals', 'bullseye', () => manageObjects('goals'), () => onOpenChange('goals'))}>
-                        {goalApi.goals.map(goal => {
+                        {goalApi.nonArchivedGoals.map(goal => {
                             const filterDefinition = { id: goal.id, type: 'goal' };
 
                             return (
