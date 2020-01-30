@@ -1,5 +1,6 @@
 import JSZip from 'jszip';
 import moment from 'moment';
+import { ActionCreators } from 'redux-undo';
 import uuid from 'uuid/v4';
 import { getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
@@ -114,7 +115,8 @@ export function _loadDataFromFile(path, options) {
 
             await Promise.all(promises);
 
-            dispatch(refreshDataUuid());
+            await dispatch(ActionCreators.clearHistory());
+            await dispatch(refreshDataUuid());
 
             dispatch(updateProcess({
                 id: processId,
@@ -175,7 +177,8 @@ export function _loadDataFromServer(options) {
 
             await Promise.all(promises);
 
-            dispatch(refreshDataUuid());
+            await dispatch(ActionCreators.clearHistory());
+            await dispatch(refreshDataUuid());
 
             dispatch(updateProcess({
                 id: processId,
@@ -303,6 +306,8 @@ export function _saveDataToFile(path, options) {
                 await saveBufferToFile(path, zipContent);
             }
 
+            await dispatch(ActionCreators.clearHistory());
+
             dispatch(updateProcess({
                 id: processId,
                 state: 'COMPLETED'
@@ -345,6 +350,8 @@ export function cleanData() {
                 dispatch(cleanTaskFilters()),
                 dispatch(cleanTaskTemplates())
             ]);
+
+            await dispatch(ActionCreators.clearHistory());
 
             dispatch(updateProcess({
                 id: processId,
@@ -441,6 +448,8 @@ export function resetData(options) {
             }
 
             await Promise.all(promises);
+
+            await dispatch(ActionCreators.clearHistory());
 
             dispatch(updateProcess({
                 id: processId,

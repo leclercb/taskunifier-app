@@ -3,6 +3,7 @@
 ## New Features
 
 * Show badge counts for every filter (#44)
+* Undo/redo feature for notes and tasks (#112)
 
 ## Bug Fixes
 

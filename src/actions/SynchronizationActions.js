@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
+import { ActionCreators } from 'redux-undo';
 import { setAccountManagerOptions } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
@@ -126,6 +127,7 @@ export function synchronize() {
 
             await dispatch(app.synchronize());
         } finally {
+            await dispatch(ActionCreators.clearHistory());
             await dispatch(setSynchronizing(false));
         }
     };

@@ -50,3 +50,19 @@ export function deleteNote(noteId, options = {}) {
 export function cleanNotes() {
     return cleanObjects('notes');
 }
+
+export function undoNoteStateUpdate() {
+    return async dispatch => {
+        dispatch({
+            type: 'NOTE_UNDO'
+        });
+    };
+}
+
+export function redoNoteStateUpdate() {
+    return async dispatch => {
+        dispatch({
+            type: 'NOTE_REDO'
+        });
+    };
+}

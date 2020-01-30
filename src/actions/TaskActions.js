@@ -56,3 +56,19 @@ export function deleteTask(taskId, options = {}) {
 export function cleanTasks() {
     return cleanObjects('tasks');
 }
+
+export function undoTaskStateUpdate() {
+    return async dispatch => {
+        dispatch({
+            type: 'TASK_UNDO'
+        });
+    };
+}
+
+export function redoTaskStateUpdate() {
+    return async dispatch => {
+        dispatch({
+            type: 'TASK_REDO'
+        });
+    };
+}
