@@ -27,3 +27,25 @@ jobs:
           build_script_name: "build:github"
         env:
           REACT_APP_GIT_COMMIT_HASH: "${{ github.sha }}"
+
+      - name: Move Files
+        shell: bash
+        run: ./move_dist.sh
+
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: taskunifier-app-linux
+          path: dist-linux
+
+      - name: Upload Mac Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: taskunifier-app-mac
+          path: dist-mac
+
+      - name: Upload Win Artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: taskunifier-app-win
+          path: dist-win
