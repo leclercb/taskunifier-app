@@ -4,6 +4,7 @@
 
 * Show badge counts for every filter (#44)
 * Undo/redo feature for notes and tasks (#112)
+* Code sign Windows binaries
 
 ## Bug Fixes
 
