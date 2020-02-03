@@ -22,7 +22,10 @@ import { showReminder } from 'utils/ReminderUtils';
 import { sortObjects } from 'utils/SorterUtils';
 import { getDurationForDay, getWorkLogsWithTimer } from 'utils/WorkLogUtils';
 
-export const getTasks = state => state.tasks;
+export const canUndoTaskStateUpdate = state => state.tasks.past.length > 0;
+export const canRedoTaskStateUpdate = state => state.tasks.future.length > 0;
+
+export const getTasks = state => state.tasks.present;
 
 export const getTasksFilteredByVisibleState = createSelector(
     getTasks,

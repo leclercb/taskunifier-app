@@ -12,7 +12,10 @@ import { compareStrings } from 'utils/CompareUtils';
 import { applyFilter } from 'utils/FilterUtils';
 import { sortObjects } from 'utils/SorterUtils';
 
-export const getNotes = state => state.notes;
+export const canUndoNoteStateUpdate = state => state.notes.past.length > 0;
+export const canRedoNoteStateUpdate = state => state.notes.future.length > 0;
+
+export const getNotes = state => state.notes.present;
 
 export const getNotesFilteredByVisibleState = createSelector(
     getNotes,

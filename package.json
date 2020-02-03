@@ -56,6 +56,7 @@
         "reduce-reducers": "^1.0.4",
         "redux": "^4.0.5",
         "redux-thunk": "^2.3.0",
+        "redux-undo": "^1.0.0",
         "reselect": "^4.0.0",
         "rrule": "^2.6.4",
         "uuid": "^3.4.0"

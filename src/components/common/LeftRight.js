@@ -8,7 +8,7 @@ function LeftRight(props) {
             style={{ display: 'flex', width: '100%' }}>
             <div
                 onClick={props.onClickLeft}
-                style={{ flexGrow: 1 }}>
+                style={{ flexGrow: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {props.left ? props.left : props.children}
             </div>
             <div

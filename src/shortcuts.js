@@ -22,16 +22,16 @@ import {
     setTaskTemplateManagerOptions
 } from 'actions/AppActions';
 import { backupData } from 'actions/BackupActions';
-import { addNote, deleteNote } from 'actions/NoteActions';
+import { addNote, deleteNote, redoNoteStateUpdate, undoNoteStateUpdate } from 'actions/NoteActions';
 import { printNotes, printTasks } from 'actions/PrintActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
-import { addTask, deleteTask } from 'actions/TaskActions';
+import { addTask, deleteTask, redoTaskStateUpdate, undoTaskStateUpdate } from 'actions/TaskActions';
 import FileField from 'components/common/FileField';
 import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
-import { getSettings } from 'selectors/SettingSelectors';
-import { getSelectedTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { canRedoNoteStateUpdate, canUndoNoteStateUpdate, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getSelectedView, getSettings } from 'selectors/SettingSelectors';
+import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { lstat } from 'utils/ElectronUtils';
@@ -59,6 +59,14 @@ export function initializeShortcuts() {
 
         ipcRenderer.on('menu-settings', async () => {
             await executeSettings();
+        });
+
+        ipcRenderer.on('menu-undo', async () => {
+            await executeUndo();
+        });
+
+        ipcRenderer.on('menu-redo', async () => {
+            await executeRedo();
         });
 
         ipcRenderer.on('menu-add-note', async () => {
@@ -256,6 +264,60 @@ async function executeExportData() {
 
 async function executeSettings() {
     await store.dispatch(setSettingManagerOptions({ visible: true }));
+}
+
+async function executeUndo() {
+    const state = store.getState();
+    const selectedView = getSelectedView(state);
+
+    switch (selectedView) {
+        case 'note':
+            if (canUndoNoteStateUpdate(state)) {
+                await store.dispatch(undoNoteStateUpdate());
+                message.success('Undo action');
+            } else {
+                message.warning('Nothing to undo');
+            }
+            break;
+        case 'task':
+        case 'taskCalendar':
+            if (canUndoTaskStateUpdate(state)) {
+                await store.dispatch(undoTaskStateUpdate());
+                message.success('Undo action');
+            } else {
+                message.warning('Nothing to undo');
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+async function executeRedo() {
+    const state = store.getState();
+    const selectedView = getSelectedView(state);
+
+    switch (selectedView) {
+        case 'note':
+            if (canRedoNoteStateUpdate(state)) {
+                await store.dispatch(redoNoteStateUpdate());
+                message.success('Redo action');
+            } else {
+                message.warning('Nothing to redo');
+            }
+            break;
+        case 'task':
+        case 'taskCalendar':
+            if (canRedoTaskStateUpdate(state)) {
+                await store.dispatch(redoTaskStateUpdate());
+                message.success('Redo action');
+            } else {
+                message.warning('Nothing to redo');
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 async function executeAddNote() {
