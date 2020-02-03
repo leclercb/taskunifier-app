@@ -9,6 +9,7 @@
 ## Bug Fixes
 
 * Hide archived folders and goals in note/task sider
+* Shrink long filter names (#150)
 
 # 0.9.3
 
