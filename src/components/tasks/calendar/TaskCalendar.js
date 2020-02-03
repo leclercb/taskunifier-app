@@ -157,21 +157,23 @@ function TaskCalendar({ apis }) {
 
     const onEventChange = ({ event, start, end }) => {
         switch (event.type) {
-            case 'startDate':
+            case 'startDate': {
                 taskApi.updateTask({
                     ...event.task,
                     startDate: moment(start).toISOString(),
                     length: moment(end).diff(moment(start), 'second')
                 });
                 break;
-            case 'dueDate':
+            }
+            case 'dueDate': {
                 taskApi.updateTask({
                     ...event.task,
                     dueDate: moment(end).toISOString(),
                     length: moment(end).diff(moment(start), 'second')
                 });
                 break;
-            case 'workLog':
+            }
+            case 'workLog': {
                 const workLogs = [...(event.task.workLogs || [])];
                 const index = workLogs.findIndex(workLog => workLog.id === event.workLogId);
 
@@ -189,6 +191,7 @@ function TaskCalendar({ apis }) {
                 }
 
                 break;
+            }
             default:
                 break;
         }
