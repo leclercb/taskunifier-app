@@ -1,8 +1,12 @@
 import React from 'react';
+import { Button, Modal } from 'antd';
 import moment from 'moment';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import PropTypes from 'prop-types';
+import uuid from 'uuid/v4';
+import Icon from 'components/common/Icon';
+import Spacer from 'components/common/Spacer';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
 import withBusyCheck from 'containers/WithBusyCheck';
@@ -24,8 +28,9 @@ function TaskCalendar({ apis }) {
         const events = [];
 
         taskApi.tasks.forEach(task => {
-            const matchStartDate = task.startDate && (taskApi.calendarDateMode === 'both' || taskApi.calendarDateMode === 'startDate');
-            const matchDueDate = task.dueDate && (taskApi.calendarDateMode === 'both' || taskApi.calendarDateMode === 'dueDate');
+            const matchStartDate = task.startDate && taskApi.calendarEventTypes.includes('startDate');
+            const matchDueDate = task.dueDate && taskApi.calendarEventTypes.includes('dueDate');
+            const matchWorkLog = task.workLogs && taskApi.calendarEventTypes.includes('workLog');
 
             if (matchStartDate) {
                 events.push({
@@ -36,7 +41,7 @@ function TaskCalendar({ apis }) {
                     allDay: !settingsApi.settings.showStartTime,
                     task,
                     settings: settingsApi.settings,
-                    mode: 'startDate',
+                    type: 'startDate',
                     selected: taskApi.selectedTaskIds.includes(task.id)
                 });
             }
@@ -50,8 +55,27 @@ function TaskCalendar({ apis }) {
                     allDay: !settingsApi.settings.showDueTime,
                     task,
                     settings: settingsApi.settings,
-                    mode: 'dueDate',
+                    type: 'dueDate',
                     selected: taskApi.selectedTaskIds.includes(task.id)
+                });
+            }
+
+            if (matchWorkLog) {
+                task.workLogs.forEach(workLog => {
+                    if (workLog.start && workLog.end) {
+                        events.push({
+                            id: `${task.id}_workLog_${workLog.id}`,
+                            title: task.title,
+                            start: moment(workLog.start).toDate(),
+                            end: moment(workLog.end).toDate(),
+                            allDay: false,
+                            task,
+                            workLogId: workLog.id,
+                            settings: settingsApi.settings,
+                            type: 'workLog',
+                            selected: taskApi.selectedTaskIds.includes(task.id)
+                        });
+                    }
                 });
             }
         });
@@ -74,40 +98,104 @@ function TaskCalendar({ apis }) {
         });
     };
 
-    const onSelectSlot = async ({ start, end, action }) => {
+    const onSelectSlot = ({ start, end, action }) => {
         if (action === 'select' && ['week', 'work_week', 'day'].includes(taskApi.selectedCalendarView)) {
-            let task = {};
+            const modal = Modal.info({
+                title: 'What do you want to do ?',
+                width: 600,
+                okText: 'Close',
+                content: (
+                    <React.Fragment>
+                        <Button
+                            onClick={async () => {
+                                let task = {};
 
-            applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, task, taskFieldApi.taskFields);
+                                applyTaskTemplate(taskTemplateApi.defaultTaskTemplate, task, taskFieldApi.taskFields);
 
-            task.startDate = moment(start).toISOString();
-            task.dueDate = moment(end).toISOString();
-            task.length = moment(end).diff(moment(start), 'second');
+                                task.startDate = moment(start).toISOString();
+                                task.dueDate = moment(end).toISOString();
+                                task.length = moment(end).diff(moment(start), 'second');
 
-            task = await taskApi.addTask(task);
+                                task = await taskApi.addTask(task);
 
-            appApi.setTaskEditionManagerOptions({
-                visible: true,
-                taskId: task.id
+                                appApi.setTaskEditionManagerOptions({
+                                    visible: true,
+                                    taskId: task.id
+                                });
+
+                                modal.destroy();
+                            }}>
+                            <Icon icon="plus" text="Create a new task" />
+                        </Button>
+                        <Spacer />
+                        <Button
+                            disabled={taskApi.selectedTaskIds.length !== 1}
+                            onClick={async () => {
+                                if (taskApi.selectedTasks.length === 1) {
+                                    await taskApi.updateTask({
+                                        ...taskApi.selectedTasks[0],
+                                        workLogs: [
+                                            ...(taskApi.selectedTasks[0].workLogs || []),
+                                            {
+                                                id: uuid(),
+                                                start: moment(start).toISOString(),
+                                                end: moment(end).toISOString()
+                                            }
+                                        ]
+                                    });
+                                }
+
+                                modal.destroy();
+                            }}>
+                            <Icon icon="plus" text="Create a work log for the selected task" />
+                        </Button>
+                    </React.Fragment>
+                )
             });
         }
     };
 
     const onEventChange = ({ event, start, end }) => {
-        if (event.mode === 'startDate') {
-            taskApi.updateTask({
-                ...event.task,
-                startDate: moment(start).toISOString(),
-                length: moment(end).diff(moment(start), 'second')
-            });
-        } else {
-            taskApi.updateTask({
-                ...event.task,
-                dueDate: moment(end).toISOString(),
-                length: moment(end).diff(moment(start), 'second')
-            });
+        switch (event.type) {
+            case 'startDate':
+                taskApi.updateTask({
+                    ...event.task,
+                    startDate: moment(start).toISOString(),
+                    length: moment(end).diff(moment(start), 'second')
+                });
+                break;
+            case 'dueDate':
+                taskApi.updateTask({
+                    ...event.task,
+                    dueDate: moment(end).toISOString(),
+                    length: moment(end).diff(moment(start), 'second')
+                });
+                break;
+            case 'workLog':
+                const workLogs = [...(event.task.workLogs || [])];
+                const index = workLogs.findIndex(workLog => workLog.id === event.workLogId);
+
+                if (index >= 0) {
+                    workLogs[index] = {
+                        ...workLogs[index],
+                        start: moment(start).toISOString(),
+                        end: moment(end).toISOString()
+                    };
+
+                    taskApi.updateTask({
+                        ...event.task,
+                        workLogs
+                    });
+                }
+
+                break;
+            default:
+                break;
         }
     };
+
+    const timeRangeFormat = ({ start, end }, culture, local) =>
+        local.format(start, settingsApi.settings.timeFormat, culture) + ' – ' + local.format(end, settingsApi.settings.timeFormat, culture);
 
     return (
         <div
@@ -131,6 +219,17 @@ function TaskCalendar({ apis }) {
                 onEventResize={onEventChange}
                 resizable={true}
                 selectable={true}
+                formats={{
+                    selectRangeFormat: timeRangeFormat,
+                    eventTimeRangeFormat: timeRangeFormat,
+                    eventTimeRangeStartFormat: ({ start }, culture, local) => local.format(start, settingsApi.settings.timeFormat, culture) + ' – ',
+                    eventTimeRangeEndFormat: ({ end }, culture, local) => ' – ' + local.format(end, settingsApi.settings.timeFormat, culture),
+                    timeGutterFormat: settingsApi.settings.timeFormat,
+                    dayHeaderFormat: settingsApi.settings.dateFormat,
+                    agendaDateFormat: settingsApi.settings.dateFormat,
+                    agendaTimeFormat: settingsApi.settings.timeFormat,
+                    agendaTimeRangeFormat: timeRangeFormat
+                }}
                 components={{
                     event: CalendarEvent,
                     eventWrapper: CalendarEventWrapper

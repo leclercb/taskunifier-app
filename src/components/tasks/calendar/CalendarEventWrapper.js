@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import { getImportanceColor } from 'utils/SettingUtils';
 
 function CalendarEventWrapper({ event, children }) {
-    let className;
+    let className = 'wrapper-' + event.type;
 
     if (event.selected) {
-        className = 'wrapper-selected';
-    } else if (event.mode === 'startDate') {
-        className = 'wrapper-start-date';
-    } else {
-        className = 'wrapper-due-date';
+        className += ' wrapper-selected';
     }
 
     return (

@@ -1409,26 +1409,26 @@ export function getCategories() {
                     visible: false
                 },
                 {
-                    id: 'calendarDateMode',
-                    title: 'Calendar date mode',
-                    type: 'select',
+                    id: 'calendarEventTypes',
+                    title: 'Calendar event types',
+                    type: 'selectTags',
                     options: {
                         values: [
                             {
-                                title: 'Both',
-                                value: 'both'
+                                title: 'Start Date',
+                                value: 'startDate'
                             },
                             {
-                                title: 'Due date',
+                                title: 'Due Date',
                                 value: 'dueDate'
                             },
                             {
-                                title: 'Start date',
-                                value: 'startDate'
+                                title: 'Work Log',
+                                value: 'workLog'
                             }
                         ]
                     },
-                    value: 'both',
+                    value: ['startDate', 'dueDate'],
                     editable: false,
                     visible: false
                 },
