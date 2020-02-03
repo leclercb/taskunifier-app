@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Badge, Checkbox, Input, Menu, Radio, Switch, Tooltip } from 'antd';
+import { Alert, Badge, Checkbox, Input, Menu, Switch, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
@@ -195,42 +195,25 @@ function TaskSider(props) {
                     </div>
                 )}
                 {props.mode === 'calendar' && (
-                    <div style={{ padding: '10px 10px 0px 10px' }}>
-                        <div style={{ marginBottom: 5 }}>Show tasks by:</div>
-                        <Radio.Group
-                            value={taskApi.calendarDateMode}
-                            onChange={event => taskApi.setCalendarDateMode(event.target.value)}>
-                            <Radio
-                                value="both"
-                                style={{
-                                    borderTop: `1px solid ${Constants.calendarDateModeColor_startDate}`,
-                                    borderLeft: `1px solid ${Constants.calendarDateModeColor_startDate}`,
-                                    borderBottom: `1px solid ${Constants.calendarDateModeColor_dueDate}`,
-                                    borderRight: `1px solid ${Constants.calendarDateModeColor_dueDate}`,
-                                    borderRadius: 10,
-                                    padding: 3
-                                }}>
-                                Both
-                            </Radio>
-                            <Radio
-                                value="startDate"
-                                style={{
-                                    border: `1px solid ${Constants.calendarDateModeColor_startDate}`,
-                                    borderRadius: 10,
-                                    padding: 3
-                                }}>
-                                Start date
-                            </Radio>
-                            <Radio
-                                value="dueDate"
-                                style={{
-                                    border: `1px solid ${Constants.calendarDateModeColor_dueDate}`,
-                                    borderRadius: 10,
-                                    padding: 3
-                                }}>
-                                Due date
-                            </Radio>
-                        </Radio.Group>
+                    <div style={{ padding: 10 }}>
+                        <div style={{ marginBottom: 5 }}>Show following event types:</div>
+                        <Checkbox.Group
+                            value={taskApi.calendarEventTypes}
+                            options={[
+                                {
+                                    label: (<span style={{ border: '1px solid ' + Constants.calendarEventTypeColor_startDate, borderRadius: 5, padding: 2 }}>Start Date</span>),
+                                    value: 'startDate'
+                                },
+                                {
+                                    label: (<span style={{ border: '1px solid ' + Constants.calendarEventTypeColor_dueDate, borderRadius: 5, padding: 2 }}>Due Date</span>),
+                                    value: 'dueDate'
+                                },
+                                {
+                                    label: (<span style={{ border: '1px solid ' + Constants.calendarEventTypeColor_workLog, borderRadius: 5, padding: 2 }}>Work Log</span>),
+                                    value: 'workLog'
+                                }
+                            ]}
+                            onChange={types => taskApi.setCalendarEventTypes(types)} />
                     </div>
                 )}
                 <div style={{ padding: 10 }}>

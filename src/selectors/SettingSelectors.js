@@ -31,7 +31,7 @@ export const getSelectedCalendarView = state => state.settings.selectedCalendarV
 export const isShowTaskHierarchy = state => state.settings.showTaskHierarchy;
 export const isShowCompletedTasks = state => state.settings.showCompletedTasks;
 export const isShowFutureTasks = state => state.settings.showFutureTasks;
-export const getCalendarDateMode = state => state.settings.calendarDateMode;
+export const getCalendarEventTypes = state => state.settings.calendarEventTypes || [];
 export const getCombinedNoteFilterDefinitions = state => state.settings.combinedNoteFilterDefinitions;
 export const getCombinedTaskFilterDefinitions = state => state.settings.combinedTaskFilterDefinitions;
 export const getCategoryNoteSorters = state => state.settings.categoryNoteSorters;

@@ -92,8 +92,8 @@ export function setShowFutureTasks(show) {
     }, { skipServerUpdate: false });
 }
 
-export function setCalendarDateMode(mode) {
+export function setCalendarEventTypes(types) {
     return updateSettings({
-        calendarDateMode: mode
+        calendarEventTypes: types
     }, { skipServerUpdate: true });
 }

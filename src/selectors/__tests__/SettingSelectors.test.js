@@ -1,5 +1,5 @@
 import {
-    getCalendarDateMode,
+    getCalendarEventTypes,
     getCategoryNoteSorters,
     getCategoryTaskSorters,
     getCombinedNoteFilterDefinitions,
@@ -28,7 +28,7 @@ const state = {
         showTaskHierarchy: false,
         showCompletedTasks: true,
         showFutureTasks: false,
-        calendarDateMode: 'dueDate',
+        calendarEventTypes: ['dueDate'],
         combinedNoteFilterDefinitions: [],
         combinedTaskFilterDefinitions: [],
         categoryNoteSorters: [],
@@ -110,8 +110,8 @@ describe('isShowFutureTasks', () => {
     expect(isShowFutureTasks(state)).toBe(state.settings.showFutureTasks);
 });
 
-describe('getCalendarDateMode', () => {
-    expect(getCalendarDateMode(state)).toBe(state.settings.calendarDateMode);
+describe('getCalendarEventTypes', () => {
+    expect(getCalendarEventTypes(state)).toBe(state.settings.calendarEventTypes);
 });
 
 describe('getCombinedNoteFilterDefinitions', () => {

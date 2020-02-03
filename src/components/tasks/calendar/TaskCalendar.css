@@ -1,24 +1,30 @@
 .task-calendar .rbc-event-label {
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    padding: 0px 3px;
 }
 
-.task-calendar .wrapper-start-date .rbc-event,
-.task-calendar .wrapper-due-date .rbc-event,
-.task-calendar .wrapper-selected .rbc-event {
+.task-calendar .wrapper-selected .rbc-event,
+.task-calendar .wrapper-startDate .rbc-event,
+.task-calendar .wrapper-dueDate .rbc-event,
+.task-calendar .wrapper-workLog .rbc-event {
     background-color: inherit;
     border: none !important;
     color: inherit;
     padding: 0;
 }
 
-.task-calendar .wrapper-start-date .rbc-event {
-    border: 2px solid #32cd32 !important;
-}
-
-.task-calendar .wrapper-due-date .rbc-event {
-    border: 2px solid #1e90ff !important;
-}
-
 .task-calendar .wrapper-selected .rbc-event {
-    border: 2px solid #ff1e29 !important;
+    box-shadow: 0px 0px 1px 3px #777777;
+}
+
+.task-calendar .wrapper-startDate .rbc-event {
+    border: 3px solid #32cd32 !important;
+}
+
+.task-calendar .wrapper-dueDate .rbc-event {
+    border: 3px solid #1e90ff !important;
+}
+
+.task-calendar .wrapper-workLog .rbc-event {
+    border: 3px solid #feb377 !important;
 }

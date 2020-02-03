@@ -79,6 +79,24 @@ ant-input:focus {
     text-shadow: -1px 0 #444444, 0 1px #444444, 1px 0 #444444, 0 -1px #444444;
 }
 
+/* React Big Calendar */
+
+.rbc-agenda-view, .rbc-month-view, .rbc-time-view {
+    background-color: #ffffff;
+}
+
+.rbc-toolbar {
+    margin-bottom: 5px !important;
+    font-size: 12px !important;
+}
+
+.rbc-toolbar button {
+    background: #ffffff !important;
+    padding: 2px 5px !important;
+    cursor: pointer;
+    user-select: none;
+}
+
 /* React SplitPane */
 
 .Resizer {

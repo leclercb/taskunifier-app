@@ -6,7 +6,7 @@ import {
     setSelectedTaskIds
 } from 'actions/AppActions';
 import {
-    setCalendarDateMode,
+    setCalendarEventTypes,
     setSelectedCalendarView,
     setShowCompletedTasks,
     setShowFutureTasks,
@@ -15,7 +15,7 @@ import {
 import { addTask, deleteTask, duplicateTask, updateTask } from 'actions/TaskActions';
 import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import {
-    getCalendarDateMode,
+    getCalendarEventTypes,
     getSelectedCalendarView,
     isShowCompletedTasks,
     isShowFutureTasks,
@@ -48,7 +48,7 @@ export function useTaskApi() {
     const showTaskHierarchy = useSelector(isShowTaskHierarchy);
     const showCompletedTasks = useSelector(isShowCompletedTasks);
     const showFutureTasks = useSelector(isShowFutureTasks);
-    const calendarDateMode = useSelector(getCalendarDateMode);
+    const calendarEventTypes = useSelector(getCalendarEventTypes);
 
     const addTaskCallback = useCallback(
         task => dispatch(addTask(task)),
@@ -105,8 +105,8 @@ export function useTaskApi() {
         [dispatch]
     );
 
-    const setCalendarDateModeCallback = useCallback(
-        mode => dispatch(setCalendarDateMode(mode)),
+    const setCalendarEventTypesCallback = useCallback(
+        types => dispatch(setCalendarEventTypes(types)),
         [dispatch]
     );
 
@@ -124,7 +124,7 @@ export function useTaskApi() {
         showTaskHierarchy,
         showCompletedTasks,
         showFutureTasks,
-        calendarDateMode,
+        calendarEventTypes,
         addTask: addTaskCallback,
         duplicateTask: duplicateTaskCallback,
         updateTask: updateTaskCallback,
@@ -136,6 +136,6 @@ export function useTaskApi() {
         setShowTaskHierarchy: setShowTaskHierarchyCallback,
         setShowCompletedTasks: setShowCompletedTasksCallback,
         setShowFutureTasks: setShowFutureTasksCallback,
-        setCalendarDateMode: setCalendarDateModeCallback
+        setCalendarEventTypes: setCalendarEventTypesCallback
     };
 }
