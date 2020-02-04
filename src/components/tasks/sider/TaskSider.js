@@ -195,7 +195,7 @@ function TaskSider(props) {
                     </div>
                 )}
                 {props.mode === 'calendar' && (
-                    <div style={{ padding: 10 }}>
+                    <div style={{ padding: '10px 10px 0px 10px' }}>
                         <div style={{ marginBottom: 5 }}>Show following event types:</div>
                         <Checkbox.Group
                             value={taskApi.calendarEventTypes}
