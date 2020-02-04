@@ -10,16 +10,14 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
-export const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, onSuccess }, ref) {
+const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, onSuccess }, ref) {
     const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
 
-    const updateTasks = () => {
-        form.validateFields((error, values) => {
-            if (error) {
-                return;
-            }
+    const updateTasks = async () => {
+        try {
+            const values = await form.validateFields();
 
             const tasks = taskApi.selectedTasks.map(task => ({ ...task }));
 
@@ -36,14 +34,14 @@ export const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({
             message.success('Tasks sucessfully updated');
             onSuccess();
             form.resetFields();
-        });
+        } catch (error) {
+            // Skip
+        }
     };
 
     useImperativeHandle(ref, () => ({
         updateTasks
     }));
-
-    const { getFieldDecorator } = form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
@@ -54,21 +52,21 @@ export const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({
 
     return (
         <Row gutter={20}>
-            <Form {...formItemLayout}>
+            <Form form={form} {...formItemLayout}>
                 {sortedAndFilteredFields.filter(field => field.id !== 'text').map(field => (
                     <Col key={field.id} span={12}>
-                        <Form.Item label={(
-                            getFieldDecorator('checked.' + field.id, {
-                                valuePropName: 'checked'
-                            })(
-                                <Checkbox>{field.title}</Checkbox>
-                            )
-                        )}>
-                            {getFieldDecorator('value.' + field.id, {
-                                valuePropName: getValuePropNameForType(field.type)
-                            })(
-                                getInputForType(field.type, field.options, { disabled: !field.editable })
+                        <Form.Item
+                            name={'value.' + field.id}
+                            label={(
+                                <Form.Item
+                                    noStyle
+                                    name={'checked.' + field.id}
+                                    valuePropName="checked">
+                                    <Checkbox>{field.title}</Checkbox>
+                                </Form.Item>
                             )}
+                            valuePropName={getValuePropNameForType(field.type)}>
+                            {getInputForType(field.type, field.options, { disabled: !field.editable })}
                         </Form.Item>
                     </Col>
                 ))}
@@ -76,18 +74,20 @@ export const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({
                     <Col key={textField.id} span={24}>
                         <Collapse bordered={false}>
                             <Collapse.Panel key="text" header={(
-                                getFieldDecorator('checked.' + textField.id, {
-                                    valuePropName: 'checked'
-                                })(
+                                <Form.Item
+                                    noStyle
+                                    name={'checked.' + textField.id}
+                                    valuePropName="checked">
                                     <Checkbox>Text</Checkbox>
-                                )
+                                </Form.Item>
                             )}>
                                 <div style={{ height: 200 }}>
-                                    {getFieldDecorator('value.' + textField.id, {
-                                        valuePropName: getValuePropNameForType(textField.type)
-                                    })(
-                                        getInputForType(textField.type, textField.options, { disabled: !textField.editable })
-                                    )}
+                                    <Form.Item
+                                        noStyle
+                                        name={'value.' + textField.id}
+                                        valuePropName={getValuePropNameForType(textField.type)}>
+                                        {getInputForType(textField.type, textField.options, { disabled: !textField.editable })}
+                                    </Form.Item>
                                 </div>
                             </Collapse.Panel>
                         </Collapse>
@@ -105,4 +105,4 @@ BatchEditTasksManager.propTypes = {
     onSuccess: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'batchEditTasks' })(BatchEditTasksManager);
+export default BatchEditTasksManager;

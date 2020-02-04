@@ -8,16 +8,15 @@ import { getValuePropNameForType } from 'data/DataFieldTypes';
 function EditableCell(props) {
     const [errors, setErrors] = useState([]);
 
+    const [form] = Form.useForm();
+
     useEffect(() => {
-        props.form.resetFields();
+        form.resetFields();
     }, [props.record.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const onChange = () => {
-        props.form.validateFields((error, values) => {
-            if (error && error[props.field.id]) {
-                setErrors(error[props.field.id].errors);
-                return;
-            }
+    const onChange = async () => {
+        try {
+            const values = await form.validateFields();
 
             setErrors([]);
 
@@ -26,7 +25,13 @@ function EditableCell(props) {
             }
 
             props.onChange(values);
-        });
+        } catch (error) {
+            const errors = (error && error.errorFields ? error.errorFields : [])
+                .filter(field => field.name.includes(props.field.id))
+                .reduce((array, field) => array.concat(field.errors), []);
+
+            setErrors(errors);
+        }
     };
 
     const inputProps = {
@@ -42,23 +47,21 @@ function EditableCell(props) {
     return (
         <Tooltip
             visible={errors.length > 0}
-            title={errors.map(error => <p key={error.field}>{error.message}</p>)}>
-            {props.form.getFieldDecorator(props.field.id, {
-                valuePropName: getValuePropNameForType(props.field.type),
-                initialValue: props.value,
-                rules: props.field.rules ? props.field.rules(props.record) : []
-            })(
-                getInputForType(
-                    props.field.type,
-                    props.field.options,
-                    { ...inputProps })
-            )}
+            title={errors.map(error => <p key={error}>{error}</p>)}>
+            <Form form={form} initialValues={{ [props.field.id]: props.value }}>
+                <Form.Item
+                    noStyle
+                    name={props.field.id}
+                    valuePropName={getValuePropNameForType(props.field.type)}
+                    rules={props.field.rules ? props.field.rules(props.record) : []}>
+                    {getInputForType(props.field.type, props.field.options, { ...inputProps })}
+                </Form.Item>
+            </Form>
         </Tooltip>
     );
 }
 
 EditableCell.propTypes = {
-    form: PropTypes.object.isRequired,
     record: PropTypes.object.isRequired,
     field: FieldPropType.isRequired,
     value: PropTypes.any,
@@ -67,4 +70,4 @@ EditableCell.propTypes = {
     toggleEdit: PropTypes.func.isRequired
 };
 
-export default Form.create()(EditableCell);
+export default EditableCell;

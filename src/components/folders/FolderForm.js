@@ -8,39 +8,38 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { FolderPropType } from 'proptypes/FolderPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function FolderForm(props) {
+function FolderForm({ folder, updateFolder }) {
     const settingsApi = useSettingsApi();
 
-    const fields = getFolderFields(settingsApi.settings);
+    const [form] = Form.useForm();
 
-    const { getFieldDecorator } = props.form;
+    const fields = getFolderFields(settingsApi.settings);
 
     const formItemLayout = getDefaultFormItemLayout();
 
     const titleRef = useRef(null);
 
     useEffect(() => {
-        if (titleRef.current && !props.folder.title) {
+        if (titleRef.current && !folder.title) {
             titleRef.current.focus();
         }
-    }, [props.folder.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [folder.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Form {...formItemLayout}>
+        <Form form={form} initialValues={folder} {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => (
-                <Form.Item key={field.id} label={field.title}>
-                    {getFieldDecorator(field.id, {
-                        valuePropName: getValuePropNameForType(field.type),
-                        initialValue: props.folder[field.id]
-                    })(
-                        getInputForType(
-                            field.type,
-                            field.options,
-                            {
-                                ref: field.id === 'title' ? titleRef : undefined,
-                                onCommit: () => onCommitForm(props.form, props.folder, props.updateFolder)
-                            })
-                    )}
+                <Form.Item
+                    key={field.id}
+                    name={field.id}
+                    label={field.title}
+                    valuePropName={getValuePropNameForType(field.type)}>
+                    {getInputForType(
+                        field.type,
+                        field.options,
+                        {
+                            ref: field.id === 'title' ? titleRef : undefined,
+                            onCommit: () => onCommitForm(form, folder, updateFolder)
+                        })}
                 </Form.Item>
             ))}
         </Form>
@@ -48,9 +47,8 @@ function FolderForm(props) {
 }
 
 FolderForm.propTypes = {
-    form: PropTypes.object.isRequired,
     folder: FolderPropType.isRequired,
     updateFolder: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'folder' })(FolderForm);
+export default FolderForm;

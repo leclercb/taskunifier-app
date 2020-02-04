@@ -35,18 +35,23 @@ export function getDefaultTailFormItemLayout() {
 }
 
 export function onCommitForm(form, object, updateObject, options = { assign: false, force: false }) {
-    setTimeout(() => {
-        form.validateFields((error, values) => {
-            if (error && (!options || options.force !== true)) {
-                return;
-            }
-
+    setTimeout(async () => {
+        const update = values => {
             if (options && options.assign === true) {
                 Object.assign(object, values);
                 updateObject(object);
             } else {
                 updateObject(merge({ ...object }, values));
             }
-        });
+        };
+
+        try {
+            const values = await form.validateFields();
+            update(values);
+        } catch (error) {
+            if (error && options && options.force === true) {
+                update(error.values);
+            }
+        }
     });
 }

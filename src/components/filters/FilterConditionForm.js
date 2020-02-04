@@ -7,8 +7,8 @@ import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { FieldPropType } from 'proptypes/FieldPropTypes';
 import { onCommitForm } from 'utils/FormUtils';
 
-function FilterConditionForm(props) {
-    const { getFieldDecorator } = props.form;
+function FilterConditionForm({ condition, context, onUpdate, disabled }) {
+    const [form] = Form.useForm();
 
     const formItemLayout = {
         labelCol: {
@@ -21,13 +21,13 @@ function FilterConditionForm(props) {
         }
     };
 
-    const field = props.context.fields.find(field => field.id === props.condition.field);
+    const field = context.fields.find(field => field.id === condition.field);
     const conditionFieldType = getConditionsFieldTypeForType(field.type);
 
-    const onCommit = () => onCommitForm(props.form, props.condition, props.onUpdate, { assign: true });
+    const onCommit = () => onCommitForm(form, condition, onUpdate, { assign: true });
 
     return (
-        <Form {...formItemLayout}>
+        <Form form={form} initialValues={condition} {...formItemLayout}>
             <Row gutter={10}>
                 <Col span={6}>
                     <Form.Item>
@@ -35,40 +35,34 @@ function FilterConditionForm(props) {
                     </Form.Item>
                 </Col>
                 <Col span={6}>
-                    <Form.Item>
-                        {getFieldDecorator('type', {
-                            initialValue: props.condition.type,
-                            rules: [
-                                {
-                                    required: true,
-                                    message: 'The condition is required'
-                                }
-                            ]
-                        })(
-                            getSelectForType(field.type, {
-                                onBlur: onCommit,
-                                disabled: props.disabled
-                            })
-                        )}
+                    <Form.Item
+                        name="type"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'The condition is required'
+                            }
+                        ]}>
+                        {getSelectForType(field.type, {
+                            onBlur: onCommit,
+                            disabled
+                        })}
                     </Form.Item>
                 </Col>
                 <Col span={10}>
-                    <Form.Item>
-                        {getFieldDecorator('value', {
-                            valuePropName: getValuePropNameForType(conditionFieldType),
-                            initialValue: props.condition.value
-                        })(
-                            getInputForType(
-                                conditionFieldType,
-                                {
-                                    ...(field.type === conditionFieldType ? field.options : {}),
-                                    extended: true
-                                },
-                                {
-                                    onCommit,
-                                    disabled: props.disabled
-                                })
-                        )}
+                    <Form.Item
+                        name="value"
+                        valuePropName={getValuePropNameForType(conditionFieldType)}>
+                        {getInputForType(
+                            conditionFieldType,
+                            {
+                                ...(field.type === conditionFieldType ? field.options : {}),
+                                extended: true
+                            },
+                            {
+                                onCommit,
+                                disabled
+                            })}
                     </Form.Item>
                 </Col>
             </Row>
@@ -77,13 +71,12 @@ function FilterConditionForm(props) {
 }
 
 FilterConditionForm.propTypes = {
-    form: PropTypes.object.isRequired,
     condition: PropTypes.object.isRequired,
     context: PropTypes.shape({
         fields: PropTypes.arrayOf(FieldPropType.isRequired).isRequired
     }).isRequired,
-    disabled: PropTypes.bool.isRequired,
-    onUpdate: PropTypes.func.isRequired
+    onUpdate: PropTypes.func.isRequired,
+    disabled: PropTypes.bool.isRequired
 };
 
-export default Form.create({ name: 'condition' })(FilterConditionForm);
+export default FilterConditionForm;

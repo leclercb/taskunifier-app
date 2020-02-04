@@ -19,6 +19,8 @@ function SettingManager(props) {
     const taskFieldApi = useTaskFieldApi();
     const settingsApi = useSettingsApi();
 
+    const [form] = Form.useForm();
+
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
     const category = categories.find(category => category.id === props.category);
     const settings = getCategorySettings(
@@ -31,29 +33,35 @@ function SettingManager(props) {
         }).filter(setting =>
             setting.visible !== false && (!setting.mode || setting.mode === process.env.REACT_APP_MODE));
 
-    const getSettingValue = setting => {
-        if (setting.id in settingsApi.settings) {
-            return settingsApi.settings[setting.id];
-        } else {
-            return setting.value;
-        }
-    };
-
     const onCategorySelection = category => {
         props.onCategorySelection(category.id);
     };
-
-    const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
 
     const createElement = item => {
         switch (item.type) {
+            case 'button':
+                return (
+                    <Form.Item label={item.title} style={{ width: '100%' }}>
+                        <PromiseButton
+                            type={item.buttonType}
+                            onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
+                            {item.title}
+                        </PromiseButton>
+                    </Form.Item>
+                );
             case 'component':
                 return (
                     <div style={{ width: '100%', margin: '20px 0px' }}>
                         {item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}
                     </div>
+                );
+            case 'label':
+                return (
+                    <Form.Item label={item.title} style={{ width: '100%' }}>
+                        {item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}
+                    </Form.Item>
                 );
             case 'sorters':
                 return (
@@ -71,33 +79,20 @@ function SettingManager(props) {
                 );
             default:
                 return (
-                    <Form.Item label={item.title} style={{ width: '100%' }}>
-                        {item.type === 'button' ? (
-                            <PromiseButton
-                                type={item.buttonType}
-                                onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
-                                {item.title}
-                            </PromiseButton>
-                        ) : null}
-                        {item.type === 'label' ? item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch) : null}
-                        {item.type !== 'button' && item.type !== 'label' && item.type !== 'component' ? (
-                            <React.Fragment>
-                                {item.prefix}
-                                {getFieldDecorator(item.id, {
-                                    valuePropName: getValuePropNameForType(item.type),
-                                    initialValue: getSettingValue(item)
-                                })(
-                                    getInputForType(
-                                        item.type,
-                                        item.options,
-                                        {
-                                            disabled: item.editable === false,
-                                            onCommit: () => onCommitForm(props.form, {}, settingsApi.updateSettings)
-                                        })
-                                )}
-                                {item.suffix}
-                            </React.Fragment>
-                        ) : null}
+                    <Form.Item
+                        name={item.id}
+                        label={item.title}
+                        valuePropName={getValuePropNameForType(item.type)}
+                        style={{ width: '100%' }}>
+                        {item.prefix}
+                        {getInputForType(
+                            item.type,
+                            item.options,
+                            {
+                                disabled: item.editable === false,
+                                onCommit: () => onCommitForm(form, {}, settingsApi.updateSettings)
+                            })}
+                        {item.suffix}
                     </Form.Item>
                 );
         }
@@ -121,7 +116,7 @@ function SettingManager(props) {
             </Col>
             <Col span={2} />
             <Col span={16}>
-                <Form {...formItemLayout}>
+                <Form form={form} initialValues={settingsApi.settings} {...formItemLayout}>
                     <List
                         size="small"
                         bordered={false}
@@ -138,9 +133,8 @@ function SettingManager(props) {
 }
 
 SettingManager.propTypes = {
-    form: PropTypes.object.isRequired,
     category: PropTypes.string.isRequired,
     onCategorySelection: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'settings' })(SettingManager);
+export default SettingManager;

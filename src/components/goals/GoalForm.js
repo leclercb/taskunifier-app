@@ -8,48 +8,47 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { GoalPropType } from 'proptypes/GoalPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function GoalForm(props) {
+function GoalForm({ goal, updateGoal }) {
     const settingsApi = useSettingsApi();
 
-    const fields = getGoalFields(settingsApi.settings);
+    const [form] = Form.useForm();
 
-    const { getFieldDecorator } = props.form;
+    const fields = getGoalFields(settingsApi.settings);
 
     const formItemLayout = getDefaultFormItemLayout();
 
     const titleRef = useRef(null);
 
     useEffect(() => {
-        if (titleRef.current && !props.goal.title) {
+        if (titleRef.current && !goal.title) {
             titleRef.current.focus();
         }
-    }, [props.goal.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [goal.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Form {...formItemLayout}>
+        <Form form={form} initialValues={goal} {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => {
                 const fieldProps = {};
 
                 if (field.type === 'goalContributesTo') {
-                    fieldProps.excludeIds = [props.goal.id];
-                    fieldProps.disabled = props.goal.level === 'lifeTime';
+                    fieldProps.excludeIds = [goal.id];
+                    fieldProps.disabled = goal.level === 'lifeTime';
                 }
 
                 return (
-                    <Form.Item key={field.id} label={field.title}>
-                        {getFieldDecorator(field.id, {
-                            valuePropName: getValuePropNameForType(field.type),
-                            initialValue: props.goal[field.id]
-                        })(
-                            getInputForType(
-                                field.type,
-                                field.options,
-                                {
-                                    ...fieldProps,
-                                    ref: field.id === 'title' ? titleRef : undefined,
-                                    onCommit: () => onCommitForm(props.form, props.goal, props.updateGoal)
-                                })
-                        )}
+                    <Form.Item
+                        key={field.id}
+                        name={field.id}
+                        label={field.title}
+                        valuePropName={getValuePropNameForType(field.type)}>
+                        {getInputForType(
+                            field.type,
+                            field.options,
+                            {
+                                ...fieldProps,
+                                ref: field.id === 'title' ? titleRef : undefined,
+                                onCommit: () => onCommitForm(form, goal, updateGoal)
+                            })}
                     </Form.Item>
                 );
             })}
@@ -58,9 +57,8 @@ function GoalForm(props) {
 }
 
 GoalForm.propTypes = {
-    form: PropTypes.object.isRequired,
     goal: GoalPropType.isRequired,
     updateGoal: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'goal' })(GoalForm);
+export default GoalForm;

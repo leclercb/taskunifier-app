@@ -1,27 +1,28 @@
 import React from 'react';
 import { Button, Form, Modal } from 'antd';
-import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useTask } from 'hooks/UseTask';
 import { useTaskApi } from 'hooks/UseTaskApi';
 
-function ModalTaskEditionManager(props) {
+function ModalTaskEditionManager() {
     const appApi = useAppApi();
     const taskApi = useTaskApi();
     const task = useTask(appApi.taskEditionManager.taskId);
 
-    const onCloseTaskEditionManager = () => {
-        props.form.validateFields((error, values) => {
-            if (error) {
-                return;
-            }
+    const [form] = Form.useForm();
+
+    const onCloseTaskEditionManager = async () => {
+        try {
+            const values = await form.validateFields();
 
             taskApi.updateTask({ ...task, ...values });
-            props.form.resetFields();
+            form.resetFields();
             appApi.setTaskEditionManagerOptions({ visible: false });
-        });
+        } catch (error) {
+            // Skip
+        }
     };
 
     return (
@@ -37,13 +38,9 @@ function ModalTaskEditionManager(props) {
                     Close
                 </Button>
             )}>
-            {!!task && (<TaskEditionManager form={props.form} task={task} />)}
+            {!!task && (<TaskEditionManager form={form} task={task} />)}
         </Modal>
     );
 }
 
-ModalTaskEditionManager.propTypes = {
-    form: PropTypes.object.isRequired
-};
-
-export default Form.create({ name: 'task' })(ModalTaskEditionManager);
+export default ModalTaskEditionManager;

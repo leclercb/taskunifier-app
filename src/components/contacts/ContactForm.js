@@ -8,39 +8,38 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { ContactPropType } from 'proptypes/ContactPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function ContactForm(props) {
+function ContactForm({ contact, updateContact }) {
     const settingsApi = useSettingsApi();
 
-    const fields = getContactFields(settingsApi.settings);
+    const [form] = Form.useForm();
 
-    const { getFieldDecorator } = props.form;
+    const fields = getContactFields(settingsApi.settings);
 
     const formItemLayout = getDefaultFormItemLayout();
 
     const firstNameRef = useRef(null);
 
     useEffect(() => {
-        if (firstNameRef.current && !props.contact.firstName) {
+        if (firstNameRef.current && !contact.firstName) {
             firstNameRef.current.focus();
         }
-    }, [props.contact.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [contact.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Form {...formItemLayout}>
+        <Form form={form} initialValues={contact} {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => (
-                <Form.Item key={field.id} label={field.title}>
-                    {getFieldDecorator(field.id, {
-                        valuePropName: getValuePropNameForType(field.type),
-                        initialValue: props.contact[field.id]
-                    })(
-                        getInputForType(
-                            field.type,
-                            field.options,
-                            {
-                                ref: field.id === 'firstName' ? firstNameRef : undefined,
-                                onCommit: () => onCommitForm(props.form, props.contact, props.updateContact)
-                            })
-                    )}
+                <Form.Item
+                    key={field.id}
+                    name={field.id}
+                    label={field.title}
+                    valuePropName={getValuePropNameForType(field.type)}>
+                    {getInputForType(
+                        field.type,
+                        field.options,
+                        {
+                            ref: field.id === 'firstName' ? firstNameRef : undefined,
+                            onCommit: () => onCommitForm(form, contact, updateContact)
+                        })}
                 </Form.Item>
             ))}
         </Form>
@@ -48,9 +47,8 @@ function ContactForm(props) {
 }
 
 ContactForm.propTypes = {
-    form: PropTypes.object.isRequired,
     contact: ContactPropType.isRequired,
     updateContact: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'contact' })(ContactForm);
+export default ContactForm;

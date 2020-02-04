@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import { Button, Form, Modal } from 'antd';
-import PropTypes from 'prop-types';
-import { BatchAddTasksManager } from 'components/tasks/batch/BatchAddTasksManager';
+import BatchAddTasksManager from 'components/tasks/batch/BatchAddTasksManager';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalBatchAddTasksManager({ form }) {
+function ModalBatchAddTasksManager() {
     const appApi = useAppApi();
 
+    const [form] = Form.useForm();
     const managerRef = useRef();
 
     const onClose = () => {
@@ -39,8 +39,4 @@ function ModalBatchAddTasksManager({ form }) {
     );
 }
 
-ModalBatchAddTasksManager.propTypes = {
-    form: PropTypes.object.isRequired
-};
-
-export default Form.create({ name: 'batchAddTasks' })(ModalBatchAddTasksManager);
+export default ModalBatchAddTasksManager;
