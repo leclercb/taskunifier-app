@@ -77,7 +77,7 @@ function FieldForm({ objects, field, updateField }) {
             {config.options.map(option => (
                 <Form.Item
                     key={option.id}
-                    name={'options.' + option.id}
+                    name={['options', option.id]}
                     label={option.title}
                     valuePropName={getValuePropNameForType(option.type)}>
                     {getInputForType(option.type, option.options, { onCommit })}

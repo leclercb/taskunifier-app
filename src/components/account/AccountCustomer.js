@@ -63,7 +63,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                 <Form.Item label="Address">
                     <div style={{ padding: 20, border: '1px solid #cccccc', borderRadius: 5 }}>
                         <Form.Item
-                            name="address.line1"
+                            name={['address', 'line1']}
                             label="Line 1"
                             rules={[
                                 {
@@ -75,13 +75,13 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             <Input placeholder="Line 1" />
                         </Form.Item>
                         <Form.Item
-                            name="address.line2"
+                            name={['address', 'line2']}
                             label="Line 2"
                             {...formItemLayout}>
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="address.city"
+                            name={['address', 'city']}
                             label="City"
                             rules={[
                                 {
@@ -93,7 +93,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="address.postalCode"
+                            name={['address', 'postalCode']}
                             label="Postal Code"
                             rules={[
                                 {
@@ -105,13 +105,13 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="address.state"
+                            name={['address', 'state']}
                             label="State"
                             {...formItemLayout}>
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name="address.country"
+                            name={['address', 'country']}
                             label="Country"
                             rules={[
                                 {
@@ -127,7 +127,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                 <Form.Item label="Tax ID">
                     <div style={{ padding: 20, border: '1px solid #cccccc', borderRadius: 5 }}>
                         <Form.Item
-                            name="taxId.type"
+                            name={['taxId', 'type']}
                             label="Type"
                             {...formItemLayout}>
                             <Select placeholder="Type">
@@ -139,7 +139,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            name="taxId.value"
+                            name={['taxId', 'value']}
                             label="Value"
                             {...formItemLayout}>
                             <Input placeholder="Value" />

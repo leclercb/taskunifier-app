@@ -58,7 +58,7 @@ function TaskTemplateForm({ taskTemplate, updateTaskTemplate }) {
             {fields.map(field => (
                 <Form.Item
                     key={field.id}
-                    name={'properties.' + field.id}
+                    name={['properties', field.id]}
                     label={field.title}
                     valuePropName={getValuePropNameForType(field.type)}>
                     {getInputForType(

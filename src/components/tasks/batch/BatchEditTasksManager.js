@@ -56,11 +56,11 @@ const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, 
                 {sortedAndFilteredFields.filter(field => field.id !== 'text').map(field => (
                     <Col key={field.id} span={12}>
                         <Form.Item
-                            name={'value.' + field.id}
+                            name={['value', field.id]}
                             label={(
                                 <Form.Item
                                     noStyle
-                                    name={'checked.' + field.id}
+                                    name={['checked', field.id]}
                                     valuePropName="checked">
                                     <Checkbox>{field.title}</Checkbox>
                                 </Form.Item>
@@ -76,7 +76,7 @@ const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, 
                             <Collapse.Panel key="text" header={(
                                 <Form.Item
                                     noStyle
-                                    name={'checked.' + textField.id}
+                                    name={['checked', textField.id]}
                                     valuePropName="checked">
                                     <Checkbox>Text</Checkbox>
                                 </Form.Item>
@@ -84,7 +84,7 @@ const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, 
                                 <div style={{ height: 200 }}>
                                     <Form.Item
                                         noStyle
-                                        name={'value.' + textField.id}
+                                        name={['value', textField.id]}
                                         valuePropName={getValuePropNameForType(textField.type)}>
                                         {getInputForType(textField.type, textField.options, { disabled: !textField.editable })}
                                     </Form.Item>

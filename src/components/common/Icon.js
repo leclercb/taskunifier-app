@@ -3,34 +3,38 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import Constants from 'constants/Constants';
 
-function Icon(props) {
+function Icon({ icon, size, color, text, children, globalStyle, globalClassName, style, className, onClick, onIconClick }) {
     return (
         <React.Fragment>
             <span
-                onClick={props.onClick}
-                className={props.globalClassName}
-                style={props.globalStyle}>
+                onClick={onClick}
+                className={globalClassName}
+                style={globalStyle}>
                 <FontAwesomeIcon
-                    icon={props.icon}
-                    onClick={props.onIconClick}
-                    className={(props.className || '') + (props.color ? '' : ' colorable')}
+                    icon={icon}
+                    onClick={onIconClick}
+                    className={(className || '') + (color ? '' : ' colorable')}
                     style={{
-                        fontSize: props.size ? props.size : undefined,
-                        color: props.color ? props.color : Constants.color,
-                        marginRight: props.text ? 10 : 0,
-                        ...(props.style || {})
+                        fontSize: size ? size : undefined,
+                        color: color ? color : Constants.color,
+                        marginRight: text || children ? 10 : 0,
+                        ...(style || {})
                     }} />
-                {props.text}
+                {text ? text : children}
             </span>
         </React.Fragment>
     );
 }
 
 Icon.propTypes = {
-    icon: PropTypes.string.isRequired,
+    icon: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+    ]).isRequired,
     size: PropTypes.number,
     color: PropTypes.string,
     text: PropTypes.node,
+    children: PropTypes.node,
     globalStyle: PropTypes.object,
     globalClassName: PropTypes.string,
     style: PropTypes.object,

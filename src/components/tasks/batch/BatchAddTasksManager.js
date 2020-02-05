@@ -94,7 +94,7 @@ const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ form, on
     const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
-        <Form form={form} initialValues={{ titles: null, taskTemplate: null }} {...formItemLayout}>
+        <Form form={form} {...formItemLayout}>
             <Form.Item {...tailFormItemLayout}>
                 <Alert
                     type="info"
