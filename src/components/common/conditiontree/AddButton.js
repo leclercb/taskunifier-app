@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { PlusOutlined } from '@ant-design/icons';
 import { Button, Input, Menu, Popover } from 'antd';
+import PropTypes from 'prop-types';
 import 'components/common/conditiontree/AddButton.css';
 
 function AddButton(props) {
@@ -48,7 +49,7 @@ function AddButton(props) {
             <Button
                 disabled={props.disabled === true}
                 shape="circle"
-                icon="plus"
+                icon={(<PlusOutlined />)}
                 size="small" />
         </Popover>
     );

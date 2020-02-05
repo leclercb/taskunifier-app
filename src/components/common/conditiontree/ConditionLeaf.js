@@ -1,5 +1,5 @@
 import React from 'react';
-import { DragOutlined } from '@ant-design/icons';
+import { DragOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
@@ -26,7 +26,7 @@ function ConditionLeaf(props) {
                 <div className='condition-actions'>
                     <Button
                         shape="circle"
-                        icon="minus"
+                        icon={(<MinusOutlined />)}
                         size="small"
                         onClick={() => props.onDelete(condition, parentCondition)} />
                 </div>

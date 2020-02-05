@@ -133,10 +133,10 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
                     <LeftRight right={(
                         <React.Fragment>
                             {subscription && !subscription.cancel_at_period_end && (
-                                <Button onClick={() => updateSubscription(true)} type="danger" size="small">Cancel subscription at period end</Button>
+                                <Button onClick={() => updateSubscription(true)} danger={true} size="small">Cancel subscription at period end</Button>
                             )}
                             {subscription && subscription.cancel_at_period_end && (
-                                <Button onClick={() => updateSubscription(false)} type="primary" size="small">Resume subscription</Button>
+                                <Button onClick={() => updateSubscription(false)} danger={true} size="small">Resume subscription</Button>
                             )}
                         </React.Fragment>
                     )}>
@@ -147,7 +147,7 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
                     <LeftRight right={(
                         <React.Fragment>
                             {subscription && scaRequired && (
-                                <Button onClick={() => handleSCA(handleSCA)} type="danger" size="small">Retry customer strong authentication</Button>
+                                <Button onClick={() => handleSCA(handleSCA)} danger={true} size="small">Retry customer strong authentication</Button>
                             )}
                         </React.Fragment>
                     )}>

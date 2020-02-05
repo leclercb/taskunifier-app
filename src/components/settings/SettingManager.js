@@ -45,7 +45,8 @@ function SettingManager(props) {
                 return (
                     <Form.Item label={item.title} style={{ width: '100%' }}>
                         <PromiseButton
-                            type={item.buttonType}
+                            danger={item.buttonType === 'danger'}
+                            type={item.buttonType === 'danger' ? 'default' : item.buttonType}
                             onClick={() => item.value(settingsApi.settings, settingsApi.updateSettings, settingsApi.dispatch)}>
                             {item.title}
                         </PromiseButton>
