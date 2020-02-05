@@ -27,7 +27,7 @@ function TaskCalendar({ apis }) {
     const getEvents = () => {
         const events = [];
 
-        taskApi.tasks.forEach(task => {
+        taskApi.filteredTasks.forEach(task => {
             const matchStartDate = task.startDate && taskApi.calendarEventTypes.includes('startDate');
             const matchDueDate = task.dueDate && taskApi.calendarEventTypes.includes('dueDate');
             const matchWorkLog = task.workLogs && taskApi.calendarEventTypes.includes('workLog');
