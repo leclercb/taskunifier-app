@@ -16,6 +16,7 @@ import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { TimerPropType } from 'proptypes/TimerPropTypes';
 import { WorkLogPropType } from 'proptypes/WorkLogPropTypes';
+import { compareDates } from 'utils/CompareUtils';
 import { getWorkLogBackgroundColor } from 'utils/SettingUtils';
 import { toStringDuration } from 'utils/StringUtils';
 import {
@@ -30,6 +31,9 @@ function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
     const [selectedWorkLogIds, setSelectedWorkLogIds] = useState([]);
+
+    workLogs = [...workLogs];
+    workLogs.sort((a, b) => compareDates(a.start, b.start, true));
 
     const workLogFields = getWorkLogFields(settingsApi.settings);
     const workLogsWithLength = getWorkLogsWithLength(workLogs);
