@@ -37,19 +37,15 @@ export function getSettings() {
 
     getCategories().forEach(category => {
         category.settings.forEach(setting => {
-            if (setting.type === 'component') {
-                return;
+            switch (setting.type) {
+                case 'button':
+                case 'component':
+                case 'label':
+                    break;
+                default:
+                    settings[setting.id] = setting.value;
+                    break;
             }
-
-            if (setting.type === 'button') {
-                return;
-            }
-
-            if (setting.type === 'label') {
-                return;
-            }
-
-            settings[setting.id] = setting.value;
         });
     });
 

@@ -1,6 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { MinusOutlined } from '@ant-design/icons';
 import { Alert, Button, Empty, Select } from 'antd';
+import PropTypes from 'prop-types';
 import { DragSource, DropTarget } from 'react-dnd';
 import ItemTypes from 'components/common/conditiontree/ItemTypes';
 import AddButton from 'components/common/conditiontree/AddButton';
@@ -54,7 +55,7 @@ function ConditionGroup(props) {
                             <br />
                             <Button
                                 shape="circle"
-                                icon="minus"
+                                icon={(<MinusOutlined />)}
                                 size="small"
                                 onClick={() => props.onDelete(condition, parentCondition)} />
                         </div>

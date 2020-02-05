@@ -8,73 +8,68 @@ import { TagPropType } from 'proptypes/TagPropTypes';
 import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import { merge } from 'utils/ObjectUtils';
 
-function TagForm(props) {
+function TagForm({ tag, updateTag }) {
     const settingsApi = useSettingsApi();
 
-    const updateTag = () => {
-        props.form.validateFields((error, values) => {
-            if (error) {
-                return;
-            }
+    const [form] = Form.useForm();
 
-            const updatedObject = merge({ ...props.tag }, values);
-            props.updateTag(updatedObject);
-        });
+    const onUpdateTag = async () => {
+        try {
+            const values = await form.validateFields();
+
+            const updatedObject = merge({ ...tag }, values);
+            updateTag(updatedObject);
+        } catch (error) {
+            // Skip
+        }
     };
 
-    const onCommit = () => {
-        props.form.validateFields((error, values) => {
-            if (error) {
-                return;
-            }
+    const onCommit = async () => {
+        try {
+            const values = await form.validateFields();
 
             settingsApi.updateSettings({
-                [`tagColor_${btoa(props.tag.title)}`]: values.color
+                [`tagColor_${btoa(tag.title)}`]: values.color
             });
-        });
+        } catch (error) {
+            // Skip
+        }
     };
-
-    const { getFieldDecorator } = props.form;
 
     const formItemLayout = getDefaultFormItemLayout();
     const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
-        <Form {...formItemLayout}>
-            <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                    initialValue: props.tag.title,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The title is required'
-                        }
-                    ]
-                })(
-                    <Input />
-                )}
+        <Form form={form} initialValues={tag} {...formItemLayout}>
+            <Form.Item
+                name="title"
+                label="Title"
+                rules={[
+                    {
+                        required: true,
+                        message: 'The title is required'
+                    }
+                ]}>
+                <Input />
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
-                <Button onClick={() => updateTag()}>
+                <Button onClick={() => onUpdateTag()}>
                     <Icon icon="tag" text="Change tag title in every task" />
                 </Button>
             </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.tag.color,
-                    valuePropName: 'color'
-                })(
-                    <ColorPicker onClose={onCommit} />
-                )}
+            <Form.Item
+                name="color"
+                label="Color"
+                valuePropName="color">
+                <ColorPicker onClose={onCommit} />
             </Form.Item>
         </Form>
     );
 }
 
 TagForm.propTypes = {
-    form: PropTypes.object.isRequired,
     tag: TagPropType.isRequired,
     updateTag: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'tag' })(TagForm);
+export default TagForm;

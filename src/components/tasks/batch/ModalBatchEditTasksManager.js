@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import { Button, Form, Modal } from 'antd';
-import PropTypes from 'prop-types';
-import { BatchEditTasksManager } from 'components/tasks/batch/BatchEditTasksManager';
+import BatchEditTasksManager from 'components/tasks/batch/BatchEditTasksManager';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalBatchEditTasksManager({ form }) {
+function ModalBatchEditTasksManager() {
     const appApi = useAppApi();
 
+    const [form] = Form.useForm();
     const managerRef = useRef();
 
     const onClose = () => {
@@ -39,8 +39,4 @@ function ModalBatchEditTasksManager({ form }) {
     );
 }
 
-ModalBatchEditTasksManager.propTypes = {
-    form: PropTypes.object.isRequired
-};
-
-export default Form.create({ name: 'batchEditTasks' })(ModalBatchEditTasksManager);
+export default ModalBatchEditTasksManager;
