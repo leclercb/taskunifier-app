@@ -174,17 +174,17 @@ function Header() {
             )}>
             <Button.Group style={{ marginRight: 20 }} className="joyride-header-selected-view">
                 <Button
-                    type={appApi.selectedView === 'task' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'task' ? 'primary' : 'default'}
                     onClick={onShowTaskContent}>
                     <Icon icon="tasks" text="Tasks" />
                 </Button>
                 <Button
-                    type={appApi.selectedView === 'taskCalendar' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'taskCalendar' ? 'primary' : 'default'}
                     onClick={onShowTaskCalendarContent}>
                     <Icon icon="calendar-alt" text="Calendar" />
                 </Button>
                 <Button
-                    type={appApi.selectedView === 'note' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'note' ? 'primary' : 'default'}
                     onClick={onShowNoteContent}>
                     <Icon icon="book" text="Notes" />
                 </Button>

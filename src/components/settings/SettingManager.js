@@ -81,18 +81,21 @@ function SettingManager(props) {
             default:
                 return (
                     <Form.Item
-                        name={item.id}
                         label={item.title}
-                        valuePropName={getValuePropNameForType(item.type)}
                         style={{ width: '100%' }}>
                         {item.prefix}
-                        {getInputForType(
-                            item.type,
-                            item.options,
-                            {
-                                disabled: item.editable === false,
-                                onCommit: () => onCommitForm(form, {}, settingsApi.updateSettings)
-                            })}
+                        <Form.Item
+                            noStyle
+                            name={item.id}
+                            valuePropName={getValuePropNameForType(item.type)}>
+                            {getInputForType(
+                                item.type,
+                                item.options,
+                                {
+                                    disabled: item.editable === false,
+                                    onCommit: () => onCommitForm(form, {}, settingsApi.updateSettings)
+                                })}
+                        </Form.Item>
                         {item.suffix}
                     </Form.Item>
                 );
