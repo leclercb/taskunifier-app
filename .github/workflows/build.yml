@@ -30,7 +30,13 @@ jobs:
           windows_certs: ${{ secrets.windows_certs }}
           windows_certs_password: ${{ secrets.windows_certs_password }}
         env:
-          REACT_APP_GIT_COMMIT_HASH: "${{ github.sha }}"
+          REACT_APP_GIT_COMMIT_HASH: ${{ github.sha }}
+          REACT_APP_AUTH_USERPOOLID: ${{ secrets.auth_userpoolid }}
+          REACT_APP_AUTH_USERPOOLWEBCLIENTID: ${{ secrets.auth_userpoolwebclientid }}
+          REACT_APP_TASKUNIFIER_CLIENT_ID: ${{ secrets.taskunifier_client_id }}
+          REACT_APP_TASKUNIFIER_CLIENT_SECRET: ${{ secrets.taskunifier_client_secret }}
+          REACT_APP_TOODLEDO_CLIENT_ID: ${{ secrets.toodledo_client_id }}
+          REACT_APP_TOODLEDO_CLIENT_SECRET: ${{ secrets.toodledo_client_secret }}
 
       - name: Move Files
         shell: bash
