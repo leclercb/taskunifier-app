@@ -29,9 +29,9 @@ import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask, redoTaskStateUpdate, undoTaskStateUpdate } from 'actions/TaskActions';
 import FileField from 'components/common/FileField';
 import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { canRedoNoteStateUpdate, canUndoNoteStateUpdate, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { canRedoNoteStateUpdate, canUndoNoteStateUpdate, getNotesFilteredBySelectedFilter } from 'selectors/NoteSelectors';
 import { getSelectedView, getSettings } from 'selectors/SettingSelectors';
-import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { lstat } from 'utils/ElectronUtils';
@@ -332,7 +332,7 @@ async function executeRemoveNotes() {
 }
 
 async function executePrintNotes() {
-    await store.dispatch(printNotes(getNotesFilteredByVisibleState(store.getState())));
+    await store.dispatch(printNotes(getNotesFilteredBySelectedFilter(store.getState())));
 }
 
 async function executeNoteFilterManager() {
@@ -410,7 +410,7 @@ async function executeRemoveTasks() {
 }
 
 async function executePrintTasks() {
-    await store.dispatch(printTasks(getTasksFilteredByVisibleState(store.getState())));
+    await store.dispatch(printTasks(getTasksFilteredBySelectedFilter(store.getState())));
 }
 
 async function executeTaskFilterManager() {

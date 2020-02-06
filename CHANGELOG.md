@@ -1,3 +1,11 @@
+# 0.9.6
+
+## New Features
+
+* Print only notes and tasks matching the selected filter
+
+## Bug Fixes
+
 # 0.9.5
 
 ## Bug Fixes

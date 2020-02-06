@@ -42,7 +42,7 @@ function Header() {
     };
 
     const onPrintNotes = () => {
-        printApi.printNotes(noteApi.notes);
+        printApi.printNotes(noteApi.filteredNotes);
     };
 
     const onAddTask = async () => {
@@ -76,7 +76,7 @@ function Header() {
     };
 
     const onPrintTasks = () => {
-        printApi.printTasks(taskApi.tasks);
+        printApi.printTasks(taskApi.filteredTasks);
     };
 
     const onSave = () => {
