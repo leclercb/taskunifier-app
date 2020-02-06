@@ -1,3 +1,9 @@
+# 0.9.5
+
+## Bug Fixes
+
+* Fix synchronization with Toodledo and TaskUnifier
+
 # 0.9.4
 
 ## New Features
