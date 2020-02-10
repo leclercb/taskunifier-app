@@ -53,11 +53,7 @@ import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { getConditionsForType } from 'data/DataFieldFilterTypes';
-import {
-    toStringNumber,
-    toStringPassword,
-    toStringRepeat
-} from 'utils/StringUtils';
+import { toStringNumber, toStringPassword } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -529,10 +525,9 @@ export function getFieldComponents(type, options) {
         }
         case 'repeat': {
             configuration = {
-                render: value => {
-                    const result = toStringRepeat(value);
-                    return result ? result : <span>&nbsp;</span>;
-                },
+                render: value => (
+                    <RepeatField repeat={value} readOnly={true} />
+                ),
                 input: props => (
                     <RepeatField
                         defaultOpened={props.fieldMode === 'table'}

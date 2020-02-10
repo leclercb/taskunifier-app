@@ -87,7 +87,7 @@ function RepeatForm({ repeat, updateRepeat }) {
     const values = {
         start: options && options.dtstart && options.dtstart.getTime() !== 0 ? 'FROM' : 'NONE',
         dtstart: options && options.dtstart ? moment(options.dtstart) : moment(),
-        freq: String(options && options.freq ? options.freq : -1),
+        freq: String(options && Number.isInteger(options.freq) ? options.freq : -1),
         from: fromCompletionDate ? 'completionDate' : 'dueDate',
         fastForward,
         interval: options && options.interval ? options.interval : 1,

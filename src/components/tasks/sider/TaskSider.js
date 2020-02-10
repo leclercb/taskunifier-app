@@ -172,25 +172,31 @@ function TaskSider(props) {
                 {props.mode === 'table' && (
                     <div style={{ padding: '10px 10px 0px 10px' }}>
                         <div>
-                            <Checkbox
-                                checked={taskApi.showTaskHierarchy}
-                                onChange={() => taskApi.setShowTaskHierarchy(!taskApi.showTaskHierarchy)}>
-                                Show task indentation
-                            </Checkbox>
+                            <Tooltip title="Show the sub-tasks below their parent" placement="right">
+                                <Checkbox
+                                    checked={taskApi.showTaskHierarchy}
+                                    onChange={() => taskApi.setShowTaskHierarchy(!taskApi.showTaskHierarchy)}>
+                                    Show task indentation
+                                </Checkbox>
+                            </Tooltip>
                         </div>
                         <div style={{ paddingTop: 3 }}>
-                            <Checkbox
-                                checked={taskApi.showCompletedTasks}
-                                onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
-                                Show completed tasks
-                            </Checkbox>
+                            <Tooltip title="Show completed tasks" placement="right">
+                                <Checkbox
+                                    checked={taskApi.showCompletedTasks}
+                                    onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
+                                    Show completed tasks
+                                </Checkbox>
+                            </Tooltip>
                         </div>
                         <div style={{ paddingTop: 3 }}>
-                            <Checkbox
-                                checked={taskApi.showFutureTasks}
-                                onChange={() => taskApi.setShowFutureTasks(!taskApi.showFutureTasks)}>
-                                Show future tasks
-                            </Checkbox>
+                            <Tooltip title="Show tasks with a start date in the future" placement="right">
+                                <Checkbox
+                                    checked={taskApi.showFutureTasks}
+                                    onChange={() => taskApi.setShowFutureTasks(!taskApi.showFutureTasks)}>
+                                    Show future tasks
+                                </Checkbox>
+                            </Tooltip>
                         </div>
                     </div>
                 )}

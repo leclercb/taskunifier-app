@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'antd';
+import { Avatar, Input, Tooltip } from 'antd';
+import LeftRight from 'components/common/LeftRight';
 import ModalRepeatManager from 'components/repeat/ModalRepeatManager';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 import { toStringRepeat } from 'utils/StringUtils';
@@ -31,8 +32,24 @@ class RepeatField extends React.Component {
     }
 
     render() {
-        const { repeat, onChange, onOpenChange, ...wrappedProps } = this.props;
+        const { repeat, readOnly, onChange, onOpenChange, ...wrappedProps } = this.props;
         delete wrappedProps.defaultOpened;
+
+        if (readOnly) {
+            const fromComp = (repeat || '').includes(';FROMCOMP');
+
+            return (
+                <LeftRight right={(
+                    <Tooltip title={fromComp ? 'From Completion Date' : 'From Due Date'}>
+                        <Avatar size="small" style={{ backgroundColor: fromComp ? '#666666' : '#bbbbbb' }}>
+                            {fromComp ? 'CD' : 'DD'}
+                        </Avatar>
+                    </Tooltip>
+                )}>
+                    {toStringRepeat(repeat, false)}
+                </LeftRight>
+            );
+        }
 
         return (
             <React.Fragment>
@@ -50,7 +67,7 @@ class RepeatField extends React.Component {
                 <Input
                     {...wrappedProps}
                     readOnly={true}
-                    value={toStringRepeat(repeat)}
+                    value={toStringRepeat(repeat, true)}
                     onClick={() => {
                         this.setOpened(true);
 
@@ -65,6 +82,7 @@ class RepeatField extends React.Component {
 
 RepeatField.propTypes = {
     repeat: RepeatPropType,
+    readOnly: PropTypes.bool,
     defaultOpened: PropTypes.bool,
     onChange: PropTypes.func,
     onOpenChange: PropTypes.func,

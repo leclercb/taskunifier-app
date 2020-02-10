@@ -3,8 +3,12 @@
 ## New Features
 
 * Print only notes and tasks matching the selected filter
+* Show "repeat from" icon in repeat column
+* Show tooltip for task checkbox filters
 
 ## Bug Fixes
+
+* Fix "yearly" repeat value
 
 # 0.9.5
 

@@ -1,5 +1,12 @@
 /* Ant Design */
 
+.ant-avatar-sm {
+    width: 20px !important;
+    height: 20px !important;
+    line-height: 20px !important;
+    font-weight: bold !important;
+}
+
 .ant-badge-count {
     height: 18px !important;
     line-height: 18px !important;

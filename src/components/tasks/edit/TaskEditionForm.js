@@ -27,8 +27,8 @@ function TaskEditionForm({ form, task }) {
     const textField = sortedAndFilteredFields.find(field => field.id === 'text');
 
     return (
-        <Row gutter={20}>
-            <Form form={form} initialValues={task} {...formItemLayout}>
+        <Form form={form} initialValues={task} {...formItemLayout}>
+            <Row gutter={20}>
                 {sortedAndFilteredFields.filter(field => field.id !== 'text').map(field => (
                     <Col key={field.id} span={12}>
                         <Form.Item
@@ -55,8 +55,8 @@ function TaskEditionForm({ form, task }) {
                         </Collapse>
                     </Col>
                 )}
-            </Form>
-        </Row>
+            </Row>
+        </Form>
     );
 }
 
