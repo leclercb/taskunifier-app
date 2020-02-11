@@ -22,7 +22,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.27",
         "@fortawesome/free-solid-svg-icons": "^5.12.1",
         "@fortawesome/react-fontawesome": "^0.1.8",
-        "antd": "^4.0.0-rc.3",
+        "antd": "^4.0.0-rc.4",
         "aws-amplify": "^2.2.2",
         "axios": "^0.19.2",
         "craco-antd": "^1.14.1",
