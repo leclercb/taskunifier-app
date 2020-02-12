@@ -23,7 +23,11 @@ export function authorize() {
 
         const url = client.generateAuthUrl({
             access_type: 'offline',
-            scope: ['https://www.googleapis.com/auth/calendar']
+            scope: [
+                'https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/calendar'
+            ]
         });
 
         openExternalLink(url);

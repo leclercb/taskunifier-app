@@ -7,9 +7,11 @@ export function getGoogleCalAccountInfo() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
 
+        const client = getClient(settings);
+
         const profile = google.oauth2({
-            auth: getClient(settings),
-            version: 'v2'
+            version: 'v2',
+            auth: client
         });
 
         const result = await profile.userinfo.get();

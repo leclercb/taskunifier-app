@@ -39,8 +39,6 @@ export function connectToGoogleCal() {
             await dispatch(authorize());
             const code = await getAuthorizationCode();
             await dispatch(createToken(code));
-
-            settings = getSettings(getState());
         }
     };
 }
