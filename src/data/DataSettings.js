@@ -3,7 +3,7 @@ import { Alert, Checkbox, Modal, Select, message, notification } from 'antd';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import { getUserDataPath } from 'actions/ActionUtils';
-import { loadData, saveData, setAccountManagerOptions, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
+import { loadData, saveData, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
 import { getBackupIds, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
@@ -21,6 +21,7 @@ import { getDefaultSelectedTaskFilter, getDefaultTaskSorters } from 'data/DataTa
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
+import { getPublicationApps } from 'utils/PublicationUtils';
 import { getSynchronizationApp } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
 
@@ -374,17 +375,13 @@ export function getCategories() {
                     id: 'activationInfo',
                     title: '',
                     type: 'component',
-                    value: (settings, updateSettings, dispatch) => {
+                    value: () => {
                         const activationInfo = getActivationInfo(store.getState());
 
                         if (activationInfo) {
                             return (<ProUnlockedMessage activationInfo={activationInfo} />);
                         } else {
-                            return (
-                                <ProLockedMessage
-                                    setAccountManagerOptions={options => dispatch(setAccountManagerOptions(options))}
-                                    info={true} />
-                            );
+                            return (<ProLockedMessage info={true} />);
                         }
                     },
                     editable: false,
@@ -689,7 +686,7 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
-                    id: 'resetConnection',
+                    id: 'resetSynchronizationConnection',
                     title: 'Reset the synchronization connection',
                     type: 'button',
                     buttonType: 'danger',
@@ -736,6 +733,78 @@ export function getCategories() {
 
                                 await dispatch(synchronize());
                             }
+                        });
+                    },
+                    editable: true,
+                    mode: 'electron'
+                }
+            ]
+        },
+        {
+            id: 'publication',
+            title: 'Publication',
+            icon: 'upload',
+            mode: 'electron',
+            settings: [
+                {
+                    id: 'publicationApps',
+                    title: 'Publish task calendar events to',
+                    type: 'selectMultiple',
+                    options: {
+                        values: getPublicationApps().map(app => ({
+                            title: app.label,
+                            value: app.id
+                        }))
+                    },
+                    value: [],
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'automaticPublication',
+                    title: 'Enable automatic publication',
+                    type: 'boolean',
+                    value: false,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'automaticPublicationInterval',
+                    title: 'Publication interval in minutes',
+                    type: 'number',
+                    options: {
+                        min: 10
+                    },
+                    value: 60,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'lastAutomaticPublication',
+                    title: 'Last automatic publication',
+                    type: 'dateTime',
+                    value: moment().toISOString(),
+                    editable: false,
+                    mode: 'electron'
+                },
+                {
+                    id: 'resetPublicationConnection',
+                    title: 'Reset the publication connection',
+                    type: 'button',
+                    buttonType: 'danger',
+                    value: async (settings, updateSettings) => {
+                        const ids = getPublicationApps().reduce((ids, app) => {
+                            ids[app.id] = null;
+                            return ids;
+                        }, {});
+
+                        await updateSettings({
+                            ...ids,
+                            lastPublicationDate: null
+                        });
+
+                        Modal.success({
+                            content: 'The publication connection has been successfully reset'
                         });
                     },
                     editable: true,
@@ -1407,7 +1476,7 @@ export function getCategories() {
                 {
                     id: 'calendarEventTypes',
                     title: 'Calendar event types',
-                    type: 'selectTags',
+                    type: 'selectMultiple',
                     options: {
                         values: [
                             {

@@ -24,6 +24,7 @@ import {
 import { backupData } from 'actions/BackupActions';
 import { addNote, deleteNote, redoNoteStateUpdate, undoNoteStateUpdate } from 'actions/NoteActions';
 import { printNotes, printTasks } from 'actions/PrintActions';
+import { publish } from 'actions/PublicationActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask, redoTaskStateUpdate, undoTaskStateUpdate } from 'actions/TaskActions';
@@ -127,6 +128,10 @@ export function initializeShortcuts() {
 
         ipcRenderer.on('menu-synchronize', async () => {
             await executeSynchronize();
+        });
+
+        ipcRenderer.on('menu-publish', async () => {
+            await executePublish();
         });
 
         ipcRenderer.on('menu-category-manager', async () => {
@@ -427,6 +432,10 @@ async function executeTaskFieldManager() {
 
 async function executeSynchronize() {
     await store.dispatch(synchronize());
+}
+
+async function executePublish() {
+    await store.dispatch(publish());
 }
 
 async function executeCategoryManager() {

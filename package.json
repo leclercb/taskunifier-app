@@ -29,6 +29,7 @@
         "electron-is-dev": "^1.1.0",
         "electron-updater": "^4.2.0",
         "fs-extra": "^8.1.0",
+        "googleapis": "^47.0.0",
         "https-proxy-agent": "^4.0.0",
         "inputmask-core": "^2.2.0",
         "jspdf": "^1.5.3",

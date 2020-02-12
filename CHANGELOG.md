@@ -5,6 +5,7 @@
 * Print only notes and tasks matching the selected filter
 * Show "repeat from" icon in repeat column
 * Show tooltip for task checkbox filters
+* Publish task calendar events to Google Calendar (#142)
 
 ## Bug Fixes
 

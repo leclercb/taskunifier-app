@@ -1,4 +1,5 @@
-const CracoAntDesignPlugin = require("craco-antd");
+const CracoAntDesignPlugin = require('craco-antd');
+const path = require('path');
 
 module.exports = {
     plugins: [
@@ -13,6 +14,9 @@ module.exports = {
         }
     },
     webpack: {
+        alias: {
+            fs: path.resolve(__dirname, 'src/mock-fs.js')
+        },
         configure: webpackConfig => {
             webpackConfig.module.rules.push({
                 test: /\.worker\.js$/,

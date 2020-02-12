@@ -18,6 +18,7 @@ import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getSecondsUntilNextSave } from 'utils/AppUtils';
 import { getSecondsUntilNextBackup } from 'utils/BackupUtils';
+import { getSecondsUntilNextPub } from 'utils/PublicationUtils';
 import { getSecondsUntilNextSync } from 'utils/SynchronizationUtils';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
 
@@ -129,6 +130,10 @@ function Header() {
 
     const onSynchronize = () => {
         appApi.synchronize();
+    };
+
+    const onPublish = () => {
+        appApi.publish();
     };
 
     const onShowTaskContent = () => {
@@ -254,6 +259,12 @@ function Header() {
                         isPro={appApi.isPro}
                         synchronize={onSynchronize} />
                 ) : null}
+                {process.env.REACT_APP_MODE === 'electron' ? (
+                    <PublicationButton
+                        settings={settingsApi.settings}
+                        isPro={appApi.isPro}
+                        publish={onPublish} />
+                ) : null}
             </Button.Group>
             <Button.Group>
                 {createButton('question-circle', 'Help', onShowHelp)}
@@ -355,6 +366,38 @@ SynchronizationButton.propTypes = {
     settings: SettingsPropType.isRequired,
     isPro: PropTypes.bool.isRequired,
     synchronize: PropTypes.func.isRequired
+};
+
+function PublicationButton({ settings, isPro, publish }) {
+    const [seconds, setSeconds] = useState(getSecondsUntilNextPub(settings, isPro));
+
+    useInterval(() => {
+        setSeconds(getSecondsUntilNextPub(settings, isPro));
+    }, 5000);
+
+    const now = moment();
+
+    const title = (
+        <React.Fragment>
+            Publish
+            <br />
+            <em>{seconds >= 0 ? 'Next publication ' + now.to(moment(now).add(seconds + 1, 'second')) : 'Automatic publication is disabled'}</em>
+        </React.Fragment>
+    );
+
+    return (
+        <Tooltip placement="bottom" title={title}>
+            <Button onClick={publish}>
+                <Icon icon="upload" />
+            </Button>
+        </Tooltip>
+    );
+}
+
+PublicationButton.propTypes = {
+    settings: SettingsPropType.isRequired,
+    isPro: PropTypes.bool.isRequired,
+    publish: PropTypes.func.isRequired
 };
 
 export default Header;

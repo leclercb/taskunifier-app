@@ -591,6 +591,40 @@ export function getFieldComponents(type, options) {
 
             break;
         }
+        case 'selectMultiple': {
+            let values = options && options.values ? options.values : [];
+            values = Array.isArray(values) ? values : [values];
+
+            configuration = {
+                render: values => (
+                    values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
+                ),
+                input: props => {
+                    return (
+                        <Select
+                            onBlur={props.onCommit}
+                            dropdownMatchSelectWidth={false}
+                            mode="multiple"
+                            {...removeExtraProps(props)}>
+                            {values.map(value => {
+                                value = typeof value === 'object' ? value : {
+                                    title: value,
+                                    value
+                                };
+
+                                return (
+                                    <Select.Option key={value.value} value={value.value}>
+                                        {value.title}
+                                    </Select.Option>
+                                );
+                            })}
+                        </Select>
+                    );
+                }
+            };
+
+            break;
+        }
         case 'selectTags': {
             let values = options && options.values ? options.values : [];
             values = Array.isArray(values) ? values : [values];

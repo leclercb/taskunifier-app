@@ -196,6 +196,17 @@ const template = [
             }
         ]
     },
+    {
+        label: 'Publication',
+        submenu: [
+            {
+                label: 'Publish',
+                click: async () => {
+                    BrowserWindow.getFocusedWindow().webContents.send('menu-publish');
+                }
+            }
+        ]
+    },
     // { role: 'viewMenu' }
     {
         label: 'View',

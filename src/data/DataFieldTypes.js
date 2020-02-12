@@ -72,6 +72,7 @@ export function getFieldTypes() {
         'repeat',
         'richtext',
         'select',
+        'selectMultiple',
         'selectTags',
         'sortDirection',
         'star',
@@ -543,6 +544,24 @@ export function getFieldType(type, options) {
                 valuePropName: 'value',
                 compare: (a, b) => compareStrings(a, b),
                 toString: value => toString(value),
+                options: [
+                    {
+                        id: 'values',
+                        title: 'Values',
+                        type: 'selectTags'
+                    }
+                ]
+            };
+        }
+        case 'selectMultiple': {
+            return {
+                title: 'Select Multiple',
+                allowCreation: true,
+                width: 200,
+                alwaysInEdition: false,
+                valuePropName: 'value',
+                compare: () => 0,
+                toString: value => toStringArray(value),
                 options: [
                     {
                         id: 'values',
