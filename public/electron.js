@@ -174,6 +174,10 @@ app.on('activate', () => {
 app.on('open-url', (event, url) => {
     event.preventDefault();
     log.info("Open URL", url);
+
+    if (mainWindow) {
+        mainWindow.webContents.send('open-url', url);
+    }
 });
 
 app.on('ready', () => {

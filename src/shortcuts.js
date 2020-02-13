@@ -325,9 +325,16 @@ async function executeRedo() {
     }
 }
 
-async function executeAddNote() {
+export async function executeAddNote(callback = null) {
     await store.dispatch(setSelectedView('note'));
-    const note = await store.dispatch(addNote());
+
+    let note = {};
+
+    if (callback) {
+        callback(note);
+    }
+
+    note = await store.dispatch(addNote());
     await store.dispatch(setSelectedNoteIds(note.id));
     await store.dispatch(setEditingCell(note.id, 'title'));
 }
@@ -348,7 +355,7 @@ async function executeNoteFieldManager() {
     await store.dispatch(setNoteFieldManagerOptions({ visible: true }));
 }
 
-async function executeAddTask(callback = null) {
+export async function executeAddTask(callback = null) {
     const state = store.getState();
 
     await store.dispatch(setSelectedView('task'));
