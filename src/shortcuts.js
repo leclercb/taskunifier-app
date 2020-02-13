@@ -29,14 +29,15 @@ import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask, redoTaskStateUpdate, undoTaskStateUpdate } from 'actions/TaskActions';
 import FileField from 'components/common/FileField';
-import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getSelectedNoteFilter, getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { canRedoNoteStateUpdate, canUndoNoteStateUpdate, getNotesFilteredBySelectedFilter } from 'selectors/NoteSelectors';
 import { getSelectedView, getSettings } from 'selectors/SettingSelectors';
-import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { lstat } from 'utils/ElectronUtils';
-import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
@@ -326,15 +327,19 @@ async function executeRedo() {
 }
 
 export async function executeAddNote(callback = null) {
+    const state = store.getState();
+
     await store.dispatch(setSelectedView('note'));
 
     let note = {};
+
+    applyNoteTemplateFromNoteFilter(getSelectedNoteFilter(state), note, getNoteFieldsIncludingDefaults(state));
 
     if (callback) {
         callback(note);
     }
 
-    note = await store.dispatch(addNote());
+    note = await store.dispatch(addNote(note));
     await store.dispatch(setSelectedNoteIds(note.id));
     await store.dispatch(setEditingCell(note.id, 'title'));
 }

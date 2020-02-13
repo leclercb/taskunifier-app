@@ -1,5 +1,6 @@
 import React from 'react';
 import SplitPane from 'react-split-pane';
+import NoteQuickAdd from 'components/notes/quick/NoteQuickAdd';
 import NoteSider from 'components/notes/sider/NoteSider';
 import NoteTable from 'components/notes/table/NoteTable';
 import NoteTabs from 'components/notes/tabs/NoteTabs';
@@ -34,6 +35,7 @@ function NoteView() {
                 primary="second"
                 paneStyle={{ overflowY: 'auto' }}>
                 <div style={{ height: '100%' }}>
+                    <NoteQuickAdd />
                     <NoteTable />
                 </div>
                 <div style={{ padding: 10, width: '100%', height: '100%' }}>

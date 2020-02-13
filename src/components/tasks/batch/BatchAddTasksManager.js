@@ -6,7 +6,7 @@ import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
-import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
+import { applyTaskTemplate } from 'utils/TemplateUtils';
 
 const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ form, onSuccess }, ref) {
     const taskApi = useTaskApi();

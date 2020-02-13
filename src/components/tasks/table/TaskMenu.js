@@ -9,7 +9,7 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
-import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 function TaskMenu({ selectedTasks, children }) {
     const appApi = useAppApi();

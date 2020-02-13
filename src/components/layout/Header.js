@@ -10,6 +10,7 @@ import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { usePrintApi } from 'hooks/UsePrintApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -20,20 +21,25 @@ import { getSecondsUntilNextSave } from 'utils/AppUtils';
 import { getSecondsUntilNextBackup } from 'utils/BackupUtils';
 import { getSecondsUntilNextPub } from 'utils/PublicationUtils';
 import { getSecondsUntilNextSync } from 'utils/SynchronizationUtils';
-import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 function Header() {
     const appApi = useAppApi();
     const joyrideApi = useJoyrideApi();
     const noteApi = useNoteApi();
-    const taskApi = useTaskApi();
+    const noteFieldApi = useNoteFieldApi();
     const printApi = usePrintApi();
     const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
     const taskTemplateApi = useTaskTemplateApi();
 
     const onAddNote = async () => {
-        const note = await noteApi.addNote();
+        let note = {};
+
+        applyNoteTemplateFromNoteFilter(noteApi.selectedNoteFilter, note, noteFieldApi.noteFields);
+
+        note = await noteApi.addNote(note);
         noteApi.setSelectedNoteIds(note.id);
         appApi.setEditingCell(note.id, 'title');
     };

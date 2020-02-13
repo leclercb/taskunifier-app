@@ -64,10 +64,7 @@ export function createNoteFilterFromDefinition(filterDefinition, filters, sorter
             return filters.find(filter => filter.id === filterDefinition.id);
         case 'general':
             return getGeneralNoteFilters().find(filter => filter.id === filterDefinition.id);
-        case 'context':
         case 'folder':
-        case 'goal':
-        case 'location':
             return {
                 id: filterDefinition.id,
                 title: 'Generated Filter',
@@ -77,7 +74,13 @@ export function createNoteFilterFromDefinition(filterDefinition, filters, sorter
                     type: 'equal',
                     value: filterDefinition.id
                 },
-                sorters
+                sorters,
+                noteTemplate: {
+                    id: null,
+                    properties: {
+                        [filterDefinition.type]: filterDefinition.id
+                    }
+                }
             };
         case 'tags':
             return {
@@ -89,7 +92,13 @@ export function createNoteFilterFromDefinition(filterDefinition, filters, sorter
                     type: 'contain',
                     value: [filterDefinition.id]
                 },
-                sorters
+                sorters,
+                noteTemplate: {
+                    id: null,
+                    properties: {
+                        [filterDefinition.type]: filterDefinition.id
+                    }
+                }
             };
         default:
             return null;

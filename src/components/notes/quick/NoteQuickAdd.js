@@ -2,12 +2,17 @@ import React, { useRef, useState } from 'react';
 import { Select } from 'antd';
 import Icon from 'components/common/Icon';
 import { FolderTitle } from 'components/folders/FolderTitle';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { applyNoteTemplateFromNoteFilter } from 'utils/TemplateUtils';
 
 function NoteQuickAdd() {
+    const appApi = useAppApi();
     const folderApi = useFolderApi();
     const noteApi = useNoteApi();
+    const noteFieldApi = useNoteFieldApi();
 
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);
@@ -25,14 +30,22 @@ function NoteQuickAdd() {
         setOpen(true);
     };
 
+    const onFocus = () => {
+        if (values.length > 0) {
+            setOpen(true);
+        }
+    };
+
     const onBlur = () => {
         setOpen(false);
     };
 
-    const onAdd = values => {
+    const onAdd = async values => {
         const newNote = {
             title: values[0]
         };
+
+        applyNoteTemplateFromNoteFilter(noteApi.selectedNoteFilter, newNote, noteFieldApi.noteFields);
 
         values.forEach((value, index) => {
             if (index === 0) {
@@ -43,7 +56,10 @@ function NoteQuickAdd() {
             newNote[object.field] = object.value;
         });
 
-        noteApi.addNote(newNote);
+        const note = await noteApi.addNote(newNote);
+
+        noteApi.setSelectedNoteIds(note.id);
+        appApi.setEditingCell(note.id, 'title');
 
         setValues([]);
         setTimeout(() => setOpen(false));
@@ -57,8 +73,10 @@ function NoteQuickAdd() {
             placeholder="Quick add note..."
             onChange={onChange}
             onInputKeyDown={onKeyInputDown}
+            onFocus={onFocus}
             onBlur={onBlur}
             open={open}
+            className="joyride-note-quick-add"
             style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
                 <Select.Option key='add' value="__ADD__">
@@ -67,7 +85,7 @@ function NoteQuickAdd() {
                 <Select.OptGroup key='folders' label="Folders">
                     {folderApi.nonArchivedFolders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
-                            <FolderTitle folder={folder} />
+                            <FolderTitle folderId={folder.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>

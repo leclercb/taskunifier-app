@@ -15,7 +15,7 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
-import { applyTaskTemplate } from 'utils/TaskTemplateUtils';
+import { applyTaskTemplate } from 'utils/TemplateUtils';
 import 'components/tasks/calendar/TaskCalendar.css';
 
 const localizer = momentLocalizer(moment);
