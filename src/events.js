@@ -10,14 +10,14 @@ export function initializeEvents() {
             const u = new URL(url);
 
             switch (u.pathname) {
-                case '//note/add':
+                case '//notes/add':
                     executeAddNote(note => {
                         if (u.searchParams.get('title')) {
                             note.title = u.searchParams.get('title');
                         }
                     });
                     break;
-                case '//task/add':
+                case '//tasks/add':
                     executeAddTask(task => {
                         if (u.searchParams.get('title')) {
                             task.title = u.searchParams.get('title');
