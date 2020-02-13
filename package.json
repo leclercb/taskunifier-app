@@ -10,7 +10,7 @@
         "react:start": "craco start",
         "electron:start": "electron .",
         "start": "REACT_APP_GIT_COMMIT_HASH=$(git rev-parse --short HEAD) craco start",
-        "build": "REACT_APP_GIT_COMMIT_HASH=$(git rev-parse --short HEAD) craco build",
+        "build": "REACT_APP_GIT_COMMIT_HASH=$(git rev-parse --short HEAD) craco --max_old_space_size=3072 build",
         "build:amplify": "REACT_APP_GIT_COMMIT_HASH=$(git rev-parse --short HEAD) craco --max_old_space_size=3072 build",
         "build:github": "craco --max_old_space_size=3072 build",
         "lint": "eslint src",
@@ -28,20 +28,21 @@
         "axios": "^0.19.2",
         "craco-antd": "^1.14.1",
         "electron-is-dev": "^1.1.0",
+        "electron-log": "^4.0.6",
         "electron-updater": "^4.2.0",
         "fs-extra": "^8.1.0",
         "googleapis": "^47.0.0",
         "https-proxy-agent": "^5.0.0",
         "inputmask-core": "^2.2.0",
         "jspdf": "^1.5.3",
-        "jspdf-autotable": "^3.2.12",
+        "jspdf-autotable": "^3.2.13",
         "jszip": "^3.2.2",
         "lodash": "^4.17.15",
         "moment": "^2.24.0",
         "mousetrap": "^1.6.5",
         "qs": "^6.9.1",
         "react": "^16.12.0",
-        "react-big-calendar": "^0.23.0",
+        "react-big-calendar": "^0.24.0",
         "react-color": "^2.18.0",
         "react-dnd": "^10.0.2",
         "react-dnd-html5-backend": "^10.0.2",
@@ -75,7 +76,7 @@
         "eslint": "^6.8.0",
         "eslint-plugin-react": "^7.18.3",
         "eslint-plugin-react-hooks": "^2.3.0",
-        "husky": "^4.2.2",
+        "husky": "^4.2.3",
         "react-test-renderer": "^16.12.0",
         "typescript": "^3.7.5",
         "worker-loader": "^2.0.0"
@@ -102,7 +103,8 @@
             "icon": "assets/icon.icns",
             "type": "distribution",
             "target": [
-                "dmg"
+                "dmg",
+                "zip"
             ],
             "publish": {
                 "provider": "github"

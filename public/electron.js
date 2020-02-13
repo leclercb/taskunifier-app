@@ -1,11 +1,16 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, dialog, ipcMain, protocol, shell, BrowserWindow } = require('electron');
+const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const isDevelopment = require('electron-is-dev');
+
+autoUpdater.logger = log;
+
+log.info('Starting TaskUnifier...');
 
 require('./electronMenu.js');
 
