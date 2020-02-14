@@ -23,6 +23,7 @@ export function authorize() {
 
         const url = client.generateAuthUrl({
             access_type: 'offline',
+            prompt: 'consent',
             scope: [
                 'https://www.googleapis.com/auth/userinfo.email',
                 'https://www.googleapis.com/auth/userinfo.profile',
@@ -35,7 +36,7 @@ export function authorize() {
 }
 
 export function createToken(code) {
-    console.debug('createToken', code);
+    console.debug('Create token', code);
 
     return async dispatch => {
         const client = getClient();

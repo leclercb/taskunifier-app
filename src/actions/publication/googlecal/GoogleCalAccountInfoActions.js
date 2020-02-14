@@ -16,7 +16,7 @@ export function getGoogleCalAccountInfo() {
 
         const result = await profile.userinfo.get();
 
-        console.debug('getGoogleCalAccountInfo', result);
+        console.debug('Get account info', result);
 
         await dispatch(setPublicationData('googlecal', {
             accountInfo: result.data

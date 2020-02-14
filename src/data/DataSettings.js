@@ -813,6 +813,80 @@ export function getCategories() {
             ]
         },
         {
+            id: 'publicationGoogleCal',
+            title: 'Publication - Google Calendar',
+            icon: 'upload',
+            mode: 'electron',
+            settings: [
+                {
+                    id: 'googlecalCalendarName',
+                    title: 'Calendar name',
+                    type: 'text',
+                    value: 'TaskUnifier',
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'googlecalPublishCompletedTaskEvents',
+                    title: 'Publish completed task events',
+                    type: 'boolean',
+                    value: true,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'googlecalPublishStartDateEvents',
+                    title: 'Publish start date events',
+                    type: 'boolean',
+                    value: true,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'googlecalPublishDueDateEvents',
+                    title: 'Publish due date events',
+                    type: 'boolean',
+                    value: true,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'googlecalPublishWorkLogEvents',
+                    title: 'Publish work log events',
+                    type: 'boolean',
+                    value: true,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'googlecalPublishMaxDaysInPast',
+                    title: 'Publish events with a date not more than',
+                    suffix: (<span style={{ marginLeft: 10 }}>day(s) in the past</span>),
+                    type: 'number',
+                    value: 7,
+                    editable: true,
+                    options: {
+                        min: 1,
+                        max: 30
+                    },
+                    mode: 'electron'
+                },
+                {
+                    id: 'googlecalPublishMaxDaysInFuture',
+                    title: 'Publish events with a date not more than',
+                    suffix: (<span style={{ marginLeft: 10 }}>day(s) in the future</span>),
+                    type: 'number',
+                    value: 7,
+                    editable: true,
+                    options: {
+                        min: 1,
+                        max: 30
+                    },
+                    mode: 'electron'
+                }
+            ]
+        },
+        {
             id: 'noteTable',
             title: 'Note table',
             icon: 'table',

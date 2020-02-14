@@ -6,6 +6,7 @@ import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getGoogleCalAccountInfo } from 'actions/publication/googlecal/GoogleCalAccountInfoActions';
 import { authorize, createToken } from 'actions/publication/googlecal/GoogleCalAuthorizationActions';
+import { publishEvents } from 'actions/publication/googlecal/GoogleCalEventActions';
 import { getSettings } from 'selectors/SettingSelectors';
 
 async function getAuthorizationCode() {
@@ -64,6 +65,8 @@ export function publishToGoogleCal() {
             await dispatch(connectToGoogleCal());
 
             await dispatch(getGoogleCalAccountInfo());
+
+            await dispatch(publishEvents());
 
             await dispatch(updateSettings({
                 lastPublicationDate: moment().toISOString()
