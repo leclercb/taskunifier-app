@@ -9,67 +9,62 @@ import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function TaskTemplateForm(props) {
+function TaskTemplateForm({ taskTemplate, updateTaskTemplate }) {
     const settingsApi = useSettingsApi();
     const taskFieldApi = useTaskFieldApi();
 
-    const { getFieldDecorator } = props.form;
+    const [form] = Form.useForm();
 
     const formItemLayout = getDefaultFormItemLayout();
 
     const titleRef = useRef(null);
 
     useEffect(() => {
-        if (titleRef.current && !props.taskTemplate.title) {
+        if (titleRef.current && !taskTemplate.title) {
             titleRef.current.focus();
         }
-    }, [props.taskTemplate.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [taskTemplate.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fields = taskFieldApi.taskFields.filter(field => field.editable && settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 
-    const onCommit = () => onCommitForm(props.form, props.taskTemplate, props.updateTaskTemplate);
+    const onCommit = () => onCommitForm(form, taskTemplate, updateTaskTemplate);
 
     return (
-        <Form {...formItemLayout}>
-            <Form.Item label="Title">
-                {getFieldDecorator('title', {
-                    initialValue: props.taskTemplate.title,
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The title is required'
-                        }
-                    ]
-                })(
-                    <Input ref={titleRef} onBlur={onCommit} />
-                )}
+        <Form form={form} initialValues={taskTemplate} {...formItemLayout}>
+            <Form.Item
+                name="title"
+                label="Title"
+                rules={[
+                    {
+                        required: true,
+                        message: 'The title is required'
+                    }
+                ]}>
+                <Input ref={titleRef} onBlur={onCommit} />
             </Form.Item>
-            <Form.Item label="Color">
-                {getFieldDecorator('color', {
-                    initialValue: props.taskTemplate.color,
-                    valuePropName: 'color',
-                    rules: [
-                        {
-                            required: true,
-                            message: 'The color is required'
-                        }
-                    ]
-                })(
-                    <ColorPicker onClose={onCommit} />
-                )}
+            <Form.Item
+                name="color"
+                label="Color"
+                valuePropName="color"
+                rules={[
+                    {
+                        required: true,
+                        message: 'The color is required'
+                    }
+                ]}>
+                <ColorPicker onClose={onCommit} />
             </Form.Item>
             <Divider>Task Properties</Divider>
             {fields.map(field => (
-                <Form.Item key={field.id} label={field.title}>
-                    {getFieldDecorator('properties.' + field.id, {
-                        valuePropName: getValuePropNameForType(field.type),
-                        initialValue: props.taskTemplate.properties ? props.taskTemplate.properties[field.id] : undefined
-                    })(
-                        getInputForType(
-                            field.type,
-                            { ...field.options, ...(field.type === 'date' || field.type === 'dateTime' ? { extended: true } : {}) },
-                            { onCommit })
-                    )}
+                <Form.Item
+                    key={field.id}
+                    name={['properties', field.id]}
+                    label={field.title}
+                    valuePropName={getValuePropNameForType(field.type)}>
+                    {getInputForType(
+                        field.type,
+                        { ...field.options, ...(field.type === 'date' || field.type === 'dateTime' ? { extended: true } : {}) },
+                        { onCommit })}
                 </Form.Item>
             ))}
         </Form>
@@ -77,9 +72,8 @@ function TaskTemplateForm(props) {
 }
 
 TaskTemplateForm.propTypes = {
-    form: PropTypes.object.isRequired,
     taskTemplate: TaskTemplatePropType.isRequired,
     updateTaskTemplate: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'taskTemplate' })(TaskTemplateForm);
+export default TaskTemplateForm;

@@ -8,9 +8,9 @@ import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
-import { useThreadApi } from 'hooks/UseThreadApi';
 import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
+import { isAutomaticPubNeeded } from 'utils/PublicationUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
 import { checkLatestVersion } from 'utils/VersionUtils';
 import { startNoteFilterCounterWorker, startTaskFilterCounterWorker } from 'utils/WorkerUtils';
@@ -25,7 +25,6 @@ import 'components/common/table/VirtualizedTable.css';
 function App() {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
-    const threadApi = useThreadApi();
 
     useInterval(() => {
         appApi.updateMinuteTimer();
@@ -100,7 +99,7 @@ function App() {
                 const interval = setInterval(() => {
                     if (isAutomaticSaveNeeded(settingsApi.settings, appApi.startDate)) {
                         try {
-                            threadApi.checkIsBusy(() => appApi.saveData());
+                            appApi.checkIsBusy(() => appApi.saveData());
 
                             settingsApi.updateSettings({
                                 lastAutomaticSave: moment().toISOString()
@@ -130,7 +129,7 @@ function App() {
                 const interval = setInterval(() => {
                     if (isAutomaticBackupNeeded(settingsApi.settings)) {
                         try {
-                            threadApi.checkIsBusy(() => appApi.backupData());
+                            appApi.checkIsBusy(() => appApi.backupData());
 
                             settingsApi.updateSettings({
                                 lastAutomaticBackup: moment().toISOString()
@@ -159,7 +158,7 @@ function App() {
                 const interval = setInterval(() => {
                     if (isAutomaticSyncNeeded(settingsApi.settings, appApi.isPro)) {
                         try {
-                            threadApi.checkIsBusy(() => appApi.synchronize());
+                            appApi.checkIsBusy(() => appApi.synchronize());
 
                             settingsApi.updateSettings({
                                 lastAutomaticSynchronization: moment().toISOString()
@@ -180,6 +179,36 @@ function App() {
             settingsApi.settings.automaticSynchronization,
             settingsApi.settings.automaticSynchronizationInterval,
             settingsApi.settings.lastAutomaticSynchronization
+        ]
+    );
+
+    useEffect(
+        () => {
+            if (process.env.REACT_APP_MODE === 'electron') {
+                const interval = setInterval(() => {
+                    if (isAutomaticPubNeeded(settingsApi.settings, appApi.isPro)) {
+                        try {
+                            appApi.checkIsBusy(() => appApi.publish());
+
+                            settingsApi.updateSettings({
+                                lastAutomaticPublication: moment().toISOString()
+                            });
+                        } catch (error) {
+                            // Skip
+                        }
+                    }
+                }, 30 * 1000);
+
+                return () => {
+                    clearInterval(interval);
+                };
+            }
+        },
+        [ // eslint-disable-line react-hooks/exhaustive-deps
+            appApi.isPro,
+            settingsApi.settings.automaticPublication,
+            settingsApi.settings.automaticPublicationInterval,
+            settingsApi.settings.lastAutomaticPublication
         ]
     );
 

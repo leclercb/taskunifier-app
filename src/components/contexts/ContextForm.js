@@ -8,39 +8,38 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { ContextPropType } from 'proptypes/ContextPropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function ContextForm(props) {
+function ContextForm({ context, updateContext }) {
     const settingsApi = useSettingsApi();
 
-    const fields = getContextFields(settingsApi.settings);
+    const [form] = Form.useForm();
 
-    const { getFieldDecorator } = props.form;
+    const fields = getContextFields(settingsApi.settings);
 
     const formItemLayout = getDefaultFormItemLayout();
 
     const titleRef = useRef(null);
 
     useEffect(() => {
-        if (titleRef.current && !props.context.title) {
+        if (titleRef.current && !context.title) {
             titleRef.current.focus();
         }
-    }, [props.context.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [context.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Form {...formItemLayout}>
+        <Form form={form} initialValues={context} {...formItemLayout}>
             {fields.filter(field => field.visible !== false).map(field => (
-                <Form.Item key={field.id} label={field.title}>
-                    {getFieldDecorator(field.id, {
-                        valuePropName: getValuePropNameForType(field.type),
-                        initialValue: props.context[field.id]
-                    })(
-                        getInputForType(
-                            field.type,
-                            field.options,
-                            {
-                                ref: field.id === 'title' ? titleRef : undefined,
-                                onCommit: () => onCommitForm(props.form, props.context, props.updateContext)
-                            })
-                    )}
+                <Form.Item
+                    key={field.id}
+                    name={field.id}
+                    label={field.title}
+                    valuePropName={getValuePropNameForType(field.type)}>
+                    {getInputForType(
+                        field.type,
+                        field.options,
+                        {
+                            ref: field.id === 'title' ? titleRef : undefined,
+                            onCommit: () => onCommitForm(form, context, updateContext)
+                        })}
                 </Form.Item>
             ))}
         </Form>
@@ -48,9 +47,8 @@ function ContextForm(props) {
 }
 
 ContextForm.propTypes = {
-    form: PropTypes.object.isRequired,
     context: ContextPropType.isRequired,
     updateContext: PropTypes.func.isRequired
 };
 
-export default Form.create({ name: 'context' })(ContextForm);
+export default ContextForm;

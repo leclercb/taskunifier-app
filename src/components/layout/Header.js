@@ -10,6 +10,7 @@ import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useJoyrideApi } from 'hooks/UseJoyrideApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
+import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { usePrintApi } from 'hooks/UsePrintApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -18,21 +19,27 @@ import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { SettingsPropType } from 'proptypes/SettingPropTypes';
 import { getSecondsUntilNextSave } from 'utils/AppUtils';
 import { getSecondsUntilNextBackup } from 'utils/BackupUtils';
+import { getSecondsUntilNextPub } from 'utils/PublicationUtils';
 import { getSecondsUntilNextSync } from 'utils/SynchronizationUtils';
-import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 function Header() {
     const appApi = useAppApi();
     const joyrideApi = useJoyrideApi();
     const noteApi = useNoteApi();
-    const taskApi = useTaskApi();
+    const noteFieldApi = useNoteFieldApi();
     const printApi = usePrintApi();
     const settingsApi = useSettingsApi();
+    const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
     const taskTemplateApi = useTaskTemplateApi();
 
     const onAddNote = async () => {
-        const note = await noteApi.addNote();
+        let note = {};
+
+        applyNoteTemplateFromNoteFilter(noteApi.selectedNoteFilter, note, noteFieldApi.noteFields);
+
+        note = await noteApi.addNote(note);
         noteApi.setSelectedNoteIds(note.id);
         appApi.setEditingCell(note.id, 'title');
     };
@@ -42,7 +49,7 @@ function Header() {
     };
 
     const onPrintNotes = () => {
-        printApi.printNotes(noteApi.notes);
+        printApi.printNotes(noteApi.filteredNotes);
     };
 
     const onAddTask = async () => {
@@ -76,7 +83,7 @@ function Header() {
     };
 
     const onPrintTasks = () => {
-        printApi.printTasks(taskApi.tasks);
+        printApi.printTasks(taskApi.filteredTasks);
     };
 
     const onSave = () => {
@@ -131,6 +138,10 @@ function Header() {
         appApi.synchronize();
     };
 
+    const onPublish = () => {
+        appApi.publish();
+    };
+
     const onShowTaskContent = () => {
         appApi.setSelectedView('task');
     };
@@ -174,17 +185,17 @@ function Header() {
             )}>
             <Button.Group style={{ marginRight: 20 }} className="joyride-header-selected-view">
                 <Button
-                    type={appApi.selectedView === 'task' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'task' ? 'primary' : 'default'}
                     onClick={onShowTaskContent}>
                     <Icon icon="tasks" text="Tasks" />
                 </Button>
                 <Button
-                    type={appApi.selectedView === 'taskCalendar' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'taskCalendar' ? 'primary' : 'default'}
                     onClick={onShowTaskCalendarContent}>
                     <Icon icon="calendar-alt" text="Calendar" />
                 </Button>
                 <Button
-                    type={appApi.selectedView === 'note' ? 'dashed' : 'default'}
+                    type={appApi.selectedView === 'note' ? 'primary' : 'default'}
                     onClick={onShowNoteContent}>
                     <Icon icon="book" text="Notes" />
                 </Button>
@@ -253,6 +264,12 @@ function Header() {
                         settings={settingsApi.settings}
                         isPro={appApi.isPro}
                         synchronize={onSynchronize} />
+                ) : null}
+                {process.env.REACT_APP_MODE === 'electron' ? (
+                    <PublicationButton
+                        settings={settingsApi.settings}
+                        isPro={appApi.isPro}
+                        publish={onPublish} />
                 ) : null}
             </Button.Group>
             <Button.Group>
@@ -355,6 +372,38 @@ SynchronizationButton.propTypes = {
     settings: SettingsPropType.isRequired,
     isPro: PropTypes.bool.isRequired,
     synchronize: PropTypes.func.isRequired
+};
+
+function PublicationButton({ settings, isPro, publish }) {
+    const [seconds, setSeconds] = useState(getSecondsUntilNextPub(settings, isPro));
+
+    useInterval(() => {
+        setSeconds(getSecondsUntilNextPub(settings, isPro));
+    }, 5000);
+
+    const now = moment();
+
+    const title = (
+        <React.Fragment>
+            Publish
+            <br />
+            <em>{seconds >= 0 ? 'Next publication ' + now.to(moment(now).add(seconds + 1, 'second')) : 'Automatic publication is disabled'}</em>
+        </React.Fragment>
+    );
+
+    return (
+        <Tooltip placement="bottom" title={title}>
+            <Button onClick={publish}>
+                <Icon icon="upload" />
+            </Button>
+        </Tooltip>
+    );
+}
+
+PublicationButton.propTypes = {
+    settings: SettingsPropType.isRequired,
+    isPro: PropTypes.bool.isRequired,
+    publish: PropTypes.func.isRequired
 };
 
 export default Header;

@@ -3,6 +3,7 @@
 There are two license types: **MIT** and **Commercial**.
 
 The following folders are **Commercial** licensed:
+* src/actions/publication
 * src/actions/synchronization
 * src/components/notefields
 * src/components/notefilters

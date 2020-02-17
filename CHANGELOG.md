@@ -1,3 +1,19 @@
+# 0.9.6
+
+## New Features
+
+* Print only notes and tasks matching the selected filter
+* Show "repeat from" icon in repeat column
+* Show tooltip for task checkbox filters
+* Publish task calendar events to Google Calendar (#142)
+* Introduce custom scheme
+* Add note quick add field
+
+## Bug Fixes
+
+* Fix "yearly" repeat value
+* Apply template from selected note filter
+
 # 0.9.5
 
 ## Bug Fixes

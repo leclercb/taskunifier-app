@@ -4,12 +4,14 @@ import { Provider } from 'react-redux';
 import { notification } from 'antd';
 import { configure } from 'Amplify';
 import App from 'App';
-import { initializeShortcuts } from 'shortcuts';
+import { initializeEvents } from './events';
+import { initializeShortcuts } from './shortcuts';
 import LoadingIndicator from 'components/common/LoadingIndicator';
 import PrivateComponent from 'components/common/PrivateComponent';
 import { store } from 'store/Store';
 import 'index.css';
 
+initializeEvents();
 initializeShortcuts();
 
 window.addEventListener('error', function (e) {

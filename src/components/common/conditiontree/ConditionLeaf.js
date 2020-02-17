@@ -1,6 +1,7 @@
 import React from 'react';
+import { DragOutlined, MinusOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'antd';
 import { DragSource } from 'react-dnd';
 import ItemTypes from 'components/common/conditiontree/ItemTypes';
 import { ConditionGroupPropType, ConditionLeafPropType } from 'components/common/conditiontree/ConditionPropTypes';
@@ -10,7 +11,7 @@ function ConditionLeaf(props) {
 
     return (
         <div className='condition-container'>
-            {props.disabled ? null : props.connectDragSource(<div className='condition-leaf-drag'><Icon type="drag" /></div>)}
+            {props.disabled ? null : props.connectDragSource(<div className='condition-leaf-drag'><DragOutlined /></div>)}
             {
                 React.createElement(
                     props.getLeafComponent(props.condition),
@@ -25,7 +26,7 @@ function ConditionLeaf(props) {
                 <div className='condition-actions'>
                     <Button
                         shape="circle"
-                        icon="minus"
+                        icon={(<MinusOutlined />)}
                         size="small"
                         onClick={() => props.onDelete(condition, parentCondition)} />
                 </div>

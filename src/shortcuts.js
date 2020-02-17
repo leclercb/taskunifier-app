@@ -24,18 +24,20 @@ import {
 import { backupData } from 'actions/BackupActions';
 import { addNote, deleteNote, redoNoteStateUpdate, undoNoteStateUpdate } from 'actions/NoteActions';
 import { printNotes, printTasks } from 'actions/PrintActions';
+import { publish } from 'actions/PublicationActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
 import { addTask, deleteTask, redoTaskStateUpdate, undoTaskStateUpdate } from 'actions/TaskActions';
 import FileField from 'components/common/FileField';
-import { getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { canRedoNoteStateUpdate, canUndoNoteStateUpdate, getNotesFilteredByVisibleState } from 'selectors/NoteSelectors';
+import { getSelectedNoteFilter, getSelectedNoteIds, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
+import { canRedoNoteStateUpdate, canUndoNoteStateUpdate, getNotesFilteredBySelectedFilter } from 'selectors/NoteSelectors';
 import { getSelectedView, getSettings } from 'selectors/SettingSelectors';
-import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
+import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTasks, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
 import { lstat } from 'utils/ElectronUtils';
-import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TaskTemplateUtils';
+import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
@@ -127,6 +129,10 @@ export function initializeShortcuts() {
 
         ipcRenderer.on('menu-synchronize', async () => {
             await executeSynchronize();
+        });
+
+        ipcRenderer.on('menu-publish', async () => {
+            await executePublish();
         });
 
         ipcRenderer.on('menu-category-manager', async () => {
@@ -320,9 +326,20 @@ async function executeRedo() {
     }
 }
 
-async function executeAddNote() {
+export async function executeAddNote(callback = null) {
+    const state = store.getState();
+
     await store.dispatch(setSelectedView('note'));
-    const note = await store.dispatch(addNote());
+
+    let note = {};
+
+    applyNoteTemplateFromNoteFilter(getSelectedNoteFilter(state), note, getNoteFieldsIncludingDefaults(state));
+
+    if (callback) {
+        callback(note);
+    }
+
+    note = await store.dispatch(addNote(note));
     await store.dispatch(setSelectedNoteIds(note.id));
     await store.dispatch(setEditingCell(note.id, 'title'));
 }
@@ -332,7 +349,7 @@ async function executeRemoveNotes() {
 }
 
 async function executePrintNotes() {
-    await store.dispatch(printNotes(getNotesFilteredByVisibleState(store.getState())));
+    await store.dispatch(printNotes(getNotesFilteredBySelectedFilter(store.getState())));
 }
 
 async function executeNoteFilterManager() {
@@ -343,7 +360,7 @@ async function executeNoteFieldManager() {
     await store.dispatch(setNoteFieldManagerOptions({ visible: true }));
 }
 
-async function executeAddTask(callback = null) {
+export async function executeAddTask(callback = null) {
     const state = store.getState();
 
     await store.dispatch(setSelectedView('task'));
@@ -410,7 +427,7 @@ async function executeRemoveTasks() {
 }
 
 async function executePrintTasks() {
-    await store.dispatch(printTasks(getTasksFilteredByVisibleState(store.getState())));
+    await store.dispatch(printTasks(getTasksFilteredBySelectedFilter(store.getState())));
 }
 
 async function executeTaskFilterManager() {
@@ -427,6 +444,10 @@ async function executeTaskFieldManager() {
 
 async function executeSynchronize() {
     await store.dispatch(synchronize());
+}
+
+async function executePublish() {
+    await store.dispatch(publish());
 }
 
 async function executeCategoryManager() {

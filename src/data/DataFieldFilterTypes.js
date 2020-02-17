@@ -732,20 +732,20 @@ function getFieldFilterType(type) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            const taskLinks = objectValue || [];
+                            const objectLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
-                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                            return conditionLinks.every(conditionLink => objectLinks.includes(conditionLink));
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            const taskLinks = objectValue || [];
+                            const objectLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
-                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                            return !conditionLinks.every(conditionLink => objectLinks.includes(conditionLink));
                         }
                     }
                 ],
@@ -759,20 +759,20 @@ function getFieldFilterType(type) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            const taskLinks = objectValue || [];
+                            const objectLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
-                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                            return conditionLinks.every(conditionLink => objectLinks.includes(conditionLink));
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            const taskLinks = objectValue || [];
+                            const objectLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
-                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                            return !conditionLinks.every(conditionLink => objectLinks.includes(conditionLink));
                         }
                     }
                 ],
@@ -786,20 +786,20 @@ function getFieldFilterType(type) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            const taskLinks = objectValue || [];
+                            const objectLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
-                            return conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                            return conditionLinks.every(conditionLink => objectLinks.includes(conditionLink));
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            const taskLinks = objectValue || [];
+                            const objectLinks = objectValue || [];
                             const conditionLinks = conditionValue || [];
 
-                            return !conditionLinks.every(conditionLink => taskLinks.includes(conditionLink));
+                            return !conditionLinks.every(conditionLink => objectLinks.includes(conditionLink));
                         }
                     }
                 ],
@@ -1278,6 +1278,33 @@ function getFieldFilterType(type) {
                 conditionsFieldType: 'select'
             };
         }
+        case 'selectMultiple': {
+            return {
+                conditions: [
+                    {
+                        type: 'contain',
+                        title: 'Contains',
+                        apply: (conditionValue, objectValue) => {
+                            const objectValues = objectValue || [];
+                            const conditionValues = conditionValue || [];
+
+                            return conditionValues.every(conditionTag => objectValues.includes(conditionTag));
+                        }
+                    },
+                    {
+                        type: 'notContain',
+                        title: 'Does not contain',
+                        apply: (conditionValue, objectValue) => {
+                            const objectValues = objectValue || [];
+                            const conditionValues = conditionValue || [];
+
+                            return !conditionValues.every(conditionTag => objectValues.includes(conditionTag));
+                        }
+                    }
+                ],
+                conditionsFieldType: 'selectMultiple'
+            };
+        }
         case 'selectTags': {
             return {
                 conditions: [
@@ -1285,20 +1312,20 @@ function getFieldFilterType(type) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            const taskTags = objectValue || [];
+                            const objectTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
-                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                            return conditionTags.every(conditionTag => objectTags.includes(conditionTag));
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            const taskTags = objectValue || [];
+                            const objectTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
-                            return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                            return !conditionTags.every(conditionTag => objectTags.includes(conditionTag));
                         }
                     }
                 ],
@@ -1375,20 +1402,20 @@ function getFieldFilterType(type) {
                         type: 'contain',
                         title: 'Contains',
                         apply: (conditionValue, objectValue) => {
-                            const taskTags = objectValue || [];
+                            const objectTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
-                            return conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                            return conditionTags.every(conditionTag => objectTags.includes(conditionTag));
                         }
                     },
                     {
                         type: 'notContain',
                         title: 'Does not contain',
                         apply: (conditionValue, objectValue) => {
-                            const taskTags = objectValue || [];
+                            const objectTags = objectValue || [];
                             const conditionTags = conditionValue || [];
 
-                            return !conditionTags.every(conditionTag => taskTags.includes(conditionTag));
+                            return !conditionTags.every(conditionTag => objectTags.includes(conditionTag));
                         }
                     }
                 ],

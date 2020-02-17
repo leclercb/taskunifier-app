@@ -8,11 +8,9 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
-function TaskEditionForm(props) {
+function TaskEditionForm({ form, task }) {
     const settingsApi = useSettingsApi();
     const taskFieldApi = useTaskFieldApi();
-
-    const { getFieldDecorator } = props.form;
 
     const formItemLayout = {
         labelCol: {
@@ -29,17 +27,15 @@ function TaskEditionForm(props) {
     const textField = sortedAndFilteredFields.find(field => field.id === 'text');
 
     return (
-        <Row gutter={20}>
-            <Form {...formItemLayout}>
+        <Form form={form} initialValues={task} {...formItemLayout}>
+            <Row gutter={20}>
                 {sortedAndFilteredFields.filter(field => field.id !== 'text').map(field => (
                     <Col key={field.id} span={12}>
-                        <Form.Item label={field.title}>
-                            {getFieldDecorator(field.id, {
-                                valuePropName: getValuePropNameForType(field.type),
-                                initialValue: props.task[field.id]
-                            })(
-                                getInputForType(field.type, field.options, { disabled: !field.editable })
-                            )}
+                        <Form.Item
+                            name={field.id}
+                            label={field.title}
+                            valuePropName={getValuePropNameForType(field.type)}>
+                            {getInputForType(field.type, field.options, { disabled: !field.editable })}
                         </Form.Item>
                     </Col>
                 ))}
@@ -48,19 +44,19 @@ function TaskEditionForm(props) {
                         <Collapse bordered={false}>
                             <Collapse.Panel key="text" header="Text">
                                 <div style={{ height: 200 }}>
-                                    {getFieldDecorator(textField.id, {
-                                        valuePropName: getValuePropNameForType(textField.type),
-                                        initialValue: props.task[textField.id]
-                                    })(
-                                        getInputForType(textField.type, textField.options, { disabled: !textField.editable })
-                                    )}
+                                    <Form.Item
+                                        noStyle
+                                        name={textField.id}
+                                        valuePropName={getValuePropNameForType(textField.type)}>
+                                        {getInputForType(textField.type, textField.options, { disabled: !textField.editable })}
+                                    </Form.Item>
                                 </div>
                             </Collapse.Panel>
                         </Collapse>
                     </Col>
                 )}
-            </Form>
-        </Row>
+            </Row>
+        </Form>
     );
 }
 

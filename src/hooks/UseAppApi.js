@@ -24,8 +24,10 @@ import {
     backupData,
     cleanBackups
 } from 'actions/BackupActions';
+import { publish } from 'actions/PublicationActions';
 import { setSelectedView } from 'actions/SettingActions';
 import { synchronize } from 'actions/SynchronizationActions';
+import { checkIsBusy } from 'actions/ThreadActions';
 import {
     getAccountManager,
     getBatchAddTasksManager,
@@ -99,6 +101,11 @@ export function useAppApi() {
         [dispatch]
     );
 
+    const publishCallback = useCallback(
+        () => dispatch(publish()),
+        [dispatch]
+    );
+
     const setSelectedViewCallback = useCallback(
         view => dispatch(setSelectedView(view)),
         [dispatch]
@@ -169,6 +176,11 @@ export function useAppApi() {
         [dispatch]
     );
 
+    const checkIsBusyCallback = useCallback(
+        (fn, silent) => dispatch(checkIsBusy(fn, silent)),
+        [dispatch]
+    );
+
     const setNoteFilterCountsCallback = useCallback(
         counts => dispatch(setNoteFilterCounts(counts)),
         [dispatch]
@@ -204,6 +216,7 @@ export function useAppApi() {
         backupData: backupDataCallback,
         cleanBackups: cleanBackupsCallback,
         synchronize: synchronizeCallback,
+        publish: publishCallback,
         setSelectedView: setSelectedViewCallback,
         setEditingCell: setEditingCellCallback,
         setBatchAddTasksManagerOptions: setBatchAddTasksManagerOptionsCallback,
@@ -218,6 +231,7 @@ export function useAppApi() {
         setTaskTemplateManagerOptions: setTaskTemplateManagerOptionsCallback,
         setAccountManagerOptions: setAccountManagerOptionsCallback,
         setSettingManagerOptions: setSettingManagerOptionsCallback,
+        checkIsBusy: checkIsBusyCallback,
         setNoteFilterCounts: setNoteFilterCountsCallback,
         setTaskFilterCounts: setTaskFilterCountsCallback
     };

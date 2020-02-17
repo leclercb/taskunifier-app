@@ -1,11 +1,16 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, dialog, ipcMain, protocol, shell, BrowserWindow } = require('electron');
+const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const isDevelopment = require('electron-is-dev');
+
+autoUpdater.logger = log;
+
+log.info('Starting TaskUnifier');
 
 require('./electronMenu.js');
 
@@ -35,7 +40,7 @@ function getWindowSettings() {
         }
 
         return window;
-    } catch (err) {
+    } catch (error) {
         return {
             width: 1280,
             height: 768
@@ -60,12 +65,12 @@ function createMainWindow() {
         } = require('electron-devtools-installer');
 
         installExtension(REACT_DEVELOPER_TOOLS)
-            .then(name => { console.log(`Added Extension: ${name}`); })
-            .catch(err => { console.log('An error occurred: ', err); });
+            .then(name => { log.info(`Added Extension: ${name}`); })
+            .catch(error => { log.error('An error occurred: ', error); });
 
         installExtension(REDUX_DEVTOOLS)
-            .then(name => { console.log(`Added Extension: ${name}`); })
-            .catch(err => { console.log('An error occurred: ', err); });
+            .then(name => { log.info(`Added Extension: ${name}`); })
+            .catch(error => { log.error('An error occurred: ', error); });
 
         window.webContents.openDevTools();
     }
@@ -95,16 +100,6 @@ function createMainWindow() {
     });
 
     return window;
-}
-
-function registerProtocol(scheme) {
-    protocol.registerStringProtocol(scheme, request => {
-        console.log(request);
-    }, (error) => {
-        if (error) {
-            console.error(`Failed to register protocol scheme "${scheme}"`);
-        }
-    });
 }
 
 ipcMain.on('get-current-window-size', event => {
@@ -176,9 +171,20 @@ app.on('activate', () => {
     }
 });
 
+app.on('open-url', (event, url) => {
+    event.preventDefault();
+    log.info("Open URL", url);
+
+    if (mainWindow) {
+        mainWindow.webContents.send('open-url', url);
+    }
+});
+
 app.on('ready', () => {
     mainWindow = createMainWindow();
-    registerProtocol('tu');
-    registerProtocol('taskunifier');
+
+    app.setAsDefaultProtocolClient('tu');
+    app.setAsDefaultProtocolClient('taskunifier');
+
     autoUpdater.checkForUpdatesAndNotify();
 });

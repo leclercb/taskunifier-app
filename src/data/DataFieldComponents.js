@@ -53,11 +53,7 @@ import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
 import { getConditionsForType } from 'data/DataFieldFilterTypes';
-import {
-    toStringNumber,
-    toStringPassword,
-    toStringRepeat
-} from 'utils/StringUtils';
+import { toStringNumber, toStringPassword } from 'utils/StringUtils';
 
 export function getDefaultGetValueFromEvent(e) {
     if (!e || !e.target) {
@@ -89,13 +85,15 @@ export function getFieldComponents(type, options) {
         return wrappedProps;
     };
 
+    const emptyOnCommit = () => { };
+
     switch (type) {
         case 'boolean': {
             configuration = {
                 render: value => <Checkbox checked={!!value} />,
                 input: props => (
                     <Checkbox
-                        onChange={props.onCommit}
+                        onChange={props.onCommit || emptyOnCommit}
                         data-prevent-default={true}
                         {...removeExtraProps(props)} />
                 )
@@ -529,10 +527,9 @@ export function getFieldComponents(type, options) {
         }
         case 'repeat': {
             configuration = {
-                render: value => {
-                    const result = toStringRepeat(value);
-                    return result ? result : <span>&nbsp;</span>;
-                },
+                render: value => (
+                    <RepeatField repeat={value} readOnly={true} />
+                ),
                 input: props => (
                     <RepeatField
                         defaultOpened={props.fieldMode === 'table'}
@@ -594,6 +591,40 @@ export function getFieldComponents(type, options) {
 
             break;
         }
+        case 'selectMultiple': {
+            let values = options && options.values ? options.values : [];
+            values = Array.isArray(values) ? values : [values];
+
+            configuration = {
+                render: values => (
+                    values ? values.map(value => (<Tag key={value}>{value}</Tag>)) : <span>&nbsp;</span>
+                ),
+                input: props => {
+                    return (
+                        <Select
+                            onBlur={props.onCommit}
+                            dropdownMatchSelectWidth={false}
+                            mode="multiple"
+                            {...removeExtraProps(props)}>
+                            {values.map(value => {
+                                value = typeof value === 'object' ? value : {
+                                    title: value,
+                                    value
+                                };
+
+                                return (
+                                    <Select.Option key={value.value} value={value.value}>
+                                        {value.title}
+                                    </Select.Option>
+                                );
+                            })}
+                        </Select>
+                    );
+                }
+            };
+
+            break;
+        }
         case 'selectTags': {
             let values = options && options.values ? options.values : [];
             values = Array.isArray(values) ? values : [values];
@@ -648,7 +679,7 @@ export function getFieldComponents(type, options) {
                 render: value => <StarCheckbox checked={!!value} />,
                 input: props => (
                     <StarCheckbox
-                        onChange={props.onCommit}
+                        onChange={props.onCommit || emptyOnCommit}
                         {...removeExtraProps(props)} />
                 )
             };

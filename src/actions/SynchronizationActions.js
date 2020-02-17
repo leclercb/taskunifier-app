@@ -1,9 +1,10 @@
-import React from 'react';
-import { Button, Modal } from 'antd';
+import React, { useState } from 'react';
+import { Button, Modal, message } from 'antd';
+import PropTypes from 'prop-types';
 import { ActionCreators } from 'redux-undo';
-import { setAccountManagerOptions } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import ProLockedMessage from 'components/pro/ProLockedMessage';
+import Constants from 'constants/Constants';
 import { isPro } from 'selectors/AppSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { isSynchronizing } from 'selectors/SynchronizationSelectors';
@@ -50,21 +51,9 @@ export async function selectSynchronizationApp() {
         Modal.confirm({
             title: 'Select a synchronization service',
             content: (
-                <React.Fragment>
-                    {getSynchronizationApps().map(app => (
-                        <Button
-                            key={app.id}
-                            onClick={() => synchronizationApp = app.id}
-                            style={{ width: 200, height: 200, margin: '0px 10px' }}>
-                            <img
-                                alt={app.label}
-                                src={app.img}
-                                style={{ width: 100, height: 100, marginBottom: 25 }} />
-                            <br />
-                            {app.label}
-                        </Button>
-                    ))}
-                </React.Fragment>
+                <SelectSynchronizationApp
+                    synchronizationApp={synchronizationApp}
+                    onChange={app => synchronizationApp = app} />
             ),
             okText: 'Select',
             onOk: () => {
@@ -85,15 +74,10 @@ export function synchronize() {
             const settings = getSettings(state);
 
             if (!isPro(state)) {
-                const modal = Modal.info({
+                Modal.info({
                     icon: null,
                     width: 800,
-                    content: (
-                        <ProLockedMessage setAccountManagerOptions={options => {
-                            modal.destroy();
-                            dispatch(setAccountManagerOptions(options));
-                        }} />
-                    )
+                    content: (<ProLockedMessage />)
                 });
 
                 return;
@@ -122,7 +106,8 @@ export function synchronize() {
             const app = getSynchronizationApp(synchronizationApp);
 
             if (!app) {
-                throw new Error('No synchronization application defined');
+                message.warning('No synchronization application defined');
+                return;
             }
 
             await dispatch(app.synchronize());
@@ -161,3 +146,38 @@ export function resetDataForSynchronization() {
         await dispatch(app.resetData());
     };
 }
+
+function SelectSynchronizationApp({ synchronizationApp, onChange }) {
+    const [selectedSynchronizationApp, setSelectedSynchronizationApp] = useState(synchronizationApp);
+
+    return (
+        <React.Fragment>
+            {getSynchronizationApps().map(app => (
+                <Button
+                    key={app.id}
+                    onClick={() => {
+                        setSelectedSynchronizationApp(app.id);
+                        onChange(app.id);
+                    }}
+                    style={{
+                        width: 200,
+                        height: 200,
+                        margin: '0px 10px',
+                        backgroundColor: selectedSynchronizationApp === app.id ? Constants.lightIconColor : null
+                    }}>
+                    <img
+                        alt={app.label}
+                        src={app.img}
+                        style={{ width: 100, height: 100, marginBottom: 25 }} />
+                    <br />
+                    {app.label}
+                </Button>
+            ))}
+        </React.Fragment>
+    );
+}
+
+SelectSynchronizationApp.propTypes = {
+    synchronizationApp: PropTypes.string,
+    onChange: PropTypes.func.isRequired
+};

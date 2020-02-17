@@ -35,6 +35,8 @@ Organize your tasks, notes and calendar with ease.
 * Synchronization with:
     * TaskUnifier Cloud (www.taskunifier.app/cloud) *
     * Toodledo (www.toodledo.com) *
+* Publication to:
+    * Google Calendar (calendar.google.com) *
 
 The features marked with an asterisk are available in the PRO version only.
 The PRO features requires a **Commercial** license.

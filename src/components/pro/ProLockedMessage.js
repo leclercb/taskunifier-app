@@ -46,7 +46,7 @@ export function ProLockedMessage({ setAccountManagerOptions, info }) {
 }
 
 ProLockedMessage.propTypes = {
-    setAccountManagerOptions: PropTypes.func.isRequired,
+    setAccountManagerOptions: PropTypes.func,
     info: PropTypes.bool
 };
 
