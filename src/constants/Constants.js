@@ -10,7 +10,7 @@ export default {
     processCompletedColor: '#3caea3',
     processErrorColor: '#ed553b',
     conditionTreeGroupAndColor: '#d1f7d9',
-    conditionTreeGroupAndActiveColorColor: '#c2e2c9',
+    conditionTreeGroupAndActiveColor: '#c2e2c9',
     conditionTreeGroupOrColor: '#e8ebf6',
     conditionTreeGroupOrActiveColor: '#d4d7e2',
     conditionTreeGroupNotColor: '#ffc8c5',

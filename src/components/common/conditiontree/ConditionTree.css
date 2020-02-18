@@ -2,7 +2,7 @@
     position: relative;
     padding: 5px 5px 5px 5px;
     width: 100%;
-    border: 1px dashed #cccccc;
+    border: 1px solid #eeeeee;
     margin: 5px;
 }
 
@@ -25,7 +25,14 @@
     width: 40px;
     max-width: 40px;
     vertical-align: middle;
-    border: 1px solid #000000;
+}
+
+.condition-group-operator.highlighted {
+    border: 1px dashed #cccccc;
+}
+
+.condition-group-operator.hovered {
+    border: 1px dashed #0e67c4;
 }
 
 .condition-group-operator-text {

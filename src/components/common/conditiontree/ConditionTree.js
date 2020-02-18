@@ -5,11 +5,10 @@ import { Empty } from 'antd';
 import AddButton from 'components/common/conditiontree/AddButton';
 import Condition from 'components/common/conditiontree/Condition';
 import { ConditionPropType } from 'components/common/conditiontree/ConditionPropTypes';
-import { clone } from 'utils/ObjectUtils';
 import 'components/common/conditiontree/ConditionTree.css';
 
 function ConditionTree(props) {
-    const rootCondition = clone(props.condition);
+    const rootCondition = props.condition;
 
     const onAdd = (condition, key) => {
         let newCondition = null;
@@ -61,13 +60,13 @@ function ConditionTree(props) {
         }
     };
 
-    const onEndDrag = (item, dropResult) => {
+    const onEndDrag = (item, dropCondition) => {
         if (!item.parentCondition) {
             return;
         }
 
         item.parentCondition.conditions.splice(item.parentCondition.conditions.indexOf(item.condition), 1);
-        dropResult.condition.conditions.push(item.condition);
+        dropCondition.conditions.push(item.condition);
 
         props.onSaveCondition(rootCondition);
     };
@@ -75,16 +74,16 @@ function ConditionTree(props) {
     if (!rootCondition) {
         if (props.disabled) {
             return null;
-        } else {
-            return (
-                <React.Fragment>
-                    <AddButton
-                        onClick={(key) => onAdd(null, key)}
-                        menuItems={props.addMenuItems} />
-                    <Empty description='No filter, click on the "+" icon to add your first condition !' />
-                </React.Fragment>
-            );
         }
+
+        return (
+            <React.Fragment>
+                <AddButton
+                    onClick={(key) => onAdd(null, key)}
+                    menuItems={props.addMenuItems} />
+                <Empty description='No filter, click on the "+" icon to add your first condition !' />
+            </React.Fragment>
+        );
     }
 
     return (

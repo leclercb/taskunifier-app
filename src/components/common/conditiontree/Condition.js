@@ -28,7 +28,6 @@ function Condition(props) {
                 disabled={props.disabled}
                 onDelete={props.onDelete}
                 onUpdate={props.onUpdate}
-                onEndDrag={props.onEndDrag}
                 getLeafComponent={props.getLeafComponent} />
         );
     }
