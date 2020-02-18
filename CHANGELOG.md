@@ -8,6 +8,7 @@
 * Publish task calendar events to Google Calendar (#142)
 * Introduce custom scheme
 * Add note quick add field
+* Improve style of condition tree
 
 ## Bug Fixes
 

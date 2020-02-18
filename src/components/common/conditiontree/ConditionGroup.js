@@ -1,16 +1,64 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { MinusOutlined } from '@ant-design/icons';
 import { Alert, Button, Empty, Select } from 'antd';
 import PropTypes from 'prop-types';
-import { DragSource, DropTarget } from 'react-dnd';
-import ItemTypes from 'components/common/conditiontree/ItemTypes';
+import { useDrag, useDrop } from 'react-dnd';
 import AddButton from 'components/common/conditiontree/AddButton';
 import Condition from 'components/common/conditiontree/Condition';
 import { ConditionGroupPropType } from 'components/common/conditiontree/ConditionPropTypes';
 import Constants from 'constants/Constants';
 
 function ConditionGroup(props) {
-    const isActive = props.canDrop && props.isOver;
+    const ref = useRef(null);
+
+    // eslint-disable-next-line no-unused-vars
+    const [collectedDragProps, drag] = useDrag({
+        item: {
+            type: 'condition',
+            condition: props.condition,
+            parentCondition: props.parentCondition
+        },
+        canDrag: () => !props.disabled && props.parentCondition
+    });
+
+    const [collectedDropProps, drop] = useDrop({
+        accept: 'condition',
+        canDrop: item => {
+            const dropCondition = props.condition;
+
+            if (item.condition.id === dropCondition.id) {
+                return false;
+            }
+
+            const contains = (sourceCondition, targetCondition) => {
+                if (targetCondition.operator) {
+                    for (let i = 0; i < targetCondition.conditions.length; i++) {
+                        if (targetCondition.conditions[i].id === sourceCondition.id) {
+                            return true;
+                        }
+
+                        if (contains(sourceCondition, targetCondition.conditions[i])) {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
+            };
+
+            return !contains(dropCondition, item.condition);
+        },
+        drop: item => props.onEndDrag(item, props.condition),
+        collect: monitor => ({
+            canDrop: monitor.canDrop(),
+            hovered: monitor.isOver()
+        })
+    });
+
+    drag(ref);
+    drop(ref);
+
+    let operatorClassName = collectedDropProps.canDrop ? 'highlighted' : '';
 
     let colors = {
         AND: Constants.conditionTreeGroupAndColor,
@@ -18,7 +66,9 @@ function ConditionGroup(props) {
         NOT: Constants.conditionTreeGroupNotColor
     };
 
-    if (isActive) {
+    if (collectedDropProps.hovered && collectedDropProps.canDrop) {
+        operatorClassName = 'hovered';
+
         colors = {
             AND: Constants.conditionTreeGroupAndActiveColor,
             OR: Constants.conditionTreeGroupOrActiveColor,
@@ -30,38 +80,39 @@ function ConditionGroup(props) {
 
     return (
         <div className='condition-group-container'>
-            {props.connectDragSource(props.connectDropTarget(
-                <div className='condition-group-operator' style={{ background: colors[condition.operator] }}>
-                    <div className='condition-group-operator-text'>
-                        <Select
-                            defaultValue={condition.operator}
-                            style={{ width: 80 }}
-                            disabled={props.disabled}
-                            onChange={(value) => {
-                                condition.operator = value;
-                                props.onUpdate(condition);
-                            }}>
-                            <Select.Option value="AND">AND</Select.Option>
-                            <Select.Option value="OR">OR</Select.Option>
-                            <Select.Option value="NOT">NOT</Select.Option>
-                        </Select>
-                    </div>
-                    {props.disabled ? null : (
-                        <div className='condition-group-operator-actions'>
-                            <AddButton
-                                disabled={condition.operator === 'NOT' && condition.conditions.length >= 1}
-                                onClick={(key) => props.onAdd(condition, key)}
-                                menuItems={props.addMenuItems} />
-                            <br />
-                            <Button
-                                shape="circle"
-                                icon={(<MinusOutlined />)}
-                                size="small"
-                                onClick={() => props.onDelete(condition, parentCondition)} />
-                        </div>
-                    )}
+            <div
+                ref={ref}
+                className={'condition-group-operator ' + operatorClassName}
+                style={{ background: colors[condition.operator] }}>
+                <div className='condition-group-operator-text'>
+                    <Select
+                        defaultValue={condition.operator}
+                        style={{ width: 80 }}
+                        disabled={props.disabled}
+                        onChange={(value) => {
+                            condition.operator = value;
+                            props.onUpdate(condition);
+                        }}>
+                        <Select.Option value="AND">AND</Select.Option>
+                        <Select.Option value="OR">OR</Select.Option>
+                        <Select.Option value="NOT">NOT</Select.Option>
+                    </Select>
                 </div>
-            ))}
+                {!props.disabled && (
+                    <div className='condition-group-operator-actions'>
+                        <AddButton
+                            disabled={condition.operator === 'NOT' && condition.conditions.length >= 1}
+                            onClick={(key) => props.onAdd(condition, key)}
+                            menuItems={props.addMenuItems} />
+                        <br />
+                        <Button
+                            shape="circle"
+                            icon={(<MinusOutlined />)}
+                            size="small"
+                            onClick={() => props.onDelete(condition, parentCondition)} />
+                    </div>
+                )}
+            </div>
             <div className='condition-group-content'>
                 {condition.conditions.length === 0 ? (
                     <div className='condition-container'>
@@ -78,7 +129,7 @@ function ConditionGroup(props) {
                     <div className='condition-container'>
                         <Alert
                             message="Warning"
-                            description={'A condition group with operator \'' + condition.operator + '\' must contain exactly one sub-condition.'}
+                            description={`A condition group with operator '${condition.operator}' must contain exactly one sub-condition.`}
                             type="warning"
                             showIcon
                         />
@@ -116,78 +167,7 @@ ConditionGroup.propTypes = {
     onUpdate: PropTypes.func.isRequired,
     onEndDrag: PropTypes.func.isRequired,
     addMenuItems: PropTypes.oneOfType([PropTypes.node.isRequired, PropTypes.func.isRequired]).isRequired,
-    getLeafComponent: PropTypes.any.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-    isDragging: PropTypes.bool.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
-    isOver: PropTypes.bool.isRequired,
-    canDrop: PropTypes.bool.isRequired
+    getLeafComponent: PropTypes.any.isRequired
 };
 
-const conditionSource = {
-    canDrag(props) {
-        return !props.disabled && props.parentCondition ? true : false;
-    },
-    beginDrag(props) {
-        return {
-            condition: props.condition,
-            parentCondition: props.parentCondition
-        };
-    },
-    endDrag(props, monitor) {
-        const item = monitor.getItem();
-        const dropResult = monitor.getDropResult();
-
-        if (dropResult) {
-            props.onEndDrag(item, dropResult);
-        }
-    }
-};
-
-function collectSource(connect, monitor) {
-    return {
-        connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging()
-    };
-}
-
-const conditionTarget = {
-    canDrop(props, monitor) {
-        if (props.condition === monitor.getItem().condition) {
-            return false;
-        }
-
-        var contains = function (sourceCondition, targetCondition) {
-            if (targetCondition.operator) {
-                for (var i = 0; i < targetCondition.conditions.length; i++) {
-                    if (targetCondition.conditions[i] === sourceCondition) {
-                        return true;
-                    }
-
-                    if (contains(sourceCondition, targetCondition.conditions[i])) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        };
-
-        return !contains(props.condition, monitor.getItem().condition);
-    },
-    drop(props) {
-        return {
-            condition: props.condition
-        };
-    }
-};
-
-function collectTarget(connect, monitor) {
-    return {
-        connectDropTarget: connect.dropTarget(),
-        isOver: monitor.isOver(),
-        canDrop: monitor.canDrop()
-    };
-}
-
-export default DropTarget(ItemTypes.CONDITION, conditionTarget, collectTarget)(DragSource(ItemTypes.CONDITION, conditionSource, collectSource)(ConditionGroup));
+export default ConditionGroup;
