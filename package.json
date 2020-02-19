@@ -2,7 +2,7 @@
     "name": "taskunifier-app",
     "description": "TaskUnifier - Task Management Application",
     "author": "BL-IT",
-    "version": "0.9.6",
+    "version": "0.9.7",
     "private": true,
     "main": "public/electron.js",
     "homepage": "./",
