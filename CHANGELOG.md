@@ -1,3 +1,9 @@
+# 1.0.0
+
+## New Features
+
+## Bug Fixes
+
 # 0.9.7
 
 ## New Features
