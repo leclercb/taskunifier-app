@@ -1,3 +1,9 @@
+# 0.9.7
+
+## New Features
+
+* Publish task calendar events to Google Calendar (#142)
+
 # 0.9.6
 
 ## New Features
