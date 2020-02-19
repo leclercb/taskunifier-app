@@ -84,6 +84,8 @@ function RepeatForm({ repeat, updateRepeat }) {
         }
     }
 
+    const toArray = value => Array.isArray(value) ? value : [value];
+
     const values = {
         start: options && options.dtstart && options.dtstart.getTime() !== 0 ? 'FROM' : 'NONE',
         dtstart: options && options.dtstart ? moment(options.dtstart) : moment(),
@@ -91,11 +93,11 @@ function RepeatForm({ repeat, updateRepeat }) {
         from: fromCompletionDate ? 'completionDate' : 'dueDate',
         fastForward,
         interval: options && options.interval ? options.interval : 1,
-        byweekday: options && options.byweekday ? options.byweekday.map(v => String(v)) : [],
-        bymonthday: options && options.bymonthday ? options.bymonthday.map(v => String(v)) : [],
-        bymonth: options && options.bymonth ? options.bymonth.map(v => String(v)) : [],
-        byyearday: options && options.byyearday ? options.byyearday.map(v => String(v)) : [],
-        byweekno: options && options.byweekno ? options.byweekno.map(v => String(v)) : [],
+        byweekday: options && options.byweekday ? toArray(options.byweekday).map(v => String(v)) : [],
+        bymonthday: options && options.bymonthday ? toArray(options.bymonthday).map(v => String(v)) : [],
+        bymonth: options && options.bymonth ? toArray(options.bymonth).map(v => String(v)) : [],
+        byyearday: options && options.byyearday ? toArray(options.byyearday).map(v => String(v)) : [],
+        byweekno: options && options.byweekno ? toArray(options.byweekno).map(v => String(v)) : [],
         end: options && options.until ? 'UNTIL' : 'NEVER',
         until: options && options.until ? moment(options.until) : moment()
     };

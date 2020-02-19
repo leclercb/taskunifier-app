@@ -38,6 +38,10 @@ class RepeatField extends React.Component {
         if (readOnly) {
             const fromComp = (repeat || '').includes(';FROMCOMP');
 
+            if (!repeat) {
+                return null;
+            }
+
             return (
                 <LeftRight right={(
                     <Tooltip title={fromComp ? 'From Completion Date' : 'From Due Date'}>

@@ -61,7 +61,7 @@ function NoteMenu({ selectedNotes, children }) {
                 setVisible(true);
                 event.preventDefault();
             }}
-            style={{ flexGrow: 1 }}>
+            style={{ flexGrow: 1, maxWidth: '100%' }}>
             <Dropdown
                 overlay={menu}
                 trigger={['contextMenu']}
