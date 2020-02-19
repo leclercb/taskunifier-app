@@ -143,6 +143,15 @@ function TaskCalendar({ apis }) {
                                             }
                                         ]
                                     });
+
+                                    if (!taskApi.calendarEventTypes.includes('workLog')) {
+                                        await settingsApi.updateSettings({
+                                            calendarEventTypes: [
+                                                ...taskApi.calendarEventTypes,
+                                                'workLog'
+                                            ]
+                                        });
+                                    }
                                 }
 
                                 modal.destroy();
