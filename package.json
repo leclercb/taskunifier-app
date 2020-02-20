@@ -119,7 +119,8 @@
             ],
             "publish": {
                 "provider": "github"
-            }
+            },
+            "publisherName": "BL-IT"
         },
         "linux": {
             "icon": "assets/icon.png",
