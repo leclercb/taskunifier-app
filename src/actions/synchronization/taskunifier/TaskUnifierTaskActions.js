@@ -293,9 +293,9 @@ export function deleteRemoteTasks(tasks) {
 }
 
 function convertTaskToRemote(task, state, options) {
-    options = merge({
+    options = Object.assign({
         skipParent: false
-    }, options || {});
+    }, options);
 
     const remoteTask = {
         ...convertFieldsToRemote(getTaskFieldsIncludingDefaults(state), state, task),

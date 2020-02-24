@@ -323,9 +323,9 @@ export function deleteRemoteTasks(tasks) {
 }
 
 function convertTaskToRemote(task, state, options) {
-    options = merge({
+    options = Object.assign({
         skipParent: false
-    }, options || {});
+    }, options);
 
     const status = getStatuses().find(status => status.key === task.status);
     const priority = getPriorities().find(priority => priority.key === task.priority);

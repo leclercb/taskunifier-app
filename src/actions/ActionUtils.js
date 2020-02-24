@@ -12,7 +12,6 @@ import {
     remove,
     writeFile
 } from 'utils/ElectronUtils';
-import { merge } from 'utils/ObjectUtils';
 
 /**
  * Loads the data from the provided file.
@@ -98,9 +97,9 @@ export function loadFromFile(property, file) {
 }
 
 export function loadFromServer(property, options, params) {
-    options = merge({
+    options = Object.assign({
         skipSetLoaded: false
-    }, options || {});
+    }, options);
 
     return async dispatch => {
         const processId = uuid();
