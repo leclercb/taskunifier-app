@@ -1,5 +1,5 @@
 import React from 'react';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
 import { Button, List } from 'antd';
 import Icon from 'components/common/Icon';

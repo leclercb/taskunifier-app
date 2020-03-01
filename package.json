@@ -2,7 +2,7 @@
     "name": "taskunifier-app",
     "description": "TaskUnifier - Task Management Application",
     "author": "BL-IT",
-    "version": "0.9.7",
+    "version": "1.0.0",
     "private": true,
     "main": "public/electron.js",
     "homepage": "./",
@@ -23,12 +23,12 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.27",
         "@fortawesome/free-solid-svg-icons": "^5.12.1",
         "@fortawesome/react-fontawesome": "^0.1.8",
-        "antd": "^4.0.0-rc.5",
-        "aws-amplify": "^2.2.5",
+        "antd": "^4.0.0",
+        "aws-amplify": "^2.2.6",
         "axios": "^0.19.2",
         "craco-antd": "^1.14.1",
         "electron-is-dev": "^1.1.0",
-        "electron-log": "^4.0.6",
+        "electron-log": "^4.0.7",
         "electron-updater": "^4.2.2",
         "fs-extra": "^8.1.0",
         "googleapis": "^47.0.0",
@@ -41,12 +41,12 @@
         "moment": "^2.24.0",
         "mousetrap": "^1.6.5",
         "qs": "^6.9.1",
-        "react": "^16.12.0",
+        "react": "^16.13.0",
         "react-big-calendar": "^0.24.0",
         "react-color": "^2.18.0",
         "react-dnd": "^10.0.2",
         "react-dnd-html5-backend": "^10.0.2",
-        "react-dom": "^16.12.0",
+        "react-dom": "^16.13.0",
         "react-draggable": "^4.2.0",
         "react-joyride": "^2.2.1",
         "react-redux": "^7.2.0",
@@ -62,12 +62,12 @@
         "redux-undo": "^1.0.0",
         "reselect": "^4.0.0",
         "rrule": "^2.6.4",
-        "uuid": "^3.4.0"
+        "uuid": "^7.0.1"
     },
     "devDependencies": {
-        "babel-eslint": "^10.0.3",
+        "babel-eslint": "^10.1.0",
         "babel-jest": "^25.1.0",
-        "electron": "^8.0.1",
+        "electron": "^8.0.2",
         "electron-builder": "^22.3.2",
         "electron-devtools-installer": "^2.2.4",
         "enzyme": "^3.11.0",
@@ -75,10 +75,10 @@
         "enzyme-to-json": "^3.4.4",
         "eslint": "^6.8.0",
         "eslint-plugin-react": "^7.18.3",
-        "eslint-plugin-react-hooks": "^2.4.0",
+        "eslint-plugin-react-hooks": "^2.5.0",
         "husky": "^4.2.3",
-        "react-test-renderer": "^16.12.0",
-        "typescript": "^3.7.5",
+        "react-test-renderer": "^16.13.0",
+        "typescript": "^3.8.3",
         "worker-loader": "^2.0.0"
     },
     "build": {
@@ -119,7 +119,8 @@
             ],
             "publish": {
                 "provider": "github"
-            }
+            },
+            "publisherName": "BL-IT"
         },
         "linux": {
             "icon": "assets/icon.png",

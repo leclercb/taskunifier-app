@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal } from 'antd';
 import { Auth } from 'aws-amplify';
 import moment from 'moment';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { setAccountManagerOptions } from 'actions/AppActions';
 import { changeId } from 'actions/ObjectActions';
 import { sendRequest } from 'actions/RequestActions';

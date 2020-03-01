@@ -1,3 +1,11 @@
+# 1.0.0
+
+## New Features
+
+## Bug Fixes
+
+* Fix auto update on Windows
+
 # 0.9.7
 
 ## New Features

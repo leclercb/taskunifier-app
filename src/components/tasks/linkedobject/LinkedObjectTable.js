@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { AutoSizer, Column, Table } from 'react-virtualized';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CellRenderer from 'components/common/table/CellRenderer';

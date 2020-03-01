@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import moment from 'moment';
 import { ActionCreators } from 'redux-undo';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile, setContexts } from 'actions/ContextActions';
@@ -31,7 +31,6 @@ import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
 import { dirname, ensureDir, join } from 'utils/ElectronUtils';
-import { merge } from 'utils/ObjectUtils';
 import { filterSettings } from 'utils/SettingUtils';
 
 export function loadData(options) {
@@ -47,10 +46,10 @@ export function loadDataFromFile(options) {
 }
 
 export function _loadDataFromFile(path, options) {
-    options = merge({
+    options = Object.assign({
         skipSettings: false,
         zip: false
-    }, options || {});
+    }, options);
 
     return async (dispatch, getState) => {
         const processId = uuid();
@@ -141,9 +140,9 @@ export function loadDataFromServer(options) {
 }
 
 export function _loadDataFromServer(options) {
-    options = merge({
+    options = Object.assign({
         skipSettings: false
-    }, options || {});
+    }, options);
 
     return async (dispatch, getState) => {
         const processId = uuid();
@@ -211,12 +210,12 @@ export function saveDataToFile(options) {
 }
 
 export function _saveDataToFile(path, options) {
-    options = merge({
+    options = Object.assign({
         coreSettingsOnly: false,
         clean: false,
         message: null,
         zip: false
-    }, options || {});
+    }, options);
 
     return async (dispatch, getState) => {
         const processId = uuid();
@@ -370,7 +369,7 @@ export function cleanData() {
 }
 
 export function resetData(options) {
-    options = merge({
+    options = Object.assign({
         resetAll: false,
         resetContacts: false,
         resetContexts: false,
@@ -384,7 +383,7 @@ export function resetData(options) {
         resetTaskFields: false,
         resetTaskFilters: false,
         resetTaskTemplates: false
-    }, options || {});
+    }, options);
 
     return async dispatch => {
         const processId = uuid();

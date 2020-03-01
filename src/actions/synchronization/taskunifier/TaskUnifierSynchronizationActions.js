@@ -1,7 +1,7 @@
 import React from 'react';
 import { Input, Modal, message } from 'antd';
 import moment from 'moment';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { resetData } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';

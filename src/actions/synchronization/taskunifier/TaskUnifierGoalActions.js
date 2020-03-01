@@ -184,9 +184,9 @@ export function deleteRemoteGoal(goal) {
 }
 
 function convertGoalToRemote(goal, state, options) {
-    options = merge({
+    options = Object.assign({
         skipContributesTo: false
-    }, options || {});
+    }, options);
 
     const remoteGoal = { ...goal };
 

@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { updateNote } from 'actions/NoteActions';
 import { sendRequest } from 'actions/RequestActions';
 import { updateTask } from 'actions/TaskActions';

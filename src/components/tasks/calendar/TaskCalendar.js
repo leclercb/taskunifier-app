@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import PropTypes from 'prop-types';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';

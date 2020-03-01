@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { isBusy } from 'selectors/ThreadSelectors';
 
 export function checkIsBusy(fn = null, silent = false) {

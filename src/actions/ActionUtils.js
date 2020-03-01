@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';
@@ -12,7 +12,6 @@ import {
     remove,
     writeFile
 } from 'utils/ElectronUtils';
-import { merge } from 'utils/ObjectUtils';
 
 /**
  * Loads the data from the provided file.
@@ -98,9 +97,9 @@ export function loadFromFile(property, file) {
 }
 
 export function loadFromServer(property, options, params) {
-    options = merge({
+    options = Object.assign({
         skipSetLoaded: false
-    }, options || {});
+    }, options);
 
     return async dispatch => {
         const processId = uuid();

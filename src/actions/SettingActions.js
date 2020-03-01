@@ -4,7 +4,6 @@ import {
     saveToFile
 } from 'actions/ActionUtils';
 import { getSettings } from 'selectors/SettingSelectors';
-import { merge } from 'utils/ObjectUtils';
 
 export const loadSettingsFromFile = (file, core = false) => {
     return async dispatch => {
@@ -35,10 +34,10 @@ export const setSettings = (settings, core = false) => {
 };
 
 export function updateSettings(settings, options) {
-    options = merge({
+    options = Object.assign({
         skipServerUpdate: false,
         skipDiff: false
-    }, options || {});
+    }, options);
 
     return async (dispatch, getState) => {
         const oldSettings = getSettings(getState());
