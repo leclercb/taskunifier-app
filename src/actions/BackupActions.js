@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import moment from 'moment';
 import { deletePath, readDirectory } from 'actions/ActionUtils';
 import { _loadDataFromFile, _saveDataToFile } from 'actions/AppActions';

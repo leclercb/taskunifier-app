@@ -1,4 +1,4 @@
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { clone } from 'utils/ObjectUtils';
 
 export function combineConditions(filter, conditions) {

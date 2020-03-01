@@ -1,5 +1,5 @@
 import { Auth } from 'aws-amplify';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getConfig } from 'config/Config';

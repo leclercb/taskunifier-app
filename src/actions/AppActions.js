@@ -1,7 +1,7 @@
 import JSZip from 'jszip';
 import moment from 'moment';
 import { ActionCreators } from 'redux-undo';
-import uuid from 'uuid/v4';
+import { v4 as uuid } from 'uuid';
 import { getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile, setContexts } from 'actions/ContextActions';
