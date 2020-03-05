@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import { usePrevious } from 'hooks/UsePrevious';
 import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 
-function ReminderChecker(props) {
-    const taskReminderApi = useTaskReminderApi(props.date);
+function ReminderChecker({ date, show }) {
+    const taskReminderApi = useTaskReminderApi(date);
     const prevTasks = usePrevious(taskReminderApi.tasks) || [];
 
     useEffect(() => {
-        const prevTaskIds = prevTasks.map(task => task.id);
-        const taskIds = taskReminderApi.tasks.map(task => task.id);
+        const newTasks = taskReminderApi.tasks.filter(task => !prevTasks.find(prevTask => prevTask.id === task.id));
 
-        if (!taskIds.every(taskId => prevTaskIds.includes(taskId))) {
-            props.show();
+        if (newTasks.length > 0) {
+            show();
+            new Notification('There are new reminders !');
         }
-    });
+    }, [taskReminderApi.tasks]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return null;
 }

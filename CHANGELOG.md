@@ -2,6 +2,8 @@
 
 ## New Features
 
+* Show system notifications for reminders (#168)
+
 ## Bug Fixes
 
 * Fix auto update on Windows
