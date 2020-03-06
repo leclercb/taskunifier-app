@@ -19,11 +19,11 @@ export function getSecondsSinceLastBackup(settings) {
         return -1;
     }
 
-    if (!settings.lastAutomaticBackup) {
+    if (!settings.lastBackupDate) {
         return Number.MAX_SAFE_INTEGER;
     }
 
-    return moment().diff(moment(settings.lastAutomaticBackup), 'second');
+    return moment().diff(moment(settings.lastBackupDate), 'second');
 }
 
 export function getSecondsUntilNextBackup(settings) {

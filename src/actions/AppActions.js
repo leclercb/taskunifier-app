@@ -12,7 +12,7 @@ import { cleanNotes, loadNotesFromFile, loadNotesFromServer, saveNotesToFile, se
 import { cleanNoteFields, loadNoteFieldsFromFile, loadNoteFieldsFromServer, saveNoteFieldsToFile, setNoteFields } from 'actions/NoteFieldActions';
 import { cleanNoteFilters, loadNoteFiltersFromFile, loadNoteFiltersFromServer, saveNoteFiltersToFile, setNoteFilters } from 'actions/NoteFilterActions';
 import { updateProcess } from 'actions/ThreadActions';
-import { loadSettingsFromFile, loadSettingsFromServer, saveSettingsToFile } from 'actions/SettingActions';
+import { loadSettingsFromFile, loadSettingsFromServer, saveSettingsToFile, updateSettings } from 'actions/SettingActions';
 import { cleanTasks, loadTasksFromFile, loadTasksFromServer, saveTasksToFile, setTasks } from 'actions/TaskActions';
 import { cleanTaskFields, loadTaskFieldsFromFile, loadTaskFieldsFromServer, saveTaskFieldsToFile, setTaskFields } from 'actions/TaskFieldActions';
 import { cleanTaskFilters, loadTaskFiltersFromFile, loadTaskFiltersFromServer, saveTaskFiltersToFile, setTaskFilters } from 'actions/TaskFilterActions';
@@ -199,7 +199,13 @@ export function _loadDataFromServer(options) {
 
 export function saveData(options) {
     if (process.env.REACT_APP_MODE === 'electron') {
-        return saveDataToFile(options);
+        return async dispatch => {
+            await dispatch(saveDataToFile(options));
+
+            await dispatch(updateSettings({
+                lastSaveDate: moment().toISOString()
+            }));
+        };
     } else {
         throw new Error('Unsupported Operation');
     }

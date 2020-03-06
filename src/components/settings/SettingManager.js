@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, List, Row } from 'antd';
 import Icon from 'components/common/Icon';
@@ -20,6 +20,10 @@ function SettingManager(props) {
     const settingsApi = useSettingsApi();
 
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        form.resetFields();
+    }, [settingsApi.settings]);
 
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
     const category = categories.find(category => category.id === props.category);
