@@ -23,7 +23,7 @@ function SettingManager(props) {
 
     useEffect(() => {
         form.resetFields();
-    }, [settingsApi.settings]);
+    }, [settingsApi.settings]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
     const category = categories.find(category => category.id === props.category);

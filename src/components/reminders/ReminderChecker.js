@@ -14,6 +14,7 @@ function ReminderChecker({ date, show }) {
             show();
 
             new Notification('TaskUnifier', {
+                icon: 'resources/images/logo.png',
                 body: newTasks.length === 1 ? `Reminder for "${newTasks[0].title}"` : `Reminder for ${newTasks.length} tasks`
             });
         }
