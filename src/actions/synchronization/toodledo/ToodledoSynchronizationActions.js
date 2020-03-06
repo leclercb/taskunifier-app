@@ -77,10 +77,6 @@ export function synchronizeWithToodledo() {
             await dispatch(synchronizeNotes());
             await dispatch(synchronizeTasks());
 
-            await dispatch(updateSettings({
-                lastSynchronizationDate: moment().toISOString()
-            }));
-
             dispatch(updateProcess({
                 id: processId,
                 state: 'COMPLETED'

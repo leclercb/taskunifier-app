@@ -49,11 +49,11 @@ export function getSecondsSinceLastSync(settings, isPro) {
         return -1;
     }
 
-    if (!settings.lastAutomaticSynchronization) {
+    if (!settings.lastSynchronizationDate) {
         return Number.MAX_SAFE_INTEGER;
     }
 
-    return moment().diff(moment(settings.lastAutomaticSynchronization), 'second');
+    return moment().diff(moment(settings.lastSynchronizationDate), 'second');
 }
 
 export function getSecondsUntilNextSync(settings, isPro) {

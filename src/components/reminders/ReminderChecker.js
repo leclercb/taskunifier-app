@@ -1,20 +1,26 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { usePrevious } from 'hooks/UsePrevious';
 import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 
-function ReminderChecker(props) {
-    const taskReminderApi = useTaskReminderApi(props.date);
-    const prevTasks = usePrevious(taskReminderApi.tasks) || [];
+function ReminderChecker({ date, show }) {
+    const taskReminderApi = useTaskReminderApi(date);
+
+    const [remindedTasks, setRemindedTasks] = useState([]);
 
     useEffect(() => {
-        const prevTaskIds = prevTasks.map(task => task.id);
-        const taskIds = taskReminderApi.tasks.map(task => task.id);
+        const newTasks = taskReminderApi.tasks.filter(task => !remindedTasks.find(remindedTask => remindedTask.id === task.id));
 
-        if (!taskIds.every(taskId => prevTaskIds.includes(taskId))) {
-            props.show();
+        if (newTasks.length > 0) {
+            show();
+
+            new Notification('TaskUnifier', {
+                icon: 'resources/images/logo.png',
+                body: newTasks.length === 1 ? `Reminder for "${newTasks[0].title}"` : `Reminder for ${newTasks.length} tasks`
+            });
         }
-    });
+
+        setRemindedTasks(taskReminderApi.tasks);
+    }, [date]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return null;
 }

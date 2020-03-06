@@ -26,9 +26,21 @@ export function combineConditions(filter, conditions) {
 export function createSearchTaskValueCondition(searchValue) {
     return {
         id: uuid(),
-        field: 'title',
-        type: 'containIgnoreCase',
-        value: searchValue
+        operator: 'OR',
+        conditions: [
+            {
+                id: uuid(),
+                field: 'title',
+                type: 'containIgnoreCase',
+                value: searchValue
+            },
+            {
+                id: uuid(),
+                field: 'text',
+                type: 'containIgnoreCase',
+                value: searchValue
+            }
+        ]
     };
 }
 

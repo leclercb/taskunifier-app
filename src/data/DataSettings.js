@@ -176,8 +176,8 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
-                    id: 'lastAutomaticSave',
-                    title: 'Last automatic save',
+                    id: 'lastSaveDate',
+                    title: 'Last save date',
                     type: 'dateTime',
                     value: moment().toISOString(),
                     editable: false,
@@ -568,8 +568,8 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
-                    id: 'lastAutomaticBackup',
-                    title: 'Last automatic backup',
+                    id: 'lastBackupDate',
+                    title: 'Last backup date',
                     type: 'dateTime',
                     value: moment().toISOString(),
                     editable: false,
@@ -640,6 +640,22 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
+                    id: 'synchronizeAfterStarting',
+                    title: 'Synchronize after starting',
+                    type: 'boolean',
+                    value: false,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'synchronizeBeforeClosing',
+                    title: 'Synchronize before closing',
+                    type: 'boolean',
+                    value: false,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
                     id: 'automaticSynchronization',
                     title: 'Enable automatic synchronization',
                     type: 'boolean',
@@ -659,8 +675,8 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
-                    id: 'lastAutomaticSynchronization',
-                    title: 'Last automatic synchronization',
+                    id: 'lastSynchronizationDate',
+                    title: 'Last synchronization date',
                     type: 'dateTime',
                     value: moment().toISOString(),
                     editable: false,
@@ -761,6 +777,22 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
+                    id: 'publishAfterStarting',
+                    title: 'Publish after starting',
+                    type: 'boolean',
+                    value: false,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'publishBeforeClosing',
+                    title: 'Publish before closing',
+                    type: 'boolean',
+                    value: false,
+                    editable: true,
+                    mode: 'electron'
+                },
+                {
                     id: 'automaticPublication',
                     title: 'Enable automatic publication',
                     type: 'boolean',
@@ -780,8 +812,8 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
-                    id: 'lastAutomaticPublication',
-                    title: 'Last automatic publication',
+                    id: 'lastPublicationDate',
+                    title: 'Last publication date',
                     type: 'dateTime',
                     value: moment().toISOString(),
                     editable: false,

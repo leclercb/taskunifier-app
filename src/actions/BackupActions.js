@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import moment from 'moment';
 import { deletePath, readDirectory } from 'actions/ActionUtils';
 import { _loadDataFromFile, _saveDataToFile } from 'actions/AppActions';
+import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { exists, join } from 'utils/ElectronUtils';
@@ -40,6 +41,10 @@ export function backupData() {
         const path = join(getState().settings.dataFolder, 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]') + '.zip');
         await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database', zip: true }));
         await dispatch(cleanBackups());
+
+        await dispatch(updateSettings({
+            lastBackupDate: moment().toISOString()
+        }));
     };
 }
 

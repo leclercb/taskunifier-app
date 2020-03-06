@@ -3,7 +3,6 @@ import { Input, Modal, message } from 'antd';
 import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 import { resetData } from 'actions/AppActions';
-import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getTaskUnifierAccountInfo } from 'actions/synchronization/taskunifier/TaskUnifierAccountInfoActions';
 import { authorize, createToken, refreshToken } from 'actions/synchronization/taskunifier/TaskUnifierAuthorizationActions';
@@ -96,10 +95,6 @@ export function synchronizeWithTaskUnifier() {
             await dispatch(synchronizeNoteFilters());
             await dispatch(synchronizeTaskFilters());
             await dispatch(synchronizeTaskTemplates());
-
-            await dispatch(updateSettings({
-                lastSynchronizationDate: moment().toISOString()
-            }));
 
             dispatch(updateProcess({
                 id: processId,

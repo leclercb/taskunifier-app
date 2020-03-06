@@ -2,6 +2,10 @@
 
 ## New Features
 
+* Show system notifications for reminders (#168)
+* Add settings to synchronize/publish on startup/close
+* Search in titles and notes instead of only titles
+
 ## Bug Fixes
 
 * Fix auto update on Windows

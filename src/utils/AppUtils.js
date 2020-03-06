@@ -21,8 +21,8 @@ export function getSecondsSinceLastSave(settings, startDate) {
 
     let maxDate = moment(startDate);
 
-    if (settings.lastAutomaticSave) {
-        maxDate = moment.max(moment(startDate), moment(settings.lastAutomaticSave));
+    if (settings.lastSaveDate) {
+        maxDate = moment.max(moment(startDate), moment(settings.lastSaveDate));
     }
 
     return moment().diff(maxDate, 'second');

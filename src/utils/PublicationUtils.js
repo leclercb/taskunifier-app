@@ -42,11 +42,11 @@ export function getSecondsSinceLastPub(settings, isPro) {
         return -1;
     }
 
-    if (!settings.lastAutomaticPublication) {
+    if (!settings.lastPublicationDate) {
         return Number.MAX_SAFE_INTEGER;
     }
 
-    return moment().diff(moment(settings.lastAutomaticPublication), 'second');
+    return moment().diff(moment(settings.lastPublicationDate), 'second');
 }
 
 export function getSecondsUntilNextPub(settings, isPro) {

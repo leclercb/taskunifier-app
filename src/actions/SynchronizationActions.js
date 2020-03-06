@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, message } from 'antd';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { ActionCreators } from 'redux-undo';
 import { updateSettings } from 'actions/SettingActions';
@@ -111,6 +112,10 @@ export function synchronize() {
             }
 
             await dispatch(app.synchronize());
+
+            await dispatch(updateSettings({
+                lastSynchronizationDate: moment().toISOString()
+            }));
         } finally {
             await dispatch(ActionCreators.clearHistory());
             await dispatch(setSynchronizing(false));

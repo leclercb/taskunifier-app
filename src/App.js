@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'antd';
-import moment from 'moment';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import AppLayout from 'components/layout/AppLayout';
@@ -26,13 +25,34 @@ function App() {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
 
+    const [started, setStarted] = useState(false);
+
     useInterval(() => {
         appApi.updateMinuteTimer();
     }, 60000);
 
     useEffect(() => {
-        appApi.loadData();
+        const onStart = async () => {
+            await appApi.loadData();
+            setStarted(true);
+        };
+
+        onStart();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        const onStarted = async () => {
+            if (settingsApi.settings.synchronizeAfterStarting) {
+                await appApi.synchronize();
+            }
+
+            if (settingsApi.settings.publishAfterStarting) {
+                await appApi.publish();
+            }
+        };
+
+        onStarted();
+    }, [started]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
@@ -57,32 +77,40 @@ function App() {
             const { ipcRenderer } = window.require('electron');
 
             const onClose = () => {
-                const size = ipcRenderer.sendSync('get-current-window-size');
-                const position = ipcRenderer.sendSync('get-current-window-position');
+                const close = async () => {
+                    const size = ipcRenderer.sendSync('get-current-window-size');
+                    const position = ipcRenderer.sendSync('get-current-window-position');
 
-                settingsApi.updateSettings({
-                    windowSizeWidth: size[0],
-                    windowSizeHeight: size[1],
-                    windowPositionX: position[0],
-                    windowPositionY: position[1]
-                }).then(() => {
-                    const close = () => {
-                        appApi.saveData({ clean: true }).finally(() => {
-                            ipcRenderer.send('closed');
-                        });
-                    };
+                    await settingsApi.updateSettings({
+                        windowSizeWidth: size[0],
+                        windowSizeHeight: size[1],
+                        windowPositionX: position[0],
+                        windowPositionY: position[1]
+                    });
 
-                    if (settingsApi.settings.confirmBeforeClosing) {
-                        Modal.confirm({
-                            title: 'Do you want to close TaskUnifier ?',
-                            onOk: () => {
-                                close();
-                            }
-                        });
-                    } else {
-                        close();
+                    if (settingsApi.settings.synchronizeBeforeClosing) {
+                        await appApi.synchronize();
                     }
-                });
+
+                    if (settingsApi.settings.publishBeforeClosing) {
+                        await appApi.publish();
+                    }
+
+                    await appApi.saveData({ clean: true });
+
+                    ipcRenderer.send('closed');
+                };
+
+                if (settingsApi.settings.confirmBeforeClosing) {
+                    Modal.confirm({
+                        title: 'Do you want to close TaskUnifier ?',
+                        onOk: () => {
+                            close();
+                        }
+                    });
+                } else {
+                    close();
+                }
             };
 
             ipcRenderer.on('app-close', onClose);
@@ -91,19 +119,43 @@ function App() {
                 ipcRenderer.removeListener('app-close', onClose);
             };
         }
-    }, [settingsApi.settings]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [ // eslint-disable-line react-hooks/exhaustive-deps
+        settingsApi.settings.confirmBeforeClosing,
+        settingsApi.settings.synchronizeBeforeClosing,
+        settingsApi.settings.publishBeforeClosing
+    ]);
 
     useEffect(
         () => {
             if (process.env.REACT_APP_MODE === 'electron') {
-                const interval = setInterval(() => {
+                const interval = setInterval(async () => {
                     if (isAutomaticSaveNeeded(settingsApi.settings, appApi.startDate)) {
                         try {
-                            appApi.checkIsBusy(() => appApi.saveData());
+                            await appApi.checkIsBusy(() => appApi.saveData());
+                        } catch (error) {
+                            // Skip
+                        }
+                    }
 
-                            settingsApi.updateSettings({
-                                lastAutomaticSave: moment().toISOString()
-                            });
+                    if (isAutomaticBackupNeeded(settingsApi.settings)) {
+                        try {
+                            await appApi.checkIsBusy(() => appApi.backupData());
+                        } catch (error) {
+                            // Skip
+                        }
+                    }
+
+                    if (isAutomaticSyncNeeded(settingsApi.settings, appApi.isPro)) {
+                        try {
+                            await appApi.checkIsBusy(() => appApi.synchronize());
+                        } catch (error) {
+                            // Skip
+                        }
+                    }
+
+                    if (isAutomaticPubNeeded(settingsApi.settings, appApi.isPro)) {
+                        try {
+                            await appApi.checkIsBusy(() => appApi.publish());
                         } catch (error) {
                             // Skip
                         }
@@ -116,99 +168,20 @@ function App() {
             }
         },
         [ // eslint-disable-line react-hooks/exhaustive-deps
+            appApi.isPro,
             appApi.startDate,
             settingsApi.settings.automaticSave,
             settingsApi.settings.automaticSaveInterval,
-            settingsApi.settings.lastAutomaticSave
-        ]
-    );
-
-    useEffect(
-        () => {
-            if (process.env.REACT_APP_MODE === 'electron') {
-                const interval = setInterval(() => {
-                    if (isAutomaticBackupNeeded(settingsApi.settings)) {
-                        try {
-                            appApi.checkIsBusy(() => appApi.backupData());
-
-                            settingsApi.updateSettings({
-                                lastAutomaticBackup: moment().toISOString()
-                            });
-                        } catch (error) {
-                            // Skip
-                        }
-                    }
-                }, 30 * 1000);
-
-                return () => {
-                    clearInterval(interval);
-                };
-            }
-        },
-        [ // eslint-disable-line react-hooks/exhaustive-deps
+            settingsApi.settings.lastSaveDate,
             settingsApi.settings.automaticBackup,
             settingsApi.settings.automaticBackupInterval,
-            settingsApi.settings.lastAutomaticBackup
-        ]
-    );
-
-    useEffect(
-        () => {
-            if (process.env.REACT_APP_MODE === 'electron') {
-                const interval = setInterval(() => {
-                    if (isAutomaticSyncNeeded(settingsApi.settings, appApi.isPro)) {
-                        try {
-                            appApi.checkIsBusy(() => appApi.synchronize());
-
-                            settingsApi.updateSettings({
-                                lastAutomaticSynchronization: moment().toISOString()
-                            });
-                        } catch (error) {
-                            // Skip
-                        }
-                    }
-                }, 30 * 1000);
-
-                return () => {
-                    clearInterval(interval);
-                };
-            }
-        },
-        [ // eslint-disable-line react-hooks/exhaustive-deps
-            appApi.isPro,
+            settingsApi.settings.lastBackupDate,
             settingsApi.settings.automaticSynchronization,
             settingsApi.settings.automaticSynchronizationInterval,
-            settingsApi.settings.lastAutomaticSynchronization
-        ]
-    );
-
-    useEffect(
-        () => {
-            if (process.env.REACT_APP_MODE === 'electron') {
-                const interval = setInterval(() => {
-                    if (isAutomaticPubNeeded(settingsApi.settings, appApi.isPro)) {
-                        try {
-                            appApi.checkIsBusy(() => appApi.publish());
-
-                            settingsApi.updateSettings({
-                                lastAutomaticPublication: moment().toISOString()
-                            });
-                        } catch (error) {
-                            // Skip
-                        }
-                    }
-                }, 30 * 1000);
-
-                return () => {
-                    clearInterval(interval);
-                };
-            }
-        },
-        [ // eslint-disable-line react-hooks/exhaustive-deps
-            appApi.isPro,
+            settingsApi.settings.lastSynchronizationDate,
             settingsApi.settings.automaticPublication,
             settingsApi.settings.automaticPublicationInterval,
-            settingsApi.settings.lastAutomaticPublication
+            settingsApi.settings.lastPublicationDate
         ]
     );
 
