@@ -15,6 +15,8 @@ function FieldForm({ objects, field, updateField }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !field.title) {
             titleRef.current.focus();
         }

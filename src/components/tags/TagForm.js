@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
@@ -12,6 +12,13 @@ function TagForm({ tag, updateTag }) {
     const settingsApi = useSettingsApi();
 
     const [form] = Form.useForm();
+
+    const formItemLayout = getDefaultFormItemLayout();
+    const tailFormItemLayout = getDefaultTailFormItemLayout();
+
+    useEffect(() => {
+        form.resetFields();
+    }, [tag.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onUpdateTag = async () => {
         try {
@@ -35,9 +42,6 @@ function TagForm({ tag, updateTag }) {
             // Skip
         }
     };
-
-    const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Form form={form} initialValues={tag} {...formItemLayout}>

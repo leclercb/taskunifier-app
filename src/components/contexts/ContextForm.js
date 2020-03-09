@@ -20,6 +20,8 @@ function ContextForm({ context, updateContext }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !context.title) {
             titleRef.current.focus();
         }

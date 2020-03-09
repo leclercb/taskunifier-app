@@ -13,6 +13,8 @@ function FilterForm({ filter, updateFilter, disabled }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !filter.title) {
             titleRef.current.focus();
         }

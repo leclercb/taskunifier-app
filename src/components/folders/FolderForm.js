@@ -20,6 +20,8 @@ function FolderForm({ folder, updateFolder }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !folder.title) {
             titleRef.current.focus();
         }
