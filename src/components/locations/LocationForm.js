@@ -20,6 +20,8 @@ function LocationForm({ location, updateLocation }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !location.title) {
             titleRef.current.focus();
         }

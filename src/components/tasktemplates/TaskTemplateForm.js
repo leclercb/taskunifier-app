@@ -20,6 +20,8 @@ function TaskTemplateForm({ taskTemplate, updateTaskTemplate }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !taskTemplate.title) {
             titleRef.current.focus();
         }

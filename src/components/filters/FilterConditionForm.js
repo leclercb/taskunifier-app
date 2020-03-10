@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Col, Form, Input, Row } from 'antd';
 import { getInputForType, getSelectForType } from 'data/DataFieldComponents';
@@ -20,6 +20,10 @@ function FilterConditionForm({ condition, context, onUpdate, disabled }) {
             sm: { span: 24 }
         }
     };
+
+    useEffect(() => {
+        form.resetFields();
+    }, [condition.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const field = context.fields.find(field => field.id === condition.field);
     const conditionFieldType = getConditionsFieldTypeForType(field.type);

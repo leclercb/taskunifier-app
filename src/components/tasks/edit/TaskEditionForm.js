@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { Col, Collapse, Form, Row } from 'antd';
@@ -20,6 +20,10 @@ function TaskEditionForm({ form, task }) {
             span: 16
         }
     };
+
+    useEffect(() => {
+        form.resetFields();
+    }, [task.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const sortedFields = sortBy(taskFieldApi.taskFields, field => ('taskColumnOrder_' + field.id) in settingsApi.settings ? settingsApi.settings['taskColumnOrder_' + field.id] : field.defaultOrder || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);

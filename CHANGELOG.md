@@ -9,6 +9,7 @@
 ## Bug Fixes
 
 * Fix auto update on Windows
+* Task data not refreshed in edition window (#171)
 
 # 0.9.7
 

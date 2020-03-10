@@ -20,6 +20,8 @@ function GoalForm({ goal, updateGoal }) {
     const titleRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (titleRef.current && !goal.title) {
             titleRef.current.focus();
         }

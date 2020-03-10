@@ -20,6 +20,8 @@ function ContactForm({ contact, updateContact }) {
     const firstNameRef = useRef(null);
 
     useEffect(() => {
+        form.resetFields();
+
         if (firstNameRef.current && !contact.firstName) {
             firstNameRef.current.focus();
         }
