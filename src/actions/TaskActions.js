@@ -72,3 +72,21 @@ export function redoTaskStateUpdate() {
         });
     };
 }
+
+export function addDismissedTaskId(taskId) {
+    return async dispatch => {
+        dispatch({
+            type: 'ADD_DISMISSED_TASK_ID',
+            taskId
+        });
+    };
+}
+
+export function removeDismissedTaskId(taskId) {
+    return async dispatch => {
+        dispatch({
+            type: 'REMOVE_DISMISSED_TASK_ID',
+            taskId
+        });
+    };
+}

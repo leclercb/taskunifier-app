@@ -2,9 +2,10 @@
 
 ## New Features
 
-* Show system notifications for reminders (#168)
 * Add settings to synchronize/publish on startup/close
 * Search in titles and notes instead of only titles
+* Change the way task reminders are dismissed (#165)
+* Show system notifications for reminders (#168)
 
 ## Bug Fixes
 
