@@ -4,6 +4,7 @@
 
 * Add settings to synchronize/publish on startup/close
 * Search in titles and notes instead of only titles
+* Add new custom fields to the end of the table (#20)
 * Open repeat dialog with "enter" key (#105)
 * Change the way task reminders are dismissed (#165)
 * Show system notifications for reminders (#168)

@@ -4,10 +4,12 @@ import { Col, Empty, Row } from 'antd';
 import withProCheck from 'containers/WithProCheck';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 
 function TaskFieldManager(props) {
+    const settingsApi = useSettingsApi();
     const taskApi = useTaskApi();
     const taskFieldApi = useTaskFieldApi();
     const selectedTaskFieldId = props.taskFieldId;
@@ -15,6 +17,10 @@ function TaskFieldManager(props) {
     const onAddTaskField = async taskField => {
         taskField = await taskFieldApi.addTaskField(taskField);
         props.onTaskFieldSelection(taskField.id);
+
+        settingsApi.updateSettings({
+            [`taskColumnOrder_${taskField.id}`]: taskFieldApi.taskFields.length
+        });
     };
 
     const onDuplicateTaskField = async taskField => {

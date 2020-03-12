@@ -6,15 +6,21 @@ import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { useSettingsApi } from 'hooks/UseSettingsApi';
 
 function NoteFieldManager(props) {
     const noteApi = useNoteApi();
     const noteFieldApi = useNoteFieldApi();
+    const settingsApi = useSettingsApi();
     const selectedNoteFieldId = props.noteFieldId;
 
     const onAddNoteField = async noteField => {
         noteField = await noteFieldApi.addNoteField(noteField);
         props.onNoteFieldSelection(noteField.id);
+
+        settingsApi.updateSettings({
+            [`noteColumnOrder_${noteField.id}`]: noteFieldApi.noteFields.length
+        });
     };
 
     const onDuplicateNoteField = async noteField => {
