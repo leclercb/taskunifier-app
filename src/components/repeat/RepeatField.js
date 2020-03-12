@@ -22,6 +22,10 @@ class RepeatField extends React.Component {
             this.setState({
                 opened
             });
+
+            if (this.props.onOpenChange) {
+                this.props.onOpenChange(opened);
+            }
         }
     }
 
@@ -32,14 +36,15 @@ class RepeatField extends React.Component {
     }
 
     render() {
-        const { repeat, readOnly, onChange, onOpenChange, ...wrappedProps } = this.props;
+        const { repeat, readOnly, onChange, ...wrappedProps } = this.props;
         delete wrappedProps.defaultOpened;
+        delete wrappedProps.onOpenChange;
 
         if (readOnly) {
             const fromComp = (repeat || '').includes(';FROMCOMP');
 
             if (!repeat) {
-                return null;
+                return <span>&nbsp;</span>;
             }
 
             return (
@@ -59,26 +64,15 @@ class RepeatField extends React.Component {
             <React.Fragment>
                 <ModalRepeatManager
                     visible={this.state.opened}
-                    onClose={() => {
-                        this.setOpened(false);
-
-                        if (onOpenChange) {
-                            onOpenChange(false);
-                        }
-                    }}
+                    onClose={() => this.setOpened(false)}
                     repeat={repeat}
                     updateRepeat={repeat => onChange(repeat)} />
                 <Input
                     {...wrappedProps}
                     readOnly={true}
                     value={toStringRepeat(repeat, true)}
-                    onClick={() => {
-                        this.setOpened(true);
-
-                        if (onOpenChange) {
-                            onOpenChange(true);
-                        }
-                    }} />
+                    onClick={() => this.setOpened(true)}
+                    onPressEnter={() => this.setOpened(true)} />
             </React.Fragment>
         );
     }
