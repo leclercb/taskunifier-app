@@ -11,6 +11,7 @@
 
 ## Bug Fixes
 
+* Trim tags imported from Toodledo
 * Fix auto update on Windows
 * Task data not refreshed in edition window (#171)
 

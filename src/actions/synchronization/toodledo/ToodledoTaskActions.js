@@ -368,7 +368,7 @@ function convertTaskToLocal(task, state) {
         title: task.title,
         completed: task.completed > 0,
         completionDate: task.completed > 0 ? moment.unix(task.completed).toISOString() : null,
-        tags: task.tag ? task.tag.split(',') : null,
+        tags: task.tag ? task.tag.split(',').map(tag => tag.trim()).filter(tag => !!tag) : null,
         context: getObjectLocalValue(state, 'context', task.context),
         folder: getObjectLocalValue(state, 'folder', task.folder),
         goal: getObjectLocalValue(state, 'goal', task.goal),
