@@ -33,11 +33,13 @@ export function isCoreSetting(settingId) {
     });
 }
 
-export function getSettings() {
+export function getSettingValues(options = {}) {
     const settings = {};
 
     getCategories().forEach(category => {
-        category.settings.forEach(setting => {
+        const categorySettings = getCategorySettings(category, options);
+
+        categorySettings.forEach(setting => {
             switch (setting.type) {
                 case 'button':
                 case 'component':

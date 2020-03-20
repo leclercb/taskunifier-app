@@ -13,6 +13,7 @@
 
 * Trim tags imported from Toodledo
 * Fix auto update on Windows
+* Fix settings default values
 * Task data not refreshed in edition window (#171)
 
 # 0.9.7

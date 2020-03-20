@@ -1,8 +1,8 @@
 import moment from 'moment';
-import { getSettings, isCoreSetting } from 'data/DataSettings';
+import { getSettingValues, isCoreSetting } from 'data/DataSettings';
 
 const Settings = () => (state = {
-    ...getSettings()
+    ...getSettingValues()
 }, action) => {
     switch (action.type) {
         case 'SET_SETTINGS': {
@@ -17,7 +17,7 @@ const Settings = () => (state = {
             }
 
             const settings = {
-                ...getSettings(),
+                ...getSettingValues(),
                 ...action.settings,
                 ...coreSettings
             };
