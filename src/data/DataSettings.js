@@ -43,6 +43,7 @@ export function getSettings() {
                 case 'component':
                 case 'label':
                     break;
+                case 'sorters':
                 default:
                     settings[setting.id] = setting.value;
                     break;

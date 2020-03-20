@@ -37,6 +37,26 @@ function SettingManager(props) {
         }).filter(setting =>
             setting.visible !== false && (!setting.mode || setting.mode === process.env.REACT_APP_MODE));
 
+    const settingsWithDefaultValue = {
+        ...settings
+            .filter(setting => {
+                switch (setting.type) {
+                    case 'button':
+                    case 'component':
+                    case 'label':
+                        return false;
+                    case 'sorters':
+                    default:
+                        return true;
+                }
+            })
+            .reduce((object, setting) => {
+                object[setting.id] = setting.value;
+                return object;
+            }, {}),
+        ...settingsApi.settings
+    };
+
     const onCategorySelection = category => {
         props.onCategorySelection(category.id);
     };
@@ -124,7 +144,7 @@ function SettingManager(props) {
             </Col>
             <Col span={2} />
             <Col span={16}>
-                <Form form={form} initialValues={settingsApi.settings} {...formItemLayout}>
+                <Form form={form} initialValues={settingsWithDefaultValue} {...formItemLayout}>
                     <List
                         size="small"
                         bordered={false}
