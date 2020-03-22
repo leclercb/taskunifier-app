@@ -27,6 +27,7 @@ export const getSelectedTaskFilterDefinition = state => state.settings.selectedT
 export const getSelectedTaskFilterId = state => state.settings.selectedTaskFilterDefinition ? state.settings.selectedTaskFilterDefinition.id : null;
 export const getSelectedTaskFilterDate = state => state.app.selectedTaskFilterDate;
 export const getTaskFilterCounts = state => state.app.taskFilterCounts;
+export const getDismissedTaskIds = state => state.app.dismissedTaskIds;
 export const getSearchTaskValue = state => state.app.searchTaskValue;
 
 export const getJoyrideOptions = state => state.app.joyride;

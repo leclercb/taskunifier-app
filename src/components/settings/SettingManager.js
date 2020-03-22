@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Col, Form, List, Row } from 'antd';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
 import PromiseButton from 'components/common/PromiseButton';
 import SorterTable from 'components/filters/SorterTable';
@@ -12,18 +13,20 @@ import { getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
+import { getSettingsIncludingDefaults } from 'selectors/SettingValueSelectors';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
 function SettingManager(props) {
     const noteFieldApi = useNoteFieldApi();
     const taskFieldApi = useTaskFieldApi();
     const settingsApi = useSettingsApi();
+    const settingsIncludingDefaults = useSelector(getSettingsIncludingDefaults);
 
     const [form] = Form.useForm();
 
     useEffect(() => {
         form.resetFields();
-    }, [settingsApi.settings]); // eslint-disable-line react-hooks/exhaustive-deps
+    }); // eslint-disable-line react-hooks/exhaustive-deps
 
     const categories = getCategories().filter(category => !category.mode || category.mode === process.env.REACT_APP_MODE);
     const category = categories.find(category => category.id === props.category);
@@ -124,7 +127,7 @@ function SettingManager(props) {
             </Col>
             <Col span={2} />
             <Col span={16}>
-                <Form form={form} initialValues={settingsApi.settings} {...formItemLayout}>
+                <Form form={form} initialValues={settingsIncludingDefaults} {...formItemLayout}>
                     <List
                         size="small"
                         bordered={false}

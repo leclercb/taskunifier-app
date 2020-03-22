@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 import { addObject } from 'actions/ObjectActions';
+import { removeDismissedTaskId } from 'actions/TaskActions';
 import { getObjectById } from 'selectors/ObjectSelectors';
 import { clone } from 'utils/ObjectUtils';
 import { canRepeat, getNextDate } from 'utils/RepeatUtils';
@@ -14,6 +15,15 @@ export const updateTask = store => next => async action => {
 
         if (task.completed) {
             task.progress = 100;
+        }
+
+        if (oldTask && (
+            oldTask.startDate !== task.startDate ||
+            oldTask.dueDate !== task.dueDate ||
+            oldTask.startDateReminder !== task.startDateReminder ||
+            oldTask.dueDateReminder !== task.dueDateReminder
+        )) {
+            await store.dispatch(removeDismissedTaskId(task.id));
         }
 
         if (oldTask && oldTask.timer && oldTask.timer.startDate) {

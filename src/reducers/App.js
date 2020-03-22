@@ -15,6 +15,7 @@ const App = () => (state = {
     selectedTaskIds: [],
     selectedTaskFilterDate: moment().toISOString(),
     taskFilterCounts: {},
+    dismissedTaskIds: [],
     searchTaskValue: '',
     joyride: {
         id: null,
@@ -119,6 +120,27 @@ const App = () => (state = {
             return {
                 ...state,
                 taskFilterCounts: action.counts
+            };
+        case 'ADD_DISMISSED_TASK_ID':
+            if (state.dismissedTaskIds.includes(action.taskId)) {
+                return state;
+            }
+
+            return {
+                ...state,
+                dismissedTaskIds: [
+                    ...state.dismissedTaskIds,
+                    action.taskId
+                ]
+            };
+        case 'REMOVE_DISMISSED_TASK_ID':
+            if (!state.dismissedTaskIds.includes(action.taskId)) {
+                return state;
+            }
+
+            return {
+                ...state,
+                dismissedTaskIds: state.dismissedTaskIds.filter(taskId => taskId !== action.taskId)
             };
         case 'SET_SEARCH_TASK_VALUE':
             return {

@@ -8,8 +8,21 @@ import {
     createSearchTaskValueCondition,
     createTaskFilterFromDefinition
 } from 'data/DataTaskFilters';
-import { getMinuteTimer, getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskFilterDate, getSelectedTaskIds } from 'selectors/AppSelectors';
-import { getCategoryTaskSorters, getCombinedTaskFilterDefinitions, isShowCompletedTasks, isShowFutureTasks, isShowTaskHierarchy } from 'selectors/SettingSelectors';
+import {
+    getDismissedTaskIds,
+    getMinuteTimer,
+    getSearchTaskValue,
+    getSelectedTaskFilter,
+    getSelectedTaskFilterDate,
+    getSelectedTaskIds
+} from 'selectors/AppSelectors';
+import {
+    getCategoryTaskSorters,
+    getCombinedTaskFilterDefinitions,
+    isShowCompletedTasks,
+    isShowFutureTasks,
+    isShowTaskHierarchy
+} from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getTaskFiltersFilteredByVisibleState } from 'selectors/TaskFilterSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
@@ -182,9 +195,14 @@ export const getStatistics = createSelector(
 
 export const getTaskRemindersSelector = () => createSelector(
     getTasksFilteredBySelectedFilter,
+    getDismissedTaskIds,
     (state, date) => date,
-    (tasks, date) => {
+    (tasks, dismissedTaskIds, date) => {
         return tasks.filter(task => {
+            if (dismissedTaskIds.includes(task.id)) {
+                return false;
+            }
+
             if (showReminder(task.startDate, task.startDateReminder, date)) {
                 return true;
             }

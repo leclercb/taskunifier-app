@@ -14,35 +14,16 @@ function ReminderList(props) {
     const taskReminderApi = useTaskReminderApi(props.date);
     const [selectedTaskId, setSelectedTaskId] = useState([]);
 
-    const dismiss = task => {
-        const newTask = {
-            ...task
-        };
-
-        let showStartDateReminder = showReminder(task.startDate, task.startDateReminder);
-        let showDueDateReminder = showReminder(task.dueDate, task.dueDateReminder);
-
-        if (showStartDateReminder) {
-            newTask.startDateReminder = null;
-        }
-
-        if (showDueDateReminder) {
-            newTask.dueDateReminder = null;
-        }
-
-        taskReminderApi.updateTask(newTask);
-    };
-
     const onDismiss = () => {
         const task = taskReminderApi.tasks.find(task => task.id === selectedTaskId);
 
         if (task) {
-            dismiss(task);
+            taskReminderApi.addDismissedTaskId(task.id);
         }
     };
 
     const onDismissAll = () => {
-        taskReminderApi.tasks.forEach(task => dismiss(task));
+        taskReminderApi.tasks.forEach(task => taskReminderApi.addDismissedTaskId(task.id));
     };
 
     return (
@@ -92,7 +73,8 @@ function ReminderList(props) {
             <Spacer />
             <Button
                 onClick={() => onDismissAll()}
-                style={{ marginTop: 5 }}>
+                style={{ marginTop: 5 }}
+                disabled={taskReminderApi.tasks.length === 0}>
                 <Icon icon="eye-slash" text="Dismiss All" />
             </Button>
         </React.Fragment>
