@@ -1,3 +1,9 @@
+# 1.0.1
+
+## Bug Fixes
+
+* Fix refresh form values (#180)
+
 # 1.0.0
 
 ## New Features

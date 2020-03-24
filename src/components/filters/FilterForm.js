@@ -18,7 +18,7 @@ function FilterForm({ filter, updateFilter, disabled }) {
         if (titleRef.current && !filter.title) {
             titleRef.current.focus();
         }
-    }, [filter.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onCommit = () => onCommitForm(form, filter, updateFilter);
 

@@ -25,7 +25,7 @@ function GoalForm({ goal, updateGoal }) {
         if (titleRef.current && !goal.title) {
             titleRef.current.focus();
         }
-    }, [goal.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [goal]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Form form={form} initialValues={goal} {...formItemLayout}>

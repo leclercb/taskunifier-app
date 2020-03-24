@@ -25,7 +25,7 @@ function ContextForm({ context, updateContext }) {
         if (titleRef.current && !context.title) {
             titleRef.current.focus();
         }
-    }, [context.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [context]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Form form={form} initialValues={context} {...formItemLayout}>

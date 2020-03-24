@@ -25,7 +25,7 @@ function LocationForm({ location, updateLocation }) {
         if (titleRef.current && !location.title) {
             titleRef.current.focus();
         }
-    }, [location.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [location]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Form form={form} initialValues={location} {...formItemLayout}>

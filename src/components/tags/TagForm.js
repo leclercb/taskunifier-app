@@ -18,7 +18,7 @@ function TagForm({ tag, updateTag }) {
 
     useEffect(() => {
         form.resetFields();
-    }, [tag.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [tag]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onUpdateTag = async () => {
         try {
