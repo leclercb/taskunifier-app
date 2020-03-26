@@ -173,11 +173,11 @@ function WorkLogTable({ timer, workLogs, updateWorkLogs, updateTotalLength }) {
                     <Icon icon="edit" text="Update timer value with total" />
                 </Button>
                 <Spacer />
-                <span>Total: <strong>{toStringDuration(total)}</strong></span>
+                <span>Total: <strong>{toStringDuration(total, false)}</strong></span>
                 <Spacer />
-                <span>Total until now: <strong>{toStringDuration(totalUntilNow)}</strong></span>
+                <span>Total until now: <strong>{toStringDuration(totalUntilNow, false)}</strong></span>
                 <Spacer />
-                <span>Total for today: <strong>{toStringDuration(totalToday)}</strong></span>
+                <span>Total for today: <strong>{toStringDuration(totalToday, false)}</strong></span>
             </div>
             <Alert
                 type={timer && timer.startDate ? 'warning' : 'info'}

@@ -25,7 +25,7 @@ class TimerField extends React.Component {
     }
 
     formatDuration(value, explicit) {
-        return toStringDuration(value, explicit);
+        return value ? toStringDuration(value, explicit) : '';
     }
 
     parseDuration(match) {
@@ -103,7 +103,7 @@ class TimerField extends React.Component {
                         <MaskTextField
                             ref={this.inputRef}
                             mask="11h11m"
-                            value={this.formatDuration(timer.value, true)}
+                            value={this.formatDuration(timer.value && timer.value >= 0 ? timer.value : 0, true)}
                             onChange={e => this.onChange(e.target.value)}
                             style={{ width: 100 }}
                             {...restProps} />

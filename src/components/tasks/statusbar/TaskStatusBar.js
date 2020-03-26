@@ -41,19 +41,19 @@ function TaskStatusBar() {
                 {settingsApi.settings.showTaskTotalLength && (
                     <React.Fragment>
                         <span> - Total Length: </span>
-                        <strong>{toStringDuration(stats.length, false, false)}</strong>
+                        <strong>{toStringDuration(stats.length, false)}</strong>
                     </React.Fragment>
                 )}
                 {settingsApi.settings.showTaskTotalElapsed && (
                     <React.Fragment>
                         <span> - Total Elapsed: </span>
-                        <strong>{toStringDuration(stats.elapsed, false, false)}</strong>
+                        <strong>{toStringDuration(stats.elapsed, false)}</strong>
                     </React.Fragment>
                 )}
                 {settingsApi.settings.showTaskTotalElapsedToday && (
                     <React.Fragment>
                         <span> - Total Today: </span>
-                        <strong>{toStringDuration(stats.elapsedToday, false, false)}</strong>
+                        <strong>{toStringDuration(stats.elapsedToday, false)}</strong>
                     </React.Fragment>
                 )}
                 <span> - </span>

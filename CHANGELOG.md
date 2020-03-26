@@ -1,5 +1,9 @@
 # 1.0.1
 
+## New Features
+
+* Add snooze and snooze all in reminder manager (#179)
+
 ## Bug Fixes
 
 * Fix refresh form values (#180)

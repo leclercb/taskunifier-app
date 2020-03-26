@@ -344,7 +344,7 @@ export function getFieldType(type, options) {
                 alwaysInEdition: false,
                 valuePropName: 'duration',
                 compare: (a, b) => compareNumbers(a, b),
-                toString: value => toStringDuration(value),
+                toString: value => value ? toStringDuration(value, false) : '',
                 options: []
             };
         }
@@ -507,7 +507,7 @@ export function getFieldType(type, options) {
                 alwaysInEdition: false,
                 valuePropName: 'duration',
                 compare: (a, b) => compareNumbers(a, b),
-                toString: value => toStringDuration(value),
+                toString: value => value ? toStringDuration(value, false) : '',
                 options: []
             };
         }

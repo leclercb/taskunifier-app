@@ -40,15 +40,17 @@ export function toStringDate(value, format) {
     return moment(value).format(format);
 }
 
-export function toStringDuration(value, explicit = false, short = true) {
+export function toStringDuration(value, explicit) {
     if (!value) {
-        return short ? '' : '00:00';
+        value = 0;
     }
+
+    let str = value ? (value >= 0 ? '' : '-') : '';
+
+    value = Math.abs(value);
 
     const hours = Math.floor(value / 3600);
     const minutes = Math.floor((value % 3600) / 60);
-
-    let str = '';
 
     str += hours.toString().padStart(2, '0') + (explicit ? 'h' : ':');
     str += minutes.toString().padStart(2, '0') + (explicit ? 'm' : '');
@@ -130,7 +132,7 @@ export function toStringTimer(timer) {
         value = value + moment().diff(moment(timer.startDate), 'second');
     }
 
-    return toStringDuration(value);
+    return toStringDuration(value, false);
 }
 
 export function toStringGoalLevel(value) {
