@@ -6,6 +6,7 @@
 
 ## Bug Fixes
 
+* Fix synchronization of sub-tasks with Toodledo (#177)
 * Fix refresh form values (#180)
 
 # 1.0.0
