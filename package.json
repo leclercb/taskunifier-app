@@ -24,7 +24,7 @@
         "@fortawesome/free-solid-svg-icons": "^5.13.0",
         "@fortawesome/react-fontawesome": "^0.1.9",
         "antd": "^4.1.0",
-        "aws-amplify": "^2.2.7",
+        "aws-amplify": "2.2.7",
         "axios": "^0.19.2",
         "craco-antd": "^1.14.1",
         "electron-is-dev": "^1.1.0",
