@@ -6,6 +6,7 @@
 
 ## Bug Fixes
 
+* Fix wrong first day of week (#167)
 * Fix synchronization of sub-tasks with Toodledo (#177)
 * Fix refresh form values (#180)
 
