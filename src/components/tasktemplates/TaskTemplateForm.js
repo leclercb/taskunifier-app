@@ -25,7 +25,7 @@ function TaskTemplateForm({ taskTemplate, updateTaskTemplate }) {
         if (titleRef.current && !taskTemplate.title) {
             titleRef.current.focus();
         }
-    }, [taskTemplate.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [taskTemplate]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const fields = taskFieldApi.taskFields.filter(field => field.editable && settingsApi.settings['taskFieldVisible_' + field.id] !== false);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, Select, Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { useStripeApi } from 'hooks/UseStripeApi';
@@ -9,6 +9,13 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
 
     const [busy, setBusy] = useState(false);
     const [form] = Form.useForm();
+
+    const formItemLayout = getDefaultFormItemLayout();
+    const tailFormItemLayout = getDefaultTailFormItemLayout();
+
+    useEffect(() => {
+        form.resetFields();
+    }, [customer]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const taxId = customer && customer.tax_ids.data.length !== 0 ? customer.tax_ids.data[0] : null;
 
@@ -27,9 +34,6 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
             // Skip
         }
     };
-
-    const formItemLayout = getDefaultFormItemLayout();
-    const tailFormItemLayout = getDefaultTailFormItemLayout();
 
     return (
         <Spin spinning={busy}>

@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDismissedTaskId, removeDismissedTaskId } from 'actions/TaskActions';
+import { addDismissedTaskId, removeDismissedTaskId, updateTask } from 'actions/TaskActions';
 import { getDismissedTaskIds } from 'selectors/AppSelectors';
 import { getTaskRemindersSelector } from 'selectors/TaskSelectors';
+import { showReminder } from 'utils/ReminderUtils';
 
 export function useTaskReminderApi(date) {
     const dispatch = useDispatch();
@@ -22,10 +24,32 @@ export function useTaskReminderApi(date) {
         [dispatch]
     );
 
+    const updateTaskCallback = useCallback(
+        task => dispatch(updateTask(task)),
+        [dispatch]
+    );
+
+    const snoozeTask = (task, item) => {
+        if (showReminder(task.startDate, task.startDateReminder)) {
+            updateTaskCallback({
+                ...task,
+                startDateReminder: moment(task.startDate).subtract(item.amount, item.unit).diff(moment(), 'second')
+            });
+        }
+
+        if (showReminder(task.dueDate, task.dueDateReminder)) {
+            updateTaskCallback({
+                ...task,
+                dueDateReminder: moment(task.dueDate).subtract(item.amount, item.unit).diff(moment(), 'second')
+            });
+        }
+    };
+
     return {
         tasks,
         dismissedTaskIds,
         addDismissedTaskId: addDismissedTaskIdCallback,
-        removeDismissedTaskId: removeDismissedTaskIdCallback
+        removeDismissedTaskId: removeDismissedTaskIdCallback,
+        snoozeTask
     };
 }

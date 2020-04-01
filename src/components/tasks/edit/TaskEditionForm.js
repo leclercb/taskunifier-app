@@ -23,7 +23,7 @@ function TaskEditionForm({ form, task }) {
 
     useEffect(() => {
         form.resetFields();
-    }, [task.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [task]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const sortedFields = sortBy(taskFieldApi.taskFields, field => ('taskColumnOrder_' + field.id) in settingsApi.settings ? settingsApi.settings['taskColumnOrder_' + field.id] : field.defaultOrder || 0);
     const sortedAndFilteredFields = sortedFields.filter(field => settingsApi.settings['taskFieldVisible_' + field.id] !== false);

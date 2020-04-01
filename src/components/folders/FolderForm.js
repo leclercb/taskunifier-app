@@ -25,7 +25,7 @@ function FolderForm({ folder, updateFolder }) {
         if (titleRef.current && !folder.title) {
             titleRef.current.focus();
         }
-    }, [folder.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [folder]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Form form={form} initialValues={folder} {...formItemLayout}>

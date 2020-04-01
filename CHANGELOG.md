@@ -1,3 +1,15 @@
+# 1.0.1
+
+## New Features
+
+* Add snooze and snooze all in reminder manager (#179)
+
+## Bug Fixes
+
+* Fix wrong first day of week (#167)
+* Fix synchronization of sub-tasks with Toodledo (#177)
+* Fix refresh form values (#180)
+
 # 1.0.0
 
 ## New Features

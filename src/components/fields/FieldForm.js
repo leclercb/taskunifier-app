@@ -20,7 +20,7 @@ function FieldForm({ objects, field, updateField }) {
         if (titleRef.current && !field.title) {
             titleRef.current.focus();
         }
-    }, [field.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [field]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const config = getFieldType(field.type, field.options);
 

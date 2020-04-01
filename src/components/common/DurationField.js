@@ -20,7 +20,7 @@ class DurationField extends React.Component {
     }
 
     formatDuration(value, explicit) {
-        return toStringDuration(value, explicit);
+        return value ? toStringDuration(value, explicit) : '';
     }
 
     parseDuration(match) {
@@ -62,7 +62,7 @@ class DurationField extends React.Component {
             <MaskTextField
                 ref={this.inputRef}
                 mask="11h11m"
-                value={this.formatDuration(duration, true)}
+                value={this.formatDuration(duration && duration >= 0 ? duration : 0, true)}
                 onChange={e => this.onChange(e.target.value)}
                 {...restProps} />
         );

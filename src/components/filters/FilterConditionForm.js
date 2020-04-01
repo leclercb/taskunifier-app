@@ -23,7 +23,7 @@ function FilterConditionForm({ condition, context, onUpdate, disabled }) {
 
     useEffect(() => {
         form.resetFields();
-    }, [condition.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [condition]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const field = context.fields.find(field => field.id === condition.field);
     const conditionFieldType = getConditionsFieldTypeForType(field.type);

@@ -339,7 +339,7 @@ function convertTaskToRemote(task, state, options) {
         folder: getObjectRemoteValue(state, 'folder', task.folder),
         goal: getObjectRemoteValue(state, 'goal', task.goal),
         location: getObjectRemoteValue(state, 'location', task.location),
-        parent: !options.skipParent ? getObjectLocalValue(state, 'task', task.parent) : 0,
+        parent: !options.skipParent ? getObjectRemoteValue(state, 'task', task.parent) : 0,
         duedate: convertWeirdToodledoTimestampToRemote(task.dueDate),
         startdate: convertWeirdToodledoTimestampToRemote(task.startDate),
         duetime: convertWeirdToodledoTimestampToRemote(task.dueDate),

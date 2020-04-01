@@ -25,7 +25,7 @@ function ContactForm({ contact, updateContact }) {
         if (firstNameRef.current && !contact.firstName) {
             firstNameRef.current.focus();
         }
-    }, [contact.id]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [contact]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Form form={form} initialValues={contact} {...formItemLayout}>
