@@ -98,7 +98,7 @@ function App() {
 
                     await appApi.saveData({ clean: true });
 
-                    ipcRenderer.send('closed');
+                    ipcRenderer.send('quit');
                 };
 
                 if (settingsApi.settings.confirmBeforeClosing) {
@@ -113,10 +113,10 @@ function App() {
                 }
             };
 
-            ipcRenderer.on('app-close', onClose);
+            ipcRenderer.on('before-quit', onClose);
 
             return () => {
-                ipcRenderer.removeListener('app-close', onClose);
+                ipcRenderer.removeListener('before-quit', onClose);
             };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps

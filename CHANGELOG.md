@@ -1,3 +1,11 @@
+# 1.0.2
+
+## New Features
+
+* Add setting to use system tray instead of task bar (#169)
+
+## Bug Fixes
+
 # 1.0.1
 
 ## New Features
