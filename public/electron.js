@@ -1,6 +1,6 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-const { app, BrowserWindow, Menu, Tray } = require('electron');
+const { app, BrowserWindow, Tray } = require('electron');
 const isDevelopment = require('electron-is-dev');
 const log = require('electron-log');
 const { autoUpdater } = require('electron-updater');
@@ -14,7 +14,11 @@ autoUpdater.logger = log;
 
 log.info('Starting TaskUnifier');
 
+const isMac = process.platform === 'darwin';
 const settings = getCoreSettings();
+
+// eslint-disable-next-line no-unused-vars
+let tray = null; // To avoid being garbage collected
 let quitInitiated = false;
 
 initializeIpcMainEvents();
@@ -24,7 +28,7 @@ app.on('ready', () => {
     createMainWindow(settings);
 
     if (settings.useTray) {
-        createTray();
+        tray = createTray();
     }
 
     app.setAsDefaultProtocolClient('tu');
@@ -38,9 +42,7 @@ app.on('before-quit', () => {
 });
 
 app.on('window-all-closed', () => {
-    if (!settings.useTray) {
-        app.quit();
-    }
+    app.quit();
 });
 
 app.on('open-url', (event, url) => {
@@ -92,11 +94,11 @@ function createMainWindow(settings) {
         } = require('electron-devtools-installer');
 
         installExtension(REACT_DEVELOPER_TOOLS)
-            .then(name => { log.info(`Added Extension: ${name}`); })
+            .then(name => { log.info(`Added extension: ${name}`); })
             .catch(error => { log.error('An error occurred: ', error); });
 
         installExtension(REDUX_DEVTOOLS)
-            .then(name => { log.info(`Added Extension: ${name}`); })
+            .then(name => { log.info(`Added extension: ${name}`); })
             .catch(error => { log.error('An error occurred: ', error); });
 
         window.webContents.openDevTools();
@@ -112,6 +114,27 @@ function createMainWindow(settings) {
         window.show();
     });
 
+    window.on('show', () => {
+        if (settings.useTray && isMac) {
+            app.dock.show();
+        }
+    });
+
+    window.on('hide', () => {
+        if (settings.useTray && isMac) {
+            app.dock.hide();
+        }
+    });
+
+    window.on('session-end', () => {
+        log.info('Session end');
+
+        if (!closed) {
+            closed = true;
+            window.webContents.send('window-close');
+        }
+    });
+
     window.on('close', event => {
         if (settings.useTray && !quitInitiated) {
             event.preventDefault();
@@ -120,8 +143,8 @@ function createMainWindow(settings) {
         }
 
         if (!closed) {
-            closed = true;
             event.preventDefault();
+            closed = true;
             window.webContents.send('window-close');
             return;
         }
@@ -135,17 +158,14 @@ function createMainWindow(settings) {
 }
 
 function createTray() {
-    const tray = new Tray('public/resources/images/logo.png');
-
-    const contextMenu = Menu.buildFromTemplate([
-        { label: 'Item1', type: 'radio' },
-        { label: 'Item2', type: 'radio' },
-        { label: 'Item3', type: 'radio', checked: true },
-        { label: 'Item4', type: 'radio' }
-    ]);
-
+    const tray = new Tray('public/resources/icons/logo.png');
     tray.setToolTip('TaskUnifier');
-    tray.setContextMenu(contextMenu);
+
+    tray.on('click', () => {
+        getDefaultWindow().show();
+    });
+
+    return tray;
 }
 
 function getWindowSettings(settings) {
