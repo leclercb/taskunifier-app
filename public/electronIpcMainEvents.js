@@ -34,6 +34,10 @@ function initializeIpcMainEvents() {
         shell.openItem(file);
     });
 
+    ipcMain.on('set-badge-count', (event, count) => {
+        app.setBadgeCount(count);
+    });
+
     ipcMain.on('show-open-dialog', async (event, options) => {
         const result = await dialog.showOpenDialog(options);
         BrowserWindow.getFocusedWindow().webContents.send('file-paths-selected', result);

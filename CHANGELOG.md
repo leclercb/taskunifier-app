@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Show badge count with number of reminded tasks
 * Add setting to use system tray instead of task bar (#169)
 
 ## Bug Fixes

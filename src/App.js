@@ -7,6 +7,7 @@ import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
 import { isAutomaticPubNeeded } from 'utils/PublicationUtils';
@@ -24,6 +25,7 @@ import 'components/common/table/VirtualizedTable.css';
 function App() {
     const appApi = useAppApi();
     const settingsApi = useSettingsApi();
+    const taskReminderApi = useTaskReminderApi();
 
     const [started, setStarted] = useState(false);
 
@@ -51,7 +53,9 @@ function App() {
             }
         };
 
-        onStarted();
+        if (started) {
+            onStarted();
+        }
     }, [started]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -201,6 +205,13 @@ function App() {
             };
         }
     }, [settingsApi.settings.showAllBadgeCounts]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (process.env.REACT_APP_MODE === 'electron') {
+            const { ipcRenderer } = window.require('electron');
+            ipcRenderer.send('set-badge-count', taskReminderApi.tasks.length);
+        }
+    }, [taskReminderApi.tasks.length]);
 
     return (
         <DndProvider backend={HTML5Backend}>
