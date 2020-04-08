@@ -77,7 +77,7 @@ function getDefaultWindow() {
 function createMainWindow(settings) {
     const window = new BrowserWindow(Object.assign({
         show: false,
-        icon: 'public/resources/images/logo.png',
+        icon: path.join(__dirname, 'resources', 'images', 'logo.png'),
         skipTaskbar: settings.useTray,
         webPreferences: {
             nodeIntegration: true
@@ -107,7 +107,7 @@ function createMainWindow(settings) {
     if (isDevelopment) {
         window.loadURL('http://localhost:3000');
     } else {
-        window.loadURL(`file://${path.join(__dirname, '../build/index.html')}`);
+        window.loadURL(`file://${path.join(__dirname, 'index.html')}`);
     }
 
     window.once('ready-to-show', () => {
@@ -131,6 +131,7 @@ function createMainWindow(settings) {
 
         if (!closed) {
             closed = true;
+            window.show();
             window.webContents.send('window-close');
         }
     });
@@ -145,6 +146,7 @@ function createMainWindow(settings) {
         if (!closed) {
             event.preventDefault();
             closed = true;
+            window.show();
             window.webContents.send('window-close');
             return;
         }
@@ -158,7 +160,7 @@ function createMainWindow(settings) {
 }
 
 function createTray() {
-    const tray = new Tray('public/resources/icons/logo.png');
+    const tray = new Tray(path.join(__dirname, 'resources', 'icons', 'logo.png'));
     tray.setToolTip('TaskUnifier');
 
     tray.on('click', () => {
