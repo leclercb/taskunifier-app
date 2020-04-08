@@ -2,6 +2,10 @@ const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const os = require('os');
 
 function initializeIpcMainEvents() {
+    ipcMain.on('close-window', () => {
+        BrowserWindow.getFocusedWindow().close();
+    });
+
     ipcMain.on('get-current-window-position', event => {
         event.returnValue = BrowserWindow.getFocusedWindow().getPosition();
     });
@@ -28,10 +32,6 @@ function initializeIpcMainEvents() {
 
     ipcMain.on('pdf-viewer', (event, file) => {
         shell.openItem(file);
-    });
-
-    ipcMain.on('quit', () => {
-        app.quit();
     });
 
     ipcMain.on('show-open-dialog', async (event, options) => {

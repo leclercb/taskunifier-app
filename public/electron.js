@@ -15,7 +15,7 @@ autoUpdater.logger = log;
 log.info('Starting TaskUnifier');
 
 const settings = getCoreSettings();
-let quitStarted = false;
+let quitInitiated = false;
 
 initializeIpcMainEvents();
 initializeMenu();
@@ -34,14 +34,7 @@ app.on('ready', () => {
 });
 
 app.on('before-quit', () => {
-    let window = getDefaultWindow();
-
-    if (window && !quitStarted) {
-        quitStarted = true;
-
-        event.preventDefault();
-        window.webContents.send('before-quit');
-    }
+    quitInitiated = true;
 });
 
 app.on('window-all-closed', () => {
@@ -89,6 +82,8 @@ function createMainWindow(settings) {
         }
     }, getWindowSettings(settings)));
 
+    let closed = false;
+
     if (isDevelopment) {
         const {
             default: installExtension,
@@ -118,9 +113,17 @@ function createMainWindow(settings) {
     });
 
     window.on('close', event => {
-        if (settings.useTray) {
+        if (settings.useTray && !quitInitiated) {
             event.preventDefault();
             window.hide();
+            return;
+        }
+
+        if (!closed) {
+            closed = true;
+            event.preventDefault();
+            window.webContents.send('window-close');
+            return;
         }
     });
 
