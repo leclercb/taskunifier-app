@@ -194,6 +194,15 @@ export function getCategories() {
                     editable: true
                 },
                 {
+                    id: 'useTray',
+                    title: 'Use system tray instead of task bar',
+                    type: 'boolean',
+                    value: false,
+                    editable: true,
+                    core: true,
+                    mode: 'electron'
+                },
+                {
                     id: 'confirmBeforeClosing',
                     title: 'Confirm before closing',
                     type: 'boolean',
