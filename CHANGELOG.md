@@ -7,6 +7,8 @@
 
 ## Bug Fixes
 
+* Fix false positive trojan alert in Windows uninstaller
+
 # 1.0.1
 
 ## New Features
