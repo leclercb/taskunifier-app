@@ -17,7 +17,7 @@ export function useAutoUpdaterApi() {
     );
 
     const checkForUpdatesCallback = useCallback(
-        silent => dispatch(checkForUpdates(silent)),
+        quiet => dispatch(checkForUpdates(quiet)),
         [dispatch]
     );
 

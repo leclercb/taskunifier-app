@@ -1,5 +1,8 @@
+import { notification } from 'antd';
 import { getSettings } from 'selectors/SettingSelectors';
 import { updateSettings } from 'actions/SettingActions';
+import { compareVersions } from 'utils/CompareUtils';
+import { getAppVersion } from 'utils/VersionUtils';
 
 export function setVisible(visible) {
     return async dispatch => {
@@ -37,7 +40,7 @@ function setUpdateDownloaded(info) {
     };
 }
 
-export function checkForUpdates(silent) {
+export function checkForUpdates(quiet) {
     return async (dispatch, getState) => {
         const state = getState();
         const settings = getSettings(state);
@@ -47,18 +50,28 @@ export function checkForUpdates(silent) {
 
         const updateCheckResult = await autoUpdater.checkForUpdates();
 
-        await dispatch(setUpdateInfo(updateCheckResult.updateInfo));
+        const currentVersion = getAppVersion();
+        const latestVersion = updateCheckResult.updateInfo.version;
 
-        if (!silent || settings.checkLatestVersion !== updateCheckResult.updateInfo.version) {
-            await dispatch(setVisible(true));
+        if (quiet && settings.checkLatestVersion === latestVersion) {
+            return null;
         }
 
-        await dispatch(updateSettings({
-            checkLatestVersion: updateCheckResult.updateInfo.version
-        }));
-        dispatch(setDownloadProgress({ progress: 25 }));
+        if (compareVersions(latestVersion, currentVersion) > 0) {
+            await dispatch(setUpdateInfo(updateCheckResult.updateInfo));
+            await dispatch(setVisible(true));
+            await dispatch(updateSettings({ checkLatestVersion: latestVersion }));
 
-        return updateCheckResult;
+            return updateCheckResult;
+        } else {
+            if (!quiet) {
+                notification.success({
+                    message: 'You already have the latest version'
+                });
+            }
+
+            return null;
+        }
     };
 }
 
