@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import AutoUpdater from 'components/autoupdater/AutoUpdater';
 import AppLayout from 'components/layout/AppLayout';
 import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useAutoUpdaterApi } from 'hooks/UseAutoUpdaterApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
@@ -12,7 +14,6 @@ import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
 import { isAutomaticPubNeeded } from 'utils/PublicationUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
-import { checkForUpdates } from 'utils/VersionUtils';
 import { startNoteFilterCounterWorker, startTaskFilterCounterWorker } from 'utils/WorkerUtils';
 
 import 'App.css';
@@ -24,6 +25,7 @@ import 'components/common/table/VirtualizedTable.css';
 
 function App() {
     const appApi = useAppApi();
+    const autoUpdaterApi = useAutoUpdaterApi();
     const settingsApi = useSettingsApi();
     const taskReminderApi = useTaskReminderApi();
 
@@ -53,7 +55,7 @@ function App() {
                     await appApi.publish();
                 }
 
-                await checkForUpdates(settingsApi.settings, true)
+                autoUpdaterApi.checkForUpdates(true);
             }
         };
 
@@ -201,6 +203,7 @@ function App() {
 
     return (
         <DndProvider backend={HTML5Backend}>
+            <AutoUpdater />
             <AppLayout />
         </DndProvider>
     );

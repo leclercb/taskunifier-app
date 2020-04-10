@@ -1,6 +1,7 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 const { app, BrowserWindow, Tray } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const isDevelopment = require('electron-is-dev');
 const log = require('electron-log');
 const fs = require('fs');
@@ -10,6 +11,10 @@ const { initializeIpcMainEvents } = require('./electronIpcMainEvents.js');
 const { initializeMenu } = require('./electronMenu.js');
 
 log.info('Starting TaskUnifier');
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = false;
+autoUpdater.logger = log;
 
 const isMac = process.platform === 'darwin';
 const settings = getCoreSettings();

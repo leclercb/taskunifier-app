@@ -2,6 +2,7 @@ import reduceReducers from 'reduce-reducers';
 import { combineReducers } from 'redux';
 import undoable, { excludeAction } from 'redux-undo';
 import App from 'reducers/App';
+import AutoUpdater from 'reducers/AutoUpdater';
 import Notes from 'reducers/Notes';
 import Objects from 'reducers/Objects';
 import Publication from 'reducers/Publication';
@@ -13,6 +14,7 @@ import Thread from 'reducers/Thread';
 
 export default combineReducers({
     app: App(),
+    autoUpdater: AutoUpdater(),
     contacts: Objects('contacts'),
     contexts: Objects('contexts'),
     folders: Objects('folders'),

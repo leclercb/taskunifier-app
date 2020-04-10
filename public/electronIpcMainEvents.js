@@ -1,45 +1,7 @@
 const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
-const log = require('electron-log');
-const { autoUpdater, CancellationToken } = require('electron-updater');
 const os = require('os');
 
 function initializeIpcMainEvents() {
-    ipcMain.on('check-for-updates', async event => {
-        autoUpdater.autoDownload = false;
-        autoUpdater.autoInstallOnAppQuit = false;
-        autoUpdater.logger = log;
-
-        const updateCheckResult = await autoUpdater.checkForUpdates();
-        log.info(updateCheckResult);
-
-        event.sender.send('update-check-result', updateCheckResult);
-    });
-
-    ipcMain.on('download-update', async event => {
-        const downloadProgressHandler = info => {
-            event.sender.send('auto-updater-download-progress', info);
-        };
-
-        const updateDownloadedHandler = info => {
-            event.sender.send('auto-updater-update-downloaded', info);
-        };
-
-        try {
-            autoUpdater.on('download-progress', downloadProgressHandler);
-            autoUpdater.on('update-downloaded', updateDownloadedHandler);
-
-            const cancellationToken = new CancellationToken();
-            await autoUpdater.downloadUpdate(cancellationToken);
-        } finally {
-            autoUpdater.removeListener('download-progress', downloadProgressHandler);
-            autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
-        }
-    });
-
-    ipcMain.on('quit-and-install', () => {
-        autoUpdater.quitAndInstall();
-    });
-
     ipcMain.on('close-window', () => {
         BrowserWindow.getFocusedWindow().close();
     });
