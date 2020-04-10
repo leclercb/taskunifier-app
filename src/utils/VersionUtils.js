@@ -26,7 +26,18 @@ export async function getLatestVersion(settings) {
     return result.data.name;
 }
 
-export async function checkLatestVersion(settings, quiet = false) {
+// TODO continue auto updater
+export async function checkForUpdates(settings, quiet = false) {
+    const { ipcRenderer } = window.require('electron');
+
+    ipcRenderer.once('update-check-result', updateCheckResult => {
+        console.log('X', updateCheckResult);
+    })
+
+    ipcRenderer.send('check-for-updates');
+}
+
+export async function checkForUpdates2(settings, quiet = false) {
     try {
         const latestVersion = await getLatestVersion(settings);
         const currentVersion = getAppVersion();

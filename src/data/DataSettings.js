@@ -23,7 +23,7 @@ import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
 import { getPublicationApps } from 'utils/PublicationUtils';
 import { getSynchronizationApp } from 'utils/SynchronizationUtils';
-import { checkLatestVersion } from 'utils/VersionUtils';
+import { checkForUpdates } from 'utils/VersionUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -96,7 +96,7 @@ export function getCategories() {
                     title: 'Check version',
                     type: 'button',
                     value: async settings => {
-                        await checkLatestVersion(settings, false);
+                        await checkForUpdates(settings, false);
                     },
                     editable: true,
                     mode: 'electron'

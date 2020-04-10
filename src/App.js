@@ -12,7 +12,7 @@ import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
 import { isAutomaticPubNeeded } from 'utils/PublicationUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
-import { checkLatestVersion } from 'utils/VersionUtils';
+import { checkForUpdates } from 'utils/VersionUtils';
 import { startNoteFilterCounterWorker, startTaskFilterCounterWorker } from 'utils/WorkerUtils';
 
 import 'App.css';
@@ -44,12 +44,16 @@ function App() {
 
     useEffect(() => {
         const onStarted = async () => {
-            if (settingsApi.settings.synchronizeAfterStarting) {
-                await appApi.synchronize();
-            }
+            if (process.env.REACT_APP_MODE === 'electron') {
+                if (settingsApi.settings.synchronizeAfterStarting) {
+                    await appApi.synchronize();
+                }
 
-            if (settingsApi.settings.publishAfterStarting) {
-                await appApi.publish();
+                if (settingsApi.settings.publishAfterStarting) {
+                    await appApi.publish();
+                }
+
+                await checkForUpdates(settingsApi.settings, true)
             }
         };
 
@@ -57,24 +61,6 @@ function App() {
             onStarted();
         }
     }, [started]); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        if (process.env.REACT_APP_MODE === 'electron') {
-            const timeout = setTimeout(async () => {
-                const result = await checkLatestVersion(settingsApi.settings, true);
-
-                if (result) {
-                    settingsApi.updateSettings({
-                        checkLatestVersion: result
-                    });
-                }
-            }, 5000);
-
-            return () => {
-                clearTimeout(timeout);
-            };
-        }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {

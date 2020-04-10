@@ -3,14 +3,11 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 const { app, BrowserWindow, Tray } = require('electron');
 const isDevelopment = require('electron-is-dev');
 const log = require('electron-log');
-const { autoUpdater } = require('electron-updater');
 const fs = require('fs');
 const path = require('path');
 
 const { initializeIpcMainEvents } = require('./electronIpcMainEvents.js');
 const { initializeMenu } = require('./electronMenu.js');
-
-autoUpdater.logger = log;
 
 log.info('Starting TaskUnifier');
 
@@ -33,8 +30,6 @@ app.on('ready', () => {
 
     app.setAsDefaultProtocolClient('tu');
     app.setAsDefaultProtocolClient('taskunifier');
-
-    autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.on('before-quit', () => {
