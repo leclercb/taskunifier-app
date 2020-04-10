@@ -51,8 +51,8 @@ export function getPath(path) {
 
 export function openExternalLink(url) {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const { ipcRenderer } = window.require('electron');
-        ipcRenderer.send('open-external', url);
+        const electron = window.require('electron');
+        electron.remote.shell.openExternal(url);
     } else {
         const win = window.open(url, '_blank');
         win.focus();

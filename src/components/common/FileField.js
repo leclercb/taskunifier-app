@@ -35,38 +35,43 @@ class FileField extends React.Component {
     }
 
     onOpenFile() {
-        const { ipcRenderer } = window.require('electron');
-        return ipcRenderer.send('open-file', this.state.value);
+        const electron = window.require('electron');
+        return electron.remote.shell.openItem(this.state.value);
     }
 
-    onSelectFile() {
+    async onSelectFile() {
         this.selectingFile = true;
 
-        const { ipcRenderer } = window.require('electron');
+        const electron = window.require('electron');
+        const dialog = electron.remote.dialog;
 
-        ipcRenderer.once('file-paths-selected', (event, message) => {
-            let filePath;
+        let result;
 
-            if (this.props.type === 'save') {
-                filePath = message.filePath;
-            } else {
-                filePath = message.filePaths && message.filePaths.length === 1 ? message.filePaths[0] : null;
+        if (this.props.type === 'save') {
+            result = await dialog.showSaveDialog(this.props.options);
+        } else {
+            result = await dialog.showOpenDialog(this.props.options);
+        }
+
+        let filePath;
+
+        if (this.props.type === 'save') {
+            filePath = result.filePath;
+        } else {
+            filePath = result.filePaths && result.filePaths.length === 1 ? result.filePaths[0] : null;
+        }
+
+        if (!result.canceled && filePath) {
+            this.onChange(filePath);
+
+            if (this.props.onPressEnter) {
+                this.props.onPressEnter();
             }
+        }
 
-            if (!message.canceled && filePath) {
-                this.onChange(filePath);
-
-                if (this.props.onPressEnter) {
-                    this.props.onPressEnter();
-                }
-            }
-
-            setTimeout(() => {
-                this.selectingFile = false;
-            }, 200);
-        });
-
-        ipcRenderer.send(this.props.type === 'save' ? 'show-save-dialog' : 'show-open-dialog', this.props.options);
+        setTimeout(() => {
+            this.selectingFile = false;
+        }, 200);
     }
 
     render() {

@@ -7,7 +7,6 @@ const log = require('electron-log');
 const fs = require('fs');
 const path = require('path');
 
-const { initializeIpcMainEvents } = require('./electronIpcMainEvents.js');
 const { initializeMenu } = require('./electronMenu.js');
 
 log.info('Starting TaskUnifier');
@@ -23,7 +22,6 @@ const settings = getCoreSettings();
 let tray = null; // To avoid being garbage collected
 let quitInitiated = false;
 
-initializeIpcMainEvents();
 initializeMenu();
 
 app.on('ready', () => {

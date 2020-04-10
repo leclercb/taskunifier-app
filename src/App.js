@@ -66,12 +66,13 @@ function App() {
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-            const { ipcRenderer } = window.require('electron');
+            const electron = window.require('electron');
 
             const onClose = () => {
                 const close = async () => {
-                    const size = ipcRenderer.sendSync('get-current-window-size');
-                    const position = ipcRenderer.sendSync('get-current-window-position');
+                    const currentWindow = electron.remote.getCurrentWindow();
+                    const size = currentWindow.getSize();
+                    const position = currentWindow.getPosition();
 
                     await settingsApi.updateSettings({
                         windowSizeWidth: size[0],
@@ -90,7 +91,7 @@ function App() {
 
                     await appApi.saveData({ clean: true });
 
-                    ipcRenderer.send('close-window');
+                    currentWindow.close();
                 };
 
                 if (settingsApi.settings.confirmBeforeClosing) {
@@ -105,10 +106,10 @@ function App() {
                 }
             };
 
-            ipcRenderer.on('window-close', onClose);
+            electron.ipcRenderer.on('window-close', onClose);
 
             return () => {
-                ipcRenderer.removeListener('window-close', onClose);
+                electron.ipcRenderer.removeListener('window-close', onClose);
             };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps
@@ -196,8 +197,8 @@ function App() {
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-            const { ipcRenderer } = window.require('electron');
-            ipcRenderer.send('set-badge-count', taskReminderApi.tasks.length);
+            const electron = window.require('electron');
+            electron.remote.app.setBadgeCount(taskReminderApi.tasks.length);
         }
     }, [taskReminderApi.tasks.length]);
 
