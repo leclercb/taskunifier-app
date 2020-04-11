@@ -62,14 +62,14 @@ function initializeMenu() {
             submenu: [
                 {
                     label: 'Undo',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Z' : 'Ctrl+Z',
+                    accelerator: isMac ? 'Cmd+Z' : 'Ctrl+Z',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-undo');
                     }
                 },
                 {
                     label: 'Redo',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Y' : 'Ctrl+Y',
+                    accelerator: isMac ? 'Cmd+Y' : 'Ctrl+Y',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-redo');
                     }
@@ -85,7 +85,7 @@ function initializeMenu() {
             submenu: [
                 {
                     label: 'Add Note',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Alt+N' : 'Ctrl+Shift+N',
+                    accelerator: isMac ? 'Cmd+Alt+N' : 'Ctrl+Shift+N',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-add-note');
                     }
@@ -123,28 +123,28 @@ function initializeMenu() {
             submenu: [
                 {
                     label: 'Add Task',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Alt+T' : 'Ctrl+Shift+T',
+                    accelerator: isMac ? 'Cmd+Alt+T' : 'Ctrl+Shift+T',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-add-task');
                     }
                 },
                 {
                     label: 'Add Sub-Task',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Alt+Y' : 'Ctrl+Shift+Y',
+                    accelerator: isMac ? 'Cmd+Alt+Y' : 'Ctrl+Shift+Y',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-add-sub-task');
                     }
                 },
                 {
                     label: 'Batch Add Tasks',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Alt+B' : 'Ctrl+Shift+B',
+                    accelerator: isMac ? 'Cmd+Alt+B' : 'Ctrl+Shift+B',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-batch-add-tasks');
                     }
                 },
                 {
                     label: 'Edit Task(s)',
-                    accelerator: process.platform === 'darwin' ? 'Cmd+Alt+E' : 'Ctrl+Shift+E',
+                    accelerator: isMac ? 'Cmd+Alt+E' : 'Ctrl+Shift+E',
                     click: async () => {
                         BrowserWindow.getFocusedWindow().webContents.send('menu-edit-tasks');
                     }

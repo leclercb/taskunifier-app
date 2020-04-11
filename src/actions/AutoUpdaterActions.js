@@ -2,7 +2,7 @@ import { notification } from 'antd';
 import { getSettings } from 'selectors/SettingSelectors';
 import { updateSettings } from 'actions/SettingActions';
 import { compareVersions } from 'utils/CompareUtils';
-import { getAppVersion } from 'utils/VersionUtils';
+import { getAppVersion } from 'utils/ElectronUtils';
 
 export function setVisible(visible) {
     return async dispatch => {

@@ -96,7 +96,7 @@ export function getCategories() {
                     title: 'Check version',
                     type: 'button',
                     value: async (settings, updateSettings, dispatch) => {
-                        dispatch(checkForUpdates(false));
+                        await dispatch(checkForUpdates(false));
                     },
                     editable: true,
                     mode: 'electron'
