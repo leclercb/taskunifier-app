@@ -113,6 +113,7 @@ export function quitAndInstall() {
         const electron = window.require('electron');
         const { autoUpdater } = electron.remote.require('electron-updater');
 
+        electron.ipcRenderer.send('initiate-quit');
         autoUpdater.quitAndInstall();
     };
 }
