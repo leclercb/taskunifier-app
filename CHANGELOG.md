@@ -1,7 +1,8 @@
-# 1.0.2
+# 1.1.0
 
 ## New Features
 
+* Improved auto updater
 * Show badge count with number of reminded tasks
 * Add setting to use system tray instead of task bar (#169)
 

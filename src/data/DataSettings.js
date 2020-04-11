@@ -4,6 +4,7 @@ import moment from 'moment';
 import { v4 as uuid } from 'uuid';
 import { getUserDataPath } from 'actions/ActionUtils';
 import { loadData, saveData, setNoteFieldManagerOptions, setTaskFieldManagerOptions } from 'actions/AppActions';
+import { checkForUpdates } from 'actions/AutoUpdaterActions';
 import { getBackupIds, restoreBackup } from 'actions/BackupActions';
 import { testConnection } from 'actions/RequestActions';
 import { resetDataForSynchronization, selectSynchronizationApp, synchronize } from 'actions/SynchronizationActions';
@@ -23,7 +24,6 @@ import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
 import { getPublicationApps } from 'utils/PublicationUtils';
 import { getSynchronizationApp } from 'utils/SynchronizationUtils';
-import { checkLatestVersion } from 'utils/VersionUtils';
 
 export function isCoreSetting(settingId) {
     return !!getCategories().find(category => {
@@ -95,8 +95,8 @@ export function getCategories() {
                     id: 'checkVersion',
                     title: 'Check version',
                     type: 'button',
-                    value: async settings => {
-                        await checkLatestVersion(settings, false);
+                    value: async (settings, updateSettings, dispatch) => {
+                        await dispatch(checkForUpdates(false));
                     },
                     editable: true,
                     mode: 'electron'

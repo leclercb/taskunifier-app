@@ -14,6 +14,7 @@ import {
     faCheckDouble,
     faChevronCircleRight,
     faCircle,
+    faCodeBranch,
     faCog,
     faCogs,
     faColumns,
@@ -76,6 +77,7 @@ library.add(faCheck);
 library.add(faCheckDouble);
 library.add(faChevronCircleRight);
 library.add(faCircle);
+library.add(faCodeBranch);
 library.add(faCog);
 library.add(faCogs);
 library.add(faColumns);
