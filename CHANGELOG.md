@@ -1,3 +1,15 @@
+# 1.1.0
+
+## New Features
+
+* Improved auto updater
+* Show badge count with number of reminded tasks
+* Add setting to use system tray instead of task bar (#169)
+
+## Bug Fixes
+
+* Fix false positive trojan alert in Windows uninstaller
+
 # 1.0.1
 
 ## New Features

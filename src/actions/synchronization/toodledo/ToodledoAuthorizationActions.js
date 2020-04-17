@@ -5,8 +5,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
-import { openExternalLink } from 'utils/ElectronUtils';
-import { getAppVersion } from 'utils/VersionUtils';
+import { getAppVersion, getPlatform, openExternalLink } from 'utils/ElectronUtils';
 
 export function authorize() {
     return async () => {
@@ -27,7 +26,6 @@ export function createToken(code) {
     console.debug('createToken', code);
 
     return async (dispatch, getState) => {
-        const { ipcRenderer } = window.require('electron');
         const settings = getSettings(getState());
 
         const result = await sendRequest(
@@ -45,7 +43,7 @@ export function createToken(code) {
                     grant_type: 'authorization_code',
                     code,
                     vers: getAppVersion(),
-                    device: ipcRenderer.sendSync('get-os-platform')
+                    device: getPlatform()
                 })
             },
             settings);
@@ -65,7 +63,6 @@ export function refreshToken() {
     console.debug('refreshToken');
 
     return async (dispatch, getState) => {
-        const { ipcRenderer } = window.require('electron');
         const settings = getSettings(getState());
 
         const result = await sendRequest(
@@ -83,7 +80,7 @@ export function refreshToken() {
                     grant_type: 'refresh_token',
                     refresh_token: settings.toodledo.refreshToken,
                     vers: getAppVersion(),
-                    device: ipcRenderer.sendSync('get-os-platform')
+                    device: getPlatform()
                 })
             },
             settings);

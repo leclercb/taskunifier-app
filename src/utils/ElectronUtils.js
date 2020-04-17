@@ -45,16 +45,22 @@ export function writeFile(file, data) {
     return fse.writeFile(file, data);
 }
 
+export function getAppVersion() {
+    return electron.remote.app.getVersion();
+}
+
+export function getPlatform() {
+    return electron.remote.require('os').platform();
+}
+
 export function getPath(path) {
     return electron.remote.app.getPath(path);
 }
 
 export function openExternalLink(url) {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const { ipcRenderer } = window.require('electron');
-        ipcRenderer.send('open-external', url);
+        electron.remote.shell.openExternal(url);
     } else {
-        const win = window.open(url, '_blank');
-        win.focus();
+        window.open(url, '_blank').focus();
     }
 }

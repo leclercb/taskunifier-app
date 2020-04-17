@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { DndProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
+import AutoUpdater from 'components/autoupdater/AutoUpdater';
 import AppLayout from 'components/layout/AppLayout';
 import withJoyride from 'containers/WithJoyride';
 import { useAppApi } from 'hooks/UseAppApi';
+import { useAutoUpdaterApi } from 'hooks/UseAutoUpdaterApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
 import { isAutomaticPubNeeded } from 'utils/PublicationUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
-import { checkLatestVersion } from 'utils/VersionUtils';
 import { startNoteFilterCounterWorker, startTaskFilterCounterWorker } from 'utils/WorkerUtils';
 
 import 'App.css';
@@ -23,7 +25,9 @@ import 'components/common/table/VirtualizedTable.css';
 
 function App() {
     const appApi = useAppApi();
+    const autoUpdaterApi = useAutoUpdaterApi();
     const settingsApi = useSettingsApi();
+    const taskReminderApi = useTaskReminderApi();
 
     const [started, setStarted] = useState(false);
 
@@ -42,44 +46,33 @@ function App() {
 
     useEffect(() => {
         const onStarted = async () => {
-            if (settingsApi.settings.synchronizeAfterStarting) {
-                await appApi.synchronize();
-            }
+            if (process.env.REACT_APP_MODE === 'electron') {
+                if (settingsApi.settings.synchronizeAfterStarting) {
+                    await appApi.synchronize();
+                }
 
-            if (settingsApi.settings.publishAfterStarting) {
-                await appApi.publish();
+                if (settingsApi.settings.publishAfterStarting) {
+                    await appApi.publish();
+                }
+
+                autoUpdaterApi.checkForUpdates(true);
             }
         };
 
-        onStarted();
+        if (started) {
+            onStarted();
+        }
     }, [started]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-            const timeout = setTimeout(async () => {
-                const result = await checkLatestVersion(settingsApi.settings, true);
-
-                if (result) {
-                    settingsApi.updateSettings({
-                        checkLatestVersion: result
-                    });
-                }
-            }, 5000);
-
-            return () => {
-                clearTimeout(timeout);
-            };
-        }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    useEffect(() => {
-        if (process.env.REACT_APP_MODE === 'electron') {
-            const { ipcRenderer } = window.require('electron');
+            const electron = window.require('electron');
 
             const onClose = () => {
                 const close = async () => {
-                    const size = ipcRenderer.sendSync('get-current-window-size');
-                    const position = ipcRenderer.sendSync('get-current-window-position');
+                    const currentWindow = electron.remote.getCurrentWindow();
+                    const size = currentWindow.getSize();
+                    const position = currentWindow.getPosition();
 
                     await settingsApi.updateSettings({
                         windowSizeWidth: size[0],
@@ -98,7 +91,7 @@ function App() {
 
                     await appApi.saveData({ clean: true });
 
-                    ipcRenderer.send('closed');
+                    currentWindow.close();
                 };
 
                 if (settingsApi.settings.confirmBeforeClosing) {
@@ -113,10 +106,10 @@ function App() {
                 }
             };
 
-            ipcRenderer.on('app-close', onClose);
+            electron.ipcRenderer.on('window-close', onClose);
 
             return () => {
-                ipcRenderer.removeListener('app-close', onClose);
+                electron.ipcRenderer.removeListener('window-close', onClose);
             };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps
@@ -202,8 +195,16 @@ function App() {
         }
     }, [settingsApi.settings.showAllBadgeCounts]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    useEffect(() => {
+        if (process.env.REACT_APP_MODE === 'electron') {
+            const electron = window.require('electron');
+            electron.remote.app.setBadgeCount(taskReminderApi.tasks.length);
+        }
+    }, [taskReminderApi.tasks.length]);
+
     return (
         <DndProvider backend={HTML5Backend}>
+            <AutoUpdater />
             <AppLayout />
         </DndProvider>
     );

@@ -62,13 +62,14 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
         printTable(doc, null, fields, objects, state);
 
         if (process.env.REACT_APP_MODE === 'electron') {
-            const { ipcRenderer } = window.require('electron');
             const path = join(getSettings(state).dataFolder, 'temp');
             const file = join(path, fileName);
 
             await ensureDir(path);
             await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));
-            ipcRenderer.send('pdf-viewer', file);
+
+            const electron = window.require('electron');
+            return electron.remote.shell.openItem(file);
         } else {
             doc.save(fileName);
         }
