@@ -31,7 +31,7 @@
         "electron-log": "^4.1.1",
         "electron-updater": "^4.2.5",
         "fs-extra": "^9.0.0",
-        "googleapis": "^48.0.0",
+        "googleapis": "^49.0.0",
         "https-proxy-agent": "^5.0.0",
         "inputmask-core": "^2.2.0",
         "jspdf": "^1.5.3",
@@ -67,7 +67,7 @@
     "devDependencies": {
         "babel-eslint": "^10.1.0",
         "babel-jest": "^25.3.0",
-        "electron": "^8.2.2",
+        "electron": "^8.2.3",
         "electron-builder": "^22.5.1",
         "electron-devtools-installer": "^3.0.0",
         "enzyme": "^3.11.0",
