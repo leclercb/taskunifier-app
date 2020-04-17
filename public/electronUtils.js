@@ -103,9 +103,19 @@ function createTray() {
 }
 
 function getCoreSettings() {
-    const userDataPath = app.getPath('userData');
-    const data = fs.readFileSync(path.join(userDataPath, 'coreSettings.json'), 'utf-8');
-    return JSON.parse(data);
+    try {
+        const userDataPath = app.getPath('userData');
+        const file = path.join(userDataPath, 'coreSettings.json');
+
+        if (!fs.existsSync(file)) {
+            return {};
+        }
+
+        const data = fs.readFileSync(file, 'utf-8');
+        return JSON.parse(data);
+    } catch (error) {
+        return {};
+    }
 }
 
 function getDefaultWindow() {
@@ -121,31 +131,24 @@ function getDefaultWindow() {
 }
 
 function getWindowSettings(settings) {
-    try {
-        const window = {
-            width: 1280,
-            height: 768
-        };
+    const window = {
+        width: 1280,
+        height: 768
+    };
 
-        if (Number.isInteger(settings.windowSizeWidth) &&
-            Number.isInteger(settings.windowSizeHeight)) {
-            window.width = settings.windowSizeWidth;
-            window.height = settings.windowSizeHeight;
-        }
-
-        if (Number.isInteger(settings.windowPositionX) &&
-            Number.isInteger(settings.windowPositionY)) {
-            window.x = settings.windowPositionX;
-            window.y = settings.windowPositionY;
-        }
-
-        return window;
-    } catch (error) {
-        return {
-            width: 1280,
-            height: 768
-        };
+    if (Number.isInteger(settings.windowSizeWidth) &&
+        Number.isInteger(settings.windowSizeHeight)) {
+        window.width = settings.windowSizeWidth;
+        window.height = settings.windowSizeHeight;
     }
+
+    if (Number.isInteger(settings.windowPositionX) &&
+        Number.isInteger(settings.windowPositionY)) {
+        window.x = settings.windowPositionX;
+        window.y = settings.windowPositionY;
+    }
+
+    return window;
 }
 
 module.exports = {
