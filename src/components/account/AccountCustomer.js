@@ -33,6 +33,13 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
         }
     };
 
+    if (customer) {
+        customer = {
+            ...customer,
+            tax_id: customer.tax_ids.data.length !== 0 ? customer.tax_ids.data[0] : null
+        }
+    };
+
     return (
         <Spin spinning={busy}>
             <Form form={form} initialValues={customer} {...formItemLayout}>
@@ -129,7 +136,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                 <Form.Item label="Tax ID">
                     <div style={{ padding: 20, border: '1px solid #cccccc', borderRadius: 5 }}>
                         <Form.Item
-                            name={['tax_info', 'type']}
+                            name={['tax_id', 'type']}
                             label="Type"
                             {...formItemLayout}>
                             <Select placeholder="Type">
@@ -141,7 +148,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            name={['tax_info', 'tax_id']}
+                            name={['tax_id', 'value']}
                             label="Value"
                             {...formItemLayout}>
                             <Input placeholder="Value" />
@@ -149,7 +156,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                         <Form.Item
                             label="Verification Status"
                             {...formItemLayout}>
-                            {customer && customer.tax_info_verification ? customer.tax_info_verification.status : ''}
+                            {customer && customer.tax_id && customer.tax_id.verification ? customer.tax_id.verification.status : ''}
                         </Form.Item>
                     </div>
                 </Form.Item>
