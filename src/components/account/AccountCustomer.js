@@ -17,8 +17,6 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
         form.resetFields();
     }, [customer]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const taxId = customer && customer.tax_ids.data.length !== 0 ? customer.tax_ids.data[0] : null;
-
     const onSubmit = async () => {
         try {
             const values = await form.validateFields();
@@ -34,6 +32,13 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
             // Skip
         }
     };
+
+    if (customer) {
+        customer = {
+            ...customer,
+            tax_id: customer.tax_ids.data.length !== 0 ? customer.tax_ids.data[0] : null
+        };
+    }
 
     return (
         <Spin spinning={busy}>
@@ -97,7 +102,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             <Input />
                         </Form.Item>
                         <Form.Item
-                            name={['address', 'postalCode']}
+                            name={['address', 'postal_code']}
                             label="Postal Code"
                             rules={[
                                 {
@@ -131,7 +136,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                 <Form.Item label="Tax ID">
                     <div style={{ padding: 20, border: '1px solid #cccccc', borderRadius: 5 }}>
                         <Form.Item
-                            name={['taxId', 'type']}
+                            name={['tax_id', 'type']}
                             label="Type"
                             {...formItemLayout}>
                             <Select placeholder="Type">
@@ -143,7 +148,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                             </Select>
                         </Form.Item>
                         <Form.Item
-                            name={['taxId', 'value']}
+                            name={['tax_id', 'value']}
                             label="Value"
                             {...formItemLayout}>
                             <Input placeholder="Value" />
@@ -151,7 +156,7 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
                         <Form.Item
                             label="Verification Status"
                             {...formItemLayout}>
-                            {taxId ? taxId.verification.status : ''}
+                            {customer && customer.tax_id && customer.tax_id.verification ? customer.tax_id.verification.status : ''}
                         </Form.Item>
                     </div>
                 </Form.Item>
