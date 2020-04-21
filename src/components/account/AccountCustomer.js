@@ -37,8 +37,8 @@ function AccountCustomer({ customer, onCustomerUpdated }) {
         customer = {
             ...customer,
             tax_id: customer.tax_ids.data.length !== 0 ? customer.tax_ids.data[0] : null
-        }
-    };
+        };
+    }
 
     return (
         <Spin spinning={busy}>
