@@ -1,17 +1,19 @@
 import React from 'react';
 import { Empty, Tabs } from 'antd';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import LinkedObjectTable from 'components/tasks/linkedobject/LinkedObjectTable';
 import TaskTextForm from 'components/tasks/text/TaskTextForm';
 import WorkLogTable from 'components/tasks/worklogs/WorkLogTable';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getLinkedContactFields } from 'data/DataLinkedContactFields';
 import { getLinkedFileFields } from 'data/DataLinkedFileFields';
 import { getLinkedTaskFields } from 'data/DataLinkedTaskFields';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import 'components/tasks/tabs/TaskTabs.css';
 
-function TaskTabs() {
-    const taskApi = useTaskApi();
+function TaskTabs({ apis }) {
+    const { taskApi } = apis;
 
     if (taskApi.selectedTasks.length !== 1) {
         return (
@@ -106,4 +108,10 @@ function TaskTabs() {
     );
 }
 
-export default TaskTabs;
+TaskTabs.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TaskTabs, () => ({
+    taskApi: useTaskApi()
+}));

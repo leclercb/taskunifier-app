@@ -6,6 +6,7 @@ import LeftRight from 'components/common/LeftRight';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import ModalTaskFilterInfo from 'components/taskfilters/ModalTaskFilterInfo';
 import Constants from 'constants/Constants';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getGeneralTaskFilters } from 'data/DataTaskFilters';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useContextApi } from 'hooks/UseContextApi';
@@ -19,15 +20,7 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { equals } from 'utils/ObjectUtils';
 
 function TaskSider(props) {
-    const appApi = useAppApi();
-    const contextApi = useContextApi();
-    const folderApi = useFolderApi();
-    const goalApi = useGoalApi();
-    const locationApi = useLocationApi();
-    const settingsApi = useSettingsApi();
-    const tagApi = useTagApi();
-    const taskApi = useTaskApi();
-    const taskFilterApi = useTaskFilterApi();
+    const { appApi, contextApi, folderApi, goalApi, locationApi, settingsApi, tagApi, taskApi, taskFilterApi } = props.apis;
 
     const [searchValue, setSearchValue] = useState(taskApi.searchTaskValue);
     const [selectedTaskFilterInfo, setSelectedTaskFilterInfo] = useState(null);
@@ -443,7 +436,18 @@ function TaskSider(props) {
 }
 
 TaskSider.propTypes = {
+    apis: PropTypes.object.isRequired,
     mode: PropTypes.oneOf(['table', 'calendar']).isRequired
 };
 
-export default TaskSider;
+export default withBusyCheck(TaskSider, () => ({
+    appApi: useAppApi(),
+    contextApi: useContextApi(),
+    folderApi: useFolderApi(),
+    goalApi: useGoalApi(),
+    locationApi: useLocationApi(),
+    settingsApi: useSettingsApi(),
+    tagApi: useTagApi(),
+    taskApi: useTaskApi(),
+    taskFilterApi: useTaskFilterApi()
+}));

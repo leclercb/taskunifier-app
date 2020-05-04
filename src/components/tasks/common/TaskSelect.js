@@ -2,14 +2,14 @@ import React, { forwardRef } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
-import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
-const TaskSelect = forwardRef(function TaskSelect(props, ref) {
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const value = taskApi.tasks.find(task => task.id === props.value) ? props.value : undefined;
+const TaskSelect = forwardRef(function TaskSelect({ apis, value, ...props }, ref) {
+    const { settingsApi, taskApi } = apis;
+    const v = taskApi.tasks.find(task => task.id === value) ? value : undefined;
 
     return (
         <Select
@@ -18,7 +18,7 @@ const TaskSelect = forwardRef(function TaskSelect(props, ref) {
             showSearch={true}
             filterOption={(input, option) => (option.props.title || '').toLowerCase().includes(input)}
             {...props}
-            value={value}>
+            value={v}>
             {taskApi.tasks.map(task => (
                 <Select.Option key={task.id} value={task.id} title={task.title}>
                     <Icon
@@ -39,7 +39,11 @@ const TaskSelect = forwardRef(function TaskSelect(props, ref) {
 TaskSelect.displayName = 'ForwardRefTaskSelect';
 
 TaskSelect.propTypes = {
+    apis: PropTypes.object.isRequired,
     value: PropTypes.string
 };
 
-export default TaskSelect;
+export default withBusyCheck(TaskSelect, () => ({
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi()
+}));

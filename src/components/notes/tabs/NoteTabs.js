@@ -1,11 +1,13 @@
 import React from 'react';
 import { Empty, Tabs } from 'antd';
+import PropTypes from 'prop-types';
 import NoteTextForm from 'components/notes/text/NoteTextForm';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import 'components/notes/tabs/NoteTabs.css';
 
-function NoteTabs() {
-    const noteApi = useNoteApi();
+function NoteTabs({ apis }) {
+    const { noteApi } = apis;
 
     if (noteApi.selectedNotes.length !== 1) {
         return (
@@ -27,4 +29,10 @@ function NoteTabs() {
     );
 }
 
-export default NoteTabs;
+NoteTabs.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(NoteTabs, () => ({
+    noteApi: useNoteApi()
+}));

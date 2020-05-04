@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Alert, Badge, Input, Menu, Switch, Tooltip } from 'antd';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import ModalNoteFilterInfo from 'components/notefilters/ModalNoteFilterInfo';
 import ObjectMenuItem from 'components/sider/ObjectMenuItem';
 import Constants from 'constants/Constants';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getGeneralNoteFilters } from 'data/DataNoteFilters';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
@@ -14,13 +16,8 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTagApi } from 'hooks/UseTagApi';
 import { equals } from 'utils/ObjectUtils';
 
-function NoteSider() {
-    const appApi = useAppApi();
-    const folderApi = useFolderApi();
-    const noteApi = useNoteApi();
-    const noteFilterApi = useNoteFilterApi();
-    const settingsApi = useSettingsApi();
-    const tagApi = useTagApi();
+function NoteSider({ apis }) {
+    const { appApi, folderApi, noteApi, noteFilterApi, settingsApi, tagApi } = apis;
 
     const [searchValue, setSearchValue] = useState(noteApi.searchNoteValue);
     const [selectedNoteFilterInfo, setSelectedNoteFilterInfo] = useState(null);
@@ -316,4 +313,15 @@ function NoteSider() {
     );
 }
 
-export default NoteSider;
+NoteSider.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(NoteSider, () => ({
+    appApi: useAppApi(),
+    folderApi: useFolderApi(),
+    noteApi: useNoteApi(),
+    noteFilterApi: useNoteFilterApi(),
+    settingsApi: useSettingsApi(),
+    tagApi: useTagApi()
+}));

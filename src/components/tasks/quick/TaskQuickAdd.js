@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react';
 import { Select } from 'antd';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { ContextTitle } from 'components/contexts/ContextTitle';
 import { FolderTitle } from 'components/folders/FolderTitle';
 import { GoalTitle } from 'components/goals/GoalTitle';
 import { LocationTitle } from 'components/locations/LocationTitle';
 import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useContextApi } from 'hooks/UseContextApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
@@ -16,15 +18,8 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
-function TaskQuickAdd() {
-    const appApi = useAppApi();
-    const contextApi = useContextApi();
-    const folderApi = useFolderApi();
-    const goalApi = useGoalApi();
-    const locationApi = useLocationApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
-    const taskTemplateApi = useTaskTemplateApi();
+function TaskQuickAdd({ apis }) {
+    const { appApi, contextApi, folderApi, goalApi, locationApi, taskApi, taskFieldApi, taskTemplateApi } = apis;
 
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);
@@ -141,4 +136,17 @@ function TaskQuickAdd() {
     );
 }
 
-export default TaskQuickAdd;
+TaskQuickAdd.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TaskQuickAdd, () => ({
+    appApi: useAppApi(),
+    contextApi: useContextApi(),
+    folderApi: useFolderApi(),
+    goalApi: useGoalApi(),
+    locationApi: useLocationApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi(),
+    taskTemplateApi: useTaskTemplateApi()
+}));

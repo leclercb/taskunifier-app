@@ -3,10 +3,11 @@ import { Col, Empty, Row } from 'antd';
 import PropTypes from 'prop-types';
 import TagList from 'components/tags/TagList';
 import TagForm from 'components/tags/TagForm';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useTagApi } from 'hooks/UseTagApi';
 
 function TagManager(props) {
-    const tagApi = useTagApi();
+    const { tagApi } = props.apis;
     const selectedTagId = props.tagId;
 
     const updateTag = async tag => {
@@ -40,8 +41,11 @@ function TagManager(props) {
 }
 
 TagManager.propTypes = {
+    apis: PropTypes.object.isRequired,
     tagId: PropTypes.string,
     onTagSelection: PropTypes.func.isRequired
 };
 
-export default TagManager;
+export default withBusyCheck(TagManager, () => ({
+    tagApi: useTagApi()
+}));

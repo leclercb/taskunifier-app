@@ -1,9 +1,11 @@
 import React, { forwardRef } from 'react';
 import { Select, Tag } from 'antd';
+import PropTypes from 'prop-types';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useTagApi } from 'hooks/UseTagApi';
 
-const TagsSelect = forwardRef(function TagsSelect(props, ref) {
-    const tagApi = useTagApi();
+const TagsSelect = forwardRef(function TagsSelect({ apis, ...props }, ref) {
+    const { tagApi } = apis;
 
     return (
         <Select ref={ref} mode="tags" allowClear={true} {...props}>
@@ -18,4 +20,10 @@ const TagsSelect = forwardRef(function TagsSelect(props, ref) {
 
 TagsSelect.displayName = 'ForwardRefTagsSelect';
 
-export default TagsSelect;
+TagsSelect.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TagsSelect, () => ({
+    tagApi: useTagApi()
+}));

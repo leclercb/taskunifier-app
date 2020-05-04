@@ -6,6 +6,7 @@ import Icon from 'components/common/Icon';
 import LeftRight from 'components/common/LeftRight';
 import Logo from 'components/common/Logo';
 import UserMenu from 'components/layout/UserMenu';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useInterval } from 'hooks/UseInterval';
 import { useJoyrideApi } from 'hooks/UseJoyrideApi';
@@ -23,16 +24,8 @@ import { getSecondsUntilNextPub } from 'utils/PublicationUtils';
 import { getSecondsUntilNextSync } from 'utils/SynchronizationUtils';
 import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
-function Header() {
-    const appApi = useAppApi();
-    const joyrideApi = useJoyrideApi();
-    const noteApi = useNoteApi();
-    const noteFieldApi = useNoteFieldApi();
-    const printApi = usePrintApi();
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
-    const taskTemplateApi = useTaskTemplateApi();
+function Header({ apis }) {
+    const { appApi, joyrideApi, noteApi, noteFieldApi, printApi, settingsApi, taskApi, taskFieldApi, taskTemplateApi } = apis;
 
     const onAddNote = async () => {
         let note = {};
@@ -406,4 +399,18 @@ PublicationButton.propTypes = {
     publish: PropTypes.func.isRequired
 };
 
-export default Header;
+Header.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(Header, () => ({
+    appApi: useAppApi(),
+    joyrideApi: useJoyrideApi(),
+    noteApi: useNoteApi(),
+    noteFieldApi: useNoteFieldApi(),
+    printApi: usePrintApi(),
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi(),
+    taskTemplateApi: useTaskTemplateApi()
+}));

@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { Dropdown, Menu } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { NotePropType } from 'proptypes/NotePropTypes';
 
-function NoteMenu({ selectedNotes, children }) {
-    const noteApi = useNoteApi();
+function NoteMenu({ apis, selectedNotes, children }) {
+    const { noteApi } = apis;
 
     const [visible, setVisible] = useState(false);
 
@@ -74,8 +75,11 @@ function NoteMenu({ selectedNotes, children }) {
 }
 
 NoteMenu.propTypes = {
+    apis: PropTypes.object.isRequired,
     selectedNotes: PropTypes.arrayOf(NotePropType.isRequired).isRequired,
     children: PropTypes.node.isRequired
 };
 
-export default NoteMenu;
+export default withBusyCheck(NoteMenu, () => ({
+    noteApi: useNoteApi()
+}));
