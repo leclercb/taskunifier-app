@@ -1,14 +1,15 @@
 import React from 'react';
 import { Button, Form, Modal } from 'antd';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import TaskEditionManager from 'components/tasks/edit/TaskEditionManager';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useTask } from 'hooks/UseTask';
 import { useTaskApi } from 'hooks/UseTaskApi';
 
-function ModalTaskEditionManager() {
-    const appApi = useAppApi();
-    const taskApi = useTaskApi();
+function ModalTaskEditionManager({ apis }) {
+    const { appApi, taskApi } = apis;
     const task = useTask(appApi.taskEditionManager.taskId);
 
     const [form] = Form.useForm();
@@ -43,4 +44,11 @@ function ModalTaskEditionManager() {
     );
 }
 
-export default ModalTaskEditionManager;
+ModalTaskEditionManager.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(ModalTaskEditionManager, () => ({
+    appApi: useAppApi(),
+    taskApi: useTaskApi()
+}));

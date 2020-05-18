@@ -1,17 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withProCheck from 'containers/WithProCheck';
+import PropTypes from 'prop-types';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
+import withBusyCheck from 'containers/WithBusyCheck';
+import withProCheck from 'containers/WithProCheck';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 
 function TaskFieldManager(props) {
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
+    const { settingsApi, taskApi, taskFieldApi } = props.apis;
     const selectedTaskFieldId = props.taskFieldId;
 
     const onAddTaskField = async taskField => {
@@ -60,8 +59,13 @@ function TaskFieldManager(props) {
 }
 
 TaskFieldManager.propTypes = {
+    apis: PropTypes.object.isRequired,
     taskFieldId: PropTypes.string,
     onTaskFieldSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(TaskFieldManager);
+export default withProCheck(withBusyCheck(TaskFieldManager, () => ({
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi()
+})));

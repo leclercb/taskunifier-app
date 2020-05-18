@@ -1,17 +1,17 @@
 import React from 'react';
 import { Progress } from 'antd';
 import MediaQuery from 'react-responsive';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import { toStringDuration } from 'utils/StringUtils';
 import 'components/tasks/statusbar/TaskStatusBar.css';
 
-function TaskStatusBar() {
-    const appApi = useAppApi();
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
+function TaskStatusBar({ apis }) {
+    const { appApi, settingsApi, taskApi } = apis;
 
     const createStatsElement = (title, stats) => (
         <React.Fragment>
@@ -75,4 +75,12 @@ function TaskStatusBar() {
     );
 }
 
-export default TaskStatusBar; 
+TaskStatusBar.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TaskStatusBar, () => ({
+    appApi: useAppApi(),
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi()
+}));

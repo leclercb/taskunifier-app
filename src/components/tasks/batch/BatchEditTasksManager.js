@@ -1,7 +1,8 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
+import { Checkbox, Col, Collapse, Form, Row, message } from 'antd';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
-import { Checkbox, Col, Collapse, Form, Row, message } from 'antd';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
@@ -10,10 +11,8 @@ import { useTaskApi } from 'hooks/UseTaskApi';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { clone } from 'utils/ObjectUtils';
 
-const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, onSuccess }, ref) {
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
+const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ apis, form, onSuccess }, ref) {
+    const { settingsApi, taskApi, taskFieldApi } = apis;
 
     const updateTasks = async () => {
         try {
@@ -101,8 +100,13 @@ const BatchEditTasksManager = forwardRef(function BatchEditTasksManager({ form, 
 BatchEditTasksManager.displayName = 'BatchEditTasksManager';
 
 BatchEditTasksManager.propTypes = {
+    apis: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     onSuccess: PropTypes.func.isRequired
 };
 
-export default BatchEditTasksManager;
+export default withBusyCheck(BatchEditTasksManager, () => ({
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi()
+}));

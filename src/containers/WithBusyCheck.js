@@ -6,7 +6,7 @@ import { isBusy } from 'selectors/ThreadSelectors';
 function withBusyCheck(Component, getApis) {
     function WithApis(props) {
         const busy = useSelector(isBusy);
-        const apis = getApis();
+        const apis = getApis(props);
 
         return (<WithBusyCheck {...props} apis={apis} busy={busy} />);
     }

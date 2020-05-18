@@ -1,17 +1,16 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Button, Form, Input, message } from 'antd';
-import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
+import { getDefaultFormItemLayout, getDefaultTailFormItemLayout } from 'utils/FormUtils';
 import { applyTaskTemplate } from 'utils/TemplateUtils';
 
-const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ form, onSuccess }, ref) {
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
-    const taskTemplateApi = useTaskTemplateApi();
+const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ apis, form, onSuccess }, ref) {
+    const { taskApi, taskFieldApi, taskTemplateApi } = apis;
 
     const [showExample, setShowExample] = useState(false);
 
@@ -137,8 +136,13 @@ const BatchAddTasksManager = forwardRef(function BatchAddTasksManager({ form, on
 BatchAddTasksManager.displayName = 'BatchAddTasksManager';
 
 BatchAddTasksManager.propTypes = {
+    apis: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     onSuccess: PropTypes.func.isRequired
 };
 
-export default BatchAddTasksManager;
+export default withBusyCheck(BatchAddTasksManager, () => ({
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi(),
+    taskTemplateApi: useTaskTemplateApi()
+}));

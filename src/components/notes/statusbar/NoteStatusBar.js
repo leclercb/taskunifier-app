@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import 'components/notes/statusbar/NoteStatusBar.css';
 
-function NoteStatusBar() {
-    const appApi = useAppApi();
-    const noteApi = useNoteApi();
+function NoteStatusBar({ apis }) {
+    const { appApi, noteApi } = apis;
 
     const createStatsElement = (title, stats) => (
         <React.Fragment>
@@ -31,4 +32,11 @@ function NoteStatusBar() {
     );
 }
 
-export default NoteStatusBar; 
+NoteStatusBar.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(NoteStatusBar, () => ({
+    appApi: useAppApi(),
+    noteApi: useNoteApi()
+}));

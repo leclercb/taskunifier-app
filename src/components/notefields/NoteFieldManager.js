@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Empty, Row } from 'antd';
-import withProCheck from 'containers/WithProCheck';
 import FieldList from 'components/fields/FieldList';
 import FieldForm from 'components/fields/FieldForm';
+import withBusyCheck from 'containers/WithBusyCheck';
+import withProCheck from 'containers/WithProCheck';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 
 function NoteFieldManager(props) {
-    const noteApi = useNoteApi();
-    const noteFieldApi = useNoteFieldApi();
-    const settingsApi = useSettingsApi();
+    const { noteApi, noteFieldApi, settingsApi } = props.apis;
+
     const selectedNoteFieldId = props.noteFieldId;
 
     const onAddNoteField = async noteField => {
@@ -60,8 +60,13 @@ function NoteFieldManager(props) {
 }
 
 NoteFieldManager.propTypes = {
+    apis: PropTypes.object.isRequired,
     noteFieldId: PropTypes.string,
     onNoteFieldSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(NoteFieldManager);
+export default withProCheck(withBusyCheck(NoteFieldManager, () => ({
+    noteApi: useNoteApi(),
+    noteFieldApi: useNoteFieldApi(),
+    settingsApi: useSettingsApi()
+})));

@@ -79,6 +79,8 @@ export function synchronizeWithTaskUnifier() {
 
             await dispatch(connectToTaskUnifier());
 
+            const startTime = moment();
+
             await dispatch(getTaskUnifierAccountInfo());
 
             await dispatch(synchronizeContacts());
@@ -95,6 +97,8 @@ export function synchronizeWithTaskUnifier() {
             await dispatch(synchronizeNoteFilters());
             await dispatch(synchronizeTaskFilters());
             await dispatch(synchronizeTaskTemplates());
+
+            console.debug(`Synchronization completed in ${moment().diff(startTime, 'second')} seconds`);
 
             dispatch(updateProcess({
                 id: processId,

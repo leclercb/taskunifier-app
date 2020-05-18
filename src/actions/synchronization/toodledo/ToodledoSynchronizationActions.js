@@ -67,6 +67,8 @@ export function synchronizeWithToodledo() {
                 await dispatch(refreshToken());
             }
 
+            const startTime = moment();
+
             await dispatch(getToodledoAccountInfo());
 
             await dispatch(synchronizeContexts());
@@ -76,6 +78,8 @@ export function synchronizeWithToodledo() {
 
             await dispatch(synchronizeNotes());
             await dispatch(synchronizeTasks());
+
+            console.debug(`Synchronization completed in ${moment().diff(startTime, 'second')} seconds`);
 
             dispatch(updateProcess({
                 id: processId,

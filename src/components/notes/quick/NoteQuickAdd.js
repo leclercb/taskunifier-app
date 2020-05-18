@@ -1,18 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { Select } from 'antd';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { FolderTitle } from 'components/folders/FolderTitle';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
 import { applyNoteTemplateFromNoteFilter } from 'utils/TemplateUtils';
 
-function NoteQuickAdd() {
-    const appApi = useAppApi();
-    const folderApi = useFolderApi();
-    const noteApi = useNoteApi();
-    const noteFieldApi = useNoteFieldApi();
+function NoteQuickAdd({ apis }) {
+    const { appApi, folderApi, noteApi, noteFieldApi } = apis;
 
     const [values, setValues] = useState([]);
     const [open, setOpen] = useState(false);
@@ -94,4 +93,13 @@ function NoteQuickAdd() {
     );
 }
 
-export default NoteQuickAdd;
+NoteQuickAdd.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(NoteQuickAdd, () => ({
+    appApi: useAppApi(),
+    folderApi: useFolderApi(),
+    noteApi: useNoteApi(),
+    noteFieldApi: useNoteFieldApi()
+}));

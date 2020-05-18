@@ -1,3 +1,9 @@
+# 1.1.1
+
+## Bug Fixes
+
+* Fix synchronization performance issue
+
 # 1.1.0
 
 ## New Features

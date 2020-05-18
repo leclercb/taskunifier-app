@@ -3,6 +3,7 @@ import { Dropdown, Menu } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -11,12 +12,8 @@ import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
-function TaskMenu({ selectedTasks, children }) {
-    const appApi = useAppApi();
-    const settingsApi = useSettingsApi();
-    const taskApi = useTaskApi();
-    const taskFieldApi = useTaskFieldApi();
-    const taskTemplateApi = useTaskTemplateApi();
+function TaskMenu({ apis, selectedTasks, children }) {
+    const { appApi, settingsApi, taskApi, taskFieldApi, taskTemplateApi } = apis;
 
     const [visible, setVisible] = useState(false);
 
@@ -225,8 +222,15 @@ function TaskMenu({ selectedTasks, children }) {
 }
 
 TaskMenu.propTypes = {
+    apis: PropTypes.object.isRequired,
     selectedTasks: PropTypes.arrayOf(TaskPropType.isRequired).isRequired,
     children: PropTypes.node.isRequired
 };
 
-export default TaskMenu;
+export default withBusyCheck(TaskMenu, () => ({
+    appApi: useAppApi(),
+    settingsApi: useSettingsApi(),
+    taskApi: useTaskApi(),
+    taskFieldApi: useTaskFieldApi(),
+    taskTemplateApi: useTaskTemplateApi()
+}));
