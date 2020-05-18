@@ -156,11 +156,19 @@ function Header({ apis }) {
     };
 
     const createButton = (icon, text, onClick, disabled = false, className = '') => {
+        const button = (
+            <Button onClick={onClick} disabled={disabled} className={className}>
+                <Icon icon={icon} />
+            </Button>
+        );
+
+        if (disabled) {
+            return button;
+        }
+
         return (
             <Tooltip placement="bottom" title={text}>
-                <Button onClick={onClick} disabled={disabled} className={className}>
-                    <Icon icon={icon} />
-                </Button>
+                {button}
             </Tooltip>
         );
     };
