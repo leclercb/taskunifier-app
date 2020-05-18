@@ -81,7 +81,7 @@
     "@aws-amplify/core" "^3.2.7"
     axios "0.19.0"
 
-"@aws-amplify/api@^3.1.10":
+"@aws-amplify/api@^3.1.10", "@aws-amplify/api@^3.1.7":
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/@aws-amplify/api/-/api-3.1.10.tgz#27097fa0d4c13b58d6ba92967f3a2b7bedbf37d0"
   integrity sha512-LfjsCjrRJeCjGCnKFV1S7tOMQ7udI8TM+BbOn/en2TJw5sLrefjqKB5+SrbOYaLZqr5eIAfZ9BBlzb4uqUmOpw==
@@ -106,7 +106,7 @@
   dependencies:
     "@aws-amplify/core" "^3.2.7"
 
-"@aws-amplify/core@^3.2.7":
+"@aws-amplify/core@^3.2.4", "@aws-amplify/core@^3.2.7":
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/@aws-amplify/core/-/core-3.2.7.tgz#5e36f8dcaefdf40fbd7c28caaf6be8b822600f5f"
   integrity sha512-fMpRT+lgTC9pkMdMBuiNReapDLsbtydqeuX/h+VFPJghEgiTZ7FIegB10k2CWzMPM8nzFpBNQuNoO/F25sTxTw==
@@ -120,6 +120,20 @@
     "@aws-sdk/util-user-agent-browser" "1.0.0-beta.4"
     url "^0.11.0"
     zen-observable-ts "0.8.19"
+
+"@aws-amplify/datastore@2.0.8":
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/@aws-amplify/datastore/-/datastore-2.0.8.tgz#72a09748e4a0ca77653d0aa506ff8a4da4a129a0"
+  integrity sha512-ImK82VVMN7/itpshqE/m+eRkxg0DNhsmfRzoZpOYBV4O7Nd9LMFBd8WlOOZoOFwyz4zEC0WT6g+nJfMZI/8uhw==
+  dependencies:
+    "@aws-amplify/api" "^3.1.7"
+    "@aws-amplify/core" "^3.2.4"
+    "@aws-amplify/pubsub" "^3.0.8"
+    idb "4.0.4"
+    immer "6.0.1"
+    uuid "3.3.2"
+    zen-observable-ts "0.8.19"
+    zen-push "0.2.1"
 
 "@aws-amplify/datastore@^2.1.0":
   version "2.1.0"
@@ -159,7 +173,7 @@
     "@aws-sdk/util-utf8-node" "1.0.0-beta.3"
     uuid "^3.2.1"
 
-"@aws-amplify/pubsub@^3.0.11":
+"@aws-amplify/pubsub@^3.0.11", "@aws-amplify/pubsub@^3.0.8":
   version "3.0.11"
   resolved "https://registry.yarnpkg.com/@aws-amplify/pubsub/-/pubsub-3.0.11.tgz#95bc5fd3890d2300c180f183598d9082cdfb7249"
   integrity sha512-pQVha3rOFm7wPrkcAqj6aETPtj8tiVWtOJ6dTEHiaF1U6Iw4Jq6Sv9zpG/83+leChoIoSzSeGv51gXdDguFNqA==
@@ -3778,7 +3792,7 @@ autoprefixer@^9.6.1:
     postcss "^7.0.30"
     postcss-value-parser "^4.1.0"
 
-aws-amplify@^3.0.8:
+aws-amplify@^3.0.11:
   version "3.0.11"
   resolved "https://registry.yarnpkg.com/aws-amplify/-/aws-amplify-3.0.11.tgz#d6acf23cc8e551592c08e1b277b8cd375d2ec3b2"
   integrity sha512-eLeuEwJ4yodaIZGehPxNpQlDHxNo2ek97KcUWgavSCp7rTZVOTHuKppZFou6hanHwfJ4L+BdgyZ2sy48+LRPmw==
