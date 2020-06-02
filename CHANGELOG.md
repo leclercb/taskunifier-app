@@ -2,7 +2,8 @@
 
 ## Bug Fixes
 
-* Fix synchronization performance issue
+* Improve synchronization performance
+* Fix clear extended date picker
 
 # 1.1.0
 
