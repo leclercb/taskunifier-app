@@ -1,13 +1,15 @@
 import React from 'react';
 import { Button, Modal } from 'antd';
+import PropTypes from 'prop-types';
 import HelpButton from 'components/common/HelpButton';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CategoryManager from 'components/categories/CategoryManager';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 
-function ModalCategoryManager() {
-    const appApi = useAppApi();
+function ModalCategoryManager({ apis }) {
+    const { appApi } = apis;
 
     const onCloseCategoryManager = () => {
         appApi.setCategoryManagerOptions({ visible: false });
@@ -43,4 +45,10 @@ function ModalCategoryManager() {
     );
 }
 
-export default ModalCategoryManager;
+ModalCategoryManager.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(ModalCategoryManager, () => ({
+    appApi: useAppApi()
+}));

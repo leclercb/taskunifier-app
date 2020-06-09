@@ -1,13 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SplitPane from 'react-split-pane';
 import TaskSider from 'components/tasks/sider/TaskSider';
 import TaskCalendar from 'components/tasks/calendar/TaskCalendar';
 import TaskQuickAdd from 'components/tasks/quick/TaskQuickAdd';
 import TaskTabs from 'components/tasks/tabs/TaskTabs';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 
-function TaskCalendarView() {
-    const settingsApi = useSettingsApi();
+function TaskCalendarView({ apis }) {
+    const { settingsApi } = apis;
 
     const onTaskCalendarViewSplitPaneSizeChange = size => {
         settingsApi.updateSettings({ taskCalendarViewSplitPaneSize: size });
@@ -46,4 +48,10 @@ function TaskCalendarView() {
     );
 }
 
-export default TaskCalendarView;
+TaskCalendarView.propTypes = {
+    apis: PropTypes.object.isRequired
+};
+
+export default withBusyCheck(TaskCalendarView, () => ({
+    settingsApi: useSettingsApi()
+}));

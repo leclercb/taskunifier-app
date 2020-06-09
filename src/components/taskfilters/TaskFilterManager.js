@@ -5,28 +5,24 @@ import FilterConditionTree from 'components/filters/FilterConditionTree';
 import FilterForm from 'components/filters/FilterForm';
 import FilterList from 'components/filters/FilterList';
 import SorterTable from 'components/filters/SorterTable';
+import withBusyCheck from 'containers/WithBusyCheck';
 import withProCheck from 'containers/WithProCheck';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { useTaskFilterApi } from 'hooks/UseTaskFilterApi';
 
-function TaskFilterManager(props) {
-    const taskFieldApi = useTaskFieldApi();
-    const taskFilterApi = useTaskFilterApi();
-    const selectedTaskFilterId = props.taskFilterId;
+function TaskFilterManager({ apis, taskFilterId, onTaskFilterSelection }) {
+    const { taskFieldApi, taskFilterApi } = apis;
+    const selectedTaskFilterId = taskFilterId;
 
     const onAddTaskFilter = async taskFilter => {
         taskFilter = await taskFilterApi.addTaskFilter(taskFilter);
-        props.onTaskFilterSelection(taskFilter.id);
+        onTaskFilterSelection(taskFilter.id);
     };
 
     const onDuplicateTaskFilter = async taskFilter => {
         taskFilter = await taskFilterApi.duplicateTaskFilter(taskFilter);
-        props.onTaskFilterSelection(taskFilter.id);
-    };
-
-    const onTaskFilterSelection = taskFilter => {
-        props.onTaskFilterSelection(taskFilter.id);
+        onTaskFilterSelection(taskFilter.id);
     };
 
     const onUpdateSorters = sorters => {
@@ -47,7 +43,7 @@ function TaskFilterManager(props) {
                     addFilter={onAddTaskFilter}
                     duplicateFilter={onDuplicateTaskFilter}
                     deleteFilter={taskFilterApi.deleteTaskFilter}
-                    onFilterSelection={onTaskFilterSelection} />
+                    onFilterSelection={taskFilter => onTaskFilterSelection(taskFilter.id)} />
             </Col>
             <Col span={2} />
             <Col span={16}>
@@ -81,8 +77,12 @@ function TaskFilterManager(props) {
 }
 
 TaskFilterManager.propTypes = {
+    apis: PropTypes.object.isRequired,
     taskFilterId: PropTypes.string,
     onTaskFilterSelection: PropTypes.func.isRequired
 };
 
-export default withProCheck(TaskFilterManager);
+export default withProCheck(withBusyCheck(TaskFilterManager, () => ({
+    taskFieldApi: useTaskFieldApi(),
+    taskFilterApi: useTaskFilterApi()
+})));

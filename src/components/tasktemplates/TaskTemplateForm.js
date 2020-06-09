@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Divider, Form, Input } from 'antd';
 import ColorPicker from 'components/common/ColorPicker';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
@@ -9,9 +10,8 @@ import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskTemplatePropType } from 'proptypes/TaskTemplatePropTypes';
 import { getDefaultFormItemLayout, onCommitForm } from 'utils/FormUtils';
 
-function TaskTemplateForm({ taskTemplate, updateTaskTemplate }) {
-    const settingsApi = useSettingsApi();
-    const taskFieldApi = useTaskFieldApi();
+function TaskTemplateForm({ apis, taskTemplate, updateTaskTemplate }) {
+    const { settingsApi, taskFieldApi } = apis;
 
     const [form] = Form.useForm();
 
@@ -74,8 +74,12 @@ function TaskTemplateForm({ taskTemplate, updateTaskTemplate }) {
 }
 
 TaskTemplateForm.propTypes = {
+    apis: PropTypes.object.isRequired,
     taskTemplate: TaskTemplatePropType.isRequired,
     updateTaskTemplate: PropTypes.func.isRequired
 };
 
-export default TaskTemplateForm;
+export default withBusyCheck(TaskTemplateForm, () => ({
+    settingsApi: useSettingsApi(),
+    taskFieldApi: useTaskFieldApi()
+}));
