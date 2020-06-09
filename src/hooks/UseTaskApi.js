@@ -13,6 +13,7 @@ import {
     setShowTaskHierarchy
 } from 'actions/SettingActions';
 import { addTask, deleteTask, duplicateTask, updateTask } from 'actions/TaskActions';
+import { runProcess } from 'actions/ThreadActions';
 import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
 import {
     getCalendarEventTypes,
@@ -110,6 +111,11 @@ export function useTaskApi() {
         [dispatch]
     );
 
+    const runProcessCallback = useCallback(
+        (fn, title) => dispatch(runProcess(fn, title)),
+        [dispatch]
+    );
+
     return {
         tasks,
         tasksMetaData,
@@ -136,6 +142,7 @@ export function useTaskApi() {
         setShowTaskHierarchy: setShowTaskHierarchyCallback,
         setShowCompletedTasks: setShowCompletedTasksCallback,
         setShowFutureTasks: setShowFutureTasksCallback,
-        setCalendarEventTypes: setCalendarEventTypesCallback
+        setCalendarEventTypes: setCalendarEventTypesCallback,
+        runProcess: runProcessCallback
     };
 }

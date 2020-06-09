@@ -35,7 +35,7 @@ function TaskMenu({ apis, selectedTasks, children }) {
                     selectedTasks.forEach(task => onMoveOutOfParentTask(task));
                     break;
                 case 'duplicate':
-                    selectedTasks.forEach(task => onDuplicateTask(task));
+                    taskApi.runProcess(taskApi.duplicateTask(selectedTasks));
                     break;
                 case 'remove':
                     onRemoveTasks(selectedTasks.map(task => task.id));
@@ -97,10 +97,6 @@ function TaskMenu({ apis, selectedTasks, children }) {
             ...task,
             parent: null
         });
-    };
-
-    const onDuplicateTask = task => {
-        taskApi.duplicateTask(task);
     };
 
     const onRemoveTasks = taskIds => {
