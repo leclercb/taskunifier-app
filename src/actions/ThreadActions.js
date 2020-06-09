@@ -19,6 +19,39 @@ export function checkIsBusy(fn = null, silent = false) {
     };
 }
 
+export function runProcess(fn = null, title = 'User action') {
+    return async dispatch => {
+        const processId = uuid();
+
+        try {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'RUNNING',
+                title
+            }));
+
+            let promises = Array.isArray(fn) ? fn : [fn];
+
+            let result = await Promise.all(promises);
+
+            dispatch(updateProcess({
+                id: processId,
+                state: 'COMPLETED'
+            }));
+
+            return Array.isArray(fn) ? result : result[0];
+        } catch (error) {
+            dispatch(updateProcess({
+                id: processId,
+                state: 'ERROR',
+                error: error.toString()
+            }));
+
+            throw error;
+        }
+    };
+}
+
 export function setThreadManagerVisible(visible) {
     return async dispatch => {
         dispatch({

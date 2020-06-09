@@ -2,15 +2,15 @@ import React, { useEffect } from 'react';
 import sortBy from 'lodash/sortBy';
 import PropTypes from 'prop-types';
 import { Col, Collapse, Form, Row } from 'antd';
+import withBusyCheck from 'containers/WithBusyCheck';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { TaskPropType } from 'proptypes/TaskPropTypes';
 
-function TaskEditionForm({ form, task }) {
-    const settingsApi = useSettingsApi();
-    const taskFieldApi = useTaskFieldApi();
+function TaskEditionForm({ apis, form, task }) {
+    const { settingsApi, taskFieldApi } = apis;
 
     const formItemLayout = {
         labelCol: {
@@ -65,8 +65,12 @@ function TaskEditionForm({ form, task }) {
 }
 
 TaskEditionForm.propTypes = {
+    apis: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     task: TaskPropType.isRequired
 };
 
-export default TaskEditionForm;
+export default withBusyCheck(TaskEditionForm, () => ({
+    settingsApi: useSettingsApi(),
+    taskFieldApi: useTaskFieldApi()
+}));

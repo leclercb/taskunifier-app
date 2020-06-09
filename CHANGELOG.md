@@ -2,7 +2,9 @@
 
 ## Bug Fixes
 
-* Fix synchronization performance issue
+* Improve synchronization performance
+* Fix clear extended date picker
+* Fix batch edit tasks
 
 # 1.1.0
 

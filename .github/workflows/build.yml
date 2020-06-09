@@ -20,7 +20,7 @@ jobs:
           node-version: 12
 
       - name: Build
-        uses: samuelmeuli/action-electron-builder@v1.3.0
+        uses: samuelmeuli/action-electron-builder@v1.5.1
         with:
           github_token: ${{ github.token }}
           release: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -46,25 +46,25 @@ jobs:
 
       - name: Upload Build Artifacts
         if: runner.os == 'Linux'
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: taskunifier-app-build
           path: build
 
       - name: Upload Linux Artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: taskunifier-app-linux
           path: dist-linux
 
       - name: Upload Mac Artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: taskunifier-app-mac
           path: dist-mac
 
       - name: Upload Win Artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: taskunifier-app-win
           path: dist-win
