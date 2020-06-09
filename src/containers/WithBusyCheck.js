@@ -19,16 +19,18 @@ function withBusyCheck(Component, getApis) {
         render() {
             const wrappedProps = { ...this.props };
             delete wrappedProps.busy;
+            delete wrappedProps.forwardedRef;
 
-            return (<Component {...wrappedProps} />);
+            return (<Component ref={this.props.forwardedRef} {...wrappedProps} />);
         }
     }
 
     WithBusyCheck.propTypes = {
-        busy: PropTypes.bool.isRequired
+        busy: PropTypes.bool.isRequired,
+        forwardedRef: PropTypes.any
     };
 
-    return WithApis;
+    return React.forwardRef((props, ref) => (<WithApis {...props} forwardedRef={ref} />)); // eslint-disable-line react/display-name
 }
 
 export default withBusyCheck;
