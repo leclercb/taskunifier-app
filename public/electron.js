@@ -25,7 +25,7 @@ app.on('ready', () => {
     createMainWindow(settings, () => quitInitiated);
 
     if (settings.useTray) {
-        tray = createTray();
+        tray = createTray(); // eslint-disable-line no-unused-vars
     }
 
     app.setAsDefaultProtocolClient('tu');
