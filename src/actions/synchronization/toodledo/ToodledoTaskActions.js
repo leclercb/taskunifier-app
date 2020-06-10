@@ -34,6 +34,7 @@ export function synchronizeTasks() {
                 const result = await dispatch(addRemoteTasks(tasksToAdd, { skipParent: true }));
 
                 for (let task of result) {
+                    console.debug('updateTask', moment().format(), task);
                     await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
 
                     if (task.parent) {
@@ -54,6 +55,7 @@ export function synchronizeTasks() {
             }
 
             for (let task of tasksToDelete) {
+                console.debug('deleteTask', moment().format(), task.id);
                 await dispatch(deleteTask(task.id));
             }
         }
@@ -77,11 +79,14 @@ export function synchronizeTasks() {
                     let updatedTask = null;
 
                     if (!localTask) {
+                        console.debug('addTask', moment().format(), remoteTask);
                         updatedTask = await dispatch(addTask(remoteTask, { keepRefIds: true }));
                     } else {
                         if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                             if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
-                                updatedTask = await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true, skipUpdateMiddleware: true }));
+                                const mergedTask = merge(localTask, remoteTask);
+                                console.debug('updateTask', moment().format(), mergedTask);
+                                updatedTask = await dispatch(updateTask(mergedTask, { loaded: true, skipUpdateMiddleware: true }));
                             }
                         }
                     }
@@ -94,10 +99,12 @@ export function synchronizeTasks() {
                 state = getState();
 
                 for (let taskWithRemoteParent of tasksWithRemoteParent) {
-                    await dispatch(updateTask({
+                    const mergedTask = {
                         ...taskWithRemoteParent.task,
                         parent: getObjectLocalValue(state, 'task', taskWithRemoteParent.parent)
-                    }, { loaded: true, skipUpdateMiddleware: true }));
+                    };
+                    console.debug('updateTask', moment().format(), mergedTask);
+                    await dispatch(updateTask(mergedTask, { loaded: true, skipUpdateMiddleware: true }));
                 }
             }
         }
@@ -116,6 +123,7 @@ export function synchronizeTasks() {
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask.id);
 
                     if (localTask) {
+                        console.debug('deleteTask', moment().format(), localTask);
                         await dispatch(deleteTask(localTask.id, { force: true }));
                     }
                 }
@@ -139,6 +147,7 @@ export function synchronizeTasks() {
             }
 
             for (let task of tasksToUpdate) {
+                console.debug('updateTask', moment().format(), task);
                 await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
@@ -146,7 +155,7 @@ export function synchronizeTasks() {
 }
 
 export function getRemoteTasks(updatedAfter) {
-    console.debug('getRemoteTasks', updatedAfter);
+    console.debug('getRemoteTasks', moment().format(), updatedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -188,7 +197,7 @@ export function getRemoteTasks(updatedAfter) {
 }
 
 export function getRemoteDeletedTasks(deletedAfter) {
-    console.debug('getRemoteDeletedTasks', deletedAfter);
+    console.debug('getRemoteDeletedTasks', moment().format(), deletedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -216,7 +225,7 @@ export function getRemoteDeletedTasks(deletedAfter) {
 }
 
 export function addRemoteTasks(tasks, options) {
-    console.debug('addRemoteTasks', tasks, options);
+    console.debug('addRemoteTasks', moment().format(), tasks, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -259,7 +268,7 @@ export function addRemoteTasks(tasks, options) {
 }
 
 export function editRemoteTasks(tasks) {
-    console.debug('editRemoteTasks', tasks);
+    console.debug('editRemoteTasks', moment().format(), tasks);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -288,7 +297,7 @@ export function editRemoteTasks(tasks) {
 }
 
 export function deleteRemoteTasks(tasks) {
-    console.debug('deleteRemoteTasks', tasks);
+    console.debug('deleteRemoteTasks', moment().format(), tasks);
 
     return async (dispatch, getState) => {
         const state = getState();
