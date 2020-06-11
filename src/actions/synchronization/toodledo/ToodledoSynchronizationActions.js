@@ -14,6 +14,7 @@ import { synchronizeLocations } from 'actions/synchronization/toodledo/ToodledoL
 import { synchronizeNotes } from 'actions/synchronization/toodledo/ToodledoNoteActions';
 import { synchronizeTasks } from 'actions/synchronization/toodledo/ToodledoTaskActions';
 import { getSettings } from 'selectors/SettingSelectors';
+import logger from 'utils/LogUtils';
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -50,6 +51,8 @@ export function synchronizeWithToodledo() {
                 notify: true
             }));
 
+            logger.info('Synchronization with Toodledo started');
+
             if (!settings.toodledo || !settings.toodledo.accessToken || !settings.toodledo.refreshToken) {
                 message.info('Opening Toodledo\'s website... Please log into your account and enter the authorization code.', 10);
 
@@ -79,18 +82,14 @@ export function synchronizeWithToodledo() {
             await dispatch(synchronizeNotes());
             await dispatch(synchronizeTasks());
 
-            console.debug(`Synchronization completed in ${moment().diff(startTime, 'second')} seconds`);
+            logger.info(`Synchronization with Toodledo completed in ${moment().diff(startTime, 'second')} seconds`);
 
             dispatch(updateProcess({
                 id: processId,
                 state: 'COMPLETED'
             }));
         } catch (error) {
-            console.error(error);
-
-            if (error.response) {
-                console.error(error.response);
-            }
+            logger.error('Synchronization error', error);
 
             if (error.response && error.response.data && error.response.data.errorCode === 102) {
                 await dispatch(updateSettings({

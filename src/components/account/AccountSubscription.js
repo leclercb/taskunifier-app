@@ -7,6 +7,7 @@ import { useStripeApi } from 'hooks/UseStripeApi';
 import Plans from 'components/account/Plans';
 import LeftRight from 'components/common/LeftRight';
 import { useSessionApi } from 'hooks/UseSessionApi';
+import logger from 'utils/LogUtils';
 
 function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
     const sessionApi = useSessionApi();
@@ -26,7 +27,7 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
             }
 
             const invoice = await stripeApi.getCurrentSubscriptionLatestInvoice();
-            console.debug('Invoice', invoice);
+            logger.debug('Invoice', invoice);
 
             setSCARequired(invoice.payment_intent.status === 'requires_action');
         };
@@ -40,11 +41,11 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
 
             if (subscription && subscription.status === 'incomplete') {
                 const invoice = await stripeApi.getCurrentSubscriptionLatestInvoice();
-                console.debug('Invoice', invoice);
+                logger.debug('Invoice', invoice);
 
                 if (invoice.payment_intent.status === 'requires_action') {
                     const cardPaymentResult = await stripe.handleCardPayment(invoice.payment_intent.client_secret);
-                    console.debug('Handle Card Payment', cardPaymentResult);
+                    logger.debug('Handle card payment', cardPaymentResult);
                 }
             }
 
@@ -77,7 +78,7 @@ function AccountSubscription({ customer, onCustomerUpdated, stripe }) {
                 proration = await stripeApi.getCurrentSubscriptionPlanProration(plan.id, 1);
             }
 
-            console.debug('Proration', proration);
+            logger.debug('Proration', proration);
 
             Modal.confirm({
                 title: 'Confirmation',

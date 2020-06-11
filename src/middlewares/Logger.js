@@ -1,6 +1,8 @@
+import l from 'utils/LogUtils';
+
 export const logger = store => next => action => {
-    console.log('Dispatching', action);
+    l.info('Dispatching', action);
     const result = next(action);
-    console.log('Next state', store.getState());
+    l.info('Next state', store.getState());
     return result;
 };

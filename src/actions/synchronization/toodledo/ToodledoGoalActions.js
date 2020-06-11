@@ -8,6 +8,7 @@ import { getGoals } from 'selectors/GoalSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeGoals() {
@@ -97,7 +98,7 @@ export function synchronizeGoals() {
 }
 
 export function getRemoteGoals() {
-    console.debug('getRemoteGoals');
+    logger.debug('Get remote goals');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -123,7 +124,7 @@ export function getRemoteGoals() {
 }
 
 export function addRemoteGoal(goal, options) {
-    console.debug('addRemoteGoal', goal, options);
+    logger.debug('Add remote goal', goal.id, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -156,7 +157,7 @@ export function addRemoteGoal(goal, options) {
 }
 
 export function editRemoteGoal(goal) {
-    console.debug('editRemoteGoal', goal);
+    logger.debug('Edit remote goal', goal.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -181,7 +182,7 @@ export function editRemoteGoal(goal) {
 }
 
 export function deleteRemoteGoal(goal) {
-    console.debug('deleteRemoteGoal', goal);
+    logger.debug('Delete remote goal', goal.id);
 
     return async (dispatch, getState) => {
         const state = getState();

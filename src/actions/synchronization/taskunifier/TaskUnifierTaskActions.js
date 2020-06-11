@@ -15,6 +15,7 @@ import { getSettings } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getTasks } from 'selectors/TaskSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { diff, merge } from 'utils/ObjectUtils';
 
 const CHUNK_SIZE = 50;
@@ -135,7 +136,7 @@ export function synchronizeTasks() {
 }
 
 export function getRemoteTasks(updatedAfter) {
-    console.debug('getRemoteTasks', updatedAfter);
+    logger.debug('Get remote tasks', updatedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -155,14 +156,12 @@ export function getRemoteTasks(updatedAfter) {
             },
             settings);
 
-        console.debug(result);
-
         return result.data;
     };
 }
 
 export function getRemoteDeletedTasks(deletedAfter) {
-    console.debug('getRemoteDeletedTasks', deletedAfter);
+    logger.debug('Get remote deleted tasks', deletedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -181,14 +180,12 @@ export function getRemoteDeletedTasks(deletedAfter) {
             },
             settings);
 
-        console.debug(result);
-
         return result.data.map(task => ({ id: task.id }));
     };
 }
 
 export function addRemoteTasks(tasks, options) {
-    console.debug('addRemoteTasks', tasks, options);
+    logger.debug('Add remote tasks', tasks.length, options);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -226,7 +223,7 @@ export function addRemoteTasks(tasks, options) {
 }
 
 export function editRemoteTasks(tasks, remoteUnconvertedTasks) {
-    console.debug('editRemoteTasks', tasks);
+    logger.debug('Edit remote tasks', tasks.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -262,7 +259,7 @@ export function editRemoteTasks(tasks, remoteUnconvertedTasks) {
 }
 
 export function deleteRemoteTasks(tasks) {
-    console.debug('deleteRemoteTasks', tasks);
+    logger.debug('Delete remote tasks', tasks.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -286,7 +283,7 @@ export function deleteRemoteTasks(tasks) {
                     settings);
             } catch (error) {
                 // No throw exception if delete fails
-                console.debug(error, error.response);
+                logger.debug('Delete remote tasks error', error);
             }
         }
     };

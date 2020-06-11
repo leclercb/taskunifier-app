@@ -1777,6 +1777,69 @@ export function getCategories() {
                     }
                 }
             ]
+        },
+        {
+            id: 'advanced',
+            title: 'Advanced',
+            icon: 'radiation',
+            mode: 'electron',
+            settings: [
+                {
+                    id: 'electronLoggerLevel',
+                    title: 'Enable electron level',
+                    type: 'select',
+                    value: 'info',
+                    editable: true,
+                    options: {
+                        values: [
+                            {
+                                title: 'Error',
+                                value: 'error'
+                            },
+                            {
+                                title: 'Warning',
+                                value: 'warn'
+                            },
+                            {
+                                title: 'Info',
+                                value: 'info'
+                            },
+                            {
+                                title: 'Debug',
+                                value: 'debug'
+                            }
+                        ]
+                    },
+                    core: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'saveElectronLogs',
+                    title: 'Save electron logs',
+                    type: 'button',
+                    value: async () => {
+                        const electron = window.require('electron');
+                        const electronLog = electron.remote.require('electron-log');
+                        const fse = electron.remote.require('fs-extra');
+                        const dialog = electron.remote.dialog;
+
+                        const result = await dialog.showSaveDialog({
+                            filters: [
+                                {
+                                    name: 'Log Files',
+                                    extensions: ['log']
+                                }
+                            ]
+                        });
+
+                        if (!result.canceled && result.filePath) {
+                            await fse.copyFile(electronLog.transports.file.file, result.filePath);
+                        }
+                    },
+                    editable: true,
+                    mode: 'electron'
+                }
+            ]
         }
     ];
 }

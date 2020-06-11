@@ -8,6 +8,7 @@ import { getGoogleCalAccountInfo } from 'actions/publication/googlecal/GoogleCal
 import { authorize, createToken } from 'actions/publication/googlecal/GoogleCalAuthorizationActions';
 import { publishEvents } from 'actions/publication/googlecal/GoogleCalEventActions';
 import { getSettings } from 'selectors/SettingSelectors';
+import logger from 'utils/LogUtils';
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -77,11 +78,7 @@ export function publishToGoogleCal() {
                 state: 'COMPLETED'
             }));
         } catch (error) {
-            console.error(error);
-
-            if (error.response) {
-                console.error(error.response);
-            }
+            logger.error('Publish to Google Calendar error', error);
 
             dispatch(updateProcess({
                 id: processId,

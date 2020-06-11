@@ -1,3 +1,9 @@
+# 1.1.2
+
+## New Features
+
+* New logging and debug tool
+
 # 1.1.1
 
 ## Bug Fixes

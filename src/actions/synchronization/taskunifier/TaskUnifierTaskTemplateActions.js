@@ -7,6 +7,7 @@ import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeTaskTemplates() {
@@ -75,7 +76,7 @@ export function synchronizeTaskTemplates() {
 }
 
 export function getRemoteTaskTemplates(updatedAfter) {
-    console.debug('getRemoteTaskTemplates');
+    logger.debug('Get remote task templates');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -99,7 +100,7 @@ export function getRemoteTaskTemplates(updatedAfter) {
 }
 
 export function addRemoteTaskTemplate(taskTemplate) {
-    console.debug('addRemoteTaskTemplate', taskTemplate);
+    logger.debug('Add remote task template', taskTemplate.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -127,7 +128,7 @@ export function addRemoteTaskTemplate(taskTemplate) {
 }
 
 export function editRemoteTaskTemplate(taskTemplate) {
-    console.debug('editRemoteTaskTemplate', taskTemplate);
+    logger.debug('Edit remote task template', taskTemplate.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -147,7 +148,7 @@ export function editRemoteTaskTemplate(taskTemplate) {
 }
 
 export function deleteRemoteTaskTemplate(taskTemplate) {
-    console.debug('deleteRemoteTaskTemplate', taskTemplate);
+    logger.debug('Delete remote task template', taskTemplate.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -165,7 +166,7 @@ export function deleteRemoteTaskTemplate(taskTemplate) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote task template error', error);
         }
     };
 }

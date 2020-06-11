@@ -13,6 +13,7 @@ import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 const CHUNK_SIZE = 50;
@@ -108,7 +109,7 @@ export function synchronizeNotes() {
 }
 
 export function getRemoteNotes(updatedAfter) {
-    console.debug('getRemoteNotes', updatedAfter);
+    logger.debug('Get remote notes', updatedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -135,7 +136,6 @@ export function getRemoteNotes(updatedAfter) {
                 },
                 settings);
 
-            console.debug(result);
             checkResult(result);
 
             start += result.data[0].num;
@@ -149,7 +149,7 @@ export function getRemoteNotes(updatedAfter) {
 }
 
 export function getRemoteDeletedNotes(deletedAfter) {
-    console.debug('getRemoteDeletedNotes', deletedAfter);
+    logger.debug('Get remote deleted notes', deletedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -169,7 +169,6 @@ export function getRemoteDeletedNotes(deletedAfter) {
             },
             settings);
 
-        console.debug(result);
         checkResult(result);
 
         return result.data.slice(1).map(note => ({ id: note.id }));
@@ -177,7 +176,7 @@ export function getRemoteDeletedNotes(deletedAfter) {
 }
 
 export function addRemoteNotes(notes) {
-    console.debug('addRemoteNotes', notes);
+    logger.debug('Add remote notes', notes.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -220,7 +219,7 @@ export function addRemoteNotes(notes) {
 }
 
 export function editRemoteNotes(notes) {
-    console.debug('editRemoteNotes', notes);
+    logger.debug('Edit remote notes', notes.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -249,7 +248,7 @@ export function editRemoteNotes(notes) {
 }
 
 export function deleteRemoteNotes(notes) {
-    console.debug('deleteRemoteNotes', notes);
+    logger.debug('Delete remote notes', notes.length);
 
     return async (dispatch, getState) => {
         const state = getState();

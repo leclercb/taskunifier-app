@@ -9,6 +9,7 @@ import { initializeShortcuts } from './shortcuts';
 import LoadingIndicator from 'components/common/LoadingIndicator';
 import PrivateComponent from 'components/common/PrivateComponent';
 import { store } from 'store/Store';
+import logger from 'utils/LogUtils';
 import 'index.css';
 
 initializeEvents();
@@ -19,7 +20,7 @@ window.addEventListener('error', function (e) {
         return false;
     }
 
-    console.error(e);
+    logger.error('Uncaught error', e);
 
     notification.error({
         message: 'An error occurred',

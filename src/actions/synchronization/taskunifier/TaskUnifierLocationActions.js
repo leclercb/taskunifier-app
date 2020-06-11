@@ -5,6 +5,7 @@ import { getConfig } from 'config/Config';
 import { getLocations } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeLocations() {
@@ -73,7 +74,7 @@ export function synchronizeLocations() {
 }
 
 export function getRemoteLocations(updatedAfter) {
-    console.debug('getRemoteLocations');
+    logger.debug('Get remote locations');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -97,7 +98,7 @@ export function getRemoteLocations(updatedAfter) {
 }
 
 export function addRemoteLocation(location) {
-    console.debug('addRemoteLocation', location);
+    logger.debug('Add remote location', location.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -125,7 +126,7 @@ export function addRemoteLocation(location) {
 }
 
 export function editRemoteLocation(location) {
-    console.debug('editRemoteLocation', location);
+    logger.debug('Edit remote location', location.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -145,7 +146,7 @@ export function editRemoteLocation(location) {
 }
 
 export function deleteRemoteLocation(location) {
-    console.debug('deleteRemoteLocation', location);
+    logger.debug('Delete remote location', location.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -163,7 +164,7 @@ export function deleteRemoteLocation(location) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote location error', error);
         }
     };
 }

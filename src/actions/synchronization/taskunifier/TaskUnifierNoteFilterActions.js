@@ -6,6 +6,7 @@ import { getConfig } from 'config/Config';
 import { getNoteFilters } from 'selectors/NoteFilterSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeNoteFilters() {
@@ -74,7 +75,7 @@ export function synchronizeNoteFilters() {
 }
 
 export function getRemoteNoteFilters(updatedAfter) {
-    console.debug('getRemoteNoteFilters');
+    logger.debug('Get remote note filters');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -98,7 +99,7 @@ export function getRemoteNoteFilters(updatedAfter) {
 }
 
 export function addRemoteNoteFilter(noteFilter) {
-    console.debug('addRemoteNoteFilter', noteFilter);
+    logger.debug('Add remote note filter', noteFilter.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -126,7 +127,7 @@ export function addRemoteNoteFilter(noteFilter) {
 }
 
 export function editRemoteNoteFilter(noteFilter) {
-    console.debug('editRemoteNoteFilter', noteFilter);
+    logger.debug('Edit remote note filter', noteFilter.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -146,7 +147,7 @@ export function editRemoteNoteFilter(noteFilter) {
 }
 
 export function deleteRemoteNoteFilter(noteFilter) {
-    console.debug('deleteRemoteNoteFilter', noteFilter);
+    logger.debug('Delete remote note filter', noteFilter.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -164,7 +165,7 @@ export function deleteRemoteNoteFilter(noteFilter) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote note filter error', error);
         }
     };
 }

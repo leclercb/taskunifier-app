@@ -7,13 +7,14 @@ const log = require('electron-log');
 const { initializeMenu } = require('./electronMenu.js');
 const { createMainWindow, createTray, getCoreSettings, getDefaultWindow } = require('./electronUtils.js');
 
+const settings = getCoreSettings();
+log.transports.file.level = settings.electronLoggerLevel || 'info';
+
 log.info('Starting TaskUnifier');
 
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = false;
 autoUpdater.logger = log;
-
-const settings = getCoreSettings();
 
 // eslint-disable-next-line no-unused-vars
 let tray = null; // To avoid being garbage collected
