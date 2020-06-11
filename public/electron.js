@@ -38,6 +38,7 @@ app.on('before-quit', () => {
 });
 
 app.on('window-all-closed', () => {
+    log.info('Quit');
     app.quit();
 });
 

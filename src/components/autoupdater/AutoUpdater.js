@@ -36,7 +36,7 @@ function AutoUpdater() {
                         <React.Fragment>
                             Downloading:&nbsp;&nbsp;
                             <Progress
-                                percent={autoUpdaterApi.downloadProgress.progress}
+                                percent={Math.round(autoUpdaterApi.downloadProgress.percent)}
                                 style={{ marginRight: 10, width: 100 }} />
                         </React.Fragment>
                     )}

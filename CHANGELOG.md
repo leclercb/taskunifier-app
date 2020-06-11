@@ -4,6 +4,10 @@
 
 * New logging and debug tool
 
+## Bug Fixes
+
+* Fix auto updater download progress
+
 # 1.1.1
 
 ## Bug Fixes
