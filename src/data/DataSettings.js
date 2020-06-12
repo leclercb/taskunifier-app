@@ -1786,7 +1786,7 @@ export function getCategories() {
             settings: [
                 {
                     id: 'electronLoggerLevel',
-                    title: 'Enable electron level',
+                    title: 'Electron logger level',
                     type: 'select',
                     value: 'info',
                     editable: true,
@@ -1815,7 +1815,7 @@ export function getCategories() {
                 },
                 {
                     id: 'saveElectronLogs',
-                    title: 'Save electron logs',
+                    title: 'Save Electron logs',
                     type: 'button',
                     value: async () => {
                         const electron = window.require('electron');
