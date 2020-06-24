@@ -20,6 +20,7 @@ import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getDefaultSelectedTaskFilter, getDefaultTaskSorters } from 'data/DataTaskFilters';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
+import { getTimeDurationFields } from 'data/DataTimeDurationFields';
 import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
 import { getPublicationApps } from 'utils/PublicationUtils';
@@ -46,6 +47,7 @@ export function getSettingValues(options = {}) {
                 case 'label':
                     break;
                 case 'sorters':
+                case 'timeDurations':
                 default:
                     settings[setting.id] = setting.value;
                     break;
@@ -540,6 +542,71 @@ export function getCategories() {
                     },
                     value: 'HH:mm',
                     editable: true
+                },
+                {
+                    id: 'postponeMenuTimeDurations',
+                    title: 'Postpone menu time durations',
+                    type: 'timeDurations',
+                    fields: getTimeDurationFields(),
+                    value: [
+                        {
+                            id: '1-day',
+                            amount: 1,
+                            unit: 'day'
+                        },
+                        {
+                            id: '2-day',
+                            amount: 2,
+                            unit: 'day'
+                        },
+                        {
+                            id: '3-day',
+                            amount: 3,
+                            unit: 'day'
+                        },
+                        {
+                            id: '4-day',
+                            amount: 4,
+                            unit: 'day'
+                        },
+                        {
+                            id: '5-day',
+                            amount: 5,
+                            unit: 'day'
+                        },
+                        {
+                            id: '6-day',
+                            amount: 6,
+                            unit: 'day'
+                        },
+                        {
+                            id: '1-week',
+                            amount: 1,
+                            unit: 'week'
+                        },
+                        {
+                            id: '2-week',
+                            amount: 2,
+                            unit: 'week'
+                        },
+                        {
+                            id: '3-week',
+                            amount: 3,
+                            unit: 'week'
+                        },
+                        {
+                            id: '1-month',
+                            amount: 1,
+                            unit: 'month'
+                        },
+                        {
+                            id: '2-month',
+                            amount: 2,
+                            unit: 'month'
+                        }
+                    ],
+                    editable: true,
+                    visible: true
                 }
             ]
         },

@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Add setting to customize postpone menu items (#130)
 * New logging and debug tool
 
 ## Bug Fixes

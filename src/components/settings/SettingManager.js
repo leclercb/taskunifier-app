@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import Icon from 'components/common/Icon';
 import PromiseButton from 'components/common/PromiseButton';
 import SorterTable from 'components/filters/SorterTable';
+import TimeDurationTable from 'components/timedurations/TimeDurationTable';
 import { getInputForType } from 'data/DataFieldComponents';
 import { getValuePropNameForType } from 'data/DataFieldTypes';
 import { getGeneralNoteFilters } from 'data/DataNoteFilters';
@@ -82,6 +83,20 @@ function SettingManager(props) {
                             })}
                             orderSettingPrefix="categorySorterColumnOrder_"
                             widthSettingPrefix="categorySorterColumnWidth_"
+                            disabled={item.editable === false} />
+                    </Form.Item>
+                );
+            case 'timeDurations':
+                return (
+                    <Form.Item label={item.title} style={{ width: '100%' }}>
+                        <TimeDurationTable
+                            timeDurations={settingsApi.settings[item.id]}
+                            timeDurationFields={item.fields}
+                            updateTimeDurations={timeDurations => settingsApi.updateSettings({
+                                [item.id]: timeDurations
+                            })}
+                            orderSettingPrefix="timeDurationColumnOrder_"
+                            widthSettingPrefix="timeDurationColumnWidth_"
                             disabled={item.editable === false} />
                     </Form.Item>
                 );
