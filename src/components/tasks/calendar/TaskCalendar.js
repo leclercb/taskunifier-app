@@ -9,6 +9,7 @@ import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
+import WeekListView from 'components/tasks/calendar/WeekListView';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
@@ -231,6 +232,13 @@ function TaskCalendar({ apis }) {
                 onEventResize={onEventChange}
                 resizable={true}
                 selectable={true}
+                views={{
+                    month: true,
+                    week: true,
+                    day: true,
+                    agenda: true,
+                    week_list: WeekListView
+                }}
                 formats={{
                     selectRangeFormat: timeRangeFormat,
                     eventTimeRangeFormat: timeRangeFormat,
@@ -245,6 +253,9 @@ function TaskCalendar({ apis }) {
                 components={{
                     event: CalendarEvent,
                     eventWrapper: CalendarEventWrapper
+                }}
+                messages={{
+                    week_list: 'Week List'
                 }} />
         </div>
     );

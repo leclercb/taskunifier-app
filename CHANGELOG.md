@@ -1,7 +1,8 @@
-# 1.1.2
+# 1.2.0
 
 ## New Features
 
+* Add week list calendar view (#115)
 * Add setting to customize postpone menu items (#130)
 * Set data folder location via an environment variable (TASKUNIFIER_DATA_FOLDER) (#196)
 * New logging and debug tool
