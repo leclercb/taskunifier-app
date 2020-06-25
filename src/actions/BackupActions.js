@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import moment from 'moment';
-import { deletePath, readDirectory } from 'actions/ActionUtils';
+import { deletePath, getDataFolder, readDirectory } from 'actions/ActionUtils';
 import { _loadDataFromFile, _saveDataToFile } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
@@ -8,7 +8,7 @@ import { getSettings } from 'selectors/SettingSelectors';
 import { exists, join } from 'utils/ElectronUtils';
 
 export async function getBackupIds(settings) {
-    const path = join(settings.dataFolder, 'backups');
+    const path = join(getDataFolder(settings), 'backups');
 
     let items = await readDirectory(path);
     items = items.map(item => item.replace('.zip', ''));
@@ -19,7 +19,7 @@ export async function getBackupIds(settings) {
 
 export function restoreBackup(backupId) {
     return async (dispatch, getState) => {
-        let path = join(getState().settings.dataFolder, 'backups');
+        let path = join(getDataFolder(getState().settings), 'backups');
 
         let zip;
 
@@ -38,7 +38,7 @@ export function restoreBackup(backupId) {
 
 export function backupData() {
     return async (dispatch, getState) => {
-        const path = join(getState().settings.dataFolder, 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]') + '.zip');
+        const path = join(getDataFolder(getState().settings), 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]') + '.zip');
         await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database', zip: true }));
         await dispatch(cleanBackups());
 
@@ -60,13 +60,14 @@ export function deleteBackup(backupId) {
         }));
 
         try {
-            const path = join(getSettings(state).dataFolder, 'backups');
+            const dataFolder = getDataFolder(getSettings(state));
+            const path = join(dataFolder, 'backups');
 
             try {
                 await exists(join(path, backupId + '.zip'));
-                await deletePath(join(path, backupId + '.zip'), getSettings(state).dataFolder);
+                await deletePath(join(path, backupId + '.zip'), dataFolder);
             } catch (e) {
-                await deletePath(join(path, backupId), getSettings(state).dataFolder);
+                await deletePath(join(path, backupId), dataFolder);
             }
 
             dispatch(updateProcess({

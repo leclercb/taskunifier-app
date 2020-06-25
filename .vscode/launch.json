@@ -19,7 +19,9 @@
                 "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
             },
             "args" : ["."],
-            "env": {}
+            "env": {
+                "TASKUNIFIER_DATA_FOLDER": ""
+            }
         }
     ]
 }

@@ -218,6 +218,21 @@ export function getUserDataPath() {
     return null;
 }
 
+export function getDataFolder(settings) {
+    if (process.env.REACT_APP_MODE === 'electron') {
+        const electron = window.require('electron');
+        const env = electron.remote.getGlobal('process').env;
+
+        if (env.TASKUNIFIER_DATA_FOLDER) {
+            return env.TASKUNIFIER_DATA_FOLDER;
+        }
+
+        return settings.dataFolder;
+    }
+
+    return null;
+}
+
 export async function readDirectory(path) {
     return await readdir(path);
 }
