@@ -235,9 +235,9 @@ function TaskCalendar({ apis }) {
                 views={{
                     month: true,
                     week: true,
+                    week_list: WeekListView,
                     day: true,
-                    agenda: true,
-                    week_list: WeekListView
+                    agenda: true
                 }}
                 formats={{
                     selectRangeFormat: timeRangeFormat,
