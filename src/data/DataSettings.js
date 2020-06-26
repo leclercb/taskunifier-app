@@ -544,7 +544,7 @@ export function getCategories() {
                     editable: true
                 },
                 {
-                    id: 'postponeMenuTimeDurations',
+                    id: 'postponeTimeDurations',
                     title: 'Postpone menu time durations',
                     type: 'timeDurations',
                     fields: getTimeDurationFields(),

@@ -121,7 +121,7 @@ function TaskMenu({ apis, selectedTasks, children }) {
         <Menu.SubMenu
             key={key}
             title={(<Icon icon="calendar-alt" text={title} />)}>
-            {settingsApi.settings.postponeMenuTimeDurations.map(timeDuration => (
+            {settingsApi.settings.postponeTimeDurations.map(timeDuration => (
                 <Menu.Item key={timeDuration.id} action={{ type: key, amount: timeDuration.amount, unit: timeDuration.unit }}>
                     <Icon icon="calendar-alt" text={`Add ${timeDuration.amount} ${timeDuration.unit}${timeDuration.amount > 1 ? 's' : ''}`} />
                 </Menu.Item>
