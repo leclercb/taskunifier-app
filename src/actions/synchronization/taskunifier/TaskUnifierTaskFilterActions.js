@@ -6,6 +6,7 @@ import { getConfig } from 'config/Config';
 import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeTaskFilters() {
@@ -74,7 +75,7 @@ export function synchronizeTaskFilters() {
 }
 
 export function getRemoteTaskFilters(updatedAfter) {
-    console.debug('getRemoteTaskFilters');
+    logger.debug('Get remote task filters');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -98,7 +99,7 @@ export function getRemoteTaskFilters(updatedAfter) {
 }
 
 export function addRemoteTaskFilter(taskFilter) {
-    console.debug('addRemoteTaskFilter', taskFilter);
+    logger.debug('Add remote task filter', taskFilter.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -126,7 +127,7 @@ export function addRemoteTaskFilter(taskFilter) {
 }
 
 export function editRemoteTaskFilter(taskFilter) {
-    console.debug('editRemoteTaskFilter', taskFilter);
+    logger.debug('Edit remote task filter', taskFilter.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -146,7 +147,7 @@ export function editRemoteTaskFilter(taskFilter) {
 }
 
 export function deleteRemoteTaskFilter(taskFilter) {
-    console.debug('deleteRemoteTaskFilter', taskFilter);
+    logger.debug('Delete remote task filter', taskFilter.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -164,7 +165,7 @@ export function deleteRemoteTaskFilter(taskFilter) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote task filter error', error);
         }
     };
 }

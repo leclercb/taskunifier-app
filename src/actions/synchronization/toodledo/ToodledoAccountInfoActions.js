@@ -3,6 +3,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { checkResult } from 'actions/synchronization/toodledo/ExceptionHandler';
 import { setSynchronizationData } from 'actions/SynchronizationActions';
 import { getSettings } from 'selectors/SettingSelectors';
+import logger from 'utils/LogUtils';
 
 export function getToodledoAccountInfo() {
     return async (dispatch, getState) => {
@@ -21,7 +22,7 @@ export function getToodledoAccountInfo() {
             },
             settings);
 
-        console.debug('getToodledoAccountInfo', result);
+        logger.debug('Get Toodledo account info', result.data);
 
         checkResult(result);
 

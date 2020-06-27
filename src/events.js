@@ -1,11 +1,12 @@
 import { executeAddNote, executeAddTask } from './shortcuts';
+import logger from 'utils/LogUtils';
 
 export function initializeEvents() {
     if (process.env.REACT_APP_MODE === 'electron') {
         const { ipcRenderer } = window.require('electron');
 
         ipcRenderer.on('open-url', async (event, url) => {
-            console.debug('Open URL', url);
+            logger.debug('Open URL', url);
 
             const u = new URL(url);
 

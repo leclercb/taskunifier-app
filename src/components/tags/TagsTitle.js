@@ -5,7 +5,7 @@ import withBusyCheck from 'containers/WithBusyCheck';
 import { useTagApi } from 'hooks/UseTagApi';
 import { getTagsFromIds } from 'utils/TagUtils';
 
-export function TagsTitle(props) {
+function TagsTitle(props) {
     const { tagApi } = props.apis;
     const tags = getTagsFromIds(tagApi.tags, props.tagIds);
 

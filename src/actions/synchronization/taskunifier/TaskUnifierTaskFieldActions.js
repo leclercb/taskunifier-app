@@ -5,6 +5,7 @@ import { getConfig } from 'config/Config';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeTaskFields() {
@@ -73,7 +74,7 @@ export function synchronizeTaskFields() {
 }
 
 export function getRemoteTaskFields(updatedAfter) {
-    console.debug('getRemoteTaskFields');
+    logger.debug('Get remote task fields');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -97,7 +98,7 @@ export function getRemoteTaskFields(updatedAfter) {
 }
 
 export function addRemoteTaskField(taskField) {
-    console.debug('addRemoteTaskField', taskField);
+    logger.debug('Add remote task field', taskField.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -125,7 +126,7 @@ export function addRemoteTaskField(taskField) {
 }
 
 export function editRemoteTaskField(taskField) {
-    console.debug('editRemoteTaskField', taskField);
+    logger.debug('Edit remote task field', taskField.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -145,7 +146,7 @@ export function editRemoteTaskField(taskField) {
 }
 
 export function deleteRemoteTaskField(taskField) {
-    console.debug('deleteRemoteTaskField', taskField);
+    logger.debug('Delete remote task field', taskField.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -163,7 +164,7 @@ export function deleteRemoteTaskField(taskField) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote task field error', error);
         }
     };
 }

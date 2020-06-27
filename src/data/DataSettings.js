@@ -20,6 +20,7 @@ import { getPriorities } from 'data/DataPriorities';
 import { getStatuses } from 'data/DataStatuses';
 import { getDefaultSelectedTaskFilter, getDefaultTaskSorters } from 'data/DataTaskFilters';
 import { getTaskSorterFields } from 'data/DataTaskSorterFields';
+import { getTimeDurationFields } from 'data/DataTimeDurationFields';
 import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
 import { getPublicationApps } from 'utils/PublicationUtils';
@@ -46,6 +47,7 @@ export function getSettingValues(options = {}) {
                 case 'label':
                     break;
                 case 'sorters':
+                case 'timeDurations':
                 default:
                     settings[setting.id] = setting.value;
                     break;
@@ -540,6 +542,71 @@ export function getCategories() {
                     },
                     value: 'HH:mm',
                     editable: true
+                },
+                {
+                    id: 'postponeTimeDurations',
+                    title: 'Postpone menu time durations',
+                    type: 'timeDurations',
+                    fields: getTimeDurationFields(),
+                    value: [
+                        {
+                            id: '1-day',
+                            amount: 1,
+                            unit: 'day'
+                        },
+                        {
+                            id: '2-day',
+                            amount: 2,
+                            unit: 'day'
+                        },
+                        {
+                            id: '3-day',
+                            amount: 3,
+                            unit: 'day'
+                        },
+                        {
+                            id: '4-day',
+                            amount: 4,
+                            unit: 'day'
+                        },
+                        {
+                            id: '5-day',
+                            amount: 5,
+                            unit: 'day'
+                        },
+                        {
+                            id: '6-day',
+                            amount: 6,
+                            unit: 'day'
+                        },
+                        {
+                            id: '1-week',
+                            amount: 1,
+                            unit: 'week'
+                        },
+                        {
+                            id: '2-week',
+                            amount: 2,
+                            unit: 'week'
+                        },
+                        {
+                            id: '3-week',
+                            amount: 3,
+                            unit: 'week'
+                        },
+                        {
+                            id: '1-month',
+                            amount: 1,
+                            unit: 'month'
+                        },
+                        {
+                            id: '2-month',
+                            amount: 2,
+                            unit: 'month'
+                        }
+                    ],
+                    editable: true,
+                    visible: true
                 }
             ]
         },
@@ -1775,6 +1842,69 @@ export function getCategories() {
                             }
                         ]
                     }
+                }
+            ]
+        },
+        {
+            id: 'advanced',
+            title: 'Advanced',
+            icon: 'radiation',
+            mode: 'electron',
+            settings: [
+                {
+                    id: 'electronLoggerLevel',
+                    title: 'Electron logger level',
+                    type: 'select',
+                    value: 'info',
+                    editable: true,
+                    options: {
+                        values: [
+                            {
+                                title: 'Error',
+                                value: 'error'
+                            },
+                            {
+                                title: 'Warning',
+                                value: 'warn'
+                            },
+                            {
+                                title: 'Info',
+                                value: 'info'
+                            },
+                            {
+                                title: 'Debug',
+                                value: 'debug'
+                            }
+                        ]
+                    },
+                    core: true,
+                    mode: 'electron'
+                },
+                {
+                    id: 'saveElectronLogs',
+                    title: 'Save Electron logs',
+                    type: 'button',
+                    value: async () => {
+                        const electron = window.require('electron');
+                        const electronLog = electron.remote.require('electron-log');
+                        const fse = electron.remote.require('fs-extra');
+                        const dialog = electron.remote.dialog;
+
+                        const result = await dialog.showSaveDialog({
+                            filters: [
+                                {
+                                    name: 'Log Files',
+                                    extensions: ['log']
+                                }
+                            ]
+                        });
+
+                        if (!result.canceled && result.filePath) {
+                            await fse.copyFile(electronLog.transports.file.file, result.filePath);
+                        }
+                    },
+                    editable: true,
+                    mode: 'electron'
                 }
             ]
         }

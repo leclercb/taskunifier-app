@@ -19,7 +19,7 @@ window.addEventListener('error', function (e) {
         return false;
     }
 
-    console.error(e);
+    // logger.error('Uncaught error', e);
 
     notification.error({
         message: 'An error occurred',

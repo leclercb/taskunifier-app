@@ -5,6 +5,7 @@ import { getConfig } from 'config/Config';
 import { getContacts } from 'selectors/ContactSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeContacts() {
@@ -73,7 +74,7 @@ export function synchronizeContacts() {
 }
 
 export function getRemoteContacts(updatedAfter) {
-    console.debug('getRemoteContacts');
+    logger.debug('Get remote contacts');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -97,7 +98,7 @@ export function getRemoteContacts(updatedAfter) {
 }
 
 export function addRemoteContact(contact) {
-    console.debug('addRemoteContact', contact);
+    logger.debug('Add remote contact', contact.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -125,7 +126,7 @@ export function addRemoteContact(contact) {
 }
 
 export function editRemoteContact(contact) {
-    console.debug('editRemoteContact', contact);
+    logger.debug('Edit remote contact', contact.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -145,7 +146,7 @@ export function editRemoteContact(contact) {
 }
 
 export function deleteRemoteContact(contact) {
-    console.debug('deleteRemoteContact', contact);
+    logger.debug('Delete remote contact', contact.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -163,7 +164,7 @@ export function deleteRemoteContact(contact) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote contact error', error);
         }
     };
 }

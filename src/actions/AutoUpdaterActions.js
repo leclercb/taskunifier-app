@@ -3,6 +3,7 @@ import { getSettings } from 'selectors/SettingSelectors';
 import { updateSettings } from 'actions/SettingActions';
 import { compareVersions } from 'utils/CompareUtils';
 import { getAppVersion } from 'utils/ElectronUtils';
+import logger from 'utils/LogUtils';
 
 export function setVisible(visible) {
     return async dispatch => {
@@ -53,6 +54,8 @@ export function checkForUpdates(quiet) {
         const currentVersion = getAppVersion();
         const latestVersion = updateCheckResult.updateInfo.version;
 
+        logger.info('Check for updates', currentVersion, latestVersion);
+
         if (quiet && settings.checkLatestVersion === latestVersion) {
             return null;
         }
@@ -82,10 +85,12 @@ export function downloadUpdate() {
             const { autoUpdater, CancellationToken } = electron.remote.require('electron-updater');
 
             const downloadProgressHandler = info => {
+                logger.debug('Download progress', info.percent);
                 dispatch(setDownloadProgress(info));
             };
 
             const updateDownloadedHandler = info => {
+                logger.debug('Update downloaded', info);
                 dispatch(setUpdateDownloaded(info));
                 autoUpdater.removeListener('download-progress', downloadProgressHandler);
                 autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
@@ -96,10 +101,14 @@ export function downloadUpdate() {
                 autoUpdater.on('download-progress', downloadProgressHandler);
                 autoUpdater.on('update-downloaded', updateDownloadedHandler);
 
+                logger.info('Download update');
+
                 const cancellationToken = new CancellationToken();
                 autoUpdater.downloadUpdate(cancellationToken);
                 dispatch(setDownloadProgress({ progress: 0 }));
             } catch (e) {
+                logger.error('Download update error', e);
+
                 autoUpdater.removeListener('download-progress', downloadProgressHandler);
                 autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
                 reject(e);
@@ -112,6 +121,8 @@ export function quitAndInstall() {
     return async () => {
         const electron = window.require('electron');
         const { autoUpdater } = electron.remote.require('electron-updater');
+
+        logger.info('Quit and install');
 
         electron.ipcRenderer.send('initiate-quit');
         autoUpdater.quitAndInstall();

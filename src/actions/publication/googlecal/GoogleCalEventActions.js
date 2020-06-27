@@ -4,6 +4,7 @@ import { getClient } from 'actions/publication/googlecal/GoogleCalAuthorizationA
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
+import logger from 'utils/LogUtils';
 import { equals } from 'utils/ObjectUtils';
 
 export function publishEvents() {
@@ -38,13 +39,13 @@ export function publishEvents() {
         const events = [];
 
         if (calendar) {
-            console.debug('Calendar found', calendar);
+            logger.debug('Calendar found', calendar.id);
 
             const eventListResult = await calendarClient.events.list({
                 calendarId: calendar.id
             });
 
-            console.debug('Calendar events retrieved', eventListResult);
+            logger.debug('Calendar events retrieved', eventListResult.data.items.length);
 
             events.push(...eventListResult.data.items);
         } else {
@@ -55,7 +56,7 @@ export function publishEvents() {
                 }
             });
 
-            console.debug('Calendar created', calendarInsertResult);
+            logger.debug('Calendar created', calendarInsertResult.data);
 
             calendar = calendarInsertResult.data;
         }
@@ -131,12 +132,12 @@ export function publishEvents() {
         }
 
         for (let event of events) {
-            const eventDeleteResult = await calendarClient.events.delete({
+            await calendarClient.events.delete({
                 calendarId: calendar.id,
                 eventId: event.id
             });
 
-            console.debug('Event deleted', eventDeleteResult);
+            logger.debug('Event deleted', event.id);
         }
     };
 }
@@ -203,10 +204,10 @@ async function publishEvent(calendarClient, events, calendar, task, startDate, e
         return;
     }
 
-    const eventInsertResult = await calendarClient.events.insert({
+    await calendarClient.events.insert({
         calendarId: calendar.id,
         requestBody: newEvent
     });
 
-    console.debug('Event created', eventInsertResult);
+    logger.debug('Event created', newEvent.id);
 }

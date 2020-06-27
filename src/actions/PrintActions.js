@@ -1,6 +1,6 @@
 import sortBy from 'lodash/sortBy';
 import { v4 as uuid } from 'uuid';
-import { saveBufferToFile } from 'actions/ActionUtils';
+import { getDataFolder, saveBufferToFile } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
@@ -62,7 +62,7 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
         printTable(doc, null, fields, objects, state);
 
         if (process.env.REACT_APP_MODE === 'electron') {
-            const path = join(getSettings(state).dataFolder, 'temp');
+            const path = join(getDataFolder(getSettings(state)), 'temp');
             const file = join(path, fileName);
 
             await ensureDir(path);

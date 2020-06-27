@@ -45,7 +45,6 @@ function RepeatForm({ repeat, updateRepeat }) {
                 newRuleStr += ';FASTFORWARD';
             }
 
-            console.debug(newRuleStr);
             updateRepeat(newRuleStr);
         } catch (error) {
             // Skip

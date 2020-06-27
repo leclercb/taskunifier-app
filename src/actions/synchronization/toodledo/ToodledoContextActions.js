@@ -7,6 +7,7 @@ import { getContexts } from 'selectors/ContextSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeContexts() {
@@ -82,7 +83,7 @@ export function synchronizeContexts() {
 }
 
 export function getRemoteContexts() {
-    console.debug('getRemoteContexts');
+    logger.debug('Get remote contexts');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -108,7 +109,7 @@ export function getRemoteContexts() {
 }
 
 export function addRemoteContext(context) {
-    console.debug('addRemoteContext', context);
+    logger.debug('Add remote context', context.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -141,7 +142,7 @@ export function addRemoteContext(context) {
 }
 
 export function editRemoteContext(context) {
-    console.debug('editRemoteContext', context);
+    logger.debug('Edit remote context', context.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -166,7 +167,7 @@ export function editRemoteContext(context) {
 }
 
 export function deleteRemoteContext(context) {
-    console.debug('deleteRemoteContext', context);
+    logger.debug('Delete remote context', context.id);
 
     return async (dispatch, getState) => {
         const state = getState();

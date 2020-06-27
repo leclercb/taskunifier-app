@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, List, Row, Spin } from 'antd';
+import { Col, Empty, List, Row, Spin } from 'antd';
 import { Elements, StripeProvider } from 'react-stripe-elements';
 import AccountCustomer from 'components/account/AccountCustomer';
 import AccountSource from 'components/account/AccountSource';
@@ -9,7 +9,7 @@ import Icon from 'components/common/Icon';
 import ScriptLoader from 'components/common/ScriptLoader';
 import { getConfig } from 'config/Config';
 import { useStripeApi } from 'hooks/UseStripeApi';
-import { Empty } from 'antd';
+import logger from 'utils/LogUtils';
 
 function AccountManager() {
     const stripeApi = useStripeApi();
@@ -24,7 +24,7 @@ function AccountManager() {
                 setBusy(true);
                 const customer = await stripeApi.getCurrentCustomer();
                 setCustomer(customer);
-                console.debug('Customer', customer);
+                logger.debug('Customer', customer);
             } finally {
                 setBusy(false);
             }

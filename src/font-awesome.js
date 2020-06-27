@@ -48,6 +48,7 @@ import {
     faPlusSquare,
     faPrint,
     faQuestionCircle,
+    faRadiation,
     faRetweet,
     faSave,
     faSearch,
@@ -111,6 +112,7 @@ library.add(faPlus);
 library.add(faPlusSquare);
 library.add(faPrint);
 library.add(faQuestionCircle);
+library.add(faRadiation);
 library.add(faRetweet);
 library.add(faSave);
 library.add(faSearch);

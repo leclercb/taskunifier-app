@@ -3,6 +3,7 @@ import { updateSettings } from 'actions/SettingActions';
 import { setSynchronizationData } from 'actions/SynchronizationActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
+import logger from 'utils/LogUtils';
 
 export function getTaskUnifierAccountInfo() {
     return async (dispatch, getState) => {
@@ -18,7 +19,7 @@ export function getTaskUnifierAccountInfo() {
             },
             settings);
 
-        console.debug('getTaskUnifierAccountInfo', result);
+        logger.debug('Get TaskUnifier account info', result.data);
 
         await dispatch(updateSettings({
             taskunifier: {

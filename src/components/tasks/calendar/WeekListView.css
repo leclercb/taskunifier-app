@@ -1,0 +1,15 @@
+table.weekList,
+table.weekList th,
+table.weekList td {
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+}
+
+table.weekList th {
+    text-align: center;
+    font-size: 90%;
+}
+
+table.weekList td.hovered {
+    border: 2px solid #0e67c4;
+}

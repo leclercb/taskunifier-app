@@ -2,6 +2,7 @@ import { google } from 'googleapis';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { openExternalLink } from 'utils/ElectronUtils';
+import logger from 'utils/LogUtils';
 
 export function getClient(settings = null) {
     const client = new google.auth.OAuth2(
@@ -36,7 +37,7 @@ export function authorize() {
 }
 
 export function createToken(code) {
-    console.debug('Create token', code);
+    logger.debug('Create token', code);
 
     return async dispatch => {
         const client = getClient();

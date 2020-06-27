@@ -5,6 +5,7 @@ import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
 import { openExternalLink } from 'utils/ElectronUtils';
+import logger from 'utils/LogUtils';
 
 export function authorize() {
     return async () => {
@@ -22,7 +23,7 @@ export function authorize() {
 }
 
 export function createToken(code) {
-    console.debug('createToken', code);
+    logger.debug('Create token', code);
 
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
@@ -58,7 +59,7 @@ export function createToken(code) {
 }
 
 export function refreshToken() {
-    console.debug('refreshToken');
+    logger.debug('Refresh token');
 
     return async (dispatch, getState) => {
         const settings = getSettings(getState());

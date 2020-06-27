@@ -20,6 +20,7 @@ import { synchronizeTaskFilters } from 'actions/synchronization/taskunifier/Task
 import { synchronizeTaskTemplates } from 'actions/synchronization/taskunifier/TaskUnifierTaskTemplateActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
+import logger from 'utils/LogUtils';
 
 async function getAuthorizationCode() {
     return new Promise((resolve, reject) => {
@@ -77,6 +78,8 @@ export function synchronizeWithTaskUnifier() {
                 notify: true
             }));
 
+            logger.info('Synchronization with TaskUnifier started');
+
             await dispatch(connectToTaskUnifier());
 
             const startTime = moment();
@@ -98,18 +101,14 @@ export function synchronizeWithTaskUnifier() {
             await dispatch(synchronizeTaskFilters());
             await dispatch(synchronizeTaskTemplates());
 
-            console.debug(`Synchronization completed in ${moment().diff(startTime, 'second')} seconds`);
+            logger.info(`Synchronization with TaskUnifier completed in ${moment().diff(startTime, 'second')} seconds`);
 
             dispatch(updateProcess({
                 id: processId,
                 state: 'COMPLETED'
             }));
         } catch (error) {
-            console.error(error);
-
-            if (error.response) {
-                console.error(error.response);
-            }
+            logger.error('Synchronization error', error);
 
             dispatch(updateProcess({
                 id: processId,

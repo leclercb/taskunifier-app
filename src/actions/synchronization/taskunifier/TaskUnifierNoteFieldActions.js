@@ -5,6 +5,7 @@ import { getConfig } from 'config/Config';
 import { getNoteFields } from 'selectors/NoteFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeNoteFields() {
@@ -73,7 +74,7 @@ export function synchronizeNoteFields() {
 }
 
 export function getRemoteNoteFields(updatedAfter) {
-    console.debug('getRemoteNoteFields');
+    logger.debug('Get remote note fields');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -97,7 +98,7 @@ export function getRemoteNoteFields(updatedAfter) {
 }
 
 export function addRemoteNoteField(noteField) {
-    console.debug('addRemoteNoteField', noteField);
+    logger.debug('Add remote note field', noteField.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -125,7 +126,7 @@ export function addRemoteNoteField(noteField) {
 }
 
 export function editRemoteNoteField(noteField) {
-    console.debug('editRemoteNoteField', noteField);
+    logger.debug('Edit remote note field', noteField.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -145,7 +146,7 @@ export function editRemoteNoteField(noteField) {
 }
 
 export function deleteRemoteNoteField(noteField) {
-    console.debug('deleteRemoteNoteField', noteField);
+    logger.debug('Delete remote note field', noteField.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -163,7 +164,7 @@ export function deleteRemoteNoteField(noteField) {
                 settings);
         } catch (error) {
             // No throw exception if delete fails
-            console.debug(error);
+            logger.debug('Delete remote note field error', error);
         }
     };
 }

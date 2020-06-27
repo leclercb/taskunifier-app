@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Plan from 'components/account/Plan';
 import { getConfig } from 'config/Config';
 import { useStripeApi } from 'hooks/UseStripeApi';
+import logger from 'utils/LogUtils';
 
 function Plans({ onSelectPlan }) {
     const stripeApi = useStripeApi();
@@ -17,7 +18,7 @@ function Plans({ onSelectPlan }) {
                 setBusy(true);
                 const plans = await stripeApi.getPlans(getConfig().stripe.productId);
                 setPlans(plans);
-                console.debug('Plans', plans);
+                logger.debug('Plans', plans);
             } finally {
                 setBusy(false);
             }

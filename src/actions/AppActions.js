@@ -2,7 +2,7 @@ import JSZip from 'jszip';
 import moment from 'moment';
 import { ActionCreators } from 'redux-undo';
 import { v4 as uuid } from 'uuid';
-import { getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
+import { getDataFolder, getUserDataPath, readBufferFromFile, saveBufferToFile } from 'actions/ActionUtils';
 import { cleanContacts, loadContactsFromFile, loadContactsFromServer, saveContactsToFile, setContacts } from 'actions/ContactActions';
 import { cleanContexts, loadContextsFromFile, loadContextsFromServer, saveContextsToFile, setContexts } from 'actions/ContextActions';
 import { cleanFolders, loadFoldersFromFile, loadFoldersFromServer, saveFoldersToFile, setFolders } from 'actions/FolderActions';
@@ -71,7 +71,7 @@ export function _loadDataFromFile(path, options) {
                     throw new Error('The path is missing');
                 }
 
-                path = getState().settings.dataFolder;
+                path = getDataFolder(getState().settings);
             }
 
             let zip = null;
@@ -240,7 +240,7 @@ export function _saveDataToFile(path, options) {
                     throw new Error('The path is missing');
                 }
 
-                path = getState().settings.dataFolder;
+                path = getDataFolder(getState().settings);
             }
 
             if (options.zip) {

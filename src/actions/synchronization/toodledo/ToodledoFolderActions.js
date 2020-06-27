@@ -7,6 +7,7 @@ import { getFolders } from 'selectors/FolderSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getToodledoAccountInfo } from 'selectors/SynchronizationSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { merge } from 'utils/ObjectUtils';
 
 export function synchronizeFolders() {
@@ -82,7 +83,7 @@ export function synchronizeFolders() {
 }
 
 export function getRemoteFolders() {
-    console.debug('getRemoteFolders');
+    logger.debug('Get remote folders');
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -108,7 +109,7 @@ export function getRemoteFolders() {
 }
 
 export function addRemoteFolder(folder) {
-    console.debug('addRemoteFolder', folder);
+    logger.debug('Add remote folder', folder.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -141,7 +142,7 @@ export function addRemoteFolder(folder) {
 }
 
 export function editRemoteFolder(folder) {
-    console.debug('editRemoteFolder', folder);
+    logger.debug('Edit remote folder', folder.id);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -166,7 +167,7 @@ export function editRemoteFolder(folder) {
 }
 
 export function deleteRemoteFolder(folder) {
-    console.debug('deleteRemoteFolder', folder);
+    logger.debug('Delete remote folder', folder.id);
 
     return async (dispatch, getState) => {
         const state = getState();

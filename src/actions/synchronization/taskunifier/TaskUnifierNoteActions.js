@@ -7,6 +7,7 @@ import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getNotes } from 'selectors/NoteSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { filterByVisibleState } from 'utils/CategoryUtils';
+import logger from 'utils/LogUtils';
 import { diff, merge } from 'utils/ObjectUtils';
 
 const CHUNK_SIZE = 50;
@@ -91,7 +92,7 @@ export function synchronizeNotes() {
 }
 
 export function getRemoteNotes(updatedAfter) {
-    console.debug('getRemoteNotes', updatedAfter);
+    logger.debug('Get remote notes', updatedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -111,14 +112,12 @@ export function getRemoteNotes(updatedAfter) {
             },
             settings);
 
-        console.debug(result);
-
         return result.data.map(note => convertNoteToLocal(note, state));
     };
 }
 
 export function getRemoteDeletedNotes(deletedAfter) {
-    console.debug('getRemoteDeletedNotes', deletedAfter);
+    logger.debug('Get remote deleted notes', deletedAfter);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -137,14 +136,12 @@ export function getRemoteDeletedNotes(deletedAfter) {
             },
             settings);
 
-        console.debug(result);
-
         return result.data.map(note => ({ id: note.id }));
     };
 }
 
 export function addRemoteNotes(notes) {
-    console.debug('addRemoteNotes', notes);
+    logger.debug('Add remote notes', notes.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -182,7 +179,7 @@ export function addRemoteNotes(notes) {
 }
 
 export function editRemoteNotes(notes, remoteNotes) {
-    console.debug('editRemoteNotes', notes);
+    logger.debug('Edit remote notes', notes.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -218,7 +215,7 @@ export function editRemoteNotes(notes, remoteNotes) {
 }
 
 export function deleteRemoteNotes(notes) {
-    console.debug('deleteRemoteNotes', notes);
+    logger.debug('Delete remote notes', notes.length);
 
     return async (dispatch, getState) => {
         const state = getState();
@@ -242,7 +239,7 @@ export function deleteRemoteNotes(notes) {
                     settings);
             } catch (error) {
                 // No throw exception if delete fails
-                console.debug(error, error.response);
+                logger.debug('Delete remote notes error', error);
             }
         }
     };
