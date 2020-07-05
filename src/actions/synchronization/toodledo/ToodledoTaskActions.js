@@ -69,12 +69,18 @@ export function synchronizeTasks() {
 
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditTask = moment.unix(getToodledoAccountInfo(getState()).lastedit_task);
+            const completedAfter = moment().subtract(settings.synchronizeTasksCompletedAfter, 'month').toISOString();
 
             if (!lastSync || lastEditTask.diff(lastSync) > 0) {
                 const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync));
 
                 for (let remoteUnconvertedTask of remoteUnconvertedTasks) {
                     const remoteTask = convertTaskToLocal(remoteUnconvertedTask, state);
+
+                    if (remoteTask.completed && remoteTask.completionDate && moment(remoteTask.completionDate).isBefore(completedAfter)) {
+                        continue;
+                    }
+
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteTask.refIds.toodledo);
 
                     let updatedTask = null;

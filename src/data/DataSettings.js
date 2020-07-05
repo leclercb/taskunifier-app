@@ -754,6 +754,19 @@ export function getCategories() {
                     mode: 'electron'
                 },
                 {
+                    id: 'synchronizeTasksCompletedAfter',
+                    title: 'Synchronize tasks completed less than',
+                    suffix: (<span style={{ marginLeft: 10 }}>month(s) ago</span>),
+                    type: 'number',
+                    value: 120,
+                    editable: true,
+                    options: {
+                        min: 1,
+                        max: 120
+                    },
+                    mode: 'electron'
+                },
+                {
                     id: 'lastSynchronizationDate',
                     title: 'Last synchronization date',
                     type: 'dateTime',
