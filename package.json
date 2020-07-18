@@ -38,7 +38,7 @@
         "jspdf": "^1.5.3",
         "jspdf-autotable": "^3.5.6",
         "jszip": "^3.5.0",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "moment": "^2.27.0",
         "mousetrap": "^1.6.5",
         "qs": "^6.9.4",
