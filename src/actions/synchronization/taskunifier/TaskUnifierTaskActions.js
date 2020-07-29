@@ -65,7 +65,8 @@ export function synchronizeTasks() {
         const tasksWithRemoteParent = [];
 
         const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync));
+        const completedAfter = moment().subtract(settings.synchronizeTasksCompletedAfter, 'month').toISOString();
+        const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync, completedAfter));
 
         for (let remoteUnconvertedTask of remoteUnconvertedTasks) {
             const remoteTask = convertTaskToLocal(remoteUnconvertedTask, state);
@@ -135,7 +136,7 @@ export function synchronizeTasks() {
     };
 }
 
-export function getRemoteTasks(updatedAfter) {
+export function getRemoteTasks(updatedAfter, completedAfter) {
     logger.debug('Get remote tasks', updatedAfter);
 
     return async (dispatch, getState) => {
@@ -151,7 +152,8 @@ export function getRemoteTasks(updatedAfter) {
                 url: `${getConfig().apiUrl}/v1/tasks`,
                 query: {
                     includeText: true,
-                    updatedAfter: updatedAfter ? updatedAfter.toISOString() : null
+                    updatedAfter: updatedAfter ? updatedAfter.toISOString() : null,
+                    completedAfter: completedAfter ? completedAfter.toISOString() : null
                 }
             },
             settings);
