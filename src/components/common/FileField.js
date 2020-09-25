@@ -36,7 +36,7 @@ class FileField extends React.Component {
 
     onOpenFile() {
         const electron = window.require('electron');
-        return electron.remote.shell.openItem(this.state.value);
+        return electron.remote.shell.openPath(this.state.value);
     }
 
     async onSelectFile() {

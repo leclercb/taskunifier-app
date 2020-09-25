@@ -69,7 +69,7 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
             await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));
 
             const electron = window.require('electron');
-            return electron.remote.shell.openItem(file);
+            return electron.remote.shell.openPath(file);
         } else {
             doc.save(fileName);
         }
