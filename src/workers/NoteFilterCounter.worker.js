@@ -9,6 +9,10 @@ onmessage = function (event) {
     const data = event.data;
     const counts = {};
 
+    if (!data.noteFilters) {
+        return;
+    }
+
     data.noteFilters.forEach(filter => {
         counts[filter.id] = getCount(
             data.notes,

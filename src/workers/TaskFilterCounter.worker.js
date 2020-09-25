@@ -12,6 +12,10 @@ onmessage = function (event) {
     const data = event.data;
     const counts = {};
 
+    if (!data.taskFilters) {
+        return;
+    }
+
     data.taskFilters.forEach(filter => {
         counts[filter.id] = getCount(
             data.tasks,
