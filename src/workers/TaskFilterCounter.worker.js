@@ -12,7 +12,7 @@ onmessage = function (event) {
     const data = event.data;
     const counts = {};
 
-    if (!data.taskFilers) {
+    if (!data.taskFilters) {
         return;
     }
 
