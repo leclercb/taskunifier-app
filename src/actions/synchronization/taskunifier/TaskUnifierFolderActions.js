@@ -17,9 +17,7 @@ export function synchronizeFolders() {
             const foldersToAddPromises = foldersToAdd.map(folder => dispatch(addRemoteFolder(folder)));
             const result = await Promise.all(foldersToAddPromises);
 
-            for (let folder of result) {
-                await dispatch(updateFolder(folder, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateFolder(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         folders = getFolders(getState());
@@ -29,35 +27,41 @@ export function synchronizeFolders() {
             const foldersToDeletePromises = foldersToDelete.map(folder => dispatch(deleteRemoteFolder(folder)));
             await Promise.all(foldersToDeletePromises);
 
-            for (let folder of foldersToDelete) {
-                await dispatch(deleteFolder(folder.id));
-            }
+            await dispatch(deleteFolder(foldersToDelete.map(folder => folder.id)));
         }
 
         folders = getFolders(getState());
 
+        const foldersToAdd = [];
+        const foldersToUpdate = [];
+        const foldersToDelete = [];
         const remoteFolders = await dispatch(getRemoteFolders());
 
         for (let remoteFolder of remoteFolders) {
             const localFolder = folders.find(folder => folder.refIds.taskunifier === remoteFolder.refIds.taskunifier);
 
             if (!localFolder) {
-                await dispatch(addFolder(remoteFolder, { keepRefIds: true }));
+                foldersToAdd.push(remoteFolder);
             } else {
                 if (moment(remoteFolder.updateDate).diff(moment(localFolder.updateDate)) > 0) {
-                    await dispatch(updateFolder(merge(localFolder, remoteFolder), { loaded: true, skipUpdateMiddleware: true }));
+                    foldersToUpdate.push(merge(localFolder, remoteFolder));
                 }
             }
         }
+
+        await dispatch(addFolder(foldersToAdd, { keepRefIds: true }));
+        await dispatch(updateFolder(foldersToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         folders = getFolders(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localFolder of filterByVisibleState(folders)) {
             if (!remoteFolders.find(folder => folder.refIds.taskunifier === localFolder.refIds.taskunifier)) {
-                await dispatch(deleteFolder(localFolder.id, { force: true }));
+                foldersToDelete.push(localFolder);
             }
         }
+
+        await dispatch(deleteFolder(foldersToDelete.map(folder => folder.id), { force: true }));
 
         folders = getFolders(getState());
 
@@ -66,9 +70,7 @@ export function synchronizeFolders() {
             const foldersToUpdatePromises = foldersToUpdate.map(folder => dispatch(editRemoteFolder(folder)));
             await Promise.all(foldersToUpdatePromises);
 
-            for (let folder of foldersToUpdate) {
-                await dispatch(updateFolder(folder, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateFolder(foldersToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

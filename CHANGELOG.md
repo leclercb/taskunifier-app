@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Improve synchronization performance
 * Add setting to only synchronize tasks completed less than X months ago
 
 # 1.2.0

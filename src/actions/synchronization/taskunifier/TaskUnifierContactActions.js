@@ -17,9 +17,7 @@ export function synchronizeContacts() {
             const contactsToAddPromises = contactsToAdd.map(contact => dispatch(addRemoteContact(contact)));
             const result = await Promise.all(contactsToAddPromises);
 
-            for (let contact of result) {
-                await dispatch(updateContact(contact, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateContact(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         contacts = getContacts(getState());
@@ -29,35 +27,41 @@ export function synchronizeContacts() {
             const contactsToDeletePromises = contactsToDelete.map(contact => dispatch(deleteRemoteContact(contact)));
             await Promise.all(contactsToDeletePromises);
 
-            for (let contact of contactsToDelete) {
-                await dispatch(deleteContact(contact.id));
-            }
+            await dispatch(deleteContact(contactsToDelete.map(contact => contact.id)));
         }
 
         contacts = getContacts(getState());
 
+        const contactsToAdd = [];
+        const contactsToUpdate = [];
+        const contactsToDelete = [];
         const remoteContacts = await dispatch(getRemoteContacts());
 
         for (let remoteContact of remoteContacts) {
             const localContact = contacts.find(contact => contact.refIds.taskunifier === remoteContact.refIds.taskunifier);
 
             if (!localContact) {
-                await dispatch(addContact(remoteContact, { keepRefIds: true }));
+                contactsToAdd.push(remoteContact);
             } else {
                 if (moment(remoteContact.updateDate).diff(moment(localContact.updateDate)) > 0) {
-                    await dispatch(updateContact(merge(localContact, remoteContact), { loaded: true, skipUpdateMiddleware: true }));
+                    contactsToUpdate.push(merge(localContact, remoteContact));
                 }
             }
         }
+
+        await dispatch(addContact(contactsToAdd, { keepRefIds: true }));
+        await dispatch(updateContact(contactsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         contacts = getContacts(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localContact of filterByVisibleState(contacts)) {
             if (!remoteContacts.find(contact => contact.refIds.taskunifier === localContact.refIds.taskunifier)) {
-                await dispatch(deleteContact(localContact.id, { force: true }));
+                contactsToDelete.push(localContact);
             }
         }
+
+        await dispatch(deleteContact(contactsToDelete.map(contact => contact.id), { force: true }));
 
         contacts = getContacts(getState());
 
@@ -66,9 +70,7 @@ export function synchronizeContacts() {
             const contactsToUpdatePromises = contactsToUpdate.map(contact => dispatch(editRemoteContact(contact)));
             await Promise.all(contactsToUpdatePromises);
 
-            for (let contact of contactsToUpdate) {
-                await dispatch(updateContact(contact, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateContact(contactsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

@@ -18,9 +18,7 @@ export function synchronizeNoteFilters() {
             const noteFiltersToAddPromises = noteFiltersToAdd.map(noteFilter => dispatch(addRemoteNoteFilter(noteFilter)));
             const result = await Promise.all(noteFiltersToAddPromises);
 
-            for (let noteFilter of result) {
-                await dispatch(updateNoteFilter(noteFilter, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateNoteFilter(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         noteFilters = getNoteFilters(getState());
@@ -30,35 +28,41 @@ export function synchronizeNoteFilters() {
             const noteFiltersToDeletePromises = noteFiltersToDelete.map(noteFilter => dispatch(deleteRemoteNoteFilter(noteFilter)));
             await Promise.all(noteFiltersToDeletePromises);
 
-            for (let noteFilter of noteFiltersToDelete) {
-                await dispatch(deleteNoteFilter(noteFilter.id));
-            }
+            await dispatch(deleteNoteFilter(noteFiltersToDelete.map(noteFilter => noteFilter.id)));
         }
 
         noteFilters = getNoteFilters(getState());
 
+        const noteFiltersToAdd = [];
+        const noteFiltersToUpdate = [];
+        const noteFiltersToDelete = [];
         const remoteNoteFilters = await dispatch(getRemoteNoteFilters());
 
         for (let remoteNoteFilter of remoteNoteFilters) {
             const localNoteFilter = noteFilters.find(noteFilter => noteFilter.refIds.taskunifier === remoteNoteFilter.refIds.taskunifier);
 
             if (!localNoteFilter) {
-                await dispatch(addNoteFilter(remoteNoteFilter, { keepRefIds: true }));
+                noteFiltersToAdd.push(remoteNoteFilter);
             } else {
                 if (moment(remoteNoteFilter.updateDate).diff(moment(localNoteFilter.updateDate)) > 0) {
-                    await dispatch(updateNoteFilter(merge(localNoteFilter, remoteNoteFilter), { loaded: true, skipUpdateMiddleware: true }));
+                    noteFiltersToUpdate.push(merge(localNoteFilter, remoteNoteFilter));
                 }
             }
         }
+
+        await dispatch(addNoteFilter(noteFiltersToAdd, { keepRefIds: true }));
+        await dispatch(updateNoteFilter(noteFiltersToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         noteFilters = getNoteFilters(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localNoteFilter of filterByVisibleState(noteFilters)) {
             if (!remoteNoteFilters.find(noteFilter => noteFilter.refIds.taskunifier === localNoteFilter.refIds.taskunifier)) {
-                await dispatch(deleteNoteFilter(localNoteFilter.id, { force: true }));
+                noteFiltersToDelete.push(localNoteFilter);
             }
         }
+
+        await dispatch(deleteNoteFilter(noteFiltersToDelete.map(noteFilter => noteFilter.id), { force: true }));
 
         noteFilters = getNoteFilters(getState());
 
@@ -67,9 +71,7 @@ export function synchronizeNoteFilters() {
             const noteFiltersToUpdatePromises = noteFiltersToUpdate.map(noteFilter => dispatch(editRemoteNoteFilter(noteFilter)));
             await Promise.all(noteFiltersToUpdatePromises);
 
-            for (let noteFilter of noteFiltersToUpdate) {
-                await dispatch(updateNoteFilter(noteFilter, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateNoteFilter(noteFiltersToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

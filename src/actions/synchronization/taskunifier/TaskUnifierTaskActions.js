@@ -35,12 +35,12 @@ export function synchronizeTasks() {
                 const result = await dispatch(addRemoteTasks(tasksToAdd, { skipParent: true }));
 
                 for (let task of result) {
-                    await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
-
                     if (task.parent) {
                         createdTasksWithParent.push(task);
                     }
                 }
+
+                await dispatch(updateTask(result, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -54,63 +54,84 @@ export function synchronizeTasks() {
                 await dispatch(deleteRemoteTasks(tasksToDelete));
             }
 
-            for (let task of tasksToDelete) {
-                await dispatch(deleteTask(task.id));
-            }
+            await dispatch(deleteTask(tasksToDelete.map(task => task.id)));
         }
 
         state = getState();
         tasks = getTasks(state);
 
-        const tasksWithRemoteParent = [];
-
         const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
-        const completedAfter = moment().subtract(settings.synchronizeTasksCompletedAfter, 'month').toISOString();
+        const completedAfter = moment().subtract(settings.synchronizeTasksCompletedAfter, 'month');
+
+        const tasksToAdd = [];
+        const tasksToUpdate = [];
+        const tasksToUpdateParent = [];
         const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync, completedAfter));
 
         for (let remoteUnconvertedTask of remoteUnconvertedTasks) {
             const remoteTask = convertTaskToLocal(remoteUnconvertedTask, state);
             const localTask = tasks.find(task => task.refIds.taskunifier === remoteTask.refIds.taskunifier);
 
-            let updatedTask = null;
-
             if (!localTask) {
-                updatedTask = await dispatch(addTask(remoteTask, { keepRefIds: true }));
+                tasksToAdd.push({
+                    task: remoteTask,
+                    parent: remoteUnconvertedTask.parent
+                });
             } else {
                 if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                     if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
-                        updatedTask = await dispatch(updateTask(merge(localTask, remoteTask), { loaded: true, skipUpdateMiddleware: true }));
+                        tasksToUpdate.push({
+                            task: merge(localTask, remoteTask),
+                            parent: remoteUnconvertedTask.parent
+                        });
                     }
                 }
             }
-
-            if (updatedTask && remoteUnconvertedTask.parent) {
-                tasksWithRemoteParent.push({ task: updatedTask, parent: remoteUnconvertedTask.parent });
-            }
         }
+
+        const addedTasks = await dispatch(addTask(tasksToAdd.map(task => task.task), { keepRefIds: true }));
+        const updatedTasks = await dispatch(updateTask(tasksToUpdate.map(task => task.task), { loaded: true, skipUpdateMiddleware: true }));
+
+        const storedTasks = [
+            ...tasksToAdd.map((task, index) => {
+                task.task = addedTasks[index];
+                return task;
+            }),
+            ...tasksToUpdate.map((task, index) => {
+                task.task = updatedTasks[index];
+                return task;
+            })
+        ];
 
         state = getState();
 
-        for (let taskWithRemoteParent of tasksWithRemoteParent) {
-            await dispatch(updateTask({
-                ...taskWithRemoteParent.task,
-                parent: getObjectLocalValue(state, 'task', taskWithRemoteParent.parent)
-            }, { loaded: true, skipUpdateMiddleware: true }));
+        for (let task of storedTasks) {
+            if (task.parent) {
+                tasksToUpdateParent.push({
+                    ...task.task,
+                    parent: getObjectLocalValue(state, 'task', task.parent)
+                });
+            }
         }
+
+        await dispatch(updateTask(tasksToUpdateParent, { loaded: true, skipUpdateMiddleware: true }));
 
         state = getState();
         tasks = getTasks(state);
 
         {
+            const tasksToDelete = [];
             const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
 
             for (let remoteDeletedTask of remoteDeletedTasks) {
                 const localTask = tasks.find(task => task.refIds.taskunifier === remoteDeletedTask.id);
 
                 if (localTask) {
-                    await dispatch(deleteTask(localTask.id, { force: true }));
+                    tasksToDelete.push(localTask);
                 }
             }
+
+            await dispatch(deleteTask(tasksToDelete.map(task => task.id), { force: true }));
         }
 
         state = getState();
@@ -129,9 +150,7 @@ export function synchronizeTasks() {
                 await dispatch(editRemoteTasks(tasksToUpdate, remoteUnconvertedTasks));
             }
 
-            for (let task of tasksToUpdate) {
-                await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTask(tasksToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

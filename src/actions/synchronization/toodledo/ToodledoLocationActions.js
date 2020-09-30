@@ -21,9 +21,7 @@ export function synchronizeLocations() {
             const locationsToAddPromises = locationsToAdd.map(location => dispatch(addRemoteLocation(location)));
             const result = await Promise.all(locationsToAddPromises);
 
-            for (let location of result) {
-                await dispatch(updateLocation(location, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateLocation(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         locations = getLocations(getState());
@@ -33,9 +31,7 @@ export function synchronizeLocations() {
             const locationsToDeletePromises = locationsToDelete.map(location => dispatch(deleteRemoteLocation(location)));
             await Promise.all(locationsToDeletePromises);
 
-            for (let location of locationsToDelete) {
-                await dispatch(deleteLocation(location.id));
-            }
+            await dispatch(deleteLocation(locationsToDelete.map(location => location.id)));
         }
 
         locations = getLocations(getState());
@@ -45,26 +41,34 @@ export function synchronizeLocations() {
             const lastEditLocation = moment.unix(getToodledoAccountInfo(getState()).lastedit_location);
 
             if (!lastSync || lastEditLocation.diff(lastSync) > 0) {
+                const locationsToAdd = [];
+                const locationsToUpdate = [];
+                const locationsToDelete = [];
                 const remoteLocations = await dispatch(getRemoteLocations());
 
                 for (let remoteLocation of remoteLocations) {
                     const localLocation = locations.find(location => location.refIds.toodledo === remoteLocation.refIds.toodledo);
 
                     if (!localLocation) {
-                        await dispatch(addLocation(remoteLocation, { keepRefIds: true }));
+                        locationsToAdd.push(remoteLocation);
                     } else {
-                        await dispatch(updateLocation(merge(localLocation, remoteLocation), { loaded: true, skipUpdateMiddleware: true }));
+                        locationsToUpdate.push(merge(localLocation, remoteLocation));
                     }
                 }
+
+                await dispatch(addLocation(locationsToAdd, { keepRefIds: true }));
+                await dispatch(updateLocation(locationsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
                 locations = getLocations(getState());
 
                 // eslint-disable-next-line require-atomic-updates
                 for (let localLocation of filterByVisibleState(locations)) {
                     if (!remoteLocations.find(location => location.refIds.toodledo === localLocation.refIds.toodledo)) {
-                        await dispatch(deleteLocation(localLocation.id, { force: true }));
+                        locationsToDelete.push(localLocation);
                     }
                 }
+
+                await dispatch(deleteLocation(locationsToDelete.map(location => location.id), { force: true }));
             }
         }
 
@@ -75,9 +79,7 @@ export function synchronizeLocations() {
             const locationsToUpdatePromises = locationsToUpdate.map(location => dispatch(editRemoteLocation(location)));
             await Promise.all(locationsToUpdatePromises);
 
-            for (let location of locationsToUpdate) {
-                await dispatch(updateLocation(location, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateLocation(locationsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

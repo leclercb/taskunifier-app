@@ -21,9 +21,7 @@ export function synchronizeContexts() {
             const contextsToAddPromises = contextsToAdd.map(context => dispatch(addRemoteContext(context)));
             const result = await Promise.all(contextsToAddPromises);
 
-            for (let context of result) {
-                await dispatch(updateContext(context, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateContext(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         contexts = getContexts(getState());
@@ -33,9 +31,7 @@ export function synchronizeContexts() {
             const contextsToDeletePromises = contextsToDelete.map(context => dispatch(deleteRemoteContext(context)));
             await Promise.all(contextsToDeletePromises);
 
-            for (let context of contextsToDelete) {
-                await dispatch(deleteContext(context.id));
-            }
+            await dispatch(deleteContext(contextsToDelete.map(context => context.id)));
         }
 
         contexts = getContexts(getState());
@@ -45,26 +41,34 @@ export function synchronizeContexts() {
             const lastEditContext = moment.unix(getToodledoAccountInfo(getState()).lastedit_context);
 
             if (!lastSync || lastEditContext.diff(lastSync) > 0) {
+                const contextsToAdd = [];
+                const contextsToUpdate = [];
+                const contextsToDelete = [];
                 const remoteContexts = await dispatch(getRemoteContexts());
 
                 for (let remoteContext of remoteContexts) {
                     const localContext = contexts.find(context => context.refIds.toodledo === remoteContext.refIds.toodledo);
 
                     if (!localContext) {
-                        await dispatch(addContext(remoteContext, { keepRefIds: true }));
+                        contextsToAdd.push(remoteContext);
                     } else {
-                        await dispatch(updateContext(merge(localContext, remoteContext), { loaded: true, skipUpdateMiddleware: true }));
+                        contextsToUpdate.push(merge(localContext, remoteContext));
                     }
                 }
+
+                await dispatch(addContext(contextsToAdd, { keepRefIds: true }));
+                await dispatch(updateContext(contextsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
                 contexts = getContexts(getState());
 
                 // eslint-disable-next-line require-atomic-updates
                 for (let localContext of filterByVisibleState(contexts)) {
                     if (!remoteContexts.find(context => context.refIds.toodledo === localContext.refIds.toodledo)) {
-                        await dispatch(deleteContext(localContext.id, { force: true }));
+                        contextsToDelete.push(localContext);
                     }
                 }
+
+                await dispatch(deleteContext(contextsToDelete.map(context => context.id), { force: true }));
             }
         }
 
@@ -75,9 +79,7 @@ export function synchronizeContexts() {
             const contextsToUpdatePromises = contextsToUpdate.map(context => dispatch(editRemoteContext(context)));
             await Promise.all(contextsToUpdatePromises);
 
-            for (let context of contextsToUpdate) {
-                await dispatch(updateContext(context, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateContext(contextsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

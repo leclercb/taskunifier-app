@@ -35,13 +35,12 @@ export function synchronizeTasks() {
                 const result = await dispatch(addRemoteTasks(tasksToAdd, { skipParent: true }));
 
                 for (let task of result) {
-                    logger.debug('Update task', task.id);
-                    await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
-
                     if (task.parent) {
                         createdTasksWithParent.push(task);
                     }
                 }
+
+                await dispatch(updateTask(result, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -55,23 +54,21 @@ export function synchronizeTasks() {
                 await dispatch(deleteRemoteTasks(tasksToDelete));
             }
 
-            for (let task of tasksToDelete) {
-                logger.debug('Delete task', task.id);
-                await dispatch(deleteTask(task.id));
-            }
+            await dispatch(deleteTask(tasksToDelete.map(task => task.id)));
         }
 
         state = getState();
         tasks = getTasks(state);
 
         {
-            const tasksWithRemoteParent = [];
-
             const lastSync = settings.lastSynchronizationDate ? moment(settings.lastSynchronizationDate) : null;
             const lastEditTask = moment.unix(getToodledoAccountInfo(getState()).lastedit_task);
-            const completedAfter = moment().subtract(settings.synchronizeTasksCompletedAfter, 'month').toISOString();
+            const completedAfter = moment().subtract(settings.synchronizeTasksCompletedAfter, 'month');
 
             if (!lastSync || lastEditTask.diff(lastSync) > 0) {
+                const tasksToAdd = [];
+                const tasksToUpdate = [];
+                const tasksToUpdateParent = [];
                 const remoteUnconvertedTasks = await dispatch(getRemoteTasks(lastSync));
 
                 for (let remoteUnconvertedTask of remoteUnconvertedTasks) {
@@ -83,36 +80,49 @@ export function synchronizeTasks() {
 
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteTask.refIds.toodledo);
 
-                    let updatedTask = null;
-
                     if (!localTask) {
-                        logger.debug('Add task', remoteTask.refIds.toodledo);
-                        updatedTask = await dispatch(addTask(remoteTask, { keepRefIds: true }));
+                        tasksToAdd.push({
+                            task: remoteTask,
+                            parent: remoteUnconvertedTask.parent
+                        });
                     } else {
                         if (moment(remoteTask.updateDate).diff(moment(localTask.updateDate)) > 0) {
                             if (!createdTasksWithParent.find(task => task.id === localTask.id)) {
-                                const mergedTask = merge(localTask, remoteTask);
-                                logger.debug('Update task', mergedTask.id);
-                                updatedTask = await dispatch(updateTask(mergedTask, { loaded: true, skipUpdateMiddleware: true }));
+                                tasksToUpdate.push({
+                                    task: merge(localTask, remoteTask),
+                                    parent: remoteUnconvertedTask.parent
+                                });
                             }
                         }
                     }
-
-                    if (updatedTask && remoteUnconvertedTask.parent) {
-                        tasksWithRemoteParent.push({ task: updatedTask, parent: remoteUnconvertedTask.parent });
-                    }
                 }
+
+                const addedTasks = await dispatch(addTask(tasksToAdd.map(task => task.task), { keepRefIds: true }));
+                const updatedTasks = await dispatch(updateTask(tasksToUpdate.map(task => task.task), { loaded: true, skipUpdateMiddleware: true }));
+
+                const storedTasks = [
+                    ...tasksToAdd.map((task, index) => {
+                        task.task = addedTasks[index];
+                        return task;
+                    }),
+                    ...tasksToUpdate.map((task, index) => {
+                        task.task = updatedTasks[index];
+                        return task;
+                    })
+                ];
 
                 state = getState();
 
-                for (let taskWithRemoteParent of tasksWithRemoteParent) {
-                    const mergedTask = {
-                        ...taskWithRemoteParent.task,
-                        parent: getObjectLocalValue(state, 'task', taskWithRemoteParent.parent)
-                    };
-                    logger.debug('Update task', mergedTask.id);
-                    await dispatch(updateTask(mergedTask, { loaded: true, skipUpdateMiddleware: true }));
+                for (let task of storedTasks) {
+                    if (task.parent) {
+                        tasksToUpdateParent.push({
+                            ...task.task,
+                            parent: getObjectLocalValue(state, 'task', task.parent)
+                        });
+                    }
                 }
+
+                await dispatch(updateTask(tasksToUpdateParent, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -124,16 +134,18 @@ export function synchronizeTasks() {
             const lastDeleteTask = moment.unix(getToodledoAccountInfo(getState()).lastdelete_task);
 
             if (!lastSync || lastDeleteTask.diff(lastSync) > 0) {
+                const tasksToDelete = [];
                 const remoteDeletedTasks = await dispatch(getRemoteDeletedTasks(lastSync));
 
                 for (let remoteDeletedTask of remoteDeletedTasks) {
                     const localTask = tasks.find(task => task.refIds.toodledo === remoteDeletedTask.id);
 
                     if (localTask) {
-                        logger.debug('Delete task', localTask.id);
-                        await dispatch(deleteTask(localTask.id, { force: true }));
+                        tasksToDelete.push(localTask);
                     }
                 }
+
+                await dispatch(deleteTask(tasksToDelete.map(task => task.id), { force: true }));
             }
         }
 
@@ -153,10 +165,7 @@ export function synchronizeTasks() {
                 await dispatch(editRemoteTasks(tasksToUpdate));
             }
 
-            for (let task of tasksToUpdate) {
-                logger.debug('Update task', task.id);
-                await dispatch(updateTask(task, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTask(tasksToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

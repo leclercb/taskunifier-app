@@ -17,9 +17,7 @@ export function synchronizeNoteFields() {
             const noteFieldsToAddPromises = noteFieldsToAdd.map(noteField => dispatch(addRemoteNoteField(noteField)));
             const result = await Promise.all(noteFieldsToAddPromises);
 
-            for (let noteField of result) {
-                await dispatch(updateNoteField(noteField, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateNoteField(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         noteFields = getNoteFields(getState());
@@ -29,35 +27,41 @@ export function synchronizeNoteFields() {
             const noteFieldsToDeletePromises = noteFieldsToDelete.map(noteField => dispatch(deleteRemoteNoteField(noteField)));
             await Promise.all(noteFieldsToDeletePromises);
 
-            for (let noteField of noteFieldsToDelete) {
-                await dispatch(deleteNoteField(noteField.id));
-            }
+            await dispatch(deleteNoteField(noteFieldsToDelete.map(noteField => noteField.id)));
         }
 
         noteFields = getNoteFields(getState());
 
+        const noteFieldsToAdd = [];
+        const noteFieldsToUpdate = [];
+        const noteFieldsToDelete = [];
         const remoteNoteFields = await dispatch(getRemoteNoteFields());
 
         for (let remoteNoteField of remoteNoteFields) {
             const localNoteField = noteFields.find(noteField => noteField.refIds.taskunifier === remoteNoteField.refIds.taskunifier);
 
             if (!localNoteField) {
-                await dispatch(addNoteField(remoteNoteField, { keepRefIds: true }));
+                noteFieldsToAdd.push(remoteNoteField);
             } else {
                 if (moment(remoteNoteField.updateDate).diff(moment(localNoteField.updateDate)) > 0) {
-                    await dispatch(updateNoteField(merge(localNoteField, remoteNoteField), { loaded: true, skipUpdateMiddleware: true }));
+                    noteFieldsToUpdate.push(merge(localNoteField, remoteNoteField));
                 }
             }
         }
+
+        await dispatch(addNoteField(noteFieldsToAdd, { keepRefIds: true }));
+        await dispatch(updateNoteField(noteFieldsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         noteFields = getNoteFields(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localNoteField of filterByVisibleState(noteFields)) {
             if (!remoteNoteFields.find(noteField => noteField.refIds.taskunifier === localNoteField.refIds.taskunifier)) {
-                await dispatch(deleteNoteField(localNoteField.id, { force: true }));
+                noteFieldsToDelete.push(localNoteField);
             }
         }
+
+        await dispatch(deleteNoteField(noteFieldsToDelete.map(noteField => noteField.id), { force: true }));
 
         noteFields = getNoteFields(getState());
 
@@ -66,9 +70,7 @@ export function synchronizeNoteFields() {
             const noteFieldsToUpdatePromises = noteFieldsToUpdate.map(noteField => dispatch(editRemoteNoteField(noteField)));
             await Promise.all(noteFieldsToUpdatePromises);
 
-            for (let noteField of noteFieldsToUpdate) {
-                await dispatch(updateNoteField(noteField, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateNoteField(noteFieldsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

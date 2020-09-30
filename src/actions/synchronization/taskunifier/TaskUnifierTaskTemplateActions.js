@@ -19,9 +19,7 @@ export function synchronizeTaskTemplates() {
             const taskTemplatesToAddPromises = taskTemplatesToAdd.map(taskTemplate => dispatch(addRemoteTaskTemplate(taskTemplate)));
             const result = await Promise.all(taskTemplatesToAddPromises);
 
-            for (let taskTemplate of result) {
-                await dispatch(updateTaskTemplate(taskTemplate, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTaskTemplate(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         taskTemplates = getTaskTemplates(getState());
@@ -31,35 +29,41 @@ export function synchronizeTaskTemplates() {
             const taskTemplatesToDeletePromises = taskTemplatesToDelete.map(taskTemplate => dispatch(deleteRemoteTaskTemplate(taskTemplate)));
             await Promise.all(taskTemplatesToDeletePromises);
 
-            for (let taskTemplate of taskTemplatesToDelete) {
-                await dispatch(deleteTaskTemplate(taskTemplate.id));
-            }
+            await dispatch(deleteTaskTemplate(taskTemplatesToDelete.map(taskTemplate => taskTemplate.id)));
         }
 
         taskTemplates = getTaskTemplates(getState());
 
+        const taskTemplatesToAdd = [];
+        const taskTemplatesToUpdate = [];
+        const taskTemplatesToDelete = [];
         const remoteTaskTemplates = await dispatch(getRemoteTaskTemplates());
 
         for (let remoteTaskTemplate of remoteTaskTemplates) {
             const localTaskTemplate = taskTemplates.find(taskTemplate => taskTemplate.refIds.taskunifier === remoteTaskTemplate.refIds.taskunifier);
 
             if (!localTaskTemplate) {
-                await dispatch(addTaskTemplate(remoteTaskTemplate, { keepRefIds: true }));
+                taskTemplatesToAdd.push(remoteTaskTemplate);
             } else {
                 if (moment(remoteTaskTemplate.updateDate).diff(moment(localTaskTemplate.updateDate)) > 0) {
-                    await dispatch(updateTaskTemplate(merge(localTaskTemplate, remoteTaskTemplate), { loaded: true, skipUpdateMiddleware: true }));
+                    taskTemplatesToUpdate.push(merge(localTaskTemplate, remoteTaskTemplate));
                 }
             }
         }
+
+        await dispatch(addTaskTemplate(taskTemplatesToAdd, { keepRefIds: true }));
+        await dispatch(updateTaskTemplate(taskTemplatesToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         taskTemplates = getTaskTemplates(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localTaskTemplate of filterByVisibleState(taskTemplates)) {
             if (!remoteTaskTemplates.find(taskTemplate => taskTemplate.refIds.taskunifier === localTaskTemplate.refIds.taskunifier)) {
-                await dispatch(deleteTaskTemplate(localTaskTemplate.id, { force: true }));
+                taskTemplatesToDelete.push(localTaskTemplate);
             }
         }
+
+        await dispatch(deleteTaskTemplate(taskTemplatesToDelete.map(taskTemplate => taskTemplate.id), { force: true }));
 
         taskTemplates = getTaskTemplates(getState());
 
@@ -68,9 +72,7 @@ export function synchronizeTaskTemplates() {
             const taskTemplatesToUpdatePromises = taskTemplatesToUpdate.map(taskTemplate => dispatch(editRemoteTaskTemplate(taskTemplate)));
             await Promise.all(taskTemplatesToUpdatePromises);
 
-            for (let taskTemplate of taskTemplatesToUpdate) {
-                await dispatch(updateTaskTemplate(taskTemplate, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTaskTemplate(taskTemplatesToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }
