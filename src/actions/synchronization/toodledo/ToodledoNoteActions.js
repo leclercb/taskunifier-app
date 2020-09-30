@@ -30,9 +30,7 @@ export function synchronizeNotes() {
             if (notesToAdd.length > 0) {
                 const result = await dispatch(addRemoteNotes(notesToAdd));
 
-                for (let note of result) {
-                    await dispatch(updateNote(note, { loaded: true, skipUpdateMiddleware: true }));
-                }
+                await dispatch(updateNote(result, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -45,9 +43,7 @@ export function synchronizeNotes() {
                 await dispatch(deleteRemoteNotes(notesToDelete));
             }
 
-            for (let note of notesToDelete) {
-                await dispatch(deleteNote(note.id));
-            }
+            await dispatch(deleteNote(notesToDelete.map(note => note.id)));
         }
 
         notes = getNotes(getState());
@@ -57,19 +53,24 @@ export function synchronizeNotes() {
             const lastEditNote = moment.unix(getToodledoAccountInfo(getState()).lastedit_note);
 
             if (!lastSync || lastEditNote.diff(lastSync) > 0) {
+                const notesToAdd = [];
+                const notesToUpdate = [];
                 const remoteNotes = await dispatch(getRemoteNotes(lastSync));
 
                 for (let remoteNote of remoteNotes) {
                     const localNote = notes.find(note => note.refIds.toodledo === remoteNote.refIds.toodledo);
 
                     if (!localNote) {
-                        await dispatch(addNote(remoteNote, { keepRefIds: true }));
+                        notesToAdd.push(remoteNote);
                     } else {
                         if (moment(remoteNote.updateDate).diff(moment(localNote.updateDate)) > 0) {
-                            await dispatch(updateNote(merge(localNote, remoteNote), { loaded: true, skipUpdateMiddleware: true }));
+                            notesToUpdate.push(merge(localNote, remoteNote));
                         }
                     }
                 }
+
+                await dispatch(addNote(notesToAdd, { keepRefIds: true }));
+                await dispatch(updateNote(notesToUpdate, { loaded: true, skipUpdateMiddleware: true }));
             }
         }
 
@@ -80,15 +81,18 @@ export function synchronizeNotes() {
             const lastDeleteNote = moment.unix(getToodledoAccountInfo(getState()).lastdelete_note);
 
             if (!lastSync || lastDeleteNote.diff(lastSync) > 0) {
+                const notesToDelete = [];
                 const remoteDeletedNotes = await dispatch(getRemoteDeletedNotes(lastSync));
 
                 for (let remoteDeletedNote of remoteDeletedNotes) {
                     const localNote = notes.find(note => note.refIds.toodledo === remoteDeletedNote.id);
 
                     if (localNote) {
-                        await dispatch(deleteNote(localNote.id, { force: true }));
+                        notesToDelete.push(localNote);
                     }
                 }
+
+                await dispatch(deleteNote(notesToDelete.map(note => note.id), { force: true }));
             }
         }
 
@@ -101,9 +105,7 @@ export function synchronizeNotes() {
                 await dispatch(editRemoteNotes(notesToUpdate));
             }
 
-            for (let note of notesToUpdate) {
-                await dispatch(updateNote(note, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateNote(notesToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

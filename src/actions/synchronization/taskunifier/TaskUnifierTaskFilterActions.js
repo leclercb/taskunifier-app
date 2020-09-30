@@ -18,9 +18,7 @@ export function synchronizeTaskFilters() {
             const taskFiltersToAddPromises = taskFiltersToAdd.map(taskFilter => dispatch(addRemoteTaskFilter(taskFilter)));
             const result = await Promise.all(taskFiltersToAddPromises);
 
-            for (let taskFilter of result) {
-                await dispatch(updateTaskFilter(taskFilter, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTaskFilter(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         taskFilters = getTaskFilters(getState());
@@ -30,35 +28,41 @@ export function synchronizeTaskFilters() {
             const taskFiltersToDeletePromises = taskFiltersToDelete.map(taskFilter => dispatch(deleteRemoteTaskFilter(taskFilter)));
             await Promise.all(taskFiltersToDeletePromises);
 
-            for (let taskFilter of taskFiltersToDelete) {
-                await dispatch(deleteTaskFilter(taskFilter.id));
-            }
+            await dispatch(deleteTaskFilter(taskFiltersToDelete.map(taskFilter => taskFilter.id)));
         }
 
         taskFilters = getTaskFilters(getState());
 
+        const taskFiltersToAdd = [];
+        const taskFiltersToUpdate = [];
+        const taskFiltersToDelete = [];
         const remoteTaskFilters = await dispatch(getRemoteTaskFilters());
 
         for (let remoteTaskFilter of remoteTaskFilters) {
             const localTaskFilter = taskFilters.find(taskFilter => taskFilter.refIds.taskunifier === remoteTaskFilter.refIds.taskunifier);
 
             if (!localTaskFilter) {
-                await dispatch(addTaskFilter(remoteTaskFilter, { keepRefIds: true }));
+                taskFiltersToAdd.push(remoteTaskFilter);
             } else {
                 if (moment(remoteTaskFilter.updateDate).diff(moment(localTaskFilter.updateDate)) > 0) {
-                    await dispatch(updateTaskFilter(merge(localTaskFilter, remoteTaskFilter), { loaded: true, skipUpdateMiddleware: true }));
+                    taskFiltersToUpdate.push(merge(localTaskFilter, remoteTaskFilter));
                 }
             }
         }
+
+        await dispatch(addTaskFilter(taskFiltersToAdd, { keepRefIds: true }));
+        await dispatch(updateTaskFilter(taskFiltersToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         taskFilters = getTaskFilters(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localTaskFilter of filterByVisibleState(taskFilters)) {
             if (!remoteTaskFilters.find(taskFilter => taskFilter.refIds.taskunifier === localTaskFilter.refIds.taskunifier)) {
-                await dispatch(deleteTaskFilter(localTaskFilter.id, { force: true }));
+                taskFiltersToDelete.push(localTaskFilter);
             }
         }
+
+        await dispatch(deleteTaskFilter(taskFiltersToDelete.map(taskFilter => taskFilter.id), { force: true }));
 
         taskFilters = getTaskFilters(getState());
 
@@ -67,9 +71,7 @@ export function synchronizeTaskFilters() {
             const taskFiltersToUpdatePromises = taskFiltersToUpdate.map(taskFilter => dispatch(editRemoteTaskFilter(taskFilter)));
             await Promise.all(taskFiltersToUpdatePromises);
 
-            for (let taskFilter of taskFiltersToUpdate) {
-                await dispatch(updateTaskFilter(taskFilter, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTaskFilter(taskFiltersToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

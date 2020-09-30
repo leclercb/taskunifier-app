@@ -17,9 +17,7 @@ export function synchronizeTaskFields() {
             const taskFieldsToAddPromises = taskFieldsToAdd.map(taskField => dispatch(addRemoteTaskField(taskField)));
             const result = await Promise.all(taskFieldsToAddPromises);
 
-            for (let taskField of result) {
-                await dispatch(updateTaskField(taskField, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTaskField(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         taskFields = getTaskFields(getState());
@@ -29,35 +27,41 @@ export function synchronizeTaskFields() {
             const taskFieldsToDeletePromises = taskFieldsToDelete.map(taskField => dispatch(deleteRemoteTaskField(taskField)));
             await Promise.all(taskFieldsToDeletePromises);
 
-            for (let taskField of taskFieldsToDelete) {
-                await dispatch(deleteTaskField(taskField.id));
-            }
+            await dispatch(deleteTaskField(taskFieldsToDelete.map(taskField => taskField.id)));
         }
 
         taskFields = getTaskFields(getState());
 
+        const taskFieldsToAdd = [];
+        const taskFieldsToUpdate = [];
+        const taskFieldsToDelete = [];
         const remoteTaskFields = await dispatch(getRemoteTaskFields());
 
         for (let remoteTaskField of remoteTaskFields) {
             const localTaskField = taskFields.find(taskField => taskField.refIds.taskunifier === remoteTaskField.refIds.taskunifier);
 
             if (!localTaskField) {
-                await dispatch(addTaskField(remoteTaskField, { keepRefIds: true }));
+                taskFieldsToAdd.push(remoteTaskField);
             } else {
                 if (moment(remoteTaskField.updateDate).diff(moment(localTaskField.updateDate)) > 0) {
-                    await dispatch(updateTaskField(merge(localTaskField, remoteTaskField), { loaded: true, skipUpdateMiddleware: true }));
+                    taskFieldsToUpdate.push(merge(localTaskField, remoteTaskField));
                 }
             }
         }
+
+        await dispatch(addTaskField(taskFieldsToAdd, { keepRefIds: true }));
+        await dispatch(updateTaskField(taskFieldsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         taskFields = getTaskFields(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localTaskField of filterByVisibleState(taskFields)) {
             if (!remoteTaskFields.find(taskField => taskField.refIds.taskunifier === localTaskField.refIds.taskunifier)) {
-                await dispatch(deleteTaskField(localTaskField.id, { force: true }));
+                taskFieldsToDelete.push(localTaskField);
             }
         }
+
+        await dispatch(deleteTaskField(taskFieldsToDelete.map(taskField => taskField.id), { force: true }));
 
         taskFields = getTaskFields(getState());
 
@@ -66,9 +70,7 @@ export function synchronizeTaskFields() {
             const taskFieldsToUpdatePromises = taskFieldsToUpdate.map(taskField => dispatch(editRemoteTaskField(taskField)));
             await Promise.all(taskFieldsToUpdatePromises);
 
-            for (let taskField of taskFieldsToUpdate) {
-                await dispatch(updateTaskField(taskField, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateTaskField(taskFieldsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

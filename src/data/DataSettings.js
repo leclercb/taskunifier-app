@@ -117,44 +117,55 @@ export function getCategories() {
                     title: 'Change data folder location',
                     type: 'button',
                     value: (settings, updateSettings, dispatch) => {
-                        let dataFolder = null;
-                        let copy = false;
+                        return new Promise((resolve, reject) => {
+                            let dataFolder = null;
+                            let copy = false;
 
-                        Modal.confirm({
-                            title: 'Change data folder location',
-                            content: (
-                                <React.Fragment>
-                                    <FileField
-                                        onChange={value => dataFolder = value}
-                                        options={{
-                                            properties: [
-                                                'openDirectory'
-                                            ]
-                                        }}
-                                        style={{
-                                            width: 400,
-                                            marginBottom: 10
-                                        }} />
-                                    <Checkbox
-                                        onChange={event => copy = event.target.checked}>
-                                        Copy current data to the new data folder location.
+                            Modal.confirm({
+                                title: 'Change data folder location',
+                                content: (
+                                    <React.Fragment>
+                                        <FileField
+                                            onChange={value => dataFolder = value}
+                                            options={{
+                                                properties: [
+                                                    'openDirectory'
+                                                ]
+                                            }}
+                                            style={{
+                                                width: 400,
+                                                marginBottom: 10
+                                            }} />
+                                        <Checkbox
+                                            onChange={event => copy = event.target.checked}>
+                                            Copy current data to the new data folder location.
                                         <br />
                                         This will override any data in the selected folder !
                                     </Checkbox>
-                                </React.Fragment>
-                            ),
-                            okText: 'Change',
-                            onOk: async () => {
-                                if (dataFolder) {
-                                    await dispatch(saveData());
-                                    await updateSettings({ dataFolder });
-                                    await dispatch(saveData({ coreSettingsOnly: !copy }));
-                                    await dispatch(loadData());
-                                } else {
-                                    message.error('Please select a data folder');
-                                }
-                            },
-                            width: 500
+                                    </React.Fragment>
+                                ),
+                                okText: 'Change',
+                                onOk: async () => {
+                                    try {
+                                        if (dataFolder) {
+                                            await dispatch(saveData());
+                                            await updateSettings({ dataFolder });
+                                            await dispatch(saveData({ coreSettingsOnly: !copy }));
+                                            await dispatch(loadData());
+                                        } else {
+                                            message.error('Please select a data folder');
+                                        }
+
+                                        resolve();
+                                    } catch (error) {
+                                        reject(error);
+                                    }
+                                },
+                                onCancel: () => {
+                                    resolve();
+                                },
+                                width: 500
+                            });
                         });
                     },
                     editable: true,
@@ -358,7 +369,7 @@ export function getCategories() {
                                 });
                             }
                         } catch (error) {
-                            dispatch(updateProcess({
+                            await dispatch(updateProcess({
                                 id: processId,
                                 state: 'ERROR',
                                 title: 'Connection with TaskUnifier Cloud',
@@ -658,29 +669,39 @@ export function getCategories() {
                     id: 'restoreFromBackup',
                     title: 'Restore from backup',
                     type: 'button',
-                    value: async (settings, updateSettings, dispatch) => {
-                        const backupIds = await getBackupIds(settings);
-                        let selectedBackup = null;
+                    value: (settings, updateSettings, dispatch) => {
+                        return new Promise((resolve, reject) => {
+                            getBackupIds(settings).then(backupIds => {
+                                let selectedBackup = null;
 
-                        Modal.confirm({
-                            title: 'Restore from backup',
-                            content: (
-                                <Select onChange={value => selectedBackup = value} style={{ width: 200 }}>
-                                    {backupIds.map(backup => (
-                                        <Select.Option key={backup} value={backup}>
-                                            {moment(backup).format(`${settings.dateFormat} ${settings.timeFormat}`)}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            ),
-                            okText: 'Restore',
-                            onOk: () => {
-                                if (selectedBackup) {
-                                    return dispatch(restoreBackup(selectedBackup));
-                                }
+                                Modal.confirm({
+                                    title: 'Restore from backup',
+                                    content: (
+                                        <Select onChange={value => selectedBackup = value} style={{ width: 200 }}>
+                                            {backupIds.map(backup => (
+                                                <Select.Option key={backup} value={backup}>
+                                                    {moment(backup).format(`${settings.dateFormat} ${settings.timeFormat}`)}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
+                                    ),
+                                    okText: 'Restore',
+                                    onOk: async () => {
+                                        try {
+                                            if (selectedBackup) {
+                                                await dispatch(restoreBackup(selectedBackup));
+                                            }
 
-                                return null;
-                            }
+                                            resolve();
+                                        } catch (error) {
+                                            reject(error);
+                                        }
+                                    },
+                                    onCancel: () => {
+                                        resolve();
+                                    }
+                                });
+                            });
                         });
                     },
                     editable: true,
@@ -821,26 +842,37 @@ export function getCategories() {
                     title: 'Delete the local data and synchronize',
                     type: 'button',
                     buttonType: 'danger',
-                    value: async (settings, updateSettings, dispatch) => {
-                        Modal.confirm({
-                            content: (
-                                <span>This will delete the local data from TaskUnifier App and reload the data from the server.<br />This cannot be undone !</span>
-                            ),
-                            onOk: async () => {
-                                await dispatch(resetDataForSynchronization());
+                    value: (settings, updateSettings, dispatch) => {
+                        return new Promise((resolve, reject) => {
+                            Modal.confirm({
+                                content: (
+                                    <span>This will delete the local data from TaskUnifier App and reload the data from the server.<br />This cannot be undone !</span>
+                                ),
+                                onOk: async () => {
+                                    try {
+                                        await dispatch(resetDataForSynchronization());
 
-                                if (settings.synchronizationApp) {
-                                    await updateSettings({
-                                        [settings.synchronizationApp]: null
-                                    });
+                                        if (settings.synchronizationApp) {
+                                            await updateSettings({
+                                                [settings.synchronizationApp]: null
+                                            });
+                                        }
+
+                                        await updateSettings({
+                                            lastSynchronizationDate: null
+                                        });
+
+                                        await dispatch(synchronize());
+
+                                        resolve();
+                                    } catch (error) {
+                                        reject(error);
+                                    }
+                                },
+                                onCancel: () => {
+                                    resolve();
                                 }
-
-                                await updateSettings({
-                                    lastSynchronizationDate: null
-                                });
-
-                                await dispatch(synchronize());
-                            }
+                            });
                         });
                     },
                     editable: true,
@@ -1020,8 +1052,8 @@ export function getCategories() {
                     id: 'editCustomNoteFields',
                     title: 'Edit custom note fields',
                     type: 'button',
-                    value: (settings, updateSettings, dispatch) => {
-                        dispatch(setNoteFieldManagerOptions({ visible: true }));
+                    value: async (settings, updateSettings, dispatch) => {
+                        await dispatch(setNoteFieldManagerOptions({ visible: true }));
                     },
                     editable: true
                 },
@@ -1090,8 +1122,8 @@ export function getCategories() {
                     id: 'editCustomTaskFields',
                     title: 'Edit custom task fields',
                     type: 'button',
-                    value: (settings, updateSettings, dispatch) => {
-                        dispatch(setTaskFieldManagerOptions({ visible: true }));
+                    value: async (settings, updateSettings, dispatch) => {
+                        await dispatch(setTaskFieldManagerOptions({ visible: true }));
                     },
                     editable: true
                 },
@@ -1176,8 +1208,8 @@ export function getCategories() {
                     id: 'editCustomTaskFields',
                     title: 'Edit custom task fields',
                     type: 'button',
-                    value: (settings, updateSettings, dispatch) => {
-                        dispatch(setTaskFieldManagerOptions({ visible: true }));
+                    value: async (settings, updateSettings, dispatch) => {
+                        await dispatch(setTaskFieldManagerOptions({ visible: true }));
                     },
                     editable: true
                 },
@@ -1299,8 +1331,8 @@ export function getCategories() {
                     id: 'resetDefaultColors',
                     title: 'Reset default colors',
                     type: 'button',
-                    value: (settings, updateSettings) => {
-                        updateSettings({
+                    value: async (settings, updateSettings) => {
+                        await updateSettings({
                             evenColor: '#fafafa',
                             oddColor: '#e3ebf2',
                             dueTodayForegroundColor: '#1b5e20',
@@ -1348,8 +1380,8 @@ export function getCategories() {
                     id: 'resetPastelColors',
                     title: 'Reset pastel colors',
                     type: 'button',
-                    value: (settings, updateSettings) => {
-                        updateSettings({
+                    value: async (settings, updateSettings) => {
+                        await updateSettings({
                             importance_0: '#fafafa',
                             importance_1: '#fafafa',
                             importance_2: '#eceff1',
@@ -1371,8 +1403,8 @@ export function getCategories() {
                     id: 'resetBrightColors',
                     title: 'Reset bright colors',
                     type: 'button',
-                    value: (settings, updateSettings) => {
-                        updateSettings({
+                    value: async (settings, updateSettings) => {
+                        await updateSettings({
                             importance_0: '#fafafa',
                             importance_1: '#fafafa',
                             importance_2: '#eceff1',

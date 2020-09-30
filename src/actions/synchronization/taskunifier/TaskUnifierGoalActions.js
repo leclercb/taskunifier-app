@@ -20,12 +20,12 @@ export function synchronizeGoals() {
             const result = await Promise.all(goalsToAddPromises);
 
             for (let goal of result) {
-                await dispatch(updateGoal(goal, { loaded: true, skipUpdateMiddleware: true }));
-
                 if (goal.contributesTo) {
                     createdGoalsWithContributesTo.push(goal);
                 }
             }
+
+            await dispatch(updateGoal(result, { loaded: true, skipUpdateMiddleware: true }));
         }
 
         goals = getGoals(getState());
@@ -35,37 +35,43 @@ export function synchronizeGoals() {
             const goalsToDeletePromises = goalsToDelete.map(goal => dispatch(deleteRemoteGoal(goal)));
             await Promise.all(goalsToDeletePromises);
 
-            for (let goal of goalsToDelete) {
-                await dispatch(deleteGoal(goal.id));
-            }
+            await dispatch(deleteGoal(goalsToDelete.map(goal => goal.id)));
         }
 
         goals = getGoals(getState());
 
+        const goalsToAdd = [];
+        const goalsToUpdate = [];
+        const goalsToDelete = [];
         const remoteGoals = await dispatch(getRemoteGoals());
 
         for (let remoteGoal of remoteGoals) {
             const localGoal = goals.find(goal => goal.refIds.taskunifier === remoteGoal.refIds.taskunifier);
 
             if (!localGoal) {
-                await dispatch(addGoal(remoteGoal, { keepRefIds: true }));
+                goalsToAdd.push(remoteGoal);
             } else {
                 if (moment(remoteGoal.updateDate).diff(moment(localGoal.updateDate)) > 0) {
                     if (!createdGoalsWithContributesTo.find(goal => goal.id === localGoal.id)) {
-                        await dispatch(updateGoal(merge(localGoal, remoteGoal), { loaded: true, skipUpdateMiddleware: true }));
+                        goalsToUpdate.push(merge(localGoal, remoteGoal));
                     }
                 }
             }
         }
+
+        await dispatch(addGoal(goalsToAdd, { keepRefIds: true }));
+        await dispatch(updateGoal(goalsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
 
         goals = getGoals(getState());
 
         // eslint-disable-next-line require-atomic-updates
         for (let localGoal of filterByVisibleState(goals)) {
             if (!remoteGoals.find(goal => goal.refIds.taskunifier === localGoal.refIds.taskunifier)) {
-                await dispatch(deleteGoal(localGoal.id, { force: true }));
+                goalsToDelete.push(localGoal);
             }
         }
+
+        await dispatch(deleteGoal(goalsToDelete.map(goal => goal.id), { force: true }));
 
         goals = getGoals(getState());
 
@@ -81,9 +87,7 @@ export function synchronizeGoals() {
             const goalsToUpdatePromises = goalsToUpdate.map(goal => dispatch(editRemoteGoal(goal)));
             await Promise.all(goalsToUpdatePromises);
 
-            for (let goal of goalsToUpdate) {
-                await dispatch(updateGoal(goal, { loaded: true, skipUpdateMiddleware: true }));
-            }
+            await dispatch(updateGoal(goalsToUpdate, { loaded: true, skipUpdateMiddleware: true }));
         }
     };
 }

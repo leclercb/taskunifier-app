@@ -9,7 +9,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateProcess } from 'actions/ThreadActions';
 import CloudMaxObjectsReachedMessage from 'components/pro/CloudMaxObjectsReachedMessage';
 import { getConfig } from 'config/Config';
-import { getObjectById } from 'selectors/ObjectSelectors';
+import { getObjectsByIds } from 'selectors/ObjectSelectors';
 import { getErrorMessages } from 'utils/CloudUtils';
 import { diff } from 'utils/ObjectUtils';
 
@@ -46,11 +46,11 @@ function pushObjectToServer(property, oldObject, newObject) {
         } catch (error) {
             if (!oldObject) {
                 await dispatch({
-                    type: 'DELETE_OBJECT',
+                    type: 'DELETE_OBJECTS',
                     property,
                     generateId: () => uuid(),
                     updateDate: moment().toISOString(),
-                    objectId: newObject.id,
+                    objectIds: [newObject.id],
                     options: {}
                 });
             }
@@ -146,15 +146,24 @@ function deleteObjectFromServer(property, objectId) {
 }
 
 export const pushToServer = store => next => async action => {
-    if (action.type === 'POST_ADD_OBJECT') {
-        const remoteObject = await store.dispatch(pushObjectToServer(action.property, null, action.object));
-        await store.dispatch(changeId(action.property, action.object.id, remoteObject.id));
-        const addedObject = getObjectById(store.getState(), action.property, remoteObject.id);
-        action.addedObject = addedObject; // eslint-disable-line require-atomic-updates
+    if (action.type === 'POST_ADD_OBJECTS') {
+        const ids = [];
+
+        for (let object of action.objects) {
+            const remoteObject = await store.dispatch(pushObjectToServer(action.property, null, object));
+            await store.dispatch(changeId(action.property, object.id, remoteObject.id));
+            ids.push(remoteObject.id);
+        }
+
+        action.addedObjects = getObjectsByIds(store.getState(), action.property, ids);
     }
 
-    if (action.type === 'POST_UPDATE_OBJECT' && !action.newObject.static) {
-        await store.dispatch(pushObjectToServer(action.property, action.oldObject, action.newObject));
+    if (action.type === 'POST_UPDATE_OBJECTS') {
+        for (let object of action.objects) {
+            if (!object.new.static) {
+                await store.dispatch(pushObjectToServer(action.property, object.old, object.new));
+            }
+        }
     }
 
     if (action.type === 'POST_UPDATE_SETTINGS') {
@@ -167,10 +176,8 @@ export const pushToServer = store => next => async action => {
         }
     }
 
-    if (action.type === 'POST_DELETE_OBJECT') {
-        const objectIds = Array.isArray(action.objectId) ? action.objectId : [action.objectId];
-        const promises = objectIds.map(objectId => store.dispatch(deleteObjectFromServer(action.property, objectId)));
-        await Promise.all(promises);
+    if (action.type === 'POST_DELETE_OBJECTS') {
+        await Promise.all(action.objectIds.map(objectId => store.dispatch(deleteObjectFromServer(action.property, objectId))));
     }
 
     return next(action);

@@ -7,7 +7,7 @@ import {
 } from 'actions/ActionUtils';
 import { updateProcess } from 'actions/ThreadActions';
 import Constants from 'constants/Constants';
-import { getObjectById } from 'selectors/ObjectSelectors';
+import { getObjectsByIds } from 'selectors/ObjectSelectors';
 import { filterByStatic } from 'utils/CategoryUtils';
 
 export function loadObjectsFromFile(property, file) {
@@ -60,30 +60,36 @@ export function addObject(
     return async (dispatch, getState) => {
         const processId = uuid();
 
-        let newObject;
+        const objects = Array.isArray(object) ? object : [object];
+        const newIds = [];
+        let newObjects;
 
         try {
-            let id = uuid();
-
             await dispatch({
-                type: 'ADD_OBJECT',
+                type: 'ADD_OBJECTS',
                 property,
                 generateId: () => uuid(),
                 creationDate: moment().toISOString(),
-                object: {
-                    ...defaultValues,
-                    ...object,
-                    id
-                },
+                objects: objects.map(object => {
+                    const id = uuid();
+
+                    newIds.push(id);
+
+                    return {
+                        ...defaultValues,
+                        ...object,
+                        id
+                    };
+                }),
                 options
             });
 
-            newObject = getObjectById(getState(), property, id);
+            newObjects = getObjectsByIds(getState(), property, newIds);
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                title: `Add "${object && object.title ? object.title : ''}" of type "${property}"`,
+                title: objects.length === 1 ? `Add "${object && object.title ? object.title : ''}" of type "${property}"` : `Add ${objects.length} objects of type "${property}"`,
                 error: error.toString()
             }));
 
@@ -91,30 +97,21 @@ export function addObject(
         }
 
         const action = await dispatch({
-            type: 'POST_ADD_OBJECT',
+            type: 'POST_ADD_OBJECTS',
             property,
-            object: newObject,
+            objects: newObjects,
             options
         });
 
-        return action.addedObject || newObject;
+        const result = action.addedObjects || newObjects;
+
+        return Array.isArray(object) ? result : result[0];
     };
 }
 
 export function duplicateObject(property, object, options = {}) {
     return async dispatch => {
-        const objects = Array.isArray(object) ? object : [object];
-        const addedObjects = [];
-
-        for (let o of objects) {
-            addedObjects.push(await dispatch(addObject(property, o, options)));
-        }
-
-        if (Array.isArray(object)) {
-            return addedObjects;
-        } else {
-            return addedObjects[0];
-        }
+        return await dispatch(addObject(property, object, options));
     };
 }
 
@@ -122,27 +119,28 @@ export function updateObject(property, object, options = {}) {
     return async (dispatch, getState) => {
         const processId = uuid();
 
-        let oldObject;
-        let newObject;
+        const objects = Array.isArray(object) ? object : [object];
+        let oldObjects;
+        let newObjects;
 
         try {
-            oldObject = getObjectById(getState(), property, object.id);
+            oldObjects = getObjectsByIds(getState(), property, objects.map(object => object.id));
 
             await dispatch({
-                type: 'UPDATE_OBJECT',
+                type: 'UPDATE_OBJECTS',
                 property,
                 generateId: () => uuid(),
                 updateDate: moment().toISOString(),
-                object,
+                objects,
                 options
             });
 
-            newObject = getObjectById(getState(), property, object.id);
+            newObjects = getObjectsByIds(getState(), property, objects.map(object => object.id));
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                title: `Update "${object.title}" of type "${property}"`,
+                title: objects.length === 1 ? `Update "${object.title}" of type "${property}"` : `Update ${objects.length} objects of type "${property}"`,
                 error: error.toString()
             }));
 
@@ -150,14 +148,16 @@ export function updateObject(property, object, options = {}) {
         }
 
         await dispatch({
-            type: 'POST_UPDATE_OBJECT',
+            type: 'POST_UPDATE_OBJECTS',
             property,
-            oldObject,
-            newObject,
+            objects: objects.map((_, index) => ({
+                old: oldObjects[index],
+                new: newObjects[index]
+            })),
             options
         });
 
-        return newObject;
+        return Array.isArray(object) ? newObjects : newObjects[0];
     };
 }
 
@@ -165,20 +165,22 @@ export function deleteObject(property, objectId, options = {}) {
     return async dispatch => {
         const processId = uuid();
 
+        const objectIds = Array.isArray(objectId) ? objectId : [objectId];
+
         try {
             await dispatch({
-                type: 'DELETE_OBJECT',
+                type: 'DELETE_OBJECTS',
                 property,
                 generateId: () => uuid(),
                 updateDate: moment().toISOString(),
-                objectId,
+                objectIds,
                 options
             });
         } catch (error) {
             dispatch(updateProcess({
                 id: processId,
                 state: 'ERROR',
-                title: `Remove object(s) of type "${property}"`,
+                title: objectIds.length === 1 ? `Remove object of type "${property}"` : `Remove ${objectIds.length} objects of type "${property}"`,
                 error: error.toString()
             }));
 
@@ -186,9 +188,9 @@ export function deleteObject(property, objectId, options = {}) {
         }
 
         await dispatch({
-            type: 'POST_DELETE_OBJECT',
+            type: 'POST_DELETE_OBJECTS',
             property,
-            objectId,
+            objectIds,
             options
         });
     };
