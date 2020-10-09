@@ -14,7 +14,7 @@ import {
 } from 'actions/SettingActions';
 import { addTask, deleteTask, duplicateTask, updateTask } from 'actions/TaskActions';
 import { runProcess } from 'actions/ThreadActions';
-import { getSearchTaskValue, getSelectedTaskFilter, getSelectedTaskIds } from 'selectors/AppSelectors';
+import { getSearchTaskValue, getSelectedTaskFilter } from 'selectors/AppSelectors';
 import {
     getCalendarEventTypes,
     getSelectedCalendarView,
@@ -23,6 +23,7 @@ import {
     isShowTaskHierarchy
 } from 'selectors/SettingSelectors';
 import {
+    getSelectedTaskIds,
     getSelectedTasks,
     getStatistics,
     getTasksFilteredBySelectedFilter,

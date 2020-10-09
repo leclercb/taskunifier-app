@@ -242,13 +242,26 @@ function TaskTable({ apis }) {
                                         }
                                     };
 
+                                    const onDoubleClick = async () => {
+                                        if (task) {
+                                            taskApi.setSelectedTaskIds(task.id);
+                                        } else {
+                                            const field = sortedAndFilteredFields[columnIndex];
+                                            await onResize({ stop: true }, field.id, getWidthForType(field.type));
+
+                                            if (gridRef.current) {
+                                                gridRef.current.recomputeGridSize();
+                                            }
+                                        }
+                                    };
+
                                     return (
                                         <div
                                             key={key}
                                             style={style}
                                             className={classNames.join(' ')}
                                             onClick={event => onClick(event, false)}
-                                            onDoubleClick={() => taskApi.setSelectedTaskIds(task.id)}
+                                            onDoubleClick={onDoubleClick}
                                             onContextMenu={event => onClick(event, true)}>
                                             {getCellRenderer({ columnIndex, rowIndex })}
                                         </div>

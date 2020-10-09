@@ -200,13 +200,26 @@ function NoteTable({ apis }) {
                                         }
                                     };
 
+                                    const onDoubleClick = async () => {
+                                        if (note) {
+                                            noteApi.setSelectedNoteIds(note.id);
+                                        } else {
+                                            const field = sortedAndFilteredFields[columnIndex];
+                                            await onResize({ stop: true }, field.id, getWidthForType(field.type));
+
+                                            if (gridRef.current) {
+                                                gridRef.current.recomputeGridSize();
+                                            }
+                                        }
+                                    };
+
                                     return (
                                         <div
                                             key={key}
                                             style={style}
                                             className={classNames.join(' ')}
                                             onClick={event => onClick(event, false)}
-                                            onDoubleClick={() => noteApi.setSelectedNoteIds(note.id)}
+                                            onDoubleClick={onDoubleClick}
                                             onContextMenu={event => onClick(event, true)}>
                                             {getCellRenderer({ columnIndex, rowIndex })}
                                         </div>

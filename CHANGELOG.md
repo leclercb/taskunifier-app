@@ -1,3 +1,10 @@
+# 1.2.2
+
+## Bug Fixes
+
+* Fix double click on column header (#208)
+* Refresh selection when an object is deleted (#209)
+
 # 1.2.1
 
 ## New Features

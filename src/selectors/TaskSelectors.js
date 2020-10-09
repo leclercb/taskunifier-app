@@ -13,8 +13,7 @@ import {
     getMinuteTimer,
     getSearchTaskValue,
     getSelectedTaskFilter,
-    getSelectedTaskFilterDate,
-    getSelectedTaskIds
+    getSelectedTaskFilterDate
 } from 'selectors/AppSelectors';
 import {
     getCategoryTaskSorters,
@@ -225,9 +224,16 @@ export const getVisibleTaskSelector = () => createSelector(
 );
 
 export const getSelectedTasks = createSelector(
-    getTasks,
-    getSelectedTaskIds,
+    getTasksFilteredByVisibleState,
+    state => state.app.selectedTaskIds,
     (tasks, selectedTaskIds) => {
         return tasks.filter(task => selectedTaskIds.includes(task.id));
+    }
+);
+
+export const getSelectedTaskIds = createSelector(
+    getSelectedTasks,
+    (selectedTasks) => {
+        return selectedTasks.map(task => task.id);
     }
 );

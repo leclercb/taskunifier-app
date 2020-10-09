@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { createSelector } from 'reselect';
 import { combineConditions, createNoteFilterFromDefinition, createSearchNoteValueCondition } from 'data/DataNoteFilters';
-import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteFilterDate, getSelectedNoteIds } from 'selectors/AppSelectors';
+import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteFilterDate } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
 import { getCategoryNoteSorters, getCombinedNoteFilterDefinitions } from 'selectors/SettingSelectors';
@@ -99,9 +99,16 @@ export const getVisibleNoteSelector = () => createSelector(
 );
 
 export const getSelectedNotes = createSelector(
-    getNotes,
-    getSelectedNoteIds,
+    getNotesFilteredByVisibleState,
+    state => state.app.selectedNoteIds,
     (notes, selectedNoteIds) => {
         return notes.filter(note => selectedNoteIds.includes(note.id));
+    }
+);
+
+export const getSelectedNoteIds = createSelector(
+    getSelectedNotes,
+    (selectedNotes) => {
+        return selectedNotes.map(note => note.id);
     }
 );
