@@ -206,7 +206,7 @@ function Header({ apis }) {
                     createButton('plus', 'Add Note', onAddNote, false, 'joyride-header-add-note')
                     : null}
                 {appApi.selectedView === 'note' ?
-                    createButton('trash-alt', 'Remove Note(s)', onRemoveNotes)
+                    createButton('trash-alt', 'Remove Note(s)', onRemoveNotes, noteApi.selectedNoteIds.length === 0)
                     : null}
                 {appApi.selectedView === 'note' ?
                     createButton('print', 'Print Notes', onPrintNotes)
@@ -230,7 +230,7 @@ function Header({ apis }) {
                     createButton('magic', 'Batch Edit Tasks', onSetBatchEditTasksManagerVisible, taskApi.selectedTaskIds.length <= 1 || taskApi.selectedTaskIds.length > 50)
                     : null}
                 {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
-                    createButton('trash-alt', 'Remove Task(s)', onRemoveTasks)
+                    createButton('trash-alt', 'Remove Task(s)', onRemoveTasks, taskApi.selectedTaskIds.length === 0)
                     : null}
                 {appApi.selectedView === 'task' || appApi.selectedView === 'taskCalendar' ?
                     createButton('print', 'Print Tasks', onPrintTasks)

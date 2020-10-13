@@ -13,12 +13,12 @@ import {
     getMinuteTimer,
     getSearchTaskValue,
     getSelectedTaskFilter,
-    getSelectedTaskFilterDate,
-    getSelectedTaskIds
+    getSelectedTaskFilterDate
 } from 'selectors/AppSelectors';
 import {
     getCategoryTaskSorters,
     getCombinedTaskFilterDefinitions,
+    getTaskColumnSorter,
     isShowCompletedTasks,
     isShowFutureTasks,
     isShowTaskHierarchy
@@ -75,8 +75,9 @@ export const getTasksFilteredBySelectedFilter = createSelector(
     getTaskFiltersFilteredByVisibleState,
     getCombinedTaskFilterDefinitions,
     getCategoryTaskSorters,
+    getTaskColumnSorter,
     isBusy,
-    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, taskFilters, combinedTaskFilterDefinitions, categoryTaskSorters, busy) => {
+    (tasks, tasksMetaData, searchTaskValue, showTaskHierarchy, showCompletedTasks, showFutureTasks, selectedTaskFilter, selectedTaskFilterDate, taskFields, taskFilters, combinedTaskFilterDefinitions, categoryTaskSorters, taskColumnSorter, busy) => {
         if (busy) {
             return getTasksFilteredBySelectedFilterResult;
         }
@@ -129,7 +130,15 @@ export const getTasksFilteredBySelectedFilter = createSelector(
 
         filteredTasks.push(...parentsToAdd);
 
-        const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter, store.getState(), getTasksMetaDataFilteredByVisibleState, showTaskHierarchy);
+        if (selectedTaskFilter && taskColumnSorter) {
+            selectedTaskFilter = { ...selectedTaskFilter };
+            selectedTaskFilter.sorters = [
+                taskColumnSorter,
+                ...(selectedTaskFilter.sorters || [])
+            ];
+        }
+
+        const result = sortObjects(filteredTasks, taskFields, selectedTaskFilter ? selectedTaskFilter.sorters : [], store.getState(), getTasksMetaDataFilteredByVisibleState, showTaskHierarchy);
         getTasksFilteredBySelectedFilterResult = result;
 
         return result;
@@ -225,9 +234,16 @@ export const getVisibleTaskSelector = () => createSelector(
 );
 
 export const getSelectedTasks = createSelector(
-    getTasks,
-    getSelectedTaskIds,
+    getTasksFilteredByVisibleState,
+    state => state.app.selectedTaskIds,
     (tasks, selectedTaskIds) => {
         return tasks.filter(task => selectedTaskIds.includes(task.id));
+    }
+);
+
+export const getSelectedTaskIds = createSelector(
+    getSelectedTasks,
+    (selectedTasks) => {
+        return selectedTasks.map(task => task.id);
     }
 );

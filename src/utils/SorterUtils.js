@@ -1,10 +1,8 @@
 import { compareObjectsHierarchy } from 'utils/CompareUtils';
 
-export function sortObjects(objects, fields, filter, state, getMetaDataFunction, indented) {
-    let sorters = [];
-
-    if (filter && filter.sorters) {
-        sorters = filter.sorters; // eslint-disable-line prefer-destructuring
+export function sortObjects(objects, fields, sorters, state, getMetaDataFunction, indented) {
+    if (!sorters) {
+        sorters = [];
     }
 
     return objects.sort((a, b) => {

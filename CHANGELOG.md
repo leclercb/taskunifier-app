@@ -1,3 +1,14 @@
+# 1.2.2
+
+## New Features
+
+* Quick sort by clicking on a column header
+
+## Bug Fixes
+
+* Fix double click on column header (#208)
+* Refresh selection when an object is deleted (#209)
+
 # 1.2.1
 
 ## New Features

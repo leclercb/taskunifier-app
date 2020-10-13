@@ -79,6 +79,8 @@ function TaskTable({ apis }) {
                 <ResizableAndMovableColumn
                     dataKey={field.id}
                     label={(<strong>{field.title}</strong>)}
+                    sortBy={settingsApi.settings.taskColumnSorter ? settingsApi.settings.taskColumnSorter.field : null}
+                    sortDirection={settingsApi.settings.taskColumnSorter ? settingsApi.settings.taskColumnSorter.direction : null}
                     onResize={async data => {
                         await onResize(data, field.id, getColumnWidth(columnIndex) + data.deltaX);
 
@@ -196,6 +198,7 @@ function TaskTable({ apis }) {
                                 rowCount={dataSource.length + 1}
                                 fixedRowCount={1}
                                 cellRenderer={({ columnIndex, rowIndex, key, style }) => {
+                                    const field = sortedAndFilteredFields[columnIndex];
                                     const task = dataSource[rowIndex - 1];
                                     const classNames = [];
 
@@ -231,7 +234,7 @@ function TaskTable({ apis }) {
                                         style.backgroundColor = backgroundColor;
                                     }
 
-                                    const onClick = (event, rightClick) => {
+                                    const onClick = async (event, rightClick) => {
                                         if (task) {
                                             multiSelectionHandler(
                                                 rowData => rowData.id,
@@ -239,6 +242,42 @@ function TaskTable({ apis }) {
                                                 taskApi.selectedTaskIds,
                                                 taskApi.setSelectedTaskIds,
                                                 rightClick)({ event, rowData: task });
+                                        } else if (!rightClick) {
+                                            let direction = 'ascending';
+
+                                            if (settingsApi.settings.taskColumnSorter &&
+                                                settingsApi.settings.taskColumnSorter.field === field.id) {
+                                                if (settingsApi.settings.taskColumnSorter.direction === 'ascending') {
+                                                    direction = 'descending';
+                                                } else {
+                                                    direction = null;
+                                                }
+                                            }
+
+                                            if (direction) {
+                                                await settingsApi.updateSettings({
+                                                    taskColumnSorter: {
+                                                        field: field.id,
+                                                        direction
+                                                    }
+                                                });
+                                            } else {
+                                                await settingsApi.updateSettings({
+                                                    taskColumnSorter: null
+                                                });
+                                            }
+                                        }
+                                    };
+
+                                    const onDoubleClick = async () => {
+                                        if (task) {
+                                            taskApi.setSelectedTaskIds(task.id);
+                                        } else {
+                                            await onResize({ stop: true }, field.id, getWidthForType(field.type));
+
+                                            if (gridRef.current) {
+                                                gridRef.current.recomputeGridSize();
+                                            }
                                         }
                                     };
 
@@ -248,7 +287,7 @@ function TaskTable({ apis }) {
                                             style={style}
                                             className={classNames.join(' ')}
                                             onClick={event => onClick(event, false)}
-                                            onDoubleClick={() => taskApi.setSelectedTaskIds(task.id)}
+                                            onDoubleClick={onDoubleClick}
                                             onContextMenu={event => onClick(event, true)}>
                                             {getCellRenderer({ columnIndex, rowIndex })}
                                         </div>

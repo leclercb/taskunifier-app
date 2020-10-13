@@ -6,10 +6,11 @@ import {
     setSelectedNoteIds
 } from 'actions/AppActions';
 import { addNote, deleteNote, duplicateNote, updateNote } from 'actions/NoteActions';
-import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteIds } from 'selectors/AppSelectors';
+import { getSearchNoteValue, getSelectedNoteFilter } from 'selectors/AppSelectors';
 import {
     getNotesFilteredBySelectedFilter,
     getNotesFilteredByVisibleState,
+    getSelectedNoteIds,
     getSelectedNotes,
     getStatistics
 } from 'selectors/NoteSelectors';
