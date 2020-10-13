@@ -69,6 +69,7 @@ export const getNotesFilteredBySelectedFilter = createSelector(
         });
 
         if (selectedNoteFilter && noteColumnSorter) {
+            selectedNoteFilter = { ...selectedNoteFilter };
             selectedNoteFilter.sorters = [
                 noteColumnSorter,
                 ...(selectedNoteFilter.sorters || [])

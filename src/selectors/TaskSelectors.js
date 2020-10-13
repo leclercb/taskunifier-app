@@ -131,6 +131,7 @@ export const getTasksFilteredBySelectedFilter = createSelector(
         filteredTasks.push(...parentsToAdd);
 
         if (selectedTaskFilter && taskColumnSorter) {
+            selectedTaskFilter = { ...selectedTaskFilter };
             selectedTaskFilter.sorters = [
                 taskColumnSorter,
                 ...(selectedTaskFilter.sorters || [])
