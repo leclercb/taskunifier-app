@@ -34,5 +34,7 @@ export const isShowFutureTasks = state => state.settings.showFutureTasks;
 export const getCalendarEventTypes = state => state.settings.calendarEventTypes || [];
 export const getCombinedNoteFilterDefinitions = state => state.settings.combinedNoteFilterDefinitions;
 export const getCombinedTaskFilterDefinitions = state => state.settings.combinedTaskFilterDefinitions;
+export const getNoteColumnSorter = state => state.settings.noteColumnSorter;
 export const getCategoryNoteSorters = state => state.settings.categoryNoteSorters;
+export const getTaskColumnSorter = state => state.settings.taskColumnSorter;
 export const getCategoryTaskSorters = state => state.settings.categoryTaskSorters;

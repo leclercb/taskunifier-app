@@ -4,7 +4,7 @@ import { combineConditions, createNoteFilterFromDefinition, createSearchNoteValu
 import { getSearchNoteValue, getSelectedNoteFilter, getSelectedNoteFilterDate } from 'selectors/AppSelectors';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getNoteFiltersFilteredByVisibleState } from 'selectors/NoteFilterSelectors';
-import { getCategoryNoteSorters, getCombinedNoteFilterDefinitions } from 'selectors/SettingSelectors';
+import { getCategoryNoteSorters, getCombinedNoteFilterDefinitions, getNoteColumnSorter } from 'selectors/SettingSelectors';
 import { isBusy } from 'selectors/ThreadSelectors';
 import { store } from 'store/Store';
 import { filterByVisibleState } from 'utils/CategoryUtils';
@@ -37,8 +37,9 @@ export const getNotesFilteredBySelectedFilter = createSelector(
     getNoteFiltersFilteredByVisibleState,
     getCombinedNoteFilterDefinitions,
     getCategoryNoteSorters,
+    getNoteColumnSorter,
     isBusy,
-    (notes, searchNoteValue, selectedNoteFilter, selectedNoteFilterDate, noteFields, noteFilters, combinedNoteFilterDefinitions, categoryNoteSorters, busy) => {
+    (notes, searchNoteValue, selectedNoteFilter, selectedNoteFilterDate, noteFields, noteFilters, combinedNoteFilterDefinitions, categoryNoteSorters, noteColumnSorter, busy) => {
         if (busy) {
             return getNotesFilteredBySelectedFilterResult;
         }
@@ -67,7 +68,14 @@ export const getNotesFilteredBySelectedFilter = createSelector(
             return applyFilter(selectedNoteFilter, note, noteFields);
         });
 
-        const result = sortObjects(filteredNotes, noteFields, selectedNoteFilter, store.getState(), null, false);
+        if (selectedNoteFilter && noteColumnSorter) {
+            selectedNoteFilter.sorters = [
+                noteColumnSorter,
+                ...(selectedNoteFilter.sorters || [])
+            ];
+        }
+
+        const result = sortObjects(filteredNotes, noteFields, selectedNoteFilter ? selectedNoteFilter.sorters : [], store.getState(), null, false);
         getNotesFilteredBySelectedFilterResult = result;
 
         return result;

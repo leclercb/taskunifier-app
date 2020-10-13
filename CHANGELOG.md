@@ -1,5 +1,9 @@
 # 1.2.2
 
+## New Features
+
+* Quick sort by clicking on a column header
+
 ## Bug Fixes
 
 * Fix double click on column header (#208)

@@ -66,6 +66,8 @@ function NoteTable({ apis }) {
                 <ResizableAndMovableColumn
                     dataKey={field.id}
                     label={(<strong>{field.title}</strong>)}
+                    sortBy={settingsApi.settings.noteColumnSorter ? settingsApi.settings.noteColumnSorter.field : null}
+                    sortDirection={settingsApi.settings.noteColumnSorter ? settingsApi.settings.noteColumnSorter.direction : null}
                     onResize={async data => {
                         await onResize(data, field.id, getColumnWidth(columnIndex) + data.deltaX);
 
@@ -162,6 +164,7 @@ function NoteTable({ apis }) {
                                 rowCount={dataSource.length + 1}
                                 fixedRowCount={1}
                                 cellRenderer={({ columnIndex, rowIndex, key, style }) => {
+                                    const field = sortedAndFilteredFields[columnIndex];
                                     const note = dataSource[rowIndex - 1];
                                     const classNames = [];
 
@@ -189,7 +192,7 @@ function NoteTable({ apis }) {
                                         style.backgroundColor = backgroundColor;
                                     }
 
-                                    const onClick = (event, rightClick) => {
+                                    const onClick = async (event, rightClick) => {
                                         if (note) {
                                             multiSelectionHandler(
                                                 rowData => rowData.id,
@@ -197,6 +200,30 @@ function NoteTable({ apis }) {
                                                 noteApi.selectedNoteIds,
                                                 noteApi.setSelectedNoteIds,
                                                 rightClick)({ event, rowData: note });
+                                        } else if (!rightClick) {
+                                            let direction = 'ascending';
+
+                                            if (settingsApi.settings.noteColumnSorter &&
+                                                settingsApi.settings.noteColumnSorter.field === field.id) {
+                                                if (settingsApi.settings.noteColumnSorter.direction === 'ascending') {
+                                                    direction = 'descending';
+                                                } else {
+                                                    direction = null;
+                                                }
+                                            }
+
+                                            if (direction) {
+                                                await settingsApi.updateSettings({
+                                                    noteColumnSorter: {
+                                                        field: field.id,
+                                                        direction
+                                                    }
+                                                });
+                                            } else {
+                                                await settingsApi.updateSettings({
+                                                    noteColumnSorter: null
+                                                });
+                                            }
                                         }
                                     };
 
@@ -204,7 +231,6 @@ function NoteTable({ apis }) {
                                         if (note) {
                                             noteApi.setSelectedNoteIds(note.id);
                                         } else {
-                                            const field = sortedAndFilteredFields[columnIndex];
                                             await onResize({ stop: true }, field.id, getWidthForType(field.type));
 
                                             if (gridRef.current) {

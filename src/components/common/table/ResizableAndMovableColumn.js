@@ -31,7 +31,7 @@ export const moveHandler = (prefix, fields, settings, updateSettings) => (dragFi
 };
 
 export function ResizableAndMovableColumn(props) {
-    const showSortIndicator = sortBy === props.dataKey;
+    const showSortIndicator = props.sortBy === props.dataKey && props.sortDirection;
 
     return (
         <React.Fragment key={props.dataKey}>
@@ -47,7 +47,7 @@ export function ResizableAndMovableColumn(props) {
                 {props.label}
             </DraggableElement>
             {showSortIndicator ? (
-                <SortIndicator key="SortIndicator" sortDirection={props.sortDirection} />
+                <SortIndicator key="SortIndicator" sortDirection={props.sortDirection === 'descending' ? 'DESC' : 'ASC'} />
             ) : null}
             <Draggable
                 axis="x"
