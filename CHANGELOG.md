@@ -2,7 +2,7 @@
 
 ## New Features
 
-* Quick sort by clicking on a column header
+* Quick sort by clicking on a column header (#185)
 
 ## Bug Fixes
 
