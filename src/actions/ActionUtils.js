@@ -220,8 +220,8 @@ export function getUserDataPath() {
 
 export function getDataFolder(settings) {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const electron = window.require('electron');
-        const env = electron.remote.getGlobal('process').env;
+        const { ipcRenderer } = require('electron');
+        const env = ipcRenderer.sendSync('process-get-env');
 
         if (env.TASKUNIFIER_DATA_FOLDER) {
             return env.TASKUNIFIER_DATA_FOLDER;

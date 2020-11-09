@@ -41,7 +41,7 @@ import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFr
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const { ipcRenderer } = window.require('electron');
+        const { ipcRenderer } = require('electron');
 
         ipcRenderer.on('menu-save', async () => {
             await executeSave();
