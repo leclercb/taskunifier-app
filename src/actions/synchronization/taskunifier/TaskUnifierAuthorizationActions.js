@@ -4,7 +4,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
-import { openExternalLink } from 'utils/ElectronUtils';
+import { openExternal } from 'utils/ElectronIpc';
 import logger from 'utils/LogUtils';
 
 export function authorize() {
@@ -18,7 +18,7 @@ export function authorize() {
 
         const url = `${getConfig().synchronization.taskunifier.oauthUri}/login?${qs.stringify(params)}`;
 
-        openExternalLink(url);
+        openExternal(url);
     };
 }
 

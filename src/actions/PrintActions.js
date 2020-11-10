@@ -5,7 +5,7 @@ import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { ensureDir, join } from 'utils/ElectronUtils';
+import { ensureDir, join, openPath } from 'utils/ElectronIpc';
 import { printDocument, printTable } from 'utils/PrintUtils';
 
 export function printNotes(notes) {
@@ -62,14 +62,14 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
         printTable(doc, null, fields, objects, state);
 
         if (process.env.REACT_APP_MODE === 'electron') {
-            const path = join(getDataFolder(getSettings(state)), 'temp');
-            const file = join(path, fileName);
+            const dataFolder = await getDataFolder(getSettings(state));
+            const path = await join(dataFolder, 'temp');
+            const file = await join(path, fileName);
 
             await ensureDir(path);
             await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));
 
-            const electron = window.require('electron');
-            return electron.remote.shell.openPath(file);
+            await openPath(file);
         } else {
             doc.save(fileName);
         }

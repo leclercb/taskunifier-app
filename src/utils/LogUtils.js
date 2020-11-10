@@ -1,9 +1,8 @@
-const electron = process.env.REACT_APP_MODE === 'electron' ? window.require('electron') : null;
-const electronLog = electron ? electron.remote.require('electron-log') : null;
+import { log as electronLog, setLogLevel } from 'utils/ElectronIpc';
 
 export function setElectronLoggerLevel(level) {
-    if (electronLog) {
-        electronLog.transports.file.level = level;
+    if (process.env.REACT_APP_MODE === 'electron') {
+        setLogLevel(level);
     }
 }
 
@@ -26,8 +25,8 @@ export function debug(...params) {
 function log(type, ...params) {
     console[type](...params);
 
-    if (electronLog) {
-        electronLog[type](...params);
+    if (process.env.REACT_APP_MODE === 'electron') {
+        electronLog(type, ...params);
     }
 }
 

@@ -6,19 +6,19 @@ const config = {
         latestReleaseUrl: 'https://api.github.com/repos/leclercb/taskunifier-app/releases/latest'
     },
     local: {
-        apiUrl: 'http://localhost:2000',
-        appUrl: 'http://localhost:2100/app',
-        authUrl: 'http://localhost:2300',
-        cloudUrl: 'http://localhost:2100/cloud',
-        downloadUrl: 'http://localhost:2100/app',
-        maintenanceUrl: 'http://localhost:2100/maintenance',
+        apiUrl: 'https://api-dev.taskunifier.app',
+        appUrl: 'https://www-dev.taskunifier.app/app',
+        authUrl: 'https://auth-dev.taskunifier.app',
+        cloudUrl: 'https://www-dev.taskunifier.app/cloud',
+        downloadUrl: 'https://www-dev.taskunifier.app/app',
+        maintenanceUrl: 'https://www-dev.taskunifier.app/maintenance',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
             userPoolWebClientId: process.env.REACT_APP_AUTH_USERPOOLWEBCLIENTID,
             cookieStorage: {
-                domain: 'localhost',
-                secure: false
+                domain: '.taskunifier.app',
+                secure: true
             }
         },
         license: {

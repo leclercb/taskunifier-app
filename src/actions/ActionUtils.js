@@ -6,12 +6,13 @@ import { getConfig } from 'config/Config';
 import { getErrorMessages } from 'utils/CloudUtils';
 import {
     exists,
-    getPath,
+    getPathSync,
+    getProcessEnv,
     readFile,
     readdir,
     remove,
     writeFile
-} from 'utils/ElectronUtils';
+} from 'utils/ElectronIpc';
 
 /**
  * Loads the data from the provided file.
@@ -212,16 +213,15 @@ export async function saveBufferToFile(file, buffer) {
 
 export function getUserDataPath() {
     if (process.env.REACT_APP_MODE === 'electron') {
-        return getPath('userData');
+        return getPathSync('userData');
     }
 
     return null;
 }
 
-export function getDataFolder(settings) {
+export async function getDataFolder(settings) {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const { ipcRenderer } = require('electron');
-        const env = ipcRenderer.sendSync('process-get-env');
+        const env = await getProcessEnv();
 
         if (env.TASKUNIFIER_DATA_FOLDER) {
             return env.TASKUNIFIER_DATA_FOLDER;

@@ -30,7 +30,7 @@ import { getTasks } from 'selectors/TaskSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
-import { dirname, ensureDir, join } from 'utils/ElectronUtils';
+import { dirname, ensureDir, join } from 'utils/ElectronIpc';
 import { filterSettings } from 'utils/SettingUtils';
 
 export function loadData(options) {
@@ -63,7 +63,7 @@ export function _loadDataFromFile(path, options) {
 
         try {
             if (!options.skipSettings) {
-                await dispatch(loadSettingsFromFile(join(getUserDataPath(), 'coreSettings.json'), true));
+                await dispatch(loadSettingsFromFile(await join(getUserDataPath(), 'coreSettings.json'), true));
             }
 
             if (!path) {
@@ -71,7 +71,7 @@ export function _loadDataFromFile(path, options) {
                     throw new Error('The path is missing');
                 }
 
-                path = getDataFolder(getState().settings);
+                path = await getDataFolder(getState().settings);
             }
 
             let zip = null;
@@ -81,7 +81,7 @@ export function _loadDataFromFile(path, options) {
                 await zip.loadAsync(await readBufferFromFile(path));
             }
 
-            const getFile = name => {
+            const getFile = async name => {
                 if (options.zip) {
                     return {
                         type: 'zip',
@@ -90,26 +90,26 @@ export function _loadDataFromFile(path, options) {
                     };
                 }
 
-                return join(path, name);
+                return await join(path, name);
             };
 
             const promises = [
-                dispatch(loadContactsFromFile(getFile('contacts.json'))),
-                dispatch(loadContextsFromFile(getFile('contexts.json'))),
-                dispatch(loadFoldersFromFile(getFile('folders.json'))),
-                dispatch(loadGoalsFromFile(getFile('goals.json'))),
-                dispatch(loadLocationsFromFile(getFile('locations.json'))),
-                dispatch(loadNotesFromFile(getFile('notes.json'))),
-                dispatch(loadNoteFieldsFromFile(getFile('noteFields.json'))),
-                dispatch(loadNoteFiltersFromFile(getFile('noteFilters.json'))),
-                dispatch(loadTasksFromFile(getFile('tasks.json'))),
-                dispatch(loadTaskFieldsFromFile(getFile('taskFields.json'))),
-                dispatch(loadTaskFiltersFromFile(getFile('taskFilters.json'))),
-                dispatch(loadTaskTemplatesFromFile(getFile('taskTemplates.json')))
+                dispatch(loadContactsFromFile(await getFile('contacts.json'))),
+                dispatch(loadContextsFromFile(await getFile('contexts.json'))),
+                dispatch(loadFoldersFromFile(await getFile('folders.json'))),
+                dispatch(loadGoalsFromFile(await getFile('goals.json'))),
+                dispatch(loadLocationsFromFile(await getFile('locations.json'))),
+                dispatch(loadNotesFromFile(await getFile('notes.json'))),
+                dispatch(loadNoteFieldsFromFile(await getFile('noteFields.json'))),
+                dispatch(loadNoteFiltersFromFile(await getFile('noteFilters.json'))),
+                dispatch(loadTasksFromFile(await getFile('tasks.json'))),
+                dispatch(loadTaskFieldsFromFile(await getFile('taskFields.json'))),
+                dispatch(loadTaskFiltersFromFile(await getFile('taskFilters.json'))),
+                dispatch(loadTaskTemplatesFromFile(await getFile('taskTemplates.json')))
             ];
 
             if (!options.skipSettings) {
-                promises.unshift(dispatch(loadSettingsFromFile(getFile('settings.json'))));
+                promises.unshift(dispatch(loadSettingsFromFile(await getFile('settings.json'))));
             }
 
             await Promise.all(promises);
@@ -240,11 +240,11 @@ export function _saveDataToFile(path, options) {
                     throw new Error('The path is missing');
                 }
 
-                path = getDataFolder(getState().settings);
+                path = await getDataFolder(getState().settings);
             }
 
             if (options.zip) {
-                await ensureDir(dirname(path));
+                await ensureDir(await dirname(path));
             } else {
                 await ensureDir(path);
             }
@@ -258,7 +258,7 @@ export function _saveDataToFile(path, options) {
             }
 
             const promises = [
-                dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true)))
+                dispatch(saveSettingsToFile(await join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true)))
             ];
 
             let zip = null;
@@ -268,7 +268,7 @@ export function _saveDataToFile(path, options) {
                     zip = new JSZip();
                 }
 
-                const getFile = name => {
+                const getFile = async name => {
                     if (options.zip) {
                         return {
                             type: 'zip',
@@ -277,23 +277,23 @@ export function _saveDataToFile(path, options) {
                         };
                     }
 
-                    return join(path, name);
+                    return await join(path, name);
                 };
 
                 promises.push(
-                    dispatch(saveSettingsToFile(getFile('settings.json'), filterSettings(getSettings(state), false))),
-                    dispatch(saveContactsToFile(getFile('contacts.json'), getContacts(state))),
-                    dispatch(saveContextsToFile(getFile('contexts.json'), getContexts(state))),
-                    dispatch(saveFoldersToFile(getFile('folders.json'), getFolders(state))),
-                    dispatch(saveGoalsToFile(getFile('goals.json'), getGoals(state))),
-                    dispatch(saveLocationsToFile(getFile('locations.json'), getLocations(state))),
-                    dispatch(saveNotesToFile(getFile('notes.json'), getNotes(state))),
-                    dispatch(saveNoteFieldsToFile(getFile('noteFields.json'), getNoteFields(state))),
-                    dispatch(saveNoteFiltersToFile(getFile('noteFilters.json'), getNoteFilters(state))),
-                    dispatch(saveTasksToFile(getFile('tasks.json'), getTasks(state))),
-                    dispatch(saveTaskFieldsToFile(getFile('taskFields.json'), getTaskFields(state))),
-                    dispatch(saveTaskFiltersToFile(getFile('taskFilters.json'), getTaskFilters(state))),
-                    dispatch(saveTaskTemplatesToFile(getFile('taskTemplates.json'), getTaskTemplates(state)))
+                    dispatch(saveSettingsToFile(await getFile('settings.json'), filterSettings(getSettings(state), false))),
+                    dispatch(saveContactsToFile(await getFile('contacts.json'), getContacts(state))),
+                    dispatch(saveContextsToFile(await getFile('contexts.json'), getContexts(state))),
+                    dispatch(saveFoldersToFile(await getFile('folders.json'), getFolders(state))),
+                    dispatch(saveGoalsToFile(await getFile('goals.json'), getGoals(state))),
+                    dispatch(saveLocationsToFile(await getFile('locations.json'), getLocations(state))),
+                    dispatch(saveNotesToFile(await getFile('notes.json'), getNotes(state))),
+                    dispatch(saveNoteFieldsToFile(await getFile('noteFields.json'), getNoteFields(state))),
+                    dispatch(saveNoteFiltersToFile(await getFile('noteFilters.json'), getNoteFilters(state))),
+                    dispatch(saveTasksToFile(await getFile('tasks.json'), getTasks(state))),
+                    dispatch(saveTaskFieldsToFile(await getFile('taskFields.json'), getTaskFields(state))),
+                    dispatch(saveTaskFiltersToFile(await getFile('taskFilters.json'), getTaskFilters(state))),
+                    dispatch(saveTaskTemplatesToFile(await getFile('taskTemplates.json'), getTaskTemplates(state)))
                 );
             }
 

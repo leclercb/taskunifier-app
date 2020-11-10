@@ -1,38 +1,177 @@
-const { app, ipcMain, BrowserWindow } = require('electron');
+const axios = require('axios');
+const crypto = require('crypto');
+const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
+const { autoUpdater, CancellationToken } = require('electron-updater');
 const log = require('electron-log');
+const fse = require('fs-extra');
+const httpsProxyAgent = require('https-proxy-agent');
+const os = require('os');
+const path = require('path');
+
+async function sendRequest(axiosInstance, config) {
+    const result = await axiosInstance(config);
+
+    return {
+        status: result.status,
+        statusText: result.statusText,
+        headers: result.headers,
+        data: result.data
+    };
+}
 
 function initializeIpc(setQuitInitiated) {
-    ipcMain.on('initiate-quit', () => {
+    ipcMain.handle('app-get-path', (event, p) => {
+        return app.getPath(p);
+    });
+
+    ipcMain.on('app-get-path-sync', (event, p) => {
+        event.returnValue = app.getPath(p);
+    });
+
+    ipcMain.handle('app-get-version', () => {
+        return app.getVersion();
+    });
+
+    ipcMain.handle('app-set-badge-count', (event, count) => {
+        app.setBadgeCount(count);
+    });
+
+    ipcMain.handle('auto-updater-check-updates', () => {
+        return autoUpdater.checkForUpdates();
+    });
+
+    ipcMain.handle('auto-updater-download-update', event => {
+        const cancellationToken = new CancellationToken();
+        autoUpdater.downloadUpdate(cancellationToken);
+
+        const downloadProgressHandler = info => {
+            event.sender.send('download-progress', info);
+        };
+
+        const updateDownloadedHandler = info => {
+            autoUpdater.removeListener('download-progress', downloadProgressHandler);
+            autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
+            event.sender.send('update-downloaded', info);
+        };
+
+        autoUpdater.on('download-progress', downloadProgressHandler);
+        autoUpdater.on('update-downloaded', updateDownloadedHandler);
+    });
+
+    ipcMain.handle('auto-updater-quit-and-install', () => {
+        return autoUpdater.quitAndInstall();
+    });
+
+    ipcMain.handle('axios', (event, config) => {
+        return sendRequest(axios, config);
+    });
+
+    ipcMain.handle('axios-create', (event, config, createConfig) => {
+        return sendRequest(axios.create(createConfig), config);
+    });
+
+    ipcMain.handle('axios-https-agent', (event, config, httpsAgent) => {
+        return sendRequest(axios.create({ httpsAgent: new httpsProxyAgent(httpsAgent) }), config);
+    });
+
+    ipcMain.on('crypto-verify-sync', (event, algorithm, message, object, signature, signatureFormat) => {
+        const verifier = crypto.createVerify(algorithm);
+        verifier.update(message);
+        event.returnValue = verifier.verify(object, signature, signatureFormat);
+    });
+
+    ipcMain.handle('current-window-close', event => {
+        return BrowserWindow.fromWebContents(event.sender).close();
+    });
+
+    ipcMain.handle('current-window-get-position', event => {
+        return BrowserWindow.fromWebContents(event.sender).getPosition();
+    });
+
+    ipcMain.handle('current-window-get-size', event => {
+        return BrowserWindow.fromWebContents(event.sender).getSize();
+    });
+
+    ipcMain.handle('dialog-show-open-dialog', (event, options) => {
+        return dialog.showOpenDialog(options);
+    });
+
+    ipcMain.handle('dialog-show-save-dialog', (event, options) => {
+        return dialog.showSaveDialog(options);
+    });
+
+    ipcMain.handle('fse-access', (event, p) => {
+        return fse.access(p, fse.constants.F_OK);
+    });
+
+    ipcMain.handle('fse-copy-file', (event, src, dest) => {
+        return fse.copyFile(src, dest);
+    });
+
+    ipcMain.handle('fse-ensure-dir', (event, p) => {
+        return fse.ensureDir(p);
+    });
+
+    ipcMain.handle('fse-lstat', (event, p) => {
+        return fse.lstat(p);
+    });
+
+    ipcMain.handle('fse-read-file', (event, p, encoding) => {
+        return fse.readFile(p, encoding);
+    });
+
+    ipcMain.handle('fse-readdir', (event, p) => {
+        return fse.readdir(p);
+    });
+
+    ipcMain.handle('fse-remove', (event, p) => {
+        return fse.remove(p);
+    });
+
+    ipcMain.handle('fse-write-file', (event, file, data) => {
+        return fse.writeFile(file, data);
+    });
+
+    ipcMain.handle('initiate-quit', () => {
         setQuitInitiated(true);
     });
 
-    ipcMain.on('current-window-get-position', (event, args) => {
-        log.info('current-window-get-position: ' + JSON.stringify(args));
-        const window = BrowserWindow.fromId(args[0]);
-        event.returnValue = window ? window.getPosition() : null;
+    ipcMain.handle('log', (event, type, ...params) => {
+        log[type](...params);
     });
 
-    ipcMain.on('current-window-get-size', (event, args) => {
-        log.info('current-window-get-size: ' + JSON.stringify(args));
-        const window = BrowserWindow.fromId(args[0]);
-        event.returnValue = window ? window.getSize() : null;
+    ipcMain.handle('log-get-file', () => {
+        return log.transports.file.resolvePath;
     });
 
-    ipcMain.on('current-window-close', (event, args) => {
-        log.info('current-window-close: ' + JSON.stringify(args));
-        const window = BrowserWindow.fromId(args[0]);
-
-        if (window) {
-            window.close();
-        }
+    ipcMain.handle('log-set-level', (event, level) => {
+        log.transports.file.level = level;
     });
 
-    ipcMain.on('process-get-env', event => {
-        event.returnValue = process.env;
+    ipcMain.handle('os-platform', () => {
+        return os.platform();
     });
 
-    ipcMain.on('set-badge-count', (event, args) => {
-        app.setBadgeCount(args[0]);
+    ipcMain.handle('path-dirname', (event, p) => {
+        return path.dirname(p);
+    });
+
+    ipcMain.handle('path-join', (event, ...paths) => {
+        return path.join(...paths);
+    });
+
+    ipcMain.handle('process-get-env', () => {
+        return {
+            TASKUNIFIER_DATA_FOLDER: process.env.TASKUNIFIER_DATA_FOLDER
+        };
+    });
+
+    ipcMain.handle('shell-open-external', (event, url) => {
+        shell.openExternal(url);
+    });
+
+    ipcMain.handle('shell-open-path', (event, p) => {
+        shell.openPath(p);
     });
 }
 

@@ -5,7 +5,7 @@ import { sendRequest } from 'actions/RequestActions';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { getSettings } from 'selectors/SettingSelectors';
-import { getAppVersion, getPlatform, openExternalLink } from 'utils/ElectronUtils';
+import { getAppVersion, getPlatform, openExternal } from 'utils/ElectronIpc';
 import logger from 'utils/LogUtils';
 
 export function authorize() {
@@ -19,7 +19,7 @@ export function authorize() {
 
         const url = `https://api.toodledo.com/3/account/authorize.php?${qs.stringify(params)}`;
 
-        openExternalLink(url);
+        openExternal(url);
     };
 }
 
@@ -43,8 +43,8 @@ export function createToken(code) {
                 data: qs.stringify({
                     grant_type: 'authorization_code',
                     code,
-                    vers: getAppVersion(),
-                    device: getPlatform()
+                    vers: await getAppVersion(),
+                    device: await getPlatform()
                 })
             },
             settings);
@@ -80,8 +80,8 @@ export function refreshToken() {
                 data: qs.stringify({
                     grant_type: 'refresh_token',
                     refresh_token: settings.toodledo.refreshToken,
-                    vers: getAppVersion(),
-                    device: getPlatform()
+                    vers: await getAppVersion(),
+                    device: await getPlatform()
                 })
             },
             settings);
