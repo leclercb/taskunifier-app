@@ -35,7 +35,7 @@
             4
         ],
         "linebreak-style": [
-            "error",
+            "warn",
             "unix"
         ],
         "object-shorthand": [
