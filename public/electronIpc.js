@@ -4,7 +4,7 @@ const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const { autoUpdater, CancellationToken } = require('electron-updater');
 const log = require('electron-log');
 const fse = require('fs-extra');
-const httpsProxyAgent = require('https-proxy-agent');
+const HttpsProxyAgent = require('https-proxy-agent');
 const os = require('os');
 const path = require('path');
 
@@ -41,8 +41,7 @@ function initializeIpc(setQuitInitiated) {
     });
 
     ipcMain.handle('auto-updater-download-update', event => {
-        const cancellationToken = new CancellationToken();
-        autoUpdater.downloadUpdate(cancellationToken);
+        autoUpdater.downloadUpdate(new CancellationToken());
 
         const downloadProgressHandler = info => {
             event.sender.send('download-progress', info);
@@ -59,19 +58,19 @@ function initializeIpc(setQuitInitiated) {
     });
 
     ipcMain.handle('auto-updater-quit-and-install', () => {
-        return autoUpdater.quitAndInstall();
+        autoUpdater.quitAndInstall();
     });
 
     ipcMain.handle('axios', (event, config) => {
         return sendRequest(axios, config);
     });
 
-    ipcMain.handle('axios-create', (event, config, createConfig) => {
-        return sendRequest(axios.create(createConfig), config);
-    });
+    ipcMain.handle('axios-create', (event, config, createConfig, httpsAgent) => {
+        if (httpsAgent) {
+            createConfig.httpsAgent = new HttpsProxyAgent(httpsAgent);
+        }
 
-    ipcMain.handle('axios-https-agent', (event, config, httpsAgent) => {
-        return sendRequest(axios.create({ httpsAgent: new httpsProxyAgent(httpsAgent) }), config);
+        return sendRequest(axios.create(createConfig), config);
     });
 
     ipcMain.on('crypto-verify-sync', (event, algorithm, message, object, signature, signatureFormat) => {
@@ -81,7 +80,7 @@ function initializeIpc(setQuitInitiated) {
     });
 
     ipcMain.handle('current-window-close', event => {
-        return BrowserWindow.fromWebContents(event.sender).close();
+        BrowserWindow.fromWebContents(event.sender).close();
     });
 
     ipcMain.handle('current-window-get-position', event => {

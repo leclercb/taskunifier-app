@@ -5,7 +5,7 @@ import { verifyCryptoSync } from 'utils/ElectronIpc';
 
 const PUBLIC_KEY = getConfig().license.publicKey;
 
-export async function verifyLicense(license) {
+export function verifyLicense(license) {
     if (process.env.REACT_APP_MODE === 'react') {
         return null;
     }

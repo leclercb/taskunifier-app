@@ -2,8 +2,7 @@ import axios from 'axios';
 import { getConfig } from 'config/Config';
 import {
     axios as electronAxios,
-    axiosCreate as electronAxiosCreate,
-    axiosHttpsAgent as electronAxiosHttpsAgent
+    axiosCreate as electronAxiosCreate
 } from 'utils/ElectronIpc';
 
 export function sendRequest(config, settings = {}) {
@@ -20,7 +19,7 @@ export function sendRequest(config, settings = {}) {
     const { protocol } = new URL(config.url);
 
     if (protocol === 'https:') {
-        return electronAxiosHttpsAgent(config, {
+        return electronAxiosCreate(config, {}, {
             host: settings.proxyHost,
             port: settings.proxyPort,
             auth: `${settings.proxyUsername}:${settings.proxyPassword}`

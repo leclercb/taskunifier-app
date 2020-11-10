@@ -6,7 +6,8 @@ import {
     checkForUpdates as electronCheckForUpdates,
     downloadUpdate as electronDownloadUpdate,
     quitAndInstall as electronQuitAndInstall,
-    getAppVersion
+    getAppVersion,
+    initiateQuit
 } from 'utils/ElectronIpc';
 import logger from 'utils/LogUtils';
 
@@ -119,11 +120,9 @@ export function downloadUpdate() {
 
 export function quitAndInstall() {
     return async () => {
-        const { ipcRenderer } = window.require('electron');
-
         logger.info('Quit and install');
 
-        ipcRenderer.send('initiate-quit');
+        initiateQuit();
         electronQuitAndInstall();
     };
 }

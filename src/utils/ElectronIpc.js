@@ -16,6 +16,12 @@ export function getAppVersion() {
     return ipcRenderer.invoke('app-get-version');
 }
 
+// app-set-badge-count
+export function setBadgeCount(count) {
+    const { ipcRenderer } = window.require('electron');
+    return ipcRenderer.invoke('app-set-badge-count', count);
+}
+
 // auto-updater-check-updates
 export function checkForUpdates() {
     const { ipcRenderer } = window.require('electron');
@@ -41,21 +47,9 @@ export function axios(config) {
 }
 
 // axios-create
-export function axiosCreate(config, createConfig) {
+export function axiosCreate(config, createConfig, httpsAgent) {
     const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('axios-create', config, createConfig);
-}
-
-// axios-https-agent
-export function axiosHttpsAgent(config, httpsAgent) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('axios-https-agent', config, httpsAgent);
-}
-
-// app-set-badge-count
-export function setBadgeCount(count) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('app-set-badge-count', count);
+    return ipcRenderer.invoke('axios-create', config, createConfig, httpsAgent);
 }
 
 // crypto-verify-sync
@@ -142,6 +136,12 @@ export function writeFile(file, data) {
     return ipcRenderer.invoke('fse-write-file', file, data);
 }
 
+// initiate-quit
+export function initiateQuit() {
+    const { ipcRenderer } = window.require('electron');
+    return ipcRenderer.invoke('initiate-quit');
+}
+
 // log
 export function log(type, ...params) {
     const { ipcRenderer } = window.require('electron');
@@ -173,9 +173,9 @@ export function dirname(path) {
 }
 
 // path-join
-export function join() {
+export function join(...paths) {
     const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('path-join', ...arguments);
+    return ipcRenderer.invoke('path-join', ...paths);
 }
 
 // process-get-env
@@ -188,7 +188,7 @@ export function getProcessEnv() {
 export function openExternal(url) {
     if (process.env.REACT_APP_MODE === 'electron') {
         const { ipcRenderer } = window.require('electron');
-        ipcRenderer.invoke('shell-open-external', url);
+        return ipcRenderer.invoke('shell-open-external', url);
     } else {
         window.open(url, '_blank').focus();
     }
