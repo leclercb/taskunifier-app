@@ -40,9 +40,7 @@ function initializeIpc(setQuitInitiated) {
         return autoUpdater.checkForUpdates();
     });
 
-    ipcMain.handle('auto-updater-download-update', event => {
-        autoUpdater.downloadUpdate(new CancellationToken());
-
+    ipcMain.handle('auto-updater-download-update', async event => {
         const downloadProgressHandler = info => {
             event.sender.send('download-progress', info);
         };
@@ -55,6 +53,14 @@ function initializeIpc(setQuitInitiated) {
 
         autoUpdater.on('download-progress', downloadProgressHandler);
         autoUpdater.on('update-downloaded', updateDownloadedHandler);
+
+        try {
+            return await autoUpdater.downloadUpdate(new CancellationToken());
+        } catch (e) {
+            autoUpdater.removeListener('download-progress', downloadProgressHandler);
+            autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
+            throw e;
+        }
     });
 
     ipcMain.handle('auto-updater-quit-and-install', () => {

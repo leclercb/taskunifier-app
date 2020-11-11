@@ -99,21 +99,20 @@ export function downloadUpdate() {
                 resolve(info);
             };
 
-            try {
-                ipcRenderer.on('download-progress', downloadProgressHandler);
-                ipcRenderer.on('update-downloaded', updateDownloadedHandler);
+            ipcRenderer.on('download-progress', downloadProgressHandler);
+            ipcRenderer.on('update-downloaded', updateDownloadedHandler);
 
-                logger.info('Download update');
+            logger.info('Download update');
 
-                electronDownloadUpdate();
-                dispatch(setDownloadProgress({ progress: 0 }));
-            } catch (e) {
+            dispatch(setDownloadProgress({ progress: 0 }));
+
+            electronDownloadUpdate().catch(e => {
                 logger.error('Download update error', e);
 
                 ipcRenderer.removeListener('download-progress', downloadProgressHandler);
                 ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
                 reject(e);
-            }
+            });
         });
     };
 }
