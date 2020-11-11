@@ -36,7 +36,7 @@ import { getSelectedView, getSettings } from 'selectors/SettingSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { canRedoTaskStateUpdate, canUndoTaskStateUpdate, getSelectedTaskIds, getSelectedTasks, getTasksFilteredBySelectedFilter } from 'selectors/TaskSelectors';
 import { getDefaultTaskTemplate, getTaskTemplatesFilteredByVisibleState } from 'selectors/TaskTemplateSelectors';
-import { lstat } from 'utils/ElectronUtils';
+import { lstat } from 'utils/ElectronIpc';
 import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 export function initializeShortcuts() {

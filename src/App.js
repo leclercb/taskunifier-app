@@ -12,6 +12,7 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 import { isAutomaticSaveNeeded } from 'utils/AppUtils';
 import { isAutomaticBackupNeeded } from 'utils/BackupUtils';
+import { closeCurrentWindow, getCurrentWindowPosition, getCurrentWindowSize, setBadgeCount } from 'utils/ElectronIpc';
 import { isAutomaticPubNeeded } from 'utils/PublicationUtils';
 import { isAutomaticSyncNeeded } from 'utils/SynchronizationUtils';
 import { startNoteFilterCounterWorker, startTaskFilterCounterWorker } from 'utils/WorkerUtils';
@@ -66,13 +67,11 @@ function App() {
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-            const electron = window.require('electron');
 
             const onClose = () => {
                 const close = async () => {
-                    const currentWindow = electron.remote.getCurrentWindow();
-                    const size = currentWindow.getSize();
-                    const position = currentWindow.getPosition();
+                    const size = await getCurrentWindowSize();
+                    const position = await getCurrentWindowPosition();
 
                     await settingsApi.updateSettings({
                         windowSizeWidth: size[0],
@@ -91,7 +90,7 @@ function App() {
 
                     await appApi.saveData({ clean: true });
 
-                    currentWindow.close();
+                    await closeCurrentWindow();
                 };
 
                 if (settingsApi.settings.confirmBeforeClosing) {
@@ -106,10 +105,12 @@ function App() {
                 }
             };
 
-            electron.ipcRenderer.on('window-close', onClose);
+            const { ipcRenderer } = window.require('electron');
+
+            ipcRenderer.on('window-close', onClose);
 
             return () => {
-                electron.ipcRenderer.removeListener('window-close', onClose);
+                ipcRenderer.removeListener('window-close', onClose);
             };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps
@@ -197,8 +198,7 @@ function App() {
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-            const electron = window.require('electron');
-            electron.remote.app.setBadgeCount(taskReminderApi.tasks.length);
+            setBadgeCount(taskReminderApi.tasks.length);
         }
     }, [taskReminderApi.tasks.length]);
 

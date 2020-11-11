@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
-import { openExternalLink } from 'utils/ElectronUtils';
+import { openExternal } from 'utils/ElectronIpc';
 import logger from 'utils/LogUtils';
 
 export function getClient(settings = null) {
@@ -32,7 +32,7 @@ export function authorize() {
             ]
         });
 
-        openExternalLink(url);
+        openExternal(url);
     };
 }
 

@@ -3,12 +3,12 @@ import { Button, Empty } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import { getConfig } from 'config/Config';
-import { openExternalLink } from 'utils/ElectronUtils';
+import { openExternal } from 'utils/ElectronIpc';
 
 export function ProLockedMessage({ setAccountManagerOptions, info }) {
     if (process.env.REACT_APP_MODE === 'electron') {
         const onClick = () => {
-            openExternalLink(getConfig().appUrl);
+            openExternal(getConfig().appUrl);
         };
 
         let description = 'This feature requires a TaskUnifier App Pro license !';

@@ -2,6 +2,7 @@
 
 ## New Features
 
+* Upgrade to Electron 10
 * Quick sort by clicking on a column header (#185)
 
 ## Bug Fixes

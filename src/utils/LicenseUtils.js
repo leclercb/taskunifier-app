@@ -1,6 +1,7 @@
 import { Buffer } from 'buffer';
 import moment from 'moment';
 import { getConfig } from 'config/Config';
+import { verifyCryptoSync } from 'utils/ElectronIpc';
 
 const PUBLIC_KEY = getConfig().license.publicKey;
 
@@ -9,9 +10,6 @@ export function verifyLicense(license) {
         return null;
     }
 
-    const electron = window.require('electron');
-    const crypto = electron.remote.require('crypto');
-
     if (!license || license.length <= 512) {
         return null;
     }
@@ -19,10 +17,9 @@ export function verifyLicense(license) {
     const signature = license.substr(0, 512);
     const message = license.substr(512);
 
-    const verifier = crypto.createVerify('RSA-SHA256');
-    verifier.update(message);
+    const verified = verifyCryptoSync('RSA-SHA256', message, PUBLIC_KEY, signature, 'hex');
 
-    if (verifier.verify(PUBLIC_KEY, signature, 'hex')) {
+    if (verified) {
         const jsonContent = Buffer.from(message, 'hex').toString();
 
         try {
