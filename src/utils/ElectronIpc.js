@@ -172,10 +172,10 @@ export function dirname(path) {
     return ipcRenderer.invoke('path-dirname', path);
 }
 
-// path-join
-export function join(...paths) {
+// path-join-sync
+export function joinSync(...paths) {
     const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('path-join', ...paths);
+    return ipcRenderer.sendSync('path-join-sync', ...paths);
 }
 
 // process-get-env

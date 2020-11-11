@@ -5,7 +5,7 @@ import { updateProcess } from 'actions/ThreadActions';
 import { getNoteFieldsIncludingDefaults } from 'selectors/NoteFieldSelectors';
 import { getTaskFieldsIncludingDefaults } from 'selectors/TaskFieldSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
-import { ensureDir, join, openPath } from 'utils/ElectronIpc';
+import { ensureDir, joinSync, openPath } from 'utils/ElectronIpc';
 import { printDocument, printTable } from 'utils/PrintUtils';
 
 export function printNotes(notes) {
@@ -63,8 +63,8 @@ async function printObjects(dispatch, state, fields, objects, fileName, document
 
         if (process.env.REACT_APP_MODE === 'electron') {
             const dataFolder = await getDataFolder(getSettings(state));
-            const path = await join(dataFolder, 'temp');
-            const file = await join(path, fileName);
+            const path = joinSync(dataFolder, 'temp');
+            const file = joinSync(path, fileName);
 
             await ensureDir(path);
             await saveBufferToFile(file, new Uint8Array(doc.output('arraybuffer')));

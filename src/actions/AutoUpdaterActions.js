@@ -86,12 +86,12 @@ export function downloadUpdate() {
         return new Promise((resolve, reject) => {
             const { ipcRenderer } = window.require('electron');
 
-            const downloadProgressHandler = info => {
+            const downloadProgressHandler = (event, info) => {
                 logger.debug('Download progress', info.percent);
                 dispatch(setDownloadProgress(info));
             };
 
-            const updateDownloadedHandler = info => {
+            const updateDownloadedHandler = (event, info) => {
                 logger.debug('Update downloaded', info);
                 dispatch(setUpdateDownloaded(info));
                 ipcRenderer.removeListener('download-progress', downloadProgressHandler);

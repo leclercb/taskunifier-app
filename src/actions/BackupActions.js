@@ -5,11 +5,11 @@ import { _loadDataFromFile, _saveDataToFile } from 'actions/AppActions';
 import { updateSettings } from 'actions/SettingActions';
 import { updateProcess } from 'actions/ThreadActions';
 import { getSettings } from 'selectors/SettingSelectors';
-import { exists, join } from 'utils/ElectronIpc';
+import { exists, joinSync } from 'utils/ElectronIpc';
 
 export async function getBackupIds(settings) {
     const dataFolder = await getDataFolder(settings);
-    const path = await join(dataFolder, 'backups');
+    const path = joinSync(dataFolder, 'backups');
 
     let items = await readDirectory(path);
     items = items.map(item => item.replace('.zip', ''));
@@ -21,16 +21,16 @@ export async function getBackupIds(settings) {
 export function restoreBackup(backupId) {
     return async (dispatch, getState) => {
         const dataFolder = await getDataFolder(getState().settings);
-        let path = await join(dataFolder, 'backups');
+        let path = joinSync(dataFolder, 'backups');
 
         let zip;
 
         try {
-            await exists(await join(path, backupId + '.zip'));
-            path = await join(path, backupId + '.zip');
+            await exists(joinSync(path, backupId + '.zip'));
+            path = joinSync(path, backupId + '.zip');
             zip = true;
         } catch (e) {
-            path = await join(path, backupId);
+            path = joinSync(path, backupId);
             zip = false;
         }
 
@@ -41,7 +41,7 @@ export function restoreBackup(backupId) {
 export function backupData() {
     return async (dispatch, getState) => {
         const dataFolder = await getDataFolder(getState().settings);
-        const path = await join(dataFolder, 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]') + '.zip');
+        const path = joinSync(dataFolder, 'backups', moment.utc().format('YYYYMMDD[T]HHmmss[Z]') + '.zip');
         await dispatch(_saveDataToFile(path, { clean: false, message: 'Backup database', zip: true }));
         await dispatch(cleanBackups());
 
@@ -64,13 +64,13 @@ export function deleteBackup(backupId) {
 
         try {
             const dataFolder = await getDataFolder(getSettings(state));
-            const path = await join(dataFolder, 'backups');
+            const path = joinSync(dataFolder, 'backups');
 
             try {
-                await exists(await join(path, backupId + '.zip'));
-                await deletePath(await join(path, backupId + '.zip'), dataFolder);
+                await exists(joinSync(path, backupId + '.zip'));
+                await deletePath(joinSync(path, backupId + '.zip'), dataFolder);
             } catch (e) {
-                await deletePath(await join(path, backupId), dataFolder);
+                await deletePath(joinSync(path, backupId), dataFolder);
             }
 
             dispatch(updateProcess({

@@ -161,8 +161,8 @@ function initializeIpc(setQuitInitiated) {
         return path.dirname(p);
     });
 
-    ipcMain.handle('path-join', (event, ...paths) => {
-        return path.join(...paths);
+    ipcMain.on('path-join-sync', (event, ...paths) => {
+        event.returnValue = path.join(...paths);
     });
 
     ipcMain.handle('process-get-env', () => {
