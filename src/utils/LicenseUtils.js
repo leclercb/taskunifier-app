@@ -10,7 +10,13 @@ export function verifyLicense(license) {
         return null;
     }
 
-    if (!license || license.length <= 512) {
+    if (!license) {
+        return null;
+    }
+
+    license = license.trim();
+
+    if (license.length <= 512) {
         return null;
     }
 
