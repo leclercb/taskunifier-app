@@ -30,7 +30,7 @@ import { getTasks } from 'selectors/TaskSelectors';
 import { getTaskFields } from 'selectors/TaskFieldSelectors';
 import { getTaskFilters } from 'selectors/TaskFilterSelectors';
 import { getTaskTemplates } from 'selectors/TaskTemplateSelectors';
-import { dirname, ensureDir, join } from 'utils/ElectronUtils';
+import { dirname, ensureDir, joinSync } from 'utils/ElectronIpc';
 import { filterSettings } from 'utils/SettingUtils';
 
 export function loadData(options) {
@@ -63,7 +63,7 @@ export function _loadDataFromFile(path, options) {
 
         try {
             if (!options.skipSettings) {
-                await dispatch(loadSettingsFromFile(join(getUserDataPath(), 'coreSettings.json'), true));
+                await dispatch(loadSettingsFromFile(joinSync(getUserDataPath(), 'coreSettings.json'), true));
             }
 
             if (!path) {
@@ -71,7 +71,7 @@ export function _loadDataFromFile(path, options) {
                     throw new Error('The path is missing');
                 }
 
-                path = getDataFolder(getState().settings);
+                path = await getDataFolder(getState().settings);
             }
 
             let zip = null;
@@ -90,7 +90,7 @@ export function _loadDataFromFile(path, options) {
                     };
                 }
 
-                return join(path, name);
+                return joinSync(path, name);
             };
 
             const promises = [
@@ -240,11 +240,11 @@ export function _saveDataToFile(path, options) {
                     throw new Error('The path is missing');
                 }
 
-                path = getDataFolder(getState().settings);
+                path = await getDataFolder(getState().settings);
             }
 
             if (options.zip) {
-                await ensureDir(dirname(path));
+                await ensureDir(await dirname(path));
             } else {
                 await ensureDir(path);
             }
@@ -258,7 +258,7 @@ export function _saveDataToFile(path, options) {
             }
 
             const promises = [
-                dispatch(saveSettingsToFile(join(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true)))
+                dispatch(saveSettingsToFile(joinSync(getUserDataPath(), 'coreSettings.json'), filterSettings(getSettings(state), true)))
             ];
 
             let zip = null;
@@ -277,7 +277,7 @@ export function _saveDataToFile(path, options) {
                         };
                     }
 
-                    return join(path, name);
+                    return joinSync(path, name);
                 };
 
                 promises.push(

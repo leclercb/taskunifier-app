@@ -23,6 +23,7 @@ import { getTaskSorterFields } from 'data/DataTaskSorterFields';
 import { getTimeDurationFields } from 'data/DataTimeDurationFields';
 import { getActivationInfo, isPro } from 'selectors/AppSelectors';
 import { store } from 'store/Store';
+import { copyFile, getLogFile, showSaveDialog } from 'utils/ElectronIpc';
 import { getPublicationApps } from 'utils/PublicationUtils';
 import { getSynchronizationApp } from 'utils/SynchronizationUtils';
 
@@ -1930,12 +1931,7 @@ export function getCategories() {
                     title: 'Save Electron logs',
                     type: 'button',
                     value: async () => {
-                        const electron = window.require('electron');
-                        const electronLog = electron.remote.require('electron-log');
-                        const fse = electron.remote.require('fs-extra');
-                        const dialog = electron.remote.dialog;
-
-                        const result = await dialog.showSaveDialog({
+                        const result = await showSaveDialog({
                             filters: [
                                 {
                                     name: 'Log Files',
@@ -1945,7 +1941,7 @@ export function getCategories() {
                         });
 
                         if (!result.canceled && result.filePath) {
-                            await fse.copyFile(electronLog.transports.file.file, result.filePath);
+                            await copyFile(await getLogFile(), result.filePath);
                         }
                     },
                     editable: true,

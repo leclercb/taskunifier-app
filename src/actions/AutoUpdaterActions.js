@@ -2,7 +2,13 @@ import { notification } from 'antd';
 import { getSettings } from 'selectors/SettingSelectors';
 import { updateSettings } from 'actions/SettingActions';
 import { compareVersions } from 'utils/CompareUtils';
-import { getAppVersion } from 'utils/ElectronUtils';
+import {
+    checkForUpdates as electronCheckForUpdates,
+    downloadUpdate as electronDownloadUpdate,
+    quitAndInstall as electronQuitAndInstall,
+    getAppVersion,
+    initiateQuit
+} from 'utils/ElectronIpc';
 import logger from 'utils/LogUtils';
 
 export function setVisible(visible) {
@@ -46,12 +52,9 @@ export function checkForUpdates(quiet) {
         const state = getState();
         const settings = getSettings(state);
 
-        const electron = window.require('electron');
-        const { autoUpdater } = electron.remote.require('electron-updater');
+        const updateCheckResult = await electronCheckForUpdates();
 
-        const updateCheckResult = await autoUpdater.checkForUpdates();
-
-        const currentVersion = getAppVersion();
+        const currentVersion = await getAppVersion();
         const latestVersion = updateCheckResult.updateInfo.version;
 
         logger.info('Check for updates', currentVersion, latestVersion);
@@ -81,50 +84,44 @@ export function checkForUpdates(quiet) {
 export function downloadUpdate() {
     return async dispatch => {
         return new Promise((resolve, reject) => {
-            const electron = window.require('electron');
-            const { autoUpdater, CancellationToken } = electron.remote.require('electron-updater');
+            const { ipcRenderer } = window.require('electron');
 
-            const downloadProgressHandler = info => {
+            const downloadProgressHandler = (event, info) => {
                 logger.debug('Download progress', info.percent);
                 dispatch(setDownloadProgress(info));
             };
 
-            const updateDownloadedHandler = info => {
+            const updateDownloadedHandler = (event, info) => {
                 logger.debug('Update downloaded', info);
                 dispatch(setUpdateDownloaded(info));
-                autoUpdater.removeListener('download-progress', downloadProgressHandler);
-                autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
+                ipcRenderer.removeListener('download-progress', downloadProgressHandler);
+                ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
                 resolve(info);
             };
 
-            try {
-                autoUpdater.on('download-progress', downloadProgressHandler);
-                autoUpdater.on('update-downloaded', updateDownloadedHandler);
+            ipcRenderer.on('download-progress', downloadProgressHandler);
+            ipcRenderer.on('update-downloaded', updateDownloadedHandler);
 
-                logger.info('Download update');
+            logger.info('Download update');
 
-                const cancellationToken = new CancellationToken();
-                autoUpdater.downloadUpdate(cancellationToken);
-                dispatch(setDownloadProgress({ progress: 0 }));
-            } catch (e) {
+            dispatch(setDownloadProgress({ progress: 0 }));
+
+            electronDownloadUpdate().catch(e => {
                 logger.error('Download update error', e);
 
-                autoUpdater.removeListener('download-progress', downloadProgressHandler);
-                autoUpdater.removeListener('update-downloaded', updateDownloadedHandler);
+                ipcRenderer.removeListener('download-progress', downloadProgressHandler);
+                ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
                 reject(e);
-            }
+            });
         });
     };
 }
 
 export function quitAndInstall() {
     return async () => {
-        const electron = window.require('electron');
-        const { autoUpdater } = electron.remote.require('electron-updater');
-
         logger.info('Quit and install');
 
-        electron.ipcRenderer.send('initiate-quit');
-        autoUpdater.quitAndInstall();
+        initiateQuit();
+        electronQuitAndInstall();
     };
 }

@@ -2,19 +2,20 @@ import React, { useRef, useState } from 'react';
 import { Select } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { FolderTitle } from 'components/folders/FolderTitle';
+import FolderTitle from 'components/folders/FolderTitle';
+import TagsTitle from 'components/tags/TagsTitle';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useNoteApi } from 'hooks/UseNoteApi';
 import { useNoteFieldApi } from 'hooks/UseNoteFieldApi';
+import { useTagApi } from 'hooks/UseTagApi';
 import { applyNoteTemplateFromNoteFilter } from 'utils/TemplateUtils';
 
 function NoteQuickAdd({ apis }) {
-    const { appApi, folderApi, noteApi, noteFieldApi } = apis;
+    const { appApi, folderApi, noteApi, noteFieldApi, tagApi } = apis;
 
     const [values, setValues] = useState([]);
-    const [open, setOpen] = useState(false);
     const selectRef = useRef(null);
 
     const onChange = values => {
@@ -25,20 +26,6 @@ function NoteQuickAdd({ apis }) {
         }
     };
 
-    const onKeyInputDown = () => {
-        setOpen(true);
-    };
-
-    const onFocus = () => {
-        if (values.length > 0) {
-            setOpen(true);
-        }
-    };
-
-    const onBlur = () => {
-        setOpen(false);
-    };
-
     const onAdd = async values => {
         const newNote = {
             title: values[0]
@@ -47,12 +34,42 @@ function NoteQuickAdd({ apis }) {
         applyNoteTemplateFromNoteFilter(noteApi.selectedNoteFilter, newNote, noteFieldApi.noteFields);
 
         values.forEach((value, index) => {
+            value = value.trim();
+
+            if (!value) {
+                return;
+            }
+
             if (index === 0) {
                 return;
             }
 
-            const object = JSON.parse(value.substr(value.lastIndexOf('__') + 2));
-            newNote[object.field] = object.value;
+            let object = null;
+
+            try {
+                if (value.includes('__')) {
+                    const o = JSON.parse(value.substr(value.lastIndexOf('__') + 2));
+
+                    if (typeof o === 'object' && o.field && Object.prototype.hasOwnProperty.call(o, 'value')) {
+                        object = o;
+                    }
+                }
+            } catch (e) {
+                // Ignore
+            }
+
+            if (!object) {
+                return;
+            }
+
+            switch (object.field) {
+                case 'tags':
+                    newNote.tags = [...(newNote.tags || []), object.value];
+                    break;
+                default:
+                    newNote[object.field] = object.value;
+                    break;
+            }
         });
 
         const note = await noteApi.addNote(newNote);
@@ -61,7 +78,6 @@ function NoteQuickAdd({ apis }) {
         appApi.setEditingCell(note.id, 'title');
 
         setValues([]);
-        setTimeout(() => setOpen(false));
     };
 
     return (
@@ -71,20 +87,26 @@ function NoteQuickAdd({ apis }) {
             value={values}
             placeholder="Quick add note..."
             onChange={onChange}
-            onInputKeyDown={onKeyInputDown}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            open={open}
             className="joyride-note-quick-add"
             style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
                 <Select.Option key='add' value="__ADD__">
                     <Icon icon="plus" text="Create note" />
                 </Select.Option>,
+                <Select.Option key="star" value={'Star__' + JSON.stringify({ field: 'star', value: true })}>
+                    <Icon icon="star" text="Star" color="#fcde35" />
+                </Select.Option>,
                 <Select.OptGroup key='folders' label="Folders">
                     {folderApi.nonArchivedFolders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
                             <FolderTitle folderId={folder.id} />
+                        </Select.Option>
+                    ))}
+                </Select.OptGroup>,
+                <Select.OptGroup key='tags' label="Tags">
+                    {tagApi.tags.map(tag => (
+                        <Select.Option key={tag.id} value={tag.title + '__' + JSON.stringify({ field: 'tags', value: tag.id })}>
+                            <TagsTitle tagIds={[tag.id]} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>
@@ -101,5 +123,6 @@ export default withBusyCheck(NoteQuickAdd, () => ({
     appApi: useAppApi(),
     folderApi: useFolderApi(),
     noteApi: useNoteApi(),
-    noteFieldApi: useNoteFieldApi()
+    noteFieldApi: useNoteFieldApi(),
+    tagApi: useTagApi()
 }));

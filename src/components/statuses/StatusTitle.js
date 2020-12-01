@@ -5,7 +5,7 @@ import { getStatusColor } from 'utils/SettingUtils';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useStatusApi } from 'hooks/UseStatusApi';
 
-export function StatusTitle(props) {
+function StatusTitle(props) {
     const settingsApi = useSettingsApi();
     const statusApi = useStatusApi();
     const status = statusApi.statuses.find(status => status.id === props.statusId);

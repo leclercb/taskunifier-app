@@ -1,9 +1,10 @@
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
-const { app, ipcMain } = require('electron');
+const { app } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const log = require('electron-log');
 
+const { initializeIpc } = require('./electronIpc.js');
 const { initializeMenu } = require('./electronMenu.js');
 const { createMainWindow, createTray, getCoreSettings, getDefaultWindow } = require('./electronUtils.js');
 
@@ -20,6 +21,7 @@ autoUpdater.logger = log;
 let tray = null; // To avoid being garbage collected
 let quitInitiated = false;
 
+initializeIpc(value => quitInitiated = value);
 initializeMenu();
 
 app.on('ready', () => {
@@ -51,8 +53,4 @@ app.on('open-url', (event, url) => {
     if (window) {
         window.webContents.send('open-url', url);
     }
-});
-
-ipcMain.on('initiate-quit', () => {
-    quitInitiated = true;
 });

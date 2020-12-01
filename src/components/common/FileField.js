@@ -2,6 +2,7 @@ import React from 'react';
 import { Input } from 'antd';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
+import { openPath, showOpenDialog, showSaveDialog } from 'utils/ElectronIpc';
 
 class FileField extends React.Component {
     constructor(props) {
@@ -35,22 +36,18 @@ class FileField extends React.Component {
     }
 
     onOpenFile() {
-        const electron = window.require('electron');
-        return electron.remote.shell.openPath(this.state.value);
+        openPath(this.state.value);
     }
 
     async onSelectFile() {
         this.selectingFile = true;
 
-        const electron = window.require('electron');
-        const dialog = electron.remote.dialog;
-
         let result;
 
         if (this.props.type === 'save') {
-            result = await dialog.showSaveDialog(this.props.options);
+            result = await showSaveDialog(this.props.options);
         } else {
-            result = await dialog.showOpenDialog(this.props.options);
+            result = await showOpenDialog(this.props.options);
         }
 
         let filePath;

@@ -5,7 +5,7 @@ import { getPriorityColor } from 'utils/SettingUtils';
 import { usePriorityApi } from 'hooks/UsePriorityApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 
-export function PriorityTitle(props) {
+function PriorityTitle(props) {
     const priorityApi = usePriorityApi();
     const settingsApi = useSettingsApi();
 
