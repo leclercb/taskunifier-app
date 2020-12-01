@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TaskTitle } from 'components/tasks/common/TaskTitle';
+import TaskTitle from 'components/tasks/common/TaskTitle';
 
 function CalendarEvent({ event }) {
     return (

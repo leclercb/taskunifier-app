@@ -4,6 +4,7 @@
 
 * Upgrade to Electron 10
 * Quick sort by clicking on a column header (#185)
+* Set priority and status in "task quick add" bar (#216)
 
 ## Bug Fixes
 

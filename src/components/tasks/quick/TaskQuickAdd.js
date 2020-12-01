@@ -3,19 +3,23 @@ import { Select } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import { ContextTitle } from 'components/contexts/ContextTitle';
-import { FolderTitle } from 'components/folders/FolderTitle';
-import { GoalTitle } from 'components/goals/GoalTitle';
-import { LocationTitle } from 'components/locations/LocationTitle';
+import ContextTitle from 'components/contexts/ContextTitle';
+import FolderTitle from 'components/folders/FolderTitle';
+import GoalTitle from 'components/goals/GoalTitle';
+import LocationTitle from 'components/locations/LocationTitle';
+import PriorityTitle from 'components/priorities/PriorityTitle';
+import StatusTitle from 'components/statuses/StatusTitle';
 import TagsTitle from 'components/tags/TagsTitle';
-import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import TaskTemplateTitle from 'components/tasktemplates/TaskTemplateTitle';
 import withBusyCheck from 'containers/WithBusyCheck';
 import { useAppApi } from 'hooks/UseAppApi';
 import { useContextApi } from 'hooks/UseContextApi';
 import { useFolderApi } from 'hooks/UseFolderApi';
 import { useGoalApi } from 'hooks/UseGoalApi';
 import { useLocationApi } from 'hooks/UseLocationApi';
+import { usePriorityApi } from 'hooks/UsePriorityApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
+import { useStatusApi } from 'hooks/UseStatusApi';
 import { useTagApi } from 'hooks/UseTagApi';
 import { useTaskTemplateApi } from 'hooks/UseTaskTemplateApi';
 import { useTaskApi } from 'hooks/UseTaskApi';
@@ -23,7 +27,7 @@ import { useTaskFieldApi } from 'hooks/UseTaskFieldApi';
 import { applyTaskTemplate, applyTaskTemplateFromTaskFilter } from 'utils/TemplateUtils';
 
 function TaskQuickAdd({ apis }) {
-    const { appApi, contextApi, folderApi, goalApi, locationApi, settingsApi, tagApi, taskApi, taskFieldApi, taskTemplateApi } = apis;
+    const { appApi, contextApi, folderApi, goalApi, locationApi, priorityApi, settingsApi, statusApi, tagApi, taskApi, taskFieldApi, taskTemplateApi } = apis;
 
     const [values, setValues] = useState([]);
     const selectRef = useRef(null);
@@ -69,19 +73,27 @@ function TaskQuickAdd({ apis }) {
                 // Ignore
             }
 
-            if (object) {
-                if (object.field === 'taskTemplate') {
+            if (!object) {
+                return;
+            }
+
+            switch (object.field) {
+                case 'dueDate':
+                    newTask.dueDate = moment().add(object.value.amount, object.value.unit).toISOString();
+                    break;
+                case 'startDate':
+                    newTask.startDate = moment().add(object.value.amount, object.value.unit).toISOString();
+                    break;
+                case 'tags':
+                    newTask.tags = [...(newTask.tags || []), object.value];
+                    break;
+                case 'taskTemplate':
                     const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === object.value);
                     applyTaskTemplate(taskTemplate, newTask, taskFieldApi.taskFields);
-                } else if (object.field === 'tags') {
-                    newTask.tags = [...(newTask.tags || []), object.value];
-                } else if (object.field === 'startDate') {
-                    newTask.startDate = moment().add(object.value.amount, object.value.unit).toISOString();
-                } else if (object.field === 'dueDate') {
-                    newTask.dueDate = moment().add(object.value.amount, object.value.unit).toISOString();
-                } else {
+                    break;
+                default:
                     newTask[object.field] = object.value;
-                }
+                    break;
             }
         });
 
@@ -137,6 +149,20 @@ function TaskQuickAdd({ apis }) {
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
+                <Select.OptGroup key='priorities' label="Priorities">
+                    {priorityApi.priorities.map(priority => (
+                        <Select.Option key={priority.id} value={priority.title + '__' + JSON.stringify({ field: 'priority', value: priority.id })}>
+                            <PriorityTitle priorityId={priority.id} />
+                        </Select.Option>
+                    ))}
+                </Select.OptGroup>,
+                <Select.OptGroup key='statuses' label="Statuses">
+                    {statusApi.statuses.map(status => (
+                        <Select.Option key={status.id} value={status.title + '__' + JSON.stringify({ field: 'status', value: status.id })}>
+                            <StatusTitle statusId={status.id} />
+                        </Select.Option>
+                    ))}
+                </Select.OptGroup>,
                 <Select.OptGroup key='startDates' label="Start Dates">
                     {settingsApi.settings.postponeTimeDurations.map(timeDuration => {
                         const title = `Start date in ${timeDuration.amount} ${timeDuration.unit}${timeDuration.amount > 1 ? 's' : ''}`;
@@ -188,7 +214,9 @@ export default withBusyCheck(TaskQuickAdd, () => ({
     folderApi: useFolderApi(),
     goalApi: useGoalApi(),
     locationApi: useLocationApi(),
+    priorityApi: usePriorityApi(),
     settingsApi: useSettingsApi(),
+    statusApi: useStatusApi(),
     tagApi: useTagApi(),
     taskApi: useTaskApi(),
     taskFieldApi: useTaskFieldApi(),

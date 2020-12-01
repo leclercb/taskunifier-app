@@ -5,7 +5,7 @@ import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { useTask } from 'hooks/UseTask';
 import { getImportanceColor, getPriorityColor } from 'utils/SettingUtils';
 
-export function TaskTitle(props) {
+function TaskTitle(props) {
     const settingsApi = useSettingsApi();
     const task = useTask(props.taskId);
 

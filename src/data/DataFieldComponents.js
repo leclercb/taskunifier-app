@@ -51,7 +51,7 @@ import TaskFieldTitle from 'components/taskfields/TaskFieldTitle';
 import TaskFieldSelect from 'components/taskfields/TaskFieldSelect';
 import TaskTemplateSelect from 'components/tasktemplates/TaskTemplateSelect';
 import TimerField from 'components/common/TimerField';
-import { TaskTemplateTitle } from 'components/tasktemplates/TaskTemplateTitle';
+import TaskTemplateTitle from 'components/tasktemplates/TaskTemplateTitle';
 import { getConditionsForType } from 'data/DataFieldFilterTypes';
 import { toStringNumber, toStringPassword } from 'utils/StringUtils';
 
