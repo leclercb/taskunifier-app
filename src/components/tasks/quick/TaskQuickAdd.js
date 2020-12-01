@@ -87,10 +87,11 @@ function TaskQuickAdd({ apis }) {
                 case 'tags':
                     newTask.tags = [...(newTask.tags || []), object.value];
                     break;
-                case 'taskTemplate':
+                case 'taskTemplate': {
                     const taskTemplate = taskTemplateApi.taskTemplates.find(taskTemplate => taskTemplate.id === object.value);
                     applyTaskTemplate(taskTemplate, newTask, taskFieldApi.taskFields);
                     break;
+                }
                 default:
                     newTask[object.field] = object.value;
                     break;
