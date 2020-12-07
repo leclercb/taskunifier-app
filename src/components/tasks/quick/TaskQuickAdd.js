@@ -33,8 +33,8 @@ function TaskQuickAdd({ apis }) {
     const selectRef = useRef(null);
 
     const onChange = values => {
-        if (values.includes('__ADD__')) {
-            onAdd(values.filter(v => v !== '__ADD__'));
+        if (values.includes('__CREATE__')) {
+            onAdd(values.filter(v => v !== '__CREATE__'));
         } else {
             setValues(values);
         }
@@ -116,7 +116,7 @@ function TaskQuickAdd({ apis }) {
             className="joyride-task-quick-add"
             style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
-                <Select.Option key='add' value="__ADD__">
+                <Select.Option key='create' value="__CREATE__">
                     <Icon icon="plus" text="Create task" />
                 </Select.Option>,
                 <Select.Option key="star" value={'Star__' + JSON.stringify({ field: 'star', value: true })}>
@@ -165,6 +165,9 @@ function TaskQuickAdd({ apis }) {
                     ))}
                 </Select.OptGroup>,
                 <Select.OptGroup key='startDates' label="Start Dates">
+                    <Select.Option key={'startDate_today'} value={'Today__' + JSON.stringify({ field: 'startDate', value: { amount: 0, unit: 'day' } })}>
+                        <Icon icon="calendar-alt" text="Today" />
+                    </Select.Option>
                     {settingsApi.settings.postponeTimeDurations.map(timeDuration => {
                         const title = `Start date in ${timeDuration.amount} ${timeDuration.unit}${timeDuration.amount > 1 ? 's' : ''}`;
 
@@ -176,6 +179,9 @@ function TaskQuickAdd({ apis }) {
                     })}
                 </Select.OptGroup>,
                 <Select.OptGroup key='dueDates' label="Due Dates">
+                    <Select.Option key={'dueDate_today'} value={'Today__' + JSON.stringify({ field: 'dueDate', value: { amount: 0, unit: 'day' } })}>
+                        <Icon icon="calendar-alt" text="Today" />
+                    </Select.Option>
                     {settingsApi.settings.postponeTimeDurations.map(timeDuration => {
                         const title = `Due date in ${timeDuration.amount} ${timeDuration.unit}${timeDuration.amount > 1 ? 's' : ''}`;
 

@@ -19,8 +19,8 @@ function NoteQuickAdd({ apis }) {
     const selectRef = useRef(null);
 
     const onChange = values => {
-        if (values.includes('__ADD__')) {
-            onAdd(values.filter(v => v !== '__ADD__'));
+        if (values.includes('__CREATE__')) {
+            onAdd(values.filter(v => v !== '__CREATE__'));
         } else {
             setValues(values);
         }
@@ -90,7 +90,7 @@ function NoteQuickAdd({ apis }) {
             className="joyride-note-quick-add"
             style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
-                <Select.Option key='add' value="__ADD__">
+                <Select.Option key='create' value="__CREATE__">
                     <Icon icon="plus" text="Create note" />
                 </Select.Option>,
                 <Select.Option key="star" value={'Star__' + JSON.stringify({ field: 'star', value: true })}>
