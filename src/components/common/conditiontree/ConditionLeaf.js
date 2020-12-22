@@ -19,9 +19,9 @@ function ConditionLeaf(props) {
     });
 
     return (
-        <div className='condition-container'>
+        <div className="condition-container">
             {!props.disabled && props.parentCondition && (
-                <div ref={drag} className='condition-leaf-drag'>
+                <div ref={drag} className="condition-leaf-drag">
                     <DragOutlined />
                 </div>
             )}
@@ -35,7 +35,7 @@ function ConditionLeaf(props) {
                 }
             )}
             {!props.disabled && (
-                <div className='condition-actions'>
+                <div className="condition-actions">
                     <Button
                         shape="circle"
                         icon={(<MinusOutlined />)}

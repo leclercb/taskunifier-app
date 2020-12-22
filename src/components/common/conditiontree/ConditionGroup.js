@@ -79,12 +79,12 @@ function ConditionGroup(props) {
     const { condition, parentCondition } = props;
 
     return (
-        <div className='condition-group-container'>
+        <div className="condition-group-container">
             <div
                 ref={ref}
                 className={'condition-group-operator ' + operatorClassName}
                 style={{ background: colors[condition.operator] }}>
-                <div className='condition-group-operator-text'>
+                <div className="condition-group-operator-text">
                     <Select
                         defaultValue={condition.operator}
                         style={{ width: 80 }}
@@ -99,7 +99,7 @@ function ConditionGroup(props) {
                     </Select>
                 </div>
                 {!props.disabled && (
-                    <div className='condition-group-operator-actions'>
+                    <div className="condition-group-operator-actions">
                         <AddButton
                             disabled={condition.operator === 'NOT' && condition.conditions.length >= 1}
                             onClick={(key) => props.onAdd(condition, key)}
@@ -113,9 +113,9 @@ function ConditionGroup(props) {
                     </div>
                 )}
             </div>
-            <div className='condition-group-content'>
+            <div className="condition-group-content">
                 {condition.conditions.length === 0 ? (
-                    <div className='condition-container'>
+                    <div className="condition-container">
                         <Alert
                             message="Info"
                             description={(<Empty description='No condition in this condition group, click on the "+" icon to add one !' />)}
@@ -126,7 +126,7 @@ function ConditionGroup(props) {
                 ) : null}
 
                 {condition.operator === 'NOT' && condition.conditions.length > 1 ? (
-                    <div className='condition-container'>
+                    <div className="condition-container">
                         <Alert
                             message="Warning"
                             description={`A condition group with operator '${condition.operator}' must contain exactly one sub-condition.`}

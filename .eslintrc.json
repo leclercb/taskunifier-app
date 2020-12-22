@@ -34,6 +34,10 @@
             "off",
             4
         ],
+        "jsx-quotes": [
+            "error",
+            "prefer-double"
+        ],
         "linebreak-style": [
             "error",
             "unix"

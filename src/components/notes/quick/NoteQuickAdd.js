@@ -90,20 +90,20 @@ function NoteQuickAdd({ apis }) {
             className="joyride-note-quick-add"
             style={{ width: '100%', padding: 3 }}>
             {values.length > 0 ? [
-                <Select.Option key='create' value="__CREATE__">
+                <Select.Option key="create" value="__CREATE__">
                     <Icon icon="plus" text="Create note" />
                 </Select.Option>,
                 <Select.Option key="star" value={'Star__' + JSON.stringify({ field: 'star', value: true })}>
                     <Icon icon="star" text="Star" color="#fcde35" />
                 </Select.Option>,
-                <Select.OptGroup key='folders' label="Folders">
+                <Select.OptGroup key="folders" label="Folders">
                     {folderApi.nonArchivedFolders.map(folder => (
                         <Select.Option key={folder.id} value={folder.title + '__' + JSON.stringify({ field: 'folder', value: folder.id })}>
                             <FolderTitle folderId={folder.id} />
                         </Select.Option>
                     ))}
                 </Select.OptGroup>,
-                <Select.OptGroup key='tags' label="Tags">
+                <Select.OptGroup key="tags" label="Tags">
                     {tagApi.tags.map(tag => (
                         <Select.Option key={tag.id} value={tag.title + '__' + JSON.stringify({ field: 'tags', value: tag.id })}>
                             <TagsTitle tagIds={[tag.id]} />

@@ -30,13 +30,13 @@ const LinksSelectBC = withBusyCheck(LinksSelect, props => ({
 }));
 
 export function LinkedContactLinksSelect(props) {
-    return (<LinksSelectBC {...props} property='linkedContacts' />);
+    return (<LinksSelectBC {...props} property="linkedContacts" />);
 }
 
 export function LinkedFileLinksSelect(props) {
-    return (<LinksSelectBC {...props} property='linkedFiles' />);
+    return (<LinksSelectBC {...props} property="linkedFiles" />);
 }
 
 export function LinkedTaskLinksSelect(props) {
-    return (<LinksSelectBC {...props} property='linkedTasks' />);
+    return (<LinksSelectBC {...props} property="linkedTasks" />);
 }
