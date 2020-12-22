@@ -31,7 +31,7 @@ function AddButton(props) {
                         style={{ width: 240 }}
                         mode="vertical"
                         theme="light">
-                        <Menu.SubMenu key="conditionGroup" title='Condition Group'>
+                        <Menu.SubMenu key="conditionGroup" title="Condition Group">
                             <Menu.Item key="conditionGroupAnd">AND</Menu.Item>
                             <Menu.Item key="conditionGroupOr">OR</Menu.Item>
                             <Menu.Item key="conditionGroupNot">NOT</Menu.Item>

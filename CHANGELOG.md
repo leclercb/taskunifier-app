@@ -1,3 +1,9 @@
+# 1.2.3
+
+## New Features
+
+* Set "today" as start date and/or due date with quick add task (#228)
+
 # 1.2.2
 
 ## New Features

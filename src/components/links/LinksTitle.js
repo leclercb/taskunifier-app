@@ -30,13 +30,13 @@ const LinksTitleBC = withBusyCheck(LinksTitle, props => ({
 }));
 
 export function LinkedContactLinksTitle(props) {
-    return (<LinksTitleBC {...props} property='linkedContacts' />);
+    return (<LinksTitleBC {...props} property="linkedContacts" />);
 }
 
 export function LinkedFileLinksTitle(props) {
-    return (<LinksTitleBC {...props} property='linkedFiles' />);
+    return (<LinksTitleBC {...props} property="linkedFiles" />);
 }
 
 export function LinkedTaskLinksTitle(props) {
-    return (<LinksTitleBC {...props} property='linkedTasks' />);
+    return (<LinksTitleBC {...props} property="linkedTasks" />);
 }
