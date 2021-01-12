@@ -9,7 +9,7 @@ function applyTemplate(template, object, fields) {
         let value = template.properties[key];
         const field = fields.find(field => field.id === key);
 
-        if (value && field) {
+        if (value !== undefined && value !== null && field) {
             if (field.type === 'date' || field.type === 'dateTime') {
                 if (Number.isInteger(value)) {
                     value = moment().add(value, 'day').toISOString();
