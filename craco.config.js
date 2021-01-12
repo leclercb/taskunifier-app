@@ -7,6 +7,9 @@ module.exports = {
             plugin: CracoAntDesignPlugin
         }
     ],
+    eslint: {
+        enable: false,
+    },
     jest: {
         configure: jestConfig => {
             jestConfig.transformIgnorePatterns = [];

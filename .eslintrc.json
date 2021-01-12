@@ -39,7 +39,7 @@
             "prefer-double"
         ],
         "linebreak-style": [
-            "warn",
+            "error",
             "unix"
         ],
         "object-shorthand": [
