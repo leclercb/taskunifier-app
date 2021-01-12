@@ -3,6 +3,11 @@
 ## New Features
 
 * Set "today" as start date and/or due date with quick add task (#228)
+* Open the task edition window from the reminder window
+
+## Bug Fixes
+
+* Fix task template date fields when "number of days from now" is zero (#226)
 
 # 1.2.2
 

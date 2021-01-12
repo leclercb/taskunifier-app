@@ -5,13 +5,14 @@ import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
 import TaskTitle from 'components/tasks/common/TaskTitle';
 import withBusyCheck from 'containers/WithBusyCheck';
+import { useAppApi } from 'hooks/UseAppApi';
 import { useTaskReminderApi } from 'hooks/UseTaskReminderApi';
 import { useSettingsApi } from 'hooks/UseSettingsApi';
 import { showReminder } from 'utils/ReminderUtils';
 import { formatDate } from 'utils/SettingUtils';
 
 function ReminderList({ apis }) {
-    const { settingsApi, taskReminderApi } = apis;
+    const { appApi, settingsApi, taskReminderApi } = apis;
 
     const [selectedTaskId, setSelectedTaskId] = useState([]);
     const [snoozeMenuVisible, setSnoozeMenuVisible] = useState(false);
@@ -81,6 +82,7 @@ function ReminderList({ apis }) {
                         <List.Item
                             key={task.id}
                             onClick={() => setSelectedTaskId(task.id)}
+                            onDoubleClick={() => appApi.setTaskEditionManagerOptions({ visible: true, taskId: task.id })}
                             className={selectedTaskId === task.id ? 'selected-list-item' : null}>
                             <List.Item.Meta
                                 title={<TaskTitle taskId={task.id} />}
@@ -142,6 +144,13 @@ function ReminderList({ apis }) {
                     <Icon icon="bell" text="Snooze All" />
                 </Button>
             </Popover>
+            <Spacer />
+            <Button
+                onClick={() => appApi.setTaskEditionManagerOptions({ visible: true, taskId: selectedTaskId })}
+                style={{ marginTop: 5 }}
+                disabled={!taskReminderApi.tasks.find(task => task.id === selectedTaskId)}>
+                <Icon icon="edit" text="Edit Task" />
+            </Button>
         </React.Fragment>
     );
 }
@@ -152,6 +161,7 @@ ReminderList.propTypes = {
 };
 
 export default withBusyCheck(ReminderList, ({ date }) => ({
+    appApi: useAppApi(),
     settingsApi: useSettingsApi(),
     taskReminderApi: useTaskReminderApi(date)
 }));
