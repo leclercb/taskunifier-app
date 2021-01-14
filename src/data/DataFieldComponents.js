@@ -159,14 +159,9 @@ export function getFieldComponents(type, options) {
                     if (extended) {
                         return (
                             <ExtendedDatePicker
-                                onBlur={props.onCommit}
-                                onOpenChange={status => {
-                                    if (props.onCommit && !status) {
-                                        props.onCommit();
-                                    }
-                                }}
-                                onChange={value => {
-                                    if (props.onCommit && value === null) {
+                                defaultOpened={props.fieldMode === 'table'}
+                                onChange={() => {
+                                    if (props.onCommit) {
                                         props.onCommit();
                                     }
                                 }}
@@ -177,13 +172,9 @@ export function getFieldComponents(type, options) {
 
                     return (
                         <DatePicker
-                            onOpenChange={status => {
-                                if (props.onCommit && !status) {
-                                    props.onCommit();
-                                }
-                            }}
-                            onChange={value => {
-                                if (props.onCommit && value === null) {
+                            defaultOpened={props.fieldMode === 'table'}
+                            onChange={() => {
+                                if (props.onCommit) {
                                     props.onCommit();
                                 }
                             }}
@@ -212,14 +203,9 @@ export function getFieldComponents(type, options) {
                     if (extended) {
                         return (
                             <ExtendedDatePicker
-                                onBlur={props.onCommit}
-                                onOpenChange={status => {
-                                    if (props.onCommit && !status) {
-                                        props.onCommit();
-                                    }
-                                }}
-                                onChange={value => {
-                                    if (props.onCommit && value === null) {
+                                defaultOpened={props.fieldMode === 'table'}
+                                onChange={() => {
+                                    if (props.onCommit) {
                                         props.onCommit();
                                     }
                                 }}
@@ -231,13 +217,9 @@ export function getFieldComponents(type, options) {
 
                     return (
                         <DatePicker
-                            onOpenChange={status => {
-                                if (props.onCommit && !status) {
-                                    props.onCommit();
-                                }
-                            }}
-                            onChange={value => {
-                                if (props.onCommit && value === null) {
+                            defaultOpened={props.fieldMode === 'table'}
+                            onChange={() => {
+                                if (props.onCommit) {
                                     props.onCommit();
                                 }
                             }}

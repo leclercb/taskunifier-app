@@ -1,3 +1,13 @@
+# 1.2.4
+
+## New Features
+
+* Open the date picker automatically when editing a date field
+
+## Bug Fixes
+
+* Fix task template date fields when "number of days from now" is zero (#226)
+
 # 1.2.3
 
 ## New Features
