@@ -37,7 +37,12 @@ function EditableCell(props) {
     const inputProps = {
         fieldMode: 'table',
         size: 'small',
-        onCommit: () => setTimeout(() => onChange())
+        onCommit: () => setTimeout(() => onChange()),
+        onStopEdition: () => setTimeout(() => {
+            if (props.editing) {
+                props.toggleEdit();
+            }
+        })
     };
 
     if (props.editing) {

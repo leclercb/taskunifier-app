@@ -165,6 +165,13 @@ export function getFieldComponents(type, options) {
                                         props.onCommit();
                                     }
                                 }}
+                                onOpenChange={status => {
+                                    if (!status) {
+                                        if (props.onStopEdition) {
+                                            props.onStopEdition();
+                                        }
+                                    }
+                                }}
                                 format={dateFormat}
                                 {...removeExtraProps(props)} />
                         );
@@ -176,6 +183,13 @@ export function getFieldComponents(type, options) {
                             onChange={() => {
                                 if (props.onCommit) {
                                     props.onCommit();
+                                }
+                            }}
+                            onOpenChange={status => {
+                                if (!status) {
+                                    if (props.onStopEdition) {
+                                        props.onStopEdition();
+                                    }
                                 }
                             }}
                             format={dateFormat}
@@ -209,6 +223,13 @@ export function getFieldComponents(type, options) {
                                         props.onCommit();
                                     }
                                 }}
+                                onOpenChange={status => {
+                                    if (!status) {
+                                        if (props.onStopEdition) {
+                                            props.onStopEdition();
+                                        }
+                                    }
+                                }}
                                 showTime={{ format: timeFormat }}
                                 format={`${dateFormat} ${timeFormat}`}
                                 {...removeExtraProps(props)} />
@@ -221,6 +242,13 @@ export function getFieldComponents(type, options) {
                             onChange={() => {
                                 if (props.onCommit) {
                                     props.onCommit();
+                                }
+                            }}
+                            onOpenChange={status => {
+                                if (!status) {
+                                    if (props.onStopEdition) {
+                                        props.onStopEdition();
+                                    }
                                 }
                             }}
                             showTime={{ format: timeFormat }}
