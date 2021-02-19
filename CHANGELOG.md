@@ -7,6 +7,7 @@
 ## Bug Fixes
 
 * Fix task template date fields when "number of days from now" is zero (#226)
+* Fix gap between task bar and status bar (#232)
 
 # 1.2.3
 

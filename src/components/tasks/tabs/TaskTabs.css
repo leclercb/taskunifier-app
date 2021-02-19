@@ -3,5 +3,5 @@
 }
 
 .ant-tabs-full-height .ant-tabs-tabpane-active {
-    height: calc(100% - 60px);
+    height: 100%;
 }

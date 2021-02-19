@@ -82,6 +82,7 @@ export function getFieldComponents(type, options) {
         const { ...wrappedProps } = props;
         delete wrappedProps.fieldMode;
         delete wrappedProps.onCommit;
+        delete wrappedProps.onStopEdition;
         return wrappedProps;
     };
 
