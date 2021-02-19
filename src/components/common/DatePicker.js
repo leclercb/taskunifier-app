@@ -9,12 +9,18 @@ class DatePicker extends React.Component {
         super(props);
 
         this.state = {
-            open: false
+            open: props.defaultOpened === true
         };
 
         this.onChange = this.onChange.bind(this);
         this.onOpenChange = this.onOpenChange.bind(this);
         this.setDate = this.setDate.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.defaultOpened !== prevProps.defaultOpened) {
+            this.setState({ open: this.props.defaultOpened });
+        }
     }
 
     onChange(value) {
@@ -90,6 +96,7 @@ class DatePicker extends React.Component {
 }
 
 DatePicker.propTypes = {
+    defaultOpened: PropTypes.bool,
     value: PropTypes.string,
     onChange: PropTypes.func,
     onOpenChange: PropTypes.func

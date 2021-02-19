@@ -57,6 +57,7 @@ ExtendedDatePicker.propTypes = {
         PropTypes.string
     ]),
     onChange: PropTypes.func,
+    onOpenChange: PropTypes.func,
     disabled: PropTypes.bool
 };
 

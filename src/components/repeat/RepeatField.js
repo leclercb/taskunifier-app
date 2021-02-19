@@ -11,10 +11,16 @@ class RepeatField extends React.Component {
         super(props);
 
         this.state = {
-            opened: props.defaultOpened
+            opened: props.defaultOpened === true
         };
 
         this.setOpened = this.setOpened.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.defaultOpened !== prevProps.defaultOpened) {
+            this.setOpened(this.props.defaultOpened);
+        }
     }
 
     setOpened(opened) {
@@ -26,12 +32,6 @@ class RepeatField extends React.Component {
             if (this.props.onOpenChange) {
                 this.props.onOpenChange(opened);
             }
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.defaultOpened !== prevProps.defaultOpened) {
-            this.setOpened(this.props.defaultOpened);
         }
     }
 
@@ -83,8 +83,7 @@ RepeatField.propTypes = {
     readOnly: PropTypes.bool,
     defaultOpened: PropTypes.bool,
     onChange: PropTypes.func,
-    onOpenChange: PropTypes.func,
-    fieldMode: PropTypes.oneOf(['default', 'table'])
+    onOpenChange: PropTypes.func
 };
 
 RepeatField.defaultProps = {
