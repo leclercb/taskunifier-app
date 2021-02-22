@@ -32,7 +32,7 @@ function log(type, ...params) {
         }
 
         return param;
-    })
+    });
 
     if (process.env.REACT_APP_MODE === 'electron') {
         electronLog(type, ...params);
