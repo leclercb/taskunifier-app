@@ -792,7 +792,7 @@ export function getCategories() {
                     id: 'lastSynchronizationDate',
                     title: 'Last synchronization date',
                     type: 'dateTime',
-                    value: moment().toISOString(),
+                    value: null,
                     editable: false,
                     mode: 'electron'
                 },

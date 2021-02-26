@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { log as electronLog, setLogLevel } from 'utils/ElectronIpc';
 
 export function setElectronLoggerLevel(level) {
@@ -24,6 +25,14 @@ export function debug(...params) {
 
 function log(type, ...params) {
     console[type](...params);
+
+    params = params.map(param => {
+        if (moment.isMoment(param)) {
+            return param.toISOString();
+        }
+
+        return param;
+    });
 
     if (process.env.REACT_APP_MODE === 'electron') {
         electronLog(type, ...params);
