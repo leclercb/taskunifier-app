@@ -34,15 +34,29 @@ export function getDefaultTailFormItemLayout() {
     };
 }
 
-export function onCommitForm(form, object, updateObject, options = { assign: false, force: false }) {
+export function onCommitForm(form, object, updateObject, options) {
+    options = merge({
+        assign: false,
+        force: false,
+        convert: null
+    }, options || {});
+
     setTimeout(async () => {
         const update = values => {
+            let newObject;
+
             if (options && options.assign === true) {
                 Object.assign(object, values);
-                updateObject(object);
+                newObject = object;
             } else {
-                updateObject(merge({ ...object }, values));
+                newObject = merge({ ...object }, values);
             }
+
+            if (options && options.convert) {
+                newObject = options.convert(newObject);
+            }
+
+            updateObject(newObject);
         };
 
         try {

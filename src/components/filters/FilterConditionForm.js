@@ -48,7 +48,7 @@ function FilterConditionForm({ condition, context, onUpdate, disabled }) {
                             }
                         ]}>
                         {getSelectForType(field.type, {
-                            onBlur: onCommit,
+                            onChange: onCommit,
                             disabled
                         })}
                     </Form.Item>
