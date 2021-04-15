@@ -5,8 +5,8 @@ import { useDrag, useDrop } from 'react-dnd';
 function DraggableElement(props) {
     // eslint-disable-next-line no-unused-vars
     const [collectedDragProps, drag] = useDrag({
+        type: props.dragType,
         item: {
-            type: props.dragType,
             data: props.data
         }
     });

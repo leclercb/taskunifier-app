@@ -5,10 +5,11 @@ import { Empty } from 'antd';
 import AddButton from 'components/common/conditiontree/AddButton';
 import Condition from 'components/common/conditiontree/Condition';
 import { ConditionPropType } from 'components/common/conditiontree/ConditionPropTypes';
+import { clone } from 'utils/ObjectUtils';
 import 'components/common/conditiontree/ConditionTree.css';
 
 function ConditionTree(props) {
-    const rootCondition = props.condition;
+    const rootCondition = clone(props.condition);
 
     const onAdd = (condition, key) => {
         let newCondition = null;

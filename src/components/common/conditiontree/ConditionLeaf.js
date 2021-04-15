@@ -10,8 +10,8 @@ function ConditionLeaf(props) {
 
     // eslint-disable-next-line no-unused-vars
     const [collectedDragProps, drag] = useDrag({
+        type: 'condition',
         item: {
-            type: 'condition',
             condition: props.condition,
             parentCondition: props.parentCondition
         },

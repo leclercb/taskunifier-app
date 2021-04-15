@@ -1,3 +1,9 @@
+# 1.2.5
+
+## Bug Fixes
+
+* Fix condition tree updates
+
 # 1.2.4
 
 ## New Features

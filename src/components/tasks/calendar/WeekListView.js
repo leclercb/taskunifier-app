@@ -111,8 +111,8 @@ function WeekListCell({ accessors, components, event }) {
 
     // eslint-disable-next-line no-unused-vars
     const [collectedDragProps, drag] = useDrag({
+        type: 'calendar-event',
         item: {
-            type: 'calendar-event',
             data: event
         }
     });
