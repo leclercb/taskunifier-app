@@ -84,7 +84,7 @@ export function checkForUpdates(quiet) {
 export function downloadUpdate() {
     return async dispatch => {
         return new Promise((resolve, reject) => {
-            const { ipcRenderer } = window.require('electron');
+            const electron = window.electron;
 
             const downloadProgressHandler = (event, info) => {
                 logger.debug('Download progress', info.percent);
@@ -94,13 +94,13 @@ export function downloadUpdate() {
             const updateDownloadedHandler = (event, info) => {
                 logger.debug('Update downloaded', info);
                 dispatch(setUpdateDownloaded(info));
-                ipcRenderer.removeListener('download-progress', downloadProgressHandler);
-                ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
+                electron.removeListener('download-progress', downloadProgressHandler);
+                electron.removeListener('update-downloaded', updateDownloadedHandler);
                 resolve(info);
             };
 
-            ipcRenderer.on('download-progress', downloadProgressHandler);
-            ipcRenderer.on('update-downloaded', updateDownloadedHandler);
+            electron.on('download-progress', downloadProgressHandler);
+            electron.on('update-downloaded', updateDownloadedHandler);
 
             logger.info('Download update');
 
@@ -109,8 +109,8 @@ export function downloadUpdate() {
             electronDownloadUpdate().catch(e => {
                 logger.error('Download update error', e);
 
-                ipcRenderer.removeListener('download-progress', downloadProgressHandler);
-                ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
+                electron.removeListener('download-progress', downloadProgressHandler);
+                electron.removeListener('update-downloaded', updateDownloadedHandler);
                 reject(e);
             });
         });

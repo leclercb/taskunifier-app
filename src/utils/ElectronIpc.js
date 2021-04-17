@@ -1,194 +1,194 @@
 // app-get-path
 export function getPath(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('app-get-path', path);
+    const electron = window.electron;
+    return electron.invoke('app-get-path', path);
 }
 
 // app-get-path-sync
 export function getPathSync(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.sendSync('app-get-path-sync', path);
+    const electron = window.electron;
+    return electron.sendSync('app-get-path-sync', path);
 }
 
 // app-get-version
 export function getAppVersion() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('app-get-version');
+    const electron = window.electron;
+    return electron.invoke('app-get-version');
 }
 
 // app-set-badge-count
 export function setBadgeCount(count) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('app-set-badge-count', count);
+    const electron = window.electron;
+    return electron.invoke('app-set-badge-count', count);
 }
 
 // auto-updater-check-updates
 export function checkForUpdates() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('auto-updater-check-updates');
+    const electron = window.electron;
+    return electron.invoke('auto-updater-check-updates');
 }
 
 // auto-updater-download-update
 export function downloadUpdate() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('auto-updater-download-update');
+    const electron = window.electron;
+    return electron.invoke('auto-updater-download-update');
 }
 
 // auto-updater-quit-and-install
 export function quitAndInstall() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('auto-updater-quit-and-install');
+    const electron = window.electron;
+    return electron.invoke('auto-updater-quit-and-install');
 }
 
 // axios
 export function axios(config) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('axios', config);
+    const electron = window.electron;
+    return electron.invoke('axios', config);
 }
 
 // axios-create
 export function axiosCreate(config, createConfig, httpsAgent) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('axios-create', config, createConfig, httpsAgent);
+    const electron = window.electron;
+    return electron.invoke('axios-create', config, createConfig, httpsAgent);
 }
 
 // crypto-verify-sync
 export function verifyCryptoSync(algorithm, message, object, signature, signatureFormat) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.sendSync('crypto-verify-sync', algorithm, message, object, signature, signatureFormat);
+    const electron = window.electron;
+    return electron.sendSync('crypto-verify-sync', algorithm, message, object, signature, signatureFormat);
 }
 
 // current-window-close
 export function closeCurrentWindow() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('current-window-close');
+    const electron = window.electron;
+    return electron.invoke('current-window-close');
 }
 
 // current-window-get-position
 export function getCurrentWindowPosition() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('current-window-get-position');
+    const electron = window.electron;
+    return electron.invoke('current-window-get-position');
 }
 
 // current-window-get-size
 export function getCurrentWindowSize() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('current-window-get-size');
+    const electron = window.electron;
+    return electron.invoke('current-window-get-size');
 }
 
 // dialog-show-open-dialog
 export function showOpenDialog(options) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('dialog-show-open-dialog', options);
+    const electron = window.electron;
+    return electron.invoke('dialog-show-open-dialog', options);
 }
 
 // dialog-show-save-dialog
 export function showSaveDialog(options) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('dialog-show-save-dialog', options);
+    const electron = window.electron;
+    return electron.invoke('dialog-show-save-dialog', options);
 }
 
 // fse-access
 export function exists(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-access', path);
+    const electron = window.electron;
+    return electron.invoke('fse-access', path);
 }
 
 // fse-copy-file
 export function copyFile(src, dest) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-copy-file', src, dest);
+    const electron = window.electron;
+    return electron.invoke('fse-copy-file', src, dest);
 }
 
 // fse-ensure-dir
 export function ensureDir(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-ensure-dir', path);
+    const electron = window.electron;
+    return electron.invoke('fse-ensure-dir', path);
 }
 
 // fse-lstat
 export function lstat(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-lstat', path);
+    const electron = window.electron;
+    return electron.invoke('fse-lstat', path);
 }
 
 // fse-read-file
 export function readFile(path, encoding) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-read-file', path, encoding);
+    const electron = window.electron;
+    return electron.invoke('fse-read-file', path, encoding);
 }
 
 // fse-readdir
 export function readdir(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-readdir', path);
+    const electron = window.electron;
+    return electron.invoke('fse-readdir', path);
 }
 
 // fse-remove
 export function remove(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-remove', path);
+    const electron = window.electron;
+    return electron.invoke('fse-remove', path);
 }
 
 // fse-write-file
 export function writeFile(file, data) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('fse-write-file', file, data);
+    const electron = window.electron;
+    return electron.invoke('fse-write-file', file, data);
 }
 
 // initiate-quit
 export function initiateQuit() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('initiate-quit');
+    const electron = window.electron;
+    return electron.invoke('initiate-quit');
 }
 
 // log
 export function log(type, ...params) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('log', type, ...params);
+    const electron = window.electron;
+    return electron.invoke('log', type, ...params);
 }
 
 // log-get-file
 export function getLogFile() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('log-get-file');
+    const electron = window.electron;
+    return electron.invoke('log-get-file');
 }
 
 // log-set-level
 export function setLogLevel(level) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('log-set-level', level);
+    const electron = window.electron;
+    return electron.invoke('log-set-level', level);
 }
 
 // os-platform
 export function getPlatform() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('os-platform');
+    const electron = window.electron;
+    return electron.invoke('os-platform');
 }
 
 // path-dirname
 export function dirname(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('path-dirname', path);
+    const electron = window.electron;
+    return electron.invoke('path-dirname', path);
 }
 
 // path-join-sync
 export function joinSync(...paths) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.sendSync('path-join-sync', ...paths);
+    const electron = window.electron;
+    return electron.sendSync('path-join-sync', ...paths);
 }
 
 // process-get-env
 export function getProcessEnv() {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('process-get-env');
+    const electron = window.electron;
+    return electron.invoke('process-get-env');
 }
 
 // shell-open-external
 export function openExternal(url) {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const { ipcRenderer } = window.require('electron');
-        return ipcRenderer.invoke('shell-open-external', url);
+        const electron = window.electron;
+        return electron.invoke('shell-open-external', url);
     } else {
         window.open(url, '_blank').focus();
     }
@@ -196,6 +196,6 @@ export function openExternal(url) {
 
 // shell-open-path
 export function openPath(path) {
-    const { ipcRenderer } = window.require('electron');
-    return ipcRenderer.invoke('shell-open-path', path);
+    const electron = window.electron;
+    return electron.invoke('shell-open-path', path);
 }
