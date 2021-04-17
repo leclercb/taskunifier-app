@@ -1,5 +1,9 @@
 # 1.2.5
 
+## New Features
+
+* Upgrade to Electron 12
+
 ## Bug Fixes
 
 * Fix condition tree updates
