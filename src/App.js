@@ -67,7 +67,6 @@ function App() {
 
     useEffect(() => {
         if (process.env.REACT_APP_MODE === 'electron') {
-
             const onClose = () => {
                 const close = async () => {
                     const size = await getCurrentWindowSize();
@@ -105,12 +104,12 @@ function App() {
                 }
             };
 
-            const { ipcRenderer } = window.require('electron');
+            const electron = window.electron;
 
-            ipcRenderer.on('window-close', onClose);
+            electron.on('window-close', onClose);
 
             return () => {
-                ipcRenderer.removeListener('window-close', onClose);
+                electron.removeListener('window-close', onClose);
             };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps

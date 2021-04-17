@@ -12,7 +12,10 @@ function createMainWindow(settings, isQuitInitiated) {
         icon: path.join(__dirname, 'resources', 'images', 'logo.png'),
         skipTaskbar: settings.useTray,
         webPreferences: {
-            nodeIntegration: true
+            contextIsolation: true,
+            enableRemoteModule: false,
+            nodeIntegration: false,
+            preload: path.join(__dirname, 'electronPreload.js')
         }
     }, getWindowSettings(settings)));
 
