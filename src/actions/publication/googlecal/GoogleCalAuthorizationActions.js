@@ -1,37 +1,24 @@
-import { google } from 'googleapis';
 import { updateSettings } from 'actions/SettingActions';
 import { getConfig } from 'config/Config';
 import { openExternal } from 'utils/ElectronIpc';
 import logger from 'utils/LogUtils';
 
-export function getClient(settings = null) {
-    const client = new google.auth.OAuth2(
-        getConfig().publication.googlecal.clientId,
-        getConfig().publication.googlecal.clientSecret,
-        getConfig().publication.googlecal.redirectUri
-    );
+export function setAuthClient(settings = null) {
+    const { ipcRenderer } = window.electron;
+    ipcRenderer.invoke('google-set-auth-client', getConfig().publication.googlecal, settings ? settings.googlecal : null);
+}
 
-    if (settings && settings.googlecal && settings.googlecal.tokens) {
-        client.setCredentials(settings.googlecal.tokens);
-    }
-
-    return client;
+export function setCalendarClient() {
+    const { ipcRenderer } = window.electron;
+    ipcRenderer.invoke('google-set-calendar-client');
 }
 
 export function authorize() {
     return async () => {
-        const client = getClient();
+        setAuthClient();
 
-        const url = client.generateAuthUrl({
-            access_type: 'offline',
-            prompt: 'consent',
-            scope: [
-                'https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/userinfo.profile',
-                'https://www.googleapis.com/auth/calendar'
-            ]
-        });
-
+        const { ipcRenderer } = window.electron;
+        const url = await ipcRenderer.invoke('google-generate-auth-url');
         openExternal(url);
     };
 }
@@ -40,9 +27,10 @@ export function createToken(code) {
     logger.debug('Create token', code);
 
     return async dispatch => {
-        const client = getClient();
+        setAuthClient();
 
-        const { tokens } = await client.getToken(code);
+        const { ipcRenderer } = window.electron;
+        const tokens = await ipcRenderer.invoke('google-get-tokens', code);
 
         await dispatch(updateSettings({
             googlecal: {

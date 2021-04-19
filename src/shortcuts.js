@@ -41,117 +41,117 @@ import { applyNoteTemplateFromNoteFilter, applyTaskTemplate, applyTaskTemplateFr
 
 export function initializeShortcuts() {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const electron = window.electron;
+        const { ipcRenderer } = window.electron;
 
-        electron.on('menu-save', async () => {
+        ipcRenderer.on('menu-save', async () => {
             await executeSave();
         });
 
-        electron.on('menu-backup', async () => {
+        ipcRenderer.on('menu-backup', async () => {
             await executeBackup();
         });
 
-        electron.on('menu-import-data', async () => {
+        ipcRenderer.on('menu-import-data', async () => {
             await executeImportData();
         });
 
-        electron.on('menu-export-data', async () => {
+        ipcRenderer.on('menu-export-data', async () => {
             await executeExportData();
         });
 
-        electron.on('menu-settings', async () => {
+        ipcRenderer.on('menu-settings', async () => {
             await executeSettings();
         });
 
-        electron.on('menu-undo', async () => {
+        ipcRenderer.on('menu-undo', async () => {
             await executeUndo();
         });
 
-        electron.on('menu-redo', async () => {
+        ipcRenderer.on('menu-redo', async () => {
             await executeRedo();
         });
 
-        electron.on('menu-add-note', async () => {
+        ipcRenderer.on('menu-add-note', async () => {
             await executeAddNote();
         });
 
-        electron.on('menu-remove-notes', async () => {
+        ipcRenderer.on('menu-remove-notes', async () => {
             await executeRemoveNotes();
         });
 
-        electron.on('menu-print-notes', async () => {
+        ipcRenderer.on('menu-print-notes', async () => {
             await executePrintNotes();
         });
 
-        electron.on('menu-note-filter-manager', async () => {
+        ipcRenderer.on('menu-note-filter-manager', async () => {
             await executeNoteFilterManager();
         });
 
-        electron.on('menu-note-field-manager', async () => {
+        ipcRenderer.on('menu-note-field-manager', async () => {
             await executeNoteFieldManager();
         });
 
-        electron.on('menu-add-task', async () => {
+        ipcRenderer.on('menu-add-task', async () => {
             await executeAddTask();
         });
 
-        electron.on('menu-add-sub-task', async () => {
+        ipcRenderer.on('menu-add-sub-task', async () => {
             await executeAddSubTask();
         });
 
-        electron.on('menu-batch-add-tasks', async () => {
+        ipcRenderer.on('menu-batch-add-tasks', async () => {
             await executeBatchAddTasks();
         });
 
-        electron.on('menu-edit-tasks', async () => {
+        ipcRenderer.on('menu-edit-tasks', async () => {
             await executeEditTasks();
         });
 
-        electron.on('menu-remove-tasks', async () => {
+        ipcRenderer.on('menu-remove-tasks', async () => {
             await executeRemoveTasks();
         });
 
-        electron.on('menu-print-tasks', async () => {
+        ipcRenderer.on('menu-print-tasks', async () => {
             await executePrintTasks();
         });
 
-        electron.on('menu-task-filter-manager', async () => {
+        ipcRenderer.on('menu-task-filter-manager', async () => {
             await executeTaskFilterManager();
         });
 
-        electron.on('menu-task-template-manager', async () => {
+        ipcRenderer.on('menu-task-template-manager', async () => {
             await executeTaskTemplateManager();
         });
 
-        electron.on('menu-task-field-manager', async () => {
+        ipcRenderer.on('menu-task-field-manager', async () => {
             await executeTaskFieldManager();
         });
 
-        electron.on('menu-synchronize', async () => {
+        ipcRenderer.on('menu-synchronize', async () => {
             await executeSynchronize();
         });
 
-        electron.on('menu-publish', async () => {
+        ipcRenderer.on('menu-publish', async () => {
             await executePublish();
         });
 
-        electron.on('menu-category-manager', async () => {
+        ipcRenderer.on('menu-category-manager', async () => {
             await executeCategoryManager();
         });
 
-        electron.on('menu-reminder-manager', async () => {
+        ipcRenderer.on('menu-reminder-manager', async () => {
             await executeReminderManager();
         });
 
-        electron.on('menu-show-tasks', async () => {
+        ipcRenderer.on('menu-show-tasks', async () => {
             await executeShowTasks();
         });
 
-        electron.on('menu-show-calendar', async () => {
+        ipcRenderer.on('menu-show-calendar', async () => {
             await executeShowCalendar();
         });
 
-        electron.on('menu-show-notes', async () => {
+        ipcRenderer.on('menu-show-notes', async () => {
             await executeShowNotes();
         });
     } else {

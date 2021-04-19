@@ -33,7 +33,7 @@
         "electron-log": "^4.3.4",
         "electron-updater": "^4.3.8",
         "fs-extra": "^9.1.0",
-        "googleapis": "^48.0.0",
+        "googleapis": "^71.0.0",
         "https-proxy-agent": "^5.0.0",
         "inputmask-core": "^2.2.0",
         "jspdf": "^2.3.1",

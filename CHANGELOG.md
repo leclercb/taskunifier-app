@@ -3,6 +3,7 @@
 ## New Features
 
 * Upgrade to Electron 12
+* Upgrade to Google APIs 71
 
 ## Bug Fixes
 

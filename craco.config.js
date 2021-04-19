@@ -17,9 +17,6 @@ module.exports = {
         }
     },
     webpack: {
-        alias: {
-            fs: path.resolve(__dirname, 'src/mock-fs.js')
-        },
         configure: webpackConfig => {
             webpackConfig.module.rules.push({
                 test: /\.worker\.js$/,

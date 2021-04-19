@@ -4,9 +4,13 @@ const { app, dialog, ipcMain, shell, BrowserWindow } = require('electron');
 const { autoUpdater, CancellationToken } = require('electron-updater');
 const log = require('electron-log');
 const fse = require('fs-extra');
+const { google } = require('googleapis');
 const HttpsProxyAgent = require('https-proxy-agent');
 const os = require('os');
 const path = require('path');
+
+let googleAuthClient = null;
+let googleCalendarClient = null;
 
 async function sendRequest(axiosInstance, config) {
     const result = await axiosInstance(config);
@@ -135,6 +139,83 @@ function initializeIpc(setQuitInitiated) {
 
     ipcMain.handle('fse-write-file', (event, file, data) => {
         return fse.writeFile(file, data);
+    });
+
+    ipcMain.handle('google-set-auth-client', (event, config, settings) => {
+        const client = new google.auth.OAuth2(
+            config.clientId,
+            config.clientSecret,
+            config.redirectUri
+        );
+
+        if (settings && settings.tokens) {
+            client.setCredentials(settings.tokens);
+        }
+
+        googleAuthClient = client;
+    });
+
+    ipcMain.handle('google-set-calendar-client', () => {
+        const client = google.calendar({
+            version: 'v3',
+            auth: googleAuthClient
+        });
+
+        googleCalendarClient = client;
+    });
+
+    ipcMain.handle('google-generate-auth-url', async () => {
+        const url = googleAuthClient.generateAuthUrl({
+            access_type: 'offline',
+            prompt: 'consent',
+            scope: [
+                'https://www.googleapis.com/auth/userinfo.email',
+                'https://www.googleapis.com/auth/userinfo.profile',
+                'https://www.googleapis.com/auth/calendar'
+            ]
+        });
+
+        return url;
+    });
+
+    ipcMain.handle('google-get-tokens', async (event, code) => {
+        const { tokens } = await googleAuthClient.getToken(code);
+        return tokens;
+    });
+
+    ipcMain.handle('google-get-user-info', async () => {
+        const profile = google.oauth2({
+            version: 'v2',
+            auth: googleAuthClient
+        });
+
+        const result = await profile.userinfo.get();
+        return result.data;
+    });
+
+    ipcMain.handle('google-calendars-list', async (event, data) => {
+        const result = await googleCalendarClient.calendarList.list(data);
+        return result.data;
+    });
+
+    ipcMain.handle('google-calendars-insert', async (event, data) => {
+        const result = await googleCalendarClient.calendars.insert(data);
+        return result.data;
+    });
+
+    ipcMain.handle('google-events-list', async (event, data) => {
+        const result = await googleCalendarClient.events.list(data);
+        return result.data;
+    });
+
+    ipcMain.handle('google-events-insert', async (event, data) => {
+        const result = await googleCalendarClient.events.insert(data);
+        return result.data;
+    });
+
+    ipcMain.handle('google-events-delete', async (event, data) => {
+        const result = await googleCalendarClient.events.delete(data);
+        return result.data;
     });
 
     ipcMain.handle('initiate-quit', () => {

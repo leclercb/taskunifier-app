@@ -1,26 +1,20 @@
-import { google } from 'googleapis';
 import { setPublicationData } from 'actions/PublicationActions';
-import { getClient } from 'actions/publication/googlecal/GoogleCalAuthorizationActions';
+import { setAuthClient } from 'actions/publication/googlecal/GoogleCalAuthorizationActions';
 import { getSettings } from 'selectors/SettingSelectors';
 import logger from 'utils/LogUtils';
 
 export function getGoogleCalAccountInfo() {
     return async (dispatch, getState) => {
         const settings = getSettings(getState());
+        setAuthClient(settings);
 
-        const client = getClient(settings);
+        const { ipcRenderer } = window.electron;
+        const userInfo = await ipcRenderer.invoke('google-get-user-info');
 
-        const profile = google.oauth2({
-            version: 'v2',
-            auth: client
-        });
-
-        const result = await profile.userinfo.get();
-
-        logger.debug('Get account info', result.data);
+        logger.debug('Get account info', userInfo);
 
         await dispatch(setPublicationData('googlecal', {
-            accountInfo: result.data
+            accountInfo: userInfo
         }));
     };
 }
