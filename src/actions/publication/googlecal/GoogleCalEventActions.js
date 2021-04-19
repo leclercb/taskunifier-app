@@ -1,6 +1,5 @@
-import { google } from 'googleapis';
 import moment from 'moment';
-import { getClient } from 'actions/publication/googlecal/GoogleCalAuthorizationActions';
+import { setAuthClient, setCalendarClient } from 'actions/publication/googlecal/GoogleCalAuthorizationActions';
 import { getLocationsFilteredByVisibleState } from 'selectors/LocationSelectors';
 import { getSettings } from 'selectors/SettingSelectors';
 import { getTasksFilteredByVisibleState } from 'selectors/TaskSelectors';
@@ -26,39 +25,37 @@ export function publishEvents() {
         const publishMaxDaysInPast = settings.googlecalPublishMaxDaysInPast;
         const publishMaxDaysInFuture = settings.googlecalPublishMaxDaysInFuture;
 
-        const client = getClient(settings);
+        setAuthClient(settings);
+        setCalendarClient();
 
-        const calendarClient = google.calendar({
-            version: 'v3',
-            auth: client
-        });
+        const { ipcRenderer } = window.electron;
 
-        const calendarListResult = await calendarClient.calendarList.list();
+        const calendarListResult = await ipcRenderer.invoke('google-calendars-list');
 
-        let calendar = calendarListResult.data.items.find(item => item.summary === calendarName);
+        let calendar = calendarListResult.items.find(item => item.summary === calendarName);
         const events = [];
 
         if (calendar) {
             logger.debug('Calendar found', calendar.id);
 
-            const eventListResult = await calendarClient.events.list({
+            const eventListResult = await ipcRenderer.invoke('google-events-list', {
                 calendarId: calendar.id
             });
 
-            logger.debug('Calendar events retrieved', eventListResult.data.items.length);
+            logger.debug('Calendar events retrieved', eventListResult.items.length);
 
-            events.push(...eventListResult.data.items);
+            events.push(...eventListResult.items);
         } else {
-            const calendarInsertResult = await calendarClient.calendars.insert({
+            const calendarInsertResult = await ipcRenderer.invoke('google-calendars-insert', {
                 requestBody: {
                     summary: calendarName,
                     description: 'Created by TaskUnifier'
                 }
             });
 
-            logger.debug('Calendar created', calendarInsertResult.data);
+            logger.debug('Calendar created', calendarInsertResult);
 
-            calendar = calendarInsertResult.data;
+            calendar = calendarInsertResult;
         }
 
         for (let task of tasks) {
@@ -76,7 +73,6 @@ export function publishEvents() {
                 }
 
                 await publishEvent(
-                    calendarClient,
                     events,
                     calendar,
                     task,
@@ -95,7 +91,6 @@ export function publishEvents() {
                 }
 
                 await publishEvent(
-                    calendarClient,
                     events,
                     calendar,
                     task,
@@ -117,7 +112,6 @@ export function publishEvents() {
                         }
 
                         await publishEvent(
-                            calendarClient,
                             events,
                             calendar,
                             task,
@@ -132,7 +126,7 @@ export function publishEvents() {
         }
 
         for (let event of events) {
-            await calendarClient.events.delete({
+            await ipcRenderer.invoke('google-events-delete', {
                 calendarId: calendar.id,
                 eventId: event.id
             });
@@ -177,7 +171,7 @@ function createEvent(task, startDate, endDate, colorId, useTime, locations) {
     return event;
 }
 
-async function publishEvent(calendarClient, events, calendar, task, startDate, endDate, colorId, useTime, locations) {
+async function publishEvent(events, calendar, task, startDate, endDate, colorId, useTime, locations) {
     const newEvent = createEvent(task, startDate, endDate, colorId, useTime, locations);
 
     let event = events.find(event => {
@@ -204,7 +198,9 @@ async function publishEvent(calendarClient, events, calendar, task, startDate, e
         return;
     }
 
-    await calendarClient.events.insert({
+    const { ipcRenderer } = window.electron;
+
+    await ipcRenderer.invoke('google-events-insert', {
         calendarId: calendar.id,
         requestBody: newEvent
     });

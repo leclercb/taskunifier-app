@@ -3,9 +3,9 @@ import logger from 'utils/LogUtils';
 
 export function initializeEvents() {
     if (process.env.REACT_APP_MODE === 'electron') {
-        const electron = window.electron;
+        const { ipcRenderer } = window.electron;
 
-        electron.on('open-url', async (event, url) => {
+        ipcRenderer.on('open-url', async (event, url) => {
             logger.debug('Open URL', url);
 
             const u = new URL(url);

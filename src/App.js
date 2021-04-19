@@ -104,12 +104,12 @@ function App() {
                 }
             };
 
-            const electron = window.electron;
+            const { ipcRenderer } = window.electron;
 
-            electron.on('window-close', onClose);
+            ipcRenderer.on('window-close', onClose);
 
             return () => {
-                electron.removeListener('window-close', onClose);
+                ipcRenderer.removeListener('window-close', onClose);
             };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps
