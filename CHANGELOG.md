@@ -1,3 +1,10 @@
+# 1.2.6
+
+## New Features
+
+* Improve calendar week list view
+* Show completed tasks in calendar
+
 # 1.2.5
 
 ## New Features

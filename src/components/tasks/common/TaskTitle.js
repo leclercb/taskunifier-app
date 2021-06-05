@@ -18,6 +18,7 @@ function TaskTitle(props) {
                 backgroundColor: getImportanceColor(task.importance, settingsApi.settings),
                 borderRadius: 4,
                 padding: '2px 8px',
+                textDecoration: task.completed ? 'line-through' : 'none',
                 ...props.style
             }} />
     ) : <span>&nbsp;</span>;
