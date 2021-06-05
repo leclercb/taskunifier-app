@@ -104,7 +104,7 @@ WeekListColumn.propTypes = {
     taskApi: PropTypes.object
 };
 
-function WeekListCell({ accessors, components, event }) {
+function WeekListCell({ accessors, components, event, onDoubleClickEvent }) {
     const { event: Event } = components;
 
     const title = accessors.title(event);
@@ -118,14 +118,20 @@ function WeekListCell({ accessors, components, event }) {
     });
 
     return (
-        <div ref={drag} style={{ cursor: 'pointer' }}>{Event ? <Event event={event} title={title} /> : title}</div>
+        <div
+            ref={drag}
+            style={{ cursor: 'pointer' }}
+            onDoubleClick={() => onDoubleClickEvent(event)}>
+            {Event ? <Event event={event} title={title} /> : title}
+        </div>
     );
 }
 
 WeekListCell.propTypes = {
     accessors: PropTypes.object.isRequired,
     components: PropTypes.object.isRequired,
-    event: PropTypes.object
+    event: PropTypes.object,
+    onDoubleClickEvent: PropTypes.func.isRequired
 };
 
 export default WeekListView;
