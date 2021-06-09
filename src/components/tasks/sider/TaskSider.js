@@ -195,7 +195,16 @@ function TaskSider(props) {
                 )}
                 {props.mode === 'calendar' && (
                     <div style={{ padding: '10px 10px 0px 10px' }}>
-                        <div style={{ marginBottom: 5 }}>Show following event types:</div>
+                        <div>
+                            <Tooltip title="Show completed tasks" placement="right">
+                                <Checkbox
+                                    checked={taskApi.showCompletedTasks}
+                                    onChange={() => taskApi.setShowCompletedTasks(!taskApi.showCompletedTasks)}>
+                                    Show completed tasks
+                                </Checkbox>
+                            </Tooltip>
+                        </div>
+                        <div style={{ paddingTop: 10, marginBottom: 5 }}>Show following event types:</div>
                         <Checkbox.Group
                             value={taskApi.calendarEventTypes}
                             options={[
