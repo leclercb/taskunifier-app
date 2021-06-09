@@ -1,3 +1,10 @@
+# 1.2.7
+
+## New Features
+
+* Upgrade to Electron 13
+* Checkbox to show/hide completed tasks in calendar
+
 # 1.2.6
 
 ## New Features
