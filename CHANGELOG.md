@@ -1,3 +1,9 @@
+# 1.2.8
+
+## New Features
+
+* Improve calendar week list view
+
 # 1.2.7
 
 ## New Features

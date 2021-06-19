@@ -3,6 +3,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import { navigate } from 'react-big-calendar/lib/utils/constants';
 import { useDrag, useDrop } from 'react-dnd';
+import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
 import { useTaskApi } from 'hooks/UseTaskApi';
 import 'components/tasks/calendar/WeekListView.css';
 
@@ -104,10 +105,8 @@ WeekListColumn.propTypes = {
     taskApi: PropTypes.object
 };
 
-function WeekListCell({ accessors, components, event, onDoubleClickEvent }) {
+function WeekListCell({ components, event, onDoubleClickEvent, onSelectEvent }) {
     const { event: Event } = components;
-
-    const title = accessors.title(event);
 
     // eslint-disable-next-line no-unused-vars
     const [collectedDragProps, drag] = useDrag({
@@ -118,12 +117,16 @@ function WeekListCell({ accessors, components, event, onDoubleClickEvent }) {
     });
 
     return (
-        <div
-            ref={drag}
-            style={{ cursor: 'pointer' }}
-            onDoubleClick={() => onDoubleClickEvent(event)}>
-            {Event ? <Event event={event} title={title} /> : title}
-        </div>
+        <CalendarEventWrapper event={event}>
+            <div
+                className="rbc-event"
+                ref={drag}
+                style={{ cursor: 'pointer' }}
+                onClick={() => onSelectEvent(event)}
+                onDoubleClick={() => onDoubleClickEvent(event)}>
+                <Event event={event} />
+            </div>
+        </CalendarEventWrapper>
     );
 }
 
@@ -131,7 +134,8 @@ WeekListCell.propTypes = {
     accessors: PropTypes.object.isRequired,
     components: PropTypes.object.isRequired,
     event: PropTypes.object,
-    onDoubleClickEvent: PropTypes.func.isRequired
+    onDoubleClickEvent: PropTypes.func.isRequired,
+    onSelectEvent: PropTypes.func.isRequired
 };
 
 export default WeekListView;
