@@ -1,3 +1,9 @@
+# 1.2.9
+
+## New Features
+
+* Improve calendar agenda view
+
 # 1.2.8
 
 ## New Features
