@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { v4 as uuid } from 'uuid';
 import Icon from 'components/common/Icon';
 import Spacer from 'components/common/Spacer';
+import AgendaCalendarEvent from 'components/tasks/calendar/AgendaCalendarEvent';
 import CalendarEvent from 'components/tasks/calendar/CalendarEvent';
 import CalendarEventWrapper from 'components/tasks/calendar/CalendarEventWrapper';
 import WeekListView from 'components/tasks/calendar/WeekListView';
@@ -252,7 +253,10 @@ function TaskCalendar({ apis }) {
                 }}
                 components={{
                     event: CalendarEvent,
-                    eventWrapper: CalendarEventWrapper
+                    eventWrapper: CalendarEventWrapper,
+                    agenda: {
+                        event: AgendaCalendarEvent
+                    }
                 }}
                 messages={{
                     week_list: 'Week List'
