@@ -140,9 +140,9 @@ export function getCategories() {
                                         <Checkbox
                                             onChange={event => copy = event.target.checked}>
                                             Copy current data to the new data folder location.
-                                        <br />
-                                        This will override any data in the selected folder !
-                                    </Checkbox>
+                                            <br />
+                                            This will override any data in the selected folder !
+                                        </Checkbox>
                                     </React.Fragment>
                                 ),
                                 okText: 'Change',
@@ -401,7 +401,7 @@ export function getCategories() {
                     id: 'activationInfo',
                     title: '',
                     type: 'component',
-                    value: () => {
+                    value: () => { // eslint-disable-line react/display-name
                         const activationInfo = getActivationInfo(store.getState());
 
                         if (activationInfo) {

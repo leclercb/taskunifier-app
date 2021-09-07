@@ -63,7 +63,8 @@ function PrivateComponent({ userRole, children }) {
 }
 
 PrivateComponent.propTypes = {
-    userRole: PropTypes.string
+    userRole: PropTypes.string,
+    children: PropTypes.any
 };
 
 export default PrivateComponent;
