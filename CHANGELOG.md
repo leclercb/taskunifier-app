@@ -1,3 +1,10 @@
+# 1.2.10
+
+## New Features
+
+* Upgrade to Electron 14
+* Upgrade to Google APIs 85
+
 # 1.2.9
 
 ## New Features
