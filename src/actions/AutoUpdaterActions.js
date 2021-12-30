@@ -94,8 +94,8 @@ export function downloadUpdate() {
             const updateDownloadedHandler = (event, info) => {
                 logger.debug('Update downloaded', info);
                 dispatch(setUpdateDownloaded(info));
-                ipcRenderer.removeListener('download-progress', downloadProgressHandler);
-                ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
+                ipcRenderer.removeAllListeners('download-progress');
+                ipcRenderer.removeAllListeners('update-downloaded');
                 resolve(info);
             };
 
@@ -109,8 +109,8 @@ export function downloadUpdate() {
             electronDownloadUpdate().catch(e => {
                 logger.error('Download update error', e);
 
-                ipcRenderer.removeListener('download-progress', downloadProgressHandler);
-                ipcRenderer.removeListener('update-downloaded', updateDownloadedHandler);
+                ipcRenderer.removeAllListeners('download-progress');
+                ipcRenderer.removeAllListeners('update-downloaded');
                 reject(e);
             });
         });

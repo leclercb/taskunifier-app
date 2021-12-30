@@ -106,11 +106,8 @@ function App() {
 
             const { ipcRenderer } = window.electron;
 
+            ipcRenderer.removeAllListeners('window-close');
             ipcRenderer.on('window-close', onClose);
-
-            return () => {
-                ipcRenderer.removeListener('window-close', onClose);
-            };
         }
     }, [ // eslint-disable-line react-hooks/exhaustive-deps
         settingsApi.settings.confirmBeforeClosing,

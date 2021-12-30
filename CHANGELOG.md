@@ -5,6 +5,10 @@
 * Upgrade to Electron 16
 * Upgrade to Google APIs 92
 
+## Bug Fixes
+
+* Fix confirm on exit (#255)
+
 # 1.2.10
 
 ## New Features
