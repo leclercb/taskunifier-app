@@ -3,7 +3,7 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 14
+        - nvm install 16
         - rm -rf node_modules
         - yarn install
     build:
