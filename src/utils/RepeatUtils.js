@@ -31,6 +31,10 @@ export function canRepeat(task) {
     return true;
 }
 
+export function isRepeatWithParent(repeat) {
+    return repeat === 'PARENT';
+}
+
 export function getNextDate(repeat, start, now) {
     if (!repeat || !start) {
         return null;
@@ -38,7 +42,6 @@ export function getNextDate(repeat, start, now) {
 
     try {
         if (repeat === 'PARENT') {
-            // TODO repeat with parent
             return null;
         }
 

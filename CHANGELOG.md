@@ -1,3 +1,11 @@
+# 1.2.12
+
+## New Features
+
+* Repeat with parent
+* Upgrade to Electron 17
+* Upgrade to Google APIs 99
+
 # 1.2.11
 
 ## New Features
