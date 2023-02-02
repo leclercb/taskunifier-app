@@ -38,7 +38,7 @@
         "inputmask-core": "^2.2.0",
         "jspdf": "^2.5.1",
         "jspdf-autotable": "^3.5.23",
-        "jszip": "^3.7.1",
+        "jszip": "^3.8.0",
         "lodash": "^4.17.21",
         "moment": "^2.29.1",
         "mousetrap": "^1.6.5",
