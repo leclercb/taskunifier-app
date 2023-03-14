@@ -402,9 +402,10 @@ export function getCategories() {
                     title: '',
                     type: 'component',
                     value: () => { // eslint-disable-line react/display-name
-                        const activationInfo = getActivationInfo(store.getState());
+                        const pro = isPro(store.getState());
 
-                        if (activationInfo) {
+                        if (pro) {
+                            const activationInfo = getActivationInfo(store.getState());
                             return (<ProUnlockedMessage activationInfo={activationInfo} />);
                         } else {
                             return (<ProLockedMessage info={true} />);

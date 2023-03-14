@@ -11,10 +11,14 @@ export function ProUnlockedMessage({ activationInfo }) {
             description={(
                 <span>
                     TaskUnifier Pro has been successfully activated !<br />
-                    <strong>Email: </strong>{activationInfo.email}<br />
-                    {activationInfo.expirationDate && (
+                    {!!activationInfo && (
                         <React.Fragment>
-                            <strong>Expiration Date: </strong>{activationInfo.expirationDate}<br />
+                            <strong>Email: </strong>{activationInfo.email}<br />
+                            {activationInfo.expirationDate && (
+                                <React.Fragment>
+                                    <strong>Expiration Date: </strong>{activationInfo.expirationDate}<br />
+                                </React.Fragment>
+                            )}
                         </React.Fragment>
                     )}
                 </span>

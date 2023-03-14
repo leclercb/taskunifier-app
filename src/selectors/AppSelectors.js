@@ -83,8 +83,9 @@ export const getActivationInfo = createSelector(
 
 export const isPro = createSelector(
     getActivationInfo,
+    // eslint-disable-next-line no-unused-vars
     (activationInfo) => {
-        return !!activationInfo;
+        return true;
     }
 );
 
