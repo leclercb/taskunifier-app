@@ -1,3 +1,9 @@
+# 1.3.0
+
+## New Features
+
+* TaskUnifier Pro becomes free
+
 # 1.2.12
 
 ## New Features
