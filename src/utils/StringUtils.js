@@ -1,5 +1,5 @@
 import moment from 'moment';
-import RRule from 'rrule';
+import { RRule } from 'rrule';
 import { getContactTitle } from 'utils/ContactUtils';
 import { getGoalLevel } from 'data/DataGoalLevels';
 import { getPriority } from 'data/DataPriorities';

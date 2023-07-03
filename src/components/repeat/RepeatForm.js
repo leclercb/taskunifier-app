@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, DatePicker, Form, InputNumber, Radio, Select } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import RRule from 'rrule';
+import { RRule } from 'rrule';
 import { RepeatPropType } from 'proptypes/RepeatPropTypes';
 import { getDefaultFormItemLayout } from 'utils/FormUtils';
 import { getOptionsFromValue } from 'utils/RepeatUtils';

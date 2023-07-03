@@ -1,5 +1,5 @@
 import moment from 'moment';
-import RRule from 'rrule';
+import { RRule } from 'rrule';
 
 export function getOptionsFromValue(value) {
     try {
