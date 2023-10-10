@@ -93,11 +93,11 @@ const config = {
     },
     prod: {
         apiUrl: 'https://api.taskunifier.app',
-        appUrl: 'https://www.taskunifier.app/app',
+        appUrl: 'https://leclercb.github.io/taskunifier-web/#/app',
         authUrl: 'https://auth.taskunifier.app',
-        cloudUrl: 'https://www.taskunifier.app/cloud',
-        downloadUrl: 'https://www.taskunifier.app/app',
-        maintenanceUrl: 'https://www.taskunifier.app/maintenance',
+        cloudUrl: 'https://leclercb.github.io/taskunifier-web/#/cloud',
+        downloadUrl: 'https://leclercb.github.io/taskunifier-web/#/app',
+        maintenanceUrl: 'https://leclercb.github.io/taskunifier-web/#/maintenance',
         auth: {
             region: 'eu-west-1',
             userPoolId: process.env.REACT_APP_AUTH_USERPOOLID,
@@ -114,7 +114,7 @@ const config = {
             googlecal: {
                 clientId: process.env.REACT_APP_GOOGLECAL_CLIENT_ID,
                 clientSecret: process.env.REACT_APP_GOOGLECAL_CLIENT_SECRET,
-                redirectUri: 'https://www.taskunifier.app/code'
+                redirectUri: 'https://leclercb.github.io/taskunifier-web'
             }
         },
         stripe: {
@@ -126,7 +126,7 @@ const config = {
                 clientId: process.env.REACT_APP_TASKUNIFIER_CLIENT_ID,
                 clientSecret: process.env.REACT_APP_TASKUNIFIER_CLIENT_SECRET,
                 oauthUri: 'https://hosted-auth.taskunifier.app',
-                redirectUri: 'https://www.taskunifier.app/code'
+                redirectUri: 'https://leclercb.github.io/taskunifier-web'
             },
             toodledo: {
                 clientId: process.env.REACT_APP_TOODLEDO_CLIENT_ID,
