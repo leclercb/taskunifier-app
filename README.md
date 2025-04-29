@@ -1,7 +1,7 @@
 <p align="center">
     <img 
         alt="Logo" 
-        src="https://www.taskunifier.app/resources/images/logo.png"
+        src="https://leclercb.github.io/taskunifier-web/resources/images/logo.png"
         height="150"/>
 </p>
 
@@ -40,6 +40,8 @@ Organize your tasks, notes and calendar with ease.
 
 The features marked with an asterisk are available in the PRO version only.
 The PRO features requires a **Commercial** license.
+
+** All the pro features are now enabled by default for free as the software is not maintained anymore.**
 
 # Usage
 
