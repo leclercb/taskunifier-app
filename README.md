@@ -40,7 +40,7 @@ Organize your tasks, notes and calendar with ease.
 The features marked with an asterisk are available in the PRO version only.
 The PRO features requires a **Commercial** license.
 
-** All the pro features are now enabled by default for free as the software is not maintained anymore.**
+**All the pro features are now enabled by default for free as the software is not maintained anymore.**
 
 # Usage
 
