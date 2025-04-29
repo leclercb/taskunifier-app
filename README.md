@@ -32,7 +32,7 @@ Organize your tasks, notes and calendar with ease.
 * Custom Task Filters *
 * Custom Task Fields *
 * Synchronization with:
-    * TaskUnifier Cloud (www.taskunifier.app/cloud) *
+    * ~~TaskUnifier Cloud (www.taskunifier.app/cloud)~~ *
     * Toodledo (www.toodledo.com) *
 * Publication to:
     * Google Calendar (calendar.google.com) *
